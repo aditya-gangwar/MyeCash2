@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/toolbar"
+    android:background="?android:attr/windowBackground">
+
+    <!--android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"/-->
+
+    <LinearLayout
+        style="@style/LL_Vertical"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_last_row_btn"
+        android:layout_alignParentBottom="true">
+
+        <View
+            style="@style/Divider_horizontal_Medium"
+            android:background="@color/accent2"/>
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_normal_white"
+            android:id="@+id/btn_process"
+            android:text="PROCESS"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/LL_Vertical"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/layout_last_row_btn">
+
+        <LinearLayout
+            style="@style/LL_Horizontal_weighted"
+            android:layout_weight="40">
+
+            <EditText
+                style="@style/Edittext_biggest_main_input"
+                android:id="@+id/input_cust_mobile"
+                android:maxLength="@string/mobile_char_limit"
+                android:hint="Mobile Number"
+                android:drawableLeft="@drawable/ic_mobile"
+                android:text="8800191535"
+                android:typeface="monospace"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Vertical"
+            android:layout_height="0dp"
+            android:layout_weight="60">
+
+            <View
+                style="@style/Divider_horizontal_Medium"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_weighted">
+
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_1"
+                    android:text="1" />
+                <View
+                    style="@style/Divider_vertical_Medium"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_2"
+                    android:text="2"/>
+                <View
+                    style="@style/Divider_vertical_Medium"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_3"
+                    android:text="3"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/Divider_horizontal_Medium"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_weighted">
+
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_4"
+                    android:text="4"/>
+                <View
+                    style="@style/Divider_vertical_Medium"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_5"
+                    android:text="5"/>
+                <View
+                    style="@style/Divider_vertical_Medium"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_6"
+                    android:text="6"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/Divider_horizontal_Medium"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_weighted">
+
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_7"
+                    android:text="7"/>
+                <View
+                    style="@style/Divider_vertical_Medium"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_8"
+                    android:text="8"/>
+                <View
+                    style="@style/Divider_vertical_Medium"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_9"
+                    android:text="9"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/Divider_horizontal_Medium"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_weighted">
+
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_clear"
+                    android:text="c"/>
+                <View
+                    style="@style/Divider_vertical_Medium"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_0"
+                    android:text="0" />
+                <View
+                    style="@style/Divider_vertical_Medium"/>
+                <android.support.v7.widget.AppCompatImageButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_bs"
+                    android:src="@drawable/ic_backspace_white_24dp"
+                    android:tint="@color/secondary_text"
+                    android:scaleType="center"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/LL_Vertical_paddingSidesLarge">
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:paddingBottom="@dimen/small_space"
+        android:paddingTop="@dimen/small_space">
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@drawable/circle"
+            android:layout_gravity="center"
+            android:id="@+id/item_s_no"
+            android:text="01"
+            android:paddingTop="@dimen/edittext_padding_less"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingLeft="@dimen/edittext_padding_less"
+            android:paddingRight="@dimen/edittext_padding_less"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginRight="@dimen/medium_space"/>
+
+        <EditText
+            style="@style/Edittext_only_click_medium"
+            android:id="@+id/input_unit_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="\u20B9 78999"
+            android:gravity="left"
+            android:layout_weight="47.5"
+            android:textColor="@color/link_blue"/>
+
+        <EditText
+            style="@style/Edittext_only_view_large"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="x"/>
+
+        <EditText
+            style="@style/Edittext_only_click_medium"
+            android:id="@+id/input_quantity"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="01"
+            android:textColor="@color/link_blue"/>
+
+        <EditText
+            style="@style/Edittext_only_click_medium"
+            android:id="@+id/input_item_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="\u20B9 99999"
+            android:layout_weight="52.5"
+            android:gravity="right"/>
+
+        <android.support.v7.widget.AppCompatImageButton
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:id="@+id/img_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_delete_forever_black_18dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingRight="0dp"
+            android:tint="@color/icon_grey"/>
+
+    </LinearLayout>
+
+    <View
+        style="@style/Divider_horizontal_Large"
+        android:id="@+id/cash_pay_divider_1"/>
+
+</LinearLayout>

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants">
+
+    <LinearLayout
+        style="@style/LL_Vertical"
+        android:layout_below="@id/toolbar"
+        android:background="@drawable/dashboard_bg">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Touch buttons below to see detailed data and graph." />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="15"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <Space
+                android:layout_width="@dimen/large_space"
+                android:layout_height="match_parent"/>
+
+            <in.myecash.commonbase.utilities.SquareCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                card_view:cardCornerRadius="6dp"
+                card_view:cardBackgroundColor="@color/customers">
+
+                <LinearLayout
+                    style="@style/LL_Vertical"
+                    android:id="@+id/layout_cust_cnt">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"/>
+
+                    <EditText
+                        style="@style/Edittext_only_click_large"
+                        android:textSize="@dimen/text_size_XXL"
+                        android:id="@+id/input_cust_cnt"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:text="234"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:drawableTop="@drawable/ic_group_white_24dp"
+                        android:drawablePadding="@dimen/medium_space"/>
+
+                    <EditText
+                        style="@style/Edittext_only_click_large"
+                        android:id="@+id/label_cust_cnt"
+                        android:layout_height="wrap_content"
+                        android:text="CUSTOMERS"
+                        android:gravity="top|center_horizontal"
+                        android:textColor="@color/white"/>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"/>
+
+                </LinearLayout>
+
+            </in.myecash.commonbase.utilities.SquareCardView>
+
+            <Space
+                android:layout_width="@dimen/medium_space"
+                android:layout_height="match_parent"/>
+
+            <in.myecash.commonbase.utilities.SquareCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                card_view:cardCornerRadius="6dp"
+                card_view:cardBackgroundColor="@color/bill">
+
+                <LinearLayout
+                    android:id="@+id/layout_bill_amt"
+                    style="@style/LL_Vertical">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"/>
+
+                    <EditText
+                        style="@style/Edittext_only_click_large"
+                        android:textSize="@dimen/text_size_XXL"
+                        android:id="@+id/input_bill_amt"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:text="\u20B9 234"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:drawableTop="@drawable/ic_receipt_white_24dp"
+                        android:drawablePadding="@dimen/medium_space"/>
+
+                    <EditText
+                        style="@style/Edittext_only_click_large"
+                        android:id="@+id/label_bill_amt"
+                        android:layout_height="wrap_content"
+                        android:text="BILL AMOUNT"
+                        android:gravity="top|center_horizontal"
+                        android:textColor="@color/white"/>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"/>
+
+                </LinearLayout>
+
+            </in.myecash.commonbase.utilities.SquareCardView>
+
+            <Space
+                android:layout_width="@dimen/large_space"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <Space
+                android:layout_width="@dimen/large_space"
+                android:layout_height="match_parent"/>
+
+            <in.myecash.commonbase.utilities.SquareCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                card_view:cardCornerRadius="6dp"
+                card_view:cardBackgroundColor="@color/account">
+
+                <LinearLayout
+                    android:id="@+id/layout_account_cash"
+                    style="@style/LL_Vertical">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"/>
+
+                    <EditText
+                        style="@style/Edittext_only_click_large"
+                        android:textSize="@dimen/text_size_XXL"
+                        android:id="@+id/input_account_cash"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:text="\u20B9 234"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:drawableTop="@drawable/ic_account_balance_wallet_white_24dp"
+                        android:drawablePadding="@dimen/medium_space"/>
+
+                    <EditText
+                        style="@style/Edittext_only_click_large"
+                        android:id="@+id/label_account_cash"
+                        android:layout_height="wrap_content"
+                        android:text="ACCOUNT"
+                        android:gravity="top|center_horizontal"
+                        android:textColor="@color/white"/>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"/>
+
+                </LinearLayout>
+
+            </in.myecash.commonbase.utilities.SquareCardView>
+
+            <Space
+                android:layout_width="@dimen/medium_space"
+                android:layout_height="match_parent"/>
+
+            <in.myecash.commonbase.utilities.SquareCardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                card_view:cardCornerRadius="6dp"
+                card_view:cardBackgroundColor="@color/cashback">
+
+                <LinearLayout
+                    android:id="@+id/layout_cashback"
+                    style="@style/LL_Vertical">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"/>
+
+                    <EditText
+                        style="@style/Edittext_only_click_large"
+                        android:textSize="@dimen/text_size_XXL"
+                        android:id="@+id/input_cashback"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:text="\u20B9 234"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:drawableTop="@drawable/ic_grade_white_24dp"
+                        android:drawablePadding="@dimen/medium_space"/>
+
+                    <EditText
+                        style="@style/Edittext_only_click_large"
+                        android:id="@+id/label_cashback"
+                        android:layout_height="wrap_content"
+                        android:text="CASHBACK"
+                        android:gravity="top|center_horizontal"
+                        android:textColor="@color/white"/>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"/>
+
+                </LinearLayout>
+
+            </in.myecash.commonbase.utilities.SquareCardView>
+
+            <Space
+                android:layout_width="@dimen/large_space"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40"/>
+
+        <!--EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Access complete accounts data file" />
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:layout_marginLeft="@dimen/large_space"
+        android:layout_marginRight="@dimen/large_space">
+
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_normal_thin"
+            android:layout_width="0dp"
+            android:id="@+id/btn_cust_report_dwnload"
+            android:text="Download"
+            android:layout_weight="50"
+            android:drawableLeft="@drawable/ic_file_download_white_24dp"/>
+        <Space
+            android:layout_width="@dimen/medium_space"
+            android:layout_height="match_parent"/>
+
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_normal_thin"
+            android:layout_width="0dp"
+            android:id="@+id/btn_email_report"
+            android:text="Email"
+            android:layout_weight="50"
+            android:drawableLeft="@drawable/ic_email_white_24dp"/>
+    </LinearLayout-->
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="25"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginLeft="@dimen/large_space">
+
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="* Updated: "
+                android:textStyle="italic"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_updated_time"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="01:54 PM"
+                android:textStyle="italic"
+                android:textColor="@color/accent"/>
+        </LinearLayout>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/updated_time_details"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/large_space"
+            android:layout_marginBottom="@dimen/small_space"
+            android:paddingTop="0dp"
+            android:text="Data is updated only once every 4 hours."
+            android:textStyle="italic"/>
+    </LinearLayout>
+
+</RelativeLayout>

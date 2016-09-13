@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical"
+    android:id="@+id/layout_root_dialog"
+    android:background="?android:attr/windowBackground"
+    android:layout_width="wrap_content">
+
+    <LinearLayout
+        style="@style/LL_Vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:background="@color/iron2"
+            android:paddingTop="@dimen/XL_space"
+            android:paddingBottom="@dimen/XL_space">
+
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|left"
+                android:id="@+id/label_input_number"
+                android:text="Quantity :">
+            </EditText>
+
+            <EditText
+                style="@style/Edittext_rupee_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|left"
+                android:text="@string/Rs_space"
+                android:id="@+id/rs_input_number"
+                android:visibility="visible"/>
+
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|left"
+                android:id="@+id/input_old_value"
+                android:text="123"
+                android:maxLength="@string/cash_char_limit">
+            </EditText>
+
+            <EditText
+                style="@style/MyEdittext_Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|left"
+                android:id="@+id/input_number"
+                android:gravity="left"
+                android:hint="New Value"
+                android:maxLength="@string/cash_char_limit">
+            </EditText>
+        </LinearLayout>
+
+        <View
+            style="@style/Divider_horizontal_Medium"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_width="wrap_content">
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_keyboard_dialog"
+                android:id="@+id/input_kb_1"
+                android:text="1" />
+            <View
+                style="@style/Divider_vertical_Medium"/>
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_keyboard_dialog"
+                android:id="@+id/input_kb_2"
+                android:text="2"/>
+            <View
+                style="@style/Divider_vertical_Medium"/>
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_keyboard_dialog"
+                android:id="@+id/input_kb_3"
+                android:text="3"/>
+
+        </LinearLayout>
+
+        <View
+            style="@style/Divider_horizontal_Medium" />
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_width="wrap_content">
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_keyboard_dialog"
+                android:id="@+id/input_kb_4"
+                android:text="4"/>
+            <View
+                style="@style/Divider_vertical_Medium"/>
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_keyboard_dialog"
+                android:id="@+id/input_kb_5"
+                android:text="5"/>
+            <View
+                style="@style/Divider_vertical_Medium"/>
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_keyboard_dialog"
+                android:id="@+id/input_kb_6"
+                android:text="6"/>
+
+        </LinearLayout>
+
+        <View
+            style="@style/Divider_horizontal_Medium"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_width="wrap_content">
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_keyboard_dialog"
+                android:id="@+id/input_kb_7"
+                android:text="7"/>
+            <View
+                style="@style/Divider_vertical_Medium"/>
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_keyboard_dialog"
+                android:id="@+id/input_kb_8"
+                android:text="8"/>
+            <View
+                style="@style/Divider_vertical_Medium"/>
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_keyboard_dialog"
+                android:id="@+id/input_kb_9"
+                android:text="9"/>
+
+        </LinearLayout>
+
+        <View
+            style="@style/Divider_horizontal_Medium"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_width="wrap_content">
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_keyboard_dialog"
+                android:id="@+id/input_kb_clear"
+                android:text="c"/>
+            <View
+                style="@style/Divider_vertical_Medium"/>
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_keyboard_dialog"
+                android:id="@+id/input_kb_0"
+                android:text="0" />
+            <View
+                style="@style/Divider_vertical_Medium"/>
+            <android.support.v7.widget.AppCompatImageButton
+                style="@style/button_keyboard_dialog"
+                android:id="@+id/input_kb_bs"
+                android:src="@drawable/ic_backspace_white_24dp"
+                android:tint="@color/secondary_text"
+                android:scaleType="center"/>
+
+        </LinearLayout>
+
+        <View
+            style="@style/Divider_horizontal_Medium"/>
+
+    </LinearLayout>
+
+</LinearLayout>

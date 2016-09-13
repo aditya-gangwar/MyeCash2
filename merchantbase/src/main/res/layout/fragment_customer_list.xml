@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/custlist_root"
+    android:background="?android:attr/windowBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_report"
+        android:id="@+id/custlist_header"
+        android:background="@color/iron2">
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="wrap_content"
+            android:id="@+id/custlist_header_id"
+            android:layout_height="wrap_content"
+            android:text="Internal ID"
+            android:paddingBottom="@dimen/edittext_padding_less"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="wrap_content"
+            android:id="@+id/custlist_header_status"
+            android:layout_below="@id/custlist_header_id"
+            android:layout_height="wrap_content"
+            android:text="Mobile No. - Status"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/custlist_header_acc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Account Balance"
+            android:paddingBottom="@dimen/edittext_padding_less"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/custlist_header_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/custlist_header_acc"
+            android:layout_alignParentRight="true"
+            android:text="Cashback Balance"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingTop="0dp"/>
+
+        <View
+            style="@style/Divider_horizontal_Large"
+            android:id="@+id/custlist_divider_1"
+            android:layout_below="@id/custlist_header_cb"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/cust_recycler_view"
+        android:layout_below="@id/custlist_header">
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

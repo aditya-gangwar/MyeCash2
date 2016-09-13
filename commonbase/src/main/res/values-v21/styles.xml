@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="Label" >
+        <attr name="android:windowBackground" />
+        <attr name="android:textColorPrimary" />
+        <attr name="android:textColorHint" />
+    </declare-styleable>
+
+    <style name="MyTheme" parent="MyTheme_v16">
+        <!-- same as 'text color hint'-->
+        <!--item name="android:colorControlNormal">@color/iron</item-->
+    </style>
+
+    <style name="Edittext_biggest_main_input" parent="Edittext_only_click_large">
+        <item name="android:textSize">@dimen/text_size_XXXXL</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:letterSpacing">0.08</item>
+    </style>
+
+
+</resources>

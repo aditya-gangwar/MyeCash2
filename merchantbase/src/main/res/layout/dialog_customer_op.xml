@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?android:attr/windowBackground">
+
+    <EditText
+        style="@style/Edittext_only_view_small_more_pad"
+        android:id="@+id/label_cust_op_title"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:gravity="left"
+        android:text="CUSTOMER: OPERATION"/>
+
+    <View
+        style="@style/Divider_horizontal_Large"
+        android:id="@+id/divider_cash_pay_title"/>
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesLarge">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XXL_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_phone_android_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:id="@+id/label_customer_mobile"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Mobile"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/MyEdittext_Medium"
+                android:id="@+id/input_customer_mobile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Mobile#"
+                android:inputType="phone"
+                android:maxLength="@string/mobile_char_limit"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_card_membership_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:id="@+id/label_qr_card"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Card"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <!--View
+                style="@style/Divider_vertical_Medium"/-->
+            <EditText
+                style="@style/Edittext_only_click_bg_medium"
+                android:id="@+id/input_qr_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Touch to scan"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:singleLine="true"
+                android:ellipsize="end"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"
+            android:id="@+id/space_new_mobile"
+            android:visibility="visible"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_new_mobile"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_phone_android_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:id="@+id/label_new_mobile"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="New Mobile"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/MyEdittext_Medium"
+                android:id="@+id/input_new_mobile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="New Mobile#"
+                android:inputType="phone"
+                android:maxLength="@string/mobile_char_limit"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"
+            android:id="@+id/space_reason"
+            android:visibility="visible"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_reason"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_input_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:id="@+id/label_reason"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Reason"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <EditText
+                style="@style/Edittext_only_click_bg_medium"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:id="@+id/input_reason"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Select"
+                android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+                android:drawableTint="?android:textColorPrimary"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"
+            android:id="@+id/space_otp"
+            android:visibility="visible"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_otp"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_lock_outline_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:id="@+id/label_cust_otp"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="OTP"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <EditText
+                style="@style/MyEdittext_Medium"
+                android:id="@+id/input_cust_otp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Enter OTP"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:inputType="numberPassword"
+                android:maxLength="@string/pin_otp_char_limit"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"/>
+
+    </LinearLayout>
+</LinearLayout>

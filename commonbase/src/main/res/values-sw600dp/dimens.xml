@@ -1,0 +1,73 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="splash_logo_image_width">270dp</dimen>
+    <dimen name="splash_logo_image_height">270dp</dimen>
+    <dimen name="login_logo_image_width">178dp</dimen>
+    <dimen name="login_logo_image_height">178dp</dimen>
+
+    <dimen name="register_image_width">90dp</dimen>
+    <dimen name="register_image_height">90dp</dimen>
+
+    <dimen name="toolbar_icon_width">42dp</dimen>
+    <dimen name="toolbar_icon_height">42dp</dimen>
+    <dimen name="toolbar_image_width">56dp</dimen>
+    <dimen name="toolbar_image_height">56dp</dimen>
+    <dimen name="toolbar_image_padding">4dp</dimen>
+    <!--dimen name="toolbar_image_border_radius">42dp</dimen-->
+    <dimen name="toolbar_btn_min_width">42dp</dimen>
+
+    <dimen name="section_header_image_width">48dp</dimen>
+    <dimen name="section_header_image_height">48dp</dimen>
+
+    <dimen name="edittext_pad_fill">3dp</dimen>
+    <dimen name="edittext_padding_less">7dp</dimen>
+    <dimen name="edittext_padding">12dp</dimen>
+    <dimen name="edittext_padding_more">18dp</dimen>
+
+    <!-- 10 + 12 = total 22dp side padding -->
+    <dimen name="screen_side_padding">15dp</dimen>
+    <dimen name="screen_side_padding_more">20dp</dimen>
+
+    <!--dimen name="button_padding_XXL">16dp</dimen>
+    <dimen name="button_padding_XL">12dp</dimen>
+    <dimen name="button_padding_large">8dp</dimen>
+    <dimen name="button_padding_med">4dp</dimen-->
+
+    <dimen name="keyboard_button_height_dialog_less">96dp</dimen>
+    <dimen name="keyboard_button_width_dialog_less">108dp</dimen>
+    <!-- <no. of keys> * <key button width> i.e. 3 * 108 = 324 -->
+    <dimen name="keyboard_full_width_dialog_less">324dp</dimen>
+
+    <dimen name="keyboard_button_height_dialog">144dp</dimen>
+    <dimen name="keyboard_button_width_dialog">162dp</dimen>
+
+    <dimen name="keyboard_text_size">45sp</dimen>
+    <!-- make total of 22 = screen_padding + margin_side-->
+    <dimen name="keyboard_margin_sides">15dp</dimen>
+    <dimen name="keyboard_margin_sides_mid_col">0dp</dimen>
+    <dimen name="keyboard_margin_tops">9dp</dimen>
+
+    <dimen name="keyboard_text_size_dialog">39sp</dimen>
+    <dimen name="keyboard_margin_sides_dialog">0dp</dimen>
+    <dimen name="keyboard_margin_sides_mid_col_dialog">15dp</dimen>
+    <dimen name="keyboard_margin_tops_dialog">6dp</dimen>
+
+    <dimen name="text_size_small">20sp</dimen>
+    <dimen name="text_size_medium">24sp</dimen>
+    <dimen name="text_size_large">28sp</dimen>
+    <dimen name="text_size_XL">32sp</dimen>
+    <dimen name="text_size_XXL">36sp</dimen>
+    <dimen name="text_size_XXXL">40sp</dimen>
+    <dimen name="text_size_XXXXL">50sp</dimen>
+
+    <dimen name="XS_space">4dp</dimen>
+    <dimen name="small_space">7dp</dimen>
+    <dimen name="medium_space">15dp</dimen>
+    <dimen name="large_space">22dp</dimen>
+    <dimen name="XL_space">30dp</dimen>
+    <dimen name="XXL_space">37dp</dimen>
+    <dimen name="XXXL_space">45dp</dimen>
+    <dimen name="XXXXL_space">47dp</dimen>
+    <dimen name="big_space">75dp</dimen>
+
+</resources>

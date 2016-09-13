@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="CASHBACK">
+
+        <EditTextPreference
+            android:title="Change Rate (%)"
+            android:key="settings_cb_rate"
+            android:summary="0% cashback of eligible bill amount.\n0 means disabled."
+            android:inputType="number"
+            android:digits="0123456789."
+            android:maxLength="@string/cb_rate_char_limit">
+        </EditTextPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="CASH ACCOUNT">
+
+        <SwitchPreference
+            android:title="Add Cash Enabled"
+            android:key="settings_cl_add_enabled"
+            android:summary="Enable add cash to customer account.">
+        </SwitchPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="ACCOUNT">
+
+        <in.myecash.merchant.PasswordPreference
+            android:title="Change Password"
+            android:key="settings_change_password"
+            android:summary="Change your account password."/>
+
+        <in.myecash.merchant.MobileChangePreference
+            android:title="Change Mobile"
+            android:key="settings_change_mobile"
+            android:summary="Change your mobile number"/>
+
+        <!--EditTextPreference
+            android:title="Mobile Number"
+            android:key="settings_mobile_num"
+            android:summary="Change as contact mobile number.\nValidation PIN will be sent on new number."
+            android:inputType="number"
+            android:digits="0123456789"
+            android:maxLength="@string/mobile_char_limit">
+        </EditTextPreference-->
+
+        <EditTextPreference
+            android:title="Email"
+            android:key="settings_email_id"
+            android:summary="Change as contact email id."
+            android:maxLength="@string/email_char_limit">
+        </EditTextPreference>
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

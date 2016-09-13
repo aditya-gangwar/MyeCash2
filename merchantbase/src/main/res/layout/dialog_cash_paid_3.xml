@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical_paddingSidesLarge"
+    android:background="@color/white">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/XXL_space"/>
+
+    <include layout="@layout/cash_paid"/>
+
+    <!--LinearLayout
+        style="@style/LL_Vertical"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_cash_paid"
+        android:visibility="visible">
+
+        <EditText
+            style="@style/Edittext_only_click_small"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="CASH PAID"
+            android:textStyle="normal"
+            android:padding="@dimen/edittext_padding_less"
+            android:background="@color/white"
+            android:drawableLeft="@drawable/cash_logo_24dp"
+            android:drawablePadding="@dimen/medium_space"
+            android:textColor="@color/secondary_text"/>
+
+        <View
+            style="@style/Divider_horizontal_Medium"
+            android:background="@color/primary"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XXXL_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_marginRight="@dimen/small_space">
+
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="0dp"
+                android:layout_weight="30"
+                android:id="@+id/choice_cash_pay_1"
+                android:text="\u20B9 0"
+                android:textColor="@color/secondary_text"
+                android:background="@drawable/rounded_rectangle_border" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"/>
+
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="0dp"
+                android:layout_weight="30"
+                android:id="@+id/choice_cash_pay_2"
+                android:text="\u20B9 0"
+                android:textColor="@color/secondary_text"
+                android:background="@drawable/rounded_rectangle_border" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"/>
+
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="0dp"
+                android:layout_weight="30"
+                android:id="@+id/choice_cash_pay_3"
+                android:text="\u20B9 0"
+                android:textColor="@color/secondary_text"
+                android:background="@drawable/rounded_rectangle_border" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XXXL_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginRight="@dimen/small_space">
+
+            <EditText
+                style="@style/Edittext_rupee_large"
+                android:layout_width="wrap_content"
+                android:text="@string/Rs_space"
+                android:id="@+id/rs_cash_pay_custom"/>
+
+            <EditText
+                style="@style/MyEdittext_Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|left"
+                android:id="@+id/choice_cash_pay_custom"
+                android:hint="Other Amount"
+                android:cursorVisible="true"
+                android:maxLength="@string/cash_char_limit"
+                android:inputType="number"
+                android:digits="1234567890"
+                android:imeOptions="actionDone">
+            </EditText>
+        </LinearLayout>
+
+    </LinearLayout-->
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/XXXL_space"/>
+
+</LinearLayout>

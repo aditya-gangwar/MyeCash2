@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?android:attr/windowBackground">
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesLarge">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/label_information_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Provide 10 digit registered mobile number." />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/large_space"/>
+
+        <EditText
+            android:id="@+id/input_mobile_num"
+            style="@style/MyEdittext_Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mobile Number"
+            android:maxLength="@string/mobile_char_limit"
+            android:gravity="center"
+            android:inputType="phone"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your user id will be sent on the registered mobile number." />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"/>
+
+    </LinearLayout>
+</LinearLayout>

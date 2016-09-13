@@ -1,0 +1,468 @@
+package in.myecash.merchantbase;
+
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Space;
+import android.widget.Toast;
+
+import in.myecash.commonbase.barcodeReader.BarcodeCaptureActivity;
+import in.myecash.commonbase.constants.DbConstants;
+import in.myecash.commonbase.constants.ErrorCodes;
+import in.myecash.commonbase.utilities.AppCommonUtil;
+import in.myecash.commonbase.utilities.DialogFragmentWrapper;
+import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.commonbase.utilities.ValidationHelper;
+import in.myecash.merchantbase.entities.CustomerOps;
+
+/**
+ * Created by adgangwa on 21-05-2016.
+ */
+public class CustomerOpDialog extends DialogFragment
+        implements View.OnClickListener  {
+    private static final String TAG = "CustomerOpDialog";
+    public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9003;
+
+    private static final String ARG_OP_CODE = "argOpCode";
+    private static final String ARG_OTP_GENERATED = "argOldDialog";
+    private static final String ARG_MOBILE_NUM = "argMobileNum";
+    private static final String ARG_CARD_NUM = "argCardNum";
+    //private static final String ARG_CUST_NAME = "argCustName";
+    private static final String ARG_EXTRA_PARAMS = "argExtraParams";
+
+    private static final int REQUEST_REASON = 1;
+    private static final String DIALOG_REASON = "dialogReason";
+
+    private CustomerOpDialogIf mCallback;
+
+    public interface CustomerOpDialogIf {
+        void onCustomerOpOk(String tag, String mobileNum, String qrCode, String extraParam);
+        void onCustomerOpOtp(String otp);
+        void onCustomerOpReset(String tag);
+    }
+
+    public static CustomerOpDialog newInstance(String opCode, CustomerOps custOp) {
+        Bundle args = new Bundle();
+        args.putString(ARG_OP_CODE, opCode);
+        if(custOp != null) {
+            if(custOp.getOp_status() != null &&
+                    custOp.getOp_status().equals(CustomerOps.CUSTOMER_OP_STATUS_OTP_GENERATED)) {
+                args.putBoolean(ARG_OTP_GENERATED,true);
+            } else {
+                args.putBoolean(ARG_OTP_GENERATED,false);
+            }
+            // old dialog to ask for OTP
+            args.putString(ARG_MOBILE_NUM, custOp.getMobile_num());
+            args.putString(ARG_CARD_NUM, custOp.getQr_card());
+            if(DbConstants.CUSTOMER_OP_NEW_CARD.equals(opCode) ||
+                    DbConstants.CUSTOMER_OP_CHANGE_MOBILE.equals(opCode) ) {
+                args.putString(ARG_EXTRA_PARAMS, custOp.getExtra_op_params());
+            }
+        }else {
+            args.putBoolean(ARG_OTP_GENERATED,false);
+        }
+        CustomerOpDialog fragment = new CustomerOpDialog();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        try {
+            mCallback = (CustomerOpDialogIf) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement CustomerOpDialogIf");
+        }
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        String opCode = getArguments().getString(ARG_OP_CODE);
+        Boolean isOtpGenerated = getArguments().getBoolean(ARG_OTP_GENERATED);
+
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_customer_op, null);
+
+        bindUiResources(v);
+        initDialogView(opCode, isOtpGenerated);
+
+        Dialog dialog = new AlertDialog.Builder(getActivity())
+                .setView(v)
+                .setPositiveButton(android.R.string.ok,
+                    new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            //Do nothing here because we override this button later to change the close behaviour.
+                            //However, we still need this because on older versions of Android unless we
+                            //pass a handler the button doesn't get instantiated
+                        }
+                    })
+                //.setPositiveButton(android.R.string.ok, this)
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setNeutralButton("Reset", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mCallback.onCustomerOpReset(getTag());
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                AppCommonUtil.setDialogTextSize(CustomerOpDialog.this, (AlertDialog) dialog);
+            }
+        });
+
+        return dialog;
+    }
+
+    private void initDialogView(String opCode, boolean isOtpGenerated) {
+        // Set title
+        String title = "CUSTOMER: "+opCode;
+        mTitle.setText(title);
+
+        // Disable OTP if OTP not generated
+        if(!isOtpGenerated) {
+            mLabelOTP.setEnabled(false);
+            mInputOTP.setEnabled(false);
+        }
+
+        String mobileNum = getArguments().getString(ARG_MOBILE_NUM, null);
+        if(mobileNum != null) {
+            mInputMobileNum.setText(mobileNum);
+            if(isOtpGenerated) {
+                mLabelMobileNum.setEnabled(false);
+                mInputMobileNum.setEnabled(false);
+            }
+        }
+        String cardNum = getArguments().getString(ARG_CARD_NUM, null);
+        if(cardNum != null) {
+            mInputQrCard.setText(cardNum);
+            if(isOtpGenerated) {
+                mLabelQrCard.setEnabled(false);
+                mInputQrCard.setEnabled(false);
+            }
+        } else {
+            mInputQrCard.setOnClickListener(this);
+        }
+
+        if(opCode.equals(DbConstants.CUSTOMER_OP_NEW_CARD)) {
+            mLabelQrCard.setText("New Card");
+            String reason = getArguments().getString(ARG_EXTRA_PARAMS, null);
+            if(reason != null) {
+                mInputReason.setText(reason);
+                if(isOtpGenerated) {
+                    mLabelReason.setEnabled(false);
+                    mInputReason.setEnabled(false);
+                }
+            } else {
+                initChoiceReasons(null);
+            }
+        } else {
+            mInputReason.setEnabled(false);
+            mSpaceReason.setVisibility(View.GONE);
+            mLayoutReason.setVisibility(View.GONE);
+        }
+
+        if(opCode.equals(DbConstants.CUSTOMER_OP_CHANGE_MOBILE)) {
+            mLabelMobileNum.setText("Old Mobile");
+            String newMobile = getArguments().getString(ARG_EXTRA_PARAMS, null);
+            if(newMobile != null) {
+                mInputNewMobile.setText(newMobile);
+                if(isOtpGenerated) {
+                    mLabelNewMobile.setEnabled(false);
+                    mInputNewMobile.setEnabled(false);
+                }
+            }
+        } else {
+            mInputNewMobile.setEnabled(false);
+            mSpaceNewMobile.setVisibility(View.GONE);
+            mLayoutNewMobile.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();    //super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after this point
+        final AlertDialog d = (AlertDialog)getDialog();
+        if(d != null)
+        {
+            Button positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Boolean wantToCloseDialog = false;
+
+                    if(validate()) {
+                        // OTP is only enabled for old dialogs
+                        String otp = null;
+                        if(mInputOTP.isEnabled()) {
+                            otp = mInputOTP.getText().toString();
+                            mCallback.onCustomerOpOtp(otp);
+
+                        } else {
+                            String extraParam = null;
+
+                            if( mInputReason.isEnabled() ) {
+                                extraParam = mInputReason.getText().toString();
+                            } else if( mInputNewMobile.isEnabled() ) {
+                                extraParam = mInputNewMobile.getText().toString();
+                            }
+
+                            mCallback.onCustomerOpOk(
+                                    getTag(),
+                                    mInputMobileNum.getText().toString(),
+                                    mInputQrCard.getText().toString(),
+                                    extraParam);
+                        }
+                        wantToCloseDialog = true;
+                    }
+
+                    if (wantToCloseDialog)
+                        d.dismiss();
+                    //else dialog stays open. Make sure you have an obvious way to close the dialog especially if you set cancellable to false.
+                }
+            });
+        }
+    }
+
+    /*
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+
+        if(validate()) {
+            // OTP is only enabled for old dialogs
+            String otp = null;
+            if(mInputOTP.isEnabled()) {
+                otp = mInputOTP.getText().toString();
+                mCallback.onCustomerOpOtp(otp);
+
+            } else {
+                String extraParam = null;
+
+                if( mInputReason.isEnabled() ) {
+                    extraParam = mInputReason.getText().toString();
+                } else if( mInputNewMobile.isEnabled() ) {
+                    extraParam = mInputNewMobile.getText().toString();
+                }
+
+                mCallback.onCustomerOpOk(
+                        getTag(),
+                        mInputMobileNum.getText().toString(),
+                        mInputQrCard.getText().toString(),
+                        extraParam);
+            }
+            dialog.dismiss();
+        }
+    }*/
+
+    private boolean validate() {
+        boolean retValue = true;
+        int errorCode;
+
+        if(mInputMobileNum.isEnabled()) {
+            errorCode = ValidationHelper.validateMobileNo(mInputMobileNum.getText().toString());
+            if(errorCode != ErrorCodes.NO_ERROR) {
+                mInputMobileNum.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                retValue = false;
+            }
+        }
+
+        if(mInputQrCard.isEnabled()){
+            errorCode = ValidationHelper.validateCustQrCode(mInputQrCard.getText().toString());
+            if(errorCode != ErrorCodes.NO_ERROR) {
+                mInputQrCard.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                retValue = false;
+            }
+        }
+
+        if( mInputReason.isEnabled()
+                && mInputReason.getText().toString().isEmpty() ) {
+            mInputReason.setError(ErrorCodes.appErrorDesc.get(ErrorCodes.EMPTY_VALUE));
+            retValue = false;
+        }
+
+        if( mInputNewMobile.isEnabled()) {
+            errorCode = ValidationHelper.validateMobileNo(mInputNewMobile.getText().toString());
+            if(errorCode != ErrorCodes.NO_ERROR) {
+                mInputNewMobile.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                retValue = false;
+            }
+            // check that it is different from current number
+            else if(mInputNewMobile.getText().toString().equals(mInputMobileNum.getText().toString())) {
+                    mInputNewMobile.setError("Same as given current mobile number");
+                    retValue = false;
+            }
+        }
+
+        if(mInputOTP.isEnabled()) {
+            errorCode = ValidationHelper.validatePinOtp(mInputOTP.getText().toString());
+            if(errorCode != ErrorCodes.NO_ERROR) {
+                mInputOTP.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                retValue = false;
+            }
+        }
+
+        return retValue;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int vId = v.getId();
+        LogMy.d(TAG, "In onClick: " + vId);
+
+        if (vId == R.id.input_qr_card) {// launch barcode activity.
+            Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
+            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+            intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+            startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
+
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LogMy.d(TAG,"In onActivityResult"+requestCode+","+resultCode);
+        if (requestCode == RC_BARCODE_CAPTURE_CARD_DIALOG) {
+            if (resultCode == ErrorCodes.NO_ERROR) {
+                String qrCode = data.getStringExtra(BarcodeCaptureActivity.BarcodeObject);
+                LogMy.d(TAG,"Read customer QR code: "+qrCode);
+                setQrCode(qrCode);
+                mInputQrCard.setError(null);
+            } else {
+                LogMy.e(TAG,"Failed to read barcode");
+            }
+        } else if (requestCode == REQUEST_REASON) {
+            if (resultCode == ErrorCodes.NO_ERROR) {
+                String reason = data.getStringExtra(DialogFragmentWrapper.EXTRA_SELECTION);
+                mInputReason.setText(reason);
+                mInputReason.setError(null);
+            }
+        }
+    }
+
+    private EditText mTitle;
+    private EditText mLabelMobileNum;
+    private EditText mInputMobileNum;
+    private EditText mLabelQrCard;
+    private EditText mInputQrCard;
+
+    private Space mSpaceNewMobile;
+    private LinearLayout mLayoutNewMobile;
+    private EditText mLabelNewMobile;
+    private EditText mInputNewMobile;
+
+    //private Space mSpaceOtp;
+    // private LinearLayout mLayoutOTP;
+    private EditText mLabelOTP;
+    private EditText mInputOTP;
+    /*
+    private Space mSpaceName;
+    private LinearLayout mLayoutName;
+    private EditText mInputName;*/
+    private Space mSpaceReason;
+    private LinearLayout mLayoutReason;
+    private EditText mLabelReason;
+    private EditText mInputReason;
+
+    private void bindUiResources(View v) {
+        mTitle = (EditText) v.findViewById(R.id.label_cust_op_title);
+        mLabelMobileNum = (EditText) v.findViewById(R.id.label_customer_mobile);
+        mInputMobileNum = (EditText) v.findViewById(R.id.input_customer_mobile);
+        mLabelQrCard = (EditText) v.findViewById(R.id.label_qr_card);
+        mInputQrCard = (EditText) v.findViewById(R.id.input_qr_card);
+
+        //mSpaceOtp = (Space) v.findViewById(R.id.space_otp);
+        //mLayoutOTP = (LinearLayout) v.findViewById(R.id.layout_otp);
+        mLabelOTP = (EditText) v.findViewById(R.id.label_cust_otp);
+        mInputOTP = (EditText) v.findViewById(R.id.input_cust_otp);
+
+        mSpaceNewMobile = (Space) v.findViewById(R.id.space_new_mobile);
+        mLayoutNewMobile = (LinearLayout) v.findViewById(R.id.layout_new_mobile);
+        mLabelNewMobile = (EditText) v.findViewById(R.id.label_new_mobile);
+        mInputNewMobile = (EditText) v.findViewById(R.id.input_new_mobile);
+
+        /*mSpaceName = (Space) v.findViewById(R.id.space_customer_name);
+        mLayoutName = (LinearLayout) v.findViewById(R.id.layout_customer_name);
+        mInputName = (EditText) v.findViewById(R.id.input_customer_name);*/
+
+        mSpaceReason = (Space) v.findViewById(R.id.space_reason);
+        mLayoutReason = (LinearLayout) v.findViewById(R.id.layout_reason);
+        mLabelReason = (EditText) v.findViewById(R.id.label_reason);
+        mInputReason = (EditText) v.findViewById(R.id.input_reason);
+    }
+
+    private void initChoiceReasons(final String selectedReason) {
+        mInputReason.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                FragmentManager fragManager = getFragmentManager();
+                if ((event.getAction() == MotionEvent.ACTION_UP) && (fragManager.findFragmentByTag(DIALOG_REASON) == null)) {
+                    //LogMy.d(TAG, "In onTouch");
+                    setReasonValues(selectedReason, fragManager);
+                    return true;
+                }
+                return false;
+            }
+        });
+        mInputReason.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                FragmentManager fragManager = getFragmentManager();
+                if (hasFocus && (fragManager.findFragmentByTag(DIALOG_REASON) == null)) {
+                    //LogMy.d(TAG, "In onFocusChange");
+                    setReasonValues(selectedReason, fragManager);
+                }
+            }
+        });
+    }
+
+    private void setReasonValues(String selectedReason, FragmentManager fragManager) {
+        AppCommonUtil.hideKeyboard(getActivity());
+        String reasons[] = getResources().getStringArray(R.array.new_card_reason_array);
+        int checkedItem = -1;
+        if(selectedReason != null) {
+            for(int i=0; i<reasons.length; i++) {
+                if(reasons[i].equals(selectedReason)) {
+                    checkedItem = i;
+                }
+            }
+        }
+        DialogFragmentWrapper dialog = DialogFragmentWrapper.createSingleChoiceDialog("Reason", reasons, checkedItem, true);
+        dialog.setTargetFragment(CustomerOpDialog.this,REQUEST_REASON);
+        dialog.show(fragManager, DIALOG_REASON);
+    }
+
+    private void setQrCode(String qrCode) {
+        if(ValidationHelper.validateCustQrCode(qrCode) == ErrorCodes.NO_ERROR) {
+            mInputQrCard.setText(qrCode);
+        } else {
+            Toast.makeText(getActivity(), "Invalid member QR code: " + qrCode, Toast.LENGTH_LONG).show();
+        }
+    }
+    
+}

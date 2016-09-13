@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/primary_dark"
+    android:paddingTop="@dimen/XXL_space"
+    android:paddingBottom="@dimen/medium_space"
+    android:orientation="vertical"
+    android:gravity="bottom|left">
+
+    <TextView
+        style="@style/Toolbar_title"
+        android:id="@+id/drawer_header_title"
+        android:gravity="left"
+        android:layout_gravity="left|bottom"
+        android:text="Username" />
+
+    <TextView
+        style="@style/Toolbar_subtitle"
+        android:id="@+id/drawer_header_mobile"
+        android:gravity="left"
+        android:layout_gravity="left|bottom"
+        android:text="Mobile Number"/>
+
+</LinearLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?android:attr/windowBackground">
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesXL">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XXXXL_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_medium"
+            android:id="@+id/label_information_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search Customer by Internal ID" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/large_space"/>
+
+        <EditText
+            android:id="@+id/input_cust_id"
+            style="@style/MyEdittext_Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Internal Customer ID"
+            android:maxLength="@string/customer_internal_id_char_limit"
+            android:gravity="center"
+            android:inputType="textCapCharacters"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Do not give any value above to generate data for all customers." />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XXXXL_space"/>
+
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_normal_thin"
+            android:id="@+id/btn_cust_data"
+            android:text="Get Data"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"/>
+
+    </LinearLayout>
+</LinearLayout>

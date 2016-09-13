@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/XXXXL_space"
+            android:paddingRight="@dimen/XXXXL_space">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="10" />
+
+            <ImageView
+                android:src="@drawable/logo_red_base_128"
+                android:layout_width="@dimen/login_logo_image_width"
+                android:layout_height="@dimen/login_logo_image_height"
+                android:layout_gravity="center_horizontal"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="10" />
+
+            <!--  Merchant ID Label -->
+            <EditText
+                android:id="@+id/input_merchant_id"
+                style="@style/MyEdittext_Medium"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                android:hint="Merchant ID"
+                android:maxLength="@string/merchant_id_char_limit"
+                android:imeOptions="actionNext"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="10" />
+
+            <!--  Password Label -->
+            <EditText
+                android:id="@+id/input_password"
+                style="@style/MyEdittext_Medium"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="Password"
+                android:maxLength="@string/passwd_char_limit"
+                android:imeOptions="actionDone"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="10" />
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:id="@+id/btn_login"
+                android:text="@string/login_button_label"
+                android:layout_marginTop="@dimen/XL_space"/>
+
+            <TextView
+                android:id="@+id/link_forgot_id_passwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_small"
+                android:text="@string/Forgot_id_passwd_label"
+                android:layout_marginTop="@dimen/XL_space"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="60" />
+
+            <!--TextView android:id="@+id/link_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/large_space"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="@string/Register_label"
+                android:layout_marginTop="@dimen/XL_space"/-->
+
+        </LinearLayout>
+
+<!--LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginTop="@dimen/XL_space">
+
+<TextView
+    android:id="@+id/link_forgot_userid"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:textSize="@dimen/text_size_small"
+    android:text="@string/Forgot_passwd_label"/>
+
+<TextView
+    android:id="@+id/link_forgot_passwd"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:textSize="@dimen/text_size_small"
+    android:text="@string/Forgot_passwd_label"/>
+
+</LinearLayout-->

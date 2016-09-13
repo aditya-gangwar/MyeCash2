@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="Label" >
+        <attr name="android:windowBackground" />
+        <attr name="android:textColorPrimary" />
+        <attr name="android:textColorHint" />
+    </declare-styleable>
+
+    <style name="MyTheme" parent="MyTheme_v16"/>
+
+    <style name="MyTheme_v16" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+
+        <item name="android:windowBackground">@color/white</item>
+
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="android:textColorSecondary">@color/secondary_text</item>
+        <item name="android:textColorLink">@color/link_blue</item>
+        <item name="android:textColorHint">@color/hint</item>
+
+        <!--item name="android:textAppearance">@style/MyTextAppearance</item>
+        <item name="android:textAppearanceLarge">@style/MyTextAppearanceLarge</item>
+        <item name="android:textAppearanceMedium">@style/MyTextAppearanceMedium</item>
+        <item name="android:textAppearanceSmall">@style/MyTextAppearanceSmall</item-->
+
+        <!--item name="editTextStyle">@style/MyEdittext_Medium</item-->
+        <!--item name="textAppearance">?android:attr/textAppearanceMediumInverse</item-->
+        <!--item name="android:textSize">@dimen/text_size_medium</item-->
+
+        <!--item name="colorControlNormal">@color/white</item-->
+        <!--item name="colorControlActivated">@color/accent2</item-->
+        <!--item name="colorControlHighlight">@color/accent</item-->
+        <!--item name="android:colorAccent">@color/fuji_red</item-->
+
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <!--item name="android:homeAsUpIndicator">@null</item-->
+        <item name="toolbarNavigationButtonStyle">@style/MyNavButtonStyle</item>
+
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:background">@drawable/background_splash</item>
+    </style>
+
+    <style name="WrapEverythingDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="windowMinWidthMajor">0dp</item>
+        <item name="windowMinWidthMinor">0dp</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <style name="MyNavButtonStyle" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:minWidth">@dimen/toolbar_btn_min_width</item>
+    </style>
+
+    <style name="NavDrawerTextStyle" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="ProgressDialogCustom">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="button_keyboard_dialog_small" parent="button_keyboard_dialog">
+        <item name="android:layout_height">@dimen/keyboard_button_height_dialog_less</item>
+        <item name="android:layout_width">@dimen/keyboard_button_width_dialog_less</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@color/secondary_text</item>
+    </style>
+
+    <style name="button_keyboard_dialog" parent="button_keyboard">
+        <item name="android:layout_height">@dimen/keyboard_button_height_dialog</item>
+        <item name="android:layout_width">@dimen/keyboard_button_width_dialog</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="button_keyboard" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@drawable/edit_text_selector</item>
+        <item name="android:textSize">@dimen/text_size_XL</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="button_normal_white" parent="button_normal">
+        <item name="android:textColor">@color/accent2</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="button_normal_thin" parent="button_normal">
+        <item name="android:padding">@dimen/small_space</item>
+        <item name="android:minHeight">@dimen/XXXXL_space</item>
+    </style>
+
+    <style name="button_normal" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/button_fill</item>
+        <item name="android:padding">@dimen/small_space</item>
+        <item name="android:minHeight">@dimen/big_space</item>
+    </style>
+
+    <style name="Toolbar_subtitle" parent="Toolbar_title">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="Toolbar_title" parent="Edittext_only_view_medium">
+        <item name="android:clickable">false</item>
+        <item name="android:paddingLeft">@dimen/small_space</item>
+        <item name="android:paddingRight">@dimen/small_space</item>
+        <item name="android:paddingBottom">@dimen/small_space</item>
+        <item name="android:paddingTop">@dimen/small_space</item>
+        <item name="android:textColor">@color/toolbar_text_primary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:scrollHorizontally">true</item>
+    </style>
+
+    <style name="Edittext_biggest_main_input" parent="Edittext_only_click_large">
+        <item name="android:textSize">@dimen/text_size_XXXXL</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
+    <!--style name="Et_as_Btn_bottom_medium" parent="Et_as_Btn_bottom_large">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:padding">@dimen/button_padding_med</item>
+    </style>
+    <style name="Et_as_Btn_bottom_XL" parent="Et_as_Btn_bottom_large">
+        <item name="android:textSize">@dimen/text_size_XL</item>
+        <item name="android:padding">@dimen/button_padding_XL</item>
+    </style>
+    <style name="Et_as_Btn_bottom_large" parent="Edittext_only_click_large">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">@dimen/button_padding_large</item>
+    </style-->
+
+    <style name="LL_Vertical">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="LL_Vertical_paddingSidesXL" parent="LL_Vertical_paddingSidesLarge">
+        <item name="android:paddingLeft">@dimen/screen_side_padding_more</item>
+        <item name="android:paddingRight">@dimen/screen_side_padding_more</item>
+    </style>
+
+    <style name="LL_Vertical_paddingSidesLarge">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">@dimen/screen_side_padding</item>
+        <item name="android:paddingRight">@dimen/screen_side_padding</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="LL_Horizontal_weighted">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="LL_Horizontal_wrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="LL_Horizontal_paddingSidesLarge">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/screen_side_padding</item>
+        <item name="android:paddingRight">@dimen/screen_side_padding</item>
+    </style>
+
+    <style name="Divider_vertical_Large" parent="Divider_vertical_Medium">
+        <item name="android:layout_width">1dp</item>
+    </style>
+
+    <style name="Divider_vertical_Medium">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/divider</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="Divider_horizontal_Large" parent="Divider_horizontal_Medium">
+        <item name="android:layout_height">1dp</item>
+    </style>
+
+    <style name="Divider_horizontal_Medium">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/divider</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="Edittext_number_medium_border" parent="MyEdittext_Medium">
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">number</item>
+        <item name="android:digits">0123456789</item>
+    </style>
+
+    <style name="Edittext_number_large_more_pad" parent="Edittext_number_large">
+        <item name="android:paddingLeft">@dimen/edittext_padding_more</item>
+        <item name="android:paddingRight">@dimen/edittext_padding_more</item>
+        <item name="android:paddingBottom">@dimen/edittext_padding_more</item>
+        <item name="android:paddingTop">@dimen/edittext_padding_more</item>
+    </style>
+
+    <style name="Edittext_number_large" parent="MyEdittext_Large">
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">number</item>
+        <item name="android:digits">0123456789</item>
+        <item name="android:background">@null</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Edittext_rupee_XL_view_only" parent="Edittext_rupee_large_view_only">
+        <item name="android:textSize">@dimen/text_size_XL</item>
+    </style>
+
+    <style name="Edittext_rupee_medium_view_only" parent="Edittext_rupee_large_view_only">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="Edittext_rupee_large_view_only" parent="Edittext_rupee_large">
+        <item name="android:clickable">false</item>
+    </style>
+
+    <style name="Edittext_rupee_large_more_pad" parent="Edittext_rupee_large">
+        <item name="android:paddingLeft">@dimen/edittext_padding_more</item>
+        <item name="android:paddingBottom">@dimen/edittext_padding_more</item>
+        <item name="android:paddingTop">@dimen/edittext_padding_more</item>
+    </style>
+
+    <style name="Edittext_rupee_large" parent="Edittext_only_click_large">
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:text">@string/Rs</item>
+    </style>
+
+    <style name="Edittext_rupee_medium" parent="Edittext_only_click_medium">
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:text">@string/Rs</item>
+    </style>
+
+    <!--style name="Edittext_only_view_sub_small" parent="Edittext_only_view_sub_medium">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+    <style name="Edittext_only_view_sub_medium" parent="Edittext_only_click_large">
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:clickable">false</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:gravity">left</item>
+    </style-->
+
+    <style name="Edittext_only_view_small_lessPad" parent="Edittext_only_view_small">
+        <item name="android:paddingLeft">@dimen/edittext_padding_less</item>
+        <item name="android:paddingRight">@dimen/edittext_padding_less</item>
+        <item name="android:paddingBottom">@dimen/edittext_padding_less</item>
+        <item name="android:paddingTop">@dimen/edittext_padding_less</item>
+    </style>
+
+    <style name="Edittext_only_view_small" parent="Edittext_only_click_small">
+        <item name="android:clickable">false</item>
+    </style>
+
+    <style name="Edittext_only_view_large" parent="Edittext_only_click_large">
+        <item name="android:clickable">false</item>
+    </style>
+
+    <style name="Edittext_only_view_medium" parent="Edittext_only_click_medium">
+        <item name="android:clickable">false</item>
+    </style>
+
+    <style name="Edittext_only_click_medium_fill" parent="Edittext_only_click_medium">
+        <item name="android:layout_marginLeft">@dimen/edittext_padding</item>
+        <item name="android:layout_marginRight">@dimen/edittext_padding</item>
+        <item name="android:layout_marginBottom">@dimen/edittext_padding</item>
+        <item name="android:layout_marginTop">@dimen/edittext_padding</item>
+        <item name="android:paddingLeft">@dimen/edittext_pad_fill</item>
+        <item name="android:paddingRight">@dimen/edittext_pad_fill</item>
+        <item name="android:paddingBottom">@dimen/edittext_pad_fill</item>
+        <item name="android:paddingTop">@dimen/edittext_pad_fill</item>
+    </style>
+
+    <style name="Edittext_only_click_small" parent="Edittext_only_click_large">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="Edittext_only_click_medium" parent="Edittext_only_click_large">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="Edittext_only_view_small_more_pad" parent="Edittext_only_view_large_more_pad">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="Edittext_only_view_medium_more_pad" parent="Edittext_only_view_large_more_pad">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="Edittext_only_view_large_more_pad" parent="Edittext_only_view_large">
+        <item name="android:paddingLeft">@dimen/edittext_padding_more</item>
+        <item name="android:paddingRight">@dimen/edittext_padding_more</item>
+        <item name="android:paddingBottom">@dimen/edittext_padding_more</item>
+        <item name="android:paddingTop">@dimen/edittext_padding_more</item>
+    </style>
+
+    <style name="Edittext_only_click_large" parent="Edittext_only_click_bg_large">
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="Edittext_only_view_bg_medium" parent="Edittext_only_click_bg_medium">
+        <item name="android:clickable">false</item>
+    </style>
+
+    <style name="Edittext_only_view_bg_small" parent="Edittext_only_view_small">
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="Edittext_only_click_bg_small" parent="Edittext_only_click_bg_large">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="Edittext_only_click_bg_medium" parent="Edittext_only_click_bg_large">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="Edittext_only_click_bg_large" parent="MyEdittext_Large">
+        <item name="android:gravity">center</item>
+        <!--item name="android:editable">false</item-->
+        <item name="android:cursorVisible">false</item>
+        <item name="android:focusable">true</item>
+        <!--item name="android:focusableInTouchMode">false</item-->
+        <item name="android:inputType">none</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:longClickable">true</item>
+    </style>
+
+    <style name="KeyboardEdittext2" parent="MyEdittext_XL">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:editable">false</item>
+        <item name="android:cursorVisible">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:inputType">none</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+    </style>
+
+    <style name="KeyboardEdittextDialog_midCol" parent="KeyboardEdittextDialog">
+        <item name="android:layout_marginLeft">@dimen/keyboard_margin_sides_mid_col_dialog</item>
+        <item name="android:layout_marginRight">@dimen/keyboard_margin_sides_mid_col_dialog</item>
+    </style>
+
+    <style name="KeyboardEdittextDialog_lessSidePad" parent="KeyboardEdittextDialog">
+        <item name="android:paddingLeft">@dimen/edittext_padding_less</item>
+        <item name="android:paddingRight">@dimen/edittext_padding_less</item>
+    </style>
+
+    <style name="KeyboardEdittextDialog" parent="KeyboardEdittext">
+        <item name="android:textSize">@dimen/keyboard_text_size_dialog</item>
+        <item name="android:layout_marginTop">@dimen/keyboard_margin_tops_dialog</item>
+        <item name="android:layout_marginBottom">@dimen/keyboard_margin_tops_dialog</item>
+        <item name="android:layout_marginLeft">@dimen/keyboard_margin_sides_dialog</item>
+        <item name="android:layout_marginRight">@dimen/keyboard_margin_sides_dialog</item>
+    </style>
+
+    <style name="KeyboardEdittext_midCol" parent="KeyboardEdittext">
+        <item name="android:layout_marginLeft">@dimen/keyboard_margin_sides_mid_col</item>
+        <item name="android:layout_marginRight">@dimen/keyboard_margin_sides_mid_col</item>
+    </style>
+
+    <style name="KeyboardEdittext" parent="MyEdittext_XL">
+        <item name="android:textSize">@dimen/keyboard_text_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:editable">false</item>
+        <item name="android:cursorVisible">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:inputType">none</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_marginTop">@dimen/keyboard_margin_tops</item>
+        <item name="android:layout_marginBottom">@dimen/keyboard_margin_tops</item>
+        <item name="android:layout_marginLeft">@dimen/keyboard_margin_sides</item>
+        <item name="android:layout_marginRight">@dimen/keyboard_margin_sides</item>
+    </style>
+
+    <style name="MyEdittext_XXL" parent="MyEdittext_base">
+        <item name="android:textSize">@dimen/text_size_XXL</item>
+    </style>
+
+    <style name="MyEdittext_XL" parent="MyEdittext_base">
+        <item name="android:textSize">@dimen/text_size_XL</item>
+    </style>
+
+    <style name="MyEdittext_Large" parent="MyEdittext_base">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="MyEdittext_Medium" parent="MyEdittext_base">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="MyEdittext_Small" parent="MyEdittext_base">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="MyEdittext_base" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">@dimen/edittext_padding</item>
+        <item name="android:paddingRight">@dimen/edittext_padding</item>
+        <item name="android:paddingBottom">@dimen/edittext_padding</item>
+        <item name="android:paddingTop">@dimen/edittext_padding</item>
+        <item name="android:textColor">@drawable/edit_text_selector</item>
+    </style>
+
+    <!--style name="MyTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+    <style name="MyTextAppearanceLarge" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+    <style name="MyTextAppearanceMedium" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+    <style name="MyTextAppearanceSmall" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--style name="MySpinner" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="android:spinnerMode">dialog</item>
+    </style>
+    <style name="MySpinnerItemStyle" parent="Widget.AppCompat.TextView.SpinnerItem">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
+    </style>
+    <style name="MySpinnerDropDownItemStyle" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
+    </style-->
+
+
+    <!--style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+    </style>
+    <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <-item name="android:windowBackground">@color/primary</item>
+        <item name="colorControlNormal">@color/iron</item>
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlHighlight">@color/white</item>
+        <item name="android:textColorHint">@color/iron</item>
+        <item name="colorButtonNormal">@color/primary_darker</item>
+        <item name="android:colorButtonNormal">@color/primary_darker</item>
+    </style-->
+
+</resources>

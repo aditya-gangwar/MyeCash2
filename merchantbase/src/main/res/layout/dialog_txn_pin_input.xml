@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical"
+    android:layout_width="@dimen/keyboard_full_width_dialog_less"
+    android:background="?android:attr/windowBackground">
+
+    <LinearLayout
+        style="@style/LL_Vertical"
+        android:layout_height="wrap_content"
+        android:background="@color/iron2">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_cash_amount">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="ACCOUNT"
+                android:layout_weight="60"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_cash_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="+ \u20B9 9999"
+                android:layout_weight="40"
+                android:gravity="right"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_cashback_amount">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_grade_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="CASHBACK"
+                android:layout_weight="60"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_cashback_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="+ \u20B9 9999"
+                android:layout_weight="40"
+                android:gravity="right"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_space"/>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_space"/>
+
+    <EditText
+        style="@style/Edittext_only_view_small"
+        android:id="@+id/label_information_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:text="Check transaction amounts above are correct." />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_space"/>
+
+    <EditText
+        android:id="@+id/input_secret_pin"
+        style="@style/Edittext_only_view_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLength="@string/pin_otp_char_limit"
+        android:inputType="numberPassword"
+        android:gravity="center"
+        android:hint="Enter PIN"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/small_space"/>
+
+    <View
+        style="@style/Divider_horizontal_Medium"/>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:layout_width="wrap_content">
+
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_keyboard_dialog_small"
+            android:id="@+id/input_kb_1"
+            android:text="1" />
+        <View
+            style="@style/Divider_vertical_Medium"/>
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_keyboard_dialog_small"
+            android:id="@+id/input_kb_2"
+            android:text="2"/>
+        <View
+            style="@style/Divider_vertical_Medium"/>
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_keyboard_dialog_small"
+            android:id="@+id/input_kb_3"
+            android:text="3"/>
+
+    </LinearLayout>
+
+    <View
+        style="@style/Divider_horizontal_Medium" />
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:layout_width="wrap_content">
+
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_keyboard_dialog_small"
+            android:id="@+id/input_kb_4"
+            android:text="4"/>
+        <View
+            style="@style/Divider_vertical_Medium"/>
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_keyboard_dialog_small"
+            android:id="@+id/input_kb_5"
+            android:text="5"/>
+        <View
+            style="@style/Divider_vertical_Medium"/>
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_keyboard_dialog_small"
+            android:id="@+id/input_kb_6"
+            android:text="6"/>
+
+    </LinearLayout>
+
+    <View
+        style="@style/Divider_horizontal_Medium"/>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:layout_width="wrap_content">
+
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_keyboard_dialog_small"
+            android:id="@+id/input_kb_7"
+            android:text="7"/>
+        <View
+            style="@style/Divider_vertical_Medium"/>
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_keyboard_dialog_small"
+            android:id="@+id/input_kb_8"
+            android:text="8"/>
+        <View
+            style="@style/Divider_vertical_Medium"/>
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_keyboard_dialog_small"
+            android:id="@+id/input_kb_9"
+            android:text="9"/>
+
+    </LinearLayout>
+
+    <View
+        style="@style/Divider_horizontal_Medium"/>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:layout_width="wrap_content">
+
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_keyboard_dialog_small"
+            android:id="@+id/input_kb_clear"
+            android:text="c"/>
+        <View
+            style="@style/Divider_vertical_Medium"/>
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_keyboard_dialog_small"
+            android:id="@+id/input_kb_0"
+            android:text="0" />
+        <View
+            style="@style/Divider_vertical_Medium"/>
+        <android.support.v7.widget.AppCompatImageButton
+            style="@style/button_keyboard_dialog_small"
+            android:id="@+id/input_kb_bs"
+            android:src="@drawable/ic_backspace_white_18dp"
+            android:tint="@color/secondary_text"
+            android:scaleType="center"/>
+
+    </LinearLayout>
+
+    <View
+        style="@style/Divider_horizontal_Medium"
+        android:layout_marginBottom="@dimen/small_space"/>
+
+</LinearLayout>
