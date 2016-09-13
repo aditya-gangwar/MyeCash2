@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MyeCash2.iml" filepath="$PROJECT_DIR$/MyeCash2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/appagent/appagent.iml" filepath="$PROJECT_DIR$/appagent/appagent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/appmerchant/appmerchant.iml" filepath="$PROJECT_DIR$/appmerchant/appmerchant.iml" />
+      <module fileurl="file://$PROJECT_DIR$/commonbase/commonbase.iml" filepath="$PROJECT_DIR$/commonbase/commonbase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/merchantbase/merchantbase.iml" filepath="$PROJECT_DIR$/merchantbase/merchantbase.iml" />
+    </modules>
+  </component>
+</project>
