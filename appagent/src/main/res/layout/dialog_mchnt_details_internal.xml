@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesLarge">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Merchant ID"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_merchant_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TBS"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:visibility="invisible"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Store Name"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"
+                android:paddingTop="0dp"/>
+
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_store_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TBS"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:paddingTop="0dp"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/LL_Vertical">
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_perm_identity_white_24dp"
+                    android:visibility="invisible"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Category"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_store_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="TBS"
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_input_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Status"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:id="@+id/input_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Active"
+                android:textColor="@color/green_positive"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Vertical"
+            android:id="@+id/layout_status_details">
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_input_white_24dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Changed On"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_status_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="22 July 16, 23:00"
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_input_white_24dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Reason"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_status_reason"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_input_white_24dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Remarks"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_status_remarks"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_input_white_24dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="First Login"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_first_login"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_phone_android_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Mobile"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_merchant_mobile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TBS"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_email_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:text="Email"
+                android:layout_weight="40"
+                android:gravity="left|center_vertical"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_merchant_email"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="TBS"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_place_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:text="Address"
+                android:layout_weight="40"
+                android:gravity="left|center_vertical"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:id="@+id/input_address"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="TBS"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Vertical">
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_place_white_24dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="City"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_city"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="TBS"
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_place_white_24dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="State"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_state"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="TBS"
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_settings_black_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:text="Cashback Rate"
+                android:layout_weight="40"
+                android:gravity="left|center_vertical"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:id="@+id/input_cbrate"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="TBS"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_settings_black_24dp"
+                android:tint="@color/primary"
+                android:visibility="invisible"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:text="Add Cash"
+                android:layout_weight="40"
+                android:gravity="left|center_vertical"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:id="@+id/input_addcash"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="TBS"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/large_space"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:id="@+id/btn_acc_status"
+                android:layout_width="0dp"
+                android:text="Disable"
+                android:layout_weight="47.5"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"/>
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:id="@+id/btn_launch_app"
+                android:layout_width="0dp"
+                android:text="Launch App"
+                android:layout_weight="47.5"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/large_space"/>
+
+        <!--Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+        <View
+            style="@style/Divider_horizontal_Medium"
+            android:background="@color/primary"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/radioGroupActions">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/radioButtonStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Disable"
+                    android:layout_weight="50"/>
+
+                <RadioButton
+                    android:id="@+id/radioButtonTxns"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Get Txns"
+                    android:layout_weight="50"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/radioButtonCb"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Get Customers"
+                    android:layout_weight="50"/>
+
+                <RadioButton
+                    android:id="@+id/radioButtonFree"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Get Txns"
+                    android:layout_weight="50"
+                    android:visibility="invisible"/>
+            </LinearLayout>
+
+        </RadioGroup>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+        <View
+            style="@style/Divider_horizontal_Medium"
+            android:background="@color/primary"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/-->
+
+    </LinearLayout>
+</ScrollView>

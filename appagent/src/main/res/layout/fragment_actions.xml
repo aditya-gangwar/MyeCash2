@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/toolbar_actions"
+    android:background="?android:attr/windowBackground">
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesXL"
+        android:layout_below="@id/toolbar_actions">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_medium"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="MERCHANT"
+            android:textStyle="bold"
+            android:textColor="@color/accent"
+            android:paddingLeft="0dp"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/small_space">
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:id="@+id/btn_merchant_0"
+                android:text="EMPTY"
+                android:layout_marginRight="@dimen/large_space"/>
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:id="@+id/btn_merchant_1"
+                android:text="EMPTY" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

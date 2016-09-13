@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:clickable="true"
+    android:id="@+id/scrollview_register">
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesLarge"
+        android:paddingTop="@dimen/XXXXL_space"
+        android:descendantFocusability="beforeDescendants">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/btn_upload_image"
+                android:src="@drawable/untitled"
+                android:layout_width="@dimen/register_image_width"
+                android:layout_height="@dimen/register_image_height"
+                android:scaleType="centerInside"
+                android:layout_marginBottom="@dimen/small_space"
+                android:clickable="true"
+                android:layout_gravity="bottom"/>
+
+            <!-- Name Label -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/btn_upload_image"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/XL_space"
+                android:layout_marginLeft="@dimen/XL_space"
+                card_view:counterEnabled="true"
+                card_view:counterMaxLength="@string/brand_char_limit">
+                <EditText
+                    style="@style/MyEdittext_Small"
+                    android:id="@+id/input_merchant_name"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:hint="Brand name"
+                    android:maxLength="@string/brand_char_limit"/>
+            </android.support.design.widget.TextInputLayout>
+        </RelativeLayout>
+
+        <!--  Business category -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                style="@style/Edittext_only_click_bg_small"
+                android:id="@+id/edittext_category"
+                android:layout_height="wrap_content"
+                android:hint="@string/category_hint"
+                android:gravity="left"
+                android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+                android:drawableTint="?android:textColorPrimary"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <!--  Title -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/XXXL_space">
+
+            <ImageView
+                android:id="@+id/img_contact"
+                android:src="@drawable/ic_person"
+                android:layout_width="@dimen/section_header_image_width"
+                android:layout_height="@dimen/section_header_image_height"/>
+
+            <!-- Name Label -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contact"
+                android:layout_toRightOf="@id/img_contact"
+                android:layout_marginStart="@dimen/XL_space"
+                android:layout_marginLeft="@dimen/XL_space"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+        <!--  Mobile Label -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/XL_space">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0">
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+91"
+                android:cursorVisible="false"
+                android:editable="false"
+                android:focusable="false"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <EditText
+                    style="@style/MyEdittext_Small"
+                    android:id="@+id/input_merchant_mobile"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:hint="Mobile Number"
+                    android:maxLength="@string/mobile_char_limit"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <!--  Email Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_space">
+            <EditText
+                android:id="@+id/input_merchant_email"
+                style="@style/MyEdittext_Small"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:hint="Email"
+                android:maxLength="@string/email_char_limit"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/XXXL_space">
+
+            <ImageView
+                android:id="@+id/img_address"
+                android:src="@drawable/ic_place_white_36dp"
+                android:tint="@color/monsoon"
+                android:layout_width="@dimen/section_header_image_width"
+                android:layout_height="@dimen/section_header_image_height"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/address_section_label"
+                android:layout_toRightOf="@id/img_address"
+                android:layout_marginStart="@dimen/XL_space"
+                android:layout_marginLeft="@dimen/XL_space"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+        <!-- Address Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/XL_space">
+            <EditText
+                android:id="@+id/input_address_1"
+                style="@style/MyEdittext_Small"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences"
+                android:hint="Address"
+                android:maxLength="@string/address_char_limit"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="@dimen/medium_space">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="bottom">
+                <EditText
+                    style="@style/Edittext_only_click_bg_small"
+                    android:id="@+id/edittext_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:hint="@string/city_hint"
+                    android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+                    android:drawableTint="?android:textColorPrimary"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="bottom">
+                <EditText
+                    style="@style/Edittext_only_view_bg_small"
+                    android:id="@+id/edittext_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:hint="@string/state_hint" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <!-- Signup Button -->
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_normal_thin"
+            android:id="@+id/btn_register"
+            android:layout_marginTop="@dimen/XXXXL_space"
+            android:text="Create Account"
+            android:layout_marginBottom="@dimen/XXXL_space"/>
+
+    </LinearLayout>
+</ScrollView>
