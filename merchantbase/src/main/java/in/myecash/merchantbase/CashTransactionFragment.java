@@ -544,6 +544,11 @@ public class CashTransactionFragment extends Fragment implements
         trans.setCb_debit(mRedeemCashback);
         trans.setCb_percent(mMerchantUser.getMerchant().getCb_rate());
         trans.setCustomer_id(mRetainedFragment.mCurrCustomer.getMobileNum());
+        if(isCardPresentedAndUsable()) {
+            trans.setUsedCardId(mRetainedFragment.mCustCardId);
+        } else {
+            trans.setUsedCardId("");
+        }
         mRetainedFragment.mCurrTransaction = new MyTransaction(trans);
     }
 
@@ -895,7 +900,8 @@ public class CashTransactionFragment extends Fragment implements
         // Init 'debit cash' status
         if(mRetainedFragment.mCurrCashback.getCurrClBalance() <= 0) {
             setRedeemClStatus(STATUS_NO_BALANCE);
-        } else if(isCardPresentedAndUsable()) {
+        } else if(!isCardPresentedAndUsable() &&
+            (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_ACC_DB_CARD_REQ) > 0) {
             setRedeemClStatus(STATUS_QR_CARD_NOT_USED);
         } else {
             // change status by clicking the image/label
@@ -909,7 +915,8 @@ public class CashTransactionFragment extends Fragment implements
             setRedeemCbStatus(STATUS_NO_BALANCE);
         } else if( cbBalance < ((Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CB_REDEEM_LIMIT))) {
             setRedeemCbStatus(STATUS_BALANCE_BELOW_LIMIT);
-        } else if(isCardPresentedAndUsable()) {
+        } else if(!isCardPresentedAndUsable() &&
+                (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CB_REDEEM_CARD_REQ) > 0) {
             setRedeemCbStatus(STATUS_QR_CARD_NOT_USED);
         } else if(mRetainedFragment.mBillTotal <= 0) {
             setRedeemCbStatus(STATUS_DISABLED);
@@ -994,11 +1001,8 @@ public class CashTransactionFragment extends Fragment implements
 
     private boolean isCardPresentedAndUsable() {
 
-        if(mRetainedFragment.mCardPresented &&
-                mRetainedFragment.mCurrCustomer.getCardStatus() == DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED) {
-            return true;
-        }
-        return false;
+        return (mRetainedFragment.mCardPresented &&
+                mRetainedFragment.mCurrCustomer.getCardStatus()==DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED);
     }
 
     // UI Resources data members

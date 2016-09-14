@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical_paddingSidesLarge">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_space"/>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_perm_identity_white_24dp"
+            android:tint="@color/primary"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:text="Customer"
+            android:layout_weight="40"
+            android:gravity="left"/>
+        <EditText
+            style="@style/MyEdittext_Small"
+            android:id="@+id/input_customer_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Internal ID or Mobile"
+            android:layout_weight="60"
+            android:gravity="left"/>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_space"/>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_receipt_white_24dp"
+            android:tint="@color/primary"
+            android:visibility="invisible"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="Total Bill"
+            android:layout_weight="40"
+            android:gravity="left"
+            android:visibility="invisible"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="From"
+            android:layout_weight="27.5"
+            android:gravity="left"
+            android:textStyle="bold"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="To"
+            android:layout_weight="27.5"
+            android:gravity="left"
+            android:textStyle="bold"/>
+    </LinearLayout>
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_receipt_white_24dp"
+            android:tint="@color/primary" />
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="Total Bill"
+            android:layout_weight="40"
+            android:gravity="left"/>
+        <EditText
+            style="@style/MyEdittext_Small"
+            android:id="@+id/input_bill_from"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:hint="₹ 0"
+            android:layout_weight="27.5"
+            android:gravity="left"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"/>
+        <EditText
+            style="@style/MyEdittext_Small"
+            android:id="@+id/input_bill_to"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:hint="₹ 0"
+            android:layout_weight="27.5"
+            android:gravity="left"/>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_space"/>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_grade_white_24dp"
+            android:tint="@color/primary"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="Cashback"
+            android:layout_weight="40"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:textColor="@color/accent"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="From"
+            android:layout_weight="27.5"
+            android:gravity="left"
+            android:visibility="invisible"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="To"
+            android:layout_weight="27.5"
+            android:gravity="left"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_grade_white_24dp"
+            android:tint="@color/primary"
+            android:visibility="invisible"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="Award"
+            android:layout_weight="40"
+            android:gravity="left"/>
+        <EditText
+            style="@style/MyEdittext_Small"
+            android:id="@+id/input_cbAward_from"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:hint="₹ 0"
+            android:layout_weight="27.5"
+            android:gravity="left"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"/>
+        <EditText
+            style="@style/MyEdittext_Small"
+            android:id="@+id/input_cbAward_to"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:hint="₹ 0"
+            android:layout_weight="27.5"
+            android:gravity="left"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_grade_white_24dp"
+            android:tint="@color/primary"
+            android:visibility="invisible"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="Redeem"
+            android:layout_weight="40"
+            android:gravity="left"/>
+        <EditText
+            style="@style/MyEdittext_Small"
+            android:id="@+id/input_cbRedeem_from"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:hint="₹ 0"
+            android:layout_weight="27.5"
+            android:gravity="left"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"/>
+        <EditText
+            style="@style/MyEdittext_Small"
+            android:id="@+id/input_cbRedeem_to"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:hint="₹ 0"
+            android:layout_weight="27.5"
+            android:gravity="left"/>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_space"/>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_account_balance_wallet_white_24dp"
+            android:tint="@color/primary"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="Account"
+            android:layout_weight="40"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:textColor="@color/accent"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="From"
+            android:layout_weight="27.5"
+            android:gravity="left"
+            android:visibility="invisible"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="To"
+            android:layout_weight="27.5"
+            android:gravity="left"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_grade_white_24dp"
+            android:tint="@color/primary"
+            android:visibility="invisible"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="Add"
+            android:layout_weight="40"
+            android:gravity="left"/>
+        <EditText
+            style="@style/MyEdittext_Small"
+            android:id="@+id/input_accAdd_from"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:hint="₹ 0"
+            android:layout_weight="27.5"
+            android:gravity="left"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"/>
+        <EditText
+            style="@style/MyEdittext_Small"
+            android:id="@+id/input_accAdd_to"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:hint="₹ 0"
+            android:layout_weight="27.5"
+            android:gravity="left"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_grade_white_24dp"
+            android:tint="@color/primary"
+            android:visibility="invisible"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:text="Debit"
+            android:layout_weight="40"
+            android:gravity="left"/>
+        <EditText
+            style="@style/MyEdittext_Small"
+            android:id="@+id/input_accDebit_from"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:hint="₹ 0"
+            android:layout_weight="27.5"
+            android:gravity="left"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"/>
+        <EditText
+            style="@style/MyEdittext_Small"
+            android:id="@+id/input_accDebit_to"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:hint="₹ 0"
+            android:layout_weight="27.5"
+            android:gravity="left"/>
+    </LinearLayout>
+
+</LinearLayout>

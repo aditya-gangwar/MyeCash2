@@ -82,8 +82,8 @@ public class CommonConstants {
      * Per day file containing these records is created by backend,
      * but used by app to show txns to user.
      * Format:
-     * trans_id,time,merchant_id,merchant_name,customer_id,cust_private_id,
-     * total_billed,cb_billed,cl_debit,cl_credit,cb_debit,cb_credit,cb_percent\n
+     * trans_id,time,merchant_id,merchant_name,customer_id,cust_private_id,used_card_id
+     * total_billed,cb_billed,cl_debit,cl_credit,cb_debit,cb_credit,cb_percent,cpin\n
      */
     public static int TXN_CSV_IDX_ID = 0;
     public static int TXN_CSV_IDX_TIME = 1;
@@ -91,14 +91,16 @@ public class CommonConstants {
     public static int TXN_CSV_IDX_MERCHANT_NAME = 3;
     public static int TXN_CSV_IDX_CUSTOMER_ID = 4;
     public static int TXN_CSV_IDX_CUSTOMER_PVT_ID = 5;
-    public static int TXN_CSV_IDX_TOTAL_BILLED = 6;
-    public static int TXN_CSV_IDX_CB_BILLED = 7;
-    public static int TXN_CSV_IDX_ACC_DEBIT = 8;
-    public static int TXN_CSV_IDX_ACC_CREDIT = 9;
-    public static int TXN_CSV_IDX_CB_REDEEM = 10;
-    public static int TXN_CSV_IDX_CB_AWARD = 11;
-    public static int TXN_CSV_IDX_CB_RATE = 12;
-    public static int TXN_CSV_IDX_CUST_PIN = 13;
+    public static int TXN_CSV_IDX_USED_CARD_ID = 6;
+    public static int TXN_CSV_IDX_TOTAL_BILLED = 7;
+    public static int TXN_CSV_IDX_CB_BILLED = 8;
+    public static int TXN_CSV_IDX_ACC_DEBIT = 9;
+    public static int TXN_CSV_IDX_ACC_CREDIT = 10;
+    public static int TXN_CSV_IDX_CB_REDEEM = 11;
+    public static int TXN_CSV_IDX_CB_AWARD = 12;
+    public static int TXN_CSV_IDX_CB_RATE = 13;
+    public static int TXN_CSV_IDX_CUST_PIN = 14;
+    public static int TXN_CSV_FIELD_CNT = 15;
 
     /*
      * Index of various parameters in Cashback CSV records (stored in CustData CSV files)

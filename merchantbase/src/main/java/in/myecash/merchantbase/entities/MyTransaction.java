@@ -37,6 +37,7 @@ public class MyTransaction {
         txn.setMerchant_name(csvFields[CommonConstants.TXN_CSV_IDX_MERCHANT_NAME]);
         txn.setCustomer_id(csvFields[CommonConstants.TXN_CSV_IDX_CUSTOMER_ID]);
         txn.setCust_private_id(csvFields[CommonConstants.TXN_CSV_IDX_CUSTOMER_PVT_ID]);
+        txn.setUsedCardId(csvFields[CommonConstants.TXN_CSV_IDX_USED_CARD_ID]);
         txn.setTotal_billed(Integer.parseInt(csvFields[CommonConstants.TXN_CSV_IDX_TOTAL_BILLED]));
         txn.setCb_billed(Integer.parseInt(csvFields[CommonConstants.TXN_CSV_IDX_CB_BILLED]));
         txn.setCl_debit(Integer.parseInt(csvFields[CommonConstants.TXN_CSV_IDX_ACC_DEBIT]));
@@ -48,19 +49,82 @@ public class MyTransaction {
         return txn;
     }
 
+    /*
+     * comparator functions for sorting
+     */
     public static class TxnDateComparator implements Comparator<Transaction> {
         @Override
         public int compare(Transaction lhs, Transaction rhs) {
             // TODO: Handle null x or y values
             return compare(lhs.getCreate_time().getTime(), rhs.getCreate_time().getTime());
         }
-
         private static int compare(long a, long b) {
             return a < b ? -1
                     : a > b ? 1
                     : 0;
         }
     }
+    public static class TxnBillComparator implements Comparator<Transaction> {
+        @Override
+        public int compare(Transaction lhs, Transaction rhs) {
+            // TODO: Handle null x or y values
+            return compare(lhs.getTotal_billed(), rhs.getTotal_billed());
+        }
+        private static int compare(int a, int b) {
+            return a < b ? -1
+                    : a > b ? 1
+                    : 0;
+        }
+    }
+    public static class TxnCbAwardComparator implements Comparator<Transaction> {
+        @Override
+        public int compare(Transaction lhs, Transaction rhs) {
+            // TODO: Handle null x or y values
+            return compare(lhs.getCb_credit(), rhs.getCb_credit());
+        }
+        private static int compare(int a, int b) {
+            return a < b ? -1
+                    : a > b ? 1
+                    : 0;
+        }
+    }
+    public static class TxnCbRedeemComparator implements Comparator<Transaction> {
+        @Override
+        public int compare(Transaction lhs, Transaction rhs) {
+            // TODO: Handle null x or y values
+            return compare(lhs.getCb_debit(), rhs.getCb_debit());
+        }
+        private static int compare(int a, int b) {
+            return a < b ? -1
+                    : a > b ? 1
+                    : 0;
+        }
+    }
+    public static class TxnAccAddComparator implements Comparator<Transaction> {
+        @Override
+        public int compare(Transaction lhs, Transaction rhs) {
+            // TODO: Handle null x or y values
+            return compare(lhs.getCl_credit(), rhs.getCl_credit());
+        }
+        private static int compare(int a, int b) {
+            return a < b ? -1
+                    : a > b ? 1
+                    : 0;
+        }
+    }
+    public static class TxnAccDebitComparator implements Comparator<Transaction> {
+        @Override
+        public int compare(Transaction lhs, Transaction rhs) {
+            // TODO: Handle null x or y values
+            return compare(lhs.getCl_debit(), rhs.getCl_debit());
+        }
+        private static int compare(int a, int b) {
+            return a < b ? -1
+                    : a > b ? 1
+                    : 0;
+        }
+    }
+
 
     public Transaction getTransaction() {
         return mCurrTransaction;

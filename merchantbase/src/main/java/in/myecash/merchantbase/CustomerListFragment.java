@@ -342,7 +342,6 @@ public class CustomerListFragment  extends Fragment {
 
         @Override
         public void onClick(View v) {
-            // TODO - show detailed transaction view
             LogMy.d(TAG,"In onClick: "+getAdapterPosition());
 
             // getRootView was not working, so manually finding root view
@@ -393,9 +392,7 @@ public class CustomerListFragment  extends Fragment {
         public CbHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater.inflate(R.layout.customer_itemview, parent, false);
-
             view.setOnClickListener(mListener);
-
             return new CbHolder(view);
         }
         @Override

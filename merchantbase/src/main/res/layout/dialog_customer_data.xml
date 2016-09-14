@@ -29,7 +29,7 @@
             style="@style/MyEdittext_Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Internal Customer ID"
+            android:hint="Internal ID"
             android:maxLength="@string/customer_internal_id_char_limit"
             android:gravity="center"
             android:inputType="textCapCharacters"/>
@@ -42,7 +42,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Do not give any value above to generate data for all customers." />
+            android:text="Leave above empty to generate data for all customers." />
 
         <Space
             android:layout_width="match_parent"

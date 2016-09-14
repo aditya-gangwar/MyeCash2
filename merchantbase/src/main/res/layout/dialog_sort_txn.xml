@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical_paddingSidesLarge">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_space"/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txnSortRadioGroup">
+
+        <RadioButton
+            style="@style/MyEdittext_Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dateTime"
+            android:text="Date-Time" />
+
+        <RadioButton
+            style="@style/MyEdittext_Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/billAmt"
+            android:text="Bill Amount" />
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_grade_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Cashback"
+                android:textStyle="bold"
+                android:textColor="@color/accent"/>
+        </LinearLayout>
+
+        <RadioButton
+            style="@style/MyEdittext_Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/awardCb"
+            android:text="Award Cashback" />
+
+        <RadioButton
+            style="@style/MyEdittext_Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/redeemCb"
+            android:text="Redeem Cashback" />
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Account"
+                android:textStyle="bold"
+                android:textColor="@color/accent"/>
+        </LinearLayout>
+
+        <RadioButton
+            style="@style/MyEdittext_Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addAcc"
+            android:text="Add Account" />
+
+        <RadioButton
+            style="@style/MyEdittext_Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/debitAcc"
+            android:text="Debit Account" />
+
+    </RadioGroup>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_space"/>
+
+</LinearLayout>

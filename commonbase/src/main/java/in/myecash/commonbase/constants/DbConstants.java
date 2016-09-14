@@ -105,6 +105,9 @@ public class DbConstants {
     public static final String SETTINGS_SERVICE_DISABLED_UNTIL = "service_disabled_until";
     public static final String SETTINGS_TXN_IMAGE_CAPTURE_MODE = "txn_image_capture_mode";
 
+    public static final String SETTINGS_CB_REDEEM_CARD_REQ = "cb_redeem_card_req";
+    public static final String SETTINGS_ACC_DB_CARD_REQ = "acc_debit_card_req";
+
     // GlobalSettings table - 'txn_image_capture_mode' column values
     public static final int TXN_IMAGE_CAPTURE_ALWAYS = 0;
     public static final int TXN_IMAGE_CAPTURE_NO_PIN = 1;

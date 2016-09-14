@@ -96,9 +96,11 @@ public class MerchantDetailsDialog extends DialogFragment
     private void initDialogView() {
         Merchants merchant = mCallback.getRetainedFragment().mCurrMerchant;
 
+        mMerchantId.setText(merchant.getAuto_id());
         mStoreName.setText(merchant.getName());
         mStoreCategory.setText(merchant.getBuss_category().getCategory_name());
-        mMerchantId.setText(merchant.getAuto_id());
+        mRegisteredOn.setText(mSdfDateWithTime.format(merchant.getCreated()));
+        mFirstLogin.setText(merchant.getFirst_login_ok().toString());
 
         int status = merchant.getAdmin_status();
         mInputStatus.setText(DbConstants.userStatusDesc[status]);
@@ -148,6 +150,8 @@ public class MerchantDetailsDialog extends DialogFragment
     private EditText mMerchantId;
     private EditText mStoreName;
     private EditText mStoreCategory;
+    private EditText mRegisteredOn;
+    private EditText mFirstLogin;
 
     private EditText mInputStatus;
     private EditText mInputStatusDate;
@@ -177,6 +181,8 @@ public class MerchantDetailsDialog extends DialogFragment
         mMerchantId = (EditText) v.findViewById(R.id.input_merchant_id);
         mStoreName = (EditText) v.findViewById(R.id.input_store_name);
         mStoreCategory = (EditText) v.findViewById(R.id.input_store_category);
+        mRegisteredOn = (EditText) v.findViewById(R.id.input_registered_on);
+        mFirstLogin = (EditText) v.findViewById(R.id.input_first_login);
 
         mInputStatus = (EditText) v.findViewById(R.id.input_status);
         mInputReason = (EditText) v.findViewById(R.id.input_status_reason);

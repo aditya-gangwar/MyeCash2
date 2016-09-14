@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/txnlist_root"
-    android:background="?android:attr/windowBackground">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/txnlist_root"
+                android:background="?android:attr/windowBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
             android:text="Customer ID"
             android:paddingTop="0dp"
             android:paddingBottom="@dimen/edittext_padding_less"/>
-        <!--EditText
+        <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="wrap_content"
             android:id="@+id/txnlist_header_txn_id"
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="Txn Id"
             android:paddingTop="0dp"
-            android:textStyle="italic"/-->
+            android:textStyle="italic"/>
 
         <EditText
             style="@style/Edittext_only_view_small"
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Total Bill  |  Cashback @ x%"
+            android:text="Bill Amount"
             android:paddingBottom="@dimen/edittext_padding_less"/>
 
         <EditText
@@ -54,11 +54,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txnlist_header_bill"
             android:layout_alignParentRight="true"
-            android:text="Account |  Cashback Redeem"
+            android:text="Account  |  Cashback"
             android:paddingBottom="@dimen/edittext_padding_less"
             android:paddingTop="0dp"/>
 
-        <!--EditText
+        <EditText
             style="@style/Edittext_only_view_small"
             android:id="@+id/txnlist_header_cashback"
             android:layout_width="wrap_content"
@@ -67,12 +67,12 @@
             android:layout_alignParentRight="true"
             android:text="Cashback Award @ x%"
             android:paddingTop="0dp"
-            android:textStyle="italic"/-->
+            android:textStyle="italic"/>
 
         <View
             style="@style/Divider_horizontal_Large"
             android:id="@+id/txnlist_divider_1"
-            android:layout_below="@id/txnlist_header_amts"/>
+            android:layout_below="@id/txnlist_header_cashback"/>
 
     </RelativeLayout>
 

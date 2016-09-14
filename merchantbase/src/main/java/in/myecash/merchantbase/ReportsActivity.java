@@ -53,6 +53,8 @@ public class ReportsActivity extends AppCompatActivity implements
         TxnListFragment.TxnListFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf {
     private static final String TAG = "ReportsActivity";
 
+    private static final String EXTRA_CUSTOMER_ID = "extraCustId";
+
     private static final String RETAINED_FRAGMENT = "retainedFragReports";
     private static final String DIALOG_DATE_FROM = "DialogDateFrom";
     private static final String DIALOG_DATE_TO = "DialogDateTo";
@@ -69,11 +71,11 @@ public class ReportsActivity extends AppCompatActivity implements
     MyRetainedFragment mWorkFragment;
     private MerchantUser mMerchantUser;
     private DateUtil mToday;
+    private String mCustomerId;
 
     // Store and restore as part of instance state
     private Date mFromDate;
     private Date mToDate;
-    private String mCustomerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +93,11 @@ public class ReportsActivity extends AppCompatActivity implements
         initDateInputs(savedInstanceState);
 
         mBtnGetReport.setOnClickListener(this);
+        /*
         if(savedInstanceState!=null) {
             mCustomerId = savedInstanceState.getString("mCustomerId");
-        }
+        }*/
+        mInputCustId.setText(getIntent().getStringExtra(EXTRA_CUSTOMER_ID));
 
         // Initialize retained fragment before other fragments
         // Check to see if we have retained the worker fragment.
@@ -113,7 +117,8 @@ public class ReportsActivity extends AppCompatActivity implements
         LogMy.d(TAG, "In onClick: " + vId);
 
         try {
-            if (vId == R.id.input_date_from) {// Find the minimum date for DatePicker
+            if (vId == R.id.input_date_from) {
+                // Find the minimum date for DatePicker
                 int oldDays = (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_REPORTS_HISTORY_DAYS);
                 DateUtil minFrom = new DateUtil(TimeZone.getDefault());
                 minFrom.removeDays(oldDays);
@@ -129,13 +134,22 @@ public class ReportsActivity extends AppCompatActivity implements
                     toDialog.show(getFragmentManager(), DIALOG_DATE_TO);
                 }
 
-            } else if (vId == R.id.btn_get_report) {// clear old data
+            } else if (vId == R.id.btn_get_report) {
+                // clear old data
                 mWorkFragment.mAllFiles.clear();
                 mWorkFragment.mMissingFiles.clear();
                 mWorkFragment.mTxnsFromCsv.clear();
                 if (mWorkFragment.mLastFetchTransactions != null) {
                     mWorkFragment.mLastFetchTransactions.clear();
                     mWorkFragment.mLastFetchTransactions = null;
+                }
+                mCustomerId = mInputCustId.getText().toString();
+                if (mCustomerId.length() > 0) {
+                    int errorCode = ValidationHelper.validateMobileNo(mCustomerId);
+                    if (errorCode != ErrorCodes.NO_ERROR) {
+                        mInputCustId.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                        return;
+                    }
                 }
                 fetchReportData();
 
@@ -150,14 +164,6 @@ public class ReportsActivity extends AppCompatActivity implements
     }
 
     private void fetchReportData() throws Exception{
-        mCustomerId = mInputCustId.getText().toString();
-        if (mCustomerId.length() > 0) {
-            int errorCode = ValidationHelper.validateMobileNo(mCustomerId);
-            if (errorCode != ErrorCodes.NO_ERROR) {
-                mInputCustId.setError(ErrorCodes.appErrorDesc.get(errorCode));
-                return;
-            }
-        }
         // start thread to fetch data from DB
         // show progress dialog
         AppCommonUtil.showProgressDialog(ReportsActivity.this, AppConstants.progressReports);
@@ -608,7 +614,7 @@ public class ReportsActivity extends AppCompatActivity implements
 
         outState.putSerializable("mFromDate", mFromDate);
         outState.putSerializable("mToDate", mToDate);
-        outState.putString("mCustomerId", mCustomerId);
+        //outState.putString("mCustomerId", mCustomerId);
     }
 
 }

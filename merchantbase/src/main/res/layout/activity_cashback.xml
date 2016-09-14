@@ -64,7 +64,7 @@
                         android:id="@+id/tb_title"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text=""
+                        android:text="TBS"
                         android:gravity="left|center_vertical"/>
 
                     <EditText
@@ -72,7 +72,7 @@
                         android:id="@+id/tb_title_2"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text=""
+                        android:text="TBS"
                         android:gravity="left|top"
                         android:paddingTop="0dp"
                         android:paddingBottom="0dp"

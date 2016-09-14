@@ -97,6 +97,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
     private static final String DIALOG_CUSTOMER_DATA = "dialogCustomerData";
 
+    private final SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
 
     MyRetainedFragment mWorkFragment;
     FragmentManager mFragMgr;
@@ -163,7 +164,16 @@ public class CashbackActivity extends AppCompatActivity implements
 
         // setup mobile number fragment
         startMobileNumFragment();
+
+        // show last login time
+        if(mMerchant.getLastLogin() != null) {
+            String msg = "Your last login was on "+mSdfDateWithTime.format(mMerchant.getLastLogin());
+            DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, msg, false, false)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
     }
+
+
 
     @Override
     public void setDrawerState(boolean isEnabled) {
@@ -418,8 +428,8 @@ public class CashbackActivity extends AppCompatActivity implements
             mTbImageIsMerchant = true;
         }
         setTbTitle(mMerchant.getName());
-        mTbLayoutSubhead1.setVisibility(View.GONE);
         mTbTitle2.setVisibility(View.GONE);
+        mTbLayoutSubhead1.setVisibility(View.GONE);
     }
 
     private void initTbViews() {

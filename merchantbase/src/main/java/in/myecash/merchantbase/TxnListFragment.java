@@ -44,7 +44,7 @@ import java.util.List;
 /**
  * Created by adgangwa on 07-04-2016.
  */
-public class TxnListFragment extends Fragment {
+public class TxnListFragment extends Fragment implements SortTxnDialog.SortTxnDialogIf {
     private static final String TAG = "TxnListFragment";
 
     private static final String CSV_REPORT_HEADER_1 = ",,MyeCash Merchant Statement,,,,,,,,";
@@ -68,9 +68,8 @@ public class TxnListFragment extends Fragment {
     private static final String ARG_END_TIME = "endTime";
     private static final int REQ_NOTIFY_ERROR = 1;
 
-    //private static final int REQ_STORAGE_PERMISSION = 2;
-    // permission request codes need to be < 256
-    //private static final int RC_HANDLE_WRITE_STORAGE = 10;
+    private static final String DIALOG_SORT_TXN_TYPES = "dialogSortTxn";
+    private static final String DIALOG_TXN_DETAILS = "dialogTxnDetails";
 
     private SimpleDateFormat mSdfDateWithTime;
     private SimpleDateFormat mSdfOnlyDateCSV;
@@ -82,7 +81,7 @@ public class TxnListFragment extends Fragment {
     private Date mStartTime;
     private Date mEndTime;
     // instance state - store and restore
-    //private int mActiveMenuItemId;
+    private int mSelectedSortType;
 
     public interface TxnListFragmentIf {
         void setToolbarTitle(String title);
@@ -107,11 +106,7 @@ public class TxnListFragment extends Fragment {
         try {
             mCallback = (TxnListFragmentIf) getActivity();
 
-            mCallback.setToolbarTitle("Transactions");
             mRetainedFragment = mCallback.getRetainedFragment();
-
-            // sort by date-time
-            Collections.sort(mRetainedFragment.mLastFetchTransactions, new MyTransaction.TxnDateComparator());
 
             mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
             mSdfOnlyDateCSV = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_CSV, CommonConstants.DATE_LOCALE);
@@ -121,11 +116,13 @@ public class TxnListFragment extends Fragment {
             // get arguments and store in instance
             mStartTime = (Date)getArguments().getSerializable(ARG_START_TIME);
             mEndTime = (Date)getArguments().getSerializable(ARG_END_TIME);
+            if(savedInstanceState==null) {
+                mSelectedSortType = SortTxnDialog.TXN_SORT_DATE_TIME;
+            } else {
+                mSelectedSortType = savedInstanceState.getInt("mSelectedSortType");
+            }
+            sortTxnList();
 
-            /*
-            if(savedInstanceState!=null) {
-                mActiveMenuItemId = savedInstanceState.getInt("mActiveMenuItemId");
-            }*/
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement TxnListFragmentIf");
@@ -134,12 +131,35 @@ public class TxnListFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    private void sortTxnList() {
+        switch (mSelectedSortType) {
+            case SortTxnDialog.TXN_SORT_DATE_TIME:
+                Collections.sort(mRetainedFragment.mLastFetchTransactions, new MyTransaction.TxnDateComparator());
+                break;
+            case SortTxnDialog.TXN_SORT_bILL_AMT:
+                Collections.sort(mRetainedFragment.mLastFetchTransactions, new MyTransaction.TxnBillComparator());
+                break;
+            case SortTxnDialog.TXN_SORT_CB_AWARD:
+                Collections.sort(mRetainedFragment.mLastFetchTransactions, new MyTransaction.TxnCbAwardComparator());
+                break;
+            case SortTxnDialog.TXN_SORT_CB_REDEEM:
+                Collections.sort(mRetainedFragment.mLastFetchTransactions, new MyTransaction.TxnCbRedeemComparator());
+                break;
+            case SortTxnDialog.TXN_SORT_ACC_ADD:
+                Collections.sort(mRetainedFragment.mLastFetchTransactions, new MyTransaction.TxnAccAddComparator());
+                break;
+            case SortTxnDialog.TXN_SORT_ACC_DEBIT:
+                Collections.sort(mRetainedFragment.mLastFetchTransactions, new MyTransaction.TxnAccDebitComparator());
+                break;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_txn_list, container, false);
-        mTxnRecyclerView = (RecyclerView) view
-                .findViewById(R.id.txn_recycler_view);
+
+        mTxnRecyclerView = (RecyclerView) view.findViewById(R.id.txn_recycler_view);
         mTxnRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
@@ -156,25 +176,21 @@ public class TxnListFragment extends Fragment {
         int i = item.getItemId();
         if (i == R.id.action_download) {
             downloadReport();
-                /*
-                if( checkPermission() ) {
-                    downloadReport();
-                } else {
-                    requestStoragePermission();
-                }*/
-
         } else if (i == R.id.action_email) {
             emailReport();
-                /*
-                if( checkPermission() ) {
-                    emailReport();
-                } else {
-                    requestStoragePermission();
-                }*/
-
+        } else if (i == R.id.action_sort) {
+            SortTxnDialog dialog = SortTxnDialog.newInstance(mSelectedSortType);
+            dialog.show(getFragmentManager(), DIALOG_SORT_TXN_TYPES);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTxnSortType(int sortType) {
+        mSelectedSortType = sortType;
+        sortTxnList();
+        updateUI();
     }
 
     private void downloadReport() {
@@ -331,6 +347,7 @@ public class TxnListFragment extends Fragment {
 
     private void updateUI() {
         mTxnRecyclerView.setAdapter(new TxnAdapter(mRetainedFragment.mLastFetchTransactions));
+        mCallback.setToolbarTitle(mRetainedFragment.mLastFetchTransactions.size() + " Transactions");
     }
 
     @Override
@@ -343,11 +360,6 @@ public class TxnListFragment extends Fragment {
             case REQ_NOTIFY_ERROR:
                 // do nothing
                 break;
-            /*
-            case REQ_STORAGE_PERMISSION:
-                String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                ActivityCompat.requestPermissions(getActivity(), permissions, RC_HANDLE_WRITE_STORAGE);
-                break;*/
         }
     }
 
@@ -357,6 +369,155 @@ public class TxnListFragment extends Fragment {
         super.onResume();
         updateUI();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("mSelectedSortType", mSelectedSortType);
+    }
+
+    private class TxnHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
+
+        private Transaction mTxn;
+
+        public EditText mDatetime;
+        public EditText mCustId;
+        //public EditText mTxnId;
+
+        public EditText mBillAmount;
+        public EditText mCashbackAward;
+        public View mAccountIcon;
+        public EditText mAccountAmt;
+        public View mCashbackIcon;
+        public EditText mCashbackAmt;
+
+        //public ImageView mSecureIcon;
+
+        public TxnHolder(View itemView) {
+            super(itemView);
+            itemView.setOnClickListener(this);
+            mDatetime = (EditText) itemView.findViewById(R.id.txn_time);
+            mCustId = (EditText) itemView.findViewById(R.id.txn_customer_id);
+            //mTxnId = (EditText) itemView.findViewById(R.id.txn_id);
+
+            mBillAmount = (EditText) itemView.findViewById(R.id.txn_bill);
+            mAccountIcon = itemView.findViewById(R.id.txn_account_icon);
+            mAccountAmt = (EditText) itemView.findViewById(R.id.txn_account_amt);
+            mCashbackIcon = itemView.findViewById(R.id.txn_cashback_icon);
+            mCashbackAmt = (EditText) itemView.findViewById(R.id.txn_cashback_amt);
+
+            mCashbackAward = (EditText) itemView.findViewById(R.id.txn_cashback_award);
+            //mSecureIcon = (ImageView)itemView.findViewById(R.id.txn_secure_icon);
+
+            mCustId.setOnClickListener(this);
+            mDatetime.setOnClickListener(this);
+            mBillAmount.setOnClickListener(this);
+            mAccountAmt.setOnClickListener(this);
+            mCashbackAmt.setOnClickListener(this);
+            mCashbackAward.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            LogMy.d(TAG,"In onClick: "+getAdapterPosition());
+
+            // getRootView was not working, so manually finding root view
+            View rootView = null;
+            if(v.getId()==mCustId.getId() || v.getId()==mDatetime.getId()) {
+                rootView = (View) v.getParent().getParent();
+            } else {
+                rootView = (View) v.getParent().getParent().getParent();
+            }
+            rootView.performClick();
+        }
+
+        public void bindTxn(Transaction txn) {
+            mTxn = txn;
+
+            mDatetime.setText(mSdfDateWithTime.format(mTxn.getCreate_time()));
+            mCustId.setText(mTxn.getCust_private_id());
+            //mTxnId.setText(mTxn.getTrans_id());
+
+            if(mTxn.getTotal_billed() > 0) {
+                mBillAmount.setText(AppCommonUtil.getSignedAmtStr(mTxn.getTotal_billed(), true));
+            } else {
+                mBillAmount.setText("-");
+            }
+
+            if(mTxn.getCl_credit() > 0) {
+                mAccountAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCl_credit(), true));
+                mAccountAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
+            } else if(mTxn.getCl_debit() > 0) {
+                mAccountAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCl_debit(), false));
+                mAccountAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+            } else {
+                mAccountIcon.setVisibility(View.GONE);
+                mAccountAmt.setText("-");
+            }
+
+            if(mTxn.getCb_debit() > 0) {
+                mCashbackAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCl_debit(), false));
+                mCashbackAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+            } else {
+                mCashbackIcon.setVisibility(View.GONE);
+                mCashbackAmt.setText("-");
+            }
+
+            if(mTxn.getCb_credit() > 0) {
+                String cbData = AppCommonUtil.getAmtStr(mTxn.getCb_credit())+" @ "+mTxn.getCb_percent()+"%";
+                mCashbackAward.setText(cbData);
+            } else {
+                mCashbackAward.setText("-");
+            }
+
+            /*
+            if(mTxn.getCpin().equals(DbConstants.TXN_CUSTOMER_PIN_NOT_USED)) {
+                mSecureIcon.setVisibility(View.GONE);
+            }*/
+        }
+    }
+
+    private class TxnAdapter extends RecyclerView.Adapter<TxnHolder> {
+        private List<Transaction> mTxns;
+        private View.OnClickListener mListener;
+
+        public TxnAdapter(List<Transaction> txns) {
+            mTxns = txns;
+            mListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LogMy.d(TAG,"In onClickListener of txn list item");
+                    int pos = mTxnRecyclerView.getChildAdapterPosition(v);
+                    if (pos >= 0 && pos < getItemCount()) {
+                        CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(pos);
+                        dialog.show(getFragmentManager(), DIALOG_TXN_DETAILS);
+                    } else {
+                        LogMy.e(TAG,"Invalid position in onClickListener of customer list item: "+pos);
+                    }
+                }
+            };
+        }
+
+        @Override
+        public TxnHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            View view = layoutInflater.inflate(R.layout.txn_itemview, parent, false);
+            view.setOnClickListener(mListener);
+            return new TxnHolder(view);
+        }
+        @Override
+        public void onBindViewHolder(TxnHolder holder, int position) {
+            Transaction txn = mTxns.get(position);
+            holder.bindTxn(txn);
+        }
+        @Override
+        public int getItemCount() {
+             return mTxns.size();
+        }
+    }
+}
+
 
     /*
     private boolean checkPermission() {
@@ -419,115 +580,3 @@ public class TxnListFragment extends Fragment {
         outState.putInt("mActiveMenuItemId", mActiveMenuItemId);
     }
     */
-
-
-    private class TxnHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
-
-        private Transaction mTxn;
-
-        public EditText mDatetime;
-        public EditText mCustId;
-        public EditText mTxnId;
-
-        public EditText mBillAmount;
-        public View mAccountIcon;
-        public EditText mAccountAmt;
-        public View mCashbackIcon;
-        public EditText mCashbackAmt;
-
-        public EditText mCashbackAward;
-        public ImageView mSecureIcon;
-
-        public TxnHolder(View itemView) {
-            super(itemView);
-            itemView.setOnClickListener(this);
-            mDatetime = (EditText) itemView.findViewById(R.id.txn_time);
-            mCustId = (EditText) itemView.findViewById(R.id.txn_customer_id);
-            mTxnId = (EditText) itemView.findViewById(R.id.txn_id);
-
-            mBillAmount = (EditText) itemView.findViewById(R.id.txn_bill);
-            mAccountIcon = itemView.findViewById(R.id.txn_account_icon);
-            mAccountAmt = (EditText) itemView.findViewById(R.id.txn_account_amt);
-            mCashbackIcon = itemView.findViewById(R.id.txn_cashback_icon);
-            mCashbackAmt = (EditText) itemView.findViewById(R.id.txn_cashback_amt);
-
-            mCashbackAward = (EditText) itemView.findViewById(R.id.txn_cashback_award);
-            mSecureIcon = (ImageView)itemView.findViewById(R.id.txn_secure_icon);
-        }
-
-        @Override
-        public void onClick(View v) {
-            // TODO - show detailed transaction view
-        }
-
-        public void bindTxn(Transaction txn) {
-            mTxn = txn;
-
-            mDatetime.setText(mSdfDateWithTime.format(mTxn.getCreate_time()));
-            mCustId.setText(mTxn.getCust_private_id());
-            mTxnId.setText(mTxn.getTrans_id());
-
-            if(mTxn.getTotal_billed() > 0) {
-                mBillAmount.setText(AppCommonUtil.getSignedAmtStr(mTxn.getTotal_billed(), true));
-            } else {
-                mBillAmount.setText("-");
-            }
-
-            if(mTxn.getCl_credit() > 0) {
-                mAccountAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCl_credit(), true));
-                mAccountAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
-            } else if(mTxn.getCl_debit() > 0) {
-                mAccountAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCl_debit(), false));
-                mAccountAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
-            } else {
-                mAccountIcon.setVisibility(View.GONE);
-                mAccountAmt.setText("-");
-            }
-
-            if(mTxn.getCb_debit() > 0) {
-                mCashbackAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCl_debit(), false));
-                mCashbackAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
-            } else {
-                mCashbackIcon.setVisibility(View.GONE);
-                mCashbackAmt.setText("-");
-            }
-
-            if(mTxn.getCb_credit() > 0) {
-                String cbData = AppCommonUtil.getAmtStr(mTxn.getCb_credit())+" @ "+mTxn.getCb_percent()+"%";
-                mCashbackAward.setText(cbData);
-            } else {
-                mCashbackAward.setText("-");
-            }
-
-            if(mTxn.getCpin().equals(DbConstants.TXN_CUSTOMER_PIN_NOT_USED)) {
-                mSecureIcon.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    private class TxnAdapter extends RecyclerView.Adapter<TxnHolder> {
-        private List<Transaction> mTxns;
-
-        public TxnAdapter(List<Transaction> txns) {
-            mTxns = txns;
-        }
-
-        @Override
-        public TxnHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater
-                    .inflate(R.layout.transaction_itemview, parent, false);
-            return new TxnHolder(view);
-        }
-        @Override
-        public void onBindViewHolder(TxnHolder holder, int position) {
-            Transaction txn = mTxns.get(position);
-            holder.bindTxn(txn);
-        }
-        @Override
-        public int getItemCount() {
-             return mTxns.size();
-        }
-    }
-}

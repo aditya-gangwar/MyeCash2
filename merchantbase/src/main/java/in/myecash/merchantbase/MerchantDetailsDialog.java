@@ -86,6 +86,8 @@ public class MerchantDetailsDialog extends DialogFragment {
         mStoreName.setText(merchant.getName());
         mStoreCategory.setText(merchant.getBuss_category().getCategory_name());
         mMerchantId.setText(merchant.getAuto_id());
+        mRegisteredOn.setText(mSdfDateWithTime.format(merchant.getCreated()));
+        mLastLogin.setText(mSdfDateWithTime.format(merchant.getLastLogin()));
 
         int status = merchant.getAdmin_status();
         mInputStatus.setText(DbConstants.userStatusDesc[status]);
@@ -119,7 +121,10 @@ public class MerchantDetailsDialog extends DialogFragment {
     private ImageView mDisplayImage;
     private EditText mStoreName;
     private EditText mStoreCategory;
+
     private EditText mMerchantId;
+    private EditText mRegisteredOn;
+    private EditText mLastLogin;
 
     private EditText mInputStatus;
     private View mLayoutStatusDetails;
@@ -142,6 +147,8 @@ public class MerchantDetailsDialog extends DialogFragment {
         mStoreCategory = (EditText) v.findViewById(R.id.input_store_category);
 
         mMerchantId = (EditText) v.findViewById(R.id.input_merchant_id);
+        mRegisteredOn = (EditText) v.findViewById(R.id.input_registered_on);
+        mLastLogin = (EditText) v.findViewById(R.id.input_lastLogin);
 
         mInputStatus = (EditText) v.findViewById(R.id.input_status);
         mLayoutStatusDetails = v.findViewById(R.id.layout_status_details);
