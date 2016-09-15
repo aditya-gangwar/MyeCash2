@@ -425,7 +425,7 @@ public class AppCommonUtil {
             updateTime = currStats.getCreated();
         }
         long timeDiff = now.getTime() - updateTime.getTime();
-        long noRefreshDuration = 60*60*1000*((Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_DASHBOARD_NO_REFRESH_HRS));
+        long noRefreshDuration = 60*60*1000*MyGlobalSettings.getMchntDashBNoRefreshHrs();
         if( timeDiff > noRefreshDuration ) {
             return true;
         }

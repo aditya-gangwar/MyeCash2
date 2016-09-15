@@ -27,6 +27,7 @@ import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.entities.MyGlobalSettings;
+import in.myecash.commonbase.models.GlobalSettings;
 import in.myecash.commonbase.utilities.AppAlarms;
 import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.DialogFragmentWrapper;
@@ -328,8 +329,7 @@ public class LoginActivity extends AppCompatActivity implements
 
             } else if(errorCode == ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD) {
                 mLoginButton.setEnabled(true);
-                Integer lockHrs = (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_MERCHANT_ACCOUNT_BLOCK_HRS);
-                String errorMsg = String.format(ErrorCodes.appErrorDesc.get(errorCode),lockHrs.toString());
+                String errorMsg = String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getMchntAccBlockHrs()));
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errorMsg, false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 MerchantUser.reset();
@@ -349,13 +349,12 @@ public class LoginActivity extends AppCompatActivity implements
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else if(errorCode == ErrorCodes.OPERATION_SCHEDULED) {
                 // Show success notification dialog
-                Integer passwdResetMins = (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_MERCHANT_PASSWD_RESET_MINS);
-                String msg = String.format(AppConstants.pwdGenerateSuccessMsg, passwdResetMins.toString());
+                String msg = String.format(AppConstants.pwdGenerateSuccessMsg, Integer.toString(MyGlobalSettings.getMchntPasswdResetMins()));
                 DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, msg, false, false)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY) {
                 // Old request is already pending
-                String msg = String.format(AppConstants.pwdGenerateDuplicateRequestMsg, (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_MERCHANT_PASSWD_RESET_REQUEST_GAP));
+                String msg = String.format(AppConstants.pwdGenerateDuplicateRequestMsg, Integer.toString(MyGlobalSettings.getMchntPasswdResetReqGap()));
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, false, false)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else {

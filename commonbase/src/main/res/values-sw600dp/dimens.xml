@@ -20,7 +20,7 @@
     <dimen name="section_header_image_height">48dp</dimen>
 
     <dimen name="edittext_pad_fill">3dp</dimen>
-    <dimen name="edittext_padding_less">7dp</dimen>
+    <dimen name="edittext_padding_less">6dp</dimen>
     <dimen name="edittext_padding">12dp</dimen>
     <dimen name="edittext_padding_more">18dp</dimen>
 

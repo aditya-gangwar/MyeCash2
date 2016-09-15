@@ -102,7 +102,7 @@ public class SplashActivity extends AppCompatActivity
         protected void onPostExecute(Integer errorCode) {
             AppCommonUtil.cancelProgressDialog(true);
             if(errorCode==ErrorCodes.NO_ERROR) {
-                Date disabledUntil = (Date)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_SERVICE_DISABLED_UNTIL);
+                Date disabledUntil = MyGlobalSettings.getServiceDisabledUntil();
                 if(disabledUntil == null) {
                     startLoginActivity();
                 } else {
