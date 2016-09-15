@@ -5,9 +5,11 @@ import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.models.Cashback;
+import in.myecash.commonbase.models.Transaction;
 import in.myecash.commonbase.utilities.AppAlarms;
 import in.myecash.commonbase.utilities.LogMy;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,16 @@ import java.util.Map;
  */
 public class MyCashback {
     private static final String TAG = "MyCashback";
+
+    // Txn sort parameter types
+    public static final int CB_CMP_TYPE_UPDATE_TIME = 0;
+    public static final int CB_CMP_TYPE_BILL_AMT = 1;
+    public static final int CB_CMP_TYPE_ACC_BALANCE = 2;
+    public static final int CB_CMP_TYPE_ACC_ADD = 3;
+    public static final int CB_CMP_TYPE_ACC_DEBIT = 4;
+    public static final int CB_CMP_TYPE_CB_BALANCE = 5;
+    public static final int CB_CMP_TYPE_CB_ADD = 6;
+    public static final int CB_CMP_TYPE_CB_DEBIT = 7;
 
     private Cashback mOldCashback;
     private Cashback mCurrCashback;
@@ -73,7 +85,10 @@ public class MyCashback {
         return mCurrCashback==null?-1:mCurrCashback.getCb_billed();
     }
     public Date getUpdateTime() {
-        return mCurrCashback==null?null:mCurrCashback.getUpdated();
+        // updateTime will be null if no txn done after registration - use createTime in that case
+        return mCurrCashback==null ?
+                null :
+                (mCurrCashback.getUpdated()==null ? getCreateTime():mCurrCashback.getUpdated());
     }
     public Date getCreateTime() {
         return mCurrCashback==null?null:mCurrCashback.getCreated();
@@ -127,5 +142,50 @@ public class MyCashback {
         cb.setCustomer_details(csvFields[CommonConstants.CB_CSV_CUST_DETAILS]);
 
         init(cb);
+    }
+
+    /*
+     * comparator functions for sorting
+     */
+    public static class MyCashbackComparator implements Comparator<MyCashback> {
+
+        int mCompareType;
+        public MyCashbackComparator(int compareType) {
+            mCompareType = compareType;
+        }
+
+        @Override
+        public int compare(MyCashback lhs, MyCashback rhs) {
+            // TODO: Handle null x or y values
+            switch (mCompareType) {
+                case CB_CMP_TYPE_UPDATE_TIME:
+                    return compare(lhs.getUpdateTime().getTime(), rhs.getUpdateTime().getTime());
+                case CB_CMP_TYPE_BILL_AMT:
+                    return compare(lhs.getBillAmt(), rhs.getBillAmt());
+                case CB_CMP_TYPE_ACC_BALANCE:
+                    return compare(lhs.getCurrClBalance(), rhs.getCurrClBalance());
+                case CB_CMP_TYPE_ACC_ADD:
+                    return compare(lhs.getClCredit(), rhs.getClCredit());
+                case CB_CMP_TYPE_ACC_DEBIT:
+                    return compare(lhs.getClDebit(), rhs.getClDebit());
+                case CB_CMP_TYPE_CB_BALANCE:
+                    return compare(lhs.getCurrCbBalance(), rhs.getCurrCbBalance());
+                case CB_CMP_TYPE_CB_ADD:
+                    return compare(lhs.getCbCredit(), rhs.getCbCredit());
+                case CB_CMP_TYPE_CB_DEBIT:
+                    return compare(lhs.getCbRedeem(), rhs.getCbRedeem());
+            }
+            return 0;
+        }
+        private static int compare(long a, long b) {
+            return a < b ? -1
+                    : a > b ? 1
+                    : 0;
+        }
+        private static int compare(int a, int b) {
+            return a < b ? -1
+                    : a > b ? 1
+                    : 0;
+        }
     }
 }

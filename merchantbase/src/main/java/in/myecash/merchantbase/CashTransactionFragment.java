@@ -654,8 +654,8 @@ public class CashTransactionFragment extends Fragment implements
                     AppCommonUtil.toast(getActivity(), "Member card is either not presented or not active");
                     break;
                 case STATUS_BALANCE_BELOW_LIMIT:
-                    int redeemLimit = (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CB_REDEEM_LIMIT);
-                    AppCommonUtil.toast(getActivity(), "Cashback balance below redeem limit of " + AppCommonUtil.getAmtStr(redeemLimit));
+                    AppCommonUtil.toast(getActivity(), "Cashback balance below redeem limit of " +
+                            AppCommonUtil.getAmtStr(MyGlobalSettings.getCbRedeemLimit()));
                     break;
             }
 
@@ -900,8 +900,7 @@ public class CashTransactionFragment extends Fragment implements
         // Init 'debit cash' status
         if(mRetainedFragment.mCurrCashback.getCurrClBalance() <= 0) {
             setRedeemClStatus(STATUS_NO_BALANCE);
-        } else if(!isCardPresentedAndUsable() &&
-            (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_ACC_DB_CARD_REQ) > 0) {
+        } else if(!isCardPresentedAndUsable() && MyGlobalSettings.getCardReqAccDebit()) {
             setRedeemClStatus(STATUS_QR_CARD_NOT_USED);
         } else {
             // change status by clicking the image/label
@@ -913,10 +912,9 @@ public class CashTransactionFragment extends Fragment implements
         int cbBalance = mRetainedFragment.mCurrCashback.getCurrCbBalance();
         if(cbBalance<= 0) {
             setRedeemCbStatus(STATUS_NO_BALANCE);
-        } else if( cbBalance < ((Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CB_REDEEM_LIMIT))) {
+        } else if( cbBalance < MyGlobalSettings.getCbRedeemLimit()) {
             setRedeemCbStatus(STATUS_BALANCE_BELOW_LIMIT);
-        } else if(!isCardPresentedAndUsable() &&
-                (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CB_REDEEM_CARD_REQ) > 0) {
+        } else if(!isCardPresentedAndUsable() && MyGlobalSettings.getCardReqCbRedeem()) {
             setRedeemCbStatus(STATUS_QR_CARD_NOT_USED);
         } else if(mRetainedFragment.mBillTotal <= 0) {
             setRedeemCbStatus(STATUS_DISABLED);

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:clickable="false"
         android:gravity="left"
-        android:text="Sort Transactions by:"/>
+        android:text="Sort Customers by:"/>
 
     <View
         style="@style/Divider_horizontal_Large"
@@ -28,17 +28,17 @@
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txnSortRadioGroup">
+            android:id="@+id/custSortRadioGroup">
 
             <RadioButton
                 style="@style/radio_button_medium"
-                android:id="@+id/dateTime"
-                android:text="Date-Time" />
+                android:id="@+id/lastTxnTime"
+                android:text="Last Txn Time" />
 
             <RadioButton
                 style="@style/radio_button_medium"
                 android:id="@+id/billAmt"
-                android:text="Bill Amount" />
+                android:text="Total Bill" />
 
             <Space
                 android:layout_width="match_parent"
@@ -63,13 +63,18 @@
 
             <RadioButton
                 style="@style/radio_button_medium"
+                android:id="@+id/balanceCb"
+                android:text="Cashback Balance" />
+
+            <RadioButton
+                style="@style/radio_button_medium"
                 android:id="@+id/awardCb"
-                android:text="Award Cashback" />
+                android:text="Total Cashback Add" />
 
             <RadioButton
                 style="@style/radio_button_medium"
                 android:id="@+id/redeemCb"
-                android:text="Redeem Cashback" />
+                android:text="Total Cashback Debit" />
 
             <Space
                 android:layout_width="match_parent"
@@ -94,13 +99,18 @@
 
             <RadioButton
                 style="@style/radio_button_medium"
+                android:id="@+id/balanceAcc"
+                android:text="Account Balance" />
+
+            <RadioButton
+                style="@style/radio_button_medium"
                 android:id="@+id/addAcc"
-                android:text="Add Account" />
+                android:text="Total Account Add" />
 
             <RadioButton
                 style="@style/radio_button_medium"
                 android:id="@+id/debitAcc"
-                android:text="Debit Account" />
+                android:text="Total Account Debit" />
 
         </RadioGroup>
 

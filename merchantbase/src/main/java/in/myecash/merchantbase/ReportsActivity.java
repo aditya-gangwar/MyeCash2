@@ -53,7 +53,7 @@ public class ReportsActivity extends AppCompatActivity implements
         TxnListFragment.TxnListFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf {
     private static final String TAG = "ReportsActivity";
 
-    private static final String EXTRA_CUSTOMER_ID = "extraCustId";
+    public static final String EXTRA_CUSTOMER_ID = "extraCustId";
 
     private static final String RETAINED_FRAGMENT = "retainedFragReports";
     private static final String DIALOG_DATE_FROM = "DialogDateFrom";
@@ -119,9 +119,9 @@ public class ReportsActivity extends AppCompatActivity implements
         try {
             if (vId == R.id.input_date_from) {
                 // Find the minimum date for DatePicker
-                int oldDays = (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_REPORTS_HISTORY_DAYS);
+                //int oldDays = (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_REPORTS_HISTORY_DAYS);
                 DateUtil minFrom = new DateUtil(TimeZone.getDefault());
-                minFrom.removeDays(oldDays);
+                minFrom.removeDays(MyGlobalSettings.getMchntReportHistoryDays());
 
                 DialogFragment fromDialog = DatePickerDialog.newInstance(mFromDate, minFrom.getTime(), mToday.getTime());
                 fromDialog.show(getFragmentManager(), DIALOG_DATE_FROM);
@@ -145,9 +145,9 @@ public class ReportsActivity extends AppCompatActivity implements
                 }
                 mCustomerId = mInputCustId.getText().toString();
                 if (mCustomerId.length() > 0) {
-                    int errorCode = ValidationHelper.validateMobileNo(mCustomerId);
-                    if (errorCode != ErrorCodes.NO_ERROR) {
-                        mInputCustId.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                    if( mCustomerId.length() != CommonConstants.CUSTOMER_INTERNAL_ID_LEN &&
+                            mCustomerId.length() != CommonConstants.MOBILE_NUM_LENGTH ) {
+                        mInputCustId.setError(ErrorCodes.appErrorDesc.get(ErrorCodes.INVALID_LENGTH));
                         return;
                     }
                 }
@@ -289,8 +289,10 @@ public class ReportsActivity extends AppCompatActivity implements
         // we used '<' and not '<='
         whereClause.append(" AND create_time < '").append(toDateStr).append("'");
 
-        if(mCustomerId.length() > 0) {
+        if(mCustomerId.length() == CommonConstants.MOBILE_NUM_LENGTH) {
             whereClause.append(" AND customer_id = '").append(mCustomerId).append("'");
+        } else if(mCustomerId.length() == CommonConstants.CUSTOMER_INTERNAL_ID_LEN) {
+            whereClause.append(" AND cust_private_id = '").append(mCustomerId).append("'");
         }
 
         whereClause.append(" AND archived = false");
@@ -368,6 +370,7 @@ public class ReportsActivity extends AppCompatActivity implements
                 }
             }
         } catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
             LogMy.e(TAG, "Exception is ReportsActivity:onBgProcessResponse: "+operation+": "+errorCode, e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.GENERAL_ERROR), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -419,7 +422,7 @@ public class ReportsActivity extends AppCompatActivity implements
                 boolean fileAlreadyMissing = false;
                 String missingFile = mWorkFragment.mAllFiles.get(i);
                 for (String curVal : mWorkFragment.mMissingFiles){
-                    if (curVal.equals(missingFile)){
+                    if (curVal.endsWith(missingFile)){
                         fileAlreadyMissing = true;
                     }
                 }
@@ -436,11 +439,22 @@ public class ReportsActivity extends AppCompatActivity implements
 
     private void processTxnCsvRecord(String csvString, boolean isCustomerFilter)  throws ParseException {
         String[] csvFields = csvString.split(CommonConstants.CSV_DELIMETER);
+
+        if( !isCustomerFilter ||
+                (mCustomerId.length()==CommonConstants.MOBILE_NUM_LENGTH &&
+                mCustomerId.equals(csvFields[CommonConstants.TXN_CSV_IDX_CUSTOMER_ID])) ||
+                (mCustomerId.length()==CommonConstants.CUSTOMER_INTERNAL_ID_LEN &&
+                        mCustomerId.equals(csvFields[CommonConstants.TXN_CSV_IDX_CUSTOMER_PVT_ID])) ) {
+
+            mWorkFragment.mTxnsFromCsv.add(MyTransaction.getTxnFromCsv(csvFields));
+        }
+
+        /*
         if(!isCustomerFilter ||
                 mCustomerId.equals(csvFields[CommonConstants.TXN_CSV_IDX_CUSTOMER_ID]) ) {
             // convert csv record to Transaction object and add to list
             mWorkFragment.mTxnsFromCsv.add(MyTransaction.getTxnFromCsv(csvFields));
-        }
+        }*/
     }
 
     private void addToSummary(List<Transaction> txns) {

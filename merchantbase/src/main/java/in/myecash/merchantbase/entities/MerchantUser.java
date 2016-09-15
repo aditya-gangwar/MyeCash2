@@ -456,21 +456,21 @@ public class MerchantUser
      */
     public int getClDebitLimitForPin() {
         if(mMerchant.getCl_debit_limit_for_pin() == null) {
-            return (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CL_DEBIT_LIMIT_FOR_PIN);
+            return MyGlobalSettings.getAccDebitPinLimit();
         }
         return mMerchant.getCl_debit_limit_for_pin();
     }
 
     public int getCbDebitLimitForPin() {
         if(mMerchant.getCb_debit_limit_for_pin() == null) {
-            return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CB_DEBIT_LIMIT_FOR_PIN);
+            return MyGlobalSettings.getCbDebitPinLimit();
         }
         return mMerchant.getCb_debit_limit_for_pin();
     }
 
     public int getClCreditLimitForPin() {
         if(mMerchant.getCl_credit_limit_for_pin() == null) {
-            return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CL_CREDIT_LIMIT_FOR_PIN);
+            return MyGlobalSettings.getAccAddPinLimit();
         }
         return mMerchant.getCl_credit_limit_for_pin();
     }

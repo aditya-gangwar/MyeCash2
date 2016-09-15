@@ -20,11 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.models.Transaction;
 import in.myecash.commonbase.utilities.AppCommonUtil;
@@ -44,7 +42,7 @@ import java.util.List;
 /**
  * Created by adgangwa on 07-04-2016.
  */
-public class TxnListFragment extends Fragment implements SortTxnDialog.SortTxnDialogIf {
+public class TxnListFragment extends Fragment {
     private static final String TAG = "TxnListFragment";
 
     private static final String CSV_REPORT_HEADER_1 = ",,MyeCash Merchant Statement,,,,,,,,";
@@ -66,7 +64,9 @@ public class TxnListFragment extends Fragment implements SortTxnDialog.SortTxnDi
 
     private static final String ARG_START_TIME = "startTime";
     private static final String ARG_END_TIME = "endTime";
+
     private static final int REQ_NOTIFY_ERROR = 1;
+    private static final int REQ_SORT_TXN_TYPES = 2;
 
     private static final String DIALOG_SORT_TXN_TYPES = "dialogSortTxn";
     private static final String DIALOG_TXN_DETAILS = "dialogTxnDetails";
@@ -152,6 +152,8 @@ public class TxnListFragment extends Fragment implements SortTxnDialog.SortTxnDi
                 Collections.sort(mRetainedFragment.mLastFetchTransactions, new MyTransaction.TxnAccDebitComparator());
                 break;
         }
+        // Make it in decreasing order
+        Collections.reverse(mRetainedFragment.mLastFetchTransactions);
     }
 
     @Override
@@ -180,17 +182,11 @@ public class TxnListFragment extends Fragment implements SortTxnDialog.SortTxnDi
             emailReport();
         } else if (i == R.id.action_sort) {
             SortTxnDialog dialog = SortTxnDialog.newInstance(mSelectedSortType);
+            dialog.setTargetFragment(this, REQ_SORT_TXN_TYPES);
             dialog.show(getFragmentManager(), DIALOG_SORT_TXN_TYPES);
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onTxnSortType(int sortType) {
-        mSelectedSortType = sortType;
-        sortTxnList();
-        updateUI();
     }
 
     private void downloadReport() {
@@ -356,10 +352,10 @@ public class TxnListFragment extends Fragment implements SortTxnDialog.SortTxnDi
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        switch(requestCode) {
-            case REQ_NOTIFY_ERROR:
-                // do nothing
-                break;
+        if(requestCode== REQ_SORT_TXN_TYPES) {
+            mSelectedSortType = data.getIntExtra(SortCustDialog.EXTRA_SELECTION, SortTxnDialog.TXN_SORT_DATE_TIME);
+            sortTxnList();
+            updateUI();
         }
     }
 

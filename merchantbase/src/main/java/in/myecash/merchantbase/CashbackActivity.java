@@ -256,7 +256,7 @@ public class CashbackActivity extends AppCompatActivity implements
             dialog.show(mFragMgr, DIALOG_CUSTOMER_DATA);
 
         } else if (i == R.id.menu_reports) {
-            startReportsActivity();
+            startReportsActivity(null);
 
         } else if (i == R.id.menu_settings) {
             startSettingsFragment();
@@ -612,10 +612,15 @@ public class CashbackActivity extends AppCompatActivity implements
         }
     }
 
-    private void startReportsActivity() {
+    @Override
+    public void getCustTxns(String id) {
+        startReportsActivity(id);
+    }
+
+    private void startReportsActivity(String custId) {
         // check for reports blackout period
-        Integer startHour = (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_REPORTS_BLACKOUT_START);
-        Integer endHour = (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_REPORTS_BLACKOUT_END);
+        Integer startHour = MyGlobalSettings.getMchntNoReportStartHrs();
+        Integer endHour = MyGlobalSettings.getMchntNoReportEndHrs();
 
         if(startHour!=null && endHour!=null &&
                 startHour.intValue()!=endHour.intValue()) {
@@ -641,6 +646,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
         // start reports activity
         Intent intent = new Intent( this, ReportsActivity.class );
+        intent.putExtra(ReportsActivity.EXTRA_CUSTOMER_ID, custId);
         startActivity(intent);
     }
 
@@ -1126,14 +1132,14 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     private boolean captureTxnImage(String pin) {
-        switch((Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_TXN_IMAGE_CAPTURE_MODE) ) {
+        switch(MyGlobalSettings.getCardImageCaptureMode()) {
             case DbConstants.TXN_IMAGE_CAPTURE_ALWAYS:
                 return true;
-            case DbConstants.TXN_IMAGE_CAPTURE_NO_PIN:
-                return (pin==null);
-            case DbConstants.TXN_IMAGE_CAPTURE_ALL_DEBIT:
-                return (mWorkFragment.mCurrTransaction.getTransaction().getCl_debit() > 0
-                        || mWorkFragment.mCurrTransaction.getTransaction().getCb_debit() > 0);
+            case DbConstants.TXN_IMAGE_CAPTURE_CARD_REQUIRED:
+                return ( (mWorkFragment.mCurrTransaction.getTransaction().getCl_debit()>0 &&
+                        MyGlobalSettings.getCardReqAccDebit()) ||
+                        (mWorkFragment.mCurrTransaction.getTransaction().getCb_debit()>0 &&
+                                MyGlobalSettings.getCardReqCbRedeem()) );
             case DbConstants.TXN_IMAGE_CAPTURE_NEVER:
                 return false;
         }
@@ -1175,8 +1181,8 @@ public class CashbackActivity extends AppCompatActivity implements
         } else {
             String msg = ErrorCodes.appErrorDesc.get(errorCode);
             if(errorCode == ErrorCodes.CASH_ACCOUNT_LIMIT_RCHD) {
-                Integer cashLimit = (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CUSTOMER_CASH_LIMIT);
-                msg = String.format(ErrorCodes.appErrorDesc.get(errorCode),cashLimit.toString());
+                //Integer cashLimit = (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CUSTOMER_CASH_LIMIT);
+                msg = String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getCashAccLimit()));
             }
             // Display failure notification
             DialogFragmentWrapper.createNotification(AppConstants.commitTransFailureTitle, msg, false, true)

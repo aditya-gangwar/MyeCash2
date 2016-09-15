@@ -367,7 +367,10 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
             msg.fileUrl = missingFiles.get(i);
             errorCode = downloadFile(msg);
             //remove from missing files list
-            mRetainedFragment.mMissingFiles.remove(missingFiles.get(i));
+            if(errorCode==ErrorCodes.NO_ERROR) {
+                LogMy.d(TAG,"Txn file found remotely, removing from missing list: "+missingFiles.get(i));
+                mRetainedFragment.mMissingFiles.remove(missingFiles.get(i));
+            }
             /*
             String filepath = missingFiles.get(i);
             String fileURL = BackendSettings.BACKEND_FILE_BASE_URL + filepath;

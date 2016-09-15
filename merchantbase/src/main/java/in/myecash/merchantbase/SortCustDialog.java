@@ -12,91 +12,90 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.commonbase.utilities.ValidationHelper;
 import in.myecash.merchantbase.entities.MyCashback;
 
 /**
- * Created by adgangwa on 14-09-2016.
+ * Created by adgangwa on 15-09-2016.
  */
-public class SortTxnDialog extends DialogFragment implements DialogInterface.OnClickListener {
-    public static final String TAG = "SortTxnDialog";
+public class SortCustDialog extends DialogFragment implements DialogInterface.OnClickListener {
+    public static final String TAG = "SortCustDialog";
 
     public static final String ARG_SELECTED = "argSelected";
     public static final String EXTRA_SELECTION = "extraSelected";
 
-    // Txn sort parameter types
-    public static final int TXN_SORT_DATE_TIME = 0;
-    public static final int TXN_SORT_bILL_AMT = 1;
-    public static final int TXN_SORT_CB_AWARD = 2;
-    public static final int TXN_SORT_CB_REDEEM = 3;
-    public static final int TXN_SORT_ACC_ADD = 4;
-    public static final int TXN_SORT_ACC_DEBIT = 5;
+    //private SortCustDialogIf mListener;
 
     /*
-    private SortTxnDialogIf mListener;
-
-    public interface SortTxnDialogIf {
-        void onTxnSortType(int sortType);
+    public interface SortCustDialogIf {
+        void onCustSortType(int sortType);
     }*/
 
-    public static SortTxnDialog newInstance(int selectedSortType) {
-        LogMy.d(TAG, "Creating new SortTxnDialog instance: "+selectedSortType);
+    public static SortCustDialog newInstance(int selectedSortType) {
+        LogMy.d(TAG, "Creating new SortCustDialog instance: "+selectedSortType);
         Bundle args = new Bundle();
         args.putInt(ARG_SELECTED, selectedSortType);
 
-        SortTxnDialog fragment = new SortTxnDialog();
+        SortCustDialog fragment = new SortCustDialog();
         fragment.setArguments(args);
         return fragment;
     }
 
-    /*
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        /*
         try {
-            mListener = (SortTxnDialogIf) getActivity();
+            mListener = (SortCustDialogIf) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
-                    + " must implement SortTxnDialogIf");
+                    + " must implement SortCustDialogIf");
+        }*/
+
+        // set selection
+        int selected = getArguments().getInt(ARG_SELECTED);
+        LogMy.d(TAG,"Setting selection to "+selected);
+        switch (selected) {
+            case MyCashback.CB_CMP_TYPE_UPDATE_TIME:
+                mSortCustRadioGroup.check(mUpdateTime.getId());
+                break;
+            case MyCashback.CB_CMP_TYPE_BILL_AMT:
+                mSortCustRadioGroup.check(mBillAmt.getId());
+                break;
+            case MyCashback.CB_CMP_TYPE_ACC_BALANCE:
+                mSortCustRadioGroup.check(mBalanceAcc.getId());
+                break;
+            case MyCashback.CB_CMP_TYPE_ACC_ADD:
+                mSortCustRadioGroup.check(mAddAcc.getId());
+                break;
+            case MyCashback.CB_CMP_TYPE_ACC_DEBIT:
+                mSortCustRadioGroup.check(mDebitAcc.getId());
+                break;
+            case MyCashback.CB_CMP_TYPE_CB_BALANCE:
+                mSortCustRadioGroup.check(mBalanceCb.getId());
+                break;
+            case MyCashback.CB_CMP_TYPE_CB_ADD:
+                mSortCustRadioGroup.check(mAwardCb.getId());
+                break;
+            case MyCashback.CB_CMP_TYPE_CB_DEBIT:
+                mSortCustRadioGroup.check(mRedeemCb.getId());
+                break;
         }
-    }*/
+
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LogMy.d(TAG, "In onCreateDialog");
 
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_sort_txn, null);
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_sort_cust, null);
         initUiResources(v);
-        // set selection
-        int selected = getArguments().getInt(ARG_SELECTED);
-        switch (selected) {
-            case TXN_SORT_DATE_TIME:
-                mSortTxnRadioGroup.check(mDateTime.getId());
-                break;
-            case TXN_SORT_bILL_AMT:
-                mSortTxnRadioGroup.check(mBillAmt.getId());
-                break;
-            case TXN_SORT_CB_AWARD:
-                mSortTxnRadioGroup.check(mAwardCb.getId());
-                break;
-            case TXN_SORT_CB_REDEEM:
-                mSortTxnRadioGroup.check(mRedeemCb.getId());
-                break;
-            case TXN_SORT_ACC_ADD:
-                mSortTxnRadioGroup.check(mAddAcc.getId());
-                break;
-            case TXN_SORT_ACC_DEBIT:
-                mSortTxnRadioGroup.check(mDebitAcc.getId());
-                break;
-        }
+
 
         // return new dialog
         final AlertDialog alertDialog =  new AlertDialog.Builder(getActivity()).setView(v)
@@ -113,40 +112,45 @@ public class SortTxnDialog extends DialogFragment implements DialogInterface.OnC
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                AppCommonUtil.setDialogTextSize(SortTxnDialog.this, (AlertDialog) dialog);
+                AppCommonUtil.setDialogTextSize(SortCustDialog.this, (AlertDialog) dialog);
 
                 Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
-                        int selectedId = mSortTxnRadioGroup.getCheckedRadioButtonId();
-                        int selectedSortType = TXN_SORT_DATE_TIME;
-                        
-                        if (selectedId == R.id.dateTime) {
-                            selectedSortType = TXN_SORT_DATE_TIME;
+                        int selectedId = mSortCustRadioGroup.getCheckedRadioButtonId();
+                        int selectedSortType = MyCashback.CB_CMP_TYPE_UPDATE_TIME;
+
+                        if (selectedId == R.id.lastTxnTime) {
+                            selectedSortType = MyCashback.CB_CMP_TYPE_UPDATE_TIME;
 
                         } else if (selectedId == R.id.billAmt) {
-                            selectedSortType = TXN_SORT_bILL_AMT;
+                            selectedSortType = MyCashback.CB_CMP_TYPE_BILL_AMT;
+
+                        } else if (selectedId == R.id.balanceCb) {
+                            selectedSortType = MyCashback.CB_CMP_TYPE_CB_BALANCE;
 
                         } else if (selectedId == R.id.awardCb) {
-                            selectedSortType = TXN_SORT_CB_AWARD;
+                            selectedSortType = MyCashback.CB_CMP_TYPE_CB_ADD;
 
                         } else if (selectedId == R.id.redeemCb) {
-                            selectedSortType = TXN_SORT_CB_REDEEM;
+                            selectedSortType = MyCashback.CB_CMP_TYPE_CB_DEBIT;
+
+                        } else if (selectedId == R.id.balanceAcc) {
+                            selectedSortType = MyCashback.CB_CMP_TYPE_ACC_BALANCE;
 
                         } else if (selectedId == R.id.addAcc) {
-                            selectedSortType = TXN_SORT_ACC_ADD;
+                            selectedSortType = MyCashback.CB_CMP_TYPE_ACC_ADD;
 
                         } else if (selectedId == R.id.debitAcc) {
-                            selectedSortType = TXN_SORT_ACC_DEBIT;
-
+                            selectedSortType = MyCashback.CB_CMP_TYPE_ACC_DEBIT;
                         }
 
                         Intent intent = new Intent();
                         intent.putExtra(EXTRA_SELECTION,selectedSortType);
                         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-                        
+
                         getDialog().dismiss();
                     }
                 });
@@ -169,23 +173,29 @@ public class SortTxnDialog extends DialogFragment implements DialogInterface.OnC
         super.onCancel(dialog);
     }
 
-    private RadioGroup mSortTxnRadioGroup;
-    private RadioButton mDateTime;
+    private RadioGroup mSortCustRadioGroup;
+    private RadioButton mUpdateTime;
     private RadioButton mBillAmt;
+
+    private RadioButton mBalanceCb;
     private RadioButton mAwardCb;
     private RadioButton mRedeemCb;
+
+    private RadioButton mBalanceAcc;
     private RadioButton mAddAcc;
     private RadioButton mDebitAcc;
 
     private void initUiResources(View v) {
-        mSortTxnRadioGroup = (RadioGroup) v.findViewById(R.id.txnSortRadioGroup);
-        mDateTime = (RadioButton) v.findViewById(R.id.dateTime);
+        mSortCustRadioGroup = (RadioGroup) v.findViewById(R.id.custSortRadioGroup);
+        mUpdateTime = (RadioButton) v.findViewById(R.id.lastTxnTime);
         mBillAmt = (RadioButton) v.findViewById(R.id.billAmt);
+
+        mBalanceCb = (RadioButton) v.findViewById(R.id.balanceCb);
         mAwardCb = (RadioButton) v.findViewById(R.id.awardCb);
         mRedeemCb = (RadioButton) v.findViewById(R.id.redeemCb);
+
+        mBalanceAcc = (RadioButton) v.findViewById(R.id.balanceAcc);
         mAddAcc = (RadioButton) v.findViewById(R.id.addAcc);
         mDebitAcc = (RadioButton) v.findViewById(R.id.debitAcc);
     }
 }
-
-

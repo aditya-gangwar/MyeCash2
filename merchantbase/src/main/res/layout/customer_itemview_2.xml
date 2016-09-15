@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical_paddingSidesLarge"
+    android:layout_height="wrap_content"
+    android:id="@+id/layout_root"
+    android:descendantFocusability="beforeDescendants">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_relative">
+
+        <EditText
+            style="@style/Edittext_only_click_small"
+            android:id="@+id/input_cust_id"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="AUX67DF4"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:textStyle="bold"
+            android:textColor="@color/primary"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/input_cust_id">
+
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:id="@+id/input_cust_mobile"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="xxxxx91535"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingRight="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/cust_amts_divider"
+                android:text="/"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingRight="@dimen/edittext_padding_less"
+                android:paddingLeft="@dimen/edittext_padding_less"/>
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:id="@+id/input_cust_status"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Active"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingRight="@dimen/edittext_padding_less"
+                android:paddingLeft="0dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/account_layout"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/cust_account_icon"
+                android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:id="@+id/cust_account_amt"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="\u20B9 3456"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingLeft="@dimen/edittext_padding_less"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/cb_layout"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/account_layout"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cust_cashback_icon"
+                android:src="@drawable/ic_grade_white_18dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:id="@+id/cust_cashback_amt"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="\u20B9 3456"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingLeft="@dimen/edittext_padding_less"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        style="@style/Divider_horizontal_Large"
+        android:id="@+id/cust_divider_1"/>
+
+</LinearLayout>

@@ -157,9 +157,7 @@ public class DashboardFragment extends Fragment
         total_account_cash.setText(AppCommonUtil.getAmtStr(mMerchantStats.getCash_credit()));
         total_cashback.setText(AppCommonUtil.getAmtStr(mMerchantStats.getCb_credit()));
 
-        String txt = "Data is updated only once every "+
-                ((Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_DASHBOARD_NO_REFRESH_HRS)).toString()+
-                " hours.";
+        String txt = "Data is updated only once every "+ MyGlobalSettings.getMchntDashBNoRefreshHrs()+" hours.";
         mUpdatedDetail.setText(txt);
     }
 

@@ -19,33 +19,44 @@
             android:layout_height="wrap_content"
             android:text="Internal ID"
             android:paddingBottom="@dimen/edittext_padding_less"/>
+
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="wrap_content"
-            android:id="@+id/custlist_header_status"
+            android:id="@+id/custlist_header_acc"
             android:layout_below="@id/custlist_header_id"
             android:layout_height="wrap_content"
-            android:text="Mobile No. - Status"
+            android:text="Account: Add - Debit = Balance"
             android:paddingTop="0dp"
             android:paddingBottom="@dimen/edittext_padding_less"/>
 
         <EditText
             style="@style/Edittext_only_view_small"
-            android:id="@+id/custlist_header_acc"
             android:layout_width="wrap_content"
+            android:id="@+id/custlist_header_cb"
+            android:layout_below="@id/custlist_header_acc"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="Account Balance"
+            android:text="Cashback: Add - Debit = Balance"
+            android:paddingTop="0dp"
             android:paddingBottom="@dimen/edittext_padding_less"/>
 
         <EditText
             style="@style/Edittext_only_view_small"
-            android:id="@+id/custlist_header_cb"
+            android:id="@+id/custlist_header_txnTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/custlist_header_acc"
             android:layout_alignParentRight="true"
-            android:text="Cashback Balance"
+            android:text="Last Txn Time"
+            android:paddingBottom="@dimen/edittext_padding_less"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/custlist_header_bill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/custlist_header_txnTime"
+            android:layout_alignParentRight="true"
+            android:text="Total Bill"
             android:paddingBottom="@dimen/edittext_padding_less"
             android:paddingTop="0dp"/>
 

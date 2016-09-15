@@ -1,5 +1,6 @@
 package in.myecash.merchantbase;
 
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Fragment;
 import android.content.Intent;
@@ -40,6 +41,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +51,7 @@ import java.util.List;
 public class CustomerListFragment  extends Fragment {
     private static final String TAG = "CustomerListFragment";
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
+    private static final String DIALOG_SORT_CUST_TYPES = "dialogSortCust";
 
     private static final String CSV_HEADER = "Sl.No.,Internal Id,Mobile No.,Card ID,Status,Account Balance,Account Add,Account Debit,Cashback Balance,Cashback Award,Cashback Redeem,Total Bill,Cashback Bill,Last Txn here,First Txn here";
     // 5+10+10+10+10+5+5+5+5+5+5+5+5+10+10 = 105
@@ -57,6 +60,7 @@ public class CustomerListFragment  extends Fragment {
     private static final int CSV_LINES_BUFFER = 5;
 
     private static final int REQ_NOTIFY_ERROR = 1;
+    private static final int REQ_SORT_CUST_TYPES = 2;
 
     private SimpleDateFormat mSdfDateWithTime;
     private SimpleDateFormat mSdfOnlyDateFilename;
@@ -70,14 +74,8 @@ public class CustomerListFragment  extends Fragment {
         public void setDrawerState(boolean isEnabled);
     }
 
-    /*
-    public static CustomerListFragment getInstance(Date startTime, Date endTime) {
-        Bundle args = new Bundle();
-
-        CustomerListFragment fragment = new CustomerListFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }*/
+    // instance state - store and restore
+    private int mSelectedSortType;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -97,6 +95,13 @@ public class CustomerListFragment  extends Fragment {
                 processFile();
             }
 
+            if(savedInstanceState==null) {
+                mSelectedSortType = MyCashback.CB_CMP_TYPE_UPDATE_TIME;
+            } else {
+                mSelectedSortType = savedInstanceState.getInt("mSelectedSortType");
+            }
+            sortCustList();
+
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement CustomerListFragmentIf");
@@ -109,6 +114,12 @@ public class CustomerListFragment  extends Fragment {
         }
 
         setHasOptionsMenu(true);
+    }
+
+    private void sortCustList() {
+        Collections.sort(mRetainedFragment.mLastFetchCashbacks, new MyCashback.MyCashbackComparator(mSelectedSortType));
+        // Make it in decreasing order
+        Collections.reverse(mRetainedFragment.mLastFetchCashbacks);
     }
 
     @Override
@@ -162,7 +173,15 @@ public class CustomerListFragment  extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // do nothing
+        LogMy.d(TAG, "In onActivityResult :" + requestCode + ", " + resultCode);
+        if(resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if(requestCode==REQ_SORT_CUST_TYPES) {
+            mSelectedSortType = data.getIntExtra(SortCustDialog.EXTRA_SELECTION, MyCashback.CB_CMP_TYPE_UPDATE_TIME);
+            sortCustList();
+            updateUI();
+        }
     }
 
     @Override
@@ -170,6 +189,12 @@ public class CustomerListFragment  extends Fragment {
         super.onResume();
         mCallback.setDrawerState(false);
         updateUI();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("mSelectedSortType", mSelectedSortType);
     }
 
     @Override
@@ -187,7 +212,12 @@ public class CustomerListFragment  extends Fragment {
             } else if (i == R.id.action_email) {
                 emailReport();
 
+            } else if (i == R.id.action_sort) {
+                SortCustDialog dialog = SortCustDialog.newInstance(mSelectedSortType);
+                dialog.setTargetFragment(this, REQ_SORT_CUST_TYPES);
+                dialog.show(getFragmentManager(), DIALOG_SORT_CUST_TYPES);
             }
+
         } catch(Exception e) {
             LogMy.e(TAG, "Exception is CustomerListFragment:onOptionsItemSelected", e);
             // unexpected exception - show error
@@ -319,38 +349,71 @@ public class CustomerListFragment  extends Fragment {
         private MyCashback mCb;
 
         public EditText mCustId;
-        public EditText mCustMobile;
-        public EditText mCustStatus;
-        public EditText mAccountAmt;
-        public EditText mCashbackAmt;
+        public EditText mLastTxnTime;
+
+        //public View mLayoutBill;
+        public EditText mBillAmt;
+
+        //public View mLayoutAcc;
+        public EditText mAccAdd;
+        public EditText mAccDebit;
+        public EditText mAccBalance;
+
+        //public View mLayoutCb;
+        public EditText mCbAdd;
+        public EditText mCbDebit;
+        public EditText mCbBalance;
 
         public CbHolder(View itemView) {
             super(itemView);
-            //itemView.setOnClickListener(this);
+
             mCustId = (EditText) itemView.findViewById(R.id.input_cust_id);
-            mCustMobile = (EditText) itemView.findViewById(R.id.input_cust_mobile);
-            mCustStatus = (EditText) itemView.findViewById(R.id.input_cust_status);
-            mAccountAmt = (EditText) itemView.findViewById(R.id.cust_account_amt);
-            mCashbackAmt = (EditText) itemView.findViewById(R.id.cust_cashback_amt);
+            mLastTxnTime = (EditText) itemView.findViewById(R.id.input_last_txn);
+
+            //mLayoutBill = itemView.findViewById(R.id.layout_bill);
+            mBillAmt = (EditText) itemView.findViewById(R.id.cust_bill_amt);
+
+            //mLayoutAcc = itemView.findViewById(R.id.layout_account);
+            mAccAdd = (EditText) itemView.findViewById(R.id.cust_acc_credit);
+            mAccDebit = (EditText) itemView.findViewById(R.id.cust_acc_debit);
+            mAccBalance = (EditText) itemView.findViewById(R.id.cust_acc_balance);
+
+            //mLayoutCb = itemView.findViewById(R.id.layout_cashback);
+            mCbAdd = (EditText) itemView.findViewById(R.id.cust_cb_credit);
+            mCbDebit = (EditText) itemView.findViewById(R.id.cust_cb_debit);
+            mCbBalance = (EditText) itemView.findViewById(R.id.cust_cb_balance);
 
             mCustId.setOnClickListener(this);
-            mCustMobile.setOnClickListener(this);
-            mCustStatus.setOnClickListener(this);
-            mAccountAmt.setOnClickListener(this);
-            mCashbackAmt.setOnClickListener(this);
+            mLastTxnTime.setOnClickListener(this);
+            mBillAmt.setOnClickListener(this);;
+            mAccAdd.setOnClickListener(this);;
+            mAccDebit.setOnClickListener(this);;
+            mAccBalance.setOnClickListener(this);;
+            mCbAdd.setOnClickListener(this);;
+            mCbDebit.setOnClickListener(this);;
+            mCbBalance.setOnClickListener(this);;
+
+            //mLayoutBill.setOnClickListener(this);
+            //mLayoutAcc.setOnClickListener(this);
+            //mLayoutCb.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            LogMy.d(TAG,"In onClick: "+getAdapterPosition());
+            LogMy.d(TAG,"In onClick: "+v.getId());
 
             // getRootView was not working, so manually finding root view
+            // depending upon views on which listener is set
+            //View rootView = (View) v.getParent().getParent();
             View rootView = null;
-            if(v.getId()==mCustId.getId()) {
+            if(v.getId()==mCustId.getId() || v.getId()==mLastTxnTime.getId()) {
                 rootView = (View) v.getParent().getParent();
+                LogMy.d(TAG,"Clicked first level view "+rootView.getId());
             } else {
                 rootView = (View) v.getParent().getParent().getParent();
+                LogMy.d(TAG,"Clicked second level view "+rootView.getId());
             }
+
             rootView.performClick();
         }
 
@@ -359,11 +422,16 @@ public class CustomerListFragment  extends Fragment {
             MyCustomer customer = mCb.getCustomer();
 
             mCustId.setText(customer.getPrivateId());
-            mCustMobile.setText(AppCommonUtil.getPartialVisibleStr(customer.getMobileNum()));
-            mCustStatus.setText(DbConstants.userStatusDesc[customer.getStatus()]);
+            mLastTxnTime.setText(mSdfDateWithTime.format(cb.getUpdateTime()));
+            mBillAmt.setText(AppCommonUtil.getAmtStr(cb.getBillAmt()));
 
-            mAccountAmt.setText(AppCommonUtil.getAmtStr(mCb.getCurrClBalance()));
-            mCashbackAmt.setText(AppCommonUtil.getAmtStr(mCb.getCurrCbBalance()));
+            mAccAdd.setText(AppCommonUtil.getAmtStr(cb.getClCredit()));
+            mAccDebit.setText(AppCommonUtil.getAmtStr(cb.getClDebit()));
+            mAccBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrClBalance()));
+
+            mCbAdd.setText(AppCommonUtil.getAmtStr(cb.getCbCredit()));
+            mCbDebit.setText(AppCommonUtil.getAmtStr(cb.getCbRedeem()));
+            mCbBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrCbBalance()));
         }
     }
 

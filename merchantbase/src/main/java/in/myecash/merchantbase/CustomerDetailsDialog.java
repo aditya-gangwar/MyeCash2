@@ -34,6 +34,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
     public interface CustomerDetailsDialogIf {
         MyRetainedFragment getRetainedFragment();
+        void getCustTxns(String id);
     }
 
     public static CustomerDetailsDialog newInstance(int position) {
@@ -82,6 +83,13 @@ public class CustomerDetailsDialog extends DialogFragment  {
                                 dialog.dismiss();
                             }
                         })
+                .setNeutralButton("Get Txns", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mCallback.getCustTxns(mInputCustomerId.getText().toString());
+                        dialog.dismiss();
+                    }
+                })
                 .create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -130,9 +138,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
                 if(status==DbConstants.USER_STATUS_LOCKED) {
                     mInputStatusDetails.setVisibility(View.VISIBLE);
-
-                    Integer lockHrs = (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CUSTOMER_ACCOUNT_BLOCK_HRS);
-                    String detail = "Will be unlocked automatically after "+lockHrs.toString()+" hours.";
+                    String detail = "Will be unlocked automatically after "+MyGlobalSettings.getCustAccBlockHrs()+" hours.";
                     mInputStatusDetails.setText(detail);
                 } else {
                     mInputStatusDetails.setVisibility(View.GONE);
