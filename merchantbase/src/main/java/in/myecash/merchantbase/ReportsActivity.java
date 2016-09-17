@@ -85,8 +85,8 @@ public class ReportsActivity extends AppCompatActivity implements
         // gets handlers to screen resources
         bindUiResources();
         mMerchantUser = MerchantUser.getInstance();
-        mToday = new DateUtil();
-        mToday.toTZ(TimeZone.getDefault());
+        mToday = new DateUtil(new Date(), TimeZone.getDefault());
+        //mToday.toTZ(TimeZone.getDefault());
         mToday.toMidnight();
 
         initToolbar();
@@ -120,7 +120,7 @@ public class ReportsActivity extends AppCompatActivity implements
             if (vId == R.id.input_date_from) {
                 // Find the minimum date for DatePicker
                 //int oldDays = (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_REPORTS_HISTORY_DAYS);
-                DateUtil minFrom = new DateUtil(TimeZone.getDefault());
+                DateUtil minFrom = new DateUtil(new Date(), TimeZone.getDefault());
                 minFrom.removeDays(MyGlobalSettings.getMchntReportHistoryDays());
 
                 DialogFragment fromDialog = DatePickerDialog.newInstance(mFromDate, minFrom.getTime(), mToday.getTime());
@@ -176,7 +176,7 @@ public class ReportsActivity extends AppCompatActivity implements
                 // only today's txns are required, fetch from DB table
                 mWorkFragment.fetchTransactions(buildWhereClause());
             } else {
-                // in valid state: if from == today, then To has to be == today only
+                // invalid state: if from == today, then To has to be == today only
                 LogMy.e(TAG,"ReportsActivity: Invalid state: From is today, but To is not");
                 AppCommonUtil.cancelProgressDialog(true);
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.GENERAL_ERROR), false, true)
@@ -224,12 +224,17 @@ public class ReportsActivity extends AppCompatActivity implements
         if( !mWorkFragment.mTxnsFromCsv.isEmpty() &&
                 mWorkFragment.mLastFetchTransactions != null &&
                 !mWorkFragment.mLastFetchTransactions.isEmpty() ) {
+            LogMy.d(TAG,"Merging records from CSV and DB: "+mWorkFragment.mTxnsFromCsv.size()+", "+mWorkFragment.mLastFetchTransactions.size());
             // merge if both type of records available
             mWorkFragment.mLastFetchTransactions.addAll(mWorkFragment.mTxnsFromCsv);
 
         } else if( mWorkFragment.mLastFetchTransactions == null ||
                 mWorkFragment.mLastFetchTransactions.isEmpty()) {
+            LogMy.d(TAG,"Only records from CSV available: "+mWorkFragment.mTxnsFromCsv.size());
             mWorkFragment.mLastFetchTransactions = mWorkFragment.mTxnsFromCsv;
+
+        } else {
+            LogMy.d(TAG,"Only records from DB available: "+mWorkFragment.mLastFetchTransactions.size());
         }
 
         if(mWorkFragment.mLastFetchTransactions.isEmpty()) {
@@ -458,7 +463,17 @@ public class ReportsActivity extends AppCompatActivity implements
     }
 
     private void addToSummary(List<Transaction> txns) {
+        LogMy.d(TAG, "In addToSummary: "+txns.size());
         int summary[] = mWorkFragment.mSummary;
+
+        // reset first
+        summary[AppConstants.INDEX_TXN_COUNT] = 0;
+        summary[AppConstants.INDEX_BILL_AMOUNT] = 0;
+        summary[AppConstants.INDEX_ADD_ACCOUNT] = 0;
+        summary[AppConstants.INDEX_DEBIT_ACCOUNT] = 0;
+        summary[AppConstants.INDEX_CASHBACK] = 0;
+        summary[AppConstants.INDEX_DEBIT_CASHBACK] = 0;
+
         for (Transaction txn : txns) {
             summary[AppConstants.INDEX_TXN_COUNT]++;
             summary[AppConstants.INDEX_BILL_AMOUNT] = summary[AppConstants.INDEX_BILL_AMOUNT] + txn.getTotal_billed();

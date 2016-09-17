@@ -184,7 +184,7 @@ public class DashboardTxnFragment extends Fragment {
             entries.add(new Entry(mMerchantStats.getCust_cnt_no_balance(), index));
         }
 
-        PieDataSet dataset = new PieDataSet(entries, "Customer Count");
+        PieDataSet dataset = new PieDataSet(entries, "Customers");
         dataset.setColors(ColorTemplate.MATERIAL_COLORS);
 
         PieData data = new PieData(labels, dataset); // initialize Piedata
@@ -207,72 +207,71 @@ public class DashboardTxnFragment extends Fragment {
 
         float percent = 0;
         String percentStr = null;
-        if(mMerchantStats.getCust_cnt_cb() > 0) {
+//        if(mMerchantStats.getCust_cnt_cb() > 0) {
             row_1_values[0].setText("Only Cashback");
             row_1_values[1].setText(String.valueOf(mMerchantStats.getCust_cnt_cb()));
             percent = (mMerchantStats.getCust_cnt_cb()*100.0f)/total_cust_cnt;
             percentStr = df.format(percent)+" %";
             row_1_values[2].setText(percentStr);
-
+/*
             rows_table[0].setVisibility(View.VISIBLE);
         } else {
             rows_table[0].setVisibility(View.GONE);
-        }
+        }*/
 
-        if(mMerchantStats.getCust_cnt_cash() > 0)
-        {
+//        if(mMerchantStats.getCust_cnt_cash() > 0) {
             row_2_values[0].setText("Only Account Balance");
             row_2_values[1].setText(String.valueOf(mMerchantStats.getCust_cnt_cash()));
             percent = (mMerchantStats.getCust_cnt_cash()*100.0f)/total_cust_cnt;
             percentStr = df.format(percent)+" %";
             row_2_values[2].setText(percentStr);
-
+/*
             rows_table[1].setVisibility(View.VISIBLE);
         } else {
             rows_table[1].setVisibility(View.GONE);
-        }
+        }*/
 
-        if(mMerchantStats.getCust_cnt_cb_and_cash() > 0) {
+//        if(mMerchantStats.getCust_cnt_cb_and_cash() > 0) {
             row_3_values[0].setText("Account + Cashback");
             row_3_values[1].setText(String.valueOf(mMerchantStats.getCust_cnt_cb_and_cash()));
             percent = (mMerchantStats.getCust_cnt_cb_and_cash()*100.0f)/total_cust_cnt;
             percentStr = df.format(percent)+" %";
             row_3_values[2].setText(percentStr);
-
+/*
             rows_table[2].setVisibility(View.VISIBLE);
         } else {
             rows_table[2].setVisibility(View.GONE);
-        }
+        }*/
 
-        if(mMerchantStats.getCust_cnt_no_balance() > 0) {
+//        if(mMerchantStats.getCust_cnt_no_balance() > 0) {
             row_4_values[0].setText("0 Balance");
             row_4_values[1].setText(String.valueOf(mMerchantStats.getCust_cnt_no_balance()));
             percent = (mMerchantStats.getCust_cnt_no_balance()*100.0f)/total_cust_cnt;
             percentStr = df.format(percent)+" %";
             row_4_values[2].setText(percentStr);
-
+/*
             rows_table[3].setVisibility(View.VISIBLE);
         } else {
             rows_table[3].setVisibility(View.GONE);
-        }
+        }*/
 
         total_value.setText(String.valueOf(total_cust_cnt));
     }
 
     private void createCashbackChart() {
         // creating values - Y axis
+        ArrayList<String> labels = new ArrayList<>();
         ArrayList<Entry> entries = new ArrayList<>();
+
+        labels.add("Debited");
         entries.add(new Entry(mMerchantStats.getCb_debit(), 0));
+
+        labels.add("Pending");
         int balance = mMerchantStats.getCb_credit()- mMerchantStats.getCb_debit();
         entries.add(new Entry(balance, 1));
 
-        PieDataSet dataset = new PieDataSet(entries, "Cashback Amount");
+        PieDataSet dataset = new PieDataSet(entries, "Cashback");
         dataset.setColors(ColorTemplate.MATERIAL_COLORS);
-
-        // creating labels
-        ArrayList<String> labels = new ArrayList<>();
-        labels.add("Redeemed");
-        labels.add("Pending");
 
         PieData data = new PieData(labels, dataset); // initialize Piedata
         data.setValueFormatter(new PercentFormatter());
@@ -315,24 +314,24 @@ public class DashboardTxnFragment extends Fragment {
 
     private void createCashAccountChart() {
         // creating values - Y axis
+        ArrayList<String> labels = new ArrayList<>();
         ArrayList<Entry> entries = new ArrayList<>();
+
+        labels.add("Debited");
         entries.add(new Entry(mMerchantStats.getCash_debit(), 0));
+
+        labels.add("Available");
         int balance = mMerchantStats.getCash_credit()- mMerchantStats.getCash_debit();
         entries.add(new Entry(balance, 1));
 
-        PieDataSet dataset = new PieDataSet(entries, "Cash Amount");
+        PieDataSet dataset = new PieDataSet(entries, "Account Cash");
         dataset.setColors(ColorTemplate.MATERIAL_COLORS);
-
-        // creating labels
-        ArrayList<String> labels = new ArrayList<>();
-        labels.add("Debited");
-        labels.add("Available");
 
         PieData data = new PieData(labels, dataset); // initialize Piedata
         data.setValueFormatter(new PercentFormatter());
         mPieChart.setData(data); //set data into chart
 
-        mPieChart.setDescription("Account Cash Data");
+        mPieChart.setDescription("Account Cash");
     }
 
     private void updateTableForCashAccount() {
@@ -371,18 +370,28 @@ public class DashboardTxnFragment extends Fragment {
         // creating values - Y axis
         ArrayList<Entry> entries = new ArrayList<>();
         ArrayList<String> labels = new ArrayList<>();
+        int index = 0;
 
-        labels.add("Direct");
         int direct = mMerchantStats.getBill_amt_total()- mMerchantStats.getCb_debit() - mMerchantStats.getCash_debit();
-        entries.add(new Entry(direct, 0));
+        if(direct>0) {
+            labels.add("Direct");
+            entries.add(new Entry(direct, index));
+            index++;
+        }
 
-        labels.add("From Cashback");
-        entries.add(new Entry(mMerchantStats.getCb_debit(), 1));
+        if(mMerchantStats.getCb_debit() > 0) {
+            labels.add("From Cashback");
+            entries.add(new Entry(mMerchantStats.getCb_debit(), index));
+            index++;
+        }
 
-        labels.add("From Account");
-        entries.add(new Entry(mMerchantStats.getCash_debit(), 1));
+        if(mMerchantStats.getCash_debit()>0) {
+            labels.add("From Account");
+            entries.add(new Entry(mMerchantStats.getCash_debit(), index));
+            index++;
+        }
 
-        PieDataSet dataset = new PieDataSet(entries, "Bill Amount");
+        PieDataSet dataset = new PieDataSet(entries, "Bill Payment");
         dataset.setColors(ColorTemplate.MATERIAL_COLORS);
 
         // creating labels
@@ -390,7 +399,7 @@ public class DashboardTxnFragment extends Fragment {
         data.setValueFormatter(new PercentFormatter());
         mPieChart.setData(data); //set data into chart
 
-        mPieChart.setDescription("Bill Payment Data");
+        mPieChart.setDescription("Bill Payment");
     }
 
     private void updateTableForBillAmount() {

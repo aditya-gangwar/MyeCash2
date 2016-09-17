@@ -165,9 +165,10 @@ public class AppCommonUtil {
         try {
             out = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             //Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            bmp.compress(Bitmap.CompressFormat.WEBP, 80, out);
+            bmp.compress(Bitmap.CompressFormat.WEBP, 50, out);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            LogMy.e(TAG,"Exception in compressWebpAndStore",e);
             return false;
         } finally {
             try {

@@ -69,19 +69,24 @@ public class AgentUser {
             LogMy.d(TAG,"setDeviceForLogin success");
 
             mAgentUser = Backendless.UserService.login(userId, password, false);
-            if(  DbConstants.USER_TYPE_AGENT != (Integer)mAgentUser.getProperty("user_type") ) {
+            int userType = (Integer)mAgentUser.getProperty("user_type");
+            if(  userType != DbConstants.USER_TYPE_AGENT &&
+                    userType != DbConstants.USER_TYPE_CC   ) {
                 // wrong user type
-                mAgentUser = null;
+                LogMy.e(TAG,"Invalid usertype in agent app: "+userType+", "+userId);
+                logout();
                 return ErrorCodes.USER_WRONG_ID_PASSWD;
             }
             LogMy.d(TAG, "Login Success: " + getUser_id());
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Login failed: "+e.toString());
+            logout();
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;
     }
+
     public int logout() {
         LogMy.d(TAG, "In logout");
         int errorCode = ErrorCodes.NO_ERROR;
@@ -153,23 +158,4 @@ public class AgentUser {
         }
         return null;
     }
-
-    public static Merchants getMerchant(String key, boolean searchById) {
-        BackendlessDataQuery query = new BackendlessDataQuery();
-        if(searchById) {
-            query.setWhereClause("auto_id = '"+key+"'");
-        } else {
-            query.setWhereClause("mobile_num = '"+key+"'");
-        }
-
-        BackendlessCollection<Merchants> user = Backendless.Data.of( Merchants.class ).find(query);
-        if( user.getTotalObjects() == 0) {
-            String errorMsg = "No Merchant found: "+key;
-            throw new BackendlessException(BackendResponseCodes.BE_ERROR_NO_SUCH_USER, errorMsg);
-        } else {
-            return user.getData().get(0);
-        }
-    }
-
-
 }

@@ -26,12 +26,12 @@
     <PreferenceCategory
         android:title="ACCOUNT">
 
-        <in.myecash.merchant.PasswordPreference
+        <in.myecash.merchantbase.PasswordPreference
             android:title="Change Password"
             android:key="settings_change_password"
             android:summary="Change your account password."/>
 
-        <in.myecash.merchant.MobileChangePreference
+        <in.myecash.merchantbase.MobileChangePreference
             android:title="Change Mobile"
             android:key="settings_change_mobile"
             android:summary="Change your mobile number"/>

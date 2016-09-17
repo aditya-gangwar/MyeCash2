@@ -27,20 +27,22 @@ public class DateUtil {
     public DateUtil() {
         this(new Date());
     }
-    public DateUtil(TimeZone tz) {
-        this(new Date(),tz);
+
+    public DateUtil(String tz) {
+        this(new Date(), TimeZone.getTimeZone(tz));
     }
+
     /** Inizialize a new instance with the given date */
     public DateUtil(Date d) {
         cal = Calendar.getInstance();
         cal.setTime(d);
     }
+
     public DateUtil(Date d, TimeZone tz) {
         cal = Calendar.getInstance();
-        cal.setTime(d);
         cal.setTimeZone(tz);
+        cal.setTime(d);
     }
-
     //---------------------------------------------------------- Public methods
 
     /** Set a new time */
@@ -81,8 +83,19 @@ public class DateUtil {
      * @return a reference to this DateUtil, for concatenation.
      */
     public DateUtil removeDays(int days) {
+
         int x = days*-1;
         cal.add(Calendar.DAY_OF_YEAR, x);
+
+        /*
+        Date d = cal.getTime();
+        long time = d.getTime();
+        long milliSec = days * 24 * 3600 * 1000;
+        time = time - milliSec;
+        //time -= days * 24 * 3600 * 1000;
+        d.setTime(time);
+        cal.setTime(d);*/
+
         return this;
     }
 
@@ -128,11 +141,6 @@ public class DateUtil {
 
         return this;
     }
-    public DateUtil toTZ(TimeZone tz) {
-        cal.setTimeZone(tz);
-
-        return this;
-    }
 
     /**
      * Get the days passed from the specified date up to the date provided
@@ -165,12 +173,6 @@ public class DateUtil {
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(date);
         return cal.after(cal2);
-    }
-
-    public boolean isBefore(Date date) {
-        Calendar cal2 = Calendar.getInstance();
-        cal2.setTime(date);
-        return cal.before(cal2);
     }
 
     public boolean isHourBetween(Date from, Date to) {

@@ -4,12 +4,12 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.entities.MyGlobalSettings;
 import in.myecash.commonbase.models.MerchantStats;
 import in.myecash.commonbase.utilities.AppCommonUtil;
@@ -23,7 +23,7 @@ import java.util.Date;
  * Created by adgangwa on 05-07-2016.
  */
 public class DashboardFragment extends Fragment
-        implements View.OnClickListener {
+        implements View.OnClickListener, View.OnTouchListener {
     private static final String TAG = "DashboardSummary";
 
     public static final int DB_TYPE_CUSTOMER = 1;
@@ -43,7 +43,7 @@ public class DashboardFragment extends Fragment
     public interface DashboardSummaryFragmentIf {
         public MyRetainedFragment getRetainedFragment();
         public void setDrawerState(boolean isEnabled);
-        public void showHistoryTxns(int which);
+        public void showDashboardDetails(int which);
     }
     private DashboardSummaryFragmentIf mCallback;
 
@@ -102,15 +102,15 @@ public class DashboardFragment extends Fragment
         layoutAccount.setOnClickListener(this);
         layoutCashback.setOnClickListener(this);
 
-        labelCustCnt.setOnClickListener(this);
-        labelBillAmt.setOnClickListener(this);
-        labelAccount.setOnClickListener(this);
-        labelCashback.setOnClickListener(this);
+        labelCustCnt.setOnTouchListener(this);
+        labelBillAmt.setOnTouchListener(this);
+        labelAccount.setOnTouchListener(this);
+        labelCashback.setOnTouchListener(this);
 
-        total_customers.setOnClickListener(this);
-        total_bill_amt.setOnClickListener(this);
-        total_account_cash.setOnClickListener(this);
-        total_cashback.setOnClickListener(this);
+        total_customers.setOnTouchListener(this);
+        total_bill_amt.setOnTouchListener(this);
+        total_account_cash.setOnTouchListener(this);
+        total_cashback.setOnTouchListener(this);
 
         //downloadDataFile.setOnClickListener(this);
         //emailDataFile.setOnClickListener(this);
@@ -118,31 +118,34 @@ public class DashboardFragment extends Fragment
 
     @Override
     public void onClick(View v) {
+        LogMy.d(TAG,"In onClick: "+v.getId());
+        showDetailedView(v);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            LogMy.d(TAG,"In onTouch: "+v.getId());
+            showDetailedView(v);
+        }
+        return true;
+    }
+
+    private void showDetailedView(View v) {
         int id = v.getId();
 
         if (id == R.id.layout_cust_cnt) {
-            mCallback.showHistoryTxns(DB_TYPE_CUSTOMER);
+            mCallback.showDashboardDetails(DB_TYPE_CUSTOMER);
 
         } else if (id == R.id.layout_bill_amt) {
-            mCallback.showHistoryTxns(DB_TYPE_BILL_AMT);
+            mCallback.showDashboardDetails(DB_TYPE_BILL_AMT);
 
         } else if (id == R.id.layout_account_cash) {
-            mCallback.showHistoryTxns(DB_TYPE_ACCOUNT);
+            mCallback.showDashboardDetails(DB_TYPE_ACCOUNT);
 
         } else if (id == R.id.layout_cashback) {
-            mCallback.showHistoryTxns(DB_TYPE_CASHBACK);
+            mCallback.showDashboardDetails(DB_TYPE_CASHBACK);
 
-            /*
-            case R.id.btn_email_report:
-            case R.id.btn_cust_report_dwnload:
-                mActiveRequestId = id;
-                if( checkPermission() ) {
-                    mCallback.downloadCustDataFile();
-                } else {
-                    requestStoragePermission();
-                }
-                break;
-            */
         } else {
             View parent = (View) v.getParent();
             parent.performClick();

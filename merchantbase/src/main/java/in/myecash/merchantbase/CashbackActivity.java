@@ -166,11 +166,12 @@ public class CashbackActivity extends AppCompatActivity implements
         startMobileNumFragment();
 
         // show last login time
+        /*
         if(mMerchant.getLastLogin() != null) {
             String msg = "Your last login was on "+mSdfDateWithTime.format(mMerchant.getLastLogin());
             DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, msg, false, false)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-        }
+        }*/
     }
 
 
@@ -1077,9 +1078,12 @@ public class CashbackActivity extends AppCompatActivity implements
         int cl_debit_threshold = mMerchantUser.getClDebitLimitForPin();
         int cb_debit_threshold = mMerchantUser.getCbDebitLimitForPin();
 
-        return (mWorkFragment.mCurrTransaction.getTransaction().getCl_credit() > cl_credit_threshold
-                || mWorkFragment.mCurrTransaction.getTransaction().getCl_debit() > cl_debit_threshold
-                || mWorkFragment.mCurrTransaction.getTransaction().getCb_debit() > cb_debit_threshold );
+        int higher_debit_threshold = Math.max(cl_debit_threshold, cb_debit_threshold);
+
+        return (mWorkFragment.mCurrTransaction.getTransaction().getCl_credit() > cl_credit_threshold ||
+                mWorkFragment.mCurrTransaction.getTransaction().getCl_debit() > cl_debit_threshold ||
+                mWorkFragment.mCurrTransaction.getTransaction().getCb_debit() > cb_debit_threshold ||
+                (cb_debit_threshold+cl_debit_threshold) > higher_debit_threshold);
     }
 
     @Override
@@ -1403,7 +1407,7 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void showHistoryTxns(int dbType) {
+    public void showDashboardDetails(int dbType) {
         startDashboardFragment(dbType);
     }
 

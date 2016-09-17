@@ -87,7 +87,7 @@ public class SearchMerchantDialog extends DialogFragment implements DialogInterf
                         } else if(!mobileNum.isEmpty()) {
                             error = ValidationHelper.validateMobileNo(mobileNum);
                             if(error == ErrorCodes.NO_ERROR) {
-                                mListener.onInputData(id,false);
+                                mListener.onInputData(mobileNum,false);
                                 getDialog().dismiss();
                             } else {
                                 mInputMobileNum.setError(ErrorCodes.appErrorDesc.get(error));

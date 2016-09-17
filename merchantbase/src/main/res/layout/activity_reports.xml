@@ -83,7 +83,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="For transactions of specific customer, provide 'Internal ID' or 'Mobile number' ofthe customer below" />
+            android:text="Enter Customer 'Internal ID' or 'Mobile number'" />
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">

@@ -11,6 +11,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -563,7 +564,10 @@ public class CashTransactionFragment extends Fragment implements
                 startNumInputDialog(REQ_NEW_BILL_AMT, "Bill Amount:", mInputBillAmt, 0);
             }
 
-        } else if (i == R.id.input_trans_add_cl) {
+        }
+        // manually change the values
+
+        /*else if (i == R.id.input_trans_add_cl) {
             int effectiveToPay = mRetainedFragment.mBillTotal - mRedeemCashback - mRedeemCashload;
             int curMaxValue = (mCashPaid < effectiveToPay) ? 0 : (mCashPaid - effectiveToPay);
             if (curMaxValue > 0) {
@@ -576,10 +580,9 @@ public class CashTransactionFragment extends Fragment implements
         } else if (i == R.id.input_trans_redeem_cb) {
             startNumInputDialog(REQ_NEW_REDEEM_CB, "Cashback Redeem:", mInputRedeemCb, mCbBalance);
 
-            //case R.id.img_trans_add_cl:
-            //case R.id.checkbox_add_cl:
-        } else if (i == R.id.radio_add_cl || i == R.id.layout_add_cl) {//case R.id.label_trans_add_cl:
-            //case R.id.input_trans_add_cl:
+        } */
+
+        else if (i == R.id.radio_add_cl || i == R.id.layout_add_cl || i==R.id.label_trans_add_cl) {
 
             switch (mAddClStatus) {
                 case STATUS_AUTO_CLEARED:
@@ -604,9 +607,8 @@ public class CashTransactionFragment extends Fragment implements
                     break;
             }
 
-            //case R.id.img_trans_redeem_cl:
-            //case R.id.checkbox_debit_cl:
-        } else if (i == R.id.radio_redeem_cl || i == R.id.layout_redeem_cl) {//case R.id.label_trans_redeem_cl:
+        } else if (i == R.id.radio_redeem_cl || i == R.id.layout_redeem_cl || i==R.id.label_trans_redeem_cl) {
+            //case R.id.label_trans_redeem_cl:
             //case R.id.input_trans_redeem_cl:
 
             switch (mRedeemClStatus) {
@@ -628,13 +630,11 @@ public class CashTransactionFragment extends Fragment implements
                     AppCommonUtil.toast(getActivity(), AppConstants.toastNoBalance);
                     break;
                 case STATUS_QR_CARD_NOT_USED:
-                    AppCommonUtil.toast(getActivity(), "Member card is either not presented or not active");
+                    AppCommonUtil.toast(getActivity(), "Valid Member card not used");
                     break;
             }
 
-            //case R.id.img_trans_redeem_cb:
-        } else if (i == R.id.checkbox_redeem_cb || i == R.id.layout_redeem_cb) {//case R.id.label_trans_redeem_cb:
-            //case R.id.input_trans_redeem_cb:
+        } else if (i == R.id.checkbox_redeem_cb || i == R.id.layout_redeem_cb || i==R.id.label_trans_redeem_cb) {
 
             switch (mRedeemCbStatus) {
                 case STATUS_AUTO_CLEARED:
@@ -651,7 +651,7 @@ public class CashTransactionFragment extends Fragment implements
                     AppCommonUtil.toast(getActivity(), AppConstants.toastNoBalance);
                     break;
                 case STATUS_QR_CARD_NOT_USED:
-                    AppCommonUtil.toast(getActivity(), "Member card is either not presented or not active");
+                    AppCommonUtil.toast(getActivity(), "Valid Member card not used");
                     break;
                 case STATUS_BALANCE_BELOW_LIMIT:
                     AppCommonUtil.toast(getActivity(), "Cashback balance below redeem limit of " +
@@ -659,9 +659,7 @@ public class CashTransactionFragment extends Fragment implements
                     break;
             }
 
-            //case R.id.img_trans_add_cb:
-        } else if (i == R.id.checkbox_add_cb || i == R.id.layout_add_cb) {//case R.id.label_trans_add_cb:
-            //case R.id.input_trans_add_cb:
+        } else if (i == R.id.checkbox_add_cb || i == R.id.layout_add_cb || i==R.id.label_trans_add_cb) {
 
             if (mAddCbStatus == STATUS_DISABLED) {
                 AppCommonUtil.toast(getActivity(), "Set Cashback rate(%) in settings");
@@ -711,36 +709,30 @@ public class CashTransactionFragment extends Fragment implements
             case STATUS_CLEARED:
             case STATUS_CASH_PAID_NOT_SET:
             case STATUS_DISABLED:
-                //mImageAddCl.setImageResource(R.drawable.ic_add_circle_iron);
-                //mImageAddCl.setAlpha(0.5f);
-                //mImageAddCl.setEnabled(false);
                 mRadioAddCl.setChecked(false);
                 if(status != STATUS_CLEARED && status != STATUS_AUTO_CLEARED) {
                     // disable only for cases, if cant be enabled back for now
                     mRadioAddCl.setEnabled(false);
                 }
-                mLabelAddCl.setEnabled(false);
+                // make label appear as disabled - but dont disable it - in order to catch click event
+                //mLabelAddCl.setEnabled(false);
+                mLabelAddCl.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 mInputAddCl.setEnabled(false);
+                // change the green/red color
                 mInputAddCl.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 break;
             case STATUS_AUTO:
-                //mImageAddCl.setImageResource(R.drawable.ic_add_circle_coconut);
-                //mRsAddCl.setEnabled(true);
-                //mInputAddCl.setEnabled(true);
                 mRadioAddCl.setChecked(true);
                 mRadioAddCl.setEnabled(true);
-                mLabelAddCl.setEnabled(true);
+                //mLabelAddCl.setEnabled(true);
+                // restore text color - in case changed while disabling it in above case
+                mLabelAddCl.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary_text));
                 mInputAddCl.setEnabled(true);
                 mInputAddCl.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
                 break;
             case STATUS_MANUAL_SET:
                 // do nothing - it was already in auto - so all are already enabled
                 break;
-            //case STATUS_CLEARED:
-                //mImageAddCl.setImageResource(R.drawable.ic_add_circle_iron);
-                //mRsAddCl.setEnabled(false);
-                //mInputAddCl.setEnabled(false);
-                //break;
             default:
                 // no other status is valid for 'add cb'
                 LogMy.e(TAG, "Inavlid add cashload status: " + status);
@@ -756,32 +748,22 @@ public class CashTransactionFragment extends Fragment implements
             case STATUS_CLEARED:
             case STATUS_QR_CARD_NOT_USED:
             case STATUS_NO_BALANCE:
-                //mImageRedeemCl.setImageResource(R.drawable.ic_remove_circle_iron);
-                //mImageRedeemCl.setAlpha(0.5f);
-                //mImageRedeemCl.setEnabled(false);
                 mRadioRedeemCl.setChecked(false);
                 if(status!=STATUS_CLEARED && status!=STATUS_AUTO_CLEARED) {
                     mRadioRedeemCl.setEnabled(false);
                 }
-                mLabelRedeemCl.setEnabled(false);
+                //mLabelRedeemCl.setEnabled(false);
+                mLabelRedeemCl.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 mInputRedeemCl.setEnabled(false);
                 mInputRedeemCl.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 break;
-            //case STATUS_CLEARED:
-            //mImageRedeemCl.setImageResource(R.drawable.ic_remove_circle_coconut);
-            //mRsRedeemCl.setEnabled(false);
-            //mInputRedeemCl.setEnabled(false);
-            //break;
             case STATUS_AUTO:
                 mRadioRedeemCl.setChecked(true);
                 mRadioRedeemCl.setEnabled(true);
-                mLabelRedeemCl.setEnabled(true);
+                //mLabelRedeemCl.setEnabled(true);
+                mLabelRedeemCl.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary_text));
                 mInputRedeemCl.setEnabled(true);
                 mInputRedeemCl.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
-                //mImageRedeemCl.setImageResource(R.drawable.ic_remove_circle_coconut);
-                //mRsRedeemCl.setEnabled(true);
-                //mInputRedeemCl.setEnabled(true);
-                //mLabelRedeemCl.setEnabled(true);
                 break;
             case STATUS_MANUAL_SET:
                 // do nothing - it was already in auto - so all are already enabled
@@ -802,31 +784,23 @@ public class CashTransactionFragment extends Fragment implements
             case STATUS_BALANCE_BELOW_LIMIT:
             case STATUS_QR_CARD_NOT_USED:
             case STATUS_NO_BALANCE:
-                //mImageRedeemCb.setImageResource(R.drawable.ic_remove_circle_iron);
-                //mImageRedeemCb.setAlpha(0.5f);
-                //mImageRedeemCb.setEnabled(false);
                 mCheckboxRedeemCb.setChecked(false);
                 if(status!=STATUS_CLEARED && status!=STATUS_AUTO_CLEARED)
                     mCheckboxRedeemCb.setEnabled(false);
-                mLabelRedeemCb.setEnabled(false);
+                // set onTouchListener - as onClickListener doesnt work in disabled editext
+                //mLabelRedeemCb.setEnabled(false);
+                mLabelRedeemCb.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 mInputRedeemCb.setEnabled(false);
                 mInputRedeemCb.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 // ignore mCbBalance
                 mMinCashToPay = mRetainedFragment.mBillTotal - mClBalance;
                 break;
-            //case STATUS_CLEARED:
-                //mImageRedeemCb.setImageResource(R.drawable.ic_remove_circle_iron);
-                //mRsRedeemCb.setEnabled(false);
-                //mInputRedeemCb.setEnabled(false);
-                //break;
             case STATUS_AUTO:
                 mCheckboxRedeemCb.setChecked(true);
-                mLabelRedeemCb.setEnabled(true);
+                //mLabelRedeemCb.setEnabled(true);
+                mLabelRedeemCb.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary_text));
                 mInputRedeemCb.setEnabled(true);
                 mInputRedeemCb.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
-                //mImageRedeemCb.setImageResource(R.drawable.ic_remove_circle_soberBlue);
-                //mRsRedeemCb.setEnabled(true);
-                //mInputRedeemCb.setEnabled(true);
                 mMinCashToPay = mRetainedFragment.mBillTotal - mClBalance - mCbBalance;
                 break;
             case STATUS_MANUAL_SET:
@@ -844,12 +818,10 @@ public class CashTransactionFragment extends Fragment implements
         mAddCbStatus = status;
         switch(status) {
             case STATUS_DISABLED:
-                //mImageAddCb.setImageResource(R.drawable.ic_add_circle_iron);
-                //mImageAddCb.setAlpha(0.5f);
-                //mImageAddCb.setEnabled(false);
                 mCheckboxAddCb.setChecked(false);
                 mCheckboxAddCb.setEnabled(false);
-                mLabelAddCb.setEnabled(false);
+                //mLabelAddCb.setEnabled(false);
+                mLabelAddCb.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 mInputAddCb.setEnabled(false);
                 mSubHeadAddCb.setEnabled(false);
                 break;
@@ -870,12 +842,19 @@ public class CashTransactionFragment extends Fragment implements
 
         mInputAddCl.setOnClickListener(this);
         mLayoutAddCl.setOnClickListener(this);
+        mLabelAddCl.setOnClickListener(this);
+
         mInputRedeemCl.setOnClickListener(this);
         mLayoutRedeemCl.setOnClickListener(this);
+        mLabelRedeemCl.setOnClickListener(this);
+
         mInputRedeemCb.setOnClickListener(this);
         mLayoutRedeemCb.setOnClickListener(this);
+        mLabelRedeemCb.setOnClickListener(this);
+
         mInputAddCb.setOnClickListener(this);
         mLayoutAddCb.setOnClickListener(this);
+        mLabelAddCb.setOnClickListener(this);
 
         if(mLayoutCashPaidLink.getVisibility()==View.VISIBLE) {
             mLabelCashPaid.setOnClickListener(this);

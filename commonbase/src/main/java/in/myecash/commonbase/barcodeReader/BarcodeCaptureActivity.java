@@ -211,7 +211,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 //.setRequestedPreviewSize(1600, 1024)
                 .setRequestedPreviewSize(1024, 768)
-                .setRequestedFps(15.0f);
+                .setRequestedFps(30.0f);
 
         // make sure that auto focus is an available option
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -238,7 +238,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
 
             YuvImage yuvimage = new YuvImage(byteBuffer.array(), ImageFormat.NV21, w, h, null);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            yuvimage.compressToJpeg(new Rect(0, 0, w, h), 80, baos); // Where 80 is the quality of the generated jpeg
+            yuvimage.compressToJpeg(new Rect(0, 0, w, h), 90, baos); // Where 80 is the quality of the generated jpeg
             byte[] jpegArray = baos.toByteArray();
             Bitmap bitmap = BitmapFactory.decodeByteArray(jpegArray, 0, jpegArray.length);
             Bitmap bmp = AppCommonUtil.addDateTime(BarcodeCaptureActivity.this, bitmap);

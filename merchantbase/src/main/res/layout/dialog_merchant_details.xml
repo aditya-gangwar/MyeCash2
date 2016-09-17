@@ -166,7 +166,7 @@
                 android:paddingTop="0dp"/>
         </LinearLayout>
 
-        <LinearLayout
+        <!--LinearLayout
             style="@style/LL_Horizontal_wrap">
 
             <ImageView
@@ -192,7 +192,7 @@
                 android:layout_weight="60"
                 android:gravity="left"
                 android:paddingTop="0dp"/>
-        </LinearLayout>
+        </LinearLayout-->
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"

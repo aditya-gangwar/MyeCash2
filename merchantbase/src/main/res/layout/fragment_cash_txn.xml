@@ -141,7 +141,7 @@
                     android:onClick="onCashTxnCheckboxClick"/-->
 
                 <EditText
-                    style="@style/Edittext_only_view_medium"
+                    style="@style/Edittext_only_click_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/label_trans_add_cl"
@@ -170,7 +170,7 @@
                     android:clickable="false"/>
 
                 <EditText
-                    style="@style/Edittext_only_view_medium"
+                    style="@style/Edittext_only_click_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/label_trans_redeem_cl"
@@ -269,7 +269,7 @@
                     android:clickable="false"/>
 
                 <EditText
-                    style="@style/Edittext_only_view_medium"
+                    style="@style/Edittext_only_click_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/label_trans_redeem_cb"
@@ -300,7 +300,7 @@
                     android:clickable="false"/>
 
                 <EditText
-                    style="@style/Edittext_only_view_medium"
+                    style="@style/Edittext_only_click_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
