@@ -8,8 +8,12 @@ package in.myecash.merchantbase.backendAPI;
 
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
+
+import java.util.List;
+
 import in.myecash.commonbase.constants.BackendSettings;
 import in.myecash.commonbase.models.Cashback;
+import in.myecash.commonbase.models.MerchantOps;
 import in.myecash.commonbase.models.MerchantStats;
 import in.myecash.commonbase.models.Merchants;
 
@@ -35,6 +39,12 @@ import in.myecash.commonbase.models.Merchants;
         Backendless.setUrl( BackendSettings.BACKENDLESS_HOST );
         // if you invoke this sample inside of android application, you should use overloaded "initApp" with "context" argument
         Backendless.initApp( BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, MerchantServices.APP_VERSION );
+    }
+
+    public List<MerchantOps> getMerchantOps(String merchantId)
+    {
+        Object[] args = new Object[]{merchantId};
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMerchantOps", args, MerchantOps.class );
     }
 
     public Merchants deleteTrustedDevice(String deviceId)

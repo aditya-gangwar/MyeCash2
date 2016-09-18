@@ -71,6 +71,10 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     /*
      * Add request methods - Assumes that MerchantUser is instantiated
      */
+    public void addMerchantOpsReq() {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_MERCHANT_OPS, null).sendToTarget();
+    }
+
     public void addArchiveTxnsRequest() {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_ARCHIVE_TXNS,null).sendToTarget();
     }
@@ -88,7 +92,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     }
     public void addTxnImgUploadRequest(File file) {
         LogMy.d(TAG, "In addTxnImgUploadRequest");
-        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_UPLOAD_FILE, file).sendToTarget();
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_UPLOAD_TXN_IMG, file).sendToTarget();
     }
     public void changePassword(String oldPasswd, String newPasswd) {
         LogMy.d(TAG, "In changePassword:  ");
@@ -203,8 +207,8 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
             case MyRetainedFragment.REQUEST_CHANGE_PASSWD:
                 error = changePassword((MessageChangePassword) msg.obj);
                 break;
-            case MyRetainedFragment.REQUEST_UPLOAD_FILE:
-                error = uploadFile((File) msg.obj);
+            case MyRetainedFragment.REQUEST_UPLOAD_TXN_IMG:
+                error = uploadTxnImgFile((File) msg.obj);
                 break;
             case MyRetainedFragment.REQUEST_DELETE_TRUSTED_DEVICE:
                 error = deleteDevice((Integer) msg.obj);
@@ -223,8 +227,25 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_CUST_DATA_FILE_DOWNLOAD:
                 error = downloadFile((MessageFileDownload) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_FETCH_MERCHANT_OPS:
+                error = fetchMerchantOps();
         }
         return error;
+    }
+
+    private int fetchMerchantOps() {
+        mRetainedFragment.mLastFetchMchntOps = null;
+
+        try {
+            mRetainedFragment.mLastFetchMchntOps = MerchantUser.getInstance().fetchMerchantOps();
+            LogMy.d(TAG,"fetchMerchantOps success: "+mRetainedFragment.mLastFetchMchntOps.size());
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Exception in fetchMerchantOps: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
     }
 
     private int archiveTxns() {
@@ -259,14 +280,22 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         return MerchantUser.getInstance().deleteTrustedDevice(index);
     }
 
-    private int uploadFile(File file) {
-        int errorCode;
-        if(MerchantUser.getInstance().uploadTxnImgFile(file) == null) {
-            errorCode = ErrorCodes.GENERAL_ERROR;
-        } else {
-            errorCode = ErrorCodes.NO_ERROR;
+    private int uploadTxnImgFile(File file) {
+        try {
+            MerchantUser.getInstance().uploadTxnImgFile(file);
+            LogMy.d(TAG,"Succesfully uploaded txn image file: "+file.getName());
+            // delete local file
+            if(!file.delete()) {
+                LogMy.w(TAG,"Failed to delete txn image file: "+file.getAbsolutePath());
+            }
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"BackendlessException in uploadTxnImgFile: "+file.getAbsolutePath()+", "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        } catch(Exception e) {
+            LogMy.e(TAG,"Exception in uploadTxnImgFile: "+file.getAbsolutePath()+", "+e.toString(),e);
+            return ErrorCodes.GENERAL_ERROR;
         }
-        return errorCode;
+        return ErrorCodes.NO_ERROR;
     }
 
     private int changePassword(MessageChangePassword data) {
@@ -410,7 +439,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
 
         FileOutputStream outputStream;
         try {
-            byte[] bitmapBytes = new FileFetchr().getUrlBytes(fileURL, MerchantUser.getInstance().getUserToken());
+            byte[] bitmapBytes = new FileFetchr().getUrlBytes(fileURL, mRetainedFragment.mUserToken);
 
             outputStream = msg.ctxt.openFileOutput(filename, Context.MODE_PRIVATE);
             outputStream.write(bitmapBytes);

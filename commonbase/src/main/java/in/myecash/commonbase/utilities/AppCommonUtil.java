@@ -141,7 +141,7 @@ public class AppCommonUtil {
 
             // Here we Resize the Image ...
             //ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100,
+            bmp.compress(Bitmap.CompressFormat.JPEG, 80,
                     fileOutputStream); // bm is the bitmap object
             //byte[] bsResized = byteArrayOutputStream.toByteArray();
 
@@ -382,6 +382,10 @@ public class AppCommonUtil {
                 merchantId.substring(0,3) + CommonConstants.FILE_PATH_SEPERATOR +
                 merchantId.substring(0,5) + CommonConstants.FILE_PATH_SEPERATOR +
                 merchantId;
+    }
+
+    public static String getTxnImgFilename(String txnId) {
+        return CommonConstants.PREFIX_TXN_IMG_FILE_NAME +txnId+".webp";
     }
 
     public static void setDialogTextSize(DialogFragment frag, AlertDialog dialog) {

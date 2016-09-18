@@ -61,6 +61,8 @@ public class ErrorCodes {
     public static final int CUST_REG_OK_CB_CREATE_FAILED = 42;
     public static final int DEVICE_ALREADY_REGISTERED = 43;
     public static final int DEVICE_INSECURE = 44;
+    public static final int CUST_NOT_REG_WITH_MCHNT = 45;
+    public static final int NOT_LOGGED_IN = 46;
 
     public static final Map<Integer, String> appErrorDesc;
     static {
@@ -109,6 +111,9 @@ public class ErrorCodes {
         aMap.put(CUST_REG_OK_CB_CREATE_FAILED,"");
         aMap.put(DEVICE_ALREADY_REGISTERED,"Device already registered for other merchant. One device can register to only one merchant account.");
         aMap.put(DEVICE_INSECURE,"Your device is not secure. Please install and run application on other device.");
+        aMap.put(DEVICE_INSECURE,"Your device is not secure. Please install and run application on other device.");
+        aMap.put(CUST_NOT_REG_WITH_MCHNT,"Customer has done no transaction with the merchant.");
+        aMap.put(NOT_LOGGED_IN,"User not logged in.");
 
         appErrorDesc = Collections.unmodifiableMap(aMap);
     };
@@ -129,6 +134,8 @@ public class ErrorCodes {
         aMap.put(BackendResponseCodes.BE_ERROR_OPERATION_NOT_ALLOWED,NO_PERMISSIONS);
         aMap.put(BackendResponseCodes.BE_ERROR_DUPLICATE_REQUEST,DUPLICATE_ENTRY);
         aMap.put(BackendResponseCodes.BE_ERROR_FIRST_LOGIN_PENDING,USER_NEW);
+        aMap.put(BackendResponseCodes.BE_ERROR_NOT_LOGGED_IN,NOT_LOGGED_IN);
+        aMap.put(BackendResponseCodes.BE_ERROR_CUST_NOT_REG_WITH_MCNT,CUST_NOT_REG_WITH_MCHNT);
 
         aMap.put(BackendResponseCodes.BE_ERROR_SEND_SMS_FAILED,SEND_SMS_FAILED);
         aMap.put(BackendResponseCodes.BE_ERROR_WRONG_INPUT_DATA,WRONG_INPUT_DATA);

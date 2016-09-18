@@ -24,6 +24,7 @@ public class AppAlarms {
     private static String ALARM_CLASS_DATA_INTEGRITY = "classDataIntegrity";
     private static String ALARM_INVALID_STATE = "classInvalidState";
     private static String ALARM_IGNORE_IF_NOT_MANY = "classIgnoreIfNotMany";
+    private static String ALARM_UPLOAD_FAILED = "classUploadFailed";
 
     // Alarm names/codes
     private static String ALARM_DEVICE_ROOTED = "deviceRooted";
@@ -31,6 +32,7 @@ public class AppAlarms {
     private static String ALARM_INVALID_CARD_STATE = "invalidCardState";
     private static String ALARM_LOCAL_OP_FAILED = "localOpFailed";
     private static String INVALID_CB_DATA = "invalidCbData";
+    private static String FILE_UPLOAD_FAILED = "fileUploadFailed";
 
     // Exception logging methods
     public static void handleException(BackendlessException e) {
@@ -93,6 +95,16 @@ public class AppAlarms {
                 ALARM_SEVERITY_FATAL+ALARM_CSV_DELIM +
                 ALARM_INVALID_STATE+ALARM_CSV_DELIM +
                 INVALID_CB_DATA+ALARM_CSV_DELIM +
+                methodName+ALARM_CSV_DELIM +
+                getParamStr(params));
+    }
+    public static void fileUploadFailed(String userId, int userType, String methodName, Map<String,String> params) {
+        raiseAlarm(String.valueOf(System.currentTimeMillis())+ALARM_CSV_DELIM +
+                userId+ALARM_CSV_DELIM +
+                DbConstants.userTypeDesc[userType]+ALARM_CSV_DELIM +
+                ALARM_SEVERITY_WARN+ALARM_CSV_DELIM +
+                ALARM_UPLOAD_FAILED+ALARM_CSV_DELIM +
+                FILE_UPLOAD_FAILED+ALARM_CSV_DELIM +
                 methodName+ALARM_CSV_DELIM +
                 getParamStr(params));
     }

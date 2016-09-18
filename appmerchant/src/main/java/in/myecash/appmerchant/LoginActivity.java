@@ -467,6 +467,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         //Start Cashback Activity
         Intent intent = new Intent( this, CashbackActivity.class );
+        intent.putExtra(CashbackActivity.INTENT_EXTRA_USER_TOKEN, MerchantUser.getInstance().getUserToken());
         // clear Login activity from backstack
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

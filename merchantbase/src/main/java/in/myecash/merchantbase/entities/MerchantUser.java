@@ -20,6 +20,7 @@ import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.entities.MyGlobalSettings;
 import in.myecash.commonbase.models.Cashback;
 import in.myecash.commonbase.models.MerchantDevice;
+import in.myecash.commonbase.models.MerchantOps;
 import in.myecash.commonbase.models.MerchantStats;
 import in.myecash.commonbase.models.Merchants;
 import in.myecash.commonbase.models.Transaction;
@@ -367,7 +368,7 @@ public class MerchantUser
         return MerchantServices.getInstance().getMerchantStats(mMerchant.getAuto_id());
     }
 
-    public Cashback fetchCashback(String custId) {
+    public Cashback fetchCashback(String custId) throws BackendlessException {
         LogMy.d(TAG, "In fetchCashback");
 
         return MerchantServices.getInstance().getCashback(
@@ -375,6 +376,13 @@ public class MerchantUser
                 mMerchant.getCashback_table(),
                 custId,
                 mMerchant.getDebugLogs());
+    }
+
+    public List<MerchantOps> fetchMerchantOps() throws BackendlessException {
+        LogMy.d(TAG, "In fetchMerchantOps");
+
+        return MerchantServices.getInstance().getMerchantOps(
+                mMerchant.getAuto_id());
     }
 
     /*
@@ -387,11 +395,11 @@ public class MerchantUser
         return txn.commit(pin);
     }
 
-    public String uploadTxnImgFile(File file) {
+    public void uploadTxnImgFile(File file) throws Exception {
         if(mPseudoLoggedIn) {
-            return null;
+            throw new BackendlessException(BackendResponseCodes.BE_ERROR_OPERATION_NOT_ALLOWED, "");
         }
-        return uploadImageSync(file,AppCommonUtil.getTxnImgDir(mMerchant.getAuto_id()));
+        uploadImageSync(file,AppCommonUtil.getTxnImgDir(mMerchant.getAuto_id()));
     }
 
     /*
@@ -498,43 +506,17 @@ public class MerchantUser
         mDisplayImage = displayImage;
     }
 
-    /*
-    public String getDeviceInfo() {
-        return mDeviceInfo;
-    }
-    public void setDeviceInfo(String mDeviceInfo) {
-        this.mDeviceInfo = mDeviceInfo;
-    }
-
-    public String getDeviceId() {
-        return mDeviceId;
-    }
-    public void setDeviceId(String mDeviceId) {
-        this.mDeviceId = mDeviceId;
-    }*/
-
     public List<MerchantDevice> getTrustedDeviceList() {
         return mMerchant.getTrusted_devices();
     }
 
-    public String getCashbackTableName() {
-        return mMerchant.getCashback_table();
-    }
-
-    /*
-    public String getUser_id()
-    {
-        return (String) mBackendlessUser.getProperty( "user_id" );
-    }
-
-    public void setUser_id( String user_id )
-    {
-        mBackendlessUser.setProperty("user_id", user_id);
-    }*/
-
     public Merchants getMerchant()
     {
         return mMerchant;
+    }
+
+    public boolean isPseudoLoggedIn() {
+        return mPseudoLoggedIn;
     }
 
     // Public methods for changing merchant properties
@@ -554,16 +536,11 @@ public class MerchantUser
     /*
      * Private helper functions
      */
-    private String uploadImageSync(File imgFile, String remoteDir) {
+    private String uploadImageSync(File imgFile, String remoteDir) throws Exception {
         // upload file
-        try {
-            BackendlessFile file = Backendless.Files.upload(imgFile, remoteDir, true);
-            LogMy.d(TAG, "Image uploaded successfully at :" + file.getFileURL());
-            return file.getFileURL();
-        } catch(Exception e) {
-            LogMy.e(TAG, "Image file upload failed: " + e.toString());
-        }
-        return null;
+        BackendlessFile file = Backendless.Files.upload(imgFile, remoteDir, true);
+        LogMy.d(TAG, "Image uploaded successfully at :" + file.getFileURL());
+        return file.getFileURL();
     }
 
     /*

@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import in.myecash.commonbase.constants.AppConstants;
+import in.myecash.commonbase.constants.BackendSettings;
 import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
@@ -50,7 +51,8 @@ import java.util.TimeZone;
 public class ReportsActivity extends AppCompatActivity implements
         View.OnClickListener, MyRetainedFragment.RetainedFragmentIf,
         DatePickerDialog.DatePickerIf, TxnSummaryFragment.TxnSummaryFragmentIf,
-        TxnListFragment.TxnListFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf {
+        TxnListFragment.TxnListFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
+        TxnDetailsDialog.TxnDetailsDialogIf {
     private static final String TAG = "ReportsActivity";
 
     public static final String EXTRA_CUSTOMER_ID = "extraCustId";
@@ -76,6 +78,7 @@ public class ReportsActivity extends AppCompatActivity implements
     // Store and restore as part of instance state
     private Date mFromDate;
     private Date mToDate;
+    private int mDetailedTxnPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,17 +89,17 @@ public class ReportsActivity extends AppCompatActivity implements
         bindUiResources();
         mMerchantUser = MerchantUser.getInstance();
         mToday = new DateUtil(new Date(), TimeZone.getDefault());
-        //mToday.toTZ(TimeZone.getDefault());
         mToday.toMidnight();
 
         initToolbar();
         initDateInputs(savedInstanceState);
 
         mBtnGetReport.setOnClickListener(this);
-        /*
         if(savedInstanceState!=null) {
-            mCustomerId = savedInstanceState.getString("mCustomerId");
-        }*/
+            mDetailedTxnPos = savedInstanceState.getInt("mDetailedTxnPos");
+        } else {
+            mDetailedTxnPos = -1;
+        }
         mInputCustId.setText(getIntent().getStringExtra(EXTRA_CUSTOMER_ID));
 
         // Initialize retained fragment before other fragments
@@ -350,30 +353,47 @@ public class ReportsActivity extends AppCompatActivity implements
     @Override
     public void onBgProcessResponse(int errorCode, int operation) {
         try {
-            if (operation == MyRetainedFragment.REQUEST_FETCH_TXNS) {
-                if (errorCode == ErrorCodes.NO_ERROR ||
-                        errorCode == ErrorCodes.NO_DATA_FOUND) {
-                    // sort the list by date
-                    //Collections.sort(mWorkFragment.mLastFetchTransactions, new MyTransaction.TxnDateComparator());
-                    generateReport();
-                } else {
+            switch(operation) {
+                case MyRetainedFragment.REQUEST_FETCH_TXNS:
+                    if (errorCode == ErrorCodes.NO_ERROR ||
+                            errorCode == ErrorCodes.NO_DATA_FOUND) {
+                        generateReport();
+                    } else {
+                        AppCommonUtil.cancelProgressDialog(true);
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                                .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+
+                case MyRetainedFragment.REQUEST_FETCH_TXN_FILES:
+                    if (errorCode == ErrorCodes.NO_ERROR) {
+                        // all files should now be available locally
+                        onAllTxnFilesAvailable(false);
+                    } else if (errorCode == ErrorCodes.FILE_NOT_FOUND) {
+                        // one or more files not found, may be corresponding day txns are present in table, try to fetch the same
+                        onAllTxnFilesAvailable(true);
+                    } else {
+                        AppCommonUtil.cancelProgressDialog(true);
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                                .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+                case MyRetainedFragment.REQUEST_IMAGE_DOWNLOAD:
                     AppCommonUtil.cancelProgressDialog(true);
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
-                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-            } else if (operation == MyRetainedFragment.REQUEST_FETCH_TXN_FILES) {
-                if (errorCode == ErrorCodes.NO_ERROR) {
-                    // all files should now be available locally
-                    onAllTxnFilesAvailable(false);
-                } else if (errorCode == ErrorCodes.FILE_NOT_FOUND) {
-                    // one or more files not found, may be corresponding day txns are present in table, try to fetch the same
-                    onAllTxnFilesAvailable(true);
-                } else {
-                    AppCommonUtil.cancelProgressDialog(true);
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
-                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
+                    if (errorCode != ErrorCodes.NO_ERROR ||
+                            mWorkFragment.mLastFetchedImage==null) {
+                        AppCommonUtil.toast(this, "Failed to download image file");
+                    }
+                    // re-open the details dialog - but only if 'txn list fragment' is still open
+                    TxnListFragment fragment = (TxnListFragment)mFragMgr.findFragmentByTag(TXN_SUMMARY_FRAGMENT);
+                    if (fragment != null) {
+                        fragment.showDetailedDialog(mDetailedTxnPos);
+                    } else {
+                        LogMy.d(TAG,"Txn list fragment not available, ignoring downloaded file");
+                    }
+                    break;
             }
+
         } catch (Exception e) {
             AppCommonUtil.cancelProgressDialog(true);
             LogMy.e(TAG, "Exception is ReportsActivity:onBgProcessResponse: "+operation+": "+errorCode, e);
@@ -381,6 +401,17 @@ public class ReportsActivity extends AppCompatActivity implements
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             mWorkFragment.mTxnsFromCsv.clear();
         }
+    }
+
+    @Override
+    public void showTxnImg(int currTxnPos) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mDetailedTxnPos = currTxnPos;
+        String txnImgFileName = mWorkFragment.mLastFetchTransactions.get(currTxnPos).getImgFileName();
+        String mchntId = mWorkFragment.mLastFetchTransactions.get(currTxnPos).getMerchant_id();
+
+        String url = AppCommonUtil.getTxnImgDir(mchntId)+txnImgFileName;
+        mWorkFragment.fetchImageFile(url);
     }
 
     // process all files in 'mAllFiles' and add applicable CSV records in mWorkFragment.mFilteredCsvRecords
@@ -643,7 +674,7 @@ public class ReportsActivity extends AppCompatActivity implements
 
         outState.putSerializable("mFromDate", mFromDate);
         outState.putSerializable("mToDate", mToDate);
-        //outState.putString("mCustomerId", mCustomerId);
+        outState.putInt("mDetailedTxnPos", mDetailedTxnPos);
     }
 
 }

@@ -1,7 +1,9 @@
 package in.myecash.appagent;
 
+import android.app.ActivityManager;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -142,6 +144,15 @@ public class ActionsActivity extends AppCompatActivity implements
     public void onDialogResult(String tag, int indexOrResultCode, ArrayList<Integer> selectedItemsIndexList) {
         if (tag.equals(DIALOG_BACK_BUTTON)) {
             mExitAfterLogout = true;
+            // delete all app memory data
+            if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
+                if(!((ActivityManager)getSystemService(ACTIVITY_SERVICE))
+                        .clearApplicationUserData()) {
+                    LogMy.w(TAG,"Failed to clear application user data");
+                }
+            } else {
+                LogMy.e(TAG,"Not clearing cache data - as API level is below 19.");
+            }
             logoutAgent();
         }
     }
@@ -235,6 +246,7 @@ public class ActionsActivity extends AppCompatActivity implements
         // pseudo login done - launch cashback activity
         //Start Cashback Activity
         Intent intent = new Intent( this, CashbackActivity.class );
+        intent.putExtra(CashbackActivity.INTENT_EXTRA_USER_TOKEN, AgentUser.getInstance().getUserToken());
         // clear Login activity from backstack
         //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

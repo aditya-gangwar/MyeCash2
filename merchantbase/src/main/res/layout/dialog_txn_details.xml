@@ -371,15 +371,16 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"/>
+            android:layout_height="@dimen/large_space"/>
 
         <ImageView
             android:id="@+id/txnImage"
             android:background="@color/bg_customercare_data"
-            android:src="@drawable/ic_swap_horiz_white_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="centerInside"/>
+            android:src="@drawable/ic_block_white_48dp"
+            android:layout_width="@dimen/txn_img_image_width"
+            android:layout_height="@dimen/txn_img_image_height"
+            android:scaleType="centerInside"
+            android:layout_gravity="center"/>
 
         <Space
             android:layout_width="match_parent"

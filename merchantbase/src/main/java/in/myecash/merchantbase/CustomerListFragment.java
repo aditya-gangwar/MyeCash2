@@ -48,7 +48,7 @@ import java.util.List;
 /**
  * Created by adgangwa on 09-09-2016.
  */
-public class CustomerListFragment  extends Fragment {
+public class CustomerListFragment extends Fragment {
     private static final String TAG = "CustomerListFragment";
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
     private static final String DIALOG_SORT_CUST_TYPES = "dialogSortCust";
@@ -71,7 +71,7 @@ public class CustomerListFragment  extends Fragment {
 
     public interface CustomerListFragmentIf {
         MyRetainedFragment getRetainedFragment();
-        public void setDrawerState(boolean isEnabled);
+        void setDrawerState(boolean isEnabled);
     }
 
     // instance state - store and restore

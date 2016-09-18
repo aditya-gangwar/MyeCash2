@@ -167,6 +167,11 @@ public class TxnListFragment extends Fragment {
         return view;
     }
 
+    public void showDetailedDialog(int pos) {
+        TxnDetailsDialog dialog = TxnDetailsDialog.newInstance(pos);
+        dialog.show(getFragmentManager(), DIALOG_TXN_DETAILS);
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.txn_list_menu, menu);
@@ -486,8 +491,7 @@ public class TxnListFragment extends Fragment {
                     LogMy.d(TAG,"In onClickListener of txn list item");
                     int pos = mTxnRecyclerView.getChildAdapterPosition(v);
                     if (pos >= 0 && pos < getItemCount()) {
-                        CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(pos);
-                        dialog.show(getFragmentManager(), DIALOG_TXN_DETAILS);
+                        showDetailedDialog(pos);
                     } else {
                         LogMy.e(TAG,"Invalid position in onClickListener of customer list item: "+pos);
                     }

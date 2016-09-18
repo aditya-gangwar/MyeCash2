@@ -6,18 +6,6 @@
     <group android:checkableBehavior="single"
         android:id="@+id/grp1">
         <item
-            android:id="@+id/menu_dashboard"
-            android:title="Dashboard"
-            android:icon="@drawable/ic_dashboard_black_24dp" />
-        <item
-            android:id="@+id/menu_reports"
-            android:title="History Txns"
-            android:icon="@drawable/ic_history_black_24dp" />
-        <item
-            android:id="@+id/menu_customers"
-            android:title="Customer Data"
-            android:icon="@drawable/ic_group_black_24dp" />
-        <item
             android:id="@+id/menu_settings"
             android:title="Settings"
             android:icon="@drawable/ic_settings_black_24dp" />
@@ -30,6 +18,40 @@
             android:title="Log out"
             android:icon="@drawable/ic_power_settings_new_black_24dp" /-->
     </group>
+
+    <item
+        android:id="@+id/current_subheader"
+        android:title="Current Data">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_dashboard"
+                    android:title="Dashboard"
+                    android:icon="@drawable/ic_dashboard_black_24dp" />
+                <item
+                    android:id="@+id/menu_customers"
+                    android:title="Customer Data"
+                    android:icon="@drawable/ic_group_black_24dp" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/history_subheader"
+        android:title="History Data">
+        <menu>
+        <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/menu_reports"
+                android:title="Transactions"
+                android:icon="@drawable/ic_swap_horiz_black_24dp" />
+            <item
+                android:id="@+id/menu_operations"
+                android:title="Change Requests"
+                android:icon="@drawable/ic_change_history_black_24dp" />
+        </group>
+        </menu>
+    </item>
 
     <item
         android:id="@+id/customer_subheader"

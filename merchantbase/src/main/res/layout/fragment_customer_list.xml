@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar_report"
         android:id="@+id/custlist_header"
-        android:background="@color/iron2">
+        android:background="@color/bg_list_header">
 
         <EditText
             style="@style/Edittext_only_view_small"

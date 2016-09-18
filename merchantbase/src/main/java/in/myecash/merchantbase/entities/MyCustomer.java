@@ -55,7 +55,7 @@ public class MyCustomer {
         return mFirstLoginOk;
     }
 
-    public String getCbCreateTime() {
+    public String getCustCreateTime() {
         return mCreateTime;
     }
 

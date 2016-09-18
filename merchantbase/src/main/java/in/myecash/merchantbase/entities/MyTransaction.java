@@ -46,6 +46,7 @@ public class MyTransaction {
         txn.setCb_credit(Integer.parseInt(csvFields[CommonConstants.TXN_CSV_IDX_CB_AWARD]));
         txn.setCb_percent(csvFields[CommonConstants.TXN_CSV_IDX_CB_RATE]);
         txn.setCpin(csvFields[CommonConstants.TXN_CSV_IDX_CUST_PIN]);
+        txn.setImgFileName(csvFields[CommonConstants.TXN_CSV_IDX_IMG_FILE]);
         return txn;
     }
 

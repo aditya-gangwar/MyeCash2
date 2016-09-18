@@ -52,7 +52,7 @@ public class CommonConstants {
     public static final int CUSTOMER_CARDID_LEN = 11;
     // DOB in format 'DDMMYYYY'
     public static final int DOB_SECRET_LEN = 8; //mobile number
-    public static final int TRANSACTION_ID_LEN = 10;
+    public static final int TRANSACTION_ID_LEN = 12;
     public static final int PIN_OTP_LEN = 5;
 
     public static final int MAX_DEVICES_PER_MERCHANT = 3;
@@ -69,8 +69,10 @@ public class CommonConstants {
     public static String MERCHANT_TXN_ROOT_DIR = MERCHANT_ROOT_DIR+"txnCsvFiles"+ CommonConstants.FILE_PATH_SEPERATOR;
     public static String MERCHANT_CUST_DATA_ROOT_DIR = MERCHANT_ROOT_DIR+"customerData"+ CommonConstants.FILE_PATH_SEPERATOR;
     public static String MERCHANT_TXN_IMAGE_ROOT_DIR = MERCHANT_ROOT_DIR+"txnImages"+ CommonConstants.FILE_PATH_SEPERATOR;
+
     public static String MERCHANT_TXN_FILE_PREFIX = "txns_";
     public static String MERCHANT_CUST_DATA_FILE_PREFIX = "customers_";
+    public static final String PREFIX_TXN_IMG_FILE_NAME = "txnImg_";
 
     public static final String CSV_DELIMETER = ",";
     public static final String CSV_SUB_DELIMETER = ":";
@@ -100,7 +102,7 @@ public class CommonConstants {
     public static int TXN_CSV_IDX_CB_AWARD = 12;
     public static int TXN_CSV_IDX_CB_RATE = 13;
     public static int TXN_CSV_IDX_CUST_PIN = 14;
-    public static int TXN_CSV_FIELD_CNT = 15;
+    public static int TXN_CSV_IDX_IMG_FILE = 15;
 
     /*
      * Index of various parameters in Cashback CSV records (stored in CustData CSV files)

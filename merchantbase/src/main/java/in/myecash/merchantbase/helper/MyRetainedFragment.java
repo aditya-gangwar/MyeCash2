@@ -11,6 +11,7 @@ import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.BackendSettings;
 import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
+import in.myecash.commonbase.models.MerchantOps;
 import in.myecash.commonbase.models.MerchantStats;
 import in.myecash.commonbase.models.Transaction;
 import in.myecash.commonbase.utilities.BackgroundProcessor;
@@ -36,7 +37,7 @@ public class MyRetainedFragment extends RetainedFragment {
     private static final String TAG = "MyRetainedFragment";
 
     // Requests that this fragment executes in backend
-    public static final int REQUEST_MCHNT_DP_DOWNLOAD = 0;
+    public static final int REQUEST_IMAGE_DOWNLOAD = 0;
     public static final int REQUEST_REGISTER_MERCHANT = 1;
     public static final int REQUEST_GET_CASHBACK = 2;
     public static final int REQUEST_REGISTER_CUSTOMER = 3;
@@ -53,14 +54,16 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_CHANGE_MOBILE = 14;
     public static final int REQUEST_MERCHANT_STATS = 15;
     public static final int REQUEST_FORGOT_ID = 16;
-    public static final int REQUEST_UPLOAD_FILE = 17;
+    public static final int REQUEST_UPLOAD_TXN_IMG = 17;
     public static final int REQUEST_ARCHIVE_TXNS = 18;
     public static final int REQUEST_CUST_DATA_FILE_DOWNLOAD = 19;
+    public static final int REQUEST_FETCH_MERCHANT_OPS = 20;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
     private FetchImageTask mFetchImageTask;
 
+    public String mUserToken;
     public MerchantUser mMerchantUser;
     // Current objects - should be reset after each transaction
     public String mCustMobile;
@@ -73,6 +76,8 @@ public class MyRetainedFragment extends RetainedFragment {
     public MyTransaction mCurrTransaction;
     public MerchantStats mMerchantStats;
     public List<MyCashback> mLastFetchCashbacks;
+    public List<MerchantOps> mLastFetchMchntOps;
+    public Bitmap mLastFetchedImage;
 
     public int mBillTotal;
     public int mCbExcludedTotal;
@@ -97,7 +102,10 @@ public class MyRetainedFragment extends RetainedFragment {
         mCurrCashback = null;
         mCurrTransaction = null;
         mCurrCustomer = null;
+
         mLastFetchTransactions = null;
+        mLastFetchedImage = null;
+        mLastFetchMchntOps = null;
 
         mCustMobile = null;
         mCustCardId = null;
@@ -116,6 +124,10 @@ public class MyRetainedFragment extends RetainedFragment {
 
         Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, "");
         Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, "");
+    }
+
+    public void fetchMerchantsOps() {
+        mBackgroundProcessor.addMerchantOpsReq();
     }
 
     public void archiveTxns() {mBackgroundProcessor.addArchiveTxnsRequest();}
@@ -181,7 +193,6 @@ public class MyRetainedFragment extends RetainedFragment {
     }
 
     public void commitCashTransaction(String pin) {
-        //mBackgroundProcessor.addCommitTransRequest(mTransaction);
         mBackgroundProcessor.addCommitTransRequest(pin);
     }
 
@@ -189,15 +200,17 @@ public class MyRetainedFragment extends RetainedFragment {
         mBackgroundProcessor.addCustFileDownloadReq(ctxt, fileURL);
     }
 
-    public void fetchMerchantDp() {
-        LogMy.d(TAG, "In fetchMerchantDp");
+    public void fetchImageFile(String url) {
+        LogMy.d(TAG, "In fetchImageFile");
         // most probably this will get called before OnActivityCreated and mMerchantUser will be null then
         mMerchantUser = MerchantUser.getInstance();
+
         // start new thread if old thread already running and not finished
         if( (mFetchImageTask!=null && mFetchImageTask.getStatus()== FetchImageTask.Status.FINISHED) ||
                 mFetchImageTask == null) {
+            mLastFetchedImage = null;
             mFetchImageTask = new FetchImageTask();
-            mFetchImageTask.execute();
+            mFetchImageTask.execute(url, mUserToken);
         }
     }
 
@@ -241,16 +254,18 @@ public class MyRetainedFragment extends RetainedFragment {
     }
 
     // Async task to fetch merchant display image file
-    private class FetchImageTask extends AsyncTask<Void,Void,Bitmap> {
+    private class FetchImageTask extends AsyncTask<String,Void,Bitmap> {
         @Override
-        protected Bitmap doInBackground(Void... params) {
+        protected Bitmap doInBackground(String... params) {
             try {
+                /*
                 String url = BackendSettings.BACKEND_FILE_BASE_URL+
                         CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR+
                         mMerchantUser.getMerchant().getDisplayImage();
-
                 byte[] bitmapBytes = new FileFetchr().getUrlBytes(url,
-                        MerchantUser.getInstance().getUserToken());
+                        MerchantUser.getInstance().getUserToken());*/
+
+                byte[] bitmapBytes = new FileFetchr().getUrlBytes(params[0],params[1]);
                 return BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
             } catch (IOException ioe) {
                 LogMy.e(TAG, "Failed to fetch image"+ ioe.toString());
@@ -261,10 +276,11 @@ public class MyRetainedFragment extends RetainedFragment {
         @Override
         protected void onPostExecute(Bitmap image) {
             if(image==null) {
-                mCallback.onBgProcessResponse(ErrorCodes.GENERAL_ERROR, REQUEST_MCHNT_DP_DOWNLOAD);
+                mCallback.onBgProcessResponse(ErrorCodes.GENERAL_ERROR, REQUEST_IMAGE_DOWNLOAD);
             } else {
-                mMerchantUser.setDisplayImage(image);
-                mCallback.onBgProcessResponse(ErrorCodes.NO_ERROR, REQUEST_MCHNT_DP_DOWNLOAD);
+                mLastFetchedImage = image;
+                //mMerchantUser.setDisplayImage(image);
+                mCallback.onBgProcessResponse(ErrorCodes.NO_ERROR, REQUEST_IMAGE_DOWNLOAD);
             }
         }
     }

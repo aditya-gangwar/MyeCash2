@@ -26,9 +26,17 @@
         style="@style/Edittext_only_view_small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login (and password reset) operations are allowed from 'trusted devices' only"
-        android:layout_marginBottom="@dimen/large_space"
+        android:text="Login (and password reset) is allowed from 'trusted devices' only"
         android:layout_marginTop="@dimen/medium_space"
+        android:singleLine="false"/>
+
+    <EditText
+        style="@style/Edittext_only_view_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Keep atleast 2 trusted devices. This will help to restore access, in case device with registered number SIM is lost."
+        android:layout_marginBottom="@dimen/large_space"
+        android:layout_marginTop="@dimen/small_space"
         android:singleLine="false"/>
 
     <RelativeLayout

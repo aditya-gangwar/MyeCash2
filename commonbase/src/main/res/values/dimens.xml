@@ -1,5 +1,7 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="txn_img_image_width">270dp</dimen>
+    <dimen name="txn_img_image_height">270dp</dimen>
     <dimen name="splash_logo_image_width">180dp</dimen>
     <dimen name="splash_logo_image_height">180dp</dimen>
     <dimen name="login_logo_image_width">128dp</dimen>

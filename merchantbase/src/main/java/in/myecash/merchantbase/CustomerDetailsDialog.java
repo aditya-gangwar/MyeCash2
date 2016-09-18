@@ -105,13 +105,6 @@ public class CustomerDetailsDialog extends DialogFragment  {
     private void initDialogView(MyCashback cb) {
         MyCustomer cust = cb.getCustomer();
 
-        // hide fields for customer care logins only
-        mLayoutName.setVisibility(View.GONE);
-        mLayoutCreated.setVisibility(View.GONE);
-        mLayoutFirstLogin.setVisibility(View.GONE);
-        mLayoutRemarks.setVisibility(View.GONE);
-        mLayoutCardStatusDate.setVisibility(View.GONE);
-
         if(cust != null) {
             mInputCustomerId.setText(cust.getPrivateId());
             mInputMobileNum.setText(AppCommonUtil.getPartialVisibleStr(cust.getMobileNum()));
@@ -157,6 +150,22 @@ public class CustomerDetailsDialog extends DialogFragment  {
             mInputCbAvailable.setText(AppCommonUtil.getAmtStr(cb.getCurrCbBalance()));
             mInputCbTotalAward.setText(AppCommonUtil.getAmtStr(cb.getCbCredit()));
             mInputCbTotalRedeem.setText(AppCommonUtil.getAmtStr(cb.getCbRedeem()));
+
+            if(mCallback.getRetainedFragment().mMerchantUser.isPseudoLoggedIn()) {
+                // set cust care specific fields too
+                mName.setText(cust.getName());
+                mCreatedOn.setText(mSdfDateWithTime.format(cust.getCustCreateTime()));
+                mFirstLogin.setText(cust.isFirstLoginOk().toString());
+                mCardStatusDate.setText(cust.getCardStatusUpdateTime());
+                mInputAdminRemarks.setText(cust.getRemarks());
+            } else {
+                // hide fields for customer care logins only
+                mLayoutName.setVisibility(View.GONE);
+                mLayoutCreated.setVisibility(View.GONE);
+                mLayoutFirstLogin.setVisibility(View.GONE);
+                mLayoutRemarks.setVisibility(View.GONE);
+                mLayoutCardStatusDate.setVisibility(View.GONE);
+            }
 
         } else {
             LogMy.wtf(TAG, "Customer or Cashback object is null !!");

@@ -3,6 +3,7 @@ package in.myecash.appagent.entities;
 import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
 import com.backendless.BackendlessUser;
+import com.backendless.HeadersManager;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.files.BackendlessFile;
 import com.backendless.persistence.BackendlessDataQuery;
@@ -25,7 +26,7 @@ public class AgentUser {
     private static final String TAG = "AgentUser";
 
     private BackendlessUser mAgentUser;
-
+    private String mUserToken;
     /*
      * Singleton class
      */
@@ -76,6 +77,13 @@ public class AgentUser {
                 LogMy.e(TAG,"Invalid usertype in agent app: "+userType+", "+userId);
                 logout();
                 return ErrorCodes.USER_WRONG_ID_PASSWD;
+            }
+
+            // Store user token
+            mInstance.mUserToken = HeadersManager.getInstance().getHeader(HeadersManager.HeadersEnum.USER_TOKEN_KEY);
+            if(mInstance.mUserToken == null || mInstance.mUserToken.isEmpty()) {
+                logout();
+                return ErrorCodes.GENERAL_ERROR;
             }
             LogMy.d(TAG, "Login Success: " + getUser_id());
 
@@ -144,9 +152,13 @@ public class AgentUser {
         return ErrorCodes.NO_ERROR;
     }
 
+    public String getUserToken() {
+        return mUserToken;
+    }
+
     /*
-     * Private helper methods
-     */
+         * Private helper methods
+         */
     private String uploadImageSync(File imgFile, String remoteDir) {
         // upload file
         try {

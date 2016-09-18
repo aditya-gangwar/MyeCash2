@@ -3,7 +3,9 @@ package in.myecash.merchantbase;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -12,8 +14,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 
+import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.entities.MyGlobalSettings;
@@ -29,13 +33,14 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
  */
 public class TxnDetailsDialog extends DialogFragment {
     private static final String TAG = "TxnDetailsDialog";
-    private static final String ARG_POSITION = "cbPosition";
+    private static final String ARG_POSITION = "argPosition";
 
     private TxnDetailsDialogIf mCallback;
     private SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
 
     public interface TxnDetailsDialogIf {
         MyRetainedFragment getRetainedFragment();
+        void showTxnImg(int currTxnPos);
     }
 
     public static TxnDetailsDialog newInstance(int position) {
@@ -60,8 +65,7 @@ public class TxnDetailsDialog extends DialogFragment {
         }
 
         int position = getArguments().getInt(ARG_POSITION, -1);
-        Transaction txn = mCallback.getRetainedFragment().mLastFetchTransactions.get(position);
-        initDialogView(txn);
+        initDialogView(position);
     }
 
     @Override
@@ -91,10 +95,41 @@ public class TxnDetailsDialog extends DialogFragment {
         return dialog;
     }
 
-    private void initDialogView(Transaction txn) {
+    private void initDialogView(final int position) {
+        final Transaction txn = mCallback.getRetainedFragment().mLastFetchTransactions.get(position);
 
         // hide fields for customer care logins only
-        mTxnImage.setVisibility(View.GONE);
+        if(mCallback.getRetainedFragment().mMerchantUser.isPseudoLoggedIn()) {
+
+            // check if file locally available - will be after the call to showTxnImg()
+            // if not, set the listener
+            Bitmap image = mCallback.getRetainedFragment().mLastFetchedImage;
+            if(image != null) {
+                int radiusInDp = (int) getResources().getDimension(R.dimen.txn_img_image_width);
+                int radiusInPixels = AppCommonUtil.dpToPx(radiusInDp);
+                Bitmap scaledImg = Bitmap.createScaledBitmap(image,radiusInPixels,radiusInPixels,true);
+
+                mTxnImage.setVisibility(View.VISIBLE);
+                mTxnImage.setImageBitmap(scaledImg);
+
+            } else {
+                mTxnImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(txn.getImgFileName()==null || txn.getImgFileName().isEmpty()) {
+                            AppCommonUtil.toast(getActivity(), "Card image not required for this txn");
+                        } else {
+                            // start file download
+                            // pass index of current shown txn - so as this dialog can be started again to show the same txn
+                            mCallback.showTxnImg(position);
+                            getDialog().dismiss();
+                        }
+                    }
+                });
+            }
+        } else {
+            mTxnImage.setVisibility(View.GONE);
+        }
 
         if(txn != null) {
             mInputTxnId.setText(txn.getTrans_id());
@@ -119,6 +154,13 @@ public class TxnDetailsDialog extends DialogFragment {
             LogMy.wtf(TAG, "Txn object is null !!");
             getDialog().dismiss();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // reset it
+        mCallback.getRetainedFragment().mLastFetchedImage = null;
     }
 
     private EditText mInputTxnId;
