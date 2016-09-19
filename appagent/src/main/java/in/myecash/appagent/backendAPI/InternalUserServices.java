@@ -9,7 +9,7 @@ package in.myecash.appagent.backendAPI;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 
-  public class AgentServices
+  public class InternalUserServices
 {
     static final String BACKENDLESS_HOST = "https://api.backendless.com";
     static final String SERVICE_NAME = "AgentServices";
@@ -18,22 +18,22 @@ import com.backendless.async.callback.AsyncCallback;
     static final String APP_ID = "09667F8B-98A7-E6B9-FFEB-B2B6EE831A00";
     static final String SECRET_KEY = "BB557D9A-4C9C-84FE-FFA1-B15A476D7400";
 
-    private static AgentServices ourInstance = new AgentServices();
+    private static InternalUserServices ourInstance = new InternalUserServices();
 
-    private AgentServices(  )
+    private InternalUserServices(  )
     {
     }
 
-    public static AgentServices getInstance()
+    public static InternalUserServices getInstance()
     {
         return ourInstance;
     }
 
     public static void initApplication()
     {
-        Backendless.setUrl( AgentServices.BACKENDLESS_HOST );
+        Backendless.setUrl( InternalUserServices.BACKENDLESS_HOST );
         // if you invoke this sample inside of android application, you should use overloaded "initApp" with "context" argument
-        Backendless.initApp( AgentServices.APP_ID, AgentServices.SECRET_KEY, AgentServices.APP_VERSION );
+        Backendless.initApp( InternalUserServices.APP_ID, InternalUserServices.SECRET_KEY, InternalUserServices.APP_VERSION );
     }
 
 

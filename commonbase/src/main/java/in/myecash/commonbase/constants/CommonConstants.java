@@ -51,7 +51,7 @@ public class CommonConstants {
     public static final int CUSTOMER_INTERNAL_ID_LEN = 6;
     public static final int CUSTOMER_CARDID_LEN = 11;
     // DOB in format 'DDMMYYYY'
-    public static final int DOB_SECRET_LEN = 8; //mobile number
+    public static final int DOB_LEN = 8; //mobile number
     public static final int TRANSACTION_ID_LEN = 12;
     public static final int PIN_OTP_LEN = 5;
 

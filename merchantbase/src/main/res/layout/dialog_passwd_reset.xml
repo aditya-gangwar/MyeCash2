@@ -18,19 +18,25 @@
             android:id="@+id/label_information_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Provide your brand name for verification." />
+            android:text="Provide your 'Date of Birth' in DDMMYYYY format (as provided during registration)" />
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Example 06031983 in place of '06 March 1983'" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="@dimen/large_space"/>
 
         <EditText
-            android:id="@+id/input_bussiness_name"
+            android:id="@+id/input_dob"
             style="@style/MyEdittext_Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Brand name"
-            android:maxLength="@string/brand_char_limit"
+            android:hint="Date of Birth (DDMMYYYY)"
+            android:maxLength="@string/dob_char_limit"
             android:gravity="center"/>
 
         <Space
@@ -41,7 +47,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New password will be sent on your registered mobile number." />
+            android:text="New password will be sent on your current registered mobile number." />
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"

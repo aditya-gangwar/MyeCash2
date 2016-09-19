@@ -45,7 +45,7 @@ public interface PasswdResetDialogIf {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LogMy.d(TAG, "In onCreateDialog");
 
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_passwd_reset, null);
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_pwd_reset_agent, null);
         initUiResources(v);
 
         // return new dialog
@@ -72,7 +72,7 @@ public interface PasswdResetDialogIf {
                     public void onClick(View view) {
                         AppCommonUtil.hideKeyboard(getDialog());
                         String value = mInputName.getText().toString();
-                        int error = ValidationHelper.validateDobSecret(value);
+                        int error = ValidationHelper.validateDob(value);
                         if(error == ErrorCodes.NO_ERROR) {
                             mListener.onPasswdResetData(value);
                             getDialog().dismiss();

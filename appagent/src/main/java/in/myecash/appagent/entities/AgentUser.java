@@ -7,7 +7,7 @@ import com.backendless.HeadersManager;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.files.BackendlessFile;
 import com.backendless.persistence.BackendlessDataQuery;
-import in.myecash.appagent.backendAPI.AgentServices;
+import in.myecash.appagent.backendAPI.InternalUserServices;
 import in.myecash.appagent.backendAPI.InternalUserServicesNoLogin;
 import in.myecash.commonbase.constants.BackendResponseCodes;
 import in.myecash.commonbase.constants.CommonConstants;
@@ -139,7 +139,7 @@ public class AgentUser {
             String url = uploadImageSync(imgFile, CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR);
             if(url != null) {
                 merchant.setDisplayImage(imgFile.getName());
-                AgentServices.getInstance().registerMerchant(merchant);
+                InternalUserServices.getInstance().registerMerchant(merchant);
                 LogMy.d(TAG, "Merchant registration success: " + merchant.getAuto_id());
 
             } else {

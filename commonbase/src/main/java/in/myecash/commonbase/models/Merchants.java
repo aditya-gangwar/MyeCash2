@@ -34,6 +34,16 @@ public class Merchants
   private Integer cl_credit_limit_for_pin;
   private Boolean first_login_ok;
   private Boolean debugLogs;
+  private String dob;
+
+  public String getDob() {
+    return dob;
+  }
+
+  public void setDob(String dob) {
+    this.dob = dob;
+  }
+
   /*
   private java.util.Date lastLogin;
 

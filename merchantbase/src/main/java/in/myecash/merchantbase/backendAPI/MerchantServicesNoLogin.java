@@ -38,9 +38,9 @@ import in.myecash.commonbase.constants.BackendSettings;
 
 
 
-    public void resetMerchantPwd(String userId, String deviceId, String brandName)
+    public void resetMerchantPwd(String userId, String deviceId, String dob)
     {
-        Object[] args = new Object[]{userId, deviceId, brandName};
+        Object[] args = new Object[]{userId, deviceId, dob};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "resetMerchantPwd", args );
     }
     

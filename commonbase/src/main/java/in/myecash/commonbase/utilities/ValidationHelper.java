@@ -2,6 +2,8 @@ package in.myecash.commonbase.utilities;
 
 import android.util.Patterns;
 
+import java.util.Calendar;
+
 import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 
@@ -129,12 +131,19 @@ public final class ValidationHelper{
         }
     }
 
-    public static int validateDobSecret(String value) {
+    public static int validateDob(String value) {
         if (value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;
-        } else if (value.length() != CommonConstants.DOB_SECRET_LEN) {
+        } else if (value.length() != CommonConstants.DOB_LEN) {
             return ErrorCodes.INVALID_LENGTH;
         } else {
+            int currYear = Calendar.getInstance().get(Calendar.YEAR);
+
+            if( Integer.parseInt(value.substring(0,2)) > 31 ||
+                    Integer.parseInt(value.substring(2,4)) > 12 ||
+                    Integer.parseInt(value.substring(4)) > currYear ) {
+                return ErrorCodes.INVALID_FORMAT;
+            }
             return ErrorCodes.NO_ERROR;
         }
     }

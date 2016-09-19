@@ -308,6 +308,13 @@ public class RegisterMerchantActivity extends AppCompatActivity
             sb.append("Email; ");
         }
 
+        errorCode = ValidationHelper.validateDob(mDoBTextRes.getText().toString());
+        if( errorCode != ErrorCodes.NO_ERROR ) {
+            valid = false;
+            mDoBTextRes.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            sb.append("DoB; ");
+        }
+
         if(mAddress.getCity() == null) {
             mCityTextRes.setError("Select city");
             valid = false;
@@ -444,6 +451,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
     private EditText    mCategoryTextRes;
     private EditText    mMobileNoTextRes;
     private EditText    mEmailTextRes;
+    private EditText    mDoBTextRes;
     private EditText    mCityTextRes;
     private EditText    mStateTextRes;
     private EditText    mAddressTextRes1;
@@ -458,6 +466,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
         mCategoryTextRes    = (EditText) findViewById(R.id.edittext_category);
         mMobileNoTextRes    = (EditText) findViewById(R.id.input_merchant_mobile);
         mEmailTextRes       = (EditText) findViewById(R.id.input_merchant_email);
+        mDoBTextRes       = (EditText) findViewById(R.id.input_merchant_dob);
         mCityTextRes        = (EditText) findViewById(R.id.edittext_city);
         mStateTextRes       = (EditText) findViewById(R.id.edittext_state);
         mAddressTextRes1     = (EditText) findViewById(R.id.input_address_1);
@@ -471,6 +480,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
         mWorkFragment.mCurrMerchant.setName(mBrandNameTextRes.getText().toString());
         mWorkFragment.mCurrMerchant.setMobile_num(mMobileNoTextRes.getText().toString());
         mWorkFragment.mCurrMerchant.setEmail(mEmailTextRes.getText().toString());
+        mWorkFragment.mCurrMerchant.setDob(mDoBTextRes.getText().toString());
         mAddress.setLine_1(mAddressTextRes1.getText().toString());
         //mTermsAgreed = mTermsCheckBox.isChecked();
     }

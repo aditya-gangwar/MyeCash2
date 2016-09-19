@@ -72,13 +72,13 @@ public interface PasswdResetDialogIf {
                     @Override
                     public void onClick(View view) {
                         AppCommonUtil.hideKeyboard(getDialog());
-                        String name = mInputName.getText().toString();
-                        int error = ValidationHelper.validateBrandName(name);
+                        String dob = mInputDob.getText().toString();
+                        int error = ValidationHelper.validateDob(dob);
                         if(error == ErrorCodes.NO_ERROR) {
-                            mListener.onPasswdResetData(name);
+                            mListener.onPasswdResetData(dob);
                             getDialog().dismiss();
                         } else {
-                            mInputName.setError(ErrorCodes.appErrorDesc.get(error));
+                            mInputDob.setError(ErrorCodes.appErrorDesc.get(error));
                         }
                     }
                 });
@@ -102,8 +102,8 @@ public interface PasswdResetDialogIf {
         mListener.onPasswdResetData(null);
     }
 
-    private EditText mInputName;
+    private EditText mInputDob;
     private void initUiResources(View v) {
-        mInputName = (EditText) v.findViewById(R.id.input_bussiness_name);
+        mInputDob = (EditText) v.findViewById(R.id.input_dob);
     }
 }

@@ -489,7 +489,7 @@
                 style="@style/button_normal_thin"
                 android:id="@+id/btn_acc_status"
                 android:layout_width="0dp"
-                android:text="Disable"
+                android:text="Change Status"
                 android:layout_weight="47.5"/>
 
             <Space

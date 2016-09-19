@@ -101,6 +101,7 @@
     <style name="button_normal_thin" parent="button_normal">
         <item name="android:padding">@dimen/small_space</item>
         <item name="android:minHeight">@dimen/XXXXL_space</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
     <style name="button_normal" parent="Widget.AppCompat.Button.Borderless">
