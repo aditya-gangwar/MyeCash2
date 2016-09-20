@@ -1,7 +1,9 @@
 package in.myecash.appagent;
 
 import android.app.ActivityManager;
+import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +22,8 @@ import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.DialogFragmentWrapper;
 import in.myecash.commonbase.utilities.LogMy;
 import in.myecash.merchantbase.CashbackActivity;
+import in.myecash.merchantbase.DashboardFragment;
+import in.myecash.merchantbase.MerchantOpListFrag;
 import in.myecash.merchantbase.entities.MerchantUser;
 
 import java.util.ArrayList;
@@ -30,26 +34,18 @@ import java.util.ArrayList;
 public class ActionsActivity extends AppCompatActivity implements
         MyRetainedFragment.RetainedFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         ActionsFragment.ActionsFragmentIf, PasswdChangeDialog.PasswdChangeDialogIf,
-        SearchMerchantDialog.SearchMerchantDialogIf, MerchantDetailsDialog.MerchantDetailsDialogIf
+        SearchMerchantDialog.SearchMerchantDialogIf, MerchantDetailsFragment.MerchantDetailsFragmentIf,
+        DisableMchntDialog.DisableMchntDialogIf
 {
 
     private static final String TAG = "ActionsActivity";
     private static final String RETAINED_FRAGMENT = "retainedFragActions";
-    private static final String ACTIONS_FRAGMENT = "MobileNumFragment";
+    private static final String ACTIONS_FRAGMENT = "actionsFragment";
+    private static final String MCHNT_DETAILS_FRAGMENT = "mchntDetailsFragment";
 
     private static final String DIALOG_BACK_BUTTON = "dialogBackButton";
     private static final String DIALOG_CHANGE_BUTTON = "dialogChangeButton";
     private static final String DIALOG_SEARCH_MCHNT = "searchMchnt";
-    private static final String DIALOG_MCHNT_DETAILS = "mchntDetails";
-
-    /*
-    // Possible merchant actions
-    private static final String MERCHANT_REGISTER = "REGISTER";
-
-    private static final int MAX_MERCHANT_BUTTONS = 2;
-    // elements has to be <= MAX_MERCHANT_BUTTONS
-    private static final String[] agentMerchantActions = {MERCHANT_REGISTER};
-    */
 
     // this will never be null, as it only gets destroyed with cashback activity itself
     ActionsFragment mActionsFragment;
@@ -128,10 +124,24 @@ public class ActionsActivity extends AppCompatActivity implements
             case MyRetainedFragment.REQUEST_SEARCH_MERCHANT:
                 AppCommonUtil.cancelProgressDialog(true);
                 if(errorCode==ErrorCodes.NO_ERROR) {
-                    // show merchant details
                     mWorkFragment.mCurrMerchant = MerchantUser.getInstance().getMerchant();
-                    MerchantDetailsDialog dialog = new MerchantDetailsDialog();
-                    dialog.show(getFragmentManager(), DIALOG_MCHNT_DETAILS);
+                    startMchntDetailsFragment();
+                    // show merchant details
+                    /*
+                    mWorkFragment.mCurrMerchant = MerchantUser.getInstance().getMerchant();
+                    MerchantDetailsFragment dialog = new MerchantDetailsFragment();
+                    dialog.show(getFragmentManager(), DIALOG_MCHNT_DETAILS);*/
+                } else {
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
+                break;
+
+            case MyRetainedFragment.REQUEST_DISABLE_MERCHANT:
+                AppCommonUtil.cancelProgressDialog(true);
+                if(errorCode==ErrorCodes.NO_ERROR) {
+                    DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.merchantDisableSuccessMsg, false, false)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else {
                     DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -226,6 +236,12 @@ public class ActionsActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void disableMerchant(String ticketId, String reason, String remarks) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mWorkFragment.disableMerchant(ticketId, reason, remarks);
+    }
+
+    @Override
     public void onPasswdChangeData(String oldPasswd, String newPassword) {
         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
         mWorkFragment.changePassword(oldPasswd, newPassword);
@@ -236,10 +252,6 @@ public class ActionsActivity extends AppCompatActivity implements
         return mWorkFragment;
     }
 
-    @Override
-    public void disableMerchant() {
-
-    }
 
     @Override
     public void launchMchntApp() {
@@ -274,16 +286,31 @@ public class ActionsActivity extends AppCompatActivity implements
     }
 
     /*
-         * Activity and Fragment start fxs
-         */
+     * Activity and Fragment start fxs
+     */
     private void startActionsFragment() {
         if (mFragMgr.findFragmentByTag(ACTIONS_FRAGMENT) == null) {
             //setDrawerState(false);
             mActionsFragment = new ActionsFragment();
             mFragMgr.beginTransaction()
-                    .add(R.id.fragment_container_1, mActionsFragment, ACTIONS_FRAGMENT)
+                    .add(R.id.fragment_container, mActionsFragment, ACTIONS_FRAGMENT)
                     .addToBackStack(ACTIONS_FRAGMENT)
                     .commit();
+        }
+    }
+
+    private void startMchntDetailsFragment() {
+        if (mFragMgr.findFragmentByTag(MCHNT_DETAILS_FRAGMENT) == null) {
+            LogMy.d(TAG, "Creating new mchnt details fragment");
+            Fragment fragment = new MerchantDetailsFragment();
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container, fragment, MCHNT_DETAILS_FRAGMENT);
+            transaction.addToBackStack(MCHNT_DETAILS_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
         }
     }
 

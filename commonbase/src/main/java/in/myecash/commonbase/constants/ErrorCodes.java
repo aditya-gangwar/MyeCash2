@@ -95,7 +95,7 @@ public class ErrorCodes {
         aMap.put(WRONG_CARD,"Invalid customer card.");
         aMap.put(OTP_GENERATE_FAILED,"Failed to generate OTP. Please tru again later.");
         aMap.put(SEND_SMS_FAILED,"Failed to send SMS");
-        aMap.put(WRONG_INPUT_DATA,"");
+        aMap.put(WRONG_INPUT_DATA,"Invalid input data");
         aMap.put(NO_SUCH_CARD,"Invalid customer card");
         aMap.put(VERIFICATION_FAILED,"Request verification failed");
         aMap.put(FAILED_ATTEMPT_LIMIT_RCHD,"Failed attempt limit reached. This account is locked temporarily for next %s hours.");
@@ -171,6 +171,7 @@ public class ErrorCodes {
         aMap.put(BackendResponseCodes.BL_ERROR_DUPLICATE_ENTRY,DUPLICATE_ENTRY);
         aMap.put(BackendResponseCodes.BL_ERROR_REGISTER_DUPLICATE,USER_ALREADY_REGISTERED);
         aMap.put(BackendResponseCodes.BL_ERROR_NO_PERMISSIONS,NO_PERMISSIONS);
+        aMap.put(BackendResponseCodes.BL_ERROR_NO_DATA_FOUND,NO_DATA_FOUND);
 
         backendToLocalErrorCode = Collections.unmodifiableMap(aMap);
     }

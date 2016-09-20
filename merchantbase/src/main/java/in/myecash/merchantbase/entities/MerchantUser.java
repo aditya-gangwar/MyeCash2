@@ -462,25 +462,31 @@ public class MerchantUser
     /*
      * Getter / Setter
      */
-    public int getClDebitLimitForPin() {
-        if(mMerchant.getCl_debit_limit_for_pin() == null) {
-            return MyGlobalSettings.getAccDebitPinLimit();
+    public Integer getClDebitLimitForPin() {
+        int retValue = MyGlobalSettings.getAccDebitPinLimit();
+
+        if( mMerchant.getCl_debit_limit_for_pin() >= 0 ) {
+            retValue = mMerchant.getCl_debit_limit_for_pin();
         }
-        return mMerchant.getCl_debit_limit_for_pin();
+        return retValue;
     }
 
-    public int getCbDebitLimitForPin() {
-        if(mMerchant.getCb_debit_limit_for_pin() == null) {
-            return MyGlobalSettings.getCbDebitPinLimit();
+    public Integer getCbDebitLimitForPin() {
+        int retValue = MyGlobalSettings.getCbDebitPinLimit();
+
+        if( mMerchant.getCb_debit_limit_for_pin() >= 0 ) {
+            retValue = mMerchant.getCb_debit_limit_for_pin();
         }
-        return mMerchant.getCb_debit_limit_for_pin();
+        return retValue;
     }
 
-    public int getClCreditLimitForPin() {
-        if(mMerchant.getCl_credit_limit_for_pin() == null) {
-            return MyGlobalSettings.getAccAddPinLimit();
+    public Integer getClCreditLimitForPin() {
+        int retValue = MyGlobalSettings.getAccAddPinLimit();
+
+        if( mMerchant.getCl_credit_limit_for_pin() >= 0 ) {
+            retValue = mMerchant.getCl_credit_limit_for_pin();
         }
-        return mMerchant.getCl_credit_limit_for_pin();
+        return retValue;
     }
 
     public String getUserToken() {

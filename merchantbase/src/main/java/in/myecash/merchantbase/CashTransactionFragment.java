@@ -35,7 +35,7 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
  * Created by adgangwa on 04-03-2016.
  */
 public class CashTransactionFragment extends Fragment implements
-        View.OnClickListener, CashPaid.CashPaidIf {
+        View.OnClickListener, CashPaid.CashPaidIf, View.OnTouchListener {
     private static final String TAG = "CashTransactionFragment";
 
     private static final int REQUEST_CASH_PAY = 1;
@@ -554,18 +554,20 @@ public class CashTransactionFragment extends Fragment implements
     }
 
     @Override
-    public void onClick(View v) {
-        LogMy.d(TAG, "In onClick: " + v.getId());
+    public boolean onTouch(View v, MotionEvent event) {
 
-        int i = v.getId();
-        if (i == R.id.input_trans_bill_amt) {
-            // open 'bill amount' for editing
-            if (billAmtEditAllowed()) {
-                startNumInputDialog(REQ_NEW_BILL_AMT, "Bill Amount:", mInputBillAmt, 0);
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            LogMy.d(TAG,"In onTouch: "+v.getId());
+
+            int i = v.getId();
+            if (i == R.id.input_trans_bill_amt) {
+                // open 'bill amount' for editing
+                if (billAmtEditAllowed()) {
+                    startNumInputDialog(REQ_NEW_BILL_AMT, "Bill Amount:", mInputBillAmt, 0);
+                }
+
             }
-
-        }
-        // manually change the values
+            // manually change the values
 
         /*else if (i == R.id.input_trans_add_cl) {
             int effectiveToPay = mRetainedFragment.mBillTotal - mRedeemCashback - mRedeemCashload;
@@ -582,96 +584,107 @@ public class CashTransactionFragment extends Fragment implements
 
         } */
 
-        else if (i == R.id.radio_add_cl || i == R.id.layout_add_cl || i==R.id.label_trans_add_cl) {
+            else if (i == R.id.radio_add_cl || i == R.id.layout_add_cl || i==R.id.label_trans_add_cl) {
 
-            switch (mAddClStatus) {
-                case STATUS_AUTO_CLEARED:
-                case STATUS_CLEARED:
-                    setAddClStatus(STATUS_AUTO);
-                    if (mRedeemClStatus == STATUS_AUTO || mRedeemClStatus == STATUS_MANUAL_SET) {
-                        //mRedeemCashload = 0;
-                        setRedeemClStatus(STATUS_CLEARED);
-                    }
-                    calcAndSetAmts();
-                    break;
-                case STATUS_MANUAL_SET:
-                case STATUS_AUTO:
-                    setAddClStatus(STATUS_CLEARED);
-                    calcAndSetAmts();
-                    break;
-                case STATUS_CASH_PAID_NOT_SET:
-                    AppCommonUtil.toast(getActivity(), "Cash Paid value not set");
-                    break;
-                case STATUS_DISABLED:
-                    AppCommonUtil.toast(getActivity(), "Disabled in settings");
-                    break;
-            }
-
-        } else if (i == R.id.radio_redeem_cl || i == R.id.layout_redeem_cl || i==R.id.label_trans_redeem_cl) {
-            //case R.id.label_trans_redeem_cl:
-            //case R.id.input_trans_redeem_cl:
-
-            switch (mRedeemClStatus) {
-                case STATUS_AUTO_CLEARED:
-                case STATUS_CLEARED:
-                    setRedeemClStatus(STATUS_AUTO);
-                    if (mAddClStatus == STATUS_AUTO || mAddClStatus == STATUS_MANUAL_SET) {
-                        //mAddCashload = 0;
+                switch (mAddClStatus) {
+                    case STATUS_AUTO_CLEARED:
+                    case STATUS_CLEARED:
+                        setAddClStatus(STATUS_AUTO);
+                        if (mRedeemClStatus == STATUS_AUTO || mRedeemClStatus == STATUS_MANUAL_SET) {
+                            //mRedeemCashload = 0;
+                            setRedeemClStatus(STATUS_CLEARED);
+                        }
+                        calcAndSetAmts();
+                        break;
+                    case STATUS_MANUAL_SET:
+                    case STATUS_AUTO:
                         setAddClStatus(STATUS_CLEARED);
-                    }
-                    calcAndSetAmts();
-                    break;
-                case STATUS_MANUAL_SET:
-                case STATUS_AUTO:
-                    setRedeemClStatus(STATUS_CLEARED);
-                    calcAndSetAmts();
-                    break;
-                case STATUS_NO_BALANCE:
-                    AppCommonUtil.toast(getActivity(), AppConstants.toastNoBalance);
-                    break;
-                case STATUS_QR_CARD_NOT_USED:
-                    AppCommonUtil.toast(getActivity(), "Valid Member card not used");
-                    break;
+                        calcAndSetAmts();
+                        break;
+                    case STATUS_CASH_PAID_NOT_SET:
+                        AppCommonUtil.toast(getActivity(), "Cash Paid value not set");
+                        break;
+                    case STATUS_DISABLED:
+                        AppCommonUtil.toast(getActivity(), "Disabled in settings");
+                        break;
+                }
+
+            } else if (i == R.id.radio_redeem_cl || i == R.id.layout_redeem_cl || i==R.id.label_trans_redeem_cl) {
+                //case R.id.label_trans_redeem_cl:
+                //case R.id.input_trans_redeem_cl:
+
+                switch (mRedeemClStatus) {
+                    case STATUS_AUTO_CLEARED:
+                    case STATUS_CLEARED:
+                        setRedeemClStatus(STATUS_AUTO);
+                        if (mAddClStatus == STATUS_AUTO || mAddClStatus == STATUS_MANUAL_SET) {
+                            //mAddCashload = 0;
+                            setAddClStatus(STATUS_CLEARED);
+                        }
+                        calcAndSetAmts();
+                        break;
+                    case STATUS_MANUAL_SET:
+                    case STATUS_AUTO:
+                        setRedeemClStatus(STATUS_CLEARED);
+                        calcAndSetAmts();
+                        break;
+                    case STATUS_NO_BALANCE:
+                        AppCommonUtil.toast(getActivity(), AppConstants.toastNoBalance);
+                        break;
+                    case STATUS_QR_CARD_NOT_USED:
+                        AppCommonUtil.toast(getActivity(), "Valid Member card not used");
+                        break;
+                }
+
+            } else if (i == R.id.checkbox_redeem_cb || i == R.id.layout_redeem_cb || i==R.id.label_trans_redeem_cb) {
+
+                switch (mRedeemCbStatus) {
+                    case STATUS_AUTO_CLEARED:
+                    case STATUS_CLEARED:
+                        setRedeemCbStatus(STATUS_AUTO);
+                        calcAndSetAmts();
+                        break;
+                    case STATUS_MANUAL_SET:
+                    case STATUS_AUTO:
+                        setRedeemCbStatus(STATUS_CLEARED);
+                        calcAndSetAmts();
+                        break;
+                    case STATUS_NO_BALANCE:
+                        AppCommonUtil.toast(getActivity(), AppConstants.toastNoBalance);
+                        break;
+                    case STATUS_QR_CARD_NOT_USED:
+                        AppCommonUtil.toast(getActivity(), "Valid Member card not used");
+                        break;
+                    case STATUS_BALANCE_BELOW_LIMIT:
+                        AppCommonUtil.toast(getActivity(), "Cashback balance below redeem limit of " +
+                                AppCommonUtil.getAmtStr(MyGlobalSettings.getCbRedeemLimit()));
+                        break;
+                }
+
+            } else if (i == R.id.checkbox_add_cb || i == R.id.layout_add_cb || i==R.id.label_trans_add_cb) {
+
+                if (mAddCbStatus == STATUS_DISABLED) {
+                    AppCommonUtil.toast(getActivity(), "Set Cashback rate(%) in settings");
+                } else if (mAddCbStatus == STATUS_AUTO) {
+                    AppCommonUtil.toast(getActivity(), "Use settings to disable");
+                }
+
+            } else if (i == R.id.label_cash_paid || i == R.id.input_cash_paid) {
+                LogMy.d(TAG, "Clicked cash paid");
+                //AppCommonUtil.hideKeyboard(getActivity());
+                showCashPaidDialog();
             }
+        }
 
-        } else if (i == R.id.checkbox_redeem_cb || i == R.id.layout_redeem_cb || i==R.id.label_trans_redeem_cb) {
+        return true;
+    }
 
-            switch (mRedeemCbStatus) {
-                case STATUS_AUTO_CLEARED:
-                case STATUS_CLEARED:
-                    setRedeemCbStatus(STATUS_AUTO);
-                    calcAndSetAmts();
-                    break;
-                case STATUS_MANUAL_SET:
-                case STATUS_AUTO:
-                    setRedeemCbStatus(STATUS_CLEARED);
-                    calcAndSetAmts();
-                    break;
-                case STATUS_NO_BALANCE:
-                    AppCommonUtil.toast(getActivity(), AppConstants.toastNoBalance);
-                    break;
-                case STATUS_QR_CARD_NOT_USED:
-                    AppCommonUtil.toast(getActivity(), "Valid Member card not used");
-                    break;
-                case STATUS_BALANCE_BELOW_LIMIT:
-                    AppCommonUtil.toast(getActivity(), "Cashback balance below redeem limit of " +
-                            AppCommonUtil.getAmtStr(MyGlobalSettings.getCbRedeemLimit()));
-                    break;
-            }
+    @Override
+    public void onClick(View v) {
+        LogMy.d(TAG, "In onClick: " + v.getId());
 
-        } else if (i == R.id.checkbox_add_cb || i == R.id.layout_add_cb || i==R.id.label_trans_add_cb) {
-
-            if (mAddCbStatus == STATUS_DISABLED) {
-                AppCommonUtil.toast(getActivity(), "Set Cashback rate(%) in settings");
-            } else if (mAddCbStatus == STATUS_AUTO) {
-                AppCommonUtil.toast(getActivity(), "Use settings to disable");
-            }
-
-        } else if (i == R.id.label_cash_paid || i == R.id.input_cash_paid) {
-            LogMy.d(TAG, "Clicked cash paid");
-            showCashPaidDialog();
-
-        } else if (i == R.id.btn_collect_cash) {
+        int i = v.getId();
+        if (i == R.id.btn_collect_cash) {
             LogMy.d(TAG, "Clicked Process txn button");
             if (mAddClStatus == STATUS_AUTO ||
                     mRedeemClStatus == STATUS_AUTO ||
@@ -691,6 +704,7 @@ public class CashTransactionFragment extends Fragment implements
             }
 
         }
+
     }
 
     private void startNumInputDialog(int reqCode, String label, EditText input, int maxValue) {
@@ -838,28 +852,29 @@ public class CashTransactionFragment extends Fragment implements
 
     private void initListeners() {
         // can change bill amount
-        mInputBillAmt.setOnClickListener(this);
+        mInputBillAmt.setOnTouchListener(this);
 
-        mInputAddCl.setOnClickListener(this);
-        mLayoutAddCl.setOnClickListener(this);
-        mLabelAddCl.setOnClickListener(this);
+        //mInputAddCl.setOnTouchListener(this);
+        mLayoutAddCl.setOnTouchListener(this);
+        mLabelAddCl.setOnTouchListener(this);
 
-        mInputRedeemCl.setOnClickListener(this);
-        mLayoutRedeemCl.setOnClickListener(this);
-        mLabelRedeemCl.setOnClickListener(this);
+        //mInputRedeemCl.setOnTouchListener(this);
+        mLayoutRedeemCl.setOnTouchListener(this);
+        mLabelRedeemCl.setOnTouchListener(this);
 
-        mInputRedeemCb.setOnClickListener(this);
-        mLayoutRedeemCb.setOnClickListener(this);
-        mLabelRedeemCb.setOnClickListener(this);
+        //mInputRedeemCb.setOnTouchListener(this);
+        mLayoutRedeemCb.setOnTouchListener(this);
+        mLabelRedeemCb.setOnTouchListener(this);
 
-        mInputAddCb.setOnClickListener(this);
-        mLayoutAddCb.setOnClickListener(this);
-        mLabelAddCb.setOnClickListener(this);
+        //mInputAddCb.setOnTouchListener(this);
+        mLayoutAddCb.setOnTouchListener(this);
+        mLabelAddCb.setOnTouchListener(this);
 
         if(mLayoutCashPaidLink.getVisibility()==View.VISIBLE) {
-            mLabelCashPaid.setOnClickListener(this);
-            mInputCashPaid.setOnClickListener(this);
+            mLabelCashPaid.setOnTouchListener(this);
+            mInputCashPaid.setOnTouchListener(this);
         }
+
         mInputToPayCash.setOnClickListener(this);
     }
 

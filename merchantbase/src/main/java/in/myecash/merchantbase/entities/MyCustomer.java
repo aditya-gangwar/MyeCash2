@@ -123,11 +123,11 @@ public class MyCustomer {
         } else {
             mCreateTime = null;
         }
-        if(!csvFields[CommonConstants.CUST_CSV_ADMIN_REMARKS].isEmpty()) {
+        /*if(!csvFields[CommonConstants.CUST_CSV_ADMIN_REMARKS].isEmpty()) {
             mRemarks = csvFields[CommonConstants.CUST_CSV_ADMIN_REMARKS];
         } else {
             mRemarks = null;
-        }
+        }*/
         if(!csvFields[CommonConstants.CUST_CSV_STATUS_UPDATE_TIME].isEmpty()) {
             mCardStatusUpdateTime = mSdfDateWithTime.format(new Date(Long.parseLong(csvFields[CommonConstants.CUST_CSV_STATUS_UPDATE_TIME])));
         } else {

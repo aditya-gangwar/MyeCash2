@@ -11,6 +11,6 @@ public class BackendSettings {
     public static final String VERSION = "v1";
 //    public static final String BACKENDLESS_HOST = "https://api.backendless.com";
     //TODO: URLs need to be https in production
-    public static final String BACKENDLESS_HOST = "http://52.66.139.228:8080/api";
-    public static String BACKEND_FILE_BASE_URL = "http://52.66.139.228:8080/api/927292A7-D4D3-7742-FFED-86CED1441100/v1/files/";
+    public static final String BACKENDLESS_HOST = "http://52.66.162.192:8080/api";
+    public static String BACKEND_FILE_BASE_URL = "http://52.66.162.192:8080/api/927292A7-D4D3-7742-FFED-86CED1441100/v1/files/";
 }

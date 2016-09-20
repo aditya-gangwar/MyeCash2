@@ -41,34 +41,64 @@ import in.myecash.commonbase.models.Merchants;
         Backendless.initApp( BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, MerchantServices.APP_VERSION );
     }
 
-    public List<MerchantOps> getMerchantOps(String merchantId)
-    {
-        Object[] args = new Object[]{merchantId};
-        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMerchantOps", args, MerchantOps.class );
-    }
-
-    public Merchants deleteTrustedDevice(String deviceId)
-    {
-        Object[] args = new Object[]{deviceId};
-        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changeMobile", args, Merchants.class );
-    }
-
-    public Merchants changeMobile(String currentMobile, String newMobile, String otp)
+    public Merchants changeMobile(java.lang.String currentMobile, java.lang.String newMobile, java.lang.String otp)
     {
         Object[] args = new Object[]{currentMobile, newMobile, otp};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changeMobile", args, Merchants.class );
     }
 
-    public Merchants updateSettings(String cbRate, boolean addClEnabled, String email)
+    public void changeMobileAsync(java.lang.String currentMobile, java.lang.String newMobile, java.lang.String otp, AsyncCallback<Merchants> callback)
+    {
+        Object[] args = new Object[]{currentMobile, newMobile, otp};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changeMobile", args, Merchants.class, callback);
+    }
+
+    public Merchants updateSettings(java.lang.String cbRate, boolean addClEnabled, java.lang.String email)
     {
         Object[] args = new Object[]{cbRate, addClEnabled, email};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "updateSettings", args, Merchants.class );
     }
 
-    public MerchantStats getMerchantStats(String merchantId)
+    public void updateSettingsAsync(java.lang.String cbRate, boolean addClEnabled, java.lang.String email, AsyncCallback<Merchants> callback)
+    {
+        Object[] args = new Object[]{cbRate, addClEnabled, email};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "updateSettings", args, Merchants.class, callback);
+    }
+
+    public Merchants deleteTrustedDevice(java.lang.String deviceId)
+    {
+        Object[] args = new Object[]{deviceId};
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "deleteTrustedDevice", args, Merchants.class );
+    }
+
+    public void deleteTrustedDeviceAsync(java.lang.String deviceId, AsyncCallback<Merchants> callback)
+    {
+        Object[] args = new Object[]{deviceId};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "deleteTrustedDevice", args, Merchants.class, callback);
+    }
+
+    public MerchantStats getMerchantStats(java.lang.String mchntId)
+    {
+        Object[] args = new Object[]{mchntId};
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMerchantStats", args, MerchantStats.class );
+    }
+
+    public void getMerchantStatsAsync(java.lang.String mchntId, AsyncCallback<MerchantStats> callback)
+    {
+        Object[] args = new Object[]{mchntId};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMerchantStats", args, MerchantStats.class, callback);
+    }
+
+    public java.util.List<MerchantOps> getMerchantOps(java.lang.String merchantId)
     {
         Object[] args = new Object[]{merchantId};
-        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMerchantStats", args, MerchantStats.class );
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMerchantOps", args, java.util.List.class );
+    }
+
+    public void getMerchantOpsAsync(java.lang.String merchantId, AsyncCallback<java.util.List<MerchantOps>> callback)
+    {
+        Object[] args = new Object[]{merchantId};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMerchantOps", args, java.util.List.class, callback);
     }
 
     public void archiveTxns()
@@ -83,39 +113,40 @@ import in.myecash.commonbase.models.Merchants;
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "archiveTxns", args, Object.class, callback);
     }
 
-    public Cashback registerCustomer(String customerMobile, String name, String cardId)
+    public Cashback registerCustomer(java.lang.String customerMobile, java.lang.String name, java.lang.String cardId)
     {
         Object[] args = new Object[]{customerMobile, name, cardId};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerCustomer", args, Cashback.class );
     }
 
-    public void registerCustomerAsync(String customerMobile, String name, String cardId, AsyncCallback<Cashback> callback)
+    public void registerCustomerAsync(java.lang.String customerMobile, java.lang.String name, java.lang.String cardId, AsyncCallback<Cashback> callback)
     {
         Object[] args = new Object[]{customerMobile, name, cardId};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerCustomer", args, Cashback.class, callback);
     }
 
-    public void execCustomerOp(String opCode, String customerId, String scannedCardId, String otp, String pin, String opParam)
+    public void execCustomerOp(java.lang.String opCode, java.lang.String customerId, java.lang.String scannedCardId, java.lang.String otp, java.lang.String pin, java.lang.String opParam)
     {
         Object[] args = new Object[]{opCode, customerId, scannedCardId, otp, pin, opParam};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "execCustomerOp", args );
     }
 
-    public void execCustomerOpAsync(String opCode, String customerId, String scannedCardId, String otp, String pin, String opParam, AsyncCallback<Object> callback)
+    public void execCustomerOpAsync(java.lang.String opCode, java.lang.String customerId, java.lang.String scannedCardId, java.lang.String otp, java.lang.String pin, java.lang.String opParam, AsyncCallback<Object> callback)
     {
         Object[] args = new Object[]{opCode, customerId, scannedCardId, otp, pin, opParam};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "execCustomerOp", args, Object.class, callback);
     }
 
-    public Cashback getCashback(String merchantId, String merchantCbTable, String customerId, boolean debugLogs)
+    public Cashback getCashback(java.lang.String merchantId, java.lang.String merchantCbTable, java.lang.String customerId, boolean debugLogs)
     {
         Object[] args = new Object[]{merchantId, merchantCbTable, customerId, debugLogs};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCashback", args, Cashback.class );
     }
 
-    public void getCashbackAsync(String merchantId, String merchantCbTable, String customerId, AsyncCallback<Cashback> callback)
+    public void getCashbackAsync(java.lang.String merchantId, java.lang.String merchantCbTable, java.lang.String customerId, boolean debugLogs, AsyncCallback<Cashback> callback)
     {
-        Object[] args = new Object[]{merchantId, merchantCbTable, customerId};
+        Object[] args = new Object[]{merchantId, merchantCbTable, customerId, debugLogs};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCashback", args, Cashback.class, callback);
     }
+
 }

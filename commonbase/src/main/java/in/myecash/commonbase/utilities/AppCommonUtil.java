@@ -33,6 +33,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.backendless.Backendless;
+import com.backendless.Counters;
 import com.backendless.exceptions.BackendlessException;
 import in.myecash.commonbase.R;
 import in.myecash.commonbase.constants.AppConstants;
@@ -40,7 +42,17 @@ import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.entities.MyGlobalSettings;
+import in.myecash.commonbase.models.Address;
+import in.myecash.commonbase.models.BusinessCategories;
+import in.myecash.commonbase.models.Cashback;
+import in.myecash.commonbase.models.Cities;
+import in.myecash.commonbase.models.CustomerCards;
+import in.myecash.commonbase.models.Customers;
+import in.myecash.commonbase.models.MerchantDevice;
+import in.myecash.commonbase.models.MerchantOps;
 import in.myecash.commonbase.models.MerchantStats;
+import in.myecash.commonbase.models.Merchants;
+import in.myecash.commonbase.models.Transaction;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -436,4 +448,24 @@ public class AppCommonUtil {
         }
         return false;
     }
+
+    public static void initTableToClassMappings() {
+        Backendless.Data.mapTableToClass("CustomerCards", CustomerCards.class);
+        Backendless.Data.mapTableToClass("Customers", Customers.class);
+        Backendless.Data.mapTableToClass("Merchants", Merchants.class);
+        Backendless.Data.mapTableToClass("Counters", Counters.class);
+        Backendless.Data.mapTableToClass("MerchantOps", MerchantOps.class);
+        Backendless.Data.mapTableToClass("MerchantDevice", MerchantDevice.class);
+        Backendless.Data.mapTableToClass("BusinessCategories", BusinessCategories.class);
+        Backendless.Data.mapTableToClass("Address", Address.class);
+        Backendless.Data.mapTableToClass("Cities", Cities.class);
+
+        Backendless.Data.mapTableToClass( "Transaction0", Transaction.class );
+        Backendless.Data.mapTableToClass( "Cashback0", Cashback.class );
+
+        Backendless.Data.mapTableToClass( "Transaction1", Transaction.class );
+        Backendless.Data.mapTableToClass( "Cashback1", Cashback.class );
+
+    }
+
 }

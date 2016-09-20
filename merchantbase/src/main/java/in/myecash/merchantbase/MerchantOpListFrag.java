@@ -126,18 +126,20 @@ public class MerchantOpListFrag extends Fragment {
         public EditText mOpStatus;
         public EditText mOpParams;
         public EditText mOpTicketId;
+        public EditText mOpReason;
         public EditText mOpRemarks;
 
         public CbHolder(View itemView) {
             super(itemView);
 
-            mOpName = (EditText) itemView.findViewById(R.id.input_opname);;
-            mOpTime = (EditText) itemView.findViewById(R.id.input_op_time);;
-            mOpInitBy = (EditText) itemView.findViewById(R.id.input_init_by);;
-            mOpStatus = (EditText) itemView.findViewById(R.id.input_status);;
-            mOpParams = (EditText) itemView.findViewById(R.id.input_params);;
-            mOpTicketId = (EditText) itemView.findViewById(R.id.input_ticketId);;
-            mOpRemarks = (EditText) itemView.findViewById(R.id.input_remarks);;
+            mOpName = (EditText) itemView.findViewById(R.id.input_opname);
+            mOpTime = (EditText) itemView.findViewById(R.id.input_op_time);
+            mOpInitBy = (EditText) itemView.findViewById(R.id.input_init_by);
+            mOpStatus = (EditText) itemView.findViewById(R.id.input_status);
+            mOpParams = (EditText) itemView.findViewById(R.id.input_params);
+            mOpTicketId = (EditText) itemView.findViewById(R.id.input_ticketId);
+            mOpReason = (EditText) itemView.findViewById(R.id.input_reason);
+            mOpRemarks = (EditText) itemView.findViewById(R.id.input_remarks);
         }
 
         public void bindOp(MerchantOps op) {
@@ -159,9 +161,10 @@ public class MerchantOpListFrag extends Fragment {
             }
 
             // ticket num and remarks are to be shown to customer care user only
-            if(mCallback.getRetainedFragment().mMerchantUser.isPseudoLoggedIn()) {
+            if(!mCallback.getRetainedFragment().mMerchantUser.isPseudoLoggedIn()) {
                 mOpTicketId.setVisibility(View.GONE);
                 mOpRemarks.setVisibility(View.GONE);
+                mOpReason.setVisibility(View.GONE);
                 mOpStatus.setVisibility(View.GONE);
             } else {
                 String statusStr = "Status: "+op.getOp_status();
@@ -173,11 +176,19 @@ public class MerchantOpListFrag extends Fragment {
                 } else {
                     mOpTicketId.setVisibility(View.GONE);
                 }
+
                 if(op.getRemarks()!=null && !op.getRemarks().isEmpty()) {
                     String str = "Remarks: "+op.getRemarks();
                     mOpRemarks.setText(str);
                 } else {
                     mOpRemarks.setVisibility(View.GONE);
+                }
+
+                if(op.getReason()!=null && !op.getReason().isEmpty()) {
+                    String str = "Reason: "+op.getReason();
+                    mOpReason.setText(str);
+                } else {
+                    mOpReason.setVisibility(View.GONE);
                 }
             }
         }

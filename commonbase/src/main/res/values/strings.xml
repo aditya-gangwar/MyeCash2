@@ -57,23 +57,14 @@
     <string name="permission_camera_rationale">Access to the camera is required for scannbing membership cards.</string>
     <string name="no_camera_permission">camera permission is mandatory. Cannot proceed with login.</string>
 
-    <string-array name="txn_types_array">
-        <item>Bill Amount</item>
-        <item>Add Account cash</item>
-        <item>Debit Account cash</item>
-        <item>Add Cashback</item>
-        <item>Debit Cashback</item>
-    </string-array>
-
-    <string-array name="amt_compare_array">
-        <item>Greater than ( &gt; )</item>
-        <item>Less than ( &lt; )</item>
-        <item>Equal to ( = )</item>
-    </string-array>
-    <string-array name="amt_compare_array_short">
-        <item>&gt;</item>
-        <item>&lt;</item>
-        <item>=</item>
+    <string-array name="acc_status_reasons_array">
+        <item>None</item>
+        <item>Lost Mobile + No Trusted Device</item>
+        <item>Lost Mobile + Forgot Password</item>
+        <item>Forgot Password + No Trusted Device</item>
+        <item>Forgot Password + No Trusted Device + Lost Mobile</item>
+        <item>Doubt Security Breach</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="new_card_reason_array">
@@ -109,6 +100,7 @@
     <string name="merchant_id_char_limit">8</string>
     <string name="customer_internal_id_char_limit">6</string>
     <string name="agent_id_char_limit">7</string>
+    <string name="max_str_limit">400</string>
 
     <string name="return_cash_detail">[ - %1$d ]</string>
     <!--string name="cb_detail">\u0040 %1$d\u0025 of \u20B9 %2$d</string>

@@ -85,10 +85,24 @@
 
         <EditText
             style="@style/Edittext_only_click_small"
-            android:id="@+id/input_remarks"
+            android:id="@+id/input_reason"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_below="@id/input_ticketId"
+            android:text="Reason: Customer lost the mobile phone"
+            android:gravity="left"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:background="@color/bg_customercare_data"/>
+
+        <EditText
+            style="@style/Edittext_only_click_small"
+            android:id="@+id/input_remarks"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/input_reason"
             android:text="Remarks: Customer lost the mobile phone"
             android:gravity="left"
             android:paddingTop="0dp"

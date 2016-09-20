@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.backendless.exceptions.BackendlessException;
+
+import in.myecash.appagent.backendAPI.InternalUserServices;
 import in.myecash.appagent.backendAPI.InternalUserServicesNoLogin;
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.commonbase.backendAPI.CommonServices;
@@ -42,7 +44,11 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         public String key;
         public boolean serachById;
     }
-
+    private class MessageDisableMerchant implements Serializable {
+        public String ticketId;
+        public String reason;
+        public String remarks;
+    }
 
     /*
      * Add request methods
@@ -80,6 +86,13 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         msg.serachById = searchById;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_SEARCH_MERCHANT,msg).sendToTarget();
     }
+    public void addDisableMerchantReq(String ticketId, String reason, String remarks) {
+        MessageDisableMerchant msg = new MessageDisableMerchant();
+        msg.ticketId = ticketId;
+        msg.reason = reason;
+        msg.remarks = remarks;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DISABLE_MERCHANT,msg).sendToTarget();
+    }
 
 
     @Override
@@ -103,6 +116,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_SEARCH_MERCHANT:
                 error = searchMerchant((MessageSearchMerchant) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_DISABLE_MERCHANT:
+                error = disableMerchant((MessageDisableMerchant) msg.obj);
                 break;
         }
         return error;
@@ -154,6 +170,19 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;*/
+    }
+
+    private int disableMerchant(MessageDisableMerchant data) {
+        try {
+            InternalUserServices.getInstance().disableMerchant(mRetainedFragment.mCurrMerchant.getAuto_id(),
+                    data.ticketId, data.reason, data.remarks);
+            LogMy.d(TAG,"disableMerchant success");
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Exception in disableMerchant: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
     }
 
 

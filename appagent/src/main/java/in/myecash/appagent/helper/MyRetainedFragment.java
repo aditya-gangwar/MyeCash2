@@ -23,6 +23,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_GENERATE_PWD = 5;
     public static final int REQUEST_CHANGE_PASSWD = 7;
     public static final int REQUEST_SEARCH_MERCHANT = 8;
+    public static final int REQUEST_DISABLE_MERCHANT = 9;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -58,6 +59,9 @@ public class MyRetainedFragment extends RetainedFragment {
     }
     public void searchMerchant(String key, boolean searchById) {
         mBackgroundProcessor.addSearchMerchantReq(key, searchById);
+    }
+    public void disableMerchant(String ticketId, String reason, String remarks) {
+        mBackgroundProcessor.addDisableMerchantReq(ticketId, reason, remarks);
     }
 
     @Override

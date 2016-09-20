@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:hint="Date of Birth (DDMMYYYY)"
             android:maxLength="@string/dob_char_limit"
+            android:inputType="number"
             android:gravity="center"/>
 
         <Space

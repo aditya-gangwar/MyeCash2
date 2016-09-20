@@ -43,6 +43,8 @@ public final class ValidationHelper{
     public static int validateMobileNo(String value) {
         if (value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
+        } else if(value.length() != CommonConstants.MOBILE_NUM_LENGTH) {
+            return ErrorCodes.INVALID_LENGTH;
         } else if (!Patterns.PHONE.matcher(value).matches()) {
             return ErrorCodes.INVALID_FORMAT;
         } else {
@@ -77,6 +79,14 @@ public final class ValidationHelper{
     }
 
     public static int validatePassword(String value) {
+        if (value.isEmpty()) {
+            return ErrorCodes.EMPTY_VALUE;
+        } else {
+            return ErrorCodes.NO_ERROR;
+        }
+    }
+
+    public static int validateTicketNum(String value) {
         if (value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else {

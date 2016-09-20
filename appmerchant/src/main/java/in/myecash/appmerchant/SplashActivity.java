@@ -49,10 +49,7 @@ public class SplashActivity extends AppCompatActivity
         com.backendless.Backendless.setUrl( BackendSettings.BACKENDLESS_HOST );
 
         // Map all tables to class here - except 'cashback' and 'transaction'
-        Backendless.Data.mapTableToClass("Address", Address.class);
-        Backendless.Data.mapTableToClass("Merchants", Merchants.class);
-        Backendless.Data.mapTableToClass("MerchantDevice", MerchantDevice.class);
-        Backendless.Data.mapTableToClass("GlobalSettings", GlobalSettings.class);
+        AppCommonUtil.initTableToClassMappings();
 
         if(savedInstanceState==null) {
             int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(SplashActivity.this);

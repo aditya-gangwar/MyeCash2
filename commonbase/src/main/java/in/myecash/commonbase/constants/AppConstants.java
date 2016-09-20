@@ -108,8 +108,8 @@ public class AppConstants {
     public static final String pwdChangeSuccessMsg = "Logging out as password changed. Please login with new password.";
 
     public static final String forgotIdSuccessMsg = "Your user id is sent to your registered mobile number. If not received in next few minutes, please try again.";
-
     public static final String mobileChangeSuccessMsg = "New mobile number registered successfully.";
+    public static final String merchantDisableSuccessMsg = "Merchant disabled successfully.";
 
 
     // Progress dialog messages

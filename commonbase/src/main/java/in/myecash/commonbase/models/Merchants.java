@@ -17,8 +17,8 @@ public class Merchants
   private String displayImage;
   private java.util.Date updated;
   private java.util.Date status_update_time;
-  private Integer status_reason;
-  private String admin_remarks;
+  private String status_reason;
+  //private String admin_remarks;
   private String cashback_table;
   private String mobile_num;
   private String email;
@@ -163,17 +163,17 @@ public class Merchants
     this.status_update_time = status_update_time;
   }
 
-  public Integer getStatus_reason()
+  public String getStatus_reason()
   {
     return status_reason;
   }
 
-  public void setStatus_reason( Integer status_reason )
+  public void setStatus_reason( String status_reason )
   {
     this.status_reason = status_reason;
   }
 
-  public String getAdmin_remarks()
+  /*public String getAdmin_remarks()
   {
     return admin_remarks;
   }
@@ -181,7 +181,7 @@ public class Merchants
   public void setAdmin_remarks( String admin_remarks )
   {
     this.admin_remarks = admin_remarks;
-  }
+  }*/
 
   public String getCashback_table()
   {

@@ -127,7 +127,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
                 mLayoutStatusDetails.setVisibility(View.VISIBLE);
                 mInputStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
                 mInputStatusDate.setText(mSdfDateWithTime.format(cust.getStatusUpdateTime()));
-                mInputReason.setText(DbConstants.statusReasonDescriptions[cust.getStatusReason()]);
+                mInputReason.setText(cust.getStatusReason());
 
                 if(status==DbConstants.USER_STATUS_LOCKED) {
                     mInputStatusDetails.setVisibility(View.VISIBLE);
@@ -157,13 +157,13 @@ public class CustomerDetailsDialog extends DialogFragment  {
                 mCreatedOn.setText(mSdfDateWithTime.format(cust.getCustCreateTime()));
                 mFirstLogin.setText(cust.isFirstLoginOk().toString());
                 mCardStatusDate.setText(cust.getCardStatusUpdateTime());
-                mInputAdminRemarks.setText(cust.getRemarks());
+                //mInputAdminRemarks.setText(cust.getRemarks());
             } else {
                 // hide fields for customer care logins only
                 mLayoutName.setVisibility(View.GONE);
                 mLayoutCreated.setVisibility(View.GONE);
                 mLayoutFirstLogin.setVisibility(View.GONE);
-                mLayoutRemarks.setVisibility(View.GONE);
+                //mLayoutRemarks.setVisibility(View.GONE);
                 mLayoutCardStatusDate.setVisibility(View.GONE);
             }
 
@@ -191,7 +191,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
     private EditText mInputReason;
     private EditText mInputStatusDate;
     private EditText mInputStatusDetails;
-    private EditText mInputAdminRemarks;
+    //private EditText mInputAdminRemarks;
 
     private EditText mInputTotalBill;
     private EditText mInputCbBill;
@@ -208,7 +208,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
     private View mLayoutName;
     private View mLayoutCreated;
     private View mLayoutFirstLogin;
-    private View mLayoutRemarks;
+    //private View mLayoutRemarks;
     private View mLayoutCardStatusDate;
 
     private void bindUiResources(View v) {
@@ -231,7 +231,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
         mInputReason = (EditText) v.findViewById(R.id.input_reason);
         mInputStatusDate = (EditText) v.findViewById(R.id.input_status_date);
         mInputStatusDetails = (EditText) v.findViewById(R.id.input_activation);
-        mInputAdminRemarks = (EditText) v.findViewById(R.id.input_status_remarks);
+        //mInputAdminRemarks = (EditText) v.findViewById(R.id.input_status_remarks);
 
         mInputTotalBill = (EditText) v.findViewById(R.id.input_total_bill);
         mInputCbBill = (EditText) v.findViewById(R.id.input_cb_bill);
@@ -248,7 +248,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
         mLayoutName = v.findViewById(R.id.layout_cust_name);
         mLayoutCreated = v.findViewById(R.id.layout_cust_created_on);
         mLayoutFirstLogin = v.findViewById(R.id.layout_first_login);
-        mLayoutRemarks = v.findViewById(R.id.layout_status_remarks);
+        //mLayoutRemarks = v.findViewById(R.id.layout_status_remarks);
         mLayoutCardStatusDate = v.findViewById(R.id.layout_card_status_date);
 
     }

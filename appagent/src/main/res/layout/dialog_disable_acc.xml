@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?android:attr/windowBackground">
+
+    <EditText
+        style="@style/Edittext_only_view_small_more_pad"
+        android:id="@+id/label_cash_pay_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:gravity="left"
+        android:text="MERCHANT: Disable Account"
+        android:textStyle="bold"/>
+
+    <View
+        style="@style/Divider_horizontal_Large"/>
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesLarge">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/label_information_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="After Disable - User will need to submit self-attested ID Proof copy (via email) to Enable the account again"
+            android:textColor="@color/red_negative"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/large_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_info_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Ticket ID"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/MyEdittext_Medium"
+                android:id="@+id/input_ticketId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Support Ticket"
+                android:layout_weight="60"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_input_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:text="Reason"
+                android:layout_weight="40"
+                android:gravity="left|center_vertical"/>
+            <Spinner
+                android:id="@+id/input_reason"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="60"/>
+            <!--EditText
+                style="@style/Edittext_only_click_bg_medium"
+                android:id="@+id/input_reason"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Select"
+                android:layout_weight="60"
+                android:gravity="center"
+                android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"/-->
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/large_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Give reason below, if not in above list. \nAnd/Or any other details." />
+
+        <EditText
+            style="@style/MyEdittext_Medium"
+            android:id="@+id/input_remarks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Reason and/or other details"
+            android:gravity="center"
+            android:maxLength="@string/max_str_limit"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/large_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Are you sure to DISABLE the account ?" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+    </LinearLayout>
+</LinearLayout>

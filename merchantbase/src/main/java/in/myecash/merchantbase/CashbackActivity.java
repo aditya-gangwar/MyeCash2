@@ -1124,10 +1124,13 @@ public class CashbackActivity extends AppCompatActivity implements
 
         int higher_debit_threshold = Math.max(cl_debit_threshold, cb_debit_threshold);
 
-        return (mWorkFragment.mCurrTransaction.getTransaction().getCl_credit() > cl_credit_threshold ||
-                mWorkFragment.mCurrTransaction.getTransaction().getCl_debit() > cl_debit_threshold ||
-                mWorkFragment.mCurrTransaction.getTransaction().getCb_debit() > cb_debit_threshold ||
-                (cb_debit_threshold+cl_debit_threshold) > higher_debit_threshold);
+        int currClDebit = mWorkFragment.mCurrTransaction.getTransaction().getCl_debit();
+        int currCbDebit = mWorkFragment.mCurrTransaction.getTransaction().getCb_debit();
+
+        return ( (mWorkFragment.mCurrTransaction.getTransaction().getCl_credit() > cl_credit_threshold) ||
+                (currClDebit > cl_debit_threshold) ||
+                (currCbDebit > cb_debit_threshold) ||
+                ((currClDebit+currCbDebit) > higher_debit_threshold) );
     }
 
     @Override

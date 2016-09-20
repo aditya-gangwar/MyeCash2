@@ -48,11 +48,7 @@ public class SplashActivity extends AppCompatActivity
         com.backendless.Backendless.setUrl( BackendSettings.BACKENDLESS_HOST );
 
         // Map all tables to class here - except 'cashback' and 'transaction'
-        //Backendless.Data.mapTableToClass("CustomerCards", CustomerCards.class);
-        //Backendless.Data.mapTableToClass("Customers", Customers.class);
-        Backendless.Data.mapTableToClass("Merchants", Merchants.class);
-        Backendless.Data.mapTableToClass("MerchantDevice", MerchantDevice.class);
-        Backendless.Data.mapTableToClass("GlobalSettings", GlobalSettings.class);
+        AppCommonUtil.initTableToClassMappings();
 
         // Check if device is rooted
         if(RootUtil.isDeviceRooted()) {

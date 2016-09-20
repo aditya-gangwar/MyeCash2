@@ -74,31 +74,31 @@ public class MyGlobalSettings
         return ErrorCodes.NO_ERROR;
     }
 
-    public static int getMchntPasswdResetMins() {
+    public static Integer getMchntPasswdResetMins() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_MERCHANT_PASSWD_RESET_MINS);
     }
-    public static int getMchntPasswdResetReqGap() {
+    public static Integer getMchntPasswdResetReqGap() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_MERCHANT_PASSWD_RESET_REQUEST_GAP);
     }
-    public static int getMchntAccBlockHrs() {
+    public static Integer getMchntAccBlockHrs() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_MERCHANT_ACCOUNT_BLOCK_HRS);
     }
-    public static int getMchntDashBNoRefreshHrs() {
+    public static Integer getMchntDashBNoRefreshHrs() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_DASHBOARD_NO_REFRESH_HRS);
     }
-    public static int getAccAddPinLimit() {
+    public static Integer getAccAddPinLimit() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CL_CREDIT_LIMIT_FOR_PIN);
     }
-    public static int getAccDebitPinLimit() {
+    public static Integer getAccDebitPinLimit() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CL_DEBIT_LIMIT_FOR_PIN);
     }
-    public static int getCbDebitPinLimit() {
+    public static Integer getCbDebitPinLimit() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CB_DEBIT_LIMIT_FOR_PIN);
     }
-    public static int getCbRedeemLimit() {
+    public static Integer getCbRedeemLimit() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CB_REDEEM_LIMIT);
     }
-    public static int getMchntReportHistoryDays() {
+    public static Integer getMchntReportHistoryDays() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_REPORTS_HISTORY_DAYS);
     }
     public static Integer getMchntNoReportStartHrs() {
@@ -107,16 +107,16 @@ public class MyGlobalSettings
     public static Integer getMchntNoReportEndHrs() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_REPORTS_BLACKOUT_START);
     }
-    public static int getCustAccBlockHrs() {
+    public static Integer getCustAccBlockHrs() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CUSTOMER_ACCOUNT_BLOCK_HRS);
     }
-    public static int getCashAccLimit() {
+    public static Integer getCashAccLimit() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CUSTOMER_CASH_LIMIT);
     }
     public static Date getServiceDisabledUntil() {
         return (Date)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_SERVICE_DISABLED_UNTIL);
     }
-    public static int getCardImageCaptureMode() {
+    public static Integer getCardImageCaptureMode() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_TXN_IMAGE_CAPTURE_MODE);
     }
     public static boolean getCardReqCbRedeem() {

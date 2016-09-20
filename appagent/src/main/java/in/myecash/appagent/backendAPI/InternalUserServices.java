@@ -9,6 +9,8 @@ package in.myecash.appagent.backendAPI;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 
+import in.myecash.commonbase.models.Merchants;
+
   public class InternalUserServices
 {
     static final String BACKENDLESS_HOST = "https://api.backendless.com";
@@ -37,17 +39,29 @@ import com.backendless.async.callback.AsyncCallback;
     }
 
 
-    
-    public void registerMerchant(in.myecash.commonbase.models.Merchants merchant)
+
+    public void registerMerchant(Merchants merchant)
     {
         Object[] args = new Object[]{merchant};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerMerchant", args );
     }
-    
-    public void registerMerchantAsync(in.myecash.commonbase.models.Merchants merchant, AsyncCallback<Object> callback)
+
+    public void registerMerchantAsync(Merchants merchant, AsyncCallback<Object> callback)
     {
         Object[] args = new Object[]{merchant};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerMerchant", args, Object.class, callback);
     }
-    
+
+    public void disableMerchant(java.lang.String merchantId, java.lang.String ticketNum, java.lang.String reason, java.lang.String remarks)
+    {
+        Object[] args = new Object[]{merchantId, ticketNum, reason, remarks};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "disableMerchant", args );
+    }
+
+    public void disableMerchantAsync(java.lang.String merchantId, java.lang.String ticketNum, java.lang.String reason, java.lang.String remarks, AsyncCallback<Object> callback)
+    {
+        Object[] args = new Object[]{merchantId, ticketNum, reason, remarks};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "disableMerchant", args, Object.class, callback);
+    }
+
 }

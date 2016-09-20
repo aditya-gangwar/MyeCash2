@@ -43,13 +43,14 @@ public class CashPaidDialog extends DialogFragment implements CashPaid.CashPaidI
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LogMy.d(TAG, "In onCreateDialog");
 
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_cash_paid_3, null);
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_cash_paid, null);
 
         mCashToPay = getArguments().getInt(ARG_AMOUNT);
         String oldValue = getArguments().getString(ARG_OLD_VALUE);
         mCashPaidHelper = new CashPaid(mCashToPay, oldValue, this, getActivity());
         mCashPaidHelper.initView(v);
 
+        AppCommonUtil.hideKeyboard(getActivity());
 
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
@@ -73,6 +74,7 @@ public class CashPaidDialog extends DialogFragment implements CashPaid.CashPaidI
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
+                AppCommonUtil.hideKeyboard((Dialog) dialog);
                 AppCommonUtil.setDialogTextSize(CashPaidDialog.this, (AlertDialog) dialog);
             }
         });
@@ -131,6 +133,7 @@ public class CashPaidDialog extends DialogFragment implements CashPaid.CashPaidI
         intent.putExtra(EXTRA_CASH_PAID, cashPaid);
         getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
+}
 
 
     /*
@@ -321,4 +324,4 @@ public class CashPaidDialog extends DialogFragment implements CashPaid.CashPaidI
         mKeyClear = (EditText) v.findViewById(R.id.input_kb_clear);
     }
     */
-}
+

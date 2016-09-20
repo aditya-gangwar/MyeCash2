@@ -20,7 +20,26 @@ public class MerchantOps
   private java.util.Date updated;
   private String otp;
   private String op_status;
+  private String reason;
+  private String agentId;
   private String remarks;
+
+  public String getRemarks() {
+    return remarks;
+  }
+
+  public void setRemarks(String remarks) {
+    this.remarks = remarks;
+  }
+
+  public String getAgentId() {
+    return agentId;
+  }
+
+  public void setAgentId(String agentId) {
+    this.agentId = agentId;
+  }
+
   public String getOwnerId()
   {
     return ownerId;
@@ -131,14 +150,14 @@ public class MerchantOps
     this.op_status = op_status;
   }
 
-  public String getRemarks()
+  public String getReason()
   {
-    return remarks;
+    return reason;
   }
 
-  public void setRemarks( String remarks )
+  public void setReason(String reason)
   {
-    this.remarks = remarks;
+    this.reason = reason;
   }
 
 

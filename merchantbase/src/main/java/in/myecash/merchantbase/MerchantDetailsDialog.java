@@ -95,7 +95,7 @@ public class MerchantDetailsDialog extends DialogFragment {
             mLayoutStatusDetails.setVisibility(View.VISIBLE);
             mInputStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
             mInputStatusDate.setText(mSdfDateWithTime.format(merchant.getStatus_update_time()));
-            mInputReason.setText(DbConstants.statusReasonDescriptions[merchant.getStatus_reason()]);
+            mInputReason.setText(merchant.getStatus_reason());
 
             if(status==DbConstants.USER_STATUS_LOCKED) {
                 mInputStatusDetails.setVisibility(View.VISIBLE);

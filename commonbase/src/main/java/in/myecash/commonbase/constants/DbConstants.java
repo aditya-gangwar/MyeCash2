@@ -10,12 +10,16 @@ public class DbConstants {
     public static final int USER_TYPE_CUSTOMER = 1;
     public static final int USER_TYPE_AGENT = 2;
     public static final int USER_TYPE_CC = 3;
+    public static final int USER_TYPE_CNT = 4;
+    public static final int USER_TYPE_ADMIN = 5;
     // user type code to text description
     public static String userTypeDesc[] = {
             "Merchant",
             "Customer",
             "Agent",
-            "CustomerCare"
+            "CustomerCare",
+            "Controller",
+            "Admin"
     };
 
     // Merchant table - 'admin_status' column values
@@ -27,36 +31,16 @@ public class DbConstants {
     public static final int USER_STATUS_LOCKED = 3;
     // Error during registration - to be manually deleted
     public static final int USER_STATUS_REG_ERROR = 4;
+    // Acc can be 'enabled' by customer care, only when in this state
+    public static final int USER_STATUS_READY_TO_ACTIVE = 5;
     // status code to text description
     public static String userStatusDesc[] = {
             "",
             "Active",
             "Disabled",
             "Locked",
-            "Not Registered"
-    };
-
-    // Merchant table - 'status_reason' column values
-    //public static final int ENABLED_NEW_USER = 1;
-    public static final int ENABLED_ACTIVE = 1;
-    public static final int DISABLED_AUTO_BY_SYSTEM = 2;
-    public static final int DISABLED_ON_USER_REQUEST = 3;
-    public static final int LOCKED_WRONG_PASSWORD_LIMIT_RCHD = 4;
-    public static final int LOCKED_WRONG_PIN_LIMIT_RCHD = 5;
-    public static final int LOCKED_FORGOT_PASSWORD_ATTEMPT_LIMIT_RCHD = 6;
-    public static final int LOCKED_FORGOT_USERID_ATTEMPT_LIMIT_RCHD = 7;
-    public static final int REG_ERROR_ROLE_ASSIGN_FAILED = 8;
-
-    // Map int status values to corresponding descriptions
-    public static String statusReasonDescriptions[] = {
-            "",
-            "User is active",
-            "By system for security purpose. Will be re-activated after verification.",
-            "On user request.",
-            "Wrong password attempts limit reached.",
-            "Wrong PIN attempts limit reached.",
-            "Wrong 'password reset' attempts limit reached.",
-            ""
+            "Not Registered",
+            "Ready to enable"
     };
 
     // CustomerCards table - 'status' column values

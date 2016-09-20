@@ -6,6 +6,7 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,7 +20,7 @@ import java.io.Serializable;
 /**
  * Created by adgangwa on 16-06-2016.
  */
-public class CashPaid implements View.OnClickListener, Serializable {
+public class CashPaid implements Serializable, View.OnTouchListener {
     public static final String TAG = "CashPaid";
 
     // show next 3 values
@@ -78,6 +79,7 @@ public class CashPaid implements View.OnClickListener, Serializable {
         setValuesInUi();
     }
 
+    /*
     @Override
     public void onClick(View v) {
         int vId = v.getId();
@@ -89,6 +91,22 @@ public class CashPaid implements View.OnClickListener, Serializable {
                 mCallback.onAmountEnterFinal();
             }
         }
+    }*/
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            LogMy.d(TAG,"In onTouch: "+v.getId());
+
+            int vId = v.getId();
+            for(int i=0; i<UI_SLOT_COUNT; i++) {
+                if( vId==mInputCashPay[i].getId() ) {
+                    mInputAmt.setText(String.valueOf(mValues[i]));
+                    mCallback.onAmountEnterFinal();
+                }
+            }
+        }
+        return true;
     }
 
     private void setValuesInUi() {
@@ -143,7 +161,7 @@ public class CashPaid implements View.OnClickListener, Serializable {
 
         for(int i=0; i<UI_SLOT_COUNT; i++) {
            if(mInputCashPay[i].isEnabled()) {
-               mInputCashPay[i].setOnClickListener(this);
+               mInputCashPay[i].setOnTouchListener(this);
            }
         }
         //mInputAmt.setOnClickListener(this);

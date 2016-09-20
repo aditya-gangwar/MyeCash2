@@ -248,7 +248,7 @@
                     android:text=""
                     android:paddingTop="0dp"/>
             </LinearLayout>
-            <LinearLayout
+            <!--LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:visibility="visible">
                 <ImageView
@@ -275,7 +275,7 @@
                     android:layout_height="wrap_content"
                     android:text=""
                     android:paddingTop="0dp"/>
-            </LinearLayout>
+            </LinearLayout-->
         </LinearLayout>
 
         <Space
@@ -489,7 +489,7 @@
                 style="@style/button_normal_thin"
                 android:id="@+id/btn_acc_status"
                 android:layout_width="0dp"
-                android:text="Change Status"
+                android:text="Disable"
                 android:layout_weight="47.5"/>
 
             <Space

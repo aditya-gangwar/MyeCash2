@@ -322,7 +322,7 @@
                     android:paddingTop="0dp"
                     android:textStyle="italic"/>
             </LinearLayout>
-            <LinearLayout
+            <!--LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_status_remarks"
                 android:visibility="visible"
@@ -351,7 +351,7 @@
                     android:layout_height="wrap_content"
                     android:text=""
                     android:paddingTop="0dp"/>
-            </LinearLayout>
+            </LinearLayout-->
         </LinearLayout>
 
         <Space

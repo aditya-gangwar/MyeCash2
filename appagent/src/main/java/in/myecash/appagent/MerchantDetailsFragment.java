@@ -2,6 +2,7 @@ package in.myecash.appagent;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,8 +10,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
+import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.DbConstants;
@@ -23,32 +26,54 @@ import java.text.SimpleDateFormat;
 /**
  * Created by adgangwa on 30-07-2016.
  */
-public class MerchantDetailsDialog extends DialogFragment
+public class MerchantDetailsFragment extends Fragment
     implements View.OnClickListener {
-    private static final String TAG = "MerchantDetailsDialog";
+    private static final String TAG = "MerchantDetailsFragment";
+
+    private static final String DIALOG_DISABLE_MCHNT = "disableMerchant";
 
     private final SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
 
-    private MerchantDetailsDialogIf mCallback;
-    public interface MerchantDetailsDialogIf {
+    public interface MerchantDetailsFragmentIf {
         MyRetainedFragment getRetainedFragment();
-        void disableMerchant();
         void launchMchntApp();
     }
+    private MerchantDetailsFragmentIf mCallback;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         try {
-            mCallback = (MerchantDetailsDialogIf) getActivity();
+            mCallback = (MerchantDetailsFragmentIf) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
-                    + " must implement MerchantDetailsDialogIf");
+                    + " must implement MerchantDetailsFragmentIf");
         }
         initDialogView();
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LogMy.d(TAG, "In onCreateView");
+        View v = inflater.inflate(R.layout.frag_mchnt_details_internal, container, false);
+
+        // access to UI elements
+        bindUiResources(v);
+        //setup buttons
+        if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_AGENT) {
+            mAccStatus.setVisibility(View.GONE);
+            mLaunchApp.setVisibility(View.GONE);
+
+        } else if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_CC) {
+            mAccStatus.setOnClickListener(this);
+            mLaunchApp.setOnClickListener(this);
+        }
+
+        return v;
+    }
+
+    /*
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_mchnt_details_internal, null);
@@ -76,7 +101,7 @@ public class MerchantDetailsDialog extends DialogFragment
                                     case R.id.radioButtonCb:
                                         mCallback.getMerchantCbs();
                                         break;
-                                }*/
+                                }*//*
 
                                 dialog.dismiss();
                             }
@@ -86,12 +111,12 @@ public class MerchantDetailsDialog extends DialogFragment
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                AppCommonUtil.setDialogTextSize(MerchantDetailsDialog.this, (AlertDialog) dialog);
+                AppCommonUtil.setDialogTextSize(MerchantDetailsFragment.this, (AlertDialog) dialog);
             }
         });
 
         return dialog;
-    }
+    }*/
 
     private void initDialogView() {
         Merchants merchant = mCallback.getRetainedFragment().mCurrMerchant;
@@ -105,10 +130,11 @@ public class MerchantDetailsDialog extends DialogFragment
         int status = merchant.getAdmin_status();
         mInputStatus.setText(DbConstants.userStatusDesc[status]);
         mInputStatusDate.setText(mSdfDateWithTime.format(merchant.getStatus_update_time()));
-        mInputReason.setText(DbConstants.statusReasonDescriptions[merchant.getStatus_reason()]);
-        if(merchant.getAdmin_remarks()!=null) {
+
+        mInputReason.setText(merchant.getStatus_reason());
+        /*if(merchant.getAdmin_remarks()!=null) {
             mInputRemarks.setText(merchant.getAdmin_remarks());
-        }
+        }*/
 
         mInputMobileNum.setText(merchant.getMobile_num());
         mInputEmail.setText(merchant.getEmail());
@@ -120,10 +146,7 @@ public class MerchantDetailsDialog extends DialogFragment
         mCbRate.setText(merchant.getCb_rate());
         mAddCashStatus.setText(merchant.getCl_add_enable().toString());
 
-        mAccStatus.setOnClickListener(this);
-        mLaunchApp.setOnClickListener(this);
-
-        if(status!=DbConstants.USER_STATUS_ACTIVE) {
+        if( status!=DbConstants.USER_STATUS_ACTIVE && (mAccStatus.getVisibility()==View.VISIBLE) ) {
             mAccStatus.setEnabled(false);
             mAccStatus.setOnClickListener(null);
             mAccStatus.setAlpha(0.4f);
@@ -135,14 +158,16 @@ public class MerchantDetailsDialog extends DialogFragment
         switch (v.getId()) {
             case R.id.btn_acc_status:
                 LogMy.d(TAG,"Clicked change acc status button.");
-                mCallback.disableMerchant();
-                getDialog().dismiss();
+                // show disable dialog
+                DisableMchntDialog dialog = new DisableMchntDialog();
+                dialog.show(getFragmentManager(), DIALOG_DISABLE_MCHNT);
+                //getDialog().dismiss();
                 break;
 
             case R.id.btn_launch_app:
                 LogMy.d(TAG,"Clicked launch merchant app button.");
                 mCallback.launchMchntApp();
-                getDialog().dismiss();
+                //getDialog().dismiss();
                 break;
         }
     }
@@ -156,7 +181,7 @@ public class MerchantDetailsDialog extends DialogFragment
     private EditText mInputStatus;
     private EditText mInputStatusDate;
     private EditText mInputReason;
-    private EditText mInputRemarks;
+    //private EditText mInputRemarks;
 
     private EditText mInputMobileNum;
     private EditText mInputEmail;
@@ -187,7 +212,7 @@ public class MerchantDetailsDialog extends DialogFragment
         mInputStatus = (EditText) v.findViewById(R.id.input_status);
         mInputReason = (EditText) v.findViewById(R.id.input_status_reason);
         mInputStatusDate = (EditText) v.findViewById(R.id.input_status_date);
-        mInputRemarks = (EditText) v.findViewById(R.id.input_status_remarks);
+        //mInputRemarks = (EditText) v.findViewById(R.id.input_status_remarks);
 
         mInputMobileNum = (EditText) v.findViewById(R.id.input_merchant_mobile);
         mInputEmail = (EditText) v.findViewById(R.id.input_merchant_email);

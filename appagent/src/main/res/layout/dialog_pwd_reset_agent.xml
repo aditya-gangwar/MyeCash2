@@ -31,7 +31,8 @@
             android:layout_height="wrap_content"
             android:hint="Date of Birth"
             android:maxLength="8"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:inputType="number"/>
 
         <Space
             android:layout_width="match_parent"
