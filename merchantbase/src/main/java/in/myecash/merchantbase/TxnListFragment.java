@@ -259,9 +259,9 @@ public class TxnListFragment extends Fragment {
             sb.append(String.format(CSV_REPORT_HEADER_2,user.getMerchantName())).append(CommonConstants.CSV_NEWLINE);
             sb.append(String.format(CSV_REPORT_HEADER_3,user.getMerchant().getAddress().getLine_1(),user.getMerchantId()))
                     .append(CommonConstants.CSV_NEWLINE);
-            sb.append(String.format(CSV_REPORT_HEADER_4,user.getMerchant().getAddress().getCity().getCity(),startDate,endDate))
+            sb.append(String.format(CSV_REPORT_HEADER_4,user.getMerchant().getAddress().getCity(),startDate,endDate))
                     .append(CommonConstants.CSV_NEWLINE);
-            sb.append(String.format(CSV_REPORT_HEADER_5,user.getMerchant().getAddress().getCity().getState()))
+            sb.append(String.format(CSV_REPORT_HEADER_5,user.getMerchant().getAddress().getState()))
                     .append(CommonConstants.CSV_NEWLINE);
             sb.append(CSV_REPORT_HEADER_6).append(CommonConstants.CSV_NEWLINE);
             sb.append(CSV_REPORT_HEADER_7).append(CommonConstants.CSV_NEWLINE);

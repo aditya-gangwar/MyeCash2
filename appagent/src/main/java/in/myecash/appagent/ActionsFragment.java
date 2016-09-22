@@ -27,11 +27,20 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
     public static final String[] agentMerchantActions = {MERCHANT_SEARCH, MERCHANT_REGISTER};
     public static final String[] ccMerchantActions = {MERCHANT_SEARCH};
 
+    // Possible other actions
+    public static final String OTHER_GLOBAL_SETTINGS = "Global Settings";
+
+    public static final int MAX_OTHER_BUTTONS = 2;
+    // elements has to be <= MAX_OTHER_BUTTONS
+    public static final String[] agentOtherActions = {OTHER_GLOBAL_SETTINGS};
+    public static final String[] ccOtherActions = {OTHER_GLOBAL_SETTINGS};
+
+
     private ActionsFragmentIf mCallback;
 
     // Container Activity must implement this interface
     public interface ActionsFragmentIf {
-        public void onMerchantBtnClick(String action);
+        public void onActionBtnClick(String action);
     }
 
     @Override
@@ -68,8 +77,10 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
         switch(vId) {
             case R.id.btn_merchant_0:
             case R.id.btn_merchant_1:
+            case R.id.btn_others_0:
+            case R.id.btn_others_1:
                 String btnLabel = ((AppCompatButton)v).getText().toString();
-                mCallback.onMerchantBtnClick(btnLabel);
+                mCallback.onActionBtnClick(btnLabel);
                 break;
         }
     }
@@ -77,6 +88,7 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
     private void initButtons() {
         String[] actions = null;
 
+        // Init buttons for merchant actions
         if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_AGENT) {
             actions = agentMerchantActions;
         } else if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_CC) {
@@ -84,23 +96,44 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
             actions = ccMerchantActions;
         }
 
-        // Init buttons for merchant actions
         for(int i=0; i<MAX_MERCHANT_BUTTONS; i++) {
             if(i<actions.length) {
                 mMerchantBtns[i].setVisibility(View.VISIBLE);
                 mMerchantBtns[i].setText(actions[i]);
                 mMerchantBtns[i].setOnClickListener(this);
             } else {
-                mMerchantBtns[i].setVisibility(View.GONE);
+                mMerchantBtns[i].setVisibility(View.INVISIBLE);
+            }
+        }
+
+        // Init buttons for other actions
+        if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_AGENT) {
+            actions = agentOtherActions;
+        } else if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_CC) {
+            // customer care
+            actions = ccOtherActions;
+        }
+
+        for(int i=0; i<MAX_OTHER_BUTTONS; i++) {
+            if(i<actions.length) {
+                mOtherBtns[i].setVisibility(View.VISIBLE);
+                mOtherBtns[i].setText(actions[i]);
+                mOtherBtns[i].setOnClickListener(this);
+            } else {
+                mOtherBtns[i].setVisibility(View.INVISIBLE);
             }
         }
 
     }
 
     private AppCompatButton mMerchantBtns[] = new AppCompatButton[MAX_MERCHANT_BUTTONS];
+    private AppCompatButton mOtherBtns[] = new AppCompatButton[MAX_OTHER_BUTTONS];
 
     private void bindUiResources(View v) {
         mMerchantBtns[0] = (AppCompatButton) v.findViewById(R.id.btn_merchant_0);
         mMerchantBtns[1] = (AppCompatButton) v.findViewById(R.id.btn_merchant_1);
+
+        mOtherBtns[0] = (AppCompatButton) v.findViewById(R.id.btn_others_0);
+        mOtherBtns[1] = (AppCompatButton) v.findViewById(R.id.btn_others_1);
     }
 }

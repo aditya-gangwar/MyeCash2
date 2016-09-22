@@ -1,4 +1,4 @@
-package in.myecash.appagent.entities;
+package in.myecash.commonbase.entities;
 
 /**
  * Created by adgangwa on 19-02-2016.

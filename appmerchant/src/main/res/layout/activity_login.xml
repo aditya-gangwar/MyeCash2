@@ -29,7 +29,6 @@
                 style="@style/MyEdittext_Medium"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
                 android:hint="Merchant ID"
                 android:maxLength="@string/merchant_id_char_limit"
                 android:imeOptions="actionNext"/>

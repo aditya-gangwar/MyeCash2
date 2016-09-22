@@ -88,6 +88,8 @@ public class MyCustomer {
     }
 
     public void init(String customerDetailsInCsvFormat, String delim) {
+        LogMy.d(TAG,"In init: "+customerDetailsInCsvFormat);
+
         if(customerDetailsInCsvFormat==null || customerDetailsInCsvFormat.isEmpty())
         {
             LogMy.e(TAG,"Customer details not available.");

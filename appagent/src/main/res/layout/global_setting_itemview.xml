@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical_paddingSidesLarge"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/input_setting_name"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Merchant Password Reset Request Gap"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:paddingLeft="0dp"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/input_setting_value"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="120"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:textStyle="bold"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/input_setting_desc"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="left"
+            android:layout_below="@id/input_setting_name"
+            android:text="Minimum minutes of gap required between two consecutive password reset requests."
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/input_setting_updated"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="left"
+            android:layout_below="@id/input_setting_desc"
+            android:text="Updated: "
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"/>
+
+    </RelativeLayout>
+
+    <View
+        style="@style/Divider_horizontal_Large"
+        android:id="@+id/cust_divider_1"/>
+
+</LinearLayout>

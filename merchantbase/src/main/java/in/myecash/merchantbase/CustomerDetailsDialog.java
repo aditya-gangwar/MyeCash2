@@ -126,7 +126,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
             if(status != DbConstants.USER_STATUS_ACTIVE) {
                 mLayoutStatusDetails.setVisibility(View.VISIBLE);
                 mInputStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
-                mInputStatusDate.setText(mSdfDateWithTime.format(cust.getStatusUpdateTime()));
+                mInputStatusDate.setText(cust.getStatusUpdateTime());
                 mInputReason.setText(cust.getStatusReason());
 
                 if(status==DbConstants.USER_STATUS_LOCKED) {
@@ -154,7 +154,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
             if(mCallback.getRetainedFragment().mMerchantUser.isPseudoLoggedIn()) {
                 // set cust care specific fields too
                 mName.setText(cust.getName());
-                mCreatedOn.setText(mSdfDateWithTime.format(cust.getCustCreateTime()));
+                mCreatedOn.setText(cust.getCustCreateTime());
                 mFirstLogin.setText(cust.isFirstLoginOk().toString());
                 mCardStatusDate.setText(cust.getCardStatusUpdateTime());
                 //mInputAdminRemarks.setText(cust.getRemarks());

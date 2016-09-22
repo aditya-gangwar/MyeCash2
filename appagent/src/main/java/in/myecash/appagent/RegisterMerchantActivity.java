@@ -31,8 +31,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import in.myecash.appagent.entities.MyBusinessCategories;
-import in.myecash.appagent.entities.MyCities;
+import in.myecash.commonbase.entities.MyBusinessCategories;
+import in.myecash.commonbase.entities.MyCities;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
@@ -189,7 +189,8 @@ public class RegisterMerchantActivity extends AppCompatActivity
             case DIALOG_CITY:
                 String city = String.valueOf(MyCities.getCityValueSet()[indexOrResultCode]);
                 Cities cityObj = MyCities.getCityWithName(city);
-                mAddress.setCity(cityObj);
+                mAddress.setCity(cityObj.getCity());
+                mAddress.setState(cityObj.getState());
                 mCityTextRes.setText(city);
                 mCityTextRes.setError(null);
                 mStateTextRes.setText(cityObj.getState());

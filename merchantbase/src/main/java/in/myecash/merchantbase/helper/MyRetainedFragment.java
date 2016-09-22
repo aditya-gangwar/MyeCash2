@@ -201,7 +201,7 @@ public class MyRetainedFragment extends RetainedFragment {
     }
 
     public void fetchImageFile(String url) {
-        LogMy.d(TAG, "In fetchImageFile");
+        LogMy.d(TAG, "In fetchImageFile: "+url);
         // most probably this will get called before OnActivityCreated and mMerchantUser will be null then
         mMerchantUser = MerchantUser.getInstance();
 
@@ -267,7 +267,8 @@ public class MyRetainedFragment extends RetainedFragment {
 
                 byte[] bitmapBytes = new FileFetchr().getUrlBytes(params[0],params[1]);
                 return BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
-            } catch (IOException ioe) {
+
+            } catch (Exception ioe) {
                 LogMy.e(TAG, "Failed to fetch image"+ ioe.toString());
                 return null;
             }

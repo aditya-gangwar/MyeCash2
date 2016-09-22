@@ -1,49 +1,25 @@
 package in.myecash.merchantbase;
 
-import android.app.Activity;
-import android.app.DownloadManager;
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.models.MerchantOps;
-import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.DialogFragmentWrapper;
 import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.merchantbase.entities.MerchantUser;
-import in.myecash.merchantbase.entities.MyCashback;
-import in.myecash.merchantbase.entities.MyCustomer;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 /**
@@ -100,7 +76,7 @@ public class MerchantOpListFrag extends Fragment {
 
     private void updateUI() {
         if(mRetainedFragment.mLastFetchMchntOps!=null) {
-            mRecyclerView.setAdapter(new CbAdapter(mRetainedFragment.mLastFetchMchntOps));
+            mRecyclerView.setAdapter(new ListAdapter(mRetainedFragment.mLastFetchMchntOps));
         }
     }
 
@@ -116,7 +92,7 @@ public class MerchantOpListFrag extends Fragment {
         updateUI();
     }
 
-    private class CbHolder extends RecyclerView.ViewHolder {
+    private class ItemHolder extends RecyclerView.ViewHolder {
 
         private MerchantOps mOp;
 
@@ -129,7 +105,7 @@ public class MerchantOpListFrag extends Fragment {
         public EditText mOpReason;
         public EditText mOpRemarks;
 
-        public CbHolder(View itemView) {
+        public ItemHolder(View itemView) {
             super(itemView);
 
             mOpName = (EditText) itemView.findViewById(R.id.input_opname);
@@ -194,23 +170,23 @@ public class MerchantOpListFrag extends Fragment {
         }
     }
 
-    private class CbAdapter extends RecyclerView.Adapter<CbHolder> {
+    private class ListAdapter extends RecyclerView.Adapter<ItemHolder> {
         private List<MerchantOps> mOps;
-        private View.OnClickListener mListener;
+        //private View.OnClickListener mListener;
 
-        public CbAdapter(List<MerchantOps> ops) {
+        public ListAdapter(List<MerchantOps> ops) {
             mOps = ops;
         }
 
         @Override
-        public CbHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater.inflate(R.layout.merchant_op_itemview, parent, false);
-            view.setOnClickListener(mListener);
-            return new CbHolder(view);
+            //view.setOnClickListener(mListener);
+            return new ItemHolder(view);
         }
         @Override
-        public void onBindViewHolder(CbHolder holder, int position) {
+        public void onBindViewHolder(ItemHolder holder, int position) {
             MerchantOps op = mOps.get(position);
             holder.bindOp(op);
         }

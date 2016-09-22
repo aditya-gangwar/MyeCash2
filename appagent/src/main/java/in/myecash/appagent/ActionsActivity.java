@@ -42,6 +42,7 @@ public class ActionsActivity extends AppCompatActivity implements
     private static final String RETAINED_FRAGMENT = "retainedFragActions";
     private static final String ACTIONS_FRAGMENT = "actionsFragment";
     private static final String MCHNT_DETAILS_FRAGMENT = "mchntDetailsFragment";
+    private static final String SETTINGS_LIST_FRAGMENT = "settingsListFragment";
 
     private static final String DIALOG_BACK_BUTTON = "dialogBackButton";
     private static final String DIALOG_CHANGE_BUTTON = "dialogChangeButton";
@@ -265,7 +266,7 @@ public class ActionsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onMerchantBtnClick(String action) {
+    public void onActionBtnClick(String action) {
         switch(action) {
             case ActionsFragment.MERCHANT_REGISTER:
                 startMerchantRegisterActivity();
@@ -273,6 +274,10 @@ public class ActionsActivity extends AppCompatActivity implements
             case ActionsFragment.MERCHANT_SEARCH:
                 SearchMerchantDialog dialog = new SearchMerchantDialog();
                 dialog.show(getFragmentManager(), DIALOG_SEARCH_MCHNT);
+                break;
+            case ActionsFragment.OTHER_GLOBAL_SETTINGS:
+                startSettingsListFrag();
+                break;
         }
     }
 
@@ -308,6 +313,21 @@ public class ActionsActivity extends AppCompatActivity implements
             // Add over the existing fragment
             transaction.replace(R.id.fragment_container, fragment, MCHNT_DETAILS_FRAGMENT);
             transaction.addToBackStack(MCHNT_DETAILS_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+    }
+
+    private void startSettingsListFrag() {
+        if (mFragMgr.findFragmentByTag(SETTINGS_LIST_FRAGMENT) == null) {
+            LogMy.d(TAG, "Creating new setiings list fragment");
+            Fragment fragment = new GlobalSettingsListFrag();
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container, fragment, SETTINGS_LIST_FRAGMENT);
+            transaction.addToBackStack(SETTINGS_LIST_FRAGMENT);
 
             // Commit the transaction
             transaction.commit();

@@ -7,6 +7,8 @@ package in.myecash.commonbase.entities;
 import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
 import com.backendless.exceptions.BackendlessException;
+
+import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.models.GlobalSettings;
@@ -14,8 +16,11 @@ import in.myecash.commonbase.utilities.AppAlarms;
 import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.LogMy;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -23,6 +28,15 @@ public class MyGlobalSettings
 {
     private static String TAG="GlobalSettings";
     public static Map<String,Object> mSettings;
+
+    public static List<gSettings> userVisibleSettings = new ArrayList<>();
+
+    public static class gSettings {
+        public String name;
+        public String value;
+        public String description;
+        public Date updated;
+    }
 
     public static int initSync() {
 
@@ -47,6 +61,9 @@ public class MyGlobalSettings
                             case DbConstants.DATATYPE_INT:
                                 value = setting.getValue_int();
                                 break;
+                            case DbConstants.DATATYPE_BOOLEAN:
+                                value = (setting.getValue_int()>0);
+                                break;
                             case DbConstants.DATATYPE_STRING:
                                 value = setting.getValue_string();
                                 break;
@@ -54,8 +71,30 @@ public class MyGlobalSettings
                                 value = setting.getValue_date();
                                 break;
                         }
+
                         if(value != null) {
                             mSettings.put(setting.getName(), value);
+
+                            // store only user visible settings in the list
+                            if(setting.getUser_visible()) {
+                                gSettings gSetting = new gSettings();
+                                gSetting.name = setting.getDisplay_name();
+                                gSetting.description = setting.getDescription();
+
+                                if(setting.getUpdated()==null) {
+                                    gSetting.updated = setting.getCreated();
+                                } else {
+                                    gSetting.updated = setting.getUpdated();
+                                }
+
+                                if(setting.getValue_datatype()!=DbConstants.DATATYPE_DATE) {
+                                    gSetting.value = value.toString();
+                                } else {
+                                    SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
+                                    gSetting.value = mSdfDateWithTime.format(setting.getValue_date());
+                                }
+                                userVisibleSettings.add(gSetting);
+                            }
                         }
                     }
                     settings = settings.nextPage();
@@ -119,11 +158,11 @@ public class MyGlobalSettings
     public static Integer getCardImageCaptureMode() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_TXN_IMAGE_CAPTURE_MODE);
     }
-    public static boolean getCardReqCbRedeem() {
-        return ((Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CB_REDEEM_CARD_REQ) > 0);
+    public static Boolean getCardReqCbRedeem() {
+        return (Boolean)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CB_REDEEM_CARD_REQ);
     }
-    public static boolean getCardReqAccDebit() {
-        return ((Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_ACC_DB_CARD_REQ) > 0);
+    public static Boolean getCardReqAccDebit() {
+        return (Boolean)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_ACC_DB_CARD_REQ);
     }
 
     /*

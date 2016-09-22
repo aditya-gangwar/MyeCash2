@@ -19,6 +19,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -430,23 +431,6 @@ public class AppCommonUtil {
         }
         halfVisibleUserid.append(userId.substring(hiddenlen));
         return halfVisibleUserid.toString();
-    }
-
-    public static boolean refreshMerchantStats(MerchantStats currStats) {
-        if(currStats==null) {
-            return true;
-        }
-        Date now = new Date();
-        Date updateTime = currStats.getUpdated();
-        if(updateTime==null) {
-            updateTime = currStats.getCreated();
-        }
-        long timeDiff = now.getTime() - updateTime.getTime();
-        long noRefreshDuration = 60*60*1000*MyGlobalSettings.getMchntDashBNoRefreshHrs();
-        if( timeDiff > noRefreshDuration ) {
-            return true;
-        }
-        return false;
     }
 
     public static void initTableToClassMappings() {

@@ -58,8 +58,8 @@ public class AppConstants {
 
     // shared preference keys
     public static final String PREF_LOGIN_ID = "successLoginId";
-    // merchant id is added to below
-    public static final String PREF_IMAGE_PATH = "merchantDp";
+    public static final String PREF_IMAGE_PATH_PREFIX = "merchantDp";
+    public static final String PREF_MCHNT_STATS_PREFIX = "merchantStats";
 
     // Messages shown on popup dialogues
     public static final String defaultSuccessTitle = "SUCCESS";

@@ -13,6 +13,7 @@
 
     <string name="merchant_app_name">MyeCash-Merchant</string>
     <string name="agent_app_name">MyeCash-Agent</string>
+    <string name="customer_app_name">MyeCash-Customer</string>
 
     <string name="Rs">\u20B9</string>
     <string name="Rs_space">\u20B9\u0020</string>
@@ -100,6 +101,7 @@
     <string name="merchant_id_char_limit">8</string>
     <string name="customer_internal_id_char_limit">6</string>
     <string name="agent_id_char_limit">7</string>
+    <string name="card_number_limit">11</string>
     <string name="max_str_limit">400</string>
 
     <string name="return_cash_detail">[ - %1$d ]</string>

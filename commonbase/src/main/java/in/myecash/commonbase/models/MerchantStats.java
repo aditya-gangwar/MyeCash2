@@ -25,6 +25,14 @@ public class MerchantStats
   private String ownerId;
   public Integer cust_cnt_cb;
 
+  public void setCreated(Date created) {
+    this.created = created;
+  }
+
+  public void setUpdated(Date updated) {
+    this.updated = updated;
+  }
+
   public Integer getCust_cnt_no_balance()
   {
     return cust_cnt_no_balance;

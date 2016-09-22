@@ -91,9 +91,12 @@ public class CustomerListFragment extends Fragment {
 
             if(mRetainedFragment.mLastFetchCashbacks==null) {
                 mRetainedFragment.mLastFetchCashbacks = new ArrayList<>();
-                // new file download scenario - process the file
-                processFile();
+            } else {
+                mRetainedFragment.mLastFetchCashbacks.clear();
             }
+
+            // process the file
+            processFile();
 
             if(savedInstanceState==null) {
                 mSelectedSortType = MyCashback.CB_CMP_TYPE_UPDATE_TIME;

@@ -100,6 +100,7 @@ public class DbConstants {
 
     // GlobalSettings table - 'value_datatype' column values
     public static final int DATATYPE_INT = 1;
-    public static final int DATATYPE_STRING = 2;
-    public static final int DATATYPE_DATE = 3;
+    public static final int DATATYPE_BOOLEAN = 2;
+    public static final int DATATYPE_STRING = 3;
+    public static final int DATATYPE_DATE = 4;
 }

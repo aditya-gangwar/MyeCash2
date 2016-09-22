@@ -28,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.backendless.exceptions.BackendlessException;
 import com.crashlytics.android.Crashlytics;
 import in.myecash.commonbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.commonbase.constants.AppConstants;
@@ -37,6 +36,7 @@ import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.entities.MyGlobalSettings;
+import in.myecash.commonbase.models.MerchantStats;
 import in.myecash.commonbase.models.Merchants;
 import in.myecash.commonbase.utilities.AppAlarms;
 import in.myecash.commonbase.utilities.AppCommonUtil;
@@ -46,11 +46,13 @@ import in.myecash.commonbase.utilities.LogMy;
 import in.myecash.commonbase.utilities.ValidationHelper;
 import in.myecash.merchantbase.entities.CustomerOps;
 import in.myecash.merchantbase.entities.MerchantUser;
+import in.myecash.merchantbase.entities.MyMerchantStats;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -250,7 +252,7 @@ public class CashbackActivity extends AppCompatActivity implements
         if (i == R.id.menu_dashboard) {
             // do not fetch from backend - if last fetch was within configured duration
             // this to lessen load on server due to this function
-            if (AppCommonUtil.refreshMerchantStats(mWorkFragment.mMerchantStats)) {
+            if (refreshMerchantStats()) {
                 // fetch merchant stats from backend
                 // this builds fresh 'all customer details' file too
                 AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
@@ -321,6 +323,32 @@ public class CashbackActivity extends AppCompatActivity implements
 
     }
 
+    private boolean refreshMerchantStats() {
+        if(mWorkFragment.mMerchantStats==null) {
+            // check if available locally
+            String prefName = AppConstants.PREF_MCHNT_STATS_PREFIX +mMerchant.getAuto_id();
+            String storedStats = PreferenceManager.getDefaultSharedPreferences(this).getString(prefName, null);
+            if(storedStats != null) {
+                mWorkFragment.mMerchantStats = MyMerchantStats.fromCsvString(storedStats);
+                return false;
+            }
+            return true;
+        }
+        Date now = new Date();
+        Date updateTime = mWorkFragment.mMerchantStats.getUpdated();
+        if(updateTime==null) {
+            updateTime = mWorkFragment.mMerchantStats.getCreated();
+        }
+        long timeDiff = now.getTime() - updateTime.getTime();
+        long noRefreshDuration = 60*60*1000*MyGlobalSettings.getMchntDashBNoRefreshHrs();
+        if( timeDiff > noRefreshDuration ) {
+            return true;
+        }
+        return false;
+    }
+
+
+
     private void initToolbar() {
         LogMy.d(TAG, "In initToolbar");
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -348,7 +376,7 @@ public class CashbackActivity extends AppCompatActivity implements
         // Set merchant DP as toolbar icon
         // Check if local path available, else download from server
         boolean dwnloadImage = false;
-        String prefName = AppConstants.PREF_IMAGE_PATH+mMerchant.getAuto_id();
+        String prefName = AppConstants.PREF_IMAGE_PATH_PREFIX +mMerchant.getAuto_id();
         String imagePath = PreferenceManager.getDefaultSharedPreferences(this).getString(prefName, null);
         if( imagePath != null) {
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -445,12 +473,13 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     public void updateTbForMerchant() {
+        LogMy.d(TAG,"In updateTbForMerchant");
         if(mMerchantUser.getDisplayImage()!=null) {
             setTbImage(mMerchantUser.getDisplayImage());
             //mTbLayoutImage.setBackground(null);
             mTbImage.setBackground(null);
-            mTbImageIsMerchant = true;
         }
+        mTbImageIsMerchant = true;
         setTbTitle(mMerchant.getName());
         mTbTitle2.setVisibility(View.GONE);
         mTbLayoutSubhead1.setVisibility(View.GONE);
@@ -499,17 +528,28 @@ public class CashbackActivity extends AppCompatActivity implements
 
     @Override
     public void generateAllCustData() {
-        if(AppCommonUtil.refreshMerchantStats(mWorkFragment.mMerchantStats)) {
+        if(refreshMerchantStats()) {
             AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
             // set this to null, to indicate that the customer data file is to be downloaded and processed again
-            mWorkFragment.mLastFetchCashbacks = null;
+            //mWorkFragment.mLastFetchCashbacks = null;
+
             // fetch merchant stats from backend
             // this builds fresh 'all customer details' file too
             mWorkFragment.fetchMerchantStats();
 
         } else {
-            // no need to refresh - show old data
-            onMerchantStatsResult(ErrorCodes.NO_ERROR);
+            // check if file locally available (it should be) - from last fetch
+            File file = new File(getFilesDir() + "/" + AppCommonUtil.getMerchantCustFileName(mMerchantUser.getMerchantId()));
+            if(file.exists()) {
+                startCustomerListFrag();
+            } else {
+                // Merchant stats refresh not required - but file not available locally
+                // so download the same
+                LogMy.w(TAG,"Merchant refresh not required, but file not available locally");
+                // set this to null, to indicate that the customer data file is to be downloaded and processed again
+                //mWorkFragment.mLastFetchCashbacks = null;
+                onMerchantStatsResult(ErrorCodes.NO_ERROR);
+            }
         }
     }
 
@@ -839,6 +879,14 @@ public class CashbackActivity extends AppCompatActivity implements
                 onChangeMobileResponse(errorCode);
                 break;
             case MyRetainedFragment.REQUEST_MERCHANT_STATS:
+                if(errorCode == ErrorCodes.NO_ERROR) {
+                    // store the fetched stats in shared preference in CSV format
+                    String prefName = AppConstants.PREF_MCHNT_STATS_PREFIX +mMerchant.getAuto_id();
+                    PreferenceManager.getDefaultSharedPreferences(this)
+                            .edit()
+                            .putString(prefName, MyMerchantStats.toCsvString(mWorkFragment.mMerchantStats))
+                            .apply();
+                }
                 onMerchantStatsResult(errorCode);
                 break;
             case MyRetainedFragment.REQUEST_CUST_DATA_FILE_DOWNLOAD:
@@ -872,16 +920,24 @@ public class CashbackActivity extends AppCompatActivity implements
         if(errorCode==ErrorCodes.NO_ERROR) {
             if(mLastMenuItemId==R.id.menu_dashboard) {
                 startDBoardSummaryFrag();
+
             } else if(mLastMenuItemId==R.id.menu_customers) {
-                if(mWorkFragment.mLastFetchCashbacks == null) {
+                // customer data scenario - download the data file
+                AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+                mWorkFragment.downloadCustDataFile(this,
+                        AppCommonUtil.getMerchantCustFilePath(mMerchant.getAuto_id()));
+
+                /*if(mWorkFragment.mLastFetchCashbacks == null) {
                     // refresh scenario - download the data file
                     AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
                     mWorkFragment.downloadCustDataFile(this,
                             AppCommonUtil.getMerchantCustFilePath(mMerchant.getAuto_id()));
+
                 } else {
-                    // old no-refresh scenario - show the data
+                    // old no-refresh scenario OR file downloaded
+                    // show the data
                     startCustomerListFrag();
-                }
+                }*/
             }
         } else {
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
@@ -1019,12 +1075,15 @@ public class CashbackActivity extends AppCompatActivity implements
         LogMy.d(TAG, "In onMerchantDpDownload");
         Bitmap image = mWorkFragment.mLastFetchedImage;
         if(errorCode==ErrorCodes.NO_ERROR && image!=null) {
+            // store in MerchantUser for later use
+            mMerchantUser.setDisplayImage(image);
+
             //Drawable drawable = new BitmapDrawable(getResources(), image);
             // store in SD card and path in preferences
             File photoFile = AppCommonUtil.getPhotoFile(this);
             if (AppCommonUtil.createImageFromBitmap(image, photoFile)) {
                 // Store image path
-                String prefName = AppConstants.PREF_IMAGE_PATH+mMerchant.getAuto_id();
+                String prefName = AppConstants.PREF_IMAGE_PATH_PREFIX +mMerchant.getAuto_id();
                 PreferenceManager.getDefaultSharedPreferences(this)
                         .edit()
                         .putString(prefName, photoFile.getPath())

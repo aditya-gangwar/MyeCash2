@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mchntOpList_root"
+    android:background="?android:attr/windowBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_report"
+        android:id="@+id/list_header"
+        android:background="@color/bg_list_header">
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/label_list_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Global Settings"
+            android:textStyle="bold"/>
+
+        <View
+            style="@style/Divider_horizontal_Large"
+            android:layout_below="@id/label_list_header"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/list_recycler_view"
+        android:layout_below="@id/list_header">
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

@@ -9,16 +9,14 @@ package in.myecash.appagent.backendAPI;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 
+import in.myecash.commonbase.constants.BackendSettings;
 import in.myecash.commonbase.models.Merchants;
 
-  public class InternalUserServices
+public class InternalUserServices
 {
-    static final String BACKENDLESS_HOST = "https://api.backendless.com";
-    static final String SERVICE_NAME = "AgentServices";
+    static final String SERVICE_NAME = "InternalUserServices";
     static final String SERVICE_VERSION_NAME = "1.0.0";
     static final String APP_VERSION = "v1";
-    static final String APP_ID = "09667F8B-98A7-E6B9-FFEB-B2B6EE831A00";
-    static final String SECRET_KEY = "BB557D9A-4C9C-84FE-FFA1-B15A476D7400";
 
     private static InternalUserServices ourInstance = new InternalUserServices();
 
@@ -33,12 +31,10 @@ import in.myecash.commonbase.models.Merchants;
 
     public static void initApplication()
     {
-        Backendless.setUrl( InternalUserServices.BACKENDLESS_HOST );
+        Backendless.setUrl( BackendSettings.BACKENDLESS_HOST );
         // if you invoke this sample inside of android application, you should use overloaded "initApp" with "context" argument
-        Backendless.initApp( InternalUserServices.APP_ID, InternalUserServices.SECRET_KEY, InternalUserServices.APP_VERSION );
+        Backendless.initApp( BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, InternalUserServices.APP_VERSION );
     }
-
-
 
     public void registerMerchant(Merchants merchant)
     {

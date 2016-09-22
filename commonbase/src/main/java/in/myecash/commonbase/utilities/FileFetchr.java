@@ -12,6 +12,7 @@ import java.net.URL;
 public class FileFetchr {
 
     public byte[] getUrlBytes(String urlSpec, String userToken) throws IOException {
+        LogMy.d("FileFetchr","In getUrlBytes: "+urlSpec+", "+userToken);
 
         URL url = new URL(urlSpec);
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();

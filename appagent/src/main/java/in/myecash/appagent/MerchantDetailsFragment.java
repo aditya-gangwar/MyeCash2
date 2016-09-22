@@ -140,8 +140,8 @@ public class MerchantDetailsFragment extends Fragment
         mInputEmail.setText(merchant.getEmail());
 
         mAddress.setText(merchant.getAddress().getLine_1());
-        mCity.setText(merchant.getAddress().getCity().getCity());
-        mState.setText(merchant.getAddress().getCity().getState());
+        mCity.setText(merchant.getAddress().getCity());
+        mState.setText(merchant.getAddress().getState());
 
         mCbRate.setText(merchant.getCb_rate());
         mAddCashStatus.setText(merchant.getCl_add_enable().toString());

@@ -124,6 +124,16 @@ public final class ValidationHelper{
         }
     }
 
+    public static int validateCardId(String value) {
+        if (value.isEmpty() ) {
+            return ErrorCodes.EMPTY_VALUE;
+        } else if (value.length() != CommonConstants.CUSTOMER_CARDID_LEN) {
+            return ErrorCodes.INVALID_LENGTH;
+        } else {
+            return ErrorCodes.NO_ERROR;
+        }
+    }
+
     public static int validateCbRate(String value) {
         if (value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;

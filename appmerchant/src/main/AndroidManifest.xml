@@ -36,11 +36,6 @@
         <activity
             android:name=".LoginActivity">
         </activity>
-        <!--activity
-            android:name=".RegisterMerchantActivity"
-            android:label="@string/title_activity_register_merchant"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-        </activity-->
         <activity
             android:name="in.myecash.merchantbase.TermsConditionsActivity"
             android:label="@string/title_activity_terms_conditions">

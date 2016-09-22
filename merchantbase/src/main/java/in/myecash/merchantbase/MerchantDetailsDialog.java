@@ -98,11 +98,11 @@ public class MerchantDetailsDialog extends DialogFragment {
             mInputReason.setText(merchant.getStatus_reason());
 
             if(status==DbConstants.USER_STATUS_LOCKED) {
-                mInputStatusDetails.setVisibility(View.VISIBLE);
+                mLayoutActivation.setVisibility(View.VISIBLE);
                 String detail = "Will be auto unlocked after "+MyGlobalSettings.getMchntAccBlockHrs()+" hours from given time.";
-                mInputStatusDetails.setText(detail);
+                mInputActivation.setText(detail);
             } else {
-                mInputStatusDetails.setVisibility(View.GONE);
+                mLayoutActivation.setVisibility(View.GONE);
             }
         } else {
             mLayoutStatusDetails.setVisibility(View.GONE);
@@ -112,8 +112,8 @@ public class MerchantDetailsDialog extends DialogFragment {
         mInputEmail.setText(merchant.getEmail());
 
         mAddress.setText(merchant.getAddress().getLine_1());
-        mCity.setText(merchant.getAddress().getCity().getCity());
-        mState.setText(merchant.getAddress().getCity().getState());
+        mCity.setText(merchant.getAddress().getCity());
+        mState.setText(merchant.getAddress().getState());
     }
 
     private ImageView mDisplayImage;
@@ -128,7 +128,8 @@ public class MerchantDetailsDialog extends DialogFragment {
     private View mLayoutStatusDetails;
     private EditText mInputReason;
     private EditText mInputStatusDate;
-    private EditText mInputStatusDetails;
+    private View mLayoutActivation;
+    private EditText mInputActivation;
 
     private EditText mInputMobileNum;
     private EditText mInputEmail;
@@ -152,7 +153,8 @@ public class MerchantDetailsDialog extends DialogFragment {
         mLayoutStatusDetails = v.findViewById(R.id.layout_status_details);
         mInputReason = (EditText) v.findViewById(R.id.input_reason);
         mInputStatusDate = (EditText) v.findViewById(R.id.input_status_date);
-        mInputStatusDetails = (EditText) v.findViewById(R.id.input_activation);
+        mLayoutActivation = v.findViewById(R.id.layout_activation);
+        mInputActivation = (EditText) v.findViewById(R.id.input_activation);
 
         mInputMobileNum = (EditText) v.findViewById(R.id.input_merchant_mobile);
         mInputEmail = (EditText) v.findViewById(R.id.input_merchant_email);
