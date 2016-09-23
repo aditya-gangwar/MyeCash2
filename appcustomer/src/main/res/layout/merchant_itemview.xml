@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical_paddingSidesLarge"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_mchnt_name"
+            android:layout_width="wrap_content">
+
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:id="@+id/input_mchnt_name"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Ganga Stores and Cosmetics"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingRight="0dp"
+                android:paddingLeft="0dp"
+                android:textStyle="bold"
+                android:textColor="@color/accent"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/icon_mchnt_status_alert"
+                android:src="@drawable/ic_warning_white_18dp"
+                android:tint="@color/red_negative"
+                android:clickable="false"
+                android:paddingTop="@dimen/edittext_padding"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingRight="0dp"
+                android:paddingLeft="@dimen/edittext_padding_less"/>
+        </LinearLayout>
+
+        <EditText
+            style="@style/Edittext_only_click_small"
+            android:id="@+id/mchnt_category_city"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/layout_mchnt_name"
+            android:text="Electronics, Faridabad"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_acc"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/layout_mchnt_name"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                android:tint="@color/primary"
+                android:clickable="false"/>
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:id="@+id/cust_acc_bal"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="\u20B9 3456"
+                android:paddingRight="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"/>
+        </LinearLayout>
+
+        <EditText
+            style="@style/Edittext_only_click_small"
+            android:id="@+id/input_last_txn"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/mchnt_category_city"
+            android:text="Last: 08 Apr,16  20:15"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_cb"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/mchnt_category_city"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_grade_white_18dp"
+                android:tint="@color/primary"
+                android:clickable="false"/>
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:id="@+id/cust_cb_bal"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="\u20B9 3456"
+                android:paddingRight="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"/>
+        </LinearLayout>
+
+        <!--EditText
+            style="@style/Edittext_only_click_small"
+            android:id="@+id/input_status_alert"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/input_last_txn"
+            android:gravity="left"
+            android:text="This Merchant is closing its MyeCash account. Please redeem all your balance before 30th dec, 2017."
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:textColor="@color/red_negative"/-->
+    </RelativeLayout>
+
+    <View
+        style="@style/Divider_horizontal_Large"
+        android:id="@+id/cust_divider_1"/>
+
+</LinearLayout>

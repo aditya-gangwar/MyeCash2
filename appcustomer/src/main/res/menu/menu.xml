@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.myecash.appagent.CashbackActivity">
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/grp1">
+        <item
+            android:id="@+id/menu_dashboard"
+            android:title="Dashboard"
+            android:icon="@drawable/ic_dashboard_black_24dp" />
+        <item
+            android:id="@+id/menu_txns"
+            android:title="Transactions"
+            android:icon="@drawable/ic_swap_horiz_black_24dp" />
+        <!--item
+            android:id="@+id/menu_logout"
+            android:title="Log out"
+            android:icon="@drawable/ic_power_settings_new_black_24dp" /-->
+    </group>
+
+    <item
+        android:id="@+id/current_subheader"
+        android:title="Settings">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_change_mobile"
+                    android:title="Change Mobile"
+                    android:icon="@drawable/ic_contact_phone_black_24dp" />
+                <item
+                    android:id="@+id/action_change_passwd"
+                    android:title="Change Password"
+                    android:icon="@drawable/ic_lock_black_24dp" />
+                <item
+                    android:id="@+id/menu_change_pin"
+                    android:title="Change PIN"
+                    android:icon="@drawable/ic_lock_black_24dp" />
+            </group>
+        </menu>
+    </item>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/grp2">
+        <item
+            android:id="@+id/menu_faq"
+            android:title="Help and FAQs"
+            android:icon="@drawable/ic_help_outline_black_24dp" />
+        <item
+            android:id="@+id/menu_terms"
+            android:title="Terms and Conditions"
+            android:icon="@drawable/ic_note_black_24dp" />
+        <item
+            android:id="@+id/menu_contact_us"
+            android:title="Contact Us"
+            android:icon="@drawable/ic_perm_phone_msg_black_24dp" />
+    </group>
+
+</menu>

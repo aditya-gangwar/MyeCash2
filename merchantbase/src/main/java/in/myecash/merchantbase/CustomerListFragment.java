@@ -24,6 +24,7 @@ import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
+import in.myecash.commonbase.entities.MyGlobalSettings;
 import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.DialogFragmentWrapper;
 import in.myecash.commonbase.utilities.LogMy;
@@ -65,7 +66,6 @@ public class CustomerListFragment extends Fragment {
     private SimpleDateFormat mSdfDateWithTime;
     private SimpleDateFormat mSdfOnlyDateFilename;
 
-    private RecyclerView mCustRecyclerView;
     private MyRetainedFragment mRetainedFragment;
     private CustomerListFragmentIf mCallback;
 
@@ -76,6 +76,11 @@ public class CustomerListFragment extends Fragment {
 
     // instance state - store and restore
     private int mSelectedSortType;
+    private String mUpdatedTime;
+
+    private RecyclerView mCustRecyclerView;
+    private EditText mUpdated;
+    private EditText mUpdatedDetail;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -105,6 +110,11 @@ public class CustomerListFragment extends Fragment {
             }
             sortCustList();
 
+            // update time
+            mUpdated.setText(mUpdatedTime);
+            String txt = "Data is updated only once every "+ MyGlobalSettings.getMchntDashBNoRefreshHrs()+" hours.";
+            mUpdatedDetail.setText(txt);
+
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement CustomerListFragmentIf");
@@ -132,6 +142,9 @@ public class CustomerListFragment extends Fragment {
         mCustRecyclerView = (RecyclerView) view.findViewById(R.id.cust_recycler_view);
         mCustRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        mUpdated = (EditText) view.findViewById(R.id.input_updated_time);
+        mUpdatedDetail = (EditText) view.findViewById(R.id.updated_time_details);
+
         return view;
     }
 
@@ -146,11 +159,18 @@ public class CustomerListFragment extends Fragment {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String receiveString = "";
             while ( (receiveString = bufferedReader.readLine()) != null ) {
-                lineCnt++;
-                // ignore empty lines
-                if(!receiveString.equals(CommonConstants.CSV_NEWLINE)) {
-                    processCbCsvRecord(receiveString);
+                if(lineCnt==0) {
+                    // first line is header giving file creation time epoch
+                    String[] csvFields = receiveString.split(CommonConstants.CSV_DELIMETER);
+                    mUpdatedTime = mSdfDateWithTime.format(new Date(Long.parseLong(csvFields[0])));
+                } else {
+                    // ignore empty lines
+                    if(!receiveString.equals(CommonConstants.CSV_NEWLINE)) {
+                        processCbCsvRecord(receiveString);
+                    }
                 }
+
+                lineCnt++;
             }
             inputStream.close();
             LogMy.d(TAG,"Processed "+lineCnt+" lines from "+fileName);

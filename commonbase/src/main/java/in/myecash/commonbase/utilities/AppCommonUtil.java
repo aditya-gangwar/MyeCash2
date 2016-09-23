@@ -433,6 +433,13 @@ public class AppCommonUtil {
         return halfVisibleUserid.toString();
     }
 
+    public static String getMchntExpiryMsg(Merchants merchant) {
+        DateUtil now = new DateUtil();
+        now.addDays(MyGlobalSettings.getMchntExpiryDays());
+        SimpleDateFormat sdf = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
+        return "Expiring on "+sdf.format(now.getTime());
+    }
+
     public static void initTableToClassMappings() {
         Backendless.Data.mapTableToClass("CustomerCards", CustomerCards.class);
         Backendless.Data.mapTableToClass("Customers", Customers.class);

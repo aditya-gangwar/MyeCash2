@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesLarge"
+        android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_expiry_notice">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_warning_white_24dp"
+                android:tint="@color/red_negative"
+                android:paddingTop="@dimen/edittext_padding"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_expiry_notice"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="This Merchant is under Expiry notice. Please use all your balance with it, before 22 July 2016."
+                android:textColor="@color/red_negative"
+                android:gravity="left"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_store_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_brand_name"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Ganga Stores"
+                android:layout_weight="40"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:tint="@color/primary"
+                android:visibility="invisible"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_category_city"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Grocery, North Delhi"
+                android:layout_weight="40"
+                android:gravity="left"
+                android:paddingTop="0dp"
+                android:textStyle="italic"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_phone_android_white_24dp"
+                android:tint="@color/primary"
+                android:visibility="invisible"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Cashback Rate"
+                android:layout_weight="40"
+                android:gravity="left"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_cb_rate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="5 %"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:paddingTop="0dp"
+                android:textColor="@color/green_positive"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_phone_android_white_24dp"
+                android:tint="@color/primary"
+                android:visibility="invisible"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Last Txn"
+                android:layout_weight="40"
+                android:gravity="left"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_cust_last_activity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="22 July 16, 23:00"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:paddingTop="0dp"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_receipt_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Total Bill"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <!--View
+                style="@style/Divider_vertical_Medium"/-->
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_total_bill"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="\u20B9 NA"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:singleLine="true"
+                android:ellipsize="end"/>
+        </LinearLayout>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Cashback"
+            android:textStyle="bold"
+            android:textColor="@color/accent"
+            android:paddingLeft="0dp"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_grade_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Balance"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_cb_balance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="+ \u20B9 NA"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/green_positive"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_grade_white_24dp"
+                android:visibility="invisible"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Total Award"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:id="@+id/input_cb_award"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="+ \u20B9 NA"
+                android:paddingTop="0dp"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_grade_white_24dp"
+                android:visibility="invisible"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Total Redeem"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:id="@+id/input_cb_redeem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="+ \u20B9 NA"
+                android:paddingTop="0dp"/>
+        </LinearLayout>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Account"
+            android:textStyle="bold"
+            android:textColor="@color/accent"
+            android:paddingLeft="0dp"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Balance"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_acc_balance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="+ \u20B9 NA"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/green_positive"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                android:visibility="invisible"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Total Add"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:id="@+id/input_acc_add"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="+ \u20B9 NA"
+                android:paddingTop="0dp"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                android:visibility="invisible"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Total Debit"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:id="@+id/input_acc_debit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="+ \u20B9 NA"
+                android:paddingTop="0dp"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="More Details"
+            android:textStyle="bold"
+            android:textColor="@color/accent"
+            android:paddingLeft="0dp"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_phone_android_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/label_customer_mobile"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Mobile"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_customer_mobile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="xxxxx91535"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_input_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Status"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:id="@+id/input_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Active"
+                android:textColor="@color/green_positive"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_status_detail"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_input_white_24dp"
+                android:visibility="invisible"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:id="@+id/input_status_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Wrong password attempts limit reached."
+                android:paddingTop="0dp"
+                android:textStyle="italic"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_place_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:text="Address"
+                android:layout_weight="40"
+                android:gravity="left|center_vertical"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_weight="60"
+                android:gravity="left|center_vertical"
+                android:id="@+id/input_address"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="TBS"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Vertical">
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_place_white_24dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Area / City"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_city"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="TBS"
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_place_white_24dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="State"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_state"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="TBS"
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+</ScrollView>

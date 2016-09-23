@@ -88,7 +88,7 @@
 
     <string name="address_section_label">Address</string>
 
-    <string name="brand_char_limit">50</string>
+    <string name="brand_char_limit">32</string>
     <string name="customer_name_char_limit">20</string>
     <string name="email_char_limit">150</string>
     <string name="dob_char_limit">8</string>

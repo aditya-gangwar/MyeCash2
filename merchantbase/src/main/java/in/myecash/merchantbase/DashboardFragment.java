@@ -63,13 +63,6 @@ public class DashboardFragment extends Fragment
 
         // Setting values here and not in onCreateView - as mMerchantStats is not available in it
         updateData();
-        // update time
-        SimpleDateFormat sdf = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_TIME_12, CommonConstants.DATE_LOCALE);
-        Date updateTime = mMerchantStats.getUpdated();
-        if(updateTime==null) {
-            updateTime = mMerchantStats.getCreated();
-        }
-        mUpdated.setText(sdf.format(updateTime));
 
         /*
         if(savedInstanceState!=null) {
@@ -160,6 +153,14 @@ public class DashboardFragment extends Fragment
         total_account_cash.setText(AppCommonUtil.getAmtStr(mMerchantStats.getCash_credit()));
         total_cashback.setText(AppCommonUtil.getAmtStr(mMerchantStats.getCb_credit()));
 
+        // update time
+        SimpleDateFormat sdf = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
+        Date updateTime = mMerchantStats.getUpdated();
+        if(updateTime==null) {
+            updateTime = mMerchantStats.getCreated();
+        }
+
+        mUpdated.setText(sdf.format(updateTime));
         String txt = "Data is updated only once every "+ MyGlobalSettings.getMchntDashBNoRefreshHrs()+" hours.";
         mUpdatedDetail.setText(txt);
     }

@@ -304,7 +304,7 @@
                 android:id="@+id/input_updated_time"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="01:54 PM"
+                android:text="08 Apr,16  20:15"
                 android:textStyle="italic"
                 android:textColor="@color/accent"/>
         </LinearLayout>

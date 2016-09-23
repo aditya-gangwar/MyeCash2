@@ -97,10 +97,15 @@ public class MerchantDetailsDialog extends DialogFragment {
             mInputStatusDate.setText(mSdfDateWithTime.format(merchant.getStatus_update_time()));
             mInputReason.setText(merchant.getStatus_reason());
 
-            if(status==DbConstants.USER_STATUS_LOCKED) {
+            if(status==DbConstants.USER_STATUS_READY_TO_REMOVE ) {
+                mLayoutActivation.setVisibility(View.VISIBLE);
+                mInputActivation.setText(AppCommonUtil.getMchntExpiryMsg(merchant));
+
+            } else if(status==DbConstants.USER_STATUS_LOCKED) {
                 mLayoutActivation.setVisibility(View.VISIBLE);
                 String detail = "Will be auto unlocked after "+MyGlobalSettings.getMchntAccBlockHrs()+" hours from given time.";
                 mInputActivation.setText(detail);
+
             } else {
                 mLayoutActivation.setVisibility(View.GONE);
             }

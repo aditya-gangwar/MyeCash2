@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 
 import in.myecash.commonbase.constants.AppConstants;
+import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.DialogFragmentWrapper;
@@ -84,14 +85,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             if(errorCode==ErrorCodes.NO_ERROR) {
                 mMerchantUser.setNewCbRate(newValue);
                 mSettingsChanged = true;
-                setCbRateSummary(newValue);
+                setCbRateSummary(newValue, false);
             }
         } else if (key.equals(KEY_ADD_CL_ENABLED)) {
             boolean isAddClEnabled = sharedPreferences.getBoolean(KEY_ADD_CL_ENABLED, mMerchantUser.getMerchant().getCl_add_enable());
             if(isAddClEnabled != mMerchantUser.getMerchant().getCl_add_enable()) {
                 mMerchantUser.setNewIsAddClEnabled(isAddClEnabled);
                 mSettingsChanged = true;
-                setAddCashSummary(isAddClEnabled);
+                setAddCashSummary(isAddClEnabled, false);
             }
         } /*else if (key.equals(KEY_MOBILE_NUM)) {
             newValue = sharedPreferences.getString(KEY_MOBILE_NUM, null);
@@ -133,25 +134,40 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     private void setAllSummaries() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        setCbRateSummary(prefs.getString(KEY_CB_RATE,null));
-        setAddCashSummary(prefs.getBoolean(KEY_ADD_CL_ENABLED, false));
+
+        boolean disablePref = false;
+        if(mMerchantUser.getMerchant().getAdmin_status()== DbConstants.USER_STATUS_READY_TO_REMOVE) {
+            disablePref = true;
+        }
+
+        setCbRateSummary(prefs.getString(KEY_CB_RATE,null), disablePref);
+        setAddCashSummary(prefs.getBoolean(KEY_ADD_CL_ENABLED, false), disablePref);
+
         setMobileNumSummary(prefs.getString(KEY_MOBILE_NUM, null));
         setEmailSummary(prefs.getString(KEY_EMAIL, null));
     }
 
-    private void setCbRateSummary(String value) {
+    private void setCbRateSummary(String value, boolean disable) {
         if(null==value) {
             return;
         }
         String summary = String.format("%s%% cashback of eligible bill amount.\n0 means disabled.", value);
         Preference pref = findPreference(KEY_CB_RATE);
         pref.setSummary(summary);
+        if(disable) {
+            pref.setEnabled(false);
+        }
     }
 
-    private void setAddCashSummary(boolean value) {
+    private void setAddCashSummary(boolean value, boolean disable) {
         String summary = String.format("%s add cash to customer account.", value?"Disable":"Enable");
         Preference pref = findPreference(KEY_ADD_CL_ENABLED);
         pref.setSummary(summary);
+        if(disable) {
+            pref.setEnabled(false);
+        } else {
+            // do nothing - let it be in earlier state - even if disabled earlier
+        }
     }
 
     private void setMobileNumSummary(String value) {

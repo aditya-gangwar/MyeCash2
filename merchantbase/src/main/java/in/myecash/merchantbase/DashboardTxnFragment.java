@@ -76,12 +76,13 @@ public class DashboardTxnFragment extends Fragment {
         int type = getArguments().getInt(ARG_DBOARD_TYPE);
         updateData(type);
         // update time
+        /*
         SimpleDateFormat sdf = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_TIME_12, CommonConstants.DATE_LOCALE);
         Date updateTime = mMerchantStats.getUpdated();
         if(updateTime==null) {
             updateTime = mMerchantStats.getCreated();
         }
-        mUpdated.setText(sdf.format(updateTime));
+        mUpdated.setText(sdf.format(updateTime));*/
     }
 
     @Override
@@ -444,7 +445,7 @@ public class DashboardTxnFragment extends Fragment {
 
     //EditText mDashboardType;
     PieChart mPieChart;
-    EditText mUpdated;
+    //EditText mUpdated;
 
     TableRow rows_table[] = new TableRow[4];
     EditText row_title_values[] = new EditText[COLUMN_COUNT];
@@ -456,7 +457,7 @@ public class DashboardTxnFragment extends Fragment {
 
     protected void bindUiResources(View view) {
         //mDashboardType = (EditText) view.findViewById(R.id.choice_dashboard_type);
-        mUpdated = (EditText) view.findViewById(R.id.input_updated_time);
+        //mUpdated = (EditText) view.findViewById(R.id.input_updated_time);
         mPieChart = (PieChart) view.findViewById(R.id.chart_1);
 
         row_title_values[0] = (EditText) view.findViewById(R.id.table_row_title_col_1);

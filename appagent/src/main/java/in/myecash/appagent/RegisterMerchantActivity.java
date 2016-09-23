@@ -416,8 +416,8 @@ public class RegisterMerchantActivity extends AppCompatActivity
         Float imgWidth = getResources().getDimension(R.dimen.register_image_width);
         Float imgHeight = getResources().getDimension(R.dimen.register_image_height);
 
-        int cropWidth = 4*imgWidth.intValue();
-        int cropHeight = 4*imgHeight.intValue();
+        int cropWidth = 2*imgWidth.intValue();
+        int cropHeight = 2*imgHeight.intValue();
 
         // Crop size as twice to that of display size
         pickImageIntent.putExtra("outputX", cropWidth);

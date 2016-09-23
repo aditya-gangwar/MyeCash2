@@ -63,6 +63,7 @@ public class ErrorCodes {
     public static final int DEVICE_INSECURE = 44;
     public static final int CUST_NOT_REG_WITH_MCHNT = 45;
     public static final int NOT_LOGGED_IN = 46;
+    public static final int ACC_UNDER_EXPIRY = 47;
 
     public static final Map<Integer, String> appErrorDesc;
     static {
@@ -114,6 +115,7 @@ public class ErrorCodes {
         aMap.put(DEVICE_INSECURE,"Your device is not secure. Please install and run application on other device.");
         aMap.put(CUST_NOT_REG_WITH_MCHNT,"Customer has done no transaction with the merchant.");
         aMap.put(NOT_LOGGED_IN,"User not logged in.");
+        aMap.put(ACC_UNDER_EXPIRY,"Account under Expiry duration");
 
         appErrorDesc = Collections.unmodifiableMap(aMap);
     };
@@ -136,6 +138,7 @@ public class ErrorCodes {
         aMap.put(BackendResponseCodes.BE_ERROR_FIRST_LOGIN_PENDING,USER_NEW);
         aMap.put(BackendResponseCodes.BE_ERROR_NOT_LOGGED_IN,NOT_LOGGED_IN);
         aMap.put(BackendResponseCodes.BE_ERROR_CUST_NOT_REG_WITH_MCNT,CUST_NOT_REG_WITH_MCHNT);
+        aMap.put(BackendResponseCodes.BE_ERROR_ACC_UNDER_EXPIRY,ACC_UNDER_EXPIRY);
 
         aMap.put(BackendResponseCodes.BE_ERROR_SEND_SMS_FAILED,SEND_SMS_FAILED);
         aMap.put(BackendResponseCodes.BE_ERROR_WRONG_INPUT_DATA,WRONG_INPUT_DATA);

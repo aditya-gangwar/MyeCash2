@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical"
+    android:id="@+id/list_root">
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cust_recycler_view">
+    </android.support.v7.widget.RecyclerView>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="100"/>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:layout_marginTop="@dimen/medium_space">
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="* Updated:"
+            android:textStyle="italic"
+            android:paddingBottom="@dimen/edittext_padding_less"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/input_updated_time"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="08 Apr,16  20:15"
+            android:textStyle="italic"
+            android:textColor="@color/accent"
+            android:paddingLeft="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"/>
+    </LinearLayout>
+
+    <EditText
+        style="@style/Edittext_only_view_small"
+        android:id="@+id/updated_time_details"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="@dimen/medium_space"
+        android:paddingTop="0dp"
+        android:text="Select 'Transactions' from Menu for more recent data. "
+        android:textStyle="italic"
+        android:gravity="left"/>
+
+</LinearLayout>

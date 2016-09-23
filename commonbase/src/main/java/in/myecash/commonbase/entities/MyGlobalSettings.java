@@ -164,6 +164,9 @@ public class MyGlobalSettings
     public static Boolean getCardReqAccDebit() {
         return (Boolean)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_ACC_DB_CARD_REQ);
     }
+    public static Integer getMchntExpiryDays() {
+        return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS);
+    }
 
     /*
     private static Object getValue(String name) {

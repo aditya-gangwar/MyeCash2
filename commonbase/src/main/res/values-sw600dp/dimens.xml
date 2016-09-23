@@ -23,8 +23,8 @@
 
     <dimen name="edittext_pad_fill">3dp</dimen>
     <dimen name="edittext_padding_less">6dp</dimen>
-    <dimen name="edittext_padding">12dp</dimen>
-    <dimen name="edittext_padding_more">18dp</dimen>
+    <dimen name="edittext_padding">9dp</dimen>
+    <dimen name="edittext_padding_more">15dp</dimen>
 
     <!-- 10 + 12 = total 22dp side padding -->
     <dimen name="screen_side_padding">15dp</dimen>

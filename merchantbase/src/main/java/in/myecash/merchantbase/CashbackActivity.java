@@ -481,7 +481,20 @@ public class CashbackActivity extends AppCompatActivity implements
         }
         mTbImageIsMerchant = true;
         setTbTitle(mMerchant.getName());
+
         mTbTitle2.setVisibility(View.GONE);
+        if(mMerchant.getAdmin_status()==DbConstants.USER_STATUS_READY_TO_REMOVE ) {
+            mTbTitle2.setVisibility(View.VISIBLE);
+            mTbTitle2.setText(AppCommonUtil.getMchntExpiryMsg(mMerchant));
+
+        } else if(mMerchant.getAdmin_status()!=DbConstants.USER_STATUS_ACTIVE) {
+            // User should not be able to login, in any other status scenario
+            // raise alarm
+            Map<String,String> params = new HashMap<>();
+            params.put("MerchantId",mMerchant.getAuto_id());
+            params.put("Current Status",String.valueOf(mMerchant.getAdmin_status()));
+            AppAlarms.invalidMerchantState(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"updateTbForMerchant",params);
+        }
         mTbLayoutSubhead1.setVisibility(View.GONE);
     }
 
