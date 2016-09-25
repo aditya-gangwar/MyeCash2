@@ -1,4 +1,4 @@
-package in.myecash.merchantbase;
+package in.myecash.commonbase;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -69,7 +69,7 @@ public class OtpPinInputDialog extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View v = LayoutInflater.from(getActivity())
-                .inflate(R.layout.dialog_otp_input, null);
+                .inflate(R.layout.dialog_otp_pin_input, null);
 
         bindUiResources(v);
 

@@ -79,8 +79,13 @@ public class CustomerListFragment extends Fragment {
     private String mUpdatedTime;
 
     private RecyclerView mCustRecyclerView;
+    private EditText mLabelTxnTime;
+    private EditText mLabelBill;
+    private EditText mLabelAcc;
+    private EditText mLabelCb;
     private EditText mUpdated;
     private EditText mUpdatedDetail;
+    
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -103,12 +108,11 @@ public class CustomerListFragment extends Fragment {
             // process the file
             processFile();
 
-            if(savedInstanceState==null) {
-                mSelectedSortType = MyCashback.CB_CMP_TYPE_UPDATE_TIME;
-            } else {
-                mSelectedSortType = savedInstanceState.getInt("mSelectedSortType");
+            int sortType = MyCashback.CB_CMP_TYPE_UPDATE_TIME;
+            if(savedInstanceState!=null) {
+                sortType = savedInstanceState.getInt("mSelectedSortType");
             }
-            sortCustList();
+            sortCustList(sortType);
 
             // update time
             mUpdated.setText(mUpdatedTime);
@@ -129,18 +133,84 @@ public class CustomerListFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    private void sortCustList() {
-        Collections.sort(mRetainedFragment.mLastFetchCashbacks, new MyCashback.MyCashbackComparator(mSelectedSortType));
+    private void sortCustList(int sortType) {
+        Collections.sort(mRetainedFragment.mLastFetchCashbacks, new MyCashback.MyCashbackComparator(sortType));
         // Make it in decreasing order
         Collections.reverse(mRetainedFragment.mLastFetchCashbacks);
+
+        // Remove arrow as per old sort type
+        switch (mSelectedSortType) {
+            case MyCashback.CB_CMP_TYPE_UPDATE_TIME:
+                mLabelTxnTime.setText("Last Txn Time");
+                break;
+            case MyCashback.CB_CMP_TYPE_BILL_AMT:
+                mLabelBill.setText("Total Bill");
+                break;
+            case MyCashback.CB_CMP_TYPE_ACC_BALANCE:
+            case MyCashback.CB_CMP_TYPE_ACC_ADD:
+            case MyCashback.CB_CMP_TYPE_ACC_DEBIT:
+                mLabelAcc.setText("Account:  Add - Used = Balance");
+                break;
+            case MyCashback.CB_CMP_TYPE_CB_BALANCE:
+            case MyCashback.CB_CMP_TYPE_CB_ADD:
+            case MyCashback.CB_CMP_TYPE_CB_DEBIT:
+                mLabelCb.setText("Cashback:  Add - Used = Balance");
+                break;
+        }
+
+        // Add arrow in header as per new sort type
+        String text = null;
+        switch (sortType) {
+            case MyCashback.CB_CMP_TYPE_UPDATE_TIME:
+                text = AppConstants.SYMBOL_DOWN_ARROW + mLabelTxnTime.getText().toString();
+                mLabelTxnTime.setText(text);
+                break;
+            case MyCashback.CB_CMP_TYPE_BILL_AMT:
+                text = AppConstants.SYMBOL_DOWN_ARROW + mLabelBill.getText().toString();
+                mLabelBill.setText(text);
+                break;
+            case MyCashback.CB_CMP_TYPE_ACC_BALANCE:
+                text = "Account:  Add - Used = "+AppConstants.SYMBOL_DOWN_ARROW+"Balance";
+                mLabelAcc.setText(text);
+                break;
+            case MyCashback.CB_CMP_TYPE_ACC_ADD:
+                text = "Account: "+AppConstants.SYMBOL_DOWN_ARROW+"Add - Used = Balance";
+                mLabelAcc.setText(text);
+                break;
+            case MyCashback.CB_CMP_TYPE_ACC_DEBIT:
+                text = "Account:  Add - "+AppConstants.SYMBOL_DOWN_ARROW+"Used = Balance";
+                mLabelAcc.setText(text);
+                break;
+            case MyCashback.CB_CMP_TYPE_CB_BALANCE:
+                text = "Cashback:  Add - Used = "+AppConstants.SYMBOL_DOWN_ARROW+"Balance";
+                mLabelCb.setText(text);
+                break;
+            case MyCashback.CB_CMP_TYPE_CB_ADD:
+                text = "Cashback: "+AppConstants.SYMBOL_DOWN_ARROW+"Add - Used = Balance";
+                mLabelCb.setText(text);
+                break;
+            case MyCashback.CB_CMP_TYPE_CB_DEBIT:
+                text = "Cashback:  Add - "+AppConstants.SYMBOL_DOWN_ARROW+"Used = Balance";
+                mLabelCb.setText(text);
+                break;
+        }
+
+        // store existing sortType
+        mSelectedSortType = sortType;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_customer_list, container, false);
+
         mCustRecyclerView = (RecyclerView) view.findViewById(R.id.cust_recycler_view);
         mCustRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mLabelTxnTime = (EditText) view.findViewById(R.id.list_header_txnTime);
+        mLabelBill = (EditText) view.findViewById(R.id.list_header_bill);
+        mLabelAcc = (EditText) view.findViewById(R.id.list_header_acc);
+        mLabelCb = (EditText) view.findViewById(R.id.list_header_cb);
 
         mUpdated = (EditText) view.findViewById(R.id.input_updated_time);
         mUpdatedDetail = (EditText) view.findViewById(R.id.updated_time_details);
@@ -201,8 +271,8 @@ public class CustomerListFragment extends Fragment {
             return;
         }
         if(requestCode==REQ_SORT_CUST_TYPES) {
-            mSelectedSortType = data.getIntExtra(SortCustDialog.EXTRA_SELECTION, MyCashback.CB_CMP_TYPE_UPDATE_TIME);
-            sortCustList();
+            int sortType = data.getIntExtra(SortCustDialog.EXTRA_SELECTION, MyCashback.CB_CMP_TYPE_UPDATE_TIME);
+            sortCustList(sortType);
             updateUI();
         }
     }

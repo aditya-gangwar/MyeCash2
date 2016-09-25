@@ -16,7 +16,6 @@ import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.LogMy;
 import in.myecash.merchantbase.entities.OrderItem;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
-import in.myecash.merchantbase.R;
 
 import java.util.ArrayList;
 
@@ -109,7 +108,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setTotalAmt() {
-        String str = "Bill    "+ AppConstants.RS_SYMBOL + String.valueOf(mRetainedFragment.mBillTotal);
+        String str = "Bill    "+ AppConstants.SYMBOL_RS + String.valueOf(mRetainedFragment.mBillTotal);
         mBtnTotal.setText(str);
     }
 
@@ -124,7 +123,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
 
         String actualStr = mInputItemAmt.getText().toString();
         // remove rupee symbol for processing
-        String effectiveStr = actualStr.replace(AppConstants.RS_SYMBOL, "");
+        String effectiveStr = actualStr.replace(AppConstants.SYMBOL_RS, "");
         LogMy.d(TAG, "In onClick, actualStr: " + actualStr + ", effectiveStr: " + effectiveStr);
 
         if (resId == R.id.label_item_cnt) {
@@ -165,17 +164,17 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
                     mInputItemAmt.setText(actualStr.toCharArray(), 0, (actualStr.length() - 1));
                 }
             } else {
-                mInputItemAmt.setText(AppConstants.RS_0);
+                mInputItemAmt.setText(AppConstants.SYMBOL_RS_0);
             }
 
         } else {// process keys 0 - 9
             // ignore 0 as first entered digit
             if (!(resId == R.id.input_kb_0 && effectiveStr.isEmpty())) {
                 AppCompatButton key = (AppCompatButton) v;
-                // AppConstants.RS_0 is set after doing calculation in handlePlus
-                if (actualStr.isEmpty() || actualStr.equals(AppConstants.RS_0)) {
+                // AppConstants.SYMBOL_RS_0 is set after doing calculation in handlePlus
+                if (actualStr.isEmpty() || actualStr.equals(AppConstants.SYMBOL_RS_0)) {
                     // set rupee symbol as first character
-                    mInputItemAmt.setText(AppConstants.RS_SYMBOL);
+                    mInputItemAmt.setText(AppConstants.SYMBOL_RS);
                 }
                 mInputItemAmt.append(key.getText());
             }
@@ -225,7 +224,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
                 if (mTempCbExcluded) {
                     removeItemAmtExclusion();
                 }
-                mInputItemAmt.setText(AppConstants.RS_0);
+                mInputItemAmt.setText(AppConstants.SYMBOL_RS_0);
             }
         }
     }

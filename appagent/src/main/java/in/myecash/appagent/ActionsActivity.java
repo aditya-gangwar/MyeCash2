@@ -16,14 +16,13 @@ import android.view.MenuItem;
 
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
+import in.myecash.commonbase.PasswdChangeDialog;
 import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.DialogFragmentWrapper;
 import in.myecash.commonbase.utilities.LogMy;
 import in.myecash.merchantbase.CashbackActivity;
-import in.myecash.merchantbase.DashboardFragment;
-import in.myecash.merchantbase.MerchantOpListFrag;
 import in.myecash.merchantbase.entities.MerchantUser;
 
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public class ActionsActivity extends AppCompatActivity implements
     private static final String SETTINGS_LIST_FRAGMENT = "settingsListFragment";
 
     private static final String DIALOG_BACK_BUTTON = "dialogBackButton";
-    private static final String DIALOG_CHANGE_BUTTON = "dialogChangeButton";
+    private static final String DIALOG_CHANGE_PASSWORD = "dialogChangePassword";
     private static final String DIALOG_SEARCH_MCHNT = "searchMchnt";
 
     // this will never be null, as it only gets destroyed with cashback activity itself
@@ -226,9 +225,8 @@ public class ActionsActivity extends AppCompatActivity implements
                 onBackPressed();
                 break;
             case R.id.action_change_passwd:
-                // Ask for confirmation and the PIN too
                 PasswdChangeDialog dialog = new PasswdChangeDialog();
-                dialog.show(getFragmentManager(), DIALOG_CHANGE_BUTTON);
+                dialog.show(getFragmentManager(), DIALOG_CHANGE_PASSWORD);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

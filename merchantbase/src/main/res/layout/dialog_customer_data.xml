@@ -13,12 +13,23 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/XXXXL_space"/>
 
-        <EditText
-            style="@style/Edittext_only_view_medium"
-            android:id="@+id/label_information_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search Customer by Internal ID" />
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:tint="@color/primary"
+                android:layout_gravity="center"/>
+
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:id="@+id/label_information_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Search Customer by Internal ID" />
+        </LinearLayout>
 
         <Space
             android:layout_width="match_parent"

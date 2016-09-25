@@ -3,7 +3,6 @@ package in.myecash.appcustomer;
 import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,8 +24,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import in.myecash.appcustomer.entities.CustomerUser;
-import in.myecash.appcustomer.helper.MyRetainedFragment;
+import in.myecash.customerbase.PasswdResetDialog;
+import in.myecash.customerbase.entities.CustomerUser;
+import in.myecash.customerbase.helper.MyRetainedFragment;
 import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.entities.MyGlobalSettings;
@@ -242,11 +242,22 @@ public class LoginActivity extends AppCompatActivity implements
                 DialogFragmentWrapper.createNotification(AppConstants.loginFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
+
         } else if(operation== MyRetainedFragment.REQUEST_GENERATE_PWD) {
             AppCommonUtil.cancelProgressDialog(true);
             if(errorCode == ErrorCodes.NO_ERROR) {
                 // Show success notification dialog
                 DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, AppConstants.genericPwdGenerateSuccessMsg, false, false)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            } else if(errorCode == ErrorCodes.OPERATION_SCHEDULED) {
+                // Show success notification dialog
+                String msg = String.format(AppConstants.pwdGenerateSuccessMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
+                DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, msg, false, false)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY) {
+                // Old request is already pending
+                String msg = String.format(AppConstants.pwdGenerateDuplicateRequestMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, false, false)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else {
                 // Show error notification dialog
@@ -317,7 +328,7 @@ public class LoginActivity extends AppCompatActivity implements
         // Store latest succesfull login userid to preferences
         PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
                 .edit()
-                .putString(AppConstants.PREF_LOGIN_ID, CustomerUser.getInstance().getUser_id())
+                .putString(AppConstants.PREF_LOGIN_ID, mLoginId)
                 .apply();
 
         // turn on fullscreen mode, which was set off in OnCreate
@@ -354,12 +365,18 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onPause() {
+        LogMy.d(TAG,"In onPause: ");
+        super.onPause();
+        AppCommonUtil.cancelProgressDialog(false);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,WindowManager.LayoutParams.FLAG_SECURE);
     }
 }

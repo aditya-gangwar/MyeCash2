@@ -23,7 +23,7 @@ public class MobileChangePreference extends DialogPreference
     private static final String TAG = "MobileChangePreference";
 
     public interface MobileChangePreferenceIf {
-        void changeMobileNumOk(String oldMobile, String newMobile);
+        void changeMobileNumOk(String verifyParam, String newMobile);
         void changeMobileNumOtp(String otp);
         void changeMobileNumReset(boolean showMobilePref);
         //MerchantOps getMobileChangeMerchantOp();
@@ -32,12 +32,15 @@ public class MobileChangePreference extends DialogPreference
 
     private MobileChangePreferenceIf mCallback;
 
-    EditText labelCurrMobile;
+    View layoutDob1;
+    EditText labelDob2;
     EditText labelNewMobile;
+    EditText labelNewMobile2;
     EditText labelNewOtp;
 
-    EditText inputCurrMobile;
+    EditText inputDob;
     EditText inputNewMobile;
+    EditText inputNewMobile2;
     EditText inputNewOtp;
 
     public MobileChangePreference(Context context, AttributeSet attrs) {
@@ -57,12 +60,15 @@ public class MobileChangePreference extends DialogPreference
 
     @Override
     protected void onBindDialogView (View view) {
-        labelCurrMobile = (EditText) view.findViewById(R.id.label_current_mobile);
+        layoutDob1 = view.findViewById(R.id.layout_dob);
+        labelDob2 = (EditText) view.findViewById(R.id.label_dob2);
         labelNewMobile = (EditText) view.findViewById(R.id.label_new_mobile);
+        labelNewMobile2 = (EditText) view.findViewById(R.id.label_new_mobile2);
         labelNewOtp = (EditText) view.findViewById(R.id.label_otp);
 
-        inputCurrMobile = (EditText) view.findViewById(R.id.input_current_mobile);
+        inputDob = (EditText) view.findViewById(R.id.input_dob);
         inputNewMobile = (EditText) view.findViewById(R.id.input_new_mobile);
+        inputNewMobile2 = (EditText) view.findViewById(R.id.input_new_mobile2);
         inputNewOtp = (EditText) view.findViewById(R.id.input_otp);
 
         super.onBindDialogView(view);
@@ -75,27 +81,29 @@ public class MobileChangePreference extends DialogPreference
         getDialog().setCanceledOnTouchOutside(false);
 
         //MerchantOps op = mCallback.getMobileChangeMerchantOp();
-        String oldMobile = mCallback.getRetainedFragment().mInputCurrMobile;
+        String verifyParam = mCallback.getRetainedFragment().mVerifyParamMobileChange;
         String newMobile = mCallback.getRetainedFragment().mNewMobileNum;
 
         //if(op == null || !op.getOp_status().equals(DbConstants.MERCHANT_OP_STATUS_OTP_GENERATED)) {
-        if(oldMobile==null || newMobile==null) {
+        if(verifyParam==null || newMobile==null) {
             // first run, otp not generated yet
             // disable OTP and ask for parameters
-            labelNewOtp.setText("OTP will be sent on the New mobile number for verification.");
+            labelNewOtp.setText("OTP will be sent on the New mobile number for verification");
             inputNewOtp.setVisibility(View.GONE);
         } else {
             // second run, OTP generated
             // disable and show parameter values and ask for otp
+            layoutDob1.setAlpha(0.4f);
+            labelDob2.setEnabled(false);
+            inputDob.setEnabled(false);
+
             labelNewMobile.setEnabled(false);
-            //inputNewMobile.setText(op.getExtra_op_params());
             inputNewMobile.setText(newMobile);
             inputNewMobile.setEnabled(false);
 
-            labelCurrMobile.setEnabled(false);
-            //inputCurrMobile.setText(op.getMobile_num());
-            inputCurrMobile.setText(oldMobile);
-            inputCurrMobile.setEnabled(false);
+            labelNewMobile2.setEnabled(false);
+            inputNewMobile2.setText(newMobile);
+            inputNewMobile2.setEnabled(false);
         }
 
         /*
@@ -134,15 +142,19 @@ public class MobileChangePreference extends DialogPreference
                 mCallback.changeMobileNumOtp(otp);
 
             } else {
-                // check old and new numbers are not same
-                if(inputCurrMobile.getText().toString().equals(inputNewMobile.getText().toString())) {
-                    inputNewMobile.setError("Same as given current number.");
+                if(!inputNewMobile2.getText().toString().equals(inputNewMobile.getText().toString())) {
+                    inputNewMobile2.setError("Value do not match with above");
                     return;
-                } else {
-                    mCallback.changeMobileNumOk(
-                            inputCurrMobile.getText().toString(),
-                            inputNewMobile.getText().toString());
                 }
+                // check old and new numbers are not same
+                if(mCallback.getRetainedFragment().mMerchantUser.getMerchant().getMobile_num().equals(inputNewMobile.getText().toString())) {
+                    inputNewMobile.setError("Same as current registered number.");
+                    return;
+                }
+
+                mCallback.changeMobileNumOk(
+                        inputDob.getText().toString(),
+                        inputNewMobile.getText().toString());
             }
             getDialog().dismiss();
         }
@@ -152,10 +164,10 @@ public class MobileChangePreference extends DialogPreference
         boolean retValue = true;
         int errorCode;
 
-        if(inputCurrMobile.isEnabled()) {
-            errorCode = ValidationHelper.validateMobileNo(inputCurrMobile.getText().toString());
+        if(inputDob.isEnabled()) {
+            errorCode = ValidationHelper.validateDob(inputDob.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
-                inputCurrMobile.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                inputDob.setError(ErrorCodes.appErrorDesc.get(errorCode));
                 retValue = false;
             }
         }

@@ -1,4 +1,4 @@
-package in.myecash.appcustomer.helper;
+package in.myecash.customerbase.helper;
 
 import android.os.Handler;
 import android.os.Message;
@@ -7,8 +7,8 @@ import com.backendless.exceptions.BackendlessException;
 
 import java.io.Serializable;
 
-import in.myecash.appcustomer.backendAPI.CustomerServicesNoLogin;
-import in.myecash.appcustomer.entities.CustomerUser;
+import in.myecash.customerbase.backendAPI.CustomerServicesNoLogin;
+import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.commonbase.backendAPI.CommonServices;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.utilities.AppCommonUtil;
@@ -71,6 +71,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         msg.newPasswd = newPasswd;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CHANGE_PASSWD,msg).sendToTarget();
     }
+    public void addChangeMobileRequest() {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CHANGE_MOBILE,null).sendToTarget();
+    }
 
 
     @Override
@@ -89,6 +92,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
             case MyRetainedFragment.REQUEST_CHANGE_PASSWD:
                 error = changePassword((MessageChangePassword) msg.obj);
                 break;
+            case MyRetainedFragment.REQUEST_CHANGE_MOBILE:
+                error = changeMobileNum();
+                break;
         }
         return error;
     }
@@ -103,26 +109,15 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     }
 
     private int generatePassword(MessageLogin msg) {
-        try {
-            CustomerServicesNoLogin.getInstance().resetCustomerPassword(msg.userId, msg.password);
-            LogMy.d(TAG,"generatePassword success");
-        } catch (BackendlessException e) {
-            LogMy.e(TAG,"Agent password generate failed: "+e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;
+        return CustomerUser.resetPassword(msg.userId, msg.password);
     }
 
     private int changePassword(MessageChangePassword msg) {
+        return CustomerUser.getInstance().changePassword(msg.oldPasswd, msg.newPasswd);
+    }
 
-        try {
-            CommonServices.getInstance().changePassword(CustomerUser.getInstance().getUser_id(), msg.oldPasswd, msg.newPasswd);
-            LogMy.d(TAG,"changePassword success");
-        } catch (BackendlessException e) {
-            LogMy.e(TAG,"Change password failed: "+e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-
-        return ErrorCodes.NO_ERROR;
+    private int changeMobileNum() {
+        return CustomerUser.getInstance().changeMobileNum(mRetainedFragment.mVerifyParamMobileChange,
+                mRetainedFragment.mNewMobileNum, mRetainedFragment.mOtpMobileChange);
     }
 }

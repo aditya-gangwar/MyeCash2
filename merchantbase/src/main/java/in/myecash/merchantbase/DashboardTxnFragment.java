@@ -16,15 +16,12 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import in.myecash.commonbase.constants.AppConstants;
-import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.models.MerchantStats;
 import in.myecash.commonbase.utilities.LogMy;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by adgangwa on 09-06-2016.
@@ -291,7 +288,7 @@ public class DashboardTxnFragment extends Fragment {
         //DecimalFormat df = new DecimalFormat("##.##");
 
         row_1_values[0].setText("Redeemed");
-        String amount = AppConstants.RS_SYMBOL+String.valueOf(mMerchantStats.getCb_debit());
+        String amount = AppConstants.SYMBOL_RS +String.valueOf(mMerchantStats.getCb_debit());
         row_1_values[1].setText(amount);
         Float percent = (mMerchantStats.getCb_debit()*100.0f)/mMerchantStats.getCb_credit();
         String percentStr = (percent.isNaN() ? "0" : df.format(percent))+" %";
@@ -299,7 +296,7 @@ public class DashboardTxnFragment extends Fragment {
         rows_table[0].setVisibility(View.VISIBLE);
 
         row_2_values[0].setText("Pending");
-        amount = AppConstants.RS_SYMBOL+String.valueOf(balance);
+        amount = AppConstants.SYMBOL_RS +String.valueOf(balance);
         row_2_values[1].setText(amount);
         percent = (balance*100.0f)/mMerchantStats.getCb_credit();
         percentStr = (percent.isNaN() ? "0" : df.format(percent))+" %";
@@ -309,7 +306,7 @@ public class DashboardTxnFragment extends Fragment {
         rows_table[2].setVisibility(View.GONE);
         rows_table[3].setVisibility(View.GONE);
 
-        amount = AppConstants.RS_SYMBOL + String.valueOf(mMerchantStats.getCb_credit());
+        amount = AppConstants.SYMBOL_RS + String.valueOf(mMerchantStats.getCb_credit());
         total_value.setText(amount);
     }
 
@@ -345,7 +342,7 @@ public class DashboardTxnFragment extends Fragment {
         //DecimalFormat df = new DecimalFormat("##.##");
 
         row_1_values[0].setText("Debited");
-        String amount = AppConstants.RS_SYMBOL+String.valueOf(mMerchantStats.getCash_debit());
+        String amount = AppConstants.SYMBOL_RS +String.valueOf(mMerchantStats.getCash_debit());
         row_1_values[1].setText(amount);
         Float percent = (mMerchantStats.getCash_debit()*100.0f)/mMerchantStats.getCash_credit();
         String percentStr = (percent.isNaN() ? "0" : df.format(percent))+" %";
@@ -353,14 +350,14 @@ public class DashboardTxnFragment extends Fragment {
         rows_table[0].setVisibility(View.VISIBLE);
 
         row_2_values[0].setText("Available");
-        amount = AppConstants.RS_SYMBOL+String.valueOf(balance);
+        amount = AppConstants.SYMBOL_RS +String.valueOf(balance);
         row_2_values[1].setText(amount);
         percent = (balance*100.0f)/mMerchantStats.getCash_credit();
         percentStr = (percent.isNaN() ? "0" : df.format(percent))+" %";
         row_2_values[2].setText(percentStr);
         rows_table[1].setVisibility(View.VISIBLE);
 
-        amount = AppConstants.RS_SYMBOL + String.valueOf(mMerchantStats.getCash_credit());
+        amount = AppConstants.SYMBOL_RS + String.valueOf(mMerchantStats.getCash_credit());
         total_value.setText(amount);
 
         rows_table[2].setVisibility(View.GONE);
@@ -413,7 +410,7 @@ public class DashboardTxnFragment extends Fragment {
         //DecimalFormat df = new DecimalFormat("##.##");
 
         row_1_values[0].setText("Direct");
-        String amount = AppConstants.RS_SYMBOL+String.valueOf(direct);
+        String amount = AppConstants.SYMBOL_RS +String.valueOf(direct);
         row_1_values[1].setText(amount);
         Float percent = (direct*100.0f)/mMerchantStats.getBill_amt_total();
         String percentStr = (percent.isNaN() ? "0" : df.format(percent))+" %";
@@ -421,7 +418,7 @@ public class DashboardTxnFragment extends Fragment {
         rows_table[0].setVisibility(View.VISIBLE);
 
         row_2_values[0].setText("With Cashback");
-        amount = AppConstants.RS_SYMBOL+String.valueOf(mMerchantStats.getCb_debit());
+        amount = AppConstants.SYMBOL_RS +String.valueOf(mMerchantStats.getCb_debit());
         row_2_values[1].setText(amount);
         percent = (mMerchantStats.getCb_debit()*100.0f)/mMerchantStats.getBill_amt_total();
         percentStr = (percent.isNaN() ? "0" : df.format(percent))+" %";
@@ -429,14 +426,14 @@ public class DashboardTxnFragment extends Fragment {
         rows_table[1].setVisibility(View.VISIBLE);
 
         row_3_values[0].setText("From Account");
-        amount = AppConstants.RS_SYMBOL+String.valueOf(mMerchantStats.getCash_debit());
+        amount = AppConstants.SYMBOL_RS +String.valueOf(mMerchantStats.getCash_debit());
         row_3_values[1].setText(amount);
         percent = (mMerchantStats.getCash_debit()*100.0f)/mMerchantStats.getBill_amt_total();
         percentStr = (percent.isNaN() ? "0" : df.format(percent))+" %";
         row_3_values[2].setText(percentStr);
         rows_table[2].setVisibility(View.VISIBLE);
 
-        amount = AppConstants.RS_SYMBOL + String.valueOf(mMerchantStats.getBill_amt_total());
+        amount = AppConstants.SYMBOL_RS + String.valueOf(mMerchantStats.getBill_amt_total());
         total_value.setText(amount);
 
         rows_table[3].setVisibility(View.GONE);

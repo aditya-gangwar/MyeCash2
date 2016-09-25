@@ -133,10 +133,6 @@
                 android:paddingTop="0dp"/>
         </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/small_space"/>
-
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
 
@@ -166,6 +162,10 @@
                 android:singleLine="true"
                 android:ellipsize="end"/>
         </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_space"/>
 
         <EditText
             style="@style/Edittext_only_view_small"
@@ -218,7 +218,7 @@
                 style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="Total Award"
+                android:text="Total Add"
                 android:layout_weight="40"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"
@@ -247,7 +247,7 @@
                 style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="Total Redeem"
+                android:text="Total Used"
                 android:layout_weight="40"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"
@@ -343,7 +343,7 @@
                 style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="Total Debit"
+                android:text="Total Used"
                 android:layout_weight="40"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"

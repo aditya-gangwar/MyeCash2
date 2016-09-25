@@ -56,7 +56,7 @@ public class TxnListFragment_3 extends Fragment {
 
     private class TxnHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
-        //private static final String RS_SYMBOL = "\u20B9 ";
+        //private static final String SYMBOL_RS = "\u20B9 ";
         //private static final String ITEM_SEPERATOR = " | ";
 
         private Transaction mTxn;

@@ -1,11 +1,8 @@
-package in.myecash.appcustomer.helper;
+package in.myecash.customerbase.helper;
 
 import android.os.Handler;
 
-import java.io.File;
-
-import in.myecash.appcustomer.entities.CustomerUser;
-import in.myecash.commonbase.models.Merchants;
+import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.commonbase.utilities.BackgroundProcessor;
 import in.myecash.commonbase.utilities.LogMy;
 import in.myecash.commonbase.utilities.RetainedFragment;
@@ -21,14 +18,18 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_LOGOUT = 1;
     public static final int REQUEST_GENERATE_PWD = 2;
     public static final int REQUEST_CHANGE_PASSWD = 3;
+    public static final int REQUEST_CHANGE_MOBILE = 4;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
 
     public CustomerUser mCustomerUser;
+    public String mUserToken;
 
-    // temporary members
-    //public Merchants mCurrMerchant;
+    // params for merchant mobile number change operation
+    public String mVerifyParamMobileChange;
+    public String mNewMobileNum;
+    public String mOtpMobileChange;
 
     public void reset() {
         LogMy.d(TAG,"In reset");
@@ -49,6 +50,9 @@ public class MyRetainedFragment extends RetainedFragment {
     }
     public void changePassword(String oldPasswd, String newPasswd) {
         mBackgroundProcessor.addPasswdChangeReq(oldPasswd, newPasswd);
+    }
+    public void changeMobileNum() {
+        mBackgroundProcessor.addChangeMobileRequest();
     }
 
     @Override

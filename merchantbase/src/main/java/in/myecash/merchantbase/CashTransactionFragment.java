@@ -709,7 +709,7 @@ public class CashTransactionFragment extends Fragment implements
 
     private void startNumInputDialog(int reqCode, String label, EditText input, int maxValue) {
         FragmentManager manager = getFragmentManager();
-        String amount = input.getText().toString().replace(AppConstants.RS_SYMBOL,"");
+        String amount = input.getText().toString().replace(AppConstants.SYMBOL_RS,"");
         InputNumberDialog dialog = InputNumberDialog.newInstance(label, amount, true, maxValue);
         dialog.setTargetFragment(this, reqCode);
         dialog.show(manager, DIALOG_NUM_INPUT);

@@ -41,9 +41,9 @@ import in.myecash.commonbase.models.Merchants;
         Backendless.initApp( BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, MerchantServices.APP_VERSION );
     }
 
-    public Merchants changeMobile(java.lang.String currentMobile, java.lang.String newMobile, java.lang.String otp)
+    public Merchants changeMobile(java.lang.String verifyparam, java.lang.String newMobile, java.lang.String otp)
     {
-        Object[] args = new Object[]{currentMobile, newMobile, otp};
+        Object[] args = new Object[]{verifyparam, newMobile, otp};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changeMobile", args, Merchants.class );
     }
 

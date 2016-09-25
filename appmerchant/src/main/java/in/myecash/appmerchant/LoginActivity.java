@@ -27,7 +27,6 @@ import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.entities.MyGlobalSettings;
-import in.myecash.commonbase.models.GlobalSettings;
 import in.myecash.commonbase.utilities.AppAlarms;
 import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.DialogFragmentWrapper;
@@ -36,7 +35,7 @@ import in.myecash.commonbase.utilities.RootUtil;
 import in.myecash.commonbase.utilities.ValidationHelper;
 import in.myecash.merchantbase.CashbackActivity;
 import in.myecash.merchantbase.ForgotIdDialog;
-import in.myecash.merchantbase.OtpPinInputDialog;
+import in.myecash.commonbase.OtpPinInputDialog;
 import in.myecash.merchantbase.PasswdResetDialog;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
@@ -354,7 +353,7 @@ public class LoginActivity extends AppCompatActivity implements
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY) {
                 // Old request is already pending
-                String msg = String.format(AppConstants.pwdGenerateDuplicateRequestMsg, Integer.toString(MyGlobalSettings.getMchntPasswdResetReqGap()));
+                String msg = String.format(AppConstants.pwdGenerateDuplicateRequestMsg, Integer.toString(MyGlobalSettings.getMchntPasswdResetMins()));
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, false, false)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else {

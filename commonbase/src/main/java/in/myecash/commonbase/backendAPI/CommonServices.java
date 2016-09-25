@@ -8,6 +8,7 @@ package in.myecash.commonbase.backendAPI;
 
   import com.backendless.Backendless;
   import in.myecash.commonbase.constants.BackendSettings;
+  import in.myecash.commonbase.models.Customers;
   import in.myecash.commonbase.models.Merchants;
 
 
@@ -45,6 +46,12 @@ package in.myecash.commonbase.backendAPI;
       {
           Object[] args = new Object[]{merchantId};
           return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMerchant", args, Merchants.class );
+      }
+
+      public Customers getCustomer(String custId)
+      {
+          Object[] args = new Object[]{custId};
+          return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCustomer", args, Customers.class );
       }
 
   }

@@ -29,6 +29,7 @@ import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.DialogFragmentWrapper;
 import in.myecash.commonbase.utilities.LogMy;
 import in.myecash.merchantbase.entities.MerchantUser;
+import in.myecash.merchantbase.entities.MyCashback;
 import in.myecash.merchantbase.entities.MyTransaction;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
@@ -76,6 +77,10 @@ public class TxnListFragment extends Fragment {
     private SimpleDateFormat mSdfOnlyTimeCSV;
 
     private RecyclerView mTxnRecyclerView;
+    private EditText mHeaderBill;
+    private EditText mHeaderAmts;
+    private EditText mHeaderTime;
+
     private MyRetainedFragment mRetainedFragment;
     private TxnListFragmentIf mCallback;
     private Date mStartTime;
@@ -116,12 +121,12 @@ public class TxnListFragment extends Fragment {
             // get arguments and store in instance
             mStartTime = (Date)getArguments().getSerializable(ARG_START_TIME);
             mEndTime = (Date)getArguments().getSerializable(ARG_END_TIME);
-            if(savedInstanceState==null) {
-                mSelectedSortType = SortTxnDialog.TXN_SORT_DATE_TIME;
-            } else {
-                mSelectedSortType = savedInstanceState.getInt("mSelectedSortType");
+
+            int sortType = SortTxnDialog.TXN_SORT_DATE_TIME;
+            if(savedInstanceState!=null) {
+                sortType = savedInstanceState.getInt("mSelectedSortType");
             }
-            sortTxnList();
+            sortTxnList(sortType);
 
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
@@ -131,8 +136,8 @@ public class TxnListFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    private void sortTxnList() {
-        switch (mSelectedSortType) {
+    private void sortTxnList(int sortType) {
+        switch (sortType) {
             case SortTxnDialog.TXN_SORT_DATE_TIME:
                 Collections.sort(mRetainedFragment.mLastFetchTransactions, new MyTransaction.TxnDateComparator());
                 break;
@@ -154,6 +159,51 @@ public class TxnListFragment extends Fragment {
         }
         // Make it in decreasing order
         Collections.reverse(mRetainedFragment.mLastFetchTransactions);
+
+        // Remove arrow as per old sort type
+        switch (mSelectedSortType) {
+            case SortTxnDialog.TXN_SORT_DATE_TIME:
+                mHeaderTime.setText("Date Time");
+                break;
+            case SortTxnDialog.TXN_SORT_CB_AWARD:
+            case SortTxnDialog.TXN_SORT_bILL_AMT:
+                mHeaderBill.setText("Total Bill  |  Cashback @ x%");
+                break;
+            case SortTxnDialog.TXN_SORT_CB_REDEEM:
+            case SortTxnDialog.TXN_SORT_ACC_ADD:
+            case SortTxnDialog.TXN_SORT_ACC_DEBIT:
+                mHeaderAmts.setText("Account |  Cashback Redeem");
+                break;
+        }
+
+        // Add arrow in header as per new sort type
+        String text = null;
+        switch (sortType) {
+            case SortTxnDialog.TXN_SORT_DATE_TIME:
+                text = AppConstants.SYMBOL_DOWN_ARROW + "Date Time";
+                mHeaderTime.setText(text);
+                break;
+            case SortTxnDialog.TXN_SORT_bILL_AMT:
+                text = AppConstants.SYMBOL_DOWN_ARROW + "Total Bill  |  Cashback @ x%";
+                mHeaderBill.setText(text);
+                break;
+            case SortTxnDialog.TXN_SORT_CB_AWARD:
+                text = "Total Bill  | "+AppConstants.SYMBOL_DOWN_ARROW+"Cashback @ x%";
+                mHeaderBill.setText(text);
+                break;
+            case SortTxnDialog.TXN_SORT_CB_REDEEM:
+                text = "Account  | "+AppConstants.SYMBOL_DOWN_ARROW+"Cashback Redeem";
+                mHeaderAmts.setText(text);
+                break;
+            case SortTxnDialog.TXN_SORT_ACC_ADD:
+            case SortTxnDialog.TXN_SORT_ACC_DEBIT:
+                text = AppConstants.SYMBOL_DOWN_ARROW+"Account  |  Cashback Redeem";
+                mHeaderAmts.setText(text);
+                break;
+        }
+
+        // store existing sortType
+        mSelectedSortType = sortType;
     }
 
     @Override
@@ -358,8 +408,8 @@ public class TxnListFragment extends Fragment {
             return;
         }
         if(requestCode== REQ_SORT_TXN_TYPES) {
-            mSelectedSortType = data.getIntExtra(SortCustDialog.EXTRA_SELECTION, SortTxnDialog.TXN_SORT_DATE_TIME);
-            sortTxnList();
+            int sortType = data.getIntExtra(SortCustDialog.EXTRA_SELECTION, SortTxnDialog.TXN_SORT_DATE_TIME);
+            sortTxnList(sortType);
             updateUI();
         }
     }

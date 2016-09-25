@@ -19,7 +19,6 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -40,7 +39,6 @@ import com.backendless.exceptions.BackendlessException;
 import in.myecash.commonbase.R;
 import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.entities.MyGlobalSettings;
 import in.myecash.commonbase.models.Address;
@@ -51,7 +49,6 @@ import in.myecash.commonbase.models.CustomerCards;
 import in.myecash.commonbase.models.Customers;
 import in.myecash.commonbase.models.MerchantDevice;
 import in.myecash.commonbase.models.MerchantOps;
-import in.myecash.commonbase.models.MerchantStats;
 import in.myecash.commonbase.models.Merchants;
 import in.myecash.commonbase.models.Transaction;
 
@@ -351,18 +348,18 @@ public class AppCommonUtil {
         if(value==0) {
             return getAmtStr(value);
         }
-        return isCredit ? "+ "+AppConstants.RS_SYMBOL+String.valueOf(value) : "- "+AppConstants.RS_SYMBOL+String.valueOf(value);
+        return isCredit ? "+ "+AppConstants.SYMBOL_RS +String.valueOf(value) : "- "+AppConstants.SYMBOL_RS +String.valueOf(value);
     }
     public static String getSignedAmtStr(String value, boolean isCredit) {
-        return isCredit ? "+ "+AppConstants.RS_SYMBOL+value : "- "+AppConstants.RS_SYMBOL+value;
+        return isCredit ? "+ "+AppConstants.SYMBOL_RS +value : "- "+AppConstants.SYMBOL_RS +value;
     }
 
     public static String getAmtStr(int value) {
-        return AppConstants.RS_SYMBOL+String.valueOf(value);
+        return AppConstants.SYMBOL_RS +String.valueOf(value);
     }
 
     public static String getAmtStr(String value) {
-        return AppConstants.RS_SYMBOL+value;
+        return AppConstants.SYMBOL_RS +value;
     }
 
     public static String getMerchantTxnDir(String merchantId) {

@@ -82,7 +82,7 @@ public class OrderListViewFragment extends ListFragment implements
     }
 
     private void setTotalAmt() {
-        String str = "Charge   "+ AppConstants.RS_SYMBOL + String.valueOf(mRetainedFragment.mBillTotal);
+        String str = "Charge   "+ AppConstants.SYMBOL_RS + String.valueOf(mRetainedFragment.mBillTotal);
         mTotalBtn.setText(str);
     }
 

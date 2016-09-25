@@ -8,8 +8,6 @@ import android.os.Handler;
 
 import com.crashlytics.android.Crashlytics;
 import in.myecash.commonbase.constants.AppConstants;
-import in.myecash.commonbase.constants.BackendSettings;
-import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.models.MerchantOps;
 import in.myecash.commonbase.models.MerchantStats;
@@ -26,7 +24,6 @@ import in.myecash.merchantbase.entities.MyTransaction;
 import in.myecash.merchantbase.entities.OrderItem;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +83,7 @@ public class MyRetainedFragment extends RetainedFragment {
 
     public CustomerOps mCustomerOp;
     // params for merchant mobile number change operation
-    public String mInputCurrMobile;
+    public String mVerifyParamMobileChange;
     public String mNewMobileNum;
     public String mOtpMobileChange;
 
@@ -118,7 +115,7 @@ public class MyRetainedFragment extends RetainedFragment {
         mBillTotal = 0;
 
         mCustomerOp= null;
-        mInputCurrMobile = null;
+        mVerifyParamMobileChange = null;
         mNewMobileNum = null;
         mOtpMobileChange = null;
 

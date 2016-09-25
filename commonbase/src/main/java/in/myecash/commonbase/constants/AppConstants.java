@@ -44,8 +44,9 @@ public class AppConstants {
     public static final String noPermissionTitle = "No Permissions";
 
     public static int MOBILE_NUM_PROCESS_MIN_LENGTH = 8;
-    public static final String RS_SYMBOL = "\u20B9 ";
-    public static final String RS_0 = "\u20B9 0";
+    public static final String SYMBOL_RS = "\u20B9 ";
+    public static final String SYMBOL_RS_0 = "\u20B9 0";
+    public static final String SYMBOL_DOWN_ARROW = "\u25BC";
 
     // Txn summary constants
     public static int INDEX_TXN_COUNT = 0;
@@ -100,8 +101,8 @@ public class AppConstants {
     public static final String pwdGenerateSuccessTitle = "Password reset success";
     public static final String genericPwdGenerateSuccessMsg = "Password generated and sent to your registered mobile number. If not received in few minutes, please try again.";
 
-    public static final String pwdGenerateDuplicateRequestMsg = "For security reasons, new password reset request is not allowed within %s minutes of old request.";
-    public static final String pwdGenerateSuccessMsg = "Password will be sent to your registered mobile number after %s minutes. If not received by then, please try again.";
+    public static final String pwdGenerateDuplicateRequestMsg = "Old Password reset request already pending. Please note that Password is sent to registered mobile, only %s minutes after request is submitted.";
+    public static final String pwdGenerateSuccessMsg = "For security reasons, Password will be sent to your registered mobile number only after %s minutes. If not received by then, please try again.";
     public static final String firstPwdGenerateSuccessMsg = "First password generated and sent to your registered mobile number. If not received in few minutes, please try again.";
 
     public static final String pwdChangeSuccessTitle = "Password changed";

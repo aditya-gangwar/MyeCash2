@@ -70,7 +70,6 @@ public class DbConstants {
 
     // GlobalSettings table - should be exactly same as 'names' in DB
     public static final String SETTINGS_MERCHANT_PASSWD_RESET_MINS = "merchant_passwd_reset_mins";
-    public static final String SETTINGS_MERCHANT_PASSWD_RESET_REQUEST_GAP = "merchant_passwd_reset_request_gap_mins";
     public static final String SETTINGS_MERCHANT_WRONG_ATTEMPTS = "merchant_wrong_attempts";
     public static final String SETTINGS_MERCHANT_ACCOUNT_BLOCK_HRS = "merchant_account_block_hrs";
     public static final String SETTINGS_DASHBOARD_NO_REFRESH_HRS = "mchnt_stats_no_refresh_hours";
@@ -92,6 +91,7 @@ public class DbConstants {
     public static final String SETTINGS_CB_REDEEM_CARD_REQ = "cb_redeem_card_req";
     public static final String SETTINGS_ACC_DB_CARD_REQ = "acc_debit_card_req";
     public static final String SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS = "mchnt_removal_expiry_days";
+    public static final String SETTINGS_CUSTOMER_PASSWD_RESET_MINS = "customer_passwd_reset_mins";
 
     // GlobalSettings table - 'txn_image_capture_mode' column values
     public static final int TXN_IMAGE_CAPTURE_ALWAYS = 0;

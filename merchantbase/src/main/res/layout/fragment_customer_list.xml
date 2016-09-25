@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/LL_Vertical"
-    android:id="@+id/custlist_root">
+    android:id="@+id/list_root">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/custlist_header"
+        android:id="@+id/list_header"
         android:background="@color/bg_list_header">
 
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="wrap_content"
-            android:id="@+id/custlist_header_id"
+            android:id="@+id/list_header_id"
             android:layout_height="wrap_content"
             android:text="Internal ID"
             android:paddingBottom="@dimen/edittext_padding_less"/>
@@ -20,26 +20,26 @@
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="wrap_content"
-            android:id="@+id/custlist_header_acc"
-            android:layout_below="@id/custlist_header_id"
+            android:id="@+id/list_header_acc"
+            android:layout_below="@id/list_header_id"
             android:layout_height="wrap_content"
-            android:text="Account: Add - Debit = Balance"
+            android:text="Account:  Add - Used = Balance"
             android:paddingTop="0dp"
             android:paddingBottom="@dimen/edittext_padding_less"/>
 
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="wrap_content"
-            android:id="@+id/custlist_header_cb"
-            android:layout_below="@id/custlist_header_acc"
+            android:id="@+id/list_header_cb"
+            android:layout_below="@id/list_header_acc"
             android:layout_height="wrap_content"
-            android:text="Cashback: Add - Debit = Balance"
+            android:text="Cashback:  Add - Used = Balance"
             android:paddingTop="0dp"
             android:paddingBottom="@dimen/edittext_padding_less"/>
 
         <EditText
             style="@style/Edittext_only_view_small"
-            android:id="@+id/custlist_header_txnTime"
+            android:id="@+id/list_header_txnTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -48,10 +48,10 @@
 
         <EditText
             style="@style/Edittext_only_view_small"
-            android:id="@+id/custlist_header_bill"
+            android:id="@+id/list_header_bill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/custlist_header_txnTime"
+            android:layout_below="@id/list_header_txnTime"
             android:layout_alignParentRight="true"
             android:text="Total Bill"
             android:paddingBottom="@dimen/edittext_padding_less"
@@ -59,8 +59,8 @@
 
         <View
             style="@style/Divider_horizontal_Large"
-            android:id="@+id/custlist_divider_1"
-            android:layout_below="@id/custlist_header_cb"/>
+            android:id="@+id/list_divider_1"
+            android:layout_below="@id/list_header_cb"/>
 
     </RelativeLayout>
 

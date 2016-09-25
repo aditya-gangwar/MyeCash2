@@ -157,6 +157,35 @@
                 android:paddingTop="0dp"/>
         </LinearLayout>
 
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:visibility="visible">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_input_white_24dp"
+                android:visibility="invisible"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="DoB"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:id="@+id/input_dob"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="06031983"
+                android:paddingTop="0dp"/>
+        </LinearLayout>
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="@dimen/medium_space"/>

@@ -272,7 +272,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     }
 
     private int changeMobileNum() {
-        return MerchantUser.getInstance().changeMobileNum(mRetainedFragment.mInputCurrMobile,
+        return MerchantUser.getInstance().changeMobileNum(mRetainedFragment.mVerifyParamMobileChange,
                 mRetainedFragment.mNewMobileNum, mRetainedFragment.mOtpMobileChange);
     }
 

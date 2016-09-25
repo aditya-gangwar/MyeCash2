@@ -125,9 +125,6 @@ public class MerchantUser
     public static int login(String userId, String password, String deviceId, String otp) {
         LogMy.d(TAG, "In login");
         try {
-            // create instance of MerchantUser class
-            createInstance();
-
             String deviceInfo = deviceId+","
                     + AppCommonUtil.getDeviceManufacturer()+","
                     + AppCommonUtil.getDeviceModel()+","
@@ -145,8 +142,9 @@ public class MerchantUser
                 return ErrorCodes.USER_WRONG_ID_PASSWD;
             }
 
+            // create instance of MerchantUser class
+            createInstance();
             // load all child objects
-            //mInstance.loadMerchant(user);
             mInstance.loadMerchant(userId);
 
             // Store user token
@@ -298,14 +296,14 @@ public class MerchantUser
         return ErrorCodes.NO_ERROR;
     }
 
-    public int changeMobileNum(String currMobile, String newMobile, String otp) {
+    public int changeMobileNum(String verifyparam, String newMobile, String otp) {
         if(mPseudoLoggedIn) {
             return ErrorCodes.NO_PERMISSIONS;
         }
 
         int returnCode = ErrorCodes.NO_ERROR;
         try {
-            mMerchant = MerchantServices.getInstance().changeMobile(currMobile, newMobile, otp);
+            mMerchant = MerchantServices.getInstance().changeMobile(verifyparam, newMobile, otp);
             LogMy.d(TAG,"changeMobileNum success");
 
             /*
@@ -568,7 +566,7 @@ public class MerchantUser
         mMerchant = CommonServices.getInstance().getMerchant(idOrMobileNum);
 
         // map cashback and transaction table
-        Backendless.Data.mapTableToClass(mMerchant.getCashback_table(), Cashback.class);
+        //Backendless.Data.mapTableToClass(mMerchant.getCashback_table(), Cashback.class);
         Backendless.Data.mapTableToClass(mMerchant.getTxn_table(), Transaction.class);
 
         // Set user id for crashlytics

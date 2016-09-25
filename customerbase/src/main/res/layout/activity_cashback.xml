@@ -91,17 +91,6 @@
                     <EditText
                         style="@style/Toolbar_subtitle"
                         android:textSize="@dimen/text_size_medium"
-                        android:id="@+id/tb_curr_cashload"
-                        android:gravity="left|center_vertical"
-                        android:text="\u20B9 0"
-                        android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_account_balance_wallet_white_18dp"
-                        android:drawablePadding="@dimen/large_space"
-                        android:paddingBottom="@dimen/XS_space"
-                        android:paddingTop="0dp"/>
-                    <EditText
-                        style="@style/Toolbar_subtitle"
-                        android:textSize="@dimen/text_size_medium"
                         android:paddingTop="0dp"
                         android:paddingBottom="0dp"
                         android:id="@+id/tb_curr_cashback"
@@ -110,6 +99,17 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_grade_white_18dp"
                         android:drawablePadding="@dimen/large_space"/>
+                    <EditText
+                        style="@style/Toolbar_subtitle"
+                        android:textSize="@dimen/text_size_medium"
+                        android:id="@+id/tb_curr_cashload"
+                        android:gravity="left|center_vertical"
+                        android:text="\u20B9 0"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_account_balance_wallet_white_18dp"
+                        android:drawablePadding="@dimen/large_space"
+                        android:paddingBottom="@dimen/XS_space"
+                        android:paddingTop="0dp"/>
                 </LinearLayout>
 
             </LinearLayout>

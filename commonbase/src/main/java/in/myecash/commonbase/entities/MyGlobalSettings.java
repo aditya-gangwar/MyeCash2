@@ -116,9 +116,6 @@ public class MyGlobalSettings
     public static Integer getMchntPasswdResetMins() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_MERCHANT_PASSWD_RESET_MINS);
     }
-    public static Integer getMchntPasswdResetReqGap() {
-        return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_MERCHANT_PASSWD_RESET_REQUEST_GAP);
-    }
     public static Integer getMchntAccBlockHrs() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_MERCHANT_ACCOUNT_BLOCK_HRS);
     }
@@ -166,6 +163,9 @@ public class MyGlobalSettings
     }
     public static Integer getMchntExpiryDays() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS);
+    }
+    public static Integer getCustPasswdResetMins() {
+        return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CUSTOMER_PASSWD_RESET_MINS);
     }
 
     /*

@@ -1,4 +1,4 @@
-package in.myecash.appcustomer;
+package in.myecash.customerbase;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -21,13 +21,13 @@ import in.myecash.commonbase.utilities.ValidationHelper;
  * Created by adgangwa on 26-04-2016.
  */
 public class PasswdResetDialog extends DialogFragment implements DialogInterface.OnClickListener {
-public static final String TAG = "PasswdResetDialog";
+    public static final String TAG = "PasswdResetDialog";
 
-private PasswdResetDialogIf mListener;
+    private PasswdResetDialogIf mListener;
 
-public interface PasswdResetDialogIf {
-    void onPasswdResetData(String brandName);
-}
+    public interface PasswdResetDialogIf {
+        void onPasswdResetData(String brandName);
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

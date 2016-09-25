@@ -126,6 +126,7 @@ public class MerchantDetailsFragment extends Fragment
         mStoreCategory.setText(merchant.getBuss_category().getCategory_name());
         mRegisteredOn.setText(mSdfDateWithTime.format(merchant.getCreated()));
         mFirstLogin.setText(merchant.getFirst_login_ok().toString());
+        mDoB.setText(merchant.getDob());
 
         int status = merchant.getAdmin_status();
         mInputStatus.setText(DbConstants.userStatusDesc[status]);
@@ -177,6 +178,7 @@ public class MerchantDetailsFragment extends Fragment
     private EditText mStoreCategory;
     private EditText mRegisteredOn;
     private EditText mFirstLogin;
+    private EditText mDoB;
 
     private EditText mInputStatus;
     private EditText mInputStatusDate;
@@ -208,6 +210,7 @@ public class MerchantDetailsFragment extends Fragment
         mStoreCategory = (EditText) v.findViewById(R.id.input_store_category);
         mRegisteredOn = (EditText) v.findViewById(R.id.input_registered_on);
         mFirstLogin = (EditText) v.findViewById(R.id.input_first_login);
+        mDoB = (EditText) v.findViewById(R.id.input_dob);
 
         mInputStatus = (EditText) v.findViewById(R.id.input_status);
         mInputReason = (EditText) v.findViewById(R.id.input_status_reason);

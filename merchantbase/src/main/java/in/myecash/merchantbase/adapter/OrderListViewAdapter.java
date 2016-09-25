@@ -121,14 +121,14 @@ public class OrderListViewAdapter extends ArrayAdapter<OrderItem> {
             itemSNo.setText(String.format("%02d", value));
         }
         public void setUnitPrice(OrderItem item) {
-            unitPrice.setText(AppConstants.RS_SYMBOL);
+            unitPrice.setText(AppConstants.SYMBOL_RS);
             unitPrice.append(item.getUnitPriceStr());
         }
         public void setQty(OrderItem item) {
             qty.setText(String.format("%02d", item.getQuantity()));
         }
         public void setTotalPrice(OrderItem item) {
-            totalPrice.setText(AppConstants.RS_SYMBOL);
+            totalPrice.setText(AppConstants.SYMBOL_RS);
             totalPrice.append(item.getPriceStr());
             if(item.isCashbackExcluded()) {
                 markItemExclusion(item);

@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/appcustomer" />
             <option value="$PROJECT_DIR$/appmerchant" />
             <option value="$PROJECT_DIR$/commonbase" />
+            <option value="$PROJECT_DIR$/customerbase" />
             <option value="$PROJECT_DIR$/merchantbase" />
           </set>
         </option>
@@ -23,6 +24,7 @@
             <option value="$PROJECT_DIR$/appcustomer" />
             <option value="$PROJECT_DIR$/appmerchant" />
             <option value="$PROJECT_DIR$/commonbase" />
+            <option value="$PROJECT_DIR$/customerbase" />
             <option value="$PROJECT_DIR$/merchantbase" />
           </set>
         </option>

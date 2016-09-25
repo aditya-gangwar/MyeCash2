@@ -29,7 +29,7 @@
                     android:title="Change Mobile"
                     android:icon="@drawable/ic_contact_phone_black_24dp" />
                 <item
-                    android:id="@+id/action_change_passwd"
+                    android:id="@+id/menu_change_passwd"
                     android:title="Change Password"
                     android:icon="@drawable/ic_lock_black_24dp" />
                 <item

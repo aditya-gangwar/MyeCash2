@@ -29,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+
+import in.myecash.commonbase.OtpPinInputDialog;
 import in.myecash.commonbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.BackendSettings;
@@ -36,7 +38,6 @@ import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.entities.MyGlobalSettings;
-import in.myecash.commonbase.models.MerchantStats;
 import in.myecash.commonbase.models.Merchants;
 import in.myecash.commonbase.utilities.AppAlarms;
 import in.myecash.commonbase.utilities.AppCommonUtil;
@@ -992,9 +993,9 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void changeMobileNumOk(String oldMobile, String newMobile) {
+    public void changeMobileNumOk(String verifyParam, String newMobile) {
         mWorkFragment.mNewMobileNum = newMobile;
-        mWorkFragment.mInputCurrMobile = oldMobile;
+        mWorkFragment.mVerifyParamMobileChange = verifyParam;
         // dispatch customer op for execution
         changeMobileNum();
     }
@@ -1012,7 +1013,7 @@ public class CashbackActivity extends AppCompatActivity implements
         LogMy.d(TAG, "In changeMobileNumReset: ");
         //mWorkFragment.mMerchantOp = null;
         mWorkFragment.mNewMobileNum = null;
-        mWorkFragment.mInputCurrMobile = null;
+        mWorkFragment.mVerifyParamMobileChange = null;
         mWorkFragment.mOtpMobileChange = null;
 
         // show the 'mobile change preference' again

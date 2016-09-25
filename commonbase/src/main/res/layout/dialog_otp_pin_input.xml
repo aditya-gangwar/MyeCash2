@@ -9,23 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/medium_space"/>
 
-    <LinearLayout
-        style="@style/LL_Horizontal_wrap">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_lock_outline_white_24dp"
-            android:tint="@color/primary"
-            android:layout_gravity="center"/>
-        <EditText
-            style="@style/Edittext_only_view_medium"
-            android:id="@+id/label_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Enter OTP"/>
-    </LinearLayout>
+    <EditText
+        style="@style/Edittext_only_view_medium"
+        android:id="@+id/label_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Enter OTP"/>
 
     <EditText
         style="@style/Edittext_only_view_small"
@@ -40,14 +30,25 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/large_space"/>
 
-    <EditText
-        android:id="@+id/input_pin_otp"
-        style="@style/Edittext_only_view_medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLength="@string/pin_otp_char_limit"
-        android:inputType="numberPassword"
-        android:gravity="center" />
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_lock_outline_white_24dp"
+            android:tint="@color/primary"
+            android:layout_gravity="center"/>
+        <EditText
+            android:id="@+id/input_pin_otp"
+            style="@style/Edittext_only_view_medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="@string/pin_otp_char_limit"
+            android:inputType="numberPassword"
+            android:gravity="center" />
+    </LinearLayout>
+
 
     <View
         style="@style/Divider_horizontal_Medium"/>

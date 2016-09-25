@@ -177,7 +177,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_lock_outline_white_24dp"
+                android:src="@drawable/ic_security_white_24dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_medium"

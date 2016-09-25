@@ -13,12 +13,25 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/XL_space"/>
 
-        <EditText
-            style="@style/Edittext_only_view_small"
-            android:id="@+id/label_information_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Provide your 'Date of Birth' in DDMMYYYY format (as provided during registration)" />
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_verified_user_white_24dp"
+                android:tint="@color/primary"
+                android:layout_gravity="top"
+                android:paddingTop="@dimen/edittext_padding"/>
+
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/label_information_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Provide your 'Date of Birth' in DDMMYYYY format \n(as provided during registration)" />
+        </LinearLayout>
+
 
         <EditText
             style="@style/Edittext_only_view_small"
@@ -44,11 +57,28 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/XL_space"/>
 
-        <EditText
-            style="@style/Edittext_only_view_small"
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_vpn_key_white_24dp"
+                android:tint="@color/primary"
+                android:layout_gravity="top"
+                android:paddingTop="@dimen/edittext_padding"/>
+
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New password will be sent on your current registered mobile number." />
+        </LinearLayout>
+
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="New password will be sent on your current registered mobile number." />
+            android:layout_height="@dimen/medium_space"/>
+
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
