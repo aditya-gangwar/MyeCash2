@@ -5,27 +5,19 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 
-import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
-import in.myecash.commonbase.entities.MyGlobalSettings;
 import in.myecash.commonbase.models.Transaction;
 import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.merchantbase.entities.MyCashback;
-import in.myecash.merchantbase.entities.MyCustomer;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 /**

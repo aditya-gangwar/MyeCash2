@@ -7,8 +7,10 @@ package in.myecash.customerbase;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,12 +24,25 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import in.myecash.commonbase.OtpPinInputDialog;
+import in.myecash.commonbase.entities.MyCashback;
+import in.myecash.commonbase.entities.MyCustomer;
+import in.myecash.commonbase.entities.MyGlobalSettings;
+import in.myecash.commonbase.entities.MyMerchant;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.customerbase.helper.MyRetainedFragment;
 import in.myecash.commonbase.PasswdChangeDialog;
@@ -49,8 +64,10 @@ public class CashbackActivity extends AppCompatActivity implements
         OtpPinInputDialog.OtpPinInputDialogIf {
 
     private static final String TAG = "CashbackActivity";
-
     public static final String INTENT_EXTRA_USER_TOKEN = "extraUserToken";
+
+    //TODO: change this to 100 in production
+    private static final int CSV_LINES_BUFFER = 5;
 
     private static final String RETAINED_FRAGMENT = "workCashback";
     private static final String MERCHANT_LIST_FRAG = "CustomerListFrag";
@@ -59,16 +76,16 @@ public class CashbackActivity extends AppCompatActivity implements
     private static final String DIALOG_CHANGE_PASSWORD = "dialogChangePasswd";
     private static final String DIALOG_CHANGE_MOBILE = "dialogChangeMobile";
     private static final String DIALOG_PIN_CHANGE_MOBILE = "dialogPinChangeMobile";
+    private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
 
     private static final String DIALOG_LOGOUT = "dialogLogout";
     private static final String DIALOG_CUSTOMER_OP_RESET_PIN = "dialogResetPin";
     private static final String DIALOG_CUSTOMER_OP_OTP = "dialogCustomerOpOtp";
-    private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
     private static final String DIALOG_MERCHANT_DETAILS = "dialogMerchantDetails";
 
     private final SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
 
-    MyRetainedFragment mWorkFragment;
+    MyRetainedFragment mRetainedFragment;
     FragmentManager mFragMgr;
     // this will never be null, as it only gets destroyed with cashback activity itself
     MobileNumberFragment mMobileNumFragment;
@@ -91,6 +108,7 @@ public class CashbackActivity extends AppCompatActivity implements
     // Activity state members: These are to be saved for restore in event of activity recreation
     boolean mExitAfterLogout;
     int mLastMenuItemId;
+    long mGetCbSince;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,16 +121,16 @@ public class CashbackActivity extends AppCompatActivity implements
 
         // Initialize retained fragment before other fragments
         // Check to see if we have retained the worker fragment.
-        mWorkFragment = (MyRetainedFragment)mFragMgr.findFragmentByTag(RETAINED_FRAGMENT);
+        mRetainedFragment = (MyRetainedFragment)mFragMgr.findFragmentByTag(RETAINED_FRAGMENT);
         // If not retained (or first time running), we need to create it.
-        if (mWorkFragment == null) {
-            mWorkFragment = new MyRetainedFragment();
+        if (mRetainedFragment == null) {
+            mRetainedFragment = new MyRetainedFragment();
             // Tell it who it is working with.
-            mFragMgr.beginTransaction().add(mWorkFragment, RETAINED_FRAGMENT).commit();
+            mFragMgr.beginTransaction().add(mRetainedFragment, RETAINED_FRAGMENT).commit();
         }
 
         // store passed logged in user token
-        mWorkFragment.mUserToken = getIntent().getStringExtra(INTENT_EXTRA_USER_TOKEN);
+        mRetainedFragment.mUserToken = getIntent().getStringExtra(INTENT_EXTRA_USER_TOKEN);
 
         if(savedInstanceState!=null) {
             mExitAfterLogout = savedInstanceState.getBoolean("mExitAfterLogout");
@@ -127,7 +145,7 @@ public class CashbackActivity extends AppCompatActivity implements
         initNavDrawer();
 
         // setup mobile number fragment
-        startMobileNumFragment();
+        startMchntListFragment();
     }
 
     @Override
@@ -196,7 +214,7 @@ public class CashbackActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 // show customer details dialog
-                CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(-1);
+                CustomerDetailsDialog dialog = new CustomerDetailsDialog();
                 dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
             }
         });
@@ -216,6 +234,7 @@ public class CashbackActivity extends AppCompatActivity implements
         } else if (i == R.id.menu_txns) {
 
         } else if (i == R.id.menu_change_mobile) {
+            // show mobile change dialog
             MobileChangeDialog dialog = new MobileChangeDialog();
             dialog.show(mFragMgr, DIALOG_CHANGE_MOBILE);
 
@@ -248,7 +267,7 @@ public class CashbackActivity extends AppCompatActivity implements
         mTbTitle2.setVisibility(View.GONE);
         if(mCustomer.getAdmin_status()!=DbConstants.USER_STATUS_ACTIVE ) {
             mTbTitle2.setVisibility(View.VISIBLE);
-            //String custName = "~ "+mWorkFragment.mCurrCashback.getCashback().getCustomer().getName();
+            //String custName = "~ "+mRetainedFragment.mCurrCashback.getCashback().getCustomer().getName();
             mTbTitle2.setText(DbConstants.userStatusDesc[mCustomer.getAdmin_status()]);
 
         } else if(mCustomer.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED) {
@@ -271,10 +290,10 @@ public class CashbackActivity extends AppCompatActivity implements
             }
         }
 
-        mTbSubhead1Text1.setText(AppCommonUtil.getAmtStr(mWorkFragment.mCurrCashback.getCurrClBalance()));
+        mTbSubhead1Text1.setText(AppCommonUtil.getAmtStr(mRetainedFragment.mCurrCashback.getCurrClBalance()));
         //mTbSubhead1Divider.setVisibility(View.VISIBLE);
         //mTbSubhead1Text2.setVisibility(View.VISIBLE);
-        mTbSubhead1Text2.setText(AppCommonUtil.getAmtStr(mWorkFragment.mCurrCashback.getCurrCbBalance()));
+        mTbSubhead1Text2.setText(AppCommonUtil.getAmtStr(mRetainedFragment.mCurrCashback.getCurrCbBalance()));
     }
 
     private void initTbViews() {
@@ -303,13 +322,154 @@ public class CashbackActivity extends AppCompatActivity implements
             case MyRetainedFragment.REQUEST_CHANGE_PASSWD:
                 passwordChangeResponse(errorCode);
                 break;
+            case MyRetainedFragment.REQUEST_CHANGE_MOBILE:
+                onChangeMobileResponse(errorCode);
+                break;
+            case MyRetainedFragment.REQUEST_FETCH_CB:
+                onFetchCbResponse(errorCode);
+                break;
         }
+    }
+
+    private void onFetchCbResponse(int errorCode) {
+        LogMy.d(TAG, "In onChangeMobileResponse: " + errorCode);
+        AppCommonUtil.cancelProgressDialog(true);
+
+        if(errorCode==ErrorCodes.NO_ERROR) {
+            // fetched data should now be available in mRetainedFragment.mLastFetchCashbacks
+            if(mRetainedFragment.mLastFetchCashbacks.size() > 0 ) {
+
+                if(mRetainedFragment.mCashbacks == null) {
+                    // no data in memory - check for the file
+                    if(mGetCbSince != 0) {
+                        // some data was there in file earlier - read the same
+                        if(!processCbDataFile(true)) {
+                            // if some error in reading file - fetch all records from scratch
+                            mGetCbSince = 0;
+                            fetchCbData();
+                            return;
+                        }
+                    } else {
+                        // records fetched from scratch - no need to check for file
+                        LogMy.d(TAG,"All fetched Cb records are from scratch: "+mRetainedFragment.mLastFetchCashbacks.size());
+                        mRetainedFragment.mCashbacks = new TreeMap<>();
+                    }
+                }
+                // add all fetched records to the 'cashback store'
+                for (MyCashback cb :
+                        mRetainedFragment.mLastFetchCashbacks) {
+                    mRetainedFragment.mCashbacks.put(cb.getMerchantId(), cb);
+                }
+                // reset to null
+                mRetainedFragment.mLastFetchCashbacks = null;
+                // set time for current set of records
+                mRetainedFragment.mCbsUpdateTime = new Date();
+
+                // write whole 'cashback store' to the file
+                writeCbsToFile();
+            }
+
+            if(mRetainedFragment.mCashbacks == null) {
+                // No data available locally - none fetched from DB
+                // The customer has no cashbacks yet
+                startNoCashbackFrag();
+            } else {
+                startMerchantListFrag();
+            }
+
+        } else {
+            // Failed to fetch new data - show old one, if available
+            //DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+            //        .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+
+            // same as above - try to read data from file
+            if(mRetainedFragment.mCashbacks == null) {
+                // no data in memory - check for the file
+                if(mGetCbSince != 0) {
+                    // some data was there in file earlier - read the same
+                    if(!processCbDataFile(true)) {
+                        // if some error in reading file - fetch all records from scratch
+                        mGetCbSince = 0;
+                        fetchCbData();
+                        return;
+                    }
+                }
+            }
+
+            if(mRetainedFragment.mCashbacks == null) {
+                // No data available locally - error fetching data from DB
+                startErrorFrag();
+            } else {
+                AppCommonUtil.toast(this, "Failed to fetch latest data");
+                startMerchantListFrag();
+            }
+        }
+    }
+
+    private void writeCbsToFile() {
+        LogMy.d(TAG,"In createCsvReport");
+
+        FileOutputStream outputStream = null;
+        try {
+            String fileName = AppCommonUtil.getCashbackFileName(mCustomerUser.getCustomer().getMobile_num());
+
+            StringBuilder sb = new StringBuilder();
+            int cnt = mRetainedFragment.mCashbacks.size();
+            for(int i=0; i<cnt; i++) {
+                MyCashback cb = mRetainedFragment.mCashbacks.get(i);
+                String csvStr = MyCashback.toCsvString(cb.getCurrCashback());
+                sb.append(csvStr).append(CommonConstants.CSV_NEWLINE);
+            }
+
+            outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
+            outputStream.write(sb.toString().getBytes());
+            outputStream.close();
+
+        } catch(Exception e) {
+            LogMy.e(TAG,"exception in writeCbsToFile: "+e.toString(),e);
+            if(outputStream!=null) {
+                try {
+                    outputStream.close();
+                } catch(Exception ex){
+                    // ignore exception
+                }
+            }
+        }
+    }
+
+    private void onChangeMobileResponse(int errorCode) {
+        LogMy.d(TAG, "In onChangeMobileResponse: " + errorCode);
+        AppCommonUtil.cancelProgressDialog(true);
+
+        if(errorCode==ErrorCodes.NO_ERROR) {
+            DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.mobileChangeSuccessMsg, false, false)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            // merchant operation success, reset to null
+            changeMobileParamsReset();
+
+        } else if(errorCode==ErrorCodes.OTP_GENERATED) {
+            // OTP sent successfully to new mobile, ask for the same
+            // show the 'mobile change dialog' again
+            MobileChangeDialog dialog = new MobileChangeDialog();
+            dialog.show(mFragMgr, DIALOG_CHANGE_MOBILE);
+
+        } else {
+            // reset in case of any error
+            changeMobileParamsReset();
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
+    }
+    private void changeMobileParamsReset() {
+        mRetainedFragment.mNewMobileNum = null;
+        mRetainedFragment.mVerifyParamMobileChange = null;
+        mRetainedFragment.mOtpMobileChange = null;
     }
 
     @Override
     public void onPinOtp(String pinOrOtp, String tag) {
         if(tag.equals(DIALOG_PIN_CHANGE_MOBILE)) {
-            mWorkFragment.mVerifyParamMobileChange = pinOrOtp;
+            mRetainedFragment.mVerifyParamMobileChange = pinOrOtp;
             // dispatch customer op for execution
             changeMobileNum();
         }
@@ -317,7 +477,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
     @Override
     public void changeMobileNumOk(String newMobile) {
-        mWorkFragment.mNewMobileNum = newMobile;
+        mRetainedFragment.mNewMobileNum = newMobile;
 
         // ask for customer PIN
         String txnDetail = String.format(AppConstants.msgChangeCustMobilePin,newMobile);
@@ -328,7 +488,7 @@ public class CashbackActivity extends AppCompatActivity implements
     @Override
     public void changeMobileNumOtp(String otp) {
         LogMy.d(TAG, "In changeMobileNumOtp: " + otp);
-        mWorkFragment.mOtpMobileChange = otp;
+        mRetainedFragment.mOtpMobileChange = otp;
         changeMobileNum();
     }
 
@@ -340,7 +500,7 @@ public class CashbackActivity extends AppCompatActivity implements
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-            mWorkFragment.changeMobileNum();
+            mRetainedFragment.changeMobileNum();
         }
     }
 
@@ -353,7 +513,7 @@ public class CashbackActivity extends AppCompatActivity implements
         } else {
             // show progress dialog
             AppCommonUtil.showProgressDialog(this, AppConstants.progressLogout);
-            mWorkFragment.logoutCustomer();
+            mRetainedFragment.logoutCustomer();
         }
     }
 
@@ -368,7 +528,7 @@ public class CashbackActivity extends AppCompatActivity implements
     @Override
     public void onPasswdChangeData(String oldPasswd, String newPassword) {
         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-        mWorkFragment.changePassword(oldPasswd, newPassword);
+        mRetainedFragment.changePassword(oldPasswd, newPassword);
     }
 
     private void passwordChangeResponse(int errorCode) {
@@ -416,7 +576,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
     @Override
     public MyRetainedFragment getRetainedFragment() {
-        return mWorkFragment;
+        return mRetainedFragment;
     }
 
     @Override
@@ -457,7 +617,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
             if(mCustomer.getLast_txn_archive()==null ||
                     mCustomer.getLast_txn_archive().getTime() < todayMidnight.getTime().getTime()) {
-                mWorkFragment.archiveTxns();
+                mRetainedFragment.archiveTxns();
             }
         }
     }
@@ -476,7 +636,123 @@ public class CashbackActivity extends AppCompatActivity implements
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
+
+        boolean fetchData = false;
+        // read file, if 'cashback store' is empty
+        if(mRetainedFragment.mCashbacks == null) {
+            if(!processCbDataFile(false)) {
+                fetchData = true;
+            }
+        } else if(custStatsRefreshReq(mRetainedFragment.mCbsUpdateTime.getTime())) {
+            // data in memory, but has expired
+            fetchData = true;
+            mGetCbSince = mRetainedFragment.mCbsUpdateTime.getTime();
+        }
+        if(fetchData) {
+            // fetch data from DB
+            fetchCbData();
+        }
+
         setDrawerState(true);
+    }
+
+    private void fetchCbData() {
+        LogMy.d(TAG,"Fetching cb data from backend: "+mGetCbSince);
+        int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
+        if ( resultCode != ErrorCodes.NO_ERROR) {
+            // Show error notification dialog
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        } else {
+            AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
+            mRetainedFragment.fetchCashback(mGetCbSince);
+        }
+    }
+
+    // Reads and process local cashback data file
+    private boolean processCbDataFile(boolean ignoreTime) {
+        LogMy.d(TAG,"In processCbDataFile: "+ignoreTime);
+        String fileName = AppCommonUtil.getCashbackFileName(mCustomerUser.getCustomer().getMobile_num());
+
+        try {
+            InputStream inputStream = openFileInput(fileName);
+            if ( inputStream != null ) {
+                int lineCnt = 0;
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    if(lineCnt==0) {
+                        // first line is header giving file creation epoch time
+                        String[] csvFields = receiveString.split(CommonConstants.CSV_DELIMETER);
+                        long fileCreateTime = Long.parseLong(csvFields[0]);
+                        if(custStatsRefreshReq(fileCreateTime) &&
+                                !ignoreTime ) {
+                            // file is older than configured no refresh duration
+                            mGetCbSince = fileCreateTime;
+                            // don't read file further, will be done after updated records are fetched from DB
+                            return false;
+                        } else {
+                            mRetainedFragment.mCashbacks = new TreeMap<>();
+                            mRetainedFragment.mCbsUpdateTime = new Date(fileCreateTime);
+                        }
+                    } else {
+                        // ignore empty lines
+                        if(!receiveString.equals(CommonConstants.CSV_NEWLINE)) {
+                            processCbCsvRecord(receiveString);
+                        }
+                    }
+
+                    lineCnt++;
+                }
+                inputStream.close();
+                LogMy.d(TAG,"Processed "+lineCnt+" lines from "+fileName);
+            } else {
+                String error = "openFileInput returned null for Cashback CSV file: "+fileName;
+                LogMy.e(TAG, error);
+                throw new FileNotFoundException(error);
+            }
+        } catch (Exception ex) {
+            if(!(ex instanceof FileNotFoundException)) {
+                LogMy.e(TAG,"Exception while reading cb file: "+ex.toString(),ex);
+            }
+            // reset all, fetch all data fresh
+            mRetainedFragment.mCashbacks = null;
+            mRetainedFragment.mCbsUpdateTime = null;
+            mGetCbSince = 0;
+            return false;
+        }
+
+        return true;
+    }
+
+    private void processCbCsvRecord(String csvString) {
+        MyCashback cb = new MyCashback();
+        cb.init(csvString, false);
+        mRetainedFragment.mCashbacks.put(cb.getMerchantId(), cb);
+        LogMy.d(TAG,"Added new item in cashback store: "+mRetainedFragment.mCashbacks.size());
+    }
+
+    private boolean custStatsRefreshReq(long lastUpdate) {
+
+        if(MyGlobalSettings.getCustNoRefreshHrs()==24) {
+            // 24 is treated as special case as 'once in a day'
+            DateUtil todayMidnight = (new DateUtil()).toMidnight();
+            if(lastUpdate < todayMidnight.getTime().getTime()) {
+                // Last update was not today
+                return true;
+            }
+        } else {
+            // Check if updated in last 'cust no refresh hours'
+            long timeDiff = (new Date()).getTime() - lastUpdate;
+            long noRefreshDuration = 60*60*1000*MyGlobalSettings.getCustNoRefreshHrs();
+            if( timeDiff > noRefreshDuration ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override

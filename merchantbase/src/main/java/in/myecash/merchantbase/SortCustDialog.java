@@ -17,7 +17,7 @@ import android.widget.RadioGroup;
 
 import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.merchantbase.entities.MyCashback;
+import in.myecash.commonbase.entities.MyCashback;
 
 /**
  * Created by adgangwa on 15-09-2016.

@@ -6,21 +6,16 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.commonbase.utilities.ValidationHelper;
-import in.myecash.merchantbase.entities.MyCashback;
 
 /**
  * Created by adgangwa on 14-09-2016.

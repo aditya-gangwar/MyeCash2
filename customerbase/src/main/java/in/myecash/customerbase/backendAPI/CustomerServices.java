@@ -12,6 +12,7 @@ import com.backendless.async.callback.AsyncCallback;
 import java.util.List;
 
 import in.myecash.commonbase.constants.BackendSettings;
+import in.myecash.commonbase.models.Cashback;
 import in.myecash.commonbase.models.Customers;
 
 public class CustomerServices
@@ -43,4 +44,12 @@ public class CustomerServices
         Object[] args = new Object[]{verifyParam, newMobile, otp};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changeMobile", args, Customers.class );
     }
+
+    public java.util.List<Cashback> getCashbacks(long updatedSince)
+    {
+        Object[] args = new Object[]{updatedSince};
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCashbacks", args, java.util.List.class );
+    }
+
+
 }

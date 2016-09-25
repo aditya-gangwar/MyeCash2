@@ -18,8 +18,8 @@ import in.myecash.commonbase.utilities.LogMy;
 import in.myecash.commonbase.utilities.RetainedFragment;
 import in.myecash.merchantbase.entities.CustomerOps;
 import in.myecash.merchantbase.entities.MerchantUser;
-import in.myecash.merchantbase.entities.MyCashback;
-import in.myecash.merchantbase.entities.MyCustomer;
+import in.myecash.commonbase.entities.MyCashback;
+import in.myecash.commonbase.entities.MyCustomer;
 import in.myecash.merchantbase.entities.MyTransaction;
 import in.myecash.merchantbase.entities.OrderItem;
 

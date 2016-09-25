@@ -6,11 +6,15 @@ import com.backendless.HeadersManager;
 import com.backendless.exceptions.BackendlessException;
 import com.crashlytics.android.Crashlytics;
 
+import java.util.List;
+
 import in.myecash.commonbase.backendAPI.CommonServices;
 import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
+import in.myecash.commonbase.models.Cashback;
 import in.myecash.commonbase.models.Customers;
+import in.myecash.commonbase.models.MerchantOps;
 import in.myecash.commonbase.utilities.AppCommonUtil;
 import in.myecash.commonbase.utilities.LogMy;
 import in.myecash.customerbase.backendAPI.CustomerServices;
@@ -183,6 +187,10 @@ public class CustomerUser {
         return returnCode;
     }
 
+    public List<Cashback> fetchCashbacks(Long updatedSince) throws BackendlessException {
+        LogMy.d(TAG, "In fetchCashback");
+        return CustomerServices.getInstance().getCashbacks(updatedSince);
+    }
 
 
     /*

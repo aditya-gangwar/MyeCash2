@@ -1,4 +1,4 @@
-package in.myecash.merchantbase.entities;
+package in.myecash.commonbase.entities;
 
 import com.backendless.exceptions.BackendlessException;
 import in.myecash.commonbase.constants.CommonConstants;
@@ -136,17 +136,4 @@ public class MyCustomer {
             mCardStatusUpdateTime = null;
         }
     }
-
-    /*
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(mMobileNum).append(",")
-                .append(mStatus).append(",")
-                .append(mStatusReason).append(",")
-                .append(mStatusUpdateTime).append(",")
-                .append(mCardId).append(",")
-                .append(mCardStatus).append(",")
-                .append(mCardStatusUpdateTime);
-        return sb.toString();
-    }*/
 }

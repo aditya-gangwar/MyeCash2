@@ -427,29 +427,6 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:id="@+id/layout_status_detail"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_input_white_24dp"
-                android:visibility="invisible"
-                android:paddingTop="0dp"/>
-            <EditText
-                style="@style/Edittext_only_view_small"
-                android:layout_weight="60"
-                android:gravity="left"
-                android:id="@+id/input_status_detail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Wrong password attempts limit reached."
-                android:paddingTop="0dp"
-                android:textStyle="italic"/>
-        </LinearLayout>
-
-        <LinearLayout
             style="@style/LL_Horizontal_wrap">
 
             <ImageView

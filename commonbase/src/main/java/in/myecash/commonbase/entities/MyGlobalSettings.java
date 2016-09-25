@@ -167,6 +167,9 @@ public class MyGlobalSettings
     public static Integer getCustPasswdResetMins() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CUSTOMER_PASSWD_RESET_MINS);
     }
+    public static Integer getCustNoRefreshHrs() {
+        return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CUSTOMER_NO_REFRESH_HRS);
+    }
 
     /*
     private static Object getValue(String name) {

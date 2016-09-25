@@ -6,7 +6,11 @@ import android.os.Message;
 import com.backendless.exceptions.BackendlessException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import in.myecash.commonbase.entities.MyCashback;
+import in.myecash.commonbase.models.Cashback;
 import in.myecash.customerbase.backendAPI.CustomerServicesNoLogin;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.commonbase.backendAPI.CommonServices;
@@ -74,6 +78,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     public void addChangeMobileRequest() {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CHANGE_MOBILE,null).sendToTarget();
     }
+    public void addFetchCbRequest(Long updatedSince) {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_CB,updatedSince).sendToTarget();
+    }
 
 
     @Override
@@ -94,6 +101,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_CHANGE_MOBILE:
                 error = changeMobileNum();
+                break;
+            case MyRetainedFragment.REQUEST_FETCH_CB:
+                error = fetchCashbacks((Long) msg.obj);
                 break;
         }
         return error;
@@ -119,5 +129,27 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     private int changeMobileNum() {
         return CustomerUser.getInstance().changeMobileNum(mRetainedFragment.mVerifyParamMobileChange,
                 mRetainedFragment.mNewMobileNum, mRetainedFragment.mOtpMobileChange);
+    }
+
+    private int fetchCashbacks(Long updatedSince) {
+        mRetainedFragment.mLastFetchCashbacks = null;
+        try {
+            List<Cashback> cashbacks = CustomerUser.getInstance().fetchCashbacks(updatedSince);
+
+            if(cashbacks.size() > 0) {
+                mRetainedFragment.mLastFetchCashbacks = new ArrayList<>(cashbacks.size());
+                for (Cashback cb :
+                        cashbacks) {
+                    MyCashback myCb = new MyCashback();
+                    myCb.init(cb, false);
+                    mRetainedFragment.mLastFetchCashbacks.add(myCb);
+                }
+            }
+        } catch (BackendlessException e) {
+            mRetainedFragment.mLastFetchCashbacks = null;
+            LogMy.e(TAG, "Exception in fetchCashbacks: "+ e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
     }
 }

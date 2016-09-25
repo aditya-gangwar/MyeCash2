@@ -1,4 +1,4 @@
-package in.myecash.merchantbase;
+package in.myecash.customerbase;
 
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -20,19 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import in.myecash.commonbase.constants.AppConstants;
-import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.entities.MyGlobalSettings;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.DialogFragmentWrapper;
-import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.merchantbase.entities.MerchantUser;
-import in.myecash.commonbase.entities.MyCashback;
-import in.myecash.commonbase.entities.MyCustomer;
-import in.myecash.merchantbase.helper.MyRetainedFragment;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,12 +32,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
+
+import in.myecash.commonbase.constants.AppConstants;
+import in.myecash.commonbase.constants.CommonConstants;
+import in.myecash.commonbase.constants.DbConstants;
+import in.myecash.commonbase.constants.ErrorCodes;
+import in.myecash.commonbase.entities.MyCashback;
+import in.myecash.commonbase.entities.MyCustomer;
+import in.myecash.commonbase.entities.MyGlobalSettings;
+import in.myecash.commonbase.utilities.AppCommonUtil;
+import in.myecash.commonbase.utilities.DateUtil;
+import in.myecash.commonbase.utilities.DialogFragmentWrapper;
+import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.customerbase.helper.MyRetainedFragment;
 
 /**
  * Created by adgangwa on 09-09-2016.
  */
-public class CustomerListFragment extends Fragment {
-    private static final String TAG = "CustomerListFragment";
+public class CashbackListFragment extends Fragment {
+    private static final String TAG = "CashbackListFragment";
+
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
     private static final String DIALOG_SORT_CUST_TYPES = "dialogSortCust";
 
@@ -67,9 +69,10 @@ public class CustomerListFragment extends Fragment {
     private SimpleDateFormat mSdfOnlyDateFilename;
 
     private MyRetainedFragment mRetainedFragment;
-    private CustomerListFragmentIf mCallback;
+    private CashbackListFragmentIf mCallback;
 
-    public interface CustomerListFragmentIf {
+    public interface CashbackListFragmentIf {
+        void fetchCashback();
         MyRetainedFragment getRetainedFragment();
         void setDrawerState(boolean isEnabled);
     }
@@ -78,11 +81,7 @@ public class CustomerListFragment extends Fragment {
     private int mSelectedSortType;
     private String mUpdatedTime;
 
-    private RecyclerView mCustRecyclerView;
-    private EditText mLabelTxnTime;
-    private EditText mLabelBill;
-    private EditText mLabelAcc;
-    private EditText mLabelCb;
+    private RecyclerView mRecyclerView;
     private EditText mUpdated;
     private EditText mUpdatedDetail;
     
@@ -93,20 +92,54 @@ public class CustomerListFragment extends Fragment {
         LogMy.d(TAG, "In onActivityCreated");
 
         try {
-            mCallback = (CustomerListFragmentIf) getActivity();
+            mCallback = (CashbackListFragmentIf) getActivity();
             mRetainedFragment = mCallback.getRetainedFragment();
 
             mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
             mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
 
-            if(mRetainedFragment.mLastFetchCashbacks==null) {
-                mRetainedFragment.mLastFetchCashbacks = new ArrayList<>();
-            } else {
-                mRetainedFragment.mLastFetchCashbacks.clear();
+            // Read data from local file, only if 'cashback store' empty
+            if(mRetainedFragment.mCashbacks == null) {
+                processFile();
             }
 
-            // process the file
-            processFile();
+            // Add any data fetched from backend, to the 'cashback store'
+            if(mRetainedFragment.mLastFetchCashbacks != null &&
+                    mRetainedFragment.mLastFetchCashbacks.size() > 0) {
+                // Can be null, if no file present or error in reading file
+                if(mRetainedFragment.mCashbacks == null) {
+                    mRetainedFragment.mCashbacks = new TreeMap<>();
+                }
+                // Over-write existing records
+                for (MyCashback cb :
+                        mRetainedFragment.mLastFetchCashbacks) {
+                    mRetainedFragment.mCashbacks.put(cb.getMerchantId(), cb);
+                }
+                // reset to null, so as not processed next time
+                mRetainedFragment.mLastFetchCashbacks = null;
+            }
+
+            // Read the data from backend - if no data available, or data is older than configured value
+            boolean updateData = false;
+            if(MyGlobalSettings.getCustNoRefreshHrs()==24) {
+                // 24 is treated as special case as 'once in a day'
+                DateUtil todayMidnight = (new DateUtil()).toMidnight();
+                if(mRetainedFragment.mCbsUpdateTime.getTime() < todayMidnight.getTime().getTime()) {
+                    // Last update was not today
+                    updateData = true;
+                }
+            } else {
+                // Check if updated in last 'cust no refresh hours'
+                long timeDiff = (new Date()).getTime() - mRetainedFragment.mCbsUpdateTime.getTime();
+                long noRefreshDuration = 60*60*1000*MyGlobalSettings.getCustNoRefreshHrs();
+                if( timeDiff > noRefreshDuration ) {
+                    updateData = true;
+                }
+            }
+
+            if(updateData) {
+                mCallback.fetchCashback();
+            }
 
             int sortType = MyCashback.CB_CMP_TYPE_UPDATE_TIME;
             if(savedInstanceState!=null) {
@@ -121,9 +154,9 @@ public class CustomerListFragment extends Fragment {
 
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
-                    + " must implement CustomerListFragmentIf");
+                    + " must implement CashbackListFragmentIf");
         } catch(Exception e) {
-            LogMy.e(TAG, "Exception is CustomerListFragment:onActivityCreated", e);
+            LogMy.e(TAG, "Exception is CashbackListFragment:onActivityCreated", e);
             // unexpected exception - show error
             DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.GENERAL_ERROR), true, true);
             notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
@@ -204,8 +237,8 @@ public class CustomerListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_customer_list, container, false);
 
-        mCustRecyclerView = (RecyclerView) view.findViewById(R.id.cust_recycler_view);
-        mCustRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.cust_recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mLabelTxnTime = (EditText) view.findViewById(R.id.list_header_txnTime);
         mLabelBill = (EditText) view.findViewById(R.id.list_header_bill);
@@ -218,49 +251,56 @@ public class CustomerListFragment extends Fragment {
         return view;
     }
 
+    // Reads and process local cashback data file
     private void processFile() throws Exception {
-        String fileName = AppCommonUtil.getMerchantCustFileName(mRetainedFragment.mMerchantUser.getMerchantId());
+        String fileName = AppCommonUtil.getCashbackFileName(mRetainedFragment.mCustomerUser.getCustomer().getMobile_num());
 
-        InputStream inputStream = getActivity().openFileInput(fileName);
-        if ( inputStream != null ) {
-            int lineCnt = 0;
+        try {
+            mRetainedFragment.mCashbacks = new TreeMap<>();
 
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String receiveString = "";
-            while ( (receiveString = bufferedReader.readLine()) != null ) {
-                if(lineCnt==0) {
-                    // first line is header giving file creation time epoch
-                    String[] csvFields = receiveString.split(CommonConstants.CSV_DELIMETER);
-                    mUpdatedTime = mSdfDateWithTime.format(new Date(Long.parseLong(csvFields[0])));
-                } else {
-                    // ignore empty lines
-                    if(!receiveString.equals(CommonConstants.CSV_NEWLINE)) {
-                        processCbCsvRecord(receiveString);
+            InputStream inputStream = getActivity().openFileInput(fileName);
+            if ( inputStream != null ) {
+                int lineCnt = 0;
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    if(lineCnt==0) {
+                        // first line is header giving file creation time epoch
+                        String[] csvFields = receiveString.split(CommonConstants.CSV_DELIMETER);
+                        mRetainedFragment.mCbsUpdateTime = new Date(Long.parseLong(csvFields[0]));
+
+                    } else {
+                        // ignore empty lines
+                        if(!receiveString.equals(CommonConstants.CSV_NEWLINE)) {
+                            processCbCsvRecord(receiveString);
+                        }
                     }
+
+                    lineCnt++;
                 }
-
-                lineCnt++;
+                inputStream.close();
+                LogMy.d(TAG,"Processed "+lineCnt+" lines from "+fileName);
+            } else {
+                String error = "openFileInput returned null for Cashback CSV file: "+fileName;
+                LogMy.e(TAG, error);
+                throw new FileNotFoundException(error);
             }
-            inputStream.close();
-            LogMy.d(TAG,"Processed "+lineCnt+" lines from "+fileName);
-        } else {
-            String error = "openFileInput returned null for Cashback CSV file: "+fileName;
-            LogMy.e(TAG, error);
-            throw new FileNotFoundException(error);
+        } catch (FileNotFoundException e) {
+            // No file available - may be first run after installation
+            mRetainedFragment.mCashbacks = null;
+            mRetainedFragment.mCbsUpdateTime = null;
+        } catch (Exception ex) {
+            LogMy.e(TAG,"Exception while reading cb file: "+ex.toString(),ex);
+            mRetainedFragment.mCashbacks = null;
+            mRetainedFragment.mCbsUpdateTime = null;
         }
-    }
-
-    private void processCbCsvRecord(String csvString) {
-        MyCashback cb = new MyCashback();
-        cb.init(csvString);
-        mRetainedFragment.mLastFetchCashbacks.add(cb);
-        LogMy.d(TAG,"Added new item in mLastFetchCashbacks: "+mRetainedFragment.mLastFetchCashbacks.size());
     }
 
     private void updateUI() {
         if(mRetainedFragment.mLastFetchCashbacks!=null) {
-            mCustRecyclerView.setAdapter(new CbAdapter(mRetainedFragment.mLastFetchCashbacks));
+            mRecyclerView.setAdapter(new CbAdapter(mRetainedFragment.mLastFetchCashbacks));
         }
     }
 
@@ -312,7 +352,7 @@ public class CustomerListFragment extends Fragment {
             }
 
         } catch(Exception e) {
-            LogMy.e(TAG, "Exception is CustomerListFragment:onOptionsItemSelected", e);
+            LogMy.e(TAG, "Exception is CashbackListFragment:onOptionsItemSelected", e);
             // unexpected exception - show error
             DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.GENERAL_ERROR), true, true);
             notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
@@ -538,7 +578,7 @@ public class CustomerListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     LogMy.d(TAG,"In onClickListener of customer list item");
-                    int pos = mCustRecyclerView.getChildAdapterPosition(v);
+                    int pos = mRecyclerView.getChildAdapterPosition(v);
                     if (pos >= 0 && pos < getItemCount()) {
                         CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(pos);
                         dialog.show(getFragmentManager(), DIALOG_CUSTOMER_DETAILS);

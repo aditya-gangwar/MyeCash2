@@ -15,7 +15,7 @@ import in.myecash.commonbase.utilities.BackgroundProcessor;
 import in.myecash.commonbase.utilities.FileFetchr;
 import in.myecash.commonbase.utilities.LogMy;
 import in.myecash.merchantbase.entities.MerchantUser;
-import in.myecash.merchantbase.entities.MyCashback;
+import in.myecash.commonbase.entities.MyCashback;
 import in.myecash.merchantbase.entities.MyTransaction;
 
 import java.io.File;
@@ -439,10 +439,10 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
 
         FileOutputStream outputStream;
         try {
-            byte[] bitmapBytes = new FileFetchr().getUrlBytes(fileURL, mRetainedFragment.mUserToken);
+            byte[] bytes = new FileFetchr().getUrlBytes(fileURL, mRetainedFragment.mUserToken);
 
             outputStream = msg.ctxt.openFileOutput(filename, Context.MODE_PRIVATE);
-            outputStream.write(bitmapBytes);
+            outputStream.write(bytes);
             outputStream.close();
 
         } catch(FileNotFoundException fnf) {

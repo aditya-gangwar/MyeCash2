@@ -379,6 +379,10 @@ public class AppCommonUtil {
         // File name: customers_<merchant_id>.csv
         return CommonConstants.MERCHANT_CUST_DATA_FILE_PREFIX+merchantId+CommonConstants.CSV_FILE_EXT;
     }
+    public static String getCashbackFileName(String userId) {
+        // File name: customers_<merchant_id>.csv
+        return CommonConstants.CASHBACK_DATA_FILE_PREFIX+userId+CommonConstants.CSV_FILE_EXT;
+    }
 
 
     public static String getTxnCsvFilename(Date date, String merchantId) {

@@ -1,11 +1,10 @@
-package in.myecash.merchantbase.entities;
+package in.myecash.commonbase.entities;
 
 import com.backendless.exceptions.BackendlessException;
 import in.myecash.commonbase.constants.CommonConstants;
 import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.models.Cashback;
-import in.myecash.commonbase.models.Transaction;
 import in.myecash.commonbase.utilities.AppAlarms;
 import in.myecash.commonbase.utilities.LogMy;
 
@@ -32,13 +31,102 @@ public class MyCashback {
 
     private Cashback mOldCashback;
     private Cashback mCurrCashback;
-    // customer associated with this cashback object
+
+    // customer/merchant associated with this cashback object
+    // they are provided by the backend in the other_details field as CSV string
     private MyCustomer mCustomer;
+    private MyMerchant mMerchant;
+
+    /*
+     * Init object values from given CSV string
+     * containing both 'cashback' and 'customer/merchant' data in single record
+     */
+    public void init(String csvRecord, boolean callingUserIsMchnt) {
+        if(csvRecord==null || csvRecord.isEmpty())
+        {
+            LogMy.e(TAG,"Cashback details not available.");
+            throw new BackendlessException(String.valueOf(ErrorCodes.GENERAL_ERROR), "Cashback CSV record is null or empty");
+        }
+        LogMy.d(TAG,"In init: "+csvRecord);
+
+        Cashback cb = new Cashback();
+        String[] csvFields = csvRecord.split(CommonConstants.CSV_DELIMETER);
+
+        cb.setCust_private_id(csvFields[CommonConstants.CB_CSV_CUST_PVT_ID]);
+        cb.setMerchant_id(csvFields[CommonConstants.CB_CSV_MCHNT_ID]);
+        cb.setCl_credit(Integer.parseInt(csvFields[CommonConstants.CB_CSV_ACC_CR]));
+        cb.setCl_debit(Integer.parseInt(csvFields[CommonConstants.CB_CSV_ACC_DB]));
+        cb.setCb_credit(Integer.parseInt(csvFields[CommonConstants.CB_CSV_CR]));
+        cb.setCb_debit(Integer.parseInt(csvFields[CommonConstants.CB_CSV_DB]));
+        cb.setTotal_billed(Integer.parseInt(csvFields[CommonConstants.CB_CSV_TOTAL_BILL]));
+        cb.setCb_billed(Integer.parseInt(csvFields[CommonConstants.CB_CSV_BILL]));
+        cb.setCreated(new Date(Long.parseLong(csvFields[CommonConstants.CB_CSV_CREATE_TIME])));
+        cb.setUpdated(new Date(Long.parseLong(csvFields[CommonConstants.CB_CSV_UPDATE_TIME])));
+
+        init(cb, callingUserIsMchnt);
+    }
+
+    public void init(Cashback cb, boolean callingUserIsMchnt) {
+        mCurrCashback = cb;
+
+        if(callingUserIsMchnt) {
+            mCustomer = new MyCustomer();
+            mCustomer.init(mCurrCashback.getOther_details(), CommonConstants.CSV_SUB_DELIMETER);
+        } else {
+            mMerchant = new MyMerchant();
+            mMerchant.init(mCurrCashback.getOther_details());
+        }
+    }
+
+    public static String toCsvString(Cashback cb) {
+
+        String[] csvFields = new String[CommonConstants.CB_CSV_TOTAL_FIELDS];
+        csvFields[CommonConstants.CB_CSV_CUST_PVT_ID] = String.valueOf(cb.getCust_private_id()) ;
+        csvFields[CommonConstants.CB_CSV_MCHNT_ID] = String.valueOf(cb.getMerchant_id()) ;
+        csvFields[CommonConstants.CB_CSV_ACC_CR] = String.valueOf(cb.getCl_credit()) ;
+        csvFields[CommonConstants.CB_CSV_ACC_DB] = String.valueOf(cb.getCl_debit()) ;
+        csvFields[CommonConstants.CB_CSV_CR] = String.valueOf(cb.getCb_credit()) ;
+        csvFields[CommonConstants.CB_CSV_DB] = String.valueOf(cb.getCb_debit()) ;
+        csvFields[CommonConstants.CB_CSV_TOTAL_BILL] = String.valueOf(cb.getTotal_billed()) ;
+        csvFields[CommonConstants.CB_CSV_BILL] = String.valueOf(cb.getCb_billed()) ;
+        csvFields[CommonConstants.CB_CSV_CREATE_TIME] = String.valueOf(cb.getCreated().getTime()) ;
+        csvFields[CommonConstants.CB_CSV_UPDATE_TIME] = String.valueOf(cb.getUpdated().getTime()) ;
+        csvFields[CommonConstants.CB_CSV_OTHER_DETAILS] = cb.getOther_details() ;
+
+        // join the fields in single CSV string
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<CommonConstants.CB_CSV_TOTAL_FIELDS; i++) {
+            sb.append(csvFields[i]).append(CommonConstants.CSV_DELIMETER);
+        }
+        return sb.toString();
+    }
 
     // Current cashback operations
     public void setCashback(Cashback currCashback) {
         mOldCashback = mCurrCashback;
         mCurrCashback = currCashback;
+    }
+
+    /*
+     * Getter methods
+     */
+    public MyCustomer getCustomer() {
+        return mCustomer;
+    }
+
+    public MyMerchant getMerchant() {
+        return mMerchant;
+    }
+
+    public String getMerchantId() {
+        return mCurrCashback.getMerchant_id();
+    }
+
+    /*
+     * Current cashback Getter methods
+     */
+    public Cashback getCurrCashback() {
+        return mCurrCashback;
     }
 
     public int getCurrCbBalance() {
@@ -95,53 +183,13 @@ public class MyCashback {
     }
 
     /*
-    public String getCustomerDetails() {
-        return mCurrCashback.getCustomer_details();
-    }*/
-
-    // Old cashback operations
+     * Old cashback Getter methods
+     */
     public int getOldCbBalance() {
         return mOldCashback==null?0:(mOldCashback.getCb_credit() - mOldCashback.getCb_debit());
     }
     public int getOldClBalance() {
         return mOldCashback==null?0:(mOldCashback.getCl_credit() - mOldCashback.getCl_debit());
-    }
-
-    public MyCustomer getCustomer() {
-        return mCustomer;
-    }
-
-    public void init(Cashback cb) {
-        mCurrCashback = cb;
-        // init customer
-        mCustomer = new MyCustomer();
-        mCustomer.init(mCurrCashback.getCustomer_details(), CommonConstants.CSV_SUB_DELIMETER);
-    }
-
-    // init with CSV record containing both 'cashback' and 'customer' data in single record
-    public void init(String csvRecord) {
-        if(csvRecord==null || csvRecord.isEmpty())
-        {
-            LogMy.e(TAG,"Cashback details not available.");
-            throw new BackendlessException(String.valueOf(ErrorCodes.GENERAL_ERROR), "Cashback CSV record is null or empty");
-        }
-        LogMy.d(TAG,"In init: "+csvRecord);
-
-        Cashback cb = new Cashback();
-        String[] csvFields = csvRecord.split(CommonConstants.CSV_DELIMETER);
-        cb.setCust_private_id(csvFields[CommonConstants.CB_CSV_CUST_PVT_ID]);
-        cb.setMerchant_id(csvFields[CommonConstants.CB_CSV_MCHNT_ID]);
-        cb.setCl_credit(Integer.parseInt(csvFields[CommonConstants.CB_CSV_ACC_CR]));
-        cb.setCl_debit(Integer.parseInt(csvFields[CommonConstants.CB_CSV_ACC_DB]));
-        cb.setCb_credit(Integer.parseInt(csvFields[CommonConstants.CB_CSV_CR]));
-        cb.setCb_debit(Integer.parseInt(csvFields[CommonConstants.CB_CSV_DB]));
-        cb.setTotal_billed(Integer.parseInt(csvFields[CommonConstants.CB_CSV_TOTAL_BILL]));
-        cb.setCb_billed(Integer.parseInt(csvFields[CommonConstants.CB_CSV_BILL]));
-        cb.setCreated(new Date(Long.parseLong(csvFields[CommonConstants.CB_CSV_CREATE_TIME])));
-        cb.setUpdated(new Date(Long.parseLong(csvFields[CommonConstants.CB_CSV_UPDATE_TIME])));
-        cb.setCustomer_details(csvFields[CommonConstants.CB_CSV_CUST_DETAILS]);
-
-        init(cb);
     }
 
     /*

@@ -74,6 +74,8 @@ public class CommonConstants {
     public static String MERCHANT_CUST_DATA_FILE_PREFIX = "customers_";
     public static final String PREFIX_TXN_IMG_FILE_NAME = "txnImg_";
 
+    public static String CASHBACK_DATA_FILE_PREFIX = "cashback_";
+
     public static final String CSV_DELIMETER = ",";
     public static final String CSV_SUB_DELIMETER = ":";
     public static final String CSV_FILE_EXT = ".csv";
@@ -123,7 +125,7 @@ public class CommonConstants {
     public static int CB_CSV_BILL = 7;
     public static int CB_CSV_CREATE_TIME = 8;
     public static int CB_CSV_UPDATE_TIME = 9;
-    public static int CB_CSV_CUST_DETAILS = 10;
+    public static int CB_CSV_OTHER_DETAILS = 10;
     public static int CB_CSV_TOTAL_FIELDS = 11;
 
     /*
