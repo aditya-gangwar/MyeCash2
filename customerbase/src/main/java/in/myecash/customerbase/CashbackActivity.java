@@ -10,7 +10,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,10 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
@@ -40,9 +37,7 @@ import java.util.TreeMap;
 
 import in.myecash.commonbase.OtpPinInputDialog;
 import in.myecash.commonbase.entities.MyCashback;
-import in.myecash.commonbase.entities.MyCustomer;
 import in.myecash.commonbase.entities.MyGlobalSettings;
-import in.myecash.commonbase.entities.MyMerchant;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.customerbase.helper.MyRetainedFragment;
 import in.myecash.commonbase.PasswdChangeDialog;
@@ -61,7 +56,7 @@ import in.myecash.commonbase.utilities.LogMy;
 public class CashbackActivity extends AppCompatActivity implements
         MyRetainedFragment.RetainedFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         PasswdChangeDialog.PasswdChangeDialogIf, MobileChangeDialog.MobileChangeDialogIf,
-        OtpPinInputDialog.OtpPinInputDialogIf {
+        OtpPinInputDialog.OtpPinInputDialogIf, CashbackListFragment.CashbackListFragmentIf {
 
     private static final String TAG = "CashbackActivity";
     public static final String INTENT_EXTRA_USER_TOKEN = "extraUserToken";
@@ -69,14 +64,16 @@ public class CashbackActivity extends AppCompatActivity implements
     //TODO: change this to 100 in production
     private static final int CSV_LINES_BUFFER = 5;
 
-    private static final String RETAINED_FRAGMENT = "workCashback";
-    private static final String MERCHANT_LIST_FRAG = "CustomerListFrag";
+    private static final String RETAINED_FRAGMENT = "retainedFrag";
+    private static final String CASHBACK_LIST_FRAGMENT = "CashbackListFrag";
 
     private static final String DIALOG_BACK_BUTTON = "dialogBackButton";
     private static final String DIALOG_CHANGE_PASSWORD = "dialogChangePasswd";
     private static final String DIALOG_CHANGE_MOBILE = "dialogChangeMobile";
     private static final String DIALOG_PIN_CHANGE_MOBILE = "dialogPinChangeMobile";
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
+
+    private static final String DIALOG_NOTIFY_CB_FETCH_ERROR = "dialogCbFetchError";
 
     private static final String DIALOG_LOGOUT = "dialogLogout";
     private static final String DIALOG_CUSTOMER_OP_RESET_PIN = "dialogResetPin";
@@ -88,7 +85,7 @@ public class CashbackActivity extends AppCompatActivity implements
     MyRetainedFragment mRetainedFragment;
     FragmentManager mFragMgr;
     // this will never be null, as it only gets destroyed with cashback activity itself
-    MobileNumberFragment mMobileNumFragment;
+    CashbackListFragment mMobileNumFragment;
 
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
@@ -135,6 +132,7 @@ public class CashbackActivity extends AppCompatActivity implements
         if(savedInstanceState!=null) {
             mExitAfterLogout = savedInstanceState.getBoolean("mExitAfterLogout");
             mLastMenuItemId = savedInstanceState.getInt("mLastMenuItemId");
+            mGetCbSince = savedInstanceState.getLong("mGetCbSince");
         }
 
         // Setup a toolbar to replace the action bar.
@@ -145,7 +143,7 @@ public class CashbackActivity extends AppCompatActivity implements
         initNavDrawer();
 
         // setup mobile number fragment
-        startMchntListFragment();
+        startCashbackListFrag();
     }
 
     @Override
@@ -214,7 +212,7 @@ public class CashbackActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 // show customer details dialog
-                CustomerDetailsDialog dialog = new CustomerDetailsDialog();
+                MerchantDetailsDialog dialog = new MerchantDetailsDialog();
                 dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
             }
         });
@@ -335,25 +333,30 @@ public class CashbackActivity extends AppCompatActivity implements
         LogMy.d(TAG, "In onChangeMobileResponse: " + errorCode);
         AppCommonUtil.cancelProgressDialog(true);
 
+        // read data from file, ir-respective of result from DB i.e.e error, 0 records or whatever
+        // dont read though - if records fetched are from scratch
+        if(mGetCbSince != 0) {
+            // some data was there in file earlier - read the same
+            if(!processCbDataFile(true)) {
+                // if some error in reading file - fetch all records from scratch
+                mGetCbSince = 0;
+                fetchCbData();
+                return;
+            }
+        }
+
+        // If here, means:
+        // - either DB data was fetched from scratch
+        // - or data available locally, and is read successfully in memory
+
         if(errorCode==ErrorCodes.NO_ERROR) {
-            // fetched data should now be available in mRetainedFragment.mLastFetchCashbacks
+            // check if any data fetched
             if(mRetainedFragment.mLastFetchCashbacks.size() > 0 ) {
 
                 if(mRetainedFragment.mCashbacks == null) {
-                    // no data in memory - check for the file
-                    if(mGetCbSince != 0) {
-                        // some data was there in file earlier - read the same
-                        if(!processCbDataFile(true)) {
-                            // if some error in reading file - fetch all records from scratch
-                            mGetCbSince = 0;
-                            fetchCbData();
-                            return;
-                        }
-                    } else {
-                        // records fetched from scratch - no need to check for file
-                        LogMy.d(TAG,"All fetched Cb records are from scratch: "+mRetainedFragment.mLastFetchCashbacks.size());
-                        mRetainedFragment.mCashbacks = new TreeMap<>();
-                    }
+                    // records fetched from scratch - no need to check for file
+                    LogMy.d(TAG, "All fetched Cb records are from scratch: " + mRetainedFragment.mLastFetchCashbacks.size());
+                    mRetainedFragment.mCashbacks = new HashMap<>();
                 }
                 // add all fetched records to the 'cashback store'
                 for (MyCashback cb :
@@ -365,8 +368,15 @@ public class CashbackActivity extends AppCompatActivity implements
                 // set time for current set of records
                 mRetainedFragment.mCbsUpdateTime = new Date();
 
-                // write whole 'cashback store' to the file
-                writeCbsToFile();
+                // write complete 'in memory cashback store' to the file
+                //writeCbsToFile();
+
+            } else {
+                LogMy.d(TAG, "No updated data available in DB");
+                if(mRetainedFragment.mCashbacks != null) {
+                    // local data available from file - mark the same as latest
+                    mRetainedFragment.mCbsUpdateTime = new Date();
+                }
             }
 
             if(mRetainedFragment.mCashbacks == null) {
@@ -374,44 +384,41 @@ public class CashbackActivity extends AppCompatActivity implements
                 // The customer has no cashbacks yet
                 startNoCashbackFrag();
             } else {
-                startMerchantListFrag();
+                // write all data with time to the local file
+                if(!writeCbsToFile())
+                {
+                    // try to delete file, like if partially created
+                    try {
+                        deleteFile(AppCommonUtil.getCashbackFileName(mCustomerUser.getCustomer().getPrivate_id()));
+                    } catch (Exception e) {
+                        // ignore exception
+                    }
+                }
+                startCashbackListFrag();
             }
 
         } else {
             // Failed to fetch new data - show old one, if available
-            //DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
-            //        .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                    .show(mFragMgr, DIALOG_NOTIFY_CB_FETCH_ERROR);
 
-            // same as above - try to read data from file
+            // TODO: see if below required to be done - after 'ok' button is clicked from dialog
+            // but you will need to capture 'back button press' in dialog too
             if(mRetainedFragment.mCashbacks == null) {
-                // no data in memory - check for the file
-                if(mGetCbSince != 0) {
-                    // some data was there in file earlier - read the same
-                    if(!processCbDataFile(true)) {
-                        // if some error in reading file - fetch all records from scratch
-                        mGetCbSince = 0;
-                        fetchCbData();
-                        return;
-                    }
-                }
-            }
-
-            if(mRetainedFragment.mCashbacks == null) {
-                // No data available locally - error fetching data from DB
+                // No data available locally, also error fetching data from DB
                 startErrorFrag();
             } else {
-                AppCommonUtil.toast(this, "Failed to fetch latest data");
-                startMerchantListFrag();
+                startCashbackListFrag();
             }
         }
     }
 
-    private void writeCbsToFile() {
+    private boolean writeCbsToFile() {
         LogMy.d(TAG,"In createCsvReport");
 
         FileOutputStream outputStream = null;
         try {
-            String fileName = AppCommonUtil.getCashbackFileName(mCustomerUser.getCustomer().getMobile_num());
+            String fileName = AppCommonUtil.getCashbackFileName(mCustomerUser.getCustomer().getPrivate_id());
 
             StringBuilder sb = new StringBuilder();
             int cnt = mRetainedFragment.mCashbacks.size();
@@ -434,7 +441,9 @@ public class CashbackActivity extends AppCompatActivity implements
                     // ignore exception
                 }
             }
+            return false;
         }
+        return true;
     }
 
     private void onChangeMobileResponse(int errorCode) {
@@ -558,16 +567,16 @@ public class CashbackActivity extends AppCompatActivity implements
         }*/
     }
 
-    private void startMerchantListFrag() {
-        if (mFragMgr.findFragmentByTag(MERCHANT_LIST_FRAG) == null) {
+    private void startCashbackListFrag() {
+        if (mFragMgr.findFragmentByTag(CASHBACK_LIST_FRAGMENT) == null) {
             //setDrawerState(false);
 
-            Fragment fragment = new CustomerListFragment();
+            Fragment fragment = new CashbackListFragment();
             FragmentTransaction transaction = mFragMgr.beginTransaction();
 
             // Add over the existing fragment
-            transaction.replace(R.id.fragment_container_1, fragment, MERCHANT_LIST_FRAG);
-            transaction.addToBackStack(MERCHANT_LIST_FRAG);
+            transaction.replace(R.id.fragment_container_1, fragment, CASHBACK_LIST_FRAGMENT);
+            transaction.addToBackStack(CASHBACK_LIST_FRAGMENT);
 
             // Commit the transaction
             transaction.commit();
@@ -670,9 +679,10 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     // Reads and process local cashback data file
+    // If the fx returns true, then 'mRetainedFragment.mCashbacks' will definitly have some data
     private boolean processCbDataFile(boolean ignoreTime) {
         LogMy.d(TAG,"In processCbDataFile: "+ignoreTime);
-        String fileName = AppCommonUtil.getCashbackFileName(mCustomerUser.getCustomer().getMobile_num());
+        String fileName = AppCommonUtil.getCashbackFileName(mCustomerUser.getCustomer().getPrivate_id());
 
         try {
             InputStream inputStream = openFileInput(fileName);
@@ -706,6 +716,15 @@ public class CashbackActivity extends AppCompatActivity implements
 
                     lineCnt++;
                 }
+
+                if(mRetainedFragment.mCashbacks==null || mRetainedFragment.mCashbacks.size()==0) {
+                    // probably empty file - or no line after first
+                    LogMy.w(TAG,"Empty or invalid Cashback CSV file");
+                    mRetainedFragment.mCashbacks = null;
+                    mRetainedFragment.mCbsUpdateTime = null;
+                    return false;
+                }
+
                 inputStream.close();
                 LogMy.d(TAG,"Processed "+lineCnt+" lines from "+fileName);
             } else {
@@ -775,5 +794,6 @@ public class CashbackActivity extends AppCompatActivity implements
 
         outState.putBoolean("mExitAfterLogout", mExitAfterLogout);
         outState.putInt("mLastMenuItemId", mLastMenuItemId);
+        outState.putLong("mGetCbSince", mGetCbSince);
     }
 }

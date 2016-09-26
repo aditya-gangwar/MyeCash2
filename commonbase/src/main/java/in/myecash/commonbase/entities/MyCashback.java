@@ -19,7 +19,7 @@ import java.util.Map;
 public class MyCashback {
     private static final String TAG = "MyCashback";
 
-    // Txn sort parameter types
+    // Cashback sort parameter types
     public static final int CB_CMP_TYPE_UPDATE_TIME = 0;
     public static final int CB_CMP_TYPE_BILL_AMT = 1;
     public static final int CB_CMP_TYPE_ACC_BALANCE = 2;
@@ -28,6 +28,9 @@ public class MyCashback {
     public static final int CB_CMP_TYPE_CB_BALANCE = 5;
     public static final int CB_CMP_TYPE_CB_ADD = 6;
     public static final int CB_CMP_TYPE_CB_DEBIT = 7;
+    // Cashback sort by merchant attributes
+    public static final int CB_CMP_TYPE_MCHNT_NAME = 8;
+    public static final int CB_CMP_TYPE_MCHNT_CITY = 9;
 
     private Cashback mOldCashback;
     private Cashback mCurrCashback;
@@ -222,6 +225,10 @@ public class MyCashback {
                     return compare(lhs.getCbCredit(), rhs.getCbCredit());
                 case CB_CMP_TYPE_CB_DEBIT:
                     return compare(lhs.getCbRedeem(), rhs.getCbRedeem());
+                case CB_CMP_TYPE_MCHNT_NAME:
+                    return compare(lhs.getMerchant().getName(), rhs.getMerchant().getName());
+                case CB_CMP_TYPE_MCHNT_CITY:
+                    return compare(lhs.getMerchant().getCity(), rhs.getMerchant().getCity());
             }
             return 0;
         }
@@ -234,6 +241,10 @@ public class MyCashback {
             return a < b ? -1
                     : a > b ? 1
                     : 0;
+        }
+        private static int compare(String a, String b) {
+            int res = String.CASE_INSENSITIVE_ORDER.compare(a, b);
+            return (res != 0) ? res : a.compareTo(b);
         }
     }
 }

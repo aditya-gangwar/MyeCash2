@@ -253,7 +253,7 @@ public class CustomerListFragment extends Fragment {
 
     private void processCbCsvRecord(String csvString) {
         MyCashback cb = new MyCashback();
-        cb.init(csvString);
+        cb.init(csvString, true);
         mRetainedFragment.mLastFetchCashbacks.add(cb);
         LogMy.d(TAG,"Added new item in mLastFetchCashbacks: "+mRetainedFragment.mLastFetchCashbacks.size());
     }

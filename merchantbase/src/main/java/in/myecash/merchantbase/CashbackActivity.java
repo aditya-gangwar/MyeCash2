@@ -1261,9 +1261,10 @@ public class CashbackActivity extends AppCompatActivity implements
                     }
                 } else {
                     // delete file
-                    if(!txnImage.delete()) {
+                    deleteFile(mWorkFragment.mCardImageFile);
+                    /*if(!txnImage.delete()) {
                         LogMy.w(TAG,"Failed to delete txn image file: "+txnImage.getAbsolutePath());
-                    }
+                    }*/
                     mWorkFragment.mCardImageFile = null;
                 }
             }

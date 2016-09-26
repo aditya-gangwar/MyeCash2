@@ -124,7 +124,7 @@
                 android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:id="@+id/input_cust_last_activity"
+                android:id="@+id/input_last_txn_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="22 July 16, 23:00"
@@ -132,6 +132,10 @@
                 android:gravity="left"
                 android:paddingTop="0dp"/>
         </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_space"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -390,7 +394,7 @@
                 android:gravity="left"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:id="@+id/input_customer_mobile"
+                android:id="@+id/input_mobile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="xxxxx91535"

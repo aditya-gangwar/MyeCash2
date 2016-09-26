@@ -5,6 +5,7 @@ import com.backendless.exceptions.BackendlessException;
 import java.util.Date;
 
 import in.myecash.commonbase.constants.ErrorCodes;
+import in.myecash.commonbase.models.Merchants;
 import in.myecash.commonbase.utilities.LogMy;
 
 /**
@@ -13,22 +14,22 @@ import in.myecash.commonbase.utilities.LogMy;
 public class MyMerchant {
     private static final String TAG = "MyMerchant";
 
-    private final int MCHNT_CSV_NAME = 0;
-    private final int MCHNT_CSV_ID = 1;
-    private final int MCHNT_CSV_MOBILE = 2;
-    private final int MCHNT_CSV_CB_RATE = 3;
-    private final int MCHNT_CSV_BUSS_CATEGORY = 4;
-    private final int MCHNT_CSV_ADDR_LINE1 = 5;
-    private final int MCHNT_CSV_ADDR_CITY = 6;
-    private final int MCHNT_CSV_ADDR_STATE = 7;
-    private final int MCHNT_CSV_STATUS = 8;
-    private final int MCHNT_CSV_STATUS_TIME = 9;
-    private final int MCHNT_CSV_FIELD_CNT = 10;
+    private static final int MCHNT_CSV_NAME = 0;
+    private static final int MCHNT_CSV_ID = 1;
+    private static final int MCHNT_CSV_MOBILE = 2;
+    private static final int MCHNT_CSV_CB_RATE = 3;
+    private static final int MCHNT_CSV_BUSS_CATEGORY = 4;
+    private static final int MCHNT_CSV_ADDR_LINE1 = 5;
+    private static final int MCHNT_CSV_ADDR_CITY = 6;
+    private static final int MCHNT_CSV_ADDR_STATE = 7;
+    private static final int MCHNT_CSV_STATUS = 8;
+    private static final int MCHNT_CSV_STATUS_TIME = 9;
+    private static final int MCHNT_CSV_FIELD_CNT = 10;
 
     // Total size of above fields = 50+50+10*7
-    public final int MCHNT_CSV_MAX_SIZE = 200;
+    public static final int MCHNT_CSV_MAX_SIZE = 200;
 
-    private final String MCHNT_CSV_DELIM = ":";
+    private static final String MCHNT_CSV_DELIM = ":";
 
     // Merchant properties
     String mName;
@@ -68,18 +69,18 @@ public class MyMerchant {
     }
 
     // Convert to CSV string
-    public String toCsvString() {
+    public static String toCsvString(Merchants merchant) {
         String[] csvFields = new String[MCHNT_CSV_FIELD_CNT];
-        csvFields[MCHNT_CSV_NAME] = mName;
-        csvFields[MCHNT_CSV_ID] = mId;
-        csvFields[MCHNT_CSV_MOBILE] = mMobileNum;
-        csvFields[MCHNT_CSV_CB_RATE] = mCbRate;
-        csvFields[MCHNT_CSV_BUSS_CATEGORY] = mBusinessCategory;
-        csvFields[MCHNT_CSV_ADDR_LINE1] = mAddressLine1;
-        csvFields[MCHNT_CSV_ADDR_CITY] = mCity;
-        csvFields[MCHNT_CSV_ADDR_STATE] = mState;
-        csvFields[MCHNT_CSV_STATUS] = mStatus;
-        csvFields[MCHNT_CSV_STATUS_TIME] = String.valueOf(mStatusUpdateTime.getTime());
+        csvFields[MCHNT_CSV_NAME] = merchant.getName();
+        csvFields[MCHNT_CSV_ID] = merchant.getAuto_id();
+        csvFields[MCHNT_CSV_MOBILE] = merchant.getMobile_num();
+        csvFields[MCHNT_CSV_CB_RATE] = merchant.getCb_rate();
+        csvFields[MCHNT_CSV_BUSS_CATEGORY] = merchant.getBuss_category().getCategory_name();
+        csvFields[MCHNT_CSV_ADDR_LINE1] = merchant.getAddress().getLine_1();
+        csvFields[MCHNT_CSV_ADDR_CITY] = merchant.getAddress().getCity();
+        csvFields[MCHNT_CSV_ADDR_STATE] = merchant.getAddress().getState();
+        csvFields[MCHNT_CSV_STATUS] = String.valueOf(merchant.getAdmin_status());
+        csvFields[MCHNT_CSV_STATUS_TIME] = Long.toString(merchant.getStatus_update_time().getTime());
 
         // join the fields in single CSV string
         StringBuilder sb = new StringBuilder(MCHNT_CSV_MAX_SIZE);

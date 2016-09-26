@@ -1,15 +1,10 @@
 package in.myecash.customerbase;
 
 import android.app.Activity;
-import android.app.DownloadManager;
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,29 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.TreeMap;
 
 import in.myecash.commonbase.constants.AppConstants;
 import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
 import in.myecash.commonbase.constants.ErrorCodes;
 import in.myecash.commonbase.entities.MyCashback;
-import in.myecash.commonbase.entities.MyCustomer;
-import in.myecash.commonbase.entities.MyGlobalSettings;
+import in.myecash.commonbase.entities.MyMerchant;
 import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.DateUtil;
 import in.myecash.commonbase.utilities.DialogFragmentWrapper;
 import in.myecash.commonbase.utilities.LogMy;
 import in.myecash.customerbase.helper.MyRetainedFragment;
@@ -53,21 +36,13 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
 public class CashbackListFragment extends Fragment {
     private static final String TAG = "CashbackListFragment";
 
-    private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
+    private static final String DIALOG_MERCHANT_DETAILS = "dialogMerchantDetails";
     private static final String DIALOG_SORT_CUST_TYPES = "dialogSortCust";
-
-    private static final String CSV_HEADER = "Sl.No.,Internal Id,Mobile No.,Card ID,Status,Account Balance,Account Add,Account Debit,Cashback Balance,Cashback Award,Cashback Redeem,Total Bill,Cashback Bill,Last Txn here,First Txn here";
-    // 5+10+10+10+10+5+5+5+5+5+5+5+5+10+10 = 105
-    private static final int CSV_RECORD_MAX_CHARS = 128;
-    //TODO: change this to 100 in production
-    private static final int CSV_LINES_BUFFER = 5;
 
     private static final int REQ_NOTIFY_ERROR = 1;
     private static final int REQ_SORT_CUST_TYPES = 2;
 
     private SimpleDateFormat mSdfDateWithTime;
-    private SimpleDateFormat mSdfOnlyDateFilename;
-
     private MyRetainedFragment mRetainedFragment;
     private CashbackListFragmentIf mCallback;
 
@@ -77,14 +52,14 @@ public class CashbackListFragment extends Fragment {
         void setDrawerState(boolean isEnabled);
     }
 
-    // instance state - store and restore
-    private int mSelectedSortType;
-    private String mUpdatedTime;
-
     private RecyclerView mRecyclerView;
     private EditText mUpdated;
-    private EditText mUpdatedDetail;
-    
+    //private EditText mUpdatedDetail;
+    private List<MyCashback> mMyCbs;
+
+    // instance state - store and restore
+    private int mSelectedSortType;
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -96,61 +71,29 @@ public class CashbackListFragment extends Fragment {
             mRetainedFragment = mCallback.getRetainedFragment();
 
             mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
-            mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
+            //mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
 
-            // Read data from local file, only if 'cashback store' empty
-            if(mRetainedFragment.mCashbacks == null) {
-                processFile();
-            }
-
-            // Add any data fetched from backend, to the 'cashback store'
-            if(mRetainedFragment.mLastFetchCashbacks != null &&
-                    mRetainedFragment.mLastFetchCashbacks.size() > 0) {
-                // Can be null, if no file present or error in reading file
-                if(mRetainedFragment.mCashbacks == null) {
-                    mRetainedFragment.mCashbacks = new TreeMap<>();
-                }
-                // Over-write existing records
-                for (MyCashback cb :
-                        mRetainedFragment.mLastFetchCashbacks) {
-                    mRetainedFragment.mCashbacks.put(cb.getMerchantId(), cb);
-                }
-                // reset to null, so as not processed next time
-                mRetainedFragment.mLastFetchCashbacks = null;
-            }
-
-            // Read the data from backend - if no data available, or data is older than configured value
-            boolean updateData = false;
-            if(MyGlobalSettings.getCustNoRefreshHrs()==24) {
-                // 24 is treated as special case as 'once in a day'
-                DateUtil todayMidnight = (new DateUtil()).toMidnight();
-                if(mRetainedFragment.mCbsUpdateTime.getTime() < todayMidnight.getTime().getTime()) {
-                    // Last update was not today
-                    updateData = true;
-                }
-            } else {
-                // Check if updated in last 'cust no refresh hours'
-                long timeDiff = (new Date()).getTime() - mRetainedFragment.mCbsUpdateTime.getTime();
-                long noRefreshDuration = 60*60*1000*MyGlobalSettings.getCustNoRefreshHrs();
-                if( timeDiff > noRefreshDuration ) {
-                    updateData = true;
-                }
-            }
-
-            if(updateData) {
-                mCallback.fetchCashback();
-            }
+            // As the data is in Map - which cant be sorted
+            // so create a local list from Map in retained fragment
+            // note - this is not copy, as both list and Map will point to same MyCashback objects
+            mMyCbs = new ArrayList<>(mRetainedFragment.mCashbacks.values());
 
             int sortType = MyCashback.CB_CMP_TYPE_UPDATE_TIME;
             if(savedInstanceState!=null) {
                 sortType = savedInstanceState.getInt("mSelectedSortType");
             }
-            sortCustList(sortType);
+            sortList(sortType);
 
             // update time
-            mUpdated.setText(mUpdatedTime);
-            String txt = "Data is updated only once every "+ MyGlobalSettings.getMchntDashBNoRefreshHrs()+" hours.";
-            mUpdatedDetail.setText(txt);
+            mUpdated.setText(mSdfDateWithTime.format(mRetainedFragment.mCbsUpdateTime));
+            /*String txt = null;
+            if(MyGlobalSettings.getCustNoRefreshHrs()==24) {
+                // 24 is treated as special case as 'once in a day'
+                txt = "Data is updated once a day";
+            } else {
+                txt = "Data is updated only once every " + MyGlobalSettings.getMchntDashBNoRefreshHrs() + " hours.";
+            }
+            mUpdatedDetail.setText(txt);*/
 
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
@@ -166,68 +109,14 @@ public class CashbackListFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    private void sortCustList(int sortType) {
-        Collections.sort(mRetainedFragment.mLastFetchCashbacks, new MyCashback.MyCashbackComparator(sortType));
-        // Make it in decreasing order
-        Collections.reverse(mRetainedFragment.mLastFetchCashbacks);
+    private void sortList(int sortType) {
+        Collections.sort(mMyCbs, new MyCashback.MyCashbackComparator(sortType));
 
-        // Remove arrow as per old sort type
-        switch (mSelectedSortType) {
-            case MyCashback.CB_CMP_TYPE_UPDATE_TIME:
-                mLabelTxnTime.setText("Last Txn Time");
-                break;
-            case MyCashback.CB_CMP_TYPE_BILL_AMT:
-                mLabelBill.setText("Total Bill");
-                break;
-            case MyCashback.CB_CMP_TYPE_ACC_BALANCE:
-            case MyCashback.CB_CMP_TYPE_ACC_ADD:
-            case MyCashback.CB_CMP_TYPE_ACC_DEBIT:
-                mLabelAcc.setText("Account:  Add - Used = Balance");
-                break;
-            case MyCashback.CB_CMP_TYPE_CB_BALANCE:
-            case MyCashback.CB_CMP_TYPE_CB_ADD:
-            case MyCashback.CB_CMP_TYPE_CB_DEBIT:
-                mLabelCb.setText("Cashback:  Add - Used = Balance");
-                break;
+        if(sortType!=MyCashback.CB_CMP_TYPE_MCHNT_NAME &&
+                sortType!=MyCashback.CB_CMP_TYPE_MCHNT_CITY) {
+            // Make it in decreasing order - if not string comparison
+            Collections.reverse(mMyCbs);
         }
-
-        // Add arrow in header as per new sort type
-        String text = null;
-        switch (sortType) {
-            case MyCashback.CB_CMP_TYPE_UPDATE_TIME:
-                text = AppConstants.SYMBOL_DOWN_ARROW + mLabelTxnTime.getText().toString();
-                mLabelTxnTime.setText(text);
-                break;
-            case MyCashback.CB_CMP_TYPE_BILL_AMT:
-                text = AppConstants.SYMBOL_DOWN_ARROW + mLabelBill.getText().toString();
-                mLabelBill.setText(text);
-                break;
-            case MyCashback.CB_CMP_TYPE_ACC_BALANCE:
-                text = "Account:  Add - Used = "+AppConstants.SYMBOL_DOWN_ARROW+"Balance";
-                mLabelAcc.setText(text);
-                break;
-            case MyCashback.CB_CMP_TYPE_ACC_ADD:
-                text = "Account: "+AppConstants.SYMBOL_DOWN_ARROW+"Add - Used = Balance";
-                mLabelAcc.setText(text);
-                break;
-            case MyCashback.CB_CMP_TYPE_ACC_DEBIT:
-                text = "Account:  Add - "+AppConstants.SYMBOL_DOWN_ARROW+"Used = Balance";
-                mLabelAcc.setText(text);
-                break;
-            case MyCashback.CB_CMP_TYPE_CB_BALANCE:
-                text = "Cashback:  Add - Used = "+AppConstants.SYMBOL_DOWN_ARROW+"Balance";
-                mLabelCb.setText(text);
-                break;
-            case MyCashback.CB_CMP_TYPE_CB_ADD:
-                text = "Cashback: "+AppConstants.SYMBOL_DOWN_ARROW+"Add - Used = Balance";
-                mLabelCb.setText(text);
-                break;
-            case MyCashback.CB_CMP_TYPE_CB_DEBIT:
-                text = "Cashback:  Add - "+AppConstants.SYMBOL_DOWN_ARROW+"Used = Balance";
-                mLabelCb.setText(text);
-                break;
-        }
-
         // store existing sortType
         mSelectedSortType = sortType;
     }
@@ -235,72 +124,20 @@ public class CashbackListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_customer_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_merchant_list, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.cust_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mLabelTxnTime = (EditText) view.findViewById(R.id.list_header_txnTime);
-        mLabelBill = (EditText) view.findViewById(R.id.list_header_bill);
-        mLabelAcc = (EditText) view.findViewById(R.id.list_header_acc);
-        mLabelCb = (EditText) view.findViewById(R.id.list_header_cb);
-
         mUpdated = (EditText) view.findViewById(R.id.input_updated_time);
-        mUpdatedDetail = (EditText) view.findViewById(R.id.updated_time_details);
+        //mUpdatedDetail = (EditText) view.findViewById(R.id.updated_time_details);
 
         return view;
     }
 
-    // Reads and process local cashback data file
-    private void processFile() throws Exception {
-        String fileName = AppCommonUtil.getCashbackFileName(mRetainedFragment.mCustomerUser.getCustomer().getMobile_num());
-
-        try {
-            mRetainedFragment.mCashbacks = new TreeMap<>();
-
-            InputStream inputStream = getActivity().openFileInput(fileName);
-            if ( inputStream != null ) {
-                int lineCnt = 0;
-
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    if(lineCnt==0) {
-                        // first line is header giving file creation time epoch
-                        String[] csvFields = receiveString.split(CommonConstants.CSV_DELIMETER);
-                        mRetainedFragment.mCbsUpdateTime = new Date(Long.parseLong(csvFields[0]));
-
-                    } else {
-                        // ignore empty lines
-                        if(!receiveString.equals(CommonConstants.CSV_NEWLINE)) {
-                            processCbCsvRecord(receiveString);
-                        }
-                    }
-
-                    lineCnt++;
-                }
-                inputStream.close();
-                LogMy.d(TAG,"Processed "+lineCnt+" lines from "+fileName);
-            } else {
-                String error = "openFileInput returned null for Cashback CSV file: "+fileName;
-                LogMy.e(TAG, error);
-                throw new FileNotFoundException(error);
-            }
-        } catch (FileNotFoundException e) {
-            // No file available - may be first run after installation
-            mRetainedFragment.mCashbacks = null;
-            mRetainedFragment.mCbsUpdateTime = null;
-        } catch (Exception ex) {
-            LogMy.e(TAG,"Exception while reading cb file: "+ex.toString(),ex);
-            mRetainedFragment.mCashbacks = null;
-            mRetainedFragment.mCbsUpdateTime = null;
-        }
-    }
-
     private void updateUI() {
-        if(mRetainedFragment.mLastFetchCashbacks!=null) {
-            mRecyclerView.setAdapter(new CbAdapter(mRetainedFragment.mLastFetchCashbacks));
+        if(mRetainedFragment.mCashbacks!=null) {
+            mRecyclerView.setAdapter(new CbAdapter(mMyCbs));
         }
     }
 
@@ -311,8 +148,8 @@ public class CashbackListFragment extends Fragment {
             return;
         }
         if(requestCode==REQ_SORT_CUST_TYPES) {
-            int sortType = data.getIntExtra(SortCustDialog.EXTRA_SELECTION, MyCashback.CB_CMP_TYPE_UPDATE_TIME);
-            sortCustList(sortType);
+            int sortType = data.getIntExtra(SortMchntDialog.EXTRA_SELECTION, MyCashback.CB_CMP_TYPE_UPDATE_TIME);
+            sortList(sortType);
             updateUI();
         }
     }
@@ -332,27 +169,21 @@ public class CashbackListFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.customer_list_menu, menu);
+        inflater.inflate(R.menu.merchant_list_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
             int i = item.getItemId();
-            if (i == R.id.action_download) {
-                downloadReport();
-
-            } else if (i == R.id.action_email) {
-                emailReport();
-
-            } else if (i == R.id.action_sort) {
-                SortCustDialog dialog = SortCustDialog.newInstance(mSelectedSortType);
+            if (i == R.id.action_sort) {
+                SortMchntDialog dialog = SortMchntDialog.newInstance(mSelectedSortType);
                 dialog.setTargetFragment(this, REQ_SORT_CUST_TYPES);
                 dialog.show(getFragmentManager(), DIALOG_SORT_CUST_TYPES);
             }
 
         } catch(Exception e) {
-            LogMy.e(TAG, "Exception is CashbackListFragment:onOptionsItemSelected", e);
+            LogMy.e(TAG, "Exception is MerchantListFragment:onOptionsItemSelected", e);
             // unexpected exception - show error
             DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.GENERAL_ERROR), true, true);
             notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
@@ -362,173 +193,31 @@ public class CashbackListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void downloadReport() throws IOException {
-        File file = createCsvReport();
-        if(file!=null) {
-            // register with download manager, so as can be seen by clicking 'Downloads' icon
-            DownloadManager manager = (DownloadManager) getActivity().getSystemService(AppCompatActivity.DOWNLOAD_SERVICE);
-            long fileid = manager.addCompletedDownload("MyeCash Customer Data", "MyeCash Customer data file",
-                    true, "text/plain", file.getAbsolutePath(), file.length(), true);
-        }
-    }
-
-    private void emailReport() throws IOException {
-        File csvFile = createCsvReport();
-        if(csvFile != null) {
-            // create intent for email
-            Intent emailIntent = new Intent(Intent.ACTION_SEND);
-            // The intent does not have a URI, so declare the "text/plain" MIME type
-            emailIntent.setType("text/csv");
-            String emailId = MerchantUser.getInstance().getMerchant().getEmail();
-            if(emailId!=null && emailId.length()>0) {
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {emailId}); // recipients
-            }
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyeCash Customer Data");
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find attached the requested MyeCash customer data file.\nThanks.\nRegards,\nMyeCash Team.");
-            emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(csvFile));
-
-            // check if there's activity available for the intent
-            PackageManager packageManager = getActivity().getPackageManager();
-            List activities = packageManager.queryIntentActivities(emailIntent,
-                    PackageManager.MATCH_DEFAULT_ONLY);
-            boolean isIntentSafe = activities.size() > 0;
-
-            if(isIntentSafe) {
-                startActivity(emailIntent);
-            } else {
-                DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle,
-                        "No Email App available to send the email. Please install any and try again.", true, true);
-                notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
-                notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            }
-        }
-    }
-
-    private File createCsvReport() throws IOException {
-        LogMy.d(TAG,"In createCsvReport");
-
-        File file = null;
-        try {
-            String fileName = AppConstants.FILE_PREFIX_CUSTOMER_LIST +
-                    mSdfOnlyDateFilename.format(new Date()) +
-                    CommonConstants.CSV_FILE_EXT;
-
-            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            file = new File(dir, fileName);
-            FileOutputStream stream = new FileOutputStream(file, false);
-
-            // +10 to cover for headers
-            StringBuilder sb = new StringBuilder(CSV_RECORD_MAX_CHARS*(CSV_LINES_BUFFER+10));
-            sb.append(CSV_HEADER).append(CommonConstants.CSV_NEWLINE);
-
-            int cnt = mRetainedFragment.mLastFetchCashbacks.size();
-            for(int i=0; i<cnt; i++) {
-                if(sb==null) {
-                    // +1 for buffer
-                    sb = new StringBuilder(CSV_RECORD_MAX_CHARS*(CSV_LINES_BUFFER+1));
-                }
-
-                MyCashback cb = mRetainedFragment.mLastFetchCashbacks.get(i);
-                MyCustomer cust = cb.getCustomer();
-                // Append CSV record for this txn
-                sb.append(i+1).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cust.getPrivateId()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cust.getMobileNum()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cust.getCardId()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(DbConstants.userStatusDesc[cust.getStatus()]).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cb.getCurrClBalance()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cb.getClCredit()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cb.getClDebit()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cb.getCurrCbBalance()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cb.getCbCredit()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cb.getCbRedeem()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cb.getBillAmt()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(mSdfDateWithTime.format(cb.getUpdateTime())).append(CommonConstants.CSV_DELIMETER);
-                sb.append(mSdfDateWithTime.format(cb.getCreateTime()));
-                sb.append(CommonConstants.CSV_NEWLINE);
-
-                // Write every 100 records in one go to the file
-                if(i%CSV_LINES_BUFFER == 0) {
-                    stream.write(sb.toString().getBytes());
-                    LogMy.d(TAG,"Written "+String.valueOf(i+1)+"records to "+file.getAbsolutePath());
-                    sb = null;
-                }
-            }
-
-            // write remaining records
-            if(sb!=null) {
-                stream.write(sb.toString().getBytes());
-                LogMy.d(TAG,"Written pending records to "+file.getAbsolutePath());
-                sb = null;
-            }
-
-            stream.close();
-
-        } catch(Exception e) {
-            LogMy.e(TAG,"exception in createCsvReport: "+e.toString());
-            if(file!=null) {
-                // delete it
-                file.delete();
-            }
-            throw e;
-        }
-
-        return file;
-    }
-
     private class CbHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
         private MyCashback mCb;
 
-        public EditText mCustId;
+        public EditText mMerchantName;
+        public EditText mCategoryNdCity;
         public EditText mLastTxnTime;
-
-        //public View mLayoutBill;
-        public EditText mBillAmt;
-
-        //public View mLayoutAcc;
-        public EditText mAccAdd;
-        public EditText mAccDebit;
         public EditText mAccBalance;
-
-        //public View mLayoutCb;
-        public EditText mCbAdd;
-        public EditText mCbDebit;
         public EditText mCbBalance;
 
         public CbHolder(View itemView) {
             super(itemView);
 
-            mCustId = (EditText) itemView.findViewById(R.id.input_cust_id);
+            mMerchantName = (EditText) itemView.findViewById(R.id.input_mchnt_name);
+            mCategoryNdCity = (EditText) itemView.findViewById(R.id.mchnt_category_city);
             mLastTxnTime = (EditText) itemView.findViewById(R.id.input_last_txn);
+            mAccBalance = (EditText) itemView.findViewById(R.id.input_acc_bal);
+            mCbBalance = (EditText) itemView.findViewById(R.id.input_cb_bal);
 
-            //mLayoutBill = itemView.findViewById(R.id.layout_bill);
-            mBillAmt = (EditText) itemView.findViewById(R.id.cust_bill_amt);
-
-            //mLayoutAcc = itemView.findViewById(R.id.layout_account);
-            mAccAdd = (EditText) itemView.findViewById(R.id.cust_acc_credit);
-            mAccDebit = (EditText) itemView.findViewById(R.id.cust_acc_debit);
-            mAccBalance = (EditText) itemView.findViewById(R.id.cust_acc_balance);
-
-            //mLayoutCb = itemView.findViewById(R.id.layout_cashback);
-            mCbAdd = (EditText) itemView.findViewById(R.id.cust_cb_credit);
-            mCbDebit = (EditText) itemView.findViewById(R.id.cust_cb_debit);
-            mCbBalance = (EditText) itemView.findViewById(R.id.cust_cb_balance);
-
-            mCustId.setOnClickListener(this);
+            mMerchantName.setOnClickListener(this);
+            mCategoryNdCity.setOnClickListener(this);
             mLastTxnTime.setOnClickListener(this);
-            mBillAmt.setOnClickListener(this);;
-            mAccAdd.setOnClickListener(this);;
-            mAccDebit.setOnClickListener(this);;
             mAccBalance.setOnClickListener(this);;
-            mCbAdd.setOnClickListener(this);;
-            mCbDebit.setOnClickListener(this);;
             mCbBalance.setOnClickListener(this);;
-
-            //mLayoutBill.setOnClickListener(this);
-            //mLayoutAcc.setOnClickListener(this);
-            //mLayoutCb.setOnClickListener(this);
         }
 
         @Override
@@ -539,7 +228,7 @@ public class CashbackListFragment extends Fragment {
             // depending upon views on which listener is set
             //View rootView = (View) v.getParent().getParent();
             View rootView = null;
-            if(v.getId()==mCustId.getId() || v.getId()==mLastTxnTime.getId()) {
+            if(v.getId()==mCategoryNdCity.getId() || v.getId()==mLastTxnTime.getId()) {
                 rootView = (View) v.getParent().getParent();
                 LogMy.d(TAG,"Clicked first level view "+rootView.getId());
             } else {
@@ -552,18 +241,13 @@ public class CashbackListFragment extends Fragment {
 
         public void bindCb(MyCashback cb) {
             mCb = cb;
-            MyCustomer customer = mCb.getCustomer();
+            MyMerchant merchant = mCb.getMerchant();
 
-            mCustId.setText(customer.getPrivateId());
+            mMerchantName.setText(merchant.getName());
+            String txt = merchant.getBusinessCategory()+", "+merchant.getCity();
+            mCategoryNdCity.setText(txt);
             mLastTxnTime.setText(mSdfDateWithTime.format(cb.getUpdateTime()));
-            mBillAmt.setText(AppCommonUtil.getAmtStr(cb.getBillAmt()));
-
-            mAccAdd.setText(AppCommonUtil.getAmtStr(cb.getClCredit()));
-            mAccDebit.setText(AppCommonUtil.getAmtStr(cb.getClDebit()));
             mAccBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrClBalance()));
-
-            mCbAdd.setText(AppCommonUtil.getAmtStr(cb.getCbCredit()));
-            mCbDebit.setText(AppCommonUtil.getAmtStr(cb.getCbRedeem()));
             mCbBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrCbBalance()));
         }
     }
@@ -580,8 +264,8 @@ public class CashbackListFragment extends Fragment {
                     LogMy.d(TAG,"In onClickListener of customer list item");
                     int pos = mRecyclerView.getChildAdapterPosition(v);
                     if (pos >= 0 && pos < getItemCount()) {
-                        CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(pos);
-                        dialog.show(getFragmentManager(), DIALOG_CUSTOMER_DETAILS);
+                        MerchantDetailsDialog dialog = MerchantDetailsDialog.newInstance(mCbs.get(pos).getMerchantId());
+                        dialog.show(getFragmentManager(), DIALOG_MERCHANT_DETAILS);
                     } else {
                         LogMy.e(TAG,"Invalid position in onClickListener of customer list item: "+pos);
                     }
@@ -592,7 +276,7 @@ public class CashbackListFragment extends Fragment {
         @Override
         public CbHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(R.layout.customer_itemview, parent, false);
+            View view = layoutInflater.inflate(R.layout.merchant_itemview, parent, false);
             view.setOnClickListener(mListener);
             return new CbHolder(view);
         }

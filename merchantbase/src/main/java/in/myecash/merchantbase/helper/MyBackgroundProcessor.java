@@ -322,7 +322,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
             Cashback cashback = MerchantUser.getInstance().registerCustomer(data.mobileNum, data.name, data.qrCode);
 
             mRetainedFragment.mCurrCashback = new MyCashback();
-            mRetainedFragment.mCurrCashback.init(cashback);
+            mRetainedFragment.mCurrCashback.init(cashback, true);
             mRetainedFragment.mCurrCustomer = mRetainedFragment.mCurrCashback.getCustomer();
 
         } catch (BackendlessException e) {
@@ -343,7 +343,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
             Cashback cashback = MerchantUser.getInstance().fetchCashback(custId);
 
             mRetainedFragment.mCurrCashback = new MyCashback();
-            mRetainedFragment.mCurrCashback.init(cashback);
+            mRetainedFragment.mCurrCashback.init(cashback, true);
             mRetainedFragment.mCurrCustomer = mRetainedFragment.mCurrCashback.getCustomer();
 
         } catch (BackendlessException e) {

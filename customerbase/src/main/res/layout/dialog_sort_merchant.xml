@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <EditText
+        style="@style/Edittext_only_view_small_more_pad"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:gravity="left"
+        android:text="Sort Merchants by:"/>
+
+    <View
+        style="@style/Divider_horizontal_Large"
+        android:id="@+id/divider_cash_pay_title"/>
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesLarge">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/custSortRadioGroup">
+
+            <RadioButton
+                style="@style/radio_button_medium"
+                android:id="@+id/mchntName"
+                android:text="Merchant Name" />
+
+            <RadioButton
+                style="@style/radio_button_medium"
+                android:id="@+id/lastTxnTime"
+                android:text="Last Txn Time" />
+
+            <RadioButton
+                style="@style/radio_button_medium"
+                android:id="@+id/cityName"
+                android:text="City Name" />
+
+            <RadioButton
+                style="@style/radio_button_medium"
+                android:id="@+id/balanceCb"
+                android:text="Cashback Balance" />
+
+            <RadioButton
+                style="@style/radio_button_medium"
+                android:id="@+id/balanceAcc"
+                android:text="Account Balance" />
+
+        </RadioGroup>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_space"/>
+
+    </LinearLayout>
+</LinearLayout>

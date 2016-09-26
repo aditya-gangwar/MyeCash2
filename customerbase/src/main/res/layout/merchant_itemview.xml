@@ -63,7 +63,7 @@
                 android:clickable="false"/>
             <EditText
                 style="@style/Edittext_only_click_small"
-                android:id="@+id/cust_acc_bal"
+                android:id="@+id/input_acc_bal"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="\u20B9 3456"
@@ -99,7 +99,7 @@
                 android:clickable="false"/>
             <EditText
                 style="@style/Edittext_only_click_small"
-                android:id="@+id/cust_cb_bal"
+                android:id="@+id/input_cb_bal"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="\u20B9 3456"
