@@ -47,7 +47,6 @@ public class CashbackListFragment extends Fragment {
     private CashbackListFragmentIf mCallback;
 
     public interface CashbackListFragmentIf {
-        void fetchCashback();
         MyRetainedFragment getRetainedFragment();
         void setDrawerState(boolean isEnabled);
     }

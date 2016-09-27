@@ -93,6 +93,8 @@ public class DbConstants {
     public static final String SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS = "mchnt_removal_expiry_days";
     public static final String SETTINGS_CUSTOMER_PASSWD_RESET_MINS = "customer_passwd_reset_mins";
     public static final String SETTINGS_CUSTOMER_NO_REFRESH_HRS = "cust_no_refresh_hrs";
+    public static final String SETTINGS_MCHNT_RENEW_DURATION = "mchnt_renewal_duration";
+    public static final String SETTINGS_CUST_RENEW_DURATION = "cust_renewal_duration";
 
     // GlobalSettings table - 'txn_image_capture_mode' column values
     public static final int TXN_IMAGE_CAPTURE_ALWAYS = 0;

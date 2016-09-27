@@ -104,6 +104,11 @@ public class DateUtil {
         return this;
     }
 
+    public DateUtil addMonths(int months) {
+        cal.add( Calendar.MONTH, months);
+        return this;
+    }
+
     /**
      * Make the date go forward of the specified amount of minutes
      * The internal date is changed after this call.

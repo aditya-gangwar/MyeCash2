@@ -11,52 +11,16 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
+            android:layout_height="@dimen/XXL_space"/>
 
         <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/medium_space">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_card_membership_white_24dp"
-                android:tint="@color/primary"
-                android:layout_gravity="top"
-                android:paddingTop="@dimen/edittext_padding"/>
-
-            <EditText
-            style="@style/Edittext_only_view_small"
-            android:id="@+id/label_secret_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Enter your Card Number below" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space"/>
-
-        <EditText
-            android:id="@+id/input_secret_1"
-            style="@style/MyEdittext_Medium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Card Number"
-            android:maxLength="@string/card_number_limit"
-            android:gravity="center"
-            android:inputType="number"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_vpn_key_white_24dp"
+                android:src="@drawable/ic_verified_user_white_24dp"
                 android:tint="@color/primary"
                 android:layout_gravity="top"
                 android:paddingTop="@dimen/edittext_padding"/>
@@ -65,14 +29,70 @@
                 style="@style/Edittext_only_view_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New password will be sent on your current registered mobile number." />
+                android:text="Provide existing PIN for verification" />
         </LinearLayout>
+
+        <EditText
+            android:id="@+id/input_current_passwd"
+            style="@style/MyEdittext_Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberPassword"
+            android:hint="Current PIN"
+            android:maxLength="@string/pin_char_limit"
+            android:gravity="center"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_lock_outline_white_24dp"
+                android:tint="@color/primary"
+                android:layout_gravity="top"
+                android:paddingTop="@dimen/edittext_padding"/>
+
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Provide new PIN to set" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/input_new_passwd"
+            style="@style/MyEdittext_Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberPassword"
+            android:hint="New PIN"
+            android:maxLength="@string/pin_char_limit"
+            android:gravity="center"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
 
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Are you sure to reset your password ?" />
+            android:text="Confirm new PIN" />
+
+        <EditText
+            android:id="@+id/input_new_passwd_2"
+            style="@style/MyEdittext_Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberPassword"
+            android:hint="Confirm New PIN"
+            android:maxLength="@string/pin_char_limit"
+            android:gravity="center"/>
 
         <Space
             android:layout_width="match_parent"

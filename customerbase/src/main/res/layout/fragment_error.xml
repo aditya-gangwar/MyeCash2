@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="30"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_main"
+        android:scaleType="center"
+        android:src="@drawable/ic_block_white_48dp"
+        android:tint="@color/failure"
+        android:layout_marginBottom="@dimen/medium_space"/>
+
+    <EditText
+        style="@style/Edittext_only_view_medium"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/label_info1"
+        android:text="We're sorry, but it seems something went wrong."/>
+
+    <EditText
+        style="@style/Edittext_only_view_medium"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/label_info2"
+        android:text="We are notified of it, and will correct it soon."/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="70"/>
+
+</LinearLayout>

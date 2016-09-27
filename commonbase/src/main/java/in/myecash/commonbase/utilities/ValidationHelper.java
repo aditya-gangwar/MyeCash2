@@ -23,10 +23,20 @@ public final class ValidationHelper{
         }
     }*/
 
-    public static int validatePinOtp(String value) {
+    public static int validatePin(String value) {
         if (value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
-        } else if (value.length() != CommonConstants.PIN_OTP_LEN) {
+        } else if (value.length() != CommonConstants.PIN_LEN) {
+            return ErrorCodes.INVALID_LENGTH;
+        } else {
+            return ErrorCodes.NO_ERROR;
+        }
+    }
+
+    public static int validateOtp(String value) {
+        if (value.isEmpty()) {
+            return ErrorCodes.EMPTY_VALUE;
+        } else if (value.length() != CommonConstants.OTP_LEN) {
             return ErrorCodes.INVALID_LENGTH;
         } else {
             return ErrorCodes.NO_ERROR;

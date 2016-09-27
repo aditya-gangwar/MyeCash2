@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import in.myecash.commonbase.entities.MyCashback;
+import in.myecash.customerbase.entities.CustomerStats;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.commonbase.utilities.BackgroundProcessor;
 import in.myecash.commonbase.utilities.LogMy;
@@ -36,6 +37,9 @@ public class MyRetainedFragment extends RetainedFragment {
     public List<MyCashback> mLastFetchCashbacks;
     public Map<String, MyCashback> mCashbacks;
     public Date mCbsUpdateTime;
+
+    // stats for the customer
+    public CustomerStats stats;
 
     // params for mobile number change operation
     public String mVerifyParamMobileChange;

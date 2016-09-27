@@ -34,9 +34,9 @@ public class TrustedDevicesFragment extends Fragment
     private static final int NOTIFY_DELETE_NOT_ALLOWED = 2;
 
     public interface TrustedDevicesFragmentIf {
-        public MyRetainedFragment getRetainedFragment();
+        MyRetainedFragment getRetainedFragment();
         void deleteDevice();
-        public void setDrawerState(boolean isEnabled);
+        void setDrawerState(boolean isEnabled);
     }
 
     private TrustedDevicesFragmentIf mCallback;
@@ -72,7 +72,7 @@ public class TrustedDevicesFragment extends Fragment
 
         // update values against available devices
         List<MerchantDevice> devices = MerchantUser.getInstance().getTrustedDeviceList();
-        SimpleDateFormat sdf = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
+        //SimpleDateFormat sdf = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
 
         int cnt = (devices.size()< CommonConstants.MAX_DEVICES_PER_MERCHANT)?devices.size(): CommonConstants.MAX_DEVICES_PER_MERCHANT;
         for(int i=0; i<cnt; i++) {

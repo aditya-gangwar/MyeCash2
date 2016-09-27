@@ -25,11 +25,11 @@
                 android:paddingTop="@dimen/edittext_padding"/>
 
             <EditText
-            style="@style/Edittext_only_view_small"
-            android:id="@+id/label_secret_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Enter your Card Number below" />
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/label_secret_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter your Card Number below" />
         </LinearLayout>
 
         <Space
@@ -65,14 +65,14 @@
                 style="@style/Edittext_only_view_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New password will be sent on your current registered mobile number." />
+                android:text="New PIN will be sent on your current registered mobile number." />
         </LinearLayout>
 
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Are you sure to reset your password ?" />
+            android:text="Are you sure to reset your PIN ?" />
 
         <Space
             android:layout_width="match_parent"

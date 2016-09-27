@@ -170,6 +170,12 @@ public class MyGlobalSettings
     public static Integer getCustNoRefreshHrs() {
         return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CUSTOMER_NO_REFRESH_HRS);
     }
+    public static Integer getMchntRenewalDuration() {
+        return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_MCHNT_RENEW_DURATION);
+    }
+    public static Integer getCustRenewalDuration() {
+        return (Integer)MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_CUST_RENEW_DURATION);
+    }
 
     /*
     private static Object getValue(String name) {

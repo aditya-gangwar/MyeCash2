@@ -5,6 +5,8 @@ import com.backendless.BackendlessCollection;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.persistence.BackendlessDataQuery;
 
+import java.util.Date;
+
 public class Merchants
 {
   private String name;
@@ -35,6 +37,24 @@ public class Merchants
   private Boolean first_login_ok;
   private Boolean debugLogs;
   private String dob;
+  private String agentId;
+  private Date lastRenewDate;
+
+  public Date getLastRenewDate() {
+    return lastRenewDate;
+  }
+
+  public void setLastRenewDate(Date lastRenewDate) {
+    this.lastRenewDate = lastRenewDate;
+  }
+
+  public String getAgentId() {
+    return agentId;
+  }
+
+  public void setAgentId(String agentId) {
+    this.agentId = agentId;
+  }
 
   public String getDob() {
     return dob;

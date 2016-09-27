@@ -441,6 +441,17 @@ public class AppCommonUtil {
         return "Expiring on "+sdf.format(now.getTime());
     }
 
+    public static Date getExpiryDate(Merchants merchant) {
+        DateUtil renewDate = new DateUtil(merchant.getLastRenewDate());
+        renewDate.addMonths(MyGlobalSettings.getMchntRenewalDuration());
+        return renewDate.getTime();
+    }
+    public static Date getExpiryDate(Customers customer) {
+        DateUtil renewDate = new DateUtil(customer.getLastRenewDate());
+        renewDate.addMonths(MyGlobalSettings.getCustRenewalDuration());
+        return renewDate.getTime();
+    }
+
     public static void initTableToClassMappings() {
         Backendless.Data.mapTableToClass("CustomerCards", CustomerCards.class);
         Backendless.Data.mapTableToClass("Customers", Customers.class);

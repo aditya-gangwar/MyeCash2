@@ -27,6 +27,7 @@ public class MerchantDetailsDialog extends DialogFragment {
     private static final String TAG = "MerchantDetailsDialog";
 
     private final SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
+    private final SimpleDateFormat mSdfOnlyDate = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
 
     /*
     private MerchantDetailsDialogIf mCallback;
@@ -86,8 +87,8 @@ public class MerchantDetailsDialog extends DialogFragment {
         mStoreName.setText(merchant.getName());
         mStoreCategory.setText(merchant.getBuss_category().getCategory_name());
         mMerchantId.setText(merchant.getAuto_id());
-        mRegisteredOn.setText(mSdfDateWithTime.format(merchant.getCreated()));
-        //mLastLogin.setText(mSdfDateWithTime.format(merchant.getLastLogin()));
+        mRegisteredOn.setText(mSdfOnlyDate.format(merchant.getCreated()));
+        mExpiringOn.setText(mSdfOnlyDate.format(AppCommonUtil.getExpiryDate(merchant)));
 
         int status = merchant.getAdmin_status();
         mInputStatus.setText(DbConstants.userStatusDesc[status]);
@@ -127,7 +128,7 @@ public class MerchantDetailsDialog extends DialogFragment {
 
     private EditText mMerchantId;
     private EditText mRegisteredOn;
-    private EditText mLastLogin;
+    private EditText mExpiringOn;
 
     private EditText mInputStatus;
     private View mLayoutStatusDetails;
@@ -152,7 +153,7 @@ public class MerchantDetailsDialog extends DialogFragment {
 
         mMerchantId = (EditText) v.findViewById(R.id.input_merchant_id);
         mRegisteredOn = (EditText) v.findViewById(R.id.input_registered_on);
-        //mLastLogin = (EditText) v.findViewById(R.id.input_lastLogin);
+        mExpiringOn = (EditText) v.findViewById(R.id.input_expiring_on);
 
         mInputStatus = (EditText) v.findViewById(R.id.input_status);
         mLayoutStatusDetails = v.findViewById(R.id.layout_status_details);

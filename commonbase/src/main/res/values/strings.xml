@@ -97,7 +97,8 @@
     <string name="address_char_limit">200</string>
     <string name="cash_char_limit">8</string>
     <string name="cb_rate_char_limit">4</string>
-    <string name="pin_otp_char_limit">5</string>
+    <string name="pin_char_limit">5</string>
+    <string name="otp_char_limit">5</string>
     <string name="merchant_id_char_limit">8</string>
     <string name="customer_internal_id_char_limit">6</string>
     <string name="agent_id_char_limit">7</string>
