@@ -1,9 +1,6 @@
 package in.myecash.customerbase.entities;
 
-import java.util.Date;
-
-import in.myecash.commonbase.entities.MyCashback;
-import in.myecash.commonbase.models.Cashback;
+import in.myecash.appbase.entities.MyCashback;
 
 /**
  * Created by adgangwa on 28-09-2016.

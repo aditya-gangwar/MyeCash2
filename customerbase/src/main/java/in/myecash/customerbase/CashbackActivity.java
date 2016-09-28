@@ -28,30 +28,28 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
-import in.myecash.commonbase.OtpPinInputDialog;
-import in.myecash.commonbase.entities.MyCashback;
-import in.myecash.commonbase.entities.MyGlobalSettings;
+import in.myecash.appbase.OtpPinInputDialog;
+import in.myecash.appbase.entities.MyCashback;
+import in.myecash.appbase.entities.MyGlobalSettings;
 import in.myecash.customerbase.entities.CustomerStats;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.customerbase.helper.MyRetainedFragment;
-import in.myecash.commonbase.PasswdChangeDialog;
-import in.myecash.commonbase.constants.AppConstants;
-import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.models.Customers;
-import in.myecash.commonbase.utilities.AppAlarms;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.DateUtil;
-import in.myecash.commonbase.utilities.DialogFragmentWrapper;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.appbase.PasswdChangeDialog;
+import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.DbConstants;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.database.Customers;
+import in.myecash.appbase.utilities.AppAlarms;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.common.DateUtil;
+import in.myecash.appbase.utilities.DialogFragmentWrapper;
+import in.myecash.appbase.utilities.LogMy;
 
 
 public class CashbackActivity extends AppCompatActivity implements
@@ -80,7 +78,7 @@ public class CashbackActivity extends AppCompatActivity implements
     MyRetainedFragment mRetainedFragment;
     FragmentManager mFragMgr;
     // this will never be null, as it only gets destroyed with cashback activity itself
-    CashbackListFragment mMobileNumFragment;
+    CashbackListFragment mMchntListFragment;
 
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
@@ -327,6 +325,9 @@ public class CashbackActivity extends AppCompatActivity implements
             case MyRetainedFragment.REQUEST_FETCH_CB:
                 onFetchCbResponse(errorCode);
                 break;
+            case MyRetainedFragment.REQUEST_CHANGE_PIN:
+                onPinChangeResponse(errorCode);
+                break;
         }
     }
 
@@ -561,6 +562,52 @@ public class CashbackActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    public void onPinChangeData(String oldPin, String newPin) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mRetainedFragment.changePin(oldPin, newPin, null);
+    }
+
+    @Override
+    public void onPinResetData(String cardNum) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mRetainedFragment.changePin(null, null, cardNum);
+    }
+
+    private void onPinChangeResponse(int errorCode) {
+        LogMy.d(TAG, "In onPinChangeResponse: " + errorCode);
+        AppCommonUtil.cancelProgressDialog(true);
+
+        if(mLastMenuItemId==R.id.menu_change_pin) {
+            if(errorCode==ErrorCodes.NO_ERROR) {
+                DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.pinChangeSuccessMsg, false, false)
+                        .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            } else {
+                DialogFragmentWrapper.createNotification(AppConstants.pinChangeFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                        .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            }
+
+        } else if(mLastMenuItemId==R.id.menu_forgot_pin) {
+            if(errorCode == ErrorCodes.OPERATION_SCHEDULED) {
+                // Show success notification dialog
+                String msg = String.format(AppConstants.pinGenerateSuccessMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
+                DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, msg, false, false)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+
+            } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY) {
+                // Old request is already pending
+                String msg = String.format(AppConstants.pinGenerateDuplicateRequestMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
+                DialogFragmentWrapper.createNotification(AppConstants.pinResetFailureTitle, msg, false, false)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+
+            } else {
+                // Show error notification dialog
+                DialogFragmentWrapper.createNotification(AppConstants.pinResetFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            }
+        }
+    }
+
     public void onDialogResult(String tag, int indexOrResultCode, ArrayList<Integer> selectedItemsIndexList) {
         LogMy.d(TAG, "In onDialogResult: " + tag);
 
@@ -581,18 +628,15 @@ public class CashbackActivity extends AppCompatActivity implements
         mTbSubhead1Text1.setText(AppCommonUtil.getAmtStr(mRetainedFragment.stats.getClBalance()));
         mTbSubhead1Text2.setText(AppCommonUtil.getAmtStr(mRetainedFragment.stats.getCbBalance()));
 
-        if (mFragMgr.findFragmentByTag(CASHBACK_LIST_FRAGMENT) == null) {
+
+        mMchntListFragment = (CashbackListFragment) mFragMgr.findFragmentByTag(CASHBACK_LIST_FRAGMENT);
+        if (mMchntListFragment == null) {
             //setDrawerState(false);
-
-            Fragment fragment = new CashbackListFragment();
-            FragmentTransaction transaction = mFragMgr.beginTransaction();
-
-            // Add over the existing fragment
-            transaction.replace(R.id.fragment_container_1, fragment, CASHBACK_LIST_FRAGMENT);
-            transaction.addToBackStack(CASHBACK_LIST_FRAGMENT);
-
-            // Commit the transaction
-            transaction.commit();
+            mMchntListFragment = new CashbackListFragment();
+            mFragMgr.beginTransaction()
+                    .add(R.id.fragment_container_1, mMchntListFragment, CASHBACK_LIST_FRAGMENT)
+                    .addToBackStack(CASHBACK_LIST_FRAGMENT)
+                    .commit();
         }
     }
 
@@ -626,14 +670,14 @@ public class CashbackActivity extends AppCompatActivity implements
             return;
         }
 
-        if (mMobileNumFragment.isVisible()) {
+        if (mMchntListFragment.isVisible()) {
             DialogFragmentWrapper.createConfirmationDialog(AppConstants.exitGenTitle, AppConstants.exitAppMsg, false, false)
                     .show(mFragMgr, DIALOG_BACK_BUTTON);
         } else {
             mFragMgr.popBackStackImmediate();
-            if(mMobileNumFragment.isVisible()) {
+            if(mMchntListFragment.isVisible()) {
                 LogMy.d(TAG,"Mobile num fragment visible");
-                getReadyForNewTransaction();
+                //getReadyForNewTransaction();
             }
         }
     }

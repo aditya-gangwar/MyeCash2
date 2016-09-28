@@ -9,8 +9,8 @@ package in.myecash.appagent.backendAPI;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 
-import in.myecash.commonbase.constants.BackendSettings;
-import in.myecash.commonbase.models.Merchants;
+import in.myecash.appbase.constants.BackendSettings;
+import in.myecash.common.database.Merchants;
 
 public class InternalUserServices
 {

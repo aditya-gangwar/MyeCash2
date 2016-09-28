@@ -11,8 +11,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.utilities.ValidationHelper;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.appbase.utilities.ValidationHelper;
 
 /**
  * Created by adgangwa on 25-04-2016.

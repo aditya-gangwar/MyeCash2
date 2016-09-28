@@ -12,16 +12,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import in.myecash.commonbase.constants.AppConstants;
-import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.models.MerchantDevice;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.DialogFragmentWrapper;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.database.MerchantDevice;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.DialogFragmentWrapper;
+import in.myecash.appbase.utilities.LogMy;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**

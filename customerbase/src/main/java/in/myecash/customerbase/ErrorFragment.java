@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.LogMy;
 
 /**
  * Created by adgangwa on 28-09-2016.

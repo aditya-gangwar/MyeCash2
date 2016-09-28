@@ -17,13 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.Toast;
 
-import in.myecash.commonbase.barcodeReader.BarcodeCaptureActivity;
-import in.myecash.commonbase.constants.DbConstants;
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.DialogFragmentWrapper;
-import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.commonbase.utilities.ValidationHelper;
+import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
+import in.myecash.common.constants.DbConstants;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.DialogFragmentWrapper;
+import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.merchantbase.entities.CustomerOps;
 
 /**
@@ -319,7 +319,7 @@ public class CustomerOpDialog extends DialogFragment
         }
 
         if(mInputOTP.isEnabled()) {
-            errorCode = ValidationHelper.validatePinOtp(mInputOTP.getText().toString());
+            errorCode = ValidationHelper.validateOtp(mInputOTP.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
                 mInputOTP.setError(ErrorCodes.appErrorDesc.get(errorCode));
                 retValue = false;

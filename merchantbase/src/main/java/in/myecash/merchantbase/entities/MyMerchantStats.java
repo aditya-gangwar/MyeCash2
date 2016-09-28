@@ -2,8 +2,8 @@ package in.myecash.merchantbase.entities;
 
 import java.util.Date;
 
-import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.models.MerchantStats;
+import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.database.MerchantStats;
 
 /**
  * Created by adgangwa on 22-09-2016.

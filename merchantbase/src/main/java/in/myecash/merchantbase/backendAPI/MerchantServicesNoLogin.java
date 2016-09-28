@@ -8,7 +8,7 @@ package in.myecash.merchantbase.backendAPI;
 
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
-import in.myecash.commonbase.constants.BackendSettings;
+import in.myecash.appbase.constants.BackendSettings;
 
 
   public class MerchantServicesNoLogin

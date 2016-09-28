@@ -7,13 +7,10 @@
 package in.myecash.customerbase.backendAPI;
 
 import com.backendless.Backendless;
-import com.backendless.async.callback.AsyncCallback;
 
-import java.util.List;
-
-import in.myecash.commonbase.constants.BackendSettings;
-import in.myecash.commonbase.models.Cashback;
-import in.myecash.commonbase.models.Customers;
+import in.myecash.appbase.constants.BackendSettings;
+import in.myecash.common.database.Cashback;
+import in.myecash.common.database.Customers;
 
 public class CustomerServices
 {
@@ -51,5 +48,10 @@ public class CustomerServices
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCashbacks", args, java.util.List.class );
     }
 
+    public void changePin(String oldPin, String newPin, String cardNum)
+    {
+        Object[] args = new Object[]{oldPin, newPin, cardNum};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changePin", args );
+    }
 
 }

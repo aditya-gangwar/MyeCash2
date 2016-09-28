@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -13,14 +12,11 @@ import android.widget.EditText;
 
 import java.text.SimpleDateFormat;
 
-import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
-import in.myecash.commonbase.entities.MyCashback;
-import in.myecash.commonbase.entities.MyCustomer;
-import in.myecash.commonbase.entities.MyGlobalSettings;
-import in.myecash.commonbase.models.Customers;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.DbConstants;
+import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.database.Customers;
+import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.customerbase.entities.CustomerUser;
 
 /**

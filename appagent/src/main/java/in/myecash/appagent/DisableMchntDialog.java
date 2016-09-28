@@ -1,10 +1,8 @@
 package in.myecash.appagent;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -17,10 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.commonbase.utilities.ValidationHelper;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.ValidationHelper;
 
 /**
  * Created by adgangwa on 20-09-2016.

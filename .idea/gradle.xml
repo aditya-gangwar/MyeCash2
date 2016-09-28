@@ -10,9 +10,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/appagent" />
+            <option value="$PROJECT_DIR$/appbase" />
             <option value="$PROJECT_DIR$/appcustomer" />
             <option value="$PROJECT_DIR$/appmerchant" />
-            <option value="$PROJECT_DIR$/commonbase" />
+            <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/customerbase" />
             <option value="$PROJECT_DIR$/merchantbase" />
           </set>
@@ -21,9 +22,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/appagent" />
+            <option value="$PROJECT_DIR$/appbase" />
             <option value="$PROJECT_DIR$/appcustomer" />
             <option value="$PROJECT_DIR$/appmerchant" />
-            <option value="$PROJECT_DIR$/commonbase" />
+            <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/customerbase" />
             <option value="$PROJECT_DIR$/merchantbase" />
           </set>

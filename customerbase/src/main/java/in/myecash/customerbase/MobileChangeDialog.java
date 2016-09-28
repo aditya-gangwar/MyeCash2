@@ -1,23 +1,20 @@
 package in.myecash.customerbase;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.commonbase.utilities.ValidationHelper;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.customerbase.helper.MyRetainedFragment;
 
 /**
@@ -170,7 +167,7 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
         }
 
         if(inputNewOtp.getVisibility() == View.VISIBLE) {
-            errorCode = ValidationHelper.validatePinOtp(inputNewOtp.getText().toString());
+            errorCode = ValidationHelper.validateOtp(inputNewOtp.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
                 inputNewOtp.setError(ErrorCodes.appErrorDesc.get(errorCode));
                 retValue = false;

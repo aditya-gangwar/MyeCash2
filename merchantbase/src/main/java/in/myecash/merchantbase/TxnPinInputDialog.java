@@ -16,10 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.commonbase.utilities.ValidationHelper;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.ValidationHelper;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -144,7 +144,7 @@ public class TxnPinInputDialog extends DialogFragment
                     LogMy.d(TAG, "Clicked Ok");
                     String pinOrOtp = mInputSecretPin.getText().toString();
 
-                    int errorCode = ValidationHelper.validatePinOtp(pinOrOtp);
+                    int errorCode = ValidationHelper.validatePin(pinOrOtp);
                     if (errorCode == ErrorCodes.NO_ERROR) {
                         mCallback.onTxnPin(pinOrOtp, getTag());
                     } else {

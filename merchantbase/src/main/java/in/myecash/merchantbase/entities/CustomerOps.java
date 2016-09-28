@@ -1,7 +1,7 @@
 package in.myecash.merchantbase.entities;
 
 import com.crashlytics.android.Crashlytics;
-import in.myecash.commonbase.constants.AppConstants;
+import in.myecash.appbase.constants.AppConstants;
 
 /**
  * Created by adgangwa on 28-08-2016.

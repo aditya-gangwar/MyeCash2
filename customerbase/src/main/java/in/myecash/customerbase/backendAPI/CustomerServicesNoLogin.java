@@ -8,7 +8,7 @@ package in.myecash.customerbase.backendAPI;
 
   import com.backendless.Backendless;
 
-  import in.myecash.commonbase.constants.BackendSettings;
+  import in.myecash.appbase.constants.BackendSettings;
 
   public class CustomerServicesNoLogin
 {

@@ -12,10 +12,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.commonbase.utilities.ValidationHelper;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.ValidationHelper;
 
 /**
  * Created by adgangwa on 26-04-2016.
@@ -45,13 +45,13 @@ public class PinChangeDialog extends DialogFragment implements DialogInterface.O
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LogMy.d(TAG, "In onCreateDialog");
 
-        View v = LayoutInflater.from(getActivity()).inflate(in.myecash.commonbase.R.layout.dialog_pin_change, null);
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_pin_change, null);
         initUiResources(v);
 
         // return new dialog
         final AlertDialog alertDialog =  new AlertDialog.Builder(getActivity()).setView(v)
-                .setPositiveButton(in.myecash.commonbase.R.string.ok, this)
-                .setNegativeButton(in.myecash.commonbase.R.string.cancel, new DialogInterface.OnClickListener() {
+                .setPositiveButton(in.myecash.appbase.R.string.ok, this)
+                .setNegativeButton(in.myecash.appbase.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -116,8 +116,8 @@ public class PinChangeDialog extends DialogFragment implements DialogInterface.O
     EditText inputNewPasswd2;
 
     private void initUiResources(View view) {
-        inputCurrPasswd = (EditText) view.findViewById(in.myecash.commonbase.R.id.input_current_passwd);
-        inputNewPasswd = (EditText) view.findViewById(in.myecash.commonbase.R.id.input_new_passwd);
-        inputNewPasswd2 = (EditText) view.findViewById(in.myecash.commonbase.R.id.input_new_passwd_2);
+        inputCurrPasswd = (EditText) view.findViewById(in.myecash.appbase.R.id.input_current_passwd);
+        inputNewPasswd = (EditText) view.findViewById(in.myecash.appbase.R.id.input_new_passwd);
+        inputNewPasswd2 = (EditText) view.findViewById(in.myecash.appbase.R.id.input_new_passwd_2);
     }
 }

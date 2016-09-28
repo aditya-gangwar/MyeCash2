@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberPassword"
             android:hint="Enter OTP"
-            android:maxLength="@string/pin_otp_char_limit"
+            android:maxLength="@string/otp_char_limit"
             android:gravity="center"/>
 
         <Space

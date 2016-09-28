@@ -49,7 +49,7 @@
             android:name="in.myecash.merchantbase.ReportsActivity"
             android:label="History">
         </activity>
-        <activity android:name="in.myecash.commonbase.barcodeReader.BarcodeCaptureActivity"
+        <activity android:name="in.myecash.appbase.barcodeReader.BarcodeCaptureActivity"
             android:label="Read Barcode"/>
         <meta-data
             android:name="io.fabric.ApiKey"

@@ -11,13 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
-import in.myecash.commonbase.entities.MyGlobalSettings;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.commonbase.entities.MyCashback;
-import in.myecash.commonbase.entities.MyCustomer;
+import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.DbConstants;
+import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.entities.MyCashback;
+import in.myecash.appbase.entities.MyCustomer;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 import java.text.SimpleDateFormat;

@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import in.myecash.appagent.entities.AgentUser;
-import in.myecash.commonbase.constants.DbConstants;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.common.constants.DbConstants;
+import in.myecash.appbase.utilities.LogMy;
 
 /**
  * Created by adgangwa on 28-02-2016.

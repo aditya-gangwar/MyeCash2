@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
-import in.myecash.commonbase.constants.AppConstants;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.LogMy;
 import in.myecash.merchantbase.R;
 import in.myecash.merchantbase.entities.OrderItem;
 

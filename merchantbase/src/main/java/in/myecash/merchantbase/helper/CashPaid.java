@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.LogMy;
 import in.myecash.merchantbase.R;
 
 import java.io.Serializable;

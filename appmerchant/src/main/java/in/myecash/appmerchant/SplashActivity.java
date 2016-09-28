@@ -7,19 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.backendless.Backendless;
 import com.crashlytics.android.Crashlytics;
-import in.myecash.commonbase.constants.AppConstants;
-import in.myecash.commonbase.constants.BackendSettings;
-import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.entities.MyGlobalSettings;
-import in.myecash.commonbase.models.Address;
-import in.myecash.commonbase.models.GlobalSettings;
-import in.myecash.commonbase.models.MerchantDevice;
-import in.myecash.commonbase.models.Merchants;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.DialogFragmentWrapper;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.constants.BackendSettings;
+import in.myecash.common.constants.CommonConstants;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.DialogFragmentWrapper;
+import in.myecash.appbase.utilities.LogMy;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

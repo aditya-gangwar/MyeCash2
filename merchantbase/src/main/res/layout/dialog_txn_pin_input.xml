@@ -98,7 +98,7 @@
         style="@style/Edittext_only_view_medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLength="@string/pin_otp_char_limit"
+        android:maxLength="@string/pin_char_limit"
         android:inputType="numberPassword"
         android:gravity="center"
         android:hint="Enter PIN"/>

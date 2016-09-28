@@ -8,15 +8,13 @@ import com.crashlytics.android.Crashlytics;
 
 import java.util.List;
 
-import in.myecash.commonbase.backendAPI.CommonServices;
-import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.models.Cashback;
-import in.myecash.commonbase.models.Customers;
-import in.myecash.commonbase.models.MerchantOps;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.appbase.backendAPI.CommonServices;
+import in.myecash.common.constants.DbConstants;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.database.Cashback;
+import in.myecash.common.database.Customers;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.LogMy;
 import in.myecash.customerbase.backendAPI.CustomerServices;
 import in.myecash.customerbase.backendAPI.CustomerServicesNoLogin;
 
@@ -180,7 +178,25 @@ public class CustomerUser {
             LogMy.d(TAG,"changeMobileNum success");
 
         } catch (BackendlessException e) {
-            LogMy.e(TAG,"Merchant settings update failed: "+e.toString());
+            LogMy.e(TAG,"changeMobileNum failed: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+
+        return returnCode;
+    }
+
+    public int changePin(String oldPin, String newPin, String cardNum) {
+        if(mPseudoLoggedIn) {
+            return ErrorCodes.NO_PERMISSIONS;
+        }
+
+        int returnCode = ErrorCodes.NO_ERROR;
+        try {
+            CustomerServices.getInstance().changePin(oldPin, newPin, cardNum);
+            LogMy.d(TAG,"changePin success");
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"changePin failed: "+e.toString());
             return AppCommonUtil.getLocalErrorCode(e);
         }
 

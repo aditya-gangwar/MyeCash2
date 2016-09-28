@@ -6,16 +6,16 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.backendless.exceptions.BackendlessException;
-import in.myecash.commonbase.constants.BackendSettings;
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.models.Cashback;
-import in.myecash.commonbase.models.MerchantStats;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.BackgroundProcessor;
-import in.myecash.commonbase.utilities.FileFetchr;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.appbase.constants.BackendSettings;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.database.Cashback;
+import in.myecash.common.database.MerchantStats;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.BackgroundProcessor;
+import in.myecash.appbase.utilities.FileFetchr;
+import in.myecash.appbase.utilities.LogMy;
 import in.myecash.merchantbase.entities.MerchantUser;
-import in.myecash.commonbase.entities.MyCashback;
+import in.myecash.appbase.entities.MyCashback;
 import in.myecash.merchantbase.entities.MyTransaction;
 
 import java.io.File;

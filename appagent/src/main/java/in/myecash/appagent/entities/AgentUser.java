@@ -9,13 +9,13 @@ import com.backendless.files.BackendlessFile;
 import com.backendless.persistence.BackendlessDataQuery;
 import in.myecash.appagent.backendAPI.InternalUserServices;
 import in.myecash.appagent.backendAPI.InternalUserServicesNoLogin;
-import in.myecash.commonbase.constants.BackendResponseCodes;
-import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.models.Merchants;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.common.constants.BackendResponseCodes;
+import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.DbConstants;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.database.Merchants;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.LogMy;
 
 import java.io.File;
 

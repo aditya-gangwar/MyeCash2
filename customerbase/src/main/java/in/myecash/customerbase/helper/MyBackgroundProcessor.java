@@ -9,15 +9,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.myecash.commonbase.entities.MyCashback;
-import in.myecash.commonbase.models.Cashback;
-import in.myecash.customerbase.backendAPI.CustomerServicesNoLogin;
+import in.myecash.appbase.entities.MyCashback;
+import in.myecash.common.database.Cashback;
 import in.myecash.customerbase.entities.CustomerUser;
-import in.myecash.commonbase.backendAPI.CommonServices;
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.BackgroundProcessor;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.BackgroundProcessor;
+import in.myecash.appbase.utilities.LogMy;
 
 /**
  * Created by adgangwa on 17-07-2016.
@@ -40,14 +38,10 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         public String oldPasswd;
         public String newPasswd;
     }
-    private class MessageSearchMerchant implements Serializable {
-        public String key;
-        public boolean serachById;
-    }
-    private class MessageDisableMerchant implements Serializable {
-        public String ticketId;
-        public String reason;
-        public String remarks;
+    private class MessageChangePin implements Serializable {
+        public String oldPin;
+        public String newPin;
+        public String cardNum;
     }
 
     /*
@@ -81,6 +75,13 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     public void addFetchCbRequest(Long updatedSince) {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_CB,updatedSince).sendToTarget();
     }
+    public void addPinChangeRequest(String oldPin, String newPin, String cardNum) {
+        MessageChangePin msg = new MessageChangePin();
+        msg.oldPin = oldPin;
+        msg.newPin = newPin;
+        msg.cardNum = cardNum;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CHANGE_PIN,msg).sendToTarget();
+    }
 
 
     @Override
@@ -104,6 +105,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_FETCH_CB:
                 error = fetchCashbacks((Long) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_CHANGE_PIN:
+                error = changePin((MessageChangePin) msg.obj);
                 break;
         }
         return error;
@@ -151,5 +155,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;
+    }
+
+    private int changePin(MessageChangePin msg) {
+        return CustomerUser.getInstance().changePin(msg.oldPin, msg.newPin, msg.cardNum);
     }
 }

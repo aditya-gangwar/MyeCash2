@@ -7,6 +7,6 @@
 /build
 /captures
 appmerchant/build
-commonbase/build
+appbase/build
 merchantbase/build
 appagent/build

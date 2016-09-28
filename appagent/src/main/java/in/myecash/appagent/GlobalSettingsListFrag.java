@@ -13,9 +13,9 @@ import android.widget.EditText;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.entities.MyGlobalSettings;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.common.constants.CommonConstants;
+import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.appbase.utilities.LogMy;
 
 /**
  * Created by adgangwa on 22-09-2016.

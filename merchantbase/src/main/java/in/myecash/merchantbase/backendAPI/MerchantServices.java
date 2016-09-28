@@ -9,13 +9,11 @@ package in.myecash.merchantbase.backendAPI;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 
-import java.util.List;
-
-import in.myecash.commonbase.constants.BackendSettings;
-import in.myecash.commonbase.models.Cashback;
-import in.myecash.commonbase.models.MerchantOps;
-import in.myecash.commonbase.models.MerchantStats;
-import in.myecash.commonbase.models.Merchants;
+import in.myecash.appbase.constants.BackendSettings;
+import in.myecash.common.database.Cashback;
+import in.myecash.common.database.MerchantOps;
+import in.myecash.common.database.MerchantStats;
+import in.myecash.common.database.Merchants;
 
   public class MerchantServices
 {

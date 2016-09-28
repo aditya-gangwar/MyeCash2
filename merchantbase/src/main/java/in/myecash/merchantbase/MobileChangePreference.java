@@ -11,8 +11,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.utilities.ValidationHelper;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 /**
@@ -181,7 +181,7 @@ public class MobileChangePreference extends DialogPreference
         }
 
         if(inputNewOtp.getVisibility() == View.VISIBLE) {
-            errorCode = ValidationHelper.validatePinOtp(inputNewOtp.getText().toString());
+            errorCode = ValidationHelper.validateOtp(inputNewOtp.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
                 inputNewOtp.setError(ErrorCodes.appErrorDesc.get(errorCode));
                 retValue = false;

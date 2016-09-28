@@ -6,12 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import in.myecash.commonbase.entities.MyCashback;
+import in.myecash.appbase.entities.MyCashback;
 import in.myecash.customerbase.entities.CustomerStats;
 import in.myecash.customerbase.entities.CustomerUser;
-import in.myecash.commonbase.utilities.BackgroundProcessor;
-import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.commonbase.utilities.RetainedFragment;
+import in.myecash.appbase.utilities.BackgroundProcessor;
+import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.RetainedFragment;
 
 /**
  * Created by adgangwa on 17-07-2016.
@@ -26,6 +26,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_CHANGE_PASSWD = 3;
     public static final int REQUEST_CHANGE_MOBILE = 4;
     public static final int REQUEST_FETCH_CB = 5;
+    public static final int REQUEST_CHANGE_PIN = 6;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -74,6 +75,9 @@ public class MyRetainedFragment extends RetainedFragment {
     }
     public void fetchCashback(Long updatedSince) {
         mBackgroundProcessor.addFetchCbRequest(updatedSince);
+    }
+    public void changePin(String oldPin, String newPin, String cardNum) {
+        mBackgroundProcessor.addPinChangeRequest(oldPin, newPin, cardNum);
     }
 
     @Override

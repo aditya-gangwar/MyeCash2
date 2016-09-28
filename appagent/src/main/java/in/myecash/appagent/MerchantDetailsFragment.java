@@ -1,12 +1,8 @@
 package in.myecash.appagent;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +11,10 @@ import android.widget.EditText;
 
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
-import in.myecash.commonbase.constants.CommonConstants;
-import in.myecash.commonbase.constants.DbConstants;
-import in.myecash.commonbase.models.Merchants;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.LogMy;
+import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.DbConstants;
+import in.myecash.common.database.Merchants;
+import in.myecash.appbase.utilities.LogMy;
 
 import java.text.SimpleDateFormat;
 

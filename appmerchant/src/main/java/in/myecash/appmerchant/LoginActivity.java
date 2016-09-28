@@ -23,19 +23,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import in.myecash.commonbase.constants.AppConstants;
-import in.myecash.commonbase.constants.DbConstants;
-import in.myecash.commonbase.constants.ErrorCodes;
-import in.myecash.commonbase.entities.MyGlobalSettings;
-import in.myecash.commonbase.utilities.AppAlarms;
-import in.myecash.commonbase.utilities.AppCommonUtil;
-import in.myecash.commonbase.utilities.DialogFragmentWrapper;
-import in.myecash.commonbase.utilities.LogMy;
-import in.myecash.commonbase.utilities.RootUtil;
-import in.myecash.commonbase.utilities.ValidationHelper;
+import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.constants.DbConstants;
+import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.appbase.utilities.AppAlarms;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.DialogFragmentWrapper;
+import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.RootUtil;
+import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.merchantbase.CashbackActivity;
 import in.myecash.merchantbase.ForgotIdDialog;
-import in.myecash.commonbase.OtpPinInputDialog;
+import in.myecash.appbase.OtpPinInputDialog;
 import in.myecash.merchantbase.PasswdResetDialog;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
@@ -344,7 +344,7 @@ public class LoginActivity extends AppCompatActivity implements
             AppCommonUtil.cancelProgressDialog(true);
             if(errorCode == ErrorCodes.NO_ERROR) {
                 // Show success notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, AppConstants.firstPwdGenerateSuccessMsg, false, false)
+                DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, AppConstants.genericPwdGenerateSuccessMsg, false, false)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else if(errorCode == ErrorCodes.OPERATION_SCHEDULED) {
                 // Show success notification dialog

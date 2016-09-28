@@ -33,7 +33,7 @@
                 android:layout_width="@dimen/large_space"
                 android:layout_height="match_parent"/>
 
-            <in.myecash.commonbase.utilities.SquareCardView
+            <in.myecash.appbase.utilities.SquareCardView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="50"
@@ -77,13 +77,13 @@
 
                 </LinearLayout>
 
-            </in.myecash.commonbase.utilities.SquareCardView>
+            </in.myecash.appbase.utilities.SquareCardView>
 
             <Space
                 android:layout_width="@dimen/medium_space"
                 android:layout_height="match_parent"/>
 
-            <in.myecash.commonbase.utilities.SquareCardView
+            <in.myecash.appbase.utilities.SquareCardView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="50"
@@ -127,7 +127,7 @@
 
                 </LinearLayout>
 
-            </in.myecash.commonbase.utilities.SquareCardView>
+            </in.myecash.appbase.utilities.SquareCardView>
 
             <Space
                 android:layout_width="@dimen/large_space"
@@ -146,7 +146,7 @@
                 android:layout_width="@dimen/large_space"
                 android:layout_height="match_parent"/>
 
-            <in.myecash.commonbase.utilities.SquareCardView
+            <in.myecash.appbase.utilities.SquareCardView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="50"
@@ -190,13 +190,13 @@
 
                 </LinearLayout>
 
-            </in.myecash.commonbase.utilities.SquareCardView>
+            </in.myecash.appbase.utilities.SquareCardView>
 
             <Space
                 android:layout_width="@dimen/medium_space"
                 android:layout_height="match_parent"/>
 
-            <in.myecash.commonbase.utilities.SquareCardView
+            <in.myecash.appbase.utilities.SquareCardView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="50"
@@ -240,7 +240,7 @@
 
                 </LinearLayout>
 
-            </in.myecash.commonbase.utilities.SquareCardView>
+            </in.myecash.appbase.utilities.SquareCardView>
 
             <Space
                 android:layout_width="@dimen/large_space"

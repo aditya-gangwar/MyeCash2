@@ -197,7 +197,7 @@
                 android:layout_weight="60"
                 android:gravity="left"
                 android:inputType="numberPassword"
-                android:maxLength="@string/pin_otp_char_limit"/>
+                android:maxLength="@string/otp_char_limit"/>
         </LinearLayout>
 
         <Space
