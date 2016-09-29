@@ -5,7 +5,7 @@ import android.util.Patterns;
 import java.util.Calendar;
 
 import in.myecash.common.constants.CommonConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 
 /**
  * Created by adgangwa on 06-02-2016.
@@ -127,7 +127,7 @@ public final class ValidationHelper{
     public static int validateAgentId(String value) {
         if (value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;
-        } else if (value.length() != CommonConstants.AGENT_ID_LEN) {
+        } else if (value.length() != CommonConstants.INTERNAL_USER_ID_LEN) {
             return ErrorCodes.INVALID_LENGTH;
         } else {
             return ErrorCodes.NO_ERROR;

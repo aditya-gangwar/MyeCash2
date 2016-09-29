@@ -1,12 +1,10 @@
-package in.myecash.appbase.entities;
+package in.myecash.common;
 
 import com.backendless.exceptions.BackendlessException;
 
 import java.util.Date;
 
-import in.myecash.appbase.constants.ErrorCodes;
 import in.myecash.common.database.Merchants;
-import in.myecash.appbase.utilities.LogMy;
 
 /**
  * Created by adgangwa on 25-09-2016.
@@ -46,13 +44,6 @@ public class MyMerchant {
 
     // Init from CSV string
     public void init(String csvStr) {
-        if(csvStr==null || csvStr.isEmpty())
-        {
-            LogMy.e(TAG,"Merchant details not available.");
-            throw new BackendlessException(String.valueOf(ErrorCodes.GENERAL_ERROR), "Merchant CSV record is null or empty");
-        }
-        LogMy.d(TAG,"In init: "+csvStr);
-
         String[] csvFields = csvStr.split(MCHNT_CSV_DELIM);
 
         mName = csvFields[MCHNT_CSV_NAME];

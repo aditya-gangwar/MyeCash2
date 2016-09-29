@@ -222,12 +222,10 @@ public class Transaction implements Serializable
     return cashback;
   }
 
-  /*
   public void setCashback( Cashback cashback )
   {
     this.cashback = cashback;
-  }*/
-
+  }
                                                     
   public Transaction save()
   {

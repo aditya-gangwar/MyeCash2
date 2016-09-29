@@ -17,8 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.CsvConverter;
 import in.myecash.common.constants.CommonConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.entities.MyGlobalSettings;
 import in.myecash.common.database.Transaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -471,15 +472,14 @@ public class ReportsActivity extends AppCompatActivity implements
     }
 
     private void processTxnCsvRecord(String csvString, boolean isCustomerFilter)  throws ParseException {
-        String[] csvFields = csvString.split(CommonConstants.CSV_DELIMETER);
+        //String[] csvFields = csvString.split(CommonConstants.CSV_DELIMETER);
+        Transaction txn = CsvConverter.txnFromCsvStr(csvString);
 
         if( !isCustomerFilter ||
-                (mCustomerId.length()==CommonConstants.MOBILE_NUM_LENGTH &&
-                mCustomerId.equals(csvFields[CommonConstants.TXN_CSV_IDX_CUSTOMER_ID])) ||
-                (mCustomerId.length()==CommonConstants.CUSTOMER_INTERNAL_ID_LEN &&
-                        mCustomerId.equals(csvFields[CommonConstants.TXN_CSV_IDX_CUSTOMER_PVT_ID])) ) {
+                mCustomerId.equals(txn.getCustomer_id()) ||
+                mCustomerId.equals(txn.getCust_private_id()) ) {
 
-            mWorkFragment.mTxnsFromCsv.add(MyTransaction.getTxnFromCsv(csvFields));
+            mWorkFragment.mTxnsFromCsv.add(txn);
         }
 
         /*

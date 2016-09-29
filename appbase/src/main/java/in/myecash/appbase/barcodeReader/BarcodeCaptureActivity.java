@@ -30,7 +30,7 @@ import in.myecash.appbase.R;
 import in.myecash.appbase.barcodeReader.camera.CameraSource;
 import in.myecash.appbase.barcodeReader.camera.CameraSourcePreview;
 import in.myecash.appbase.barcodeReader.camera.GraphicOverlay;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 

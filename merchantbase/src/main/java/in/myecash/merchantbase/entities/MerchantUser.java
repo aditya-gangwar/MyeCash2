@@ -13,10 +13,9 @@ import com.backendless.exceptions.BackendlessException;
 import com.backendless.files.BackendlessFile;
 import com.crashlytics.android.Crashlytics;
 import in.myecash.appbase.backendAPI.CommonServices;
-import in.myecash.common.constants.BackendResponseCodes;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.entities.MyGlobalSettings;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.MerchantDevice;
@@ -189,7 +188,7 @@ public class MerchantUser
             BackendlessCollection<BackendlessUser> user = Backendless.Data.of(BackendlessUser.class).find(query);
             if (user.getTotalObjects() == 0) {
                 reset();
-                return ErrorCodes.USER_NOT_REGISTERED;
+                return ErrorCodes.NO_SUCH_USER;
             } else {
                 LogMy.d(TAG,"Fetched Merchant object successfully");
                 //mInstance.mBackendlessUser = user.getData().get(0);
@@ -235,7 +234,7 @@ public class MerchantUser
     public int changePassword(String oldPasswd, String newPasswd) {
         LogMy.d(TAG, "In changePassword: ");
         if(mPseudoLoggedIn) {
-            return ErrorCodes.NO_PERMISSIONS;
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
 
         try {
@@ -251,7 +250,7 @@ public class MerchantUser
 
     public int updateSettings() {
         if(mPseudoLoggedIn) {
-            return ErrorCodes.NO_PERMISSIONS;
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
 
         try {
@@ -297,7 +296,7 @@ public class MerchantUser
 
     public int changeMobileNum(String verifyparam, String newMobile, String otp) {
         if(mPseudoLoggedIn) {
-            return ErrorCodes.NO_PERMISSIONS;
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
 
         int returnCode = ErrorCodes.NO_ERROR;
@@ -334,7 +333,7 @@ public class MerchantUser
      */
     public int executeCustOp(CustomerOps custOp) {
         if(mPseudoLoggedIn) {
-            return ErrorCodes.NO_PERMISSIONS;
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
 
         try
@@ -353,7 +352,7 @@ public class MerchantUser
     public Cashback registerCustomer(String mobileNum, String name, String qrCode) {
         if(mPseudoLoggedIn) {
             // intentionally using 'Backend' error code - as calling fx. will try to convert
-            throw new BackendlessException(BackendResponseCodes.BE_ERROR_OPERATION_NOT_ALLOWED, "");
+            throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
         }
         return MerchantServices.getInstance().registerCustomer(mobileNum, name, qrCode);
     }
@@ -387,14 +386,14 @@ public class MerchantUser
      */
     public int commitTxn(MyTransaction txn, String pin) {
         if(mPseudoLoggedIn) {
-            return ErrorCodes.NO_PERMISSIONS;
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
         return txn.commit(pin);
     }
 
     public void uploadTxnImgFile(File file) throws Exception {
         if(mPseudoLoggedIn) {
-            throw new BackendlessException(BackendResponseCodes.BE_ERROR_OPERATION_NOT_ALLOWED, "");
+            throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
         }
         uploadImageSync(file,AppCommonUtil.getTxnImgDir(mMerchant.getAuto_id()));
     }
@@ -404,7 +403,7 @@ public class MerchantUser
      */
     public int archiveTxns() {
         if(mPseudoLoggedIn) {
-            return ErrorCodes.NO_PERMISSIONS;
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
 
         try {
@@ -420,7 +419,7 @@ public class MerchantUser
     public int deleteTrustedDevice(int index) {
         LogMy.d(TAG, "In deleteTrustedDevice: " + index);
         if(mPseudoLoggedIn) {
-            return ErrorCodes.NO_PERMISSIONS;
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
         try {
             mMerchant = MerchantServices.getInstance().deleteTrustedDevice(mMerchant.getTrusted_devices().get(index).getDevice_id());
@@ -436,7 +435,7 @@ public class MerchantUser
     public int deleteTrustedDevice(int index) {
         LogMy.d(TAG, "In deleteTrustedDevice: " + index);
         if(mPseudoLoggedIn) {
-            return ErrorCodes.NO_PERMISSIONS;
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
         // One step deletion - as suggested in backendless docs was not working
         // so doing as below

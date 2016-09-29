@@ -9,7 +9,7 @@ import in.myecash.appagent.backendAPI.InternalUserServices;
 import in.myecash.appagent.backendAPI.InternalUserServicesNoLogin;
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appbase.backendAPI.CommonServices;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.BackgroundProcessor;
 import in.myecash.appbase.utilities.LogMy;

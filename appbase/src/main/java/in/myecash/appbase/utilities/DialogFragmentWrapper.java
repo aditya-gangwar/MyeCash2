@@ -11,7 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.WindowManager;
 
 import in.myecash.appbase.R;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 
 import java.util.ArrayList;
 

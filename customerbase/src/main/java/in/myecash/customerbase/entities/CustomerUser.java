@@ -10,7 +10,7 @@ import java.util.List;
 
 import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.Customers;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -153,7 +153,7 @@ public class CustomerUser {
     public int changePassword(String oldPasswd, String newPasswd) {
         LogMy.d(TAG, "In changePassword: ");
         if(mPseudoLoggedIn) {
-            return ErrorCodes.NO_PERMISSIONS;
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
 
         try {
@@ -169,7 +169,7 @@ public class CustomerUser {
 
     public int changeMobileNum(String verifyParam, String newMobile, String otp) {
         if(mPseudoLoggedIn) {
-            return ErrorCodes.NO_PERMISSIONS;
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
 
         int returnCode = ErrorCodes.NO_ERROR;
@@ -187,7 +187,7 @@ public class CustomerUser {
 
     public int changePin(String oldPin, String newPin, String cardNum) {
         if(mPseudoLoggedIn) {
-            return ErrorCodes.NO_PERMISSIONS;
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
 
         int returnCode = ErrorCodes.NO_ERROR;

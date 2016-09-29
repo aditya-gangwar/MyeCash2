@@ -6,7 +6,7 @@ import com.backendless.exceptions.BackendlessException;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.QueryOptions;
 import in.myecash.common.constants.CommonConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Transaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -27,27 +27,6 @@ public class MyTransaction {
 
     public MyTransaction(Transaction txn){
         mCurrTransaction = txn;
-    }
-
-    public static Transaction getTxnFromCsv(String[] csvFields) throws ParseException {
-        Transaction txn = new Transaction();
-        txn.setTrans_id(csvFields[CommonConstants.TXN_CSV_IDX_ID]);
-        txn.setCreate_time(mSdfDateWithTime.parse(csvFields[CommonConstants.TXN_CSV_IDX_TIME]));
-        txn.setMerchant_id(csvFields[CommonConstants.TXN_CSV_IDX_MERCHANT_ID]);
-        txn.setMerchant_name(csvFields[CommonConstants.TXN_CSV_IDX_MERCHANT_NAME]);
-        txn.setCustomer_id(csvFields[CommonConstants.TXN_CSV_IDX_CUSTOMER_ID]);
-        txn.setCust_private_id(csvFields[CommonConstants.TXN_CSV_IDX_CUSTOMER_PVT_ID]);
-        txn.setUsedCardId(csvFields[CommonConstants.TXN_CSV_IDX_USED_CARD_ID]);
-        txn.setTotal_billed(Integer.parseInt(csvFields[CommonConstants.TXN_CSV_IDX_TOTAL_BILLED]));
-        txn.setCb_billed(Integer.parseInt(csvFields[CommonConstants.TXN_CSV_IDX_CB_BILLED]));
-        txn.setCl_debit(Integer.parseInt(csvFields[CommonConstants.TXN_CSV_IDX_ACC_DEBIT]));
-        txn.setCl_credit(Integer.parseInt(csvFields[CommonConstants.TXN_CSV_IDX_ACC_CREDIT]));
-        txn.setCb_debit(Integer.parseInt(csvFields[CommonConstants.TXN_CSV_IDX_CB_REDEEM]));
-        txn.setCb_credit(Integer.parseInt(csvFields[CommonConstants.TXN_CSV_IDX_CB_AWARD]));
-        txn.setCb_percent(csvFields[CommonConstants.TXN_CSV_IDX_CB_RATE]);
-        txn.setCpin(csvFields[CommonConstants.TXN_CSV_IDX_CUST_PIN]);
-        txn.setImgFileName(csvFields[CommonConstants.TXN_CSV_IDX_IMG_FILE]);
-        return txn;
     }
 
     /*

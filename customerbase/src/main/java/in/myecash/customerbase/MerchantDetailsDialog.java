@@ -15,7 +15,7 @@ import java.util.Date;
 
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.appbase.entities.MyCashback;
-import in.myecash.appbase.entities.MyMerchant;
+import in.myecash.common.MyMerchant;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.customerbase.helper.MyRetainedFragment;

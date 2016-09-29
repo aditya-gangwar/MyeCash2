@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.entities.MyGlobalSettings;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -346,7 +346,7 @@ public class LoginActivity extends AppCompatActivity implements
                 // Show success notification dialog
                 DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, AppConstants.genericPwdGenerateSuccessMsg, false, false)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            } else if(errorCode == ErrorCodes.OPERATION_SCHEDULED) {
+            } else if(errorCode == ErrorCodes.OP_SCHEDULED) {
                 // Show success notification dialog
                 String msg = String.format(AppConstants.pwdGenerateSuccessMsg, Integer.toString(MyGlobalSettings.getMchntPasswdResetMins()));
                 DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, msg, false, false)

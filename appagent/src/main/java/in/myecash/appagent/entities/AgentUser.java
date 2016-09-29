@@ -9,10 +9,9 @@ import com.backendless.files.BackendlessFile;
 import com.backendless.persistence.BackendlessDataQuery;
 import in.myecash.appagent.backendAPI.InternalUserServices;
 import in.myecash.appagent.backendAPI.InternalUserServicesNoLogin;
-import in.myecash.common.constants.BackendResponseCodes;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Merchants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -127,7 +126,7 @@ public class AgentUser {
         BackendlessCollection<Merchants> user = Backendless.Data.of( Merchants.class ).find(query);
         if( user.getTotalObjects() == 0) {
             String errorMsg = "No Merchant found: "+key;
-            throw new BackendlessException(BackendResponseCodes.BE_ERROR_NO_SUCH_USER, errorMsg);
+            throw new BackendlessException(String.valueOf(ErrorCodes.NO_SUCH_USER), errorMsg);
         } else {
             return user.getData().get(0);
         }

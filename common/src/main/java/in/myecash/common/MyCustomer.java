@@ -1,11 +1,9 @@
-package in.myecash.appbase.entities;
+package in.myecash.common;
 
 import com.backendless.exceptions.BackendlessException;
 import in.myecash.common.constants.CommonConstants;
-import in.myecash.appbase.constants.ErrorCodes;
 import in.myecash.common.database.CustomerCards;
 import in.myecash.common.database.Customers;
-import in.myecash.appbase.utilities.LogMy;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -64,14 +62,6 @@ public class MyCustomer {
 
     // Init from CSV string
     public void init(String customerDetailsInCsvFormat) {
-        LogMy.d(TAG,"In init: "+customerDetailsInCsvFormat);
-
-        if(customerDetailsInCsvFormat==null || customerDetailsInCsvFormat.isEmpty())
-        {
-            LogMy.e(TAG,"Customer details not available.");
-            throw new BackendlessException(String.valueOf(ErrorCodes.GENERAL_ERROR), "Cashback CSV record is null or empty");
-        }
-
         String[] csvFields = customerDetailsInCsvFormat.split(CUST_CSV_DELIM);
         mPrivateId = csvFields[CUST_CSV_PRIVATE_ID];
         mMobileNum = csvFields[CUST_CSV_MOBILE_NUM];

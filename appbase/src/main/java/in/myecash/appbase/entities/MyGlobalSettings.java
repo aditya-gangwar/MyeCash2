@@ -10,7 +10,7 @@ import com.backendless.exceptions.BackendlessException;
 
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.GlobalSettings;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.AppCommonUtil;

@@ -12,7 +12,7 @@ import java.util.List;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.common.database.Cashback;
 import in.myecash.customerbase.entities.CustomerUser;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.BackgroundProcessor;
 import in.myecash.appbase.utilities.LogMy;

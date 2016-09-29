@@ -8,7 +8,7 @@ import android.os.Handler;
 
 import com.crashlytics.android.Crashlytics;
 import in.myecash.appbase.constants.AppConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.MerchantOps;
 import in.myecash.common.database.MerchantStats;
 import in.myecash.common.database.Transaction;
@@ -19,7 +19,7 @@ import in.myecash.appbase.utilities.RetainedFragment;
 import in.myecash.merchantbase.entities.CustomerOps;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.appbase.entities.MyCashback;
-import in.myecash.appbase.entities.MyCustomer;
+import in.myecash.common.MyCustomer;
 import in.myecash.merchantbase.entities.MyTransaction;
 import in.myecash.merchantbase.entities.OrderItem;
 

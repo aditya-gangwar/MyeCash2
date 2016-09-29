@@ -41,7 +41,7 @@ import in.myecash.appbase.R;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.DateUtil;
 import in.myecash.common.constants.CommonConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.entities.MyGlobalSettings;
 import in.myecash.common.database.Address;
 import in.myecash.common.database.BusinessCategories;
@@ -310,14 +310,28 @@ public class AppCommonUtil {
             expCode = e.getCode();
         }
 
-        Integer status = ErrorCodes.backendToLocalErrorCode.get(expCode);
-        if(status == null) {
-            // mapping not available
-            // log the exception
-            AppAlarms.handleException(e);
-            return ErrorCodes.GENERAL_ERROR;
+        // Check if its defined error code
+        // converting code to msg to check for it
+        String errMsg = ErrorCodes.appErrorDesc.get(Integer.parseInt(expCode));
+        if(errMsg==null) {
+            // may be this is backendless error code
+            Integer status = ErrorCodes.backendToLocalErrorCode.get(expCode);
+            if(status == null) {
+                // its not backendless code
+                // this is some not expected error code
+                // as app will not be able to convert it into valid message description
+                // so return generic error code instead
+                // Also log the same for analysis
+                AppAlarms.handleException(e);
+                return ErrorCodes.GENERAL_ERROR;
+            } else {
+                // its backendless code
+                return status;
+            }
+        } else {
+            // its locally defined error
+            return Integer.parseInt(expCode);
         }
-        return status;
     }
 
     public static int dpToPx(int dp)

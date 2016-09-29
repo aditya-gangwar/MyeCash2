@@ -7,7 +7,7 @@ import android.os.Message;
 
 import com.backendless.exceptions.BackendlessException;
 import in.myecash.appbase.constants.BackendSettings;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.MerchantStats;
 import in.myecash.appbase.utilities.AppCommonUtil;

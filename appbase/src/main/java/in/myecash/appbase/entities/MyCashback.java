@@ -2,8 +2,11 @@ package in.myecash.appbase.entities;
 
 import com.backendless.exceptions.BackendlessException;
 
+import in.myecash.common.CsvConverter;
+import in.myecash.common.MyCustomer;
+import in.myecash.common.MyMerchant;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Cashback;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.LogMy;
@@ -32,32 +35,6 @@ public class MyCashback {
     public static final int CB_CMP_TYPE_MCHNT_NAME = 8;
     public static final int CB_CMP_TYPE_MCHNT_CITY = 9;
 
-    /*
-     * Index of various parameters in Cashback CSV records (stored in CustData CSV files)
-     * Format:
-     * <Total Account Credit>,<Total Account Debit>,
-     * <Total Cashback Credit>,<Total Cashback Debit>,
-     * <Total Billed>,<Total Cashback Billed>,
-     * <create time>,<update time>
-     * Records with double bracket '<<>>' are only sent to 'customer care' users
-     */
-    public static int CB_CSV_CUST_PVT_ID = 0;
-    public static int CB_CSV_MCHNT_ID = 1;
-    public static int CB_CSV_ACC_CR = 2;
-    public static int CB_CSV_ACC_DB = 3;
-    public static int CB_CSV_CR = 4;
-    public static int CB_CSV_DB = 5;
-    public static int CB_CSV_TOTAL_BILL = 6;
-    public static int CB_CSV_BILL = 7;
-    public static int CB_CSV_CREATE_TIME = 8;
-    public static int CB_CSV_UPDATE_TIME = 9;
-    public static int CB_CSV_OTHER_DETAILS = 10;
-    public static int CB_CSV_TOTAL_FIELDS = 11;
-
-    // Total size of above fields = 10*10
-    public static final int CB_CSV_MAX_SIZE = 128;
-    private static final String CB_CSV_DELIM = ",";
-
     private Cashback mOldCashback;
     private Cashback mCurrCashback;
 
@@ -71,28 +48,7 @@ public class MyCashback {
      * containing both 'cashback' and 'customer/merchant' data in single record
      */
     public void init(String csvRecord, boolean callingUserIsMchnt) {
-        if(csvRecord==null || csvRecord.isEmpty())
-        {
-            LogMy.e(TAG,"Cashback details not available.");
-            throw new BackendlessException(String.valueOf(ErrorCodes.GENERAL_ERROR), "Cashback CSV record is null or empty");
-        }
-        LogMy.d(TAG,"In init: "+csvRecord);
-
-        Cashback cb = new Cashback();
-        String[] csvFields = csvRecord.split(CB_CSV_DELIM);
-
-        cb.setCust_private_id(csvFields[CB_CSV_CUST_PVT_ID]);
-        cb.setMerchant_id(csvFields[CB_CSV_MCHNT_ID]);
-        cb.setCl_credit(Integer.parseInt(csvFields[CB_CSV_ACC_CR]));
-        cb.setCl_debit(Integer.parseInt(csvFields[CB_CSV_ACC_DB]));
-        cb.setCb_credit(Integer.parseInt(csvFields[CB_CSV_CR]));
-        cb.setCb_debit(Integer.parseInt(csvFields[CB_CSV_DB]));
-        cb.setTotal_billed(Integer.parseInt(csvFields[CB_CSV_TOTAL_BILL]));
-        cb.setCb_billed(Integer.parseInt(csvFields[CB_CSV_BILL]));
-        cb.setCreated(new Date(Long.parseLong(csvFields[CB_CSV_CREATE_TIME])));
-        cb.setUpdated(new Date(Long.parseLong(csvFields[CB_CSV_UPDATE_TIME])));
-
-        init(cb, callingUserIsMchnt);
+        init(CsvConverter.cbFromCsvStr(csvRecord), callingUserIsMchnt);
     }
 
     public void init(Cashback cb, boolean callingUserIsMchnt) {
@@ -105,29 +61,6 @@ public class MyCashback {
             mMerchant = new MyMerchant();
             mMerchant.init(mCurrCashback.getOther_details());
         }
-    }
-
-    public static String toCsvString(Cashback cb) {
-
-        String[] csvFields = new String[CB_CSV_TOTAL_FIELDS];
-        csvFields[CB_CSV_CUST_PVT_ID] = String.valueOf(cb.getCust_private_id()) ;
-        csvFields[CB_CSV_MCHNT_ID] = String.valueOf(cb.getMerchant_id()) ;
-        csvFields[CB_CSV_ACC_CR] = String.valueOf(cb.getCl_credit()) ;
-        csvFields[CB_CSV_ACC_DB] = String.valueOf(cb.getCl_debit()) ;
-        csvFields[CB_CSV_CR] = String.valueOf(cb.getCb_credit()) ;
-        csvFields[CB_CSV_DB] = String.valueOf(cb.getCb_debit()) ;
-        csvFields[CB_CSV_TOTAL_BILL] = String.valueOf(cb.getTotal_billed()) ;
-        csvFields[CB_CSV_BILL] = String.valueOf(cb.getCb_billed()) ;
-        csvFields[CB_CSV_CREATE_TIME] = String.valueOf(cb.getCreated().getTime()) ;
-        csvFields[CB_CSV_UPDATE_TIME] = String.valueOf(cb.getUpdated().getTime()) ;
-        csvFields[CB_CSV_OTHER_DETAILS] = cb.getOther_details() ;
-
-        // join the fields in single CSV string
-        StringBuilder sb = new StringBuilder(CB_CSV_MAX_SIZE + cb.getOther_details().length());
-        for(int i=0; i<CB_CSV_TOTAL_FIELDS; i++) {
-            sb.append(csvFields[i]).append(CB_CSV_DELIM);
-        }
-        return sb.toString();
     }
 
     // Current cashback operations

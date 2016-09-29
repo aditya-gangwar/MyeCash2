@@ -35,7 +35,7 @@ import in.myecash.appbase.entities.MyBusinessCategories;
 import in.myecash.appbase.entities.MyCities;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.appbase.constants.AppConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Address;
 import in.myecash.common.database.Cities;
 import in.myecash.common.database.Merchants;

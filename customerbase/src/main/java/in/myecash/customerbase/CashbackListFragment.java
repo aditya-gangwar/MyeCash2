@@ -22,9 +22,9 @@ import java.util.List;
 
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.CommonConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.entities.MyCashback;
-import in.myecash.appbase.entities.MyMerchant;
+import in.myecash.common.MyMerchant;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;

@@ -9,21 +9,21 @@ import java.util.Date;
 
 public class MerchantStats
 {
-  private Integer cust_cnt_no_balance;
-  private Integer bill_amt_no_cb;
-  private Integer cb_credit;
-  private Date created;
-  private Integer cust_cnt_cash;
-  private Date updated;
-  private String merchant_id;
-  private Integer cash_debit;
-  private Integer cb_debit;
-  private Integer bill_amt_total;
-  private Integer cash_credit;
-  private String objectId;
-  private Integer cust_cnt_cb_and_cash;
-  private String ownerId;
-  private Integer cust_cnt_cb;
+  public Integer cust_cnt_no_balance;
+  public Integer bill_amt_no_cb;
+  public Integer cb_credit;
+  public Date created;
+  public Integer cust_cnt_cash;
+  public Date updated;
+  public String merchant_id;
+  public Integer cash_debit;
+  public Integer cb_debit;
+  public Integer bill_amt_total;
+  public Integer cash_credit;
+  public String objectId;
+  public Integer cust_cnt_cb_and_cash;
+  public String ownerId;
+  public Integer cust_cnt_cb;
 
   public void setCreated(Date created) {
     this.created = created;

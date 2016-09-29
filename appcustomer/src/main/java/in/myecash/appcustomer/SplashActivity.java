@@ -15,7 +15,7 @@ import java.util.Date;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.constants.BackendSettings;
 import in.myecash.common.constants.CommonConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.entities.MyGlobalSettings;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;

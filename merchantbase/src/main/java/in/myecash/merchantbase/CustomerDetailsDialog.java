@@ -17,7 +17,7 @@ import in.myecash.appbase.entities.MyGlobalSettings;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.entities.MyCashback;
-import in.myecash.appbase.entities.MyCustomer;
+import in.myecash.common.MyCustomer;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 import java.text.SimpleDateFormat;

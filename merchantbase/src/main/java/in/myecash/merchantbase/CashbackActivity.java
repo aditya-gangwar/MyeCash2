@@ -36,7 +36,7 @@ import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.constants.BackendSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.entities.MyGlobalSettings;
 import in.myecash.common.database.Merchants;
 import in.myecash.appbase.utilities.AppAlarms;
@@ -1132,7 +1132,7 @@ public class CashbackActivity extends AppCompatActivity implements
         }
 
         // Update data in toolbar as per response
-        if(errorCode== ErrorCodes.USER_NOT_REGISTERED) {
+        if(errorCode== ErrorCodes.NO_SUCH_USER) {
             askAndRegisterCustomer();
         } else if(errorCode==ErrorCodes.NO_ERROR) {
             // update customer ids to actual fetched - just to be sure

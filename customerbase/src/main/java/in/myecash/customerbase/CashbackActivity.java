@@ -36,6 +36,7 @@ import java.util.Map;
 import in.myecash.appbase.OtpPinInputDialog;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.CsvConverter;
 import in.myecash.customerbase.entities.CustomerStats;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.customerbase.helper.MyRetainedFragment;
@@ -43,7 +44,7 @@ import in.myecash.appbase.PasswdChangeDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.appbase.constants.ErrorCodes;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Customers;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -431,7 +432,7 @@ public class CashbackActivity extends AppCompatActivity implements
             int cnt = mRetainedFragment.mCashbacks.size();
             for(int i=0; i<cnt; i++) {
                 MyCashback cb = mRetainedFragment.mCashbacks.get(i);
-                String csvStr = MyCashback.toCsvString(cb.getCurrCashback());
+                String csvStr = CsvConverter.csvStrFromCb(cb.getCurrCashback());
                 sb.append(csvStr).append(CommonConstants.CSV_NEWLINE);
             }
 
@@ -588,7 +589,7 @@ public class CashbackActivity extends AppCompatActivity implements
             }
 
         } else if(mLastMenuItemId==R.id.menu_forgot_pin) {
-            if(errorCode == ErrorCodes.OPERATION_SCHEDULED) {
+            if(errorCode == ErrorCodes.OP_SCHEDULED) {
                 // Show success notification dialog
                 String msg = String.format(AppConstants.pinGenerateSuccessMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
                 DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, msg, false, false)
