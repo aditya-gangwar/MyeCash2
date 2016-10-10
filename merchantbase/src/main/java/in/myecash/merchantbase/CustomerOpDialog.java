@@ -18,6 +18,7 @@ import android.widget.Space;
 import android.widget.Toast;
 
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -65,8 +66,8 @@ public class CustomerOpDialog extends DialogFragment
             // old dialog to ask for OTP
             args.putString(ARG_MOBILE_NUM, custOp.getMobile_num());
             args.putString(ARG_CARD_NUM, custOp.getQr_card());
-            if(DbConstants.CUSTOMER_OP_NEW_CARD.equals(opCode) ||
-                    DbConstants.CUSTOMER_OP_CHANGE_MOBILE.equals(opCode) ) {
+            if(DbConstants.OP_NEW_CARD.equals(opCode) ||
+                    DbConstants.OP_CHANGE_MOBILE.equals(opCode) ) {
                 args.putString(ARG_EXTRA_PARAMS, custOp.getExtra_op_params());
             }
         }else {
@@ -142,6 +143,7 @@ public class CustomerOpDialog extends DialogFragment
         // Set title
         String title = "CUSTOMER: "+opCode;
         mTitle.setText(title);
+        mInfoEnd.setVisibility(View.GONE);
 
         // Disable OTP if OTP not generated
         if(!isOtpGenerated) {
@@ -168,7 +170,7 @@ public class CustomerOpDialog extends DialogFragment
             mInputQrCard.setOnClickListener(this);
         }
 
-        if(opCode.equals(DbConstants.CUSTOMER_OP_NEW_CARD)) {
+        if(opCode.equals(DbConstants.OP_NEW_CARD)) {
             mLabelQrCard.setText("New Card");
             String reason = getArguments().getString(ARG_EXTRA_PARAMS, null);
             if(reason != null) {
@@ -186,7 +188,10 @@ public class CustomerOpDialog extends DialogFragment
             mLayoutReason.setVisibility(View.GONE);
         }
 
-        if(opCode.equals(DbConstants.CUSTOMER_OP_CHANGE_MOBILE)) {
+        if(opCode.equals(DbConstants.OP_CHANGE_MOBILE)) {
+            mInfoEnd.setVisibility(View.VISIBLE);
+            mInfoEnd.setText(String.format(getString(R.string.cust_mobile_change_info), MyGlobalSettings.getCustHrsAfterMobChange().toString()));
+
             mLabelMobileNum.setText("Old Mobile");
             String newMobile = getArguments().getString(ARG_EXTRA_PARAMS, null);
             if(newMobile != null) {
@@ -286,7 +291,7 @@ public class CustomerOpDialog extends DialogFragment
         if(mInputMobileNum.isEnabled()) {
             errorCode = ValidationHelper.validateMobileNo(mInputMobileNum.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
-                mInputMobileNum.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                mInputMobileNum.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
         }
@@ -294,21 +299,21 @@ public class CustomerOpDialog extends DialogFragment
         if(mInputQrCard.isEnabled()){
             errorCode = ValidationHelper.validateCustQrCode(mInputQrCard.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
-                mInputQrCard.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
         }
 
         if( mInputReason.isEnabled()
                 && mInputReason.getText().toString().isEmpty() ) {
-            mInputReason.setError(ErrorCodes.appErrorDesc.get(ErrorCodes.EMPTY_VALUE));
+            mInputReason.setError(AppCommonUtil.getErrorDesc(ErrorCodes.EMPTY_VALUE));
             retValue = false;
         }
 
         if( mInputNewMobile.isEnabled()) {
             errorCode = ValidationHelper.validateMobileNo(mInputNewMobile.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
-                mInputNewMobile.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                mInputNewMobile.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
             // check that it is different from current number
@@ -321,7 +326,7 @@ public class CustomerOpDialog extends DialogFragment
         if(mInputOTP.isEnabled()) {
             errorCode = ValidationHelper.validateOtp(mInputOTP.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
-                mInputOTP.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                mInputOTP.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
         }
@@ -389,6 +394,8 @@ public class CustomerOpDialog extends DialogFragment
     private EditText mLabelReason;
     private EditText mInputReason;
 
+    private EditText mInfoEnd;
+
     private void bindUiResources(View v) {
         mTitle = (EditText) v.findViewById(R.id.label_cust_op_title);
         mLabelMobileNum = (EditText) v.findViewById(R.id.label_customer_mobile);
@@ -414,6 +421,8 @@ public class CustomerOpDialog extends DialogFragment
         mLayoutReason = (LinearLayout) v.findViewById(R.id.layout_reason);
         mLabelReason = (EditText) v.findViewById(R.id.label_reason);
         mInputReason = (EditText) v.findViewById(R.id.input_reason);
+
+        mInfoEnd = (EditText) v.findViewById(R.id.label_info);
     }
 
     private void initChoiceReasons(final String selectedReason) {

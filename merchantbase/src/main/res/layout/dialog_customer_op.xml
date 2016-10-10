@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:clickable="false"
         android:gravity="left"
-        android:text="CUSTOMER: OPERATION"/>
+        android:text="Customer: OPERATION"/>
 
     <View
         style="@style/Divider_horizontal_Large"
@@ -199,6 +199,18 @@
                 android:inputType="numberPassword"
                 android:maxLength="@string/otp_char_limit"/>
         </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/label_info"
+            android:text="@string/cust_mobile_change_info"
+            android:textColor="@color/accent2"/>
 
         <Space
             android:layout_width="match_parent"

@@ -185,8 +185,8 @@ public class MyRetainedFragment extends RetainedFragment {
         mBackgroundProcessor.addCashbackRequest(custId);
     }
 
-    public void registerCustomer(String name, String mobileNum, String qrCode) {
-        mBackgroundProcessor.addCustRegRequest(name, mobileNum, qrCode);
+    public void registerCustomer(String mobileNum, String qrCode, String otp) {
+        mBackgroundProcessor.addCustRegRequest(mobileNum, qrCode, otp);
     }
 
     public void commitCashTransaction(String pin) {

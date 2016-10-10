@@ -75,11 +75,11 @@ public class PinChangeDialog extends DialogFragment implements DialogInterface.O
 
                         int errorCode = ValidationHelper.validatePin(currPasswd);
                         if(errorCode!= ErrorCodes.NO_ERROR) {
-                            inputCurrPasswd.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                            inputCurrPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
                         }
                         errorCode = ValidationHelper.validatePin(newPassword);
                         if(errorCode!= ErrorCodes.NO_ERROR) {
-                            inputNewPasswd.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                            inputNewPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
                         }
 
                         String newPassword2 = inputNewPasswd2.getText().toString();

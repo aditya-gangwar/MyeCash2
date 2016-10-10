@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.entities.MyCashback;
@@ -131,7 +131,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
                 if(status==DbConstants.USER_STATUS_LOCKED) {
                     mInputStatusDetails.setVisibility(View.VISIBLE);
-                    String detail = "Will be unlocked automatically after "+MyGlobalSettings.getCustAccBlockHrs()+" hours.";
+                    String detail = "Will be unlocked automatically after "+MyGlobalSettings.getAccBlockHrs(DbConstants.USER_TYPE_CUSTOMER)+" hours.";
                     mInputStatusDetails.setText(detail);
                 } else {
                     mInputStatusDetails.setVisibility(View.GONE);
@@ -153,14 +153,14 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
             if(mCallback.getRetainedFragment().mMerchantUser.isPseudoLoggedIn()) {
                 // set cust care specific fields too
-                mName.setText(cust.getName());
+                //mName.setText(cust.getName());
                 mCreatedOn.setText(cust.getCustCreateTime());
                 mFirstLogin.setText(cust.isFirstLoginOk().toString());
                 mCardStatusDate.setText(cust.getCardStatusUpdateTime());
                 //mInputAdminRemarks.setText(cust.getRemarks());
             } else {
                 // hide fields for customer care logins only
-                mLayoutName.setVisibility(View.GONE);
+                //mLayoutName.setVisibility(View.GONE);
                 mLayoutCreated.setVisibility(View.GONE);
                 mLayoutFirstLogin.setVisibility(View.GONE);
                 //mLayoutRemarks.setVisibility(View.GONE);
@@ -175,7 +175,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
     private EditText mInputCustomerId;
     private EditText mInputMobileNum;
-    private EditText mName;
+    // EditText mName;
     private EditText mLastUsedHere;
     private EditText mFirstUsedHere;
     private EditText mCreatedOn;
@@ -205,7 +205,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
     private EditText mInputCbTotalRedeem;
 
     // layouts for optional fields
-    private View mLayoutName;
+    //private View mLayoutName;
     private View mLayoutCreated;
     private View mLayoutFirstLogin;
     //private View mLayoutRemarks;
@@ -215,7 +215,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
         mInputCustomerId = (EditText) v.findViewById(R.id.input_customer_id);;
         mInputMobileNum = (EditText) v.findViewById(R.id.input_customer_mobile);
-        mName = (EditText) v.findViewById(R.id.input_cust_name);;
+        //mName = (EditText) v.findViewById(R.id.input_cust_name);;
         mLastUsedHere = (EditText) v.findViewById(R.id.input_cust_last_activity);;
         mFirstUsedHere = (EditText) v.findViewById(R.id.input_cust_register_on);;
         mCreatedOn = (EditText) v.findViewById(R.id.input_cust_created_on);;
@@ -245,7 +245,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
         mInputCbTotalRedeem = (EditText) v.findViewById(R.id.input_cb_redeem);
 
         // layouts for optional fields
-        mLayoutName = v.findViewById(R.id.layout_cust_name);
+        //mLayoutName = v.findViewById(R.id.layout_cust_name);
         mLayoutCreated = v.findViewById(R.id.layout_cust_created_on);
         mLayoutFirstLogin = v.findViewById(R.id.layout_first_login);
         //mLayoutRemarks = v.findViewById(R.id.layout_status_remarks);

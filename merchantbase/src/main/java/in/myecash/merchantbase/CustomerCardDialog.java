@@ -157,13 +157,13 @@ public class CustomerCardDialog  extends DialogFragment
 
         int errorCode = ValidationHelper.validateMobileNo(mInputMobileNum.getText().toString());
         if(errorCode != ErrorCodes.NO_ERROR) {
-            mInputMobileNum.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            mInputMobileNum.setError(AppCommonUtil.getErrorDesc(errorCode));
             retValue = false;
         }
 
         errorCode = ValidationHelper.validateCustQrCode(mInputQrCard.getText().toString());
         if(errorCode != ErrorCodes.NO_ERROR) {
-            mInputQrCard.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
             retValue = false;
         }
         return retValue;

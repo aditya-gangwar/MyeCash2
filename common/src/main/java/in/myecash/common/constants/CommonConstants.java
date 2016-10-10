@@ -1,5 +1,6 @@
 package in.myecash.common.constants;
 
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -53,7 +54,7 @@ public class CommonConstants {
     public static final int CUSTOMER_CARDID_LEN = 11;
     // DOB in format 'DDMMYYYY'
     public static final int DOB_LEN = 8;
-    public static final int TRANSACTION_ID_LEN = 12;
+    public static final int TRANSACTION_ID_LEN = 13;
     public static final int PIN_LEN = 5;
     public static final int OTP_LEN = 5;
 

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.LogMy;
@@ -103,7 +104,7 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
                 // If less then MOBILE_NUM_PROCESS_MIN_LENGTH, attempt QR code scan
                 if(mobileNum.length() > AppConstants.MOBILE_NUM_PROCESS_MIN_LENGTH &&
                         mobileNum.length() != CommonConstants.MOBILE_NUM_LENGTH ) {
-                    mInputCustMobile.setError(ErrorCodes.appErrorDesc.get(ErrorCodes.INVALID_LENGTH));
+                    mInputCustMobile.setError(AppCommonUtil.getErrorDesc(ErrorCodes.INVALID_LENGTH));
                     return;
                 }
                 mCallback.onMobileNumInput(mobileNum);

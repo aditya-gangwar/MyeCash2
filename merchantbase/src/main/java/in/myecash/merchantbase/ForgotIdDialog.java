@@ -78,7 +78,7 @@ public class ForgotIdDialog extends DialogFragment implements DialogInterface.On
                             mListener.onForgotIdData(mobileNum);
                             getDialog().dismiss();
                         } else {
-                            mInputMobileNum.setError(ErrorCodes.appErrorDesc.get(error));
+                            mInputMobileNum.setError(AppCommonUtil.getErrorDesc(error));
                         }
                     }
                 });

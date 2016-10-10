@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.MerchantOps;
@@ -58,7 +59,7 @@ public class MerchantOpListFrag extends Fragment {
         } catch(Exception e) {
             LogMy.e(TAG, "Exception is MerchantOpListFrag:onActivityCreated", e);
             // unexpected exception - show error
-            DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.GENERAL_ERROR), true, true);
+            DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true);
             notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
             notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }

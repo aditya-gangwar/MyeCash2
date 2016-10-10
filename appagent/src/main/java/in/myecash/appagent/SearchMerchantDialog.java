@@ -81,7 +81,7 @@ public class SearchMerchantDialog extends DialogFragment implements DialogInterf
                                 mListener.onInputData(id,true);
                                 getDialog().dismiss();
                             } else {
-                                mInputId.setError(ErrorCodes.appErrorDesc.get(error));
+                                mInputId.setError(AppCommonUtil.getErrorDesc(error));
                             }
 
                         } else if(!mobileNum.isEmpty()) {
@@ -90,7 +90,7 @@ public class SearchMerchantDialog extends DialogFragment implements DialogInterf
                                 mListener.onInputData(mobileNum,false);
                                 getDialog().dismiss();
                             } else {
-                                mInputMobileNum.setError(ErrorCodes.appErrorDesc.get(error));
+                                mInputMobileNum.setError(AppCommonUtil.getErrorDesc(error));
                             }
                         }
                     }

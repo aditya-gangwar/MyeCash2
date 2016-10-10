@@ -41,8 +41,9 @@ import in.myecash.appbase.R;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.DateUtil;
 import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.database.Address;
 import in.myecash.common.database.BusinessCategories;
 import in.myecash.common.database.Cashback;
@@ -64,16 +65,15 @@ import java.util.Date;
  */
 public class AppCommonUtil {
     private static final String TAG = "AndroidUtil";
-    private static final SimpleDateFormat mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
+    //private static final SimpleDateFormat mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
 
     // single active progress dialog at any time
     private static ProgressDialog mProgressDialog;
     private static String mProgressDialogMsg;
 
-    public static void toast(Context context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-    }
-
+    /*
+     * Progress Dialog related fxs
+     */
     public static void showProgressDialog(final Context context, String message) {
         cancelProgressDialog(true);
         mProgressDialogMsg = message;
@@ -82,7 +82,9 @@ public class AppCommonUtil {
 
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setMessage(mProgressDialogMsg);
+        // No way to cancel the progressDialog
         mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setCancelable(false);
         mProgressDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -107,6 +109,16 @@ public class AppCommonUtil {
         return mProgressDialogMsg;
     }
 
+    /*
+     8 Show toast on screen
+     */
+    public static void toast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    /*
+     * Convert Edittext to view only
+     */
     public static void makeEditTextOnlyView(EditText et) {
         et.setFocusable(false);
         et.setClickable(false);
@@ -114,6 +126,9 @@ public class AppCommonUtil {
         et.setInputType(EditorInfo.TYPE_NULL);
     }
 
+    /*
+     * Check internet availability
+     */
     public static int isNetworkAvailableAndConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
@@ -121,6 +136,9 @@ public class AppCommonUtil {
         return isNetworkConnected? ErrorCodes.NO_ERROR:ErrorCodes.NO_INTERNET_CONNECTION;
     }
 
+    /*
+     * Fxs to hide onscreen keyboard
+     */
     public static void hideKeyboard(Activity activity) {
         if (activity != null && activity.getWindow() != null && activity.getWindow().getDecorView() != null) {
             InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -135,16 +153,63 @@ public class AppCommonUtil {
         }
     }
 
-    public static File getPhotoFile(Context context) {
-        File filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        if (filesDir == null) {
-            return null;
+    /*
+     * Error codes related
+     */
+    public static int getLocalErrorCode(BackendlessException e) {
+        String expCode;
+        if( e.getCode().equals("0") && e.getMessage().startsWith(CommonConstants.PREFIX_ERROR_CODE_AS_MSG) ) {
+            LogMy.d(TAG,"Custom error code case: Orig: "+e.getCode()+","+e.getMessage());
+            String[] csvFields = e.getMessage().split("/");
+            expCode = csvFields[1];
+        } else {
+            expCode = e.getCode();
         }
 
-        String photoFileName = "IMG_" + System.currentTimeMillis() + ".jpg";
-        return new File(filesDir, photoFileName);
+        // Check if its defined error code
+        // converting code to msg to check for it
+        String errMsg = AppCommonUtil.getErrorDesc(Integer.parseInt(expCode));
+        if(errMsg==null) {
+            // may be this is backendless error code
+            Integer status = ErrorCodes.backendToLocalErrorCode.get(expCode);
+            if(status == null) {
+                // its not backendless code
+                // this is some not expected error code
+                // as app will not be able to convert it into valid message description
+                // so return generic error code instead
+                // Also log the same for analysis
+                AppAlarms.handleException(e);
+                return ErrorCodes.GENERAL_ERROR;
+            } else {
+                // its backendless code
+                return status;
+            }
+        } else {
+            // its locally defined error
+            return Integer.parseInt(expCode);
+        }
+    }
+    public static String getErrorDesc(int errorCode) {
+        // handle all error messages requiring substitution seperatly
+        switch(errorCode) {
+            case ErrorCodes.USER_MOB_CHANGE_RESTRICTED_ACCESS:
+                break;
+
+            case ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD:
+                return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getAccBlockHrs(null)));
+
+            case ErrorCodes.CASH_ACCOUNT_LIMIT_RCHD:
+                return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getCashAccLimit()));
+
+            default:
+                return ErrorCodes.appErrorDesc.get(errorCode);
+        }
+        return null;
     }
 
+    /*
+     * Image Processing functions
+     */
     public static boolean createImageFromBitmap(Bitmap bmp, File to) {
         boolean status = true;
         FileOutputStream fileOutputStream = null;
@@ -171,7 +236,6 @@ public class AppCommonUtil {
         return status;
     }
 
-    // Compress the given image for maximum compression and stores as internal file
     public static boolean compressWebpAndStore(Context context, Bitmap bmp, String fileName) {
         FileOutputStream out = null;
         try {
@@ -224,13 +288,6 @@ public class AppCommonUtil {
         return newBitmap;
     }
 
-    public static String removeLastChar(String s) {
-        if (s == null || s.length() == 0) {
-            return s;
-        }
-        return s.substring(0, s.length()-1);
-    }
-
     public static Bitmap getCircleBitmap(Bitmap bitmap) {
         final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Bitmap.Config.ARGB_8888);
@@ -258,6 +315,9 @@ public class AppCommonUtil {
         return output;
     }
 
+    /*
+     * Get Device Info
+     */
     public static String getDeviceManufacturer() {
         return Build.MANUFACTURER;
     }
@@ -287,52 +347,6 @@ public class AppCommonUtil {
         String imei = mTelephony.getDeviceId();
         return (imei==null)?"":imei;
     }
-    /*
-    private static String capitalize(String s) {
-        if (s == null || s.length() == 0) {
-            return "";
-        }
-        char first = s.charAt(0);
-        if (Character.isUpperCase(first)) {
-            return s;
-        } else {
-            return Character.toUpperCase(first) + s.substring(1);
-        }
-    }*/
-
-    public static int getLocalErrorCode(BackendlessException e) {
-        String expCode;
-        if( e.getCode().equals("0") && e.getMessage().startsWith(CommonConstants.PREFIX_ERROR_CODE_AS_MSG) ) {
-            LogMy.d(TAG,"Custom error code case: Orig: "+e.getCode()+","+e.getMessage());
-            String[] csvFields = e.getMessage().split("/");
-            expCode = csvFields[1];
-        } else {
-            expCode = e.getCode();
-        }
-
-        // Check if its defined error code
-        // converting code to msg to check for it
-        String errMsg = ErrorCodes.appErrorDesc.get(Integer.parseInt(expCode));
-        if(errMsg==null) {
-            // may be this is backendless error code
-            Integer status = ErrorCodes.backendToLocalErrorCode.get(expCode);
-            if(status == null) {
-                // its not backendless code
-                // this is some not expected error code
-                // as app will not be able to convert it into valid message description
-                // so return generic error code instead
-                // Also log the same for analysis
-                AppAlarms.handleException(e);
-                return ErrorCodes.GENERAL_ERROR;
-            } else {
-                // its backendless code
-                return status;
-            }
-        } else {
-            // its locally defined error
-            return Integer.parseInt(expCode);
-        }
-    }
 
     public static int dpToPx(int dp)
     {
@@ -352,45 +366,25 @@ public class AppCommonUtil {
     }
 
     /*
-    public static void tintView(AppCompatImageButton view, int color) {
-        final Drawable d = view.getBackground();
-        final Drawable nd = d.getConstantState().newDrawable();
-        nd.setColorFilter(AppCompatDrawableManager.getPorterDuffColorFilter(
-                color, PorterDuff.Mode.SRC_IN));
-        view.setBackground(nd);
-    }*/
-
+     * Functions to add Rupee symbol to givcen Amount
+     */
     public static String getSignedAmtStr(int value, boolean isCredit) {
         if(value==0) {
             return getAmtStr(value);
         }
         return isCredit ? "+ "+AppConstants.SYMBOL_RS +String.valueOf(value) : "- "+AppConstants.SYMBOL_RS +String.valueOf(value);
     }
-    public static String getSignedAmtStr(String value, boolean isCredit) {
-        return isCredit ? "+ "+AppConstants.SYMBOL_RS +value : "- "+AppConstants.SYMBOL_RS +value;
-    }
-
     public static String getAmtStr(int value) {
         return AppConstants.SYMBOL_RS +String.valueOf(value);
     }
-
     public static String getAmtStr(String value) {
         return AppConstants.SYMBOL_RS +value;
     }
 
-    public static String getMerchantTxnDir(String merchantId) {
-        // merchant directory: merchants/<first 3 chars of merchant id>/<next 2 chars of merchant id>/<merchant id>/
-        return CommonConstants.MERCHANT_TXN_ROOT_DIR +
-                merchantId.substring(0,3) + CommonConstants.FILE_PATH_SEPERATOR +
-                merchantId.substring(0,5) + CommonConstants.FILE_PATH_SEPERATOR +
-                merchantId;
-    }
 
-    public static String getMerchantCustFilePath(String merchantId) {
-        // File name: customers_<merchant_id>.csv
-        return CommonConstants.MERCHANT_CUST_DATA_ROOT_DIR +
-                CommonConstants.MERCHANT_CUST_DATA_FILE_PREFIX+merchantId+CommonConstants.CSV_FILE_EXT;
-    }
+    /*
+     * Fxs. to get Filename for various files
+     */
     public static String getMerchantCustFileName(String merchantId) {
         // File name: customers_<merchant_id>.csv
         return CommonConstants.MERCHANT_CUST_DATA_FILE_PREFIX+merchantId+CommonConstants.CSV_FILE_EXT;
@@ -399,24 +393,19 @@ public class AppCommonUtil {
         // File name: customers_<merchant_id>.csv
         return CommonConstants.CASHBACK_DATA_FILE_PREFIX+userId+CommonConstants.CSV_FILE_EXT;
     }
-
-
-    public static String getTxnCsvFilename(Date date, String merchantId) {
-        // File name: txns_<merchant_id>_<ddMMMyy>.csv
-        return CommonConstants.MERCHANT_TXN_FILE_PREFIX + merchantId + "_" + mSdfOnlyDateFilename.format(date) + CommonConstants.CSV_FILE_EXT;
-    }
-
-    public static String getTxnImgDir(String merchantId) {
-        // merchant directory: merchants/<first 3 chars of merchant id>/<next 2 chars of merchant id>/<merchant id>/
-        return CommonConstants.MERCHANT_TXN_IMAGE_ROOT_DIR +
-                merchantId.substring(0,3) + CommonConstants.FILE_PATH_SEPERATOR +
-                merchantId.substring(0,5) + CommonConstants.FILE_PATH_SEPERATOR +
-                merchantId;
-    }
-
     public static String getTxnImgFilename(String txnId) {
         return CommonConstants.PREFIX_TXN_IMG_FILE_NAME +txnId+".webp";
     }
+    public static File getMchntDpFilename(Context context) {
+        File filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (filesDir == null) {
+            return null;
+        }
+
+        String photoFileName = "IMG_" + System.currentTimeMillis() + ".jpg";
+        return new File(filesDir, photoFileName);
+    }
+
 
     public static void setDialogTextSize(DialogFragment frag, AlertDialog dialog) {
         //int textSize = (int) Helper.getDimen(mainScreen, R.dimen.textSize12);
@@ -451,10 +440,10 @@ public class AppCommonUtil {
     }
 
     public static String getMchntExpiryMsg(Merchants merchant) {
-        DateUtil now = new DateUtil();
-        now.addDays(MyGlobalSettings.getMchntExpiryDays());
+        DateUtil reqTime = new DateUtil(merchant.getRemoveReqDate());
+        reqTime.addDays(MyGlobalSettings.getMchntExpiryDays());
         SimpleDateFormat sdf = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
-        return "Expiring on "+sdf.format(now.getTime());
+        return "Expiring on "+sdf.format(reqTime.getTime());
     }
 
     public static Date getExpiryDate(Merchants merchant) {
@@ -488,3 +477,28 @@ public class AppCommonUtil {
     }
 
 }
+
+    /*public static String getMerchantTxnDir(String merchantId) {
+        // merchant directory: merchants/<first 3 chars of merchant id>/<next 2 chars of merchant id>/<merchant id>/
+        return CommonConstants.MERCHANT_TXN_ROOT_DIR +
+                merchantId.substring(0,3) + CommonConstants.FILE_PATH_SEPERATOR +
+                merchantId.substring(0,5) + CommonConstants.FILE_PATH_SEPERATOR +
+                merchantId;
+    }
+    public static String getMerchantCustFilePath(String merchantId) {
+        // File name: customers_<merchant_id>.csv
+        return CommonConstants.MERCHANT_CUST_DATA_ROOT_DIR +
+                CommonConstants.MERCHANT_CUST_DATA_FILE_PREFIX+merchantId+CommonConstants.CSV_FILE_EXT;
+    }
+    public static String getTxnCsvFilename(Date date, String merchantId) {
+        // File name: txns_<merchant_id>_<ddMMMyy>.csv
+        return CommonConstants.MERCHANT_TXN_FILE_PREFIX + merchantId + "_" + mSdfOnlyDateFilename.format(date) + CommonConstants.CSV_FILE_EXT;
+    }
+    public static String getTxnImgDir(String merchantId) {
+        // merchant directory: merchants/<first 3 chars of merchant id>/<next 2 chars of merchant id>/<merchant id>/
+        return CommonConstants.MERCHANT_TXN_IMAGE_ROOT_DIR +
+                merchantId.substring(0,3) + CommonConstants.FILE_PATH_SEPERATOR +
+                merchantId.substring(0,5) + CommonConstants.FILE_PATH_SEPERATOR +
+                merchantId;
+    }*/
+

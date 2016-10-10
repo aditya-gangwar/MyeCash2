@@ -131,7 +131,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     }
 
     private int changeMobileNum() {
-        return CustomerUser.getInstance().changeMobileNum(mRetainedFragment.mVerifyParamMobileChange,
+        return CustomerUser.getInstance().changeMobileNum(mRetainedFragment.mPinMobileChange,
                 mRetainedFragment.mNewMobileNum, mRetainedFragment.mOtpMobileChange);
     }
 

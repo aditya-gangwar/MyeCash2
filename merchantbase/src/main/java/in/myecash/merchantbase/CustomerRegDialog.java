@@ -35,6 +35,7 @@ public class CustomerRegDialog extends DialogFragment
 
     public interface CustomerRegFragmentIf {
         void onCustomerRegOk(String name, String mobileNum, String qrCode);
+        void onCustomerRegReset();
     }
 
     public static CustomerRegDialog newInstance(String mobileNo, String cardId) {
@@ -71,18 +72,27 @@ public class CustomerRegDialog extends DialogFragment
                 .inflate(R.layout.dialog_register_customer, null);
 
         bindUiResources(v);
-        if(mobileNum==null || mobileNum.isEmpty()) {
+
+        // Both null means OTP not generated yet
+        if((mobileNum==null || mobileNum.isEmpty()) &&
+                (cardId == null || cardId.isEmpty())) {
+            mLabelOtp.setEnabled(false);
+            mInputOtp.setEnabled(false);
+
             mInputMobileNum.requestFocus();
+            mInputQrCard.setOnClickListener(this);
+
         } else {
+            // Set mobile num
             mInputMobileNum.setText(mobileNum);
             AppCommonUtil.makeEditTextOnlyView(mInputMobileNum);
             mInputMobileNum.clearFocus();
-            mInputCustName.requestFocus();
-        }
+            mInputMobileNum.setEnabled(false);
 
-        mInputQrCard.setOnClickListener(this);
-        if(cardId != null) {
+            // Set card Id
             mInputQrCard.setText(cardId);
+            mInputQrCard.setClickable(false);
+            mInputQrCard.setEnabled(false);
         }
 
         Dialog dialog = new AlertDialog.Builder(getActivity())
@@ -100,6 +110,13 @@ public class CustomerRegDialog extends DialogFragment
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setNeutralButton("Reset", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mCallback.onCustomerRegReset();
                         dialog.dismiss();
                     }
                 })
@@ -143,9 +160,9 @@ public class CustomerRegDialog extends DialogFragment
 
                     if(validate()) {
                         mCallback.onCustomerRegOk(
-                                mInputCustName.getText().toString(),
                                 mInputMobileNum.getText().toString(),
-                                mInputQrCard.getText().toString());
+                                mInputQrCard.getText().toString(),
+                                mInputOtp.getText().toString());
                         wantToCloseDialog = true;
                     }
 
@@ -159,24 +176,32 @@ public class CustomerRegDialog extends DialogFragment
 
     private boolean validate() {
         boolean retValue = true;
+        int errorCode;
 
-        int errorCode = ValidationHelper.validateBrandName(mInputCustName.getText().toString());
-        if(errorCode != ErrorCodes.NO_ERROR) {
-            mInputCustName.setError(ErrorCodes.appErrorDesc.get(errorCode));
-            retValue = false;
+        if(mInputMobileNum.isEnabled()) {
+            errorCode = ValidationHelper.validateMobileNo(mInputMobileNum.getText().toString());
+            if (errorCode != ErrorCodes.NO_ERROR) {
+                mInputMobileNum.setError(AppCommonUtil.getErrorDesc(errorCode));
+                retValue = false;
+            }
         }
 
-        errorCode = ValidationHelper.validateMobileNo(mInputMobileNum.getText().toString());
-        if(errorCode != ErrorCodes.NO_ERROR) {
-            mInputMobileNum.setError(ErrorCodes.appErrorDesc.get(errorCode));
-            retValue = false;
+        if(mInputQrCard.isEnabled()) {
+            errorCode = ValidationHelper.validateCustQrCode(mInputQrCard.getText().toString());
+            if (errorCode != ErrorCodes.NO_ERROR) {
+                mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
+                retValue = false;
+            }
         }
 
-        errorCode = ValidationHelper.validateCustQrCode(mInputQrCard.getText().toString());
-        if(errorCode != ErrorCodes.NO_ERROR) {
-            mInputQrCard.setError(ErrorCodes.appErrorDesc.get(errorCode));
-            retValue = false;
+        if(mInputOtp.isEnabled()) {
+            errorCode = ValidationHelper.validateOtp(mInputOtp.getText().toString());
+            if(errorCode != ErrorCodes.NO_ERROR) {
+                mInputOtp.setError(AppCommonUtil.getErrorDesc(errorCode));
+                retValue = false;
+            }
         }
+
         return retValue;
     }
 
@@ -209,13 +234,15 @@ public class CustomerRegDialog extends DialogFragment
     }
 
     private EditText mInputMobileNum;
-    private EditText mInputCustName;
+    private EditText mInputOtp;
     private EditText mInputQrCard;
+    private EditText mLabelOtp;
 
     private void bindUiResources(View v) {
         mInputMobileNum = (EditText) v.findViewById(R.id.input_customer_mobile);
-        mInputCustName = (EditText) v.findViewById(R.id.input_customer_name);
         mInputQrCard = (EditText) v.findViewById(R.id.input_qr_card);
+        mInputOtp = (EditText) v.findViewById(R.id.input_otp);
+        mLabelOtp = (EditText) v.findViewById(R.id.label_otp);
     }
 
     private void setQrCode(String qrCode) {

@@ -77,7 +77,7 @@ public class PasswdResetDialog extends DialogFragment implements DialogInterface
                             mListener.onPasswdResetData(value);
                             getDialog().dismiss();
                         } else {
-                            mInputName.setError(ErrorCodes.appErrorDesc.get(error));
+                            mInputName.setError(AppCommonUtil.getErrorDesc(error));
                         }
                     }
                 });

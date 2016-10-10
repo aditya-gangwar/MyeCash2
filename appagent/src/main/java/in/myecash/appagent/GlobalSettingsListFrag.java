@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import in.myecash.common.constants.CommonConstants;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.appbase.utilities.LogMy;
 
 /**
@@ -134,7 +134,7 @@ public class GlobalSettingsListFrag extends Fragment {
         } catch(Exception e) {
             LogMy.e(TAG, "Exception is GlobalSettingsListFrag:onActivityCreated", e);
             // unexpected exception - show error
-            DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.GENERAL_ERROR), true, true);
+            DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true);
             notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
             notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }

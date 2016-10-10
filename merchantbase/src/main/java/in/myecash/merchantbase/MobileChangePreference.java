@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
@@ -167,7 +168,7 @@ public class MobileChangePreference extends DialogPreference
         if(inputDob.isEnabled()) {
             errorCode = ValidationHelper.validateDob(inputDob.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
-                inputDob.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                inputDob.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
         }
@@ -175,7 +176,7 @@ public class MobileChangePreference extends DialogPreference
         if( inputNewMobile.isEnabled()) {
             errorCode = ValidationHelper.validateMobileNo(inputNewMobile.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
-                inputNewMobile.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                inputNewMobile.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
         }
@@ -183,7 +184,7 @@ public class MobileChangePreference extends DialogPreference
         if(inputNewOtp.getVisibility() == View.VISIBLE) {
             errorCode = ValidationHelper.validateOtp(inputNewOtp.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
-                inputNewOtp.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                inputNewOtp.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
         }

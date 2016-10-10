@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -66,6 +67,8 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
         // set values and views
+        mInfoEnd.setText(String.format(getString(R.string.cust_mobile_change_info), MyGlobalSettings.getCustHrsAfterMobChange().toString()));
+
         String newMobile = mCallback.getRetainedFragment().mNewMobileNum;
         if(newMobile==null) {
             // first run, otp not generated yet
@@ -143,6 +146,8 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
     EditText inputNewMobile2;
     EditText inputNewOtp;
 
+    private EditText mInfoEnd;
+
     private void initUiResources(View view) {
         labelInfo1 = (EditText) view.findViewById(R.id.label_info1);
         labelNewMobile = (EditText) view.findViewById(R.id.label_new_mobile);
@@ -152,6 +157,8 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
         inputNewMobile = (EditText) view.findViewById(R.id.input_new_mobile);
         inputNewMobile2 = (EditText) view.findViewById(R.id.input_new_mobile2);
         inputNewOtp = (EditText) view.findViewById(R.id.input_otp);
+
+        mInfoEnd = (EditText) view.findViewById(R.id.label_info);
     }
 
     private boolean validate() {
@@ -161,7 +168,7 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
         if( inputNewMobile.isEnabled()) {
             errorCode = ValidationHelper.validateMobileNo(inputNewMobile.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
-                inputNewMobile.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                inputNewMobile.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
         }
@@ -169,7 +176,7 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
         if(inputNewOtp.getVisibility() == View.VISIBLE) {
             errorCode = ValidationHelper.validateOtp(inputNewOtp.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
-                inputNewOtp.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                inputNewOtp.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
         }

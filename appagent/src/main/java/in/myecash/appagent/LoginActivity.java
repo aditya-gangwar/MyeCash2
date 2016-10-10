@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity implements
                 int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(LoginActivity.this);
                 if (resultCode != ErrorCodes.NO_ERROR) {
                     // Show error notification dialog
-                    DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+                    DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                             .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else {
                     initOperationData();
@@ -148,13 +148,13 @@ public class LoginActivity extends AppCompatActivity implements
         int errorCode = ValidationHelper.validateAgentId(mLoginId);
         if(errorCode!=ErrorCodes.NO_ERROR) {
             valid = false;
-            mIdTextRes.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
         }
 
         errorCode = ValidationHelper.validatePassword(mPassword);
         if(errorCode!=ErrorCodes.NO_ERROR) {
             valid = false;
-            mPasswdTextRes.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            mPasswdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
         }
 
         return valid;
@@ -172,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements
             } else {
                 mLoginButton.setEnabled(true);
                 // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.loginFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.loginFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         } else if(operation== MyRetainedFragment.REQUEST_GENERATE_PWD) {
@@ -183,7 +183,7 @@ public class LoginActivity extends AppCompatActivity implements
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else {
                 // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
             mProcessingResetPasswd = false;
@@ -211,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements
                         PasswdResetDialog dialog = new PasswdResetDialog();
                         dialog.show(getFragmentManager(), DIALOG_PASSWD_RESET);
                     } else {
-                        mIdTextRes.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                        mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
                         mProcessingResetPasswd = false;
                     }
                 } else {

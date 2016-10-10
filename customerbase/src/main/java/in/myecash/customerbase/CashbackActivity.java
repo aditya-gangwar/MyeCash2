@@ -35,7 +35,7 @@ import java.util.Map;
 
 import in.myecash.appbase.OtpPinInputDialog;
 import in.myecash.appbase.entities.MyCashback;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.CsvConverter;
 import in.myecash.customerbase.entities.CustomerStats;
 import in.myecash.customerbase.entities.CustomerUser;
@@ -177,7 +177,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
         View headerLayout = mNavigationView.getHeaderView(0);
         TextView headerTitle = (TextView)headerLayout.findViewById(R.id.drawer_header_title);
-        headerTitle.setText(mCustomer.getName());
+        headerTitle.setText(mCustomer.getMobile_num());
         TextView headerMobile = (TextView)headerLayout.findViewById(R.id.drawer_header_mobile);
         headerMobile.setText(mCustomer.getMobile_num());
 
@@ -407,7 +407,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
         } else {
             // Failed to fetch new data - show old one, if available
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DIALOG_NOTIFY_CB_FETCH_ERROR);
 
             // TODO: see if below required to be done - after 'ok' button is clicked from dialog
@@ -459,10 +459,12 @@ public class CashbackActivity extends AppCompatActivity implements
         AppCommonUtil.cancelProgressDialog(true);
 
         if(errorCode==ErrorCodes.NO_ERROR) {
-            DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.mobileChangeSuccessMsg, false, false)
+            DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.custMobileChangeSuccessMsg, false, false)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             // merchant operation success, reset to null
             changeMobileParamsReset();
+            // logout and ask user to login again with new mobile number
+            logoutCustomer();
 
         } else if(errorCode==ErrorCodes.OTP_GENERATED) {
             // OTP sent successfully to new mobile, ask for the same
@@ -473,20 +475,20 @@ public class CashbackActivity extends AppCompatActivity implements
         } else {
             // reset in case of any error
             changeMobileParamsReset();
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
     private void changeMobileParamsReset() {
         mRetainedFragment.mNewMobileNum = null;
-        mRetainedFragment.mVerifyParamMobileChange = null;
+        mRetainedFragment.mPinMobileChange = null;
         mRetainedFragment.mOtpMobileChange = null;
     }
 
     @Override
     public void onPinOtp(String pinOrOtp, String tag) {
         if(tag.equals(DIALOG_CHANGE_MOBILE_PIN)) {
-            mRetainedFragment.mVerifyParamMobileChange = pinOrOtp;
+            mRetainedFragment.mPinMobileChange = pinOrOtp;
             // dispatch customer op for execution
             changeMobileNum();
         }
@@ -513,7 +515,7 @@ public class CashbackActivity extends AppCompatActivity implements
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
@@ -525,7 +527,7 @@ public class CashbackActivity extends AppCompatActivity implements
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             // show progress dialog
@@ -558,7 +560,7 @@ public class CashbackActivity extends AppCompatActivity implements
             logoutCustomer();
 
         } else {
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
@@ -584,7 +586,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.pinChangeSuccessMsg, false, false)
                         .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else {
-                DialogFragmentWrapper.createNotification(AppConstants.pinChangeFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.pinChangeFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
 
@@ -603,7 +605,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
             } else {
                 // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.pinResetFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.pinResetFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         }
@@ -745,7 +747,7 @@ public class CashbackActivity extends AppCompatActivity implements
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());

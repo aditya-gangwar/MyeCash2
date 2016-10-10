@@ -160,7 +160,7 @@ public class ReportsActivity extends AppCompatActivity implements
                 if (mCustomerId.length() > 0) {
                     int errorCode = ValidationHelper.validateMobileNo(mCustomerId);
                     if (errorCode != ErrorCodes.NO_ERROR) {
-                        mInputCustId.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                        mInputCustId.setError(AppCommonUtil.getErrorDesc(errorCode));
                         return;
                     }
                 }
@@ -509,7 +509,7 @@ public class ReportsActivity extends AppCompatActivity implements
                 startTxnSummaryFragment();
                 //startTxnListFragment();
             } else {
-                DialogFragmentWrapper.createNotification(ErrorCodes.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                DialogFragmentWrapper.createNotification(ErrorCodes.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         } else if(operation== MyRetainedFragment.REQUEST_FETCH_TXN_FILES) {
@@ -522,7 +522,7 @@ public class ReportsActivity extends AppCompatActivity implements
                 mWorkFragment.fetchTransactions(buildWhereClause());
             } else {
                 AppCommonUtil.cancelProgressDialog();
-                DialogFragmentWrapper.createNotification(ErrorCodes.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                DialogFragmentWrapper.createNotification(ErrorCodes.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         }

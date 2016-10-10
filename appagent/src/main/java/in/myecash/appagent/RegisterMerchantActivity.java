@@ -90,7 +90,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(RegisterMerchantActivity.this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(getFragmentManager(), DIALOG_NO_INTERNET);
             return;
         }
@@ -259,7 +259,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
             } else {
                 mRegisterButton.setEnabled(true);
                 // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.regFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.regFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DIALOG_REG_FAILED);
             }
         }
@@ -283,7 +283,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
         errorCode = ValidationHelper.validateBrandName(mBrandNameTextRes.getText().toString());
         if( errorCode != ErrorCodes.NO_ERROR ) {
             valid = false;
-            mBrandNameTextRes.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            mBrandNameTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
             sb.append("Brand name; ");
         }
 
@@ -298,21 +298,21 @@ public class RegisterMerchantActivity extends AppCompatActivity
         errorCode = ValidationHelper.validateMobileNo(mMobileNoTextRes.getText().toString());
         if( errorCode != ErrorCodes.NO_ERROR ) {
             valid = false;
-            mMobileNoTextRes.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            mMobileNoTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
             sb.append("Mobile number; ");
         }
 
         errorCode = ValidationHelper.validateEmail(mEmailTextRes.getText().toString());
         if( errorCode != ErrorCodes.NO_ERROR ) {
             valid = false;
-            mEmailTextRes.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            mEmailTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
             sb.append("Email; ");
         }
 
         errorCode = ValidationHelper.validateDob(mDoBTextRes.getText().toString());
         if( errorCode != ErrorCodes.NO_ERROR ) {
             valid = false;
-            mDoBTextRes.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            mDoBTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
             sb.append("DoB; ");
         }
 
@@ -327,7 +327,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
         errorCode = ValidationHelper.validateAddress(mAddressTextRes1.getText().toString());
         if( errorCode != ErrorCodes.NO_ERROR ) {
             valid = false;
-            mAddressTextRes1.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            mAddressTextRes1.setError(AppCommonUtil.getErrorDesc(errorCode));
             sb.append("Address; ");
         }
 
@@ -427,7 +427,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
         pickImageIntent.putExtra("scale", true);
         pickImageIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
 
-        mPhotoFile = AppCommonUtil.getPhotoFile(this);
+        mPhotoFile = AppCommonUtil.getMchntDpFilename(this);
         PackageManager packageManager = this.getPackageManager();
 
         boolean canTakePhoto = (mPhotoFile != null) && pickImageIntent.resolveActivity(packageManager) != null;

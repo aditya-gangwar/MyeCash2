@@ -28,7 +28,7 @@ public class MyCustomer {
      */
     public static int CUST_CSV_PRIVATE_ID = 0;
     public static int CUST_CSV_MOBILE_NUM = 1;
-    public static int CUST_CSV_NAME = 2;
+    //public static int CUST_CSV_NAME = 2;
     public static int CUST_CSV_FIRST_LOGIN_OK = 3;
     public static int CUST_CSV_CUST_CREATE_TIME = 4;
     public static int CUST_CSV_ACC_STATUS = 5;
@@ -54,7 +54,7 @@ public class MyCustomer {
     int mCardStatus;
 
     // optional properties
-    String mName;
+    //String mName;
     Boolean mFirstLoginOk;
     String mCreateTime;
     String mRemarks;
@@ -72,11 +72,11 @@ public class MyCustomer {
         mCardStatus = Integer.parseInt(csvFields[CUST_CSV_CARD_STATUS]);
 
         // only customer care data - thus optional
-        if(!csvFields[CUST_CSV_NAME].isEmpty()) {
+        /*if(!csvFields[CUST_CSV_NAME].isEmpty()) {
             mName = csvFields[CUST_CSV_NAME];
         } else {
             mName = null;
-        }
+        }*/
         if(!csvFields[CUST_CSV_FIRST_LOGIN_OK].isEmpty()) {
             mFirstLoginOk = Boolean.parseBoolean(csvFields[CUST_CSV_FIRST_LOGIN_OK]);
         } else {
@@ -113,13 +113,13 @@ public class MyCustomer {
         csvFields[CUST_CSV_CARD_ID] = card.getCard_id() ;
         csvFields[CUST_CSV_CARD_STATUS] = String.valueOf(card.getStatus()) ;
         if(addCustCareData) {
-            csvFields[CUST_CSV_NAME] = customer.getName() ;
+            //csvFields[CUST_CSV_NAME] = customer.getName() ;
             csvFields[CUST_CSV_FIRST_LOGIN_OK] = String.valueOf(customer.getFirst_login_ok()) ;
             csvFields[CUST_CSV_CUST_CREATE_TIME] = String.valueOf(customer.getCreated().getTime()) ;
             //csvFields[CUST_CSV_ADMIN_REMARKS] = customer.getAdmin_remarks() ;
             csvFields[CUST_CSV_CARD_STATUS_UPDATE_TIME] = String.valueOf(card.getStatus_update_time().getTime()) ;
         } else {
-            csvFields[CUST_CSV_NAME] = "";
+            //csvFields[CUST_CSV_NAME] = "";
             csvFields[CUST_CSV_FIRST_LOGIN_OK] = "";
             csvFields[CUST_CSV_CUST_CREATE_TIME] = "";
             //csvFields[CUST_CSV_ADMIN_REMARKS] = "";
@@ -146,9 +146,9 @@ public class MyCustomer {
         return mMobileNum;
     }
 
-    public String getName() {
+    /*public String getName() {
         return mName;
-    }
+    }*/
 
     public Boolean isFirstLoginOk() {
         return mFirstLoginOk;

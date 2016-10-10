@@ -43,13 +43,13 @@ public class MyRetainedFragment extends RetainedFragment {
     public CustomerStats stats;
 
     // params for mobile number change operation
-    public String mVerifyParamMobileChange;
+    public String mPinMobileChange;
     public String mNewMobileNum;
     public String mOtpMobileChange;
 
     public void reset() {
         LogMy.d(TAG,"In reset");
-        mVerifyParamMobileChange = null;
+        mPinMobileChange = null;
         mNewMobileNum = null;
         mOtpMobileChange = null;
         mLastFetchCashbacks = null;

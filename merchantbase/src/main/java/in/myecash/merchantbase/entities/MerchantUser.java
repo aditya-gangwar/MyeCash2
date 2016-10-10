@@ -13,10 +13,11 @@ import com.backendless.exceptions.BackendlessException;
 import com.backendless.files.BackendlessFile;
 import com.crashlytics.android.Crashlytics;
 import in.myecash.appbase.backendAPI.CommonServices;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.MerchantDevice;
 import in.myecash.common.database.MerchantOps;
@@ -338,7 +339,7 @@ public class MerchantUser
 
         try
         {
-            MerchantServices.getInstance().execCustomerOp(custOp.getOp_code(),custOp.getMobile_num(),custOp.getQr_card(),
+            CommonServices.getInstance().execCustomerOp(custOp.getOp_code(),custOp.getMobile_num(),custOp.getQr_card(),
                     custOp.getOtp(),custOp.getPin(),custOp.getExtra_op_params());
         }
         catch( BackendlessException e )
@@ -349,12 +350,12 @@ public class MerchantUser
         return ErrorCodes.NO_ERROR;
     }
 
-    public Cashback registerCustomer(String mobileNum, String name, String qrCode) {
+    public Cashback registerCustomer(String mobileNum, String qrCode, String otp) {
         if(mPseudoLoggedIn) {
             // intentionally using 'Backend' error code - as calling fx. will try to convert
             throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
         }
-        return MerchantServices.getInstance().registerCustomer(mobileNum, name, qrCode);
+        return MerchantServices.getInstance().registerCustomer(mobileNum, qrCode, otp);
     }
 
     /*
@@ -395,7 +396,7 @@ public class MerchantUser
         if(mPseudoLoggedIn) {
             throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
         }
-        uploadImageSync(file,AppCommonUtil.getTxnImgDir(mMerchant.getAuto_id()));
+        uploadImageSync(file, CommonUtils.getTxnImgDir(mMerchant.getAuto_id()));
     }
 
     /*
@@ -432,33 +433,9 @@ public class MerchantUser
     }
 
     /*
-    public int deleteTrustedDevice(int index) {
-        LogMy.d(TAG, "In deleteTrustedDevice: " + index);
-        if(mPseudoLoggedIn) {
-            return ErrorCodes.OPERATION_NOT_ALLOWED;
-        }
-        // One step deletion - as suggested in backendless docs was not working
-        // so doing as below
-        try {
-            Backendless.Persistence.of( MerchantDevice.class ).remove(mMerchant.getTrusted_devices().get(index));
-            LogMy.d(TAG, "Device delete success: " + mMerchant.getAuto_id());
-            int status = loadTrustedDevices();
-            if(status != ErrorCodes.NO_ERROR) {
-                // remove manually
-                LogMy.w(TAG,"Trusted device upload failed, updating manually");
-                mMerchant.getTrusted_devices().remove(index);
-            }
-            return ErrorCodes.NO_ERROR;
-        } catch(BackendlessException e) {
-            LogMy.e(TAG, "Device delete failed: " + e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-    }*/
-
-    /*
      * Getter / Setter
      */
-    public Integer getClDebitLimitForPin() {
+    /*public Integer getClDebitLimitForPin() {
         int retValue = MyGlobalSettings.getAccDebitPinLimit();
 
         if( mMerchant.getCl_debit_limit_for_pin() >= 0 ) {
@@ -483,7 +460,7 @@ public class MerchantUser
             retValue = mMerchant.getCl_credit_limit_for_pin();
         }
         return retValue;
-    }
+    }*/
 
     public String getUserToken() {
         return mUserToken;
@@ -545,20 +522,6 @@ public class MerchantUser
         return file.getFileURL();
     }
 
-    /*
-    private int loadTrustedDevices() throws BackendlessException {
-        ArrayList<String> relationProps = new ArrayList<>();
-        relationProps.add("trusted_devices");
-        try {
-            Backendless.Data.of( Merchants.class ).loadRelations(mMerchant, relationProps);
-            mBackendlessUser.setProperty("merchant", mMerchant);
-        } catch (BackendlessException e) {
-            LogMy.e(TAG,"loadTrustedDevices failed: "+e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;
-    }*/
-
     private void loadMerchant(String idOrMobileNum) {
 
         mMerchant = CommonServices.getInstance().getMerchant(idOrMobileNum);
@@ -570,6 +533,8 @@ public class MerchantUser
         // Set user id for crashlytics
         Crashlytics.setUserIdentifier(mMerchant.getAuto_id());
     }
+
+}
 
     /*
     private void loadMerchant() throws BackendlessException {
@@ -601,6 +566,40 @@ public class MerchantUser
         }
         return ErrorCodes.NO_ERROR;*//*
     }*/
+/*
+    public int deleteTrustedDevice(int index) {
+        LogMy.d(TAG, "In deleteTrustedDevice: " + index);
+        if(mPseudoLoggedIn) {
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
+        }
+        // One step deletion - as suggested in backendless docs was not working
+        // so doing as below
+        try {
+            Backendless.Persistence.of( MerchantDevice.class ).remove(mMerchant.getTrusted_devices().get(index));
+            LogMy.d(TAG, "Device delete success: " + mMerchant.getAuto_id());
+            int status = loadTrustedDevices();
+            if(status != ErrorCodes.NO_ERROR) {
+                // remove manually
+                LogMy.w(TAG,"Trusted device upload failed, updating manually");
+                mMerchant.getTrusted_devices().remove(index);
+            }
+            return ErrorCodes.NO_ERROR;
+        } catch(BackendlessException e) {
+            LogMy.e(TAG, "Device delete failed: " + e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+    }*/
+    /*
+    private int loadTrustedDevices() throws BackendlessException {
+        ArrayList<String> relationProps = new ArrayList<>();
+        relationProps.add("trusted_devices");
+        try {
+            Backendless.Data.of( Merchants.class ).loadRelations(mMerchant, relationProps);
+            mBackendlessUser.setProperty("merchant", mMerchant);
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"loadTrustedDevices failed: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }*/
 
-
-}

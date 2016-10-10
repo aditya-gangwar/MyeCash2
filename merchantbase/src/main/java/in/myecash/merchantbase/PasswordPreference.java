@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.ValidationHelper;
 
@@ -66,11 +67,11 @@ public class PasswordPreference extends DialogPreference
 
         int errorCode = ValidationHelper.validatePassword(currPasswd);
         if(errorCode!= ErrorCodes.NO_ERROR) {
-            inputCurrPasswd.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            inputCurrPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
         }
         errorCode = ValidationHelper.validatePassword(newPassword);
         if(errorCode!= ErrorCodes.NO_ERROR) {
-            inputNewPasswd.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            inputNewPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
         }
 
         String newPassword2 = inputNewPasswd2.getText().toString();

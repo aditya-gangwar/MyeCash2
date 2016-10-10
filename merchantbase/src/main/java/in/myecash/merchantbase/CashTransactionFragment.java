@@ -20,7 +20,8 @@ import android.widget.Toast;
 
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Transaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
@@ -90,10 +91,10 @@ public class CashTransactionFragment extends Fragment implements
 
     // Container Activity must implement this interface
     public interface CashTransactionFragmentIf {
-        public MyRetainedFragment getRetainedFragment();
-        public void onTransactionSubmit();
-        public void setDrawerState(boolean isEnabled);
-        public void restartTxn();
+        MyRetainedFragment getRetainedFragment();
+        void onTransactionSubmit();
+        void setDrawerState(boolean isEnabled);
+        void restartTxn();
     }
 
     @Override
@@ -173,6 +174,13 @@ public class CashTransactionFragment extends Fragment implements
     private void setAddCashload(int value) {
         this.mAddCashload = value;
         mInputAddCl.setText(AppCommonUtil.getSignedAmtStr(mAddCashload, true));
+
+        if( (mRetainedFragment.mCurrCashback.getCurrClBalance()+value) > MyGlobalSettings.getCashAccLimit()) {
+            mInputAddCl.setError(AppCommonUtil.getErrorDesc(ErrorCodes.CASH_ACCOUNT_LIMIT_RCHD));
+        }
+    }
+    private String getAddClError() {
+        return mInputAddCl.getError()==null ? null : mInputCashPaid.getError().toString();
     }
 
     private void setAddCashback(int value) {
@@ -691,11 +699,15 @@ public class CashTransactionFragment extends Fragment implements
                     mAddCbStatus == STATUS_AUTO ||
                     mRedeemCbStatus == STATUS_AUTO) {
                 if (getCashPaidError() == null) {
-                    setTransactionValues();
-                    // Show confirmation dialog
-                    TxnConfirmDialog dialog = TxnConfirmDialog.newInstance(mRetainedFragment.mCurrTransaction.getTransaction(), mCashPaid);
-                    dialog.setTargetFragment(CashTransactionFragment.this, REQ_CONFIRM_TRANS_COMMIT);
-                    dialog.show(getFragmentManager(), DIALOG_CONFIRM_TXN);
+                    if(getAddClError()==null) {
+                        setTransactionValues();
+                        // Show confirmation dialog
+                        TxnConfirmDialog dialog = TxnConfirmDialog.newInstance(mRetainedFragment.mCurrTransaction.getTransaction(), mCashPaid);
+                        dialog.setTargetFragment(CashTransactionFragment.this, REQ_CONFIRM_TRANS_COMMIT);
+                        dialog.show(getFragmentManager(), DIALOG_CONFIRM_TXN);
+                    } else {
+                        AppCommonUtil.toast(getActivity(), getAddClError());
+                    }
                 } else {
                     AppCommonUtil.toast(getActivity(), getCashPaidError());
                 }

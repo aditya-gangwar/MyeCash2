@@ -75,7 +75,7 @@ public class PinResetDialog extends DialogFragment implements DialogInterface.On
                             mListener.onPinResetData(value);
                             getDialog().dismiss();
                         } else {
-                            mInputName.setError(ErrorCodes.appErrorDesc.get(error));
+                            mInputName.setError(AppCommonUtil.getErrorDesc(error));
                         }
                     }
                 });

@@ -20,7 +20,7 @@ public class Customers
   private String objectId;
   private String cashback_table;
   private Integer admin_status;
-  private String name;
+  //private String name;
   private String private_id;
   private CustomerCards membership_card;
   private String cardId;
@@ -150,7 +150,7 @@ public class Customers
     this.admin_status = admin_status;
   }
 
-  public String getName()
+  /*public String getName()
   {
     return name;
   }
@@ -158,7 +158,7 @@ public class Customers
   public void setName( String name )
   {
     this.name = name;
-  }
+  }*/
 
   public String getPrivate_id()
   {

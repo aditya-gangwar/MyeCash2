@@ -29,6 +29,7 @@ public class ErrorCodes {
     public static final int USER_WRONG_ID_PASSWD = 508;
     public static final int FATAL_ERROR_ACC_DISABLED = 509;
     public static final int USER_ALREADY_REGISTERED = 510;
+    public static final int USER_MOB_CHANGE_RESTRICTED_ACCESS = 511;
 
     // Any of sub backend operations failed
     public static final int SEND_SMS_FAILED = 510;
@@ -71,6 +72,71 @@ public class ErrorCodes {
     public static final int FILE_NOT_FOUND = 666;
     public static final int SERVICE_GLOBAL_DISABLED = 667;
 
+    // *******************************************************************
+    // IT IS MANDATORY THAT ALL ERROR CODES ABOVE ARE ADDED TO BELOW MAP
+    // EVEN IF WITH EMPTY STRING
+    // *******************************************************************
+    public static final Map<Integer, String> appErrorDesc;
+    static {
+        Map<Integer, String> aMap = new HashMap<>(100);
+
+        aMap.put(NO_ERROR, "");
+        aMap.put(OP_SCHEDULED,"");
+        aMap.put(OTP_GENERATED,"OTP sent on mobile number. Do the operation again with OTP value.");
+
+        aMap.put(GENERAL_ERROR, "System Error. Please try again.");
+
+        aMap.put(USER_ALREADY_LOGGED_IN, "User is not logged in. Please login first.");
+        aMap.put(NO_SUCH_USER,"User is not registered. Please register first and then try again.");
+        aMap.put(USER_ACC_DISABLED, "User account is disabled. Please contact customer care.");
+        aMap.put(USER_ACC_LOCKED,"User account is temporarily locked.");
+        aMap.put(FIRST_LOGIN_PENDING, "New user. Please use forgot password link to generate new password.");
+        aMap.put(NOT_LOGGED_IN,"User not logged in.");
+        aMap.put(CUST_NOT_REG_WITH_MCNT,"Customer has done no transaction with the merchant.");
+        aMap.put(ACC_UNDER_EXPIRY,"Account under Expiry duration");
+        aMap.put(USER_WRONG_ID_PASSWD, "Wrong user id or password. Please try again.");
+        aMap.put(FATAL_ERROR_ACC_DISABLED,"User account disabled temporarily by system for safety purpose. You will receive notification from customer care in next 24-48 hours.");
+        aMap.put(USER_ALREADY_REGISTERED, "User is already registered");
+        aMap.put(USER_MOB_CHANGE_RESTRICTED_ACCESS,"Mobile number changed in last %s hours. Only 'CREDIT' transactions are allowed.");
+
+        aMap.put(SEND_SMS_FAILED,"Failed to send SMS");
+        aMap.put(OTP_GENERATE_FAILED,"Failed to generate OTP. Please tru again later.");
+
+        aMap.put(WRONG_INPUT_DATA,"Invalid input data");
+        aMap.put(WRONG_OTP,"Wrong OTP value");
+        aMap.put(WRONG_PIN,"Wrong PIN");
+        aMap.put(VERIFICATION_FAILED,"Request verification failed");
+        aMap.put(OPERATION_NOT_ALLOWED,"You do not have permissions for this operation");
+        aMap.put(NOT_TRUSTED_DEVICE,"This device is not in trusted device list");
+        aMap.put(TEMP_PASSWD_EXPIRED,"Temporary password expired. Please generate new password using 'Forget Password' link on login screen.");
+        aMap.put(WRONG_USER_TYPE,"Wrong user type");
+        aMap.put(DEVICE_INSECURE,"Your device is not secure. Please install and run application on other device.");
+
+        aMap.put(NO_SUCH_CARD,"Invalid customer card");
+        aMap.put(WRONG_CARD,"Invalid customer card.");
+        aMap.put(CARD_ALREADY_IN_USE,"Membership card already in use");
+
+        aMap.put(FAILED_ATTEMPT_LIMIT_RCHD,"Failed attempt limit reached. This account is locked temporarily for next %s hours.");
+        aMap.put(TRUSTED_DEVICE_LIMIT_RCHD,"Trusted device limit reached. To continue, login from any trusted device and delete any from the trusted devices.");
+        aMap.put(CASH_ACCOUNT_LIMIT_RCHD,"Cash Account balance more than INR %s. Change 'Cash Paid'.");
+
+
+        aMap.put(EMPTY_VALUE,"Empty input value");
+        aMap.put(INVALID_FORMAT,"Invalid format");
+        aMap.put(INVALID_LENGTH,"Invalid length");
+        aMap.put(INVALID_VALUE,"Wrong input values");
+        aMap.put(NO_DATA_FOUND,"No data found");
+
+        aMap.put(DUPLICATE_ENTRY,"Duplicate entry. Data already exists.");
+        aMap.put(DEVICE_ALREADY_REGISTERED,"Device already registered for other merchant. One device can register to only one merchant account.");
+        aMap.put(MERCHANT_ID_RANGE_ERROR,"Issue with Merchant ID Range.");
+        aMap.put(NO_INTERNET_CONNECTION,"Please check internet connectivity and try again.");
+        aMap.put(FILE_UPLOAD_FAILED,"Failed to upload the file. Please try again later.");
+        aMap.put(FILE_NOT_FOUND,"");
+        aMap.put(SERVICE_GLOBAL_DISABLED,"Service under maintenance. Please try after ");
+
+        appErrorDesc = Collections.unmodifiableMap(aMap);
+    }
 
     // These are defined by backendless
     // These are mapped to appropriate local error codes
@@ -96,61 +162,6 @@ public class ErrorCodes {
     public static final String BL_ERROR_EMPTY_ID_PASSWD = "3006";
     public static final String BL_ERROR_ACCOUNT_LOCKED = "3036";
     public static final String BL_ERROR_MULTIPLE_LOGIN_LIMIT = "3044";
-
-
-    public static final Map<Integer, String> appErrorDesc;
-    static {
-        Map<Integer, String> aMap = new HashMap<>(100);
-
-        aMap.put(GENERAL_ERROR, "System Error. Please try again.");
-        //aMap.put(USER_ALREADY_REGISTERED, "User is already registered.");
-        aMap.put(USER_ALREADY_LOGGED_IN, "User is not logged in. Please login first.");
-        aMap.put(FIRST_LOGIN_PENDING, "New user. Please use forgot password link to generate new password.");
-        aMap.put(USER_ACC_DISABLED, "User account is disabled. Please contact customer care.");
-        aMap.put(USER_WRONG_ID_PASSWD, "Wrong user id or password. Please try again.");
-        aMap.put(USER_ACC_LOCKED,"User account is temporarily locked.");
-        aMap.put(FILE_UPLOAD_FAILED,"Failed to upload the file. Please try again later.");
-        aMap.put(NO_SUCH_USER,"User is not registered. Please register first and then try again.");
-        aMap.put(NO_INTERNET_CONNECTION,"Please check internet connectivity and try again.");
-        aMap.put(EMPTY_VALUE,"Empty input value");
-        aMap.put(INVALID_FORMAT,"Invalid format");
-        aMap.put(INVALID_LENGTH,"Invalid length");
-        aMap.put(INVALID_VALUE,"Wrong input values");
-        aMap.put(NO_DATA_FOUND,"No data found");
-        aMap.put(CARD_ALREADY_IN_USE,"Membership card already in use");
-        aMap.put(TEMP_PASSWD_EXPIRED,"Temporary password expired. Please generate new password using 'Forget Password' link on login screen.");
-        aMap.put(SERVICE_GLOBAL_DISABLED,"Service under maintenance. Please try after ");
-        aMap.put(WRONG_PIN,"Wrong PIN");
-        //aMap.put(CARD_WRONG_MERCHANT,"Membership card not allotted to current merchant.");
-        aMap.put(WRONG_USER_TYPE,"Wrong user type");
-        aMap.put(FATAL_ERROR_ACC_DISABLED,"User account disabled temporarily by system for safety purpose. You will receive notification from customer care in next 24-48 hours.");
-        aMap.put(OTP_GENERATED,"OTP sent on mobile number. Do the operation again with OTP value.");
-        aMap.put(WRONG_OTP,"Wrong OTP value");
-        aMap.put(WRONG_CARD,"Invalid customer card.");
-        aMap.put(OTP_GENERATE_FAILED,"Failed to generate OTP. Please tru again later.");
-        aMap.put(SEND_SMS_FAILED,"Failed to send SMS");
-        aMap.put(WRONG_INPUT_DATA,"Invalid input data");
-        aMap.put(NO_SUCH_CARD,"Invalid customer card");
-        aMap.put(VERIFICATION_FAILED,"Request verification failed");
-        aMap.put(FAILED_ATTEMPT_LIMIT_RCHD,"Failed attempt limit reached. This account is locked temporarily for next %s hours.");
-        aMap.put(NOT_TRUSTED_DEVICE,"This device is not in trusted device list");
-        aMap.put(TRUSTED_DEVICE_LIMIT_RCHD,"Trusted device limit reached. To continue, login from any trusted device and delete any from the trusted devices.");
-        aMap.put(OP_SCHEDULED,"");
-        //aMap.put(CARD_BLOCKED,"Customer card is blocked.");
-        aMap.put(DUPLICATE_ENTRY,"Duplicate entry. Data already exists.");
-        aMap.put(CASH_ACCOUNT_LIMIT_RCHD,"Cash account balance cannot exceed INR %s.");
-        aMap.put(FILE_NOT_FOUND,"");
-        aMap.put(MERCHANT_ID_RANGE_ERROR,"Issue with Merchant ID Range.");
-        aMap.put(OPERATION_NOT_ALLOWED,"You do not have permissions for this operation");
-        //aMap.put(CUST_REG_OK_CB_CREATE_FAILED,"");
-        aMap.put(DEVICE_ALREADY_REGISTERED,"Device already registered for other merchant. One device can register to only one merchant account.");
-        aMap.put(DEVICE_INSECURE,"Your device is not secure. Please install and run application on other device.");
-        aMap.put(CUST_NOT_REG_WITH_MCNT,"Customer has done no transaction with the merchant.");
-        aMap.put(NOT_LOGGED_IN,"User not logged in.");
-        aMap.put(ACC_UNDER_EXPIRY,"Account under Expiry duration");
-
-        appErrorDesc = Collections.unmodifiableMap(aMap);
-    };
 
     // Map from backendless error codes to local error codes
     public static final Map<String, Integer> backendToLocalErrorCode;

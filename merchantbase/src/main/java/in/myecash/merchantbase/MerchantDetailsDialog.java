@@ -13,7 +13,7 @@ import android.widget.ImageView;
 
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.database.Merchants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.merchantbase.entities.MerchantUser;
@@ -104,7 +104,7 @@ public class MerchantDetailsDialog extends DialogFragment {
 
             } else if(status==DbConstants.USER_STATUS_LOCKED) {
                 mLayoutActivation.setVisibility(View.VISIBLE);
-                String detail = "Will be auto unlocked after "+MyGlobalSettings.getMchntAccBlockHrs()+" hours from given time.";
+                String detail = "Will be auto unlocked after "+MyGlobalSettings.getAccBlockHrs(DbConstants.USER_TYPE_MERCHANT)+" hours from given time.";
                 mInputActivation.setText(detail);
 
             } else {

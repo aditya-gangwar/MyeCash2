@@ -39,6 +39,15 @@ public class Merchants
   private String dob;
   private String agentId;
   private Date lastRenewDate;
+  private Date removeReqDate;
+
+  public Date getRemoveReqDate() {
+    return removeReqDate;
+  }
+
+  public void setRemoveReqDate(Date removeReqDate) {
+    this.removeReqDate = removeReqDate;
+  }
 
   public Date getLastRenewDate() {
     return lastRenewDate;

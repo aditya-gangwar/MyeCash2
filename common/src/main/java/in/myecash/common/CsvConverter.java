@@ -125,7 +125,7 @@ public class CsvConverter {
     private static int CB_CSV_TOTAL_FIELDS = 11;
 
     // Total size of above fields = 10*10
-    private static final int CB_CSV_MAX_SIZE = 128;
+    public static final int CB_CSV_MAX_SIZE = 128;
     private static final String CB_CSV_DELIM = ",";
 
     public static Cashback cbFromCsvStr(String csvRecord) {

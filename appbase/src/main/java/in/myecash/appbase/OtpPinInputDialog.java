@@ -139,7 +139,7 @@ public class OtpPinInputDialog extends DialogFragment
                         if(errorCode == ErrorCodes.NO_ERROR) {
                             mCallback.onPinOtp(pinOrOtp, getTag());
                         } else {
-                            mInputPinOtp.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                            mInputPinOtp.setError(AppCommonUtil.getErrorDesc(errorCode));
                             wantToCloseDialog = false;
                         }
                     }
@@ -163,7 +163,7 @@ public class OtpPinInputDialog extends DialogFragment
             mCallback.onPinOtp(pinOrOtp, getTag());
             dialog.dismiss();
         } else {
-            mInputPinOtp.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            mInputPinOtp.setError(AppCommonUtil.getErrorDesc(errorCode));
         }
     }*/
 

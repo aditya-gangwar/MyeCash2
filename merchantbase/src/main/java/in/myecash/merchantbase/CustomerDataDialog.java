@@ -79,7 +79,7 @@ public class CustomerDataDialog extends DialogFragment implements DialogInterfac
                             mListener.generateAllCustData();
                             getDialog().dismiss();
                         } else {
-                            mInputCustId.setError(ErrorCodes.appErrorDesc.get(error));
+                            mInputCustId.setError(AppCommonUtil.getErrorDesc(error));
                         }
                     }
                 });

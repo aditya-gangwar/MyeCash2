@@ -67,7 +67,7 @@
                 android:paddingTop="0dp"/>
         </LinearLayout>
 
-        <LinearLayout
+        <!--LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_cust_name"
             android:background="@color/bg_customercare_data">
@@ -95,7 +95,7 @@
                 android:layout_weight="60"
                 android:gravity="left"
                 android:paddingTop="0dp"/>
-        </LinearLayout>
+        </LinearLayout-->
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">

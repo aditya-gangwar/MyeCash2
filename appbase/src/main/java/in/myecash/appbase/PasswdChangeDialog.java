@@ -77,11 +77,11 @@ public class PasswdChangeDialog extends DialogFragment implements DialogInterfac
 
                         int errorCode = ValidationHelper.validatePassword(currPasswd);
                         if(errorCode!= ErrorCodes.NO_ERROR) {
-                            inputCurrPasswd.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                            inputCurrPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
                         }
                         errorCode = ValidationHelper.validatePassword(newPassword);
                         if(errorCode!= ErrorCodes.NO_ERROR) {
-                            inputNewPasswd.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                            inputNewPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
                         }
 
                         String newPassword2 = inputNewPasswd2.getText().toString();

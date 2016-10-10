@@ -36,22 +36,20 @@ public class CustomerServices
         Backendless.initApp( BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, CustomerServices.APP_VERSION );
     }
 
-    public Customers changeMobile(String verifyParam, String newMobile, String otp)
-    {
-        Object[] args = new Object[]{verifyParam, newMobile, otp};
-        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changeMobile", args, Customers.class );
-    }
-
     public java.util.List<Cashback> getCashbacks(long updatedSince)
     {
         Object[] args = new Object[]{updatedSince};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCashbacks", args, java.util.List.class );
     }
 
-    public void changePin(String oldPin, String newPin, String cardNum)
+    /*public void changePin(String oldPin, String newPin, String cardNum)
     {
         Object[] args = new Object[]{oldPin, newPin, cardNum};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changePin", args );
     }
-
+    public Customers changeMobile(String verifyParam, String newMobile, String otp)
+    {
+        Object[] args = new Object[]{verifyParam, newMobile, otp};
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changeMobile", args, Customers.class );
+    }*/
 }

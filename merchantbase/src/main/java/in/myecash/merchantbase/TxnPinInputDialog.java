@@ -148,7 +148,7 @@ public class TxnPinInputDialog extends DialogFragment
                     if (errorCode == ErrorCodes.NO_ERROR) {
                         mCallback.onTxnPin(pinOrOtp, getTag());
                     } else {
-                        mInputSecretPin.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                        mInputSecretPin.setError(AppCommonUtil.getErrorDesc(errorCode));
                         wantToCloseDialog = false;
                     }
 

@@ -78,7 +78,7 @@ public interface PasswdResetDialogIf {
                             mListener.onPasswdResetData(dob);
                             getDialog().dismiss();
                         } else {
-                            mInputDob.setError(ErrorCodes.appErrorDesc.get(error));
+                            mInputDob.setError(AppCommonUtil.getErrorDesc(error));
                         }
                     }
                 });

@@ -10,9 +10,10 @@ import com.backendless.exceptions.BackendlessException;
 import com.crashlytics.android.Crashlytics;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.constants.BackendSettings;
+import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
@@ -57,7 +58,7 @@ public class SplashActivity extends AppCompatActivity
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(SplashActivity.this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             mTask = new FetchGlobalSettings();
@@ -81,7 +82,7 @@ public class SplashActivity extends AppCompatActivity
         if(MyGlobalSettings.mSettings==null) {
             // I should not be here
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.GENERAL_ERROR), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             finish();
         }
@@ -102,15 +103,16 @@ public class SplashActivity extends AppCompatActivity
         protected Integer doInBackground(Void... params) {
             int errorCode;
             try {
-                errorCode = MyGlobalSettings.initSync();
-                if(errorCode == ErrorCodes.NO_ERROR) {
-                    LogMy.i(TAG, "Fetched global settings ");
+                MyGlobalSettings.initSync(MyGlobalSettings.RunMode.appInternalUser);
+            } catch (Exception e) {
+                LogMy.e(TAG,"Failed to fetch global settings: "+e.toString());
+                AppAlarms.handleException(e);
+                if(e instanceof BackendlessException) {
+                    return AppCommonUtil.getLocalErrorCode((BackendlessException) e);
                 }
-            } catch (BackendlessException ioe) {
-                LogMy.e(TAG, "Failed to fetch global settings: "+ioe.toString());
-                errorCode = ErrorCodes.GENERAL_ERROR;
+                return ErrorCodes.GENERAL_ERROR;
             }
-            return errorCode;
+            return ErrorCodes.NO_ERROR;
         }
 
         @Override
@@ -123,7 +125,7 @@ public class SplashActivity extends AppCompatActivity
 
                     // Add time at the end of error message
                     SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
-                    String errorStr = ErrorCodes.appErrorDesc.get(ErrorCodes.SERVICE_GLOBAL_DISABLED) + mSdfDateWithTime.format(disabledUntil);
+                    String errorStr = AppCommonUtil.getErrorDesc(ErrorCodes.SERVICE_GLOBAL_DISABLED) + mSdfDateWithTime.format(disabledUntil);
                     // Show error notification dialog
                     DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errorStr, false, true)
                             .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);

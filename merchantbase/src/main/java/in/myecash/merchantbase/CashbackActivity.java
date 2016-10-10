@@ -34,10 +34,11 @@ import in.myecash.appbase.OtpPinInputDialog;
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.constants.BackendSettings;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.database.Merchants;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -290,23 +291,24 @@ public class CashbackActivity extends AppCompatActivity implements
 
         } else if (i == R.id.menu_new_card) {
             if (mWorkFragment.mCustomerOp != null) {
-                mWorkFragment.mCustomerOp.setOp_code(DbConstants.CUSTOMER_OP_NEW_CARD);
+                mWorkFragment.mCustomerOp.setOp_code(DbConstants.OP_NEW_CARD);
             }
-            CustomerOpDialog.newInstance(DbConstants.CUSTOMER_OP_NEW_CARD, mWorkFragment.mCustomerOp)
+            CustomerOpDialog.newInstance(DbConstants.OP_NEW_CARD, mWorkFragment.mCustomerOp)
                     .show(mFragMgr, DIALOG_CUSTOMER_OP_NEW_CARD);
 
         } else if (i == R.id.menu_change_mobile) {
             if (mWorkFragment.mCustomerOp != null) {
-                mWorkFragment.mCustomerOp.setOp_code(DbConstants.CUSTOMER_OP_CHANGE_MOBILE);
+                mWorkFragment.mCustomerOp.setOp_code(DbConstants.OP_CHANGE_MOBILE);
             }
-            CustomerOpDialog.newInstance(DbConstants.CUSTOMER_OP_CHANGE_MOBILE, mWorkFragment.mCustomerOp)
+            CustomerOpDialog.newInstance(DbConstants.OP_CHANGE_MOBILE, mWorkFragment.mCustomerOp)
                     .show(mFragMgr, DIALOG_CUSTOMER_OP_CHANGE_MOBILE);
 
         } else if (i == R.id.menu_reset_pin) {
             if (mWorkFragment.mCustomerOp != null) {
-                mWorkFragment.mCustomerOp.setOp_code(DbConstants.CUSTOMER_OP_RESET_PIN);
+                mWorkFragment.mCustomerOp.setOp_code(DbConstants.OP_RESET_PIN);
             }
-            CustomerOpDialog.newInstance(DbConstants.CUSTOMER_OP_RESET_PIN, mWorkFragment.mCustomerOp)
+            // mWorkFragment.mCustomerOp will be null initially
+            CustomerOpDialog.newInstance(DbConstants.OP_RESET_PIN, mWorkFragment.mCustomerOp)
                     .show(mFragMgr, DIALOG_CUSTOMER_OP_RESET_PIN);
 
         } else if (i == R.id.menu_faq) {
@@ -532,7 +534,7 @@ public class CashbackActivity extends AppCompatActivity implements
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
@@ -579,19 +581,19 @@ public class CashbackActivity extends AppCompatActivity implements
         String txnDetail = null;
         switch (tag) {
             case DIALOG_CUSTOMER_OP_NEW_CARD:
-                mWorkFragment.mCustomerOp.setOp_code(DbConstants.CUSTOMER_OP_NEW_CARD);
+                mWorkFragment.mCustomerOp.setOp_code(DbConstants.OP_NEW_CARD);
                 mWorkFragment.mCustomerOp.setExtra_op_params(extraParam);
                 txnTitle = AppConstants.titleNewCardPin;
                 txnDetail = AppConstants.msgNewCardPin;
                 break;
             case DIALOG_CUSTOMER_OP_CHANGE_MOBILE:
-                mWorkFragment.mCustomerOp.setOp_code(DbConstants.CUSTOMER_OP_CHANGE_MOBILE);
+                mWorkFragment.mCustomerOp.setOp_code(DbConstants.OP_CHANGE_MOBILE);
                 mWorkFragment.mCustomerOp.setExtra_op_params(extraParam);
                 txnTitle = AppConstants.titleChangeCustMobilePin;
                 txnDetail = String.format(AppConstants.msgChangeCustMobilePin,mobileNum);
                 break;
             case DIALOG_CUSTOMER_OP_RESET_PIN:
-                mWorkFragment.mCustomerOp.setOp_code(DbConstants.CUSTOMER_OP_RESET_PIN);
+                mWorkFragment.mCustomerOp.setOp_code(DbConstants.OP_RESET_PIN);
                 askPin = false;
                 break;
         }
@@ -621,13 +623,13 @@ public class CashbackActivity extends AppCompatActivity implements
         // Create new dialog with same opcode
         switch (tag) {
             case DIALOG_CUSTOMER_OP_NEW_CARD:
-                CustomerOpDialog.newInstance(DbConstants.CUSTOMER_OP_NEW_CARD,null).show(mFragMgr, DIALOG_CUSTOMER_OP_NEW_CARD);
+                CustomerOpDialog.newInstance(DbConstants.OP_NEW_CARD,null).show(mFragMgr, DIALOG_CUSTOMER_OP_NEW_CARD);
                 break;
-            case DbConstants.CUSTOMER_OP_CHANGE_MOBILE:
-                CustomerOpDialog.newInstance(DbConstants.CUSTOMER_OP_CHANGE_MOBILE,null).show(mFragMgr, DIALOG_CUSTOMER_OP_CHANGE_MOBILE);
+            case DbConstants.OP_CHANGE_MOBILE:
+                CustomerOpDialog.newInstance(DbConstants.OP_CHANGE_MOBILE,null).show(mFragMgr, DIALOG_CUSTOMER_OP_CHANGE_MOBILE);
                 break;
             case DIALOG_CUSTOMER_OP_RESET_PIN:
-                CustomerOpDialog.newInstance(DbConstants.CUSTOMER_OP_RESET_PIN,null).show(mFragMgr, DIALOG_CUSTOMER_OP_RESET_PIN);
+                CustomerOpDialog.newInstance(DbConstants.OP_RESET_PIN,null).show(mFragMgr, DIALOG_CUSTOMER_OP_RESET_PIN);
                 break;
         }
     }
@@ -641,13 +643,13 @@ public class CashbackActivity extends AppCompatActivity implements
             String custOp = mWorkFragment.mCustomerOp.getOp_code();
 
             switch (custOp) {
-                case DbConstants.CUSTOMER_OP_NEW_CARD:
+                case DbConstants.OP_NEW_CARD:
                     successMsg = AppConstants.custOpNewCardSuccessMsg;
                     break;
-                case DbConstants.CUSTOMER_OP_CHANGE_MOBILE:
+                case DbConstants.OP_CHANGE_MOBILE:
                     successMsg = AppConstants.custOpChangeMobileSuccessMsg;
                     break;
-                case DbConstants.CUSTOMER_OP_RESET_PIN:
+                case DbConstants.OP_RESET_PIN:
                     successMsg = AppConstants.custOpResetPinSuccessMsg;
                     break;
             }
@@ -661,11 +663,16 @@ public class CashbackActivity extends AppCompatActivity implements
         } else if(errorCode==ErrorCodes.OTP_GENERATED) {
             // OTP sent successfully to registered customer mobile, ask for the same
             mWorkFragment.mCustomerOp.setOp_status(CustomerOps.CUSTOMER_OP_STATUS_OTP_GENERATED);
-            CustomerOpDialog.newInstance(mWorkFragment.mCustomerOp.getOp_code(),mWorkFragment.mCustomerOp)
-                    .show(mFragMgr, DIALOG_CUSTOMER_OP_OTP);
+            if(mWorkFragment.mCustomerOp==null) {
+                // some issue - not supposed to be null - raise alarm
+                AppAlarms.wtf(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onCustomerOpResult",null);
+            } else {
+                CustomerOpDialog.newInstance(mWorkFragment.mCustomerOp.getOp_code(),mWorkFragment.mCustomerOp)
+                        .show(mFragMgr, DIALOG_CUSTOMER_OP_OTP);
+            }
 
         } else {
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
@@ -682,7 +689,7 @@ public class CashbackActivity extends AppCompatActivity implements
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
@@ -732,7 +739,7 @@ public class CashbackActivity extends AppCompatActivity implements
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             // Store DB settings to app preferences
@@ -749,7 +756,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 }
             } else {
                 // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.GENERAL_ERROR), false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                         .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         }
@@ -772,7 +779,7 @@ public class CashbackActivity extends AppCompatActivity implements
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             // show progress dialog
@@ -787,7 +794,7 @@ public class CashbackActivity extends AppCompatActivity implements
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             // show progress dialog
@@ -801,7 +808,7 @@ public class CashbackActivity extends AppCompatActivity implements
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             // show progress dialog
@@ -819,7 +826,7 @@ public class CashbackActivity extends AppCompatActivity implements
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             logoutMerchant();
         } else {
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
@@ -838,7 +845,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 if(errorCode==ErrorCodes.NO_ERROR) {
                     startMerchantOpsFrag();
                 } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
                 break;
@@ -884,7 +891,7 @@ public class CashbackActivity extends AppCompatActivity implements
                         LogMy.e(TAG, "Trusted device fragment not found.");
                     }
                 } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
                 break;
@@ -909,7 +916,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 if(errorCode==ErrorCodes.NO_ERROR) {
                     startCustomerListFrag();
                 } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
                 break;
@@ -939,7 +946,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 // customer data scenario - download the data file
                 AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
                 mWorkFragment.downloadCustDataFile(this,
-                        AppCommonUtil.getMerchantCustFilePath(mMerchant.getAuto_id()));
+                        CommonUtils.getMerchantCustFilePath(mMerchant.getAuto_id()));
 
                 /*if(mWorkFragment.mLastFetchCashbacks == null) {
                     // refresh scenario - download the data file
@@ -954,7 +961,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 }*/
             }
         } else {
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
@@ -987,7 +994,7 @@ public class CashbackActivity extends AppCompatActivity implements
         } else {
             // reset in case of any error
             changeMobileNumReset(false);
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
@@ -1038,7 +1045,7 @@ public class CashbackActivity extends AppCompatActivity implements
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
@@ -1071,7 +1078,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
         if(errorCode!=ErrorCodes.NO_ERROR) {
             restoreSettings();
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
         // pop settings fragment
@@ -1094,7 +1101,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
             //Drawable drawable = new BitmapDrawable(getResources(), image);
             // store in SD card and path in preferences
-            File photoFile = AppCommonUtil.getPhotoFile(this);
+            File photoFile = AppCommonUtil.getMchntDpFilename(this);
             if (AppCommonUtil.createImageFromBitmap(image, photoFile)) {
                 // Store image path
                 String prefName = AppConstants.PREF_IMAGE_PATH_PREFIX +mMerchant.getAuto_id();
@@ -1111,44 +1118,6 @@ public class CashbackActivity extends AppCompatActivity implements
         // reset it
         mWorkFragment.mLastFetchedImage = null;
         updateTbForMerchant();
-    }
-
-    public void onCashbackResponse(int errorCode) {
-        LogMy.d(TAG, "In onCashbackResponse: " + errorCode);
-
-        if(mLastMenuItemId == R.id.menu_customers) {
-            AppCommonUtil.cancelProgressDialog(true);
-            // response against search of particular customer details
-            if(errorCode==ErrorCodes.NO_ERROR) {
-                // show customer details dialog
-                CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(-1);
-                dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
-            } else {
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
-                        .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            }
-
-            return;
-        }
-
-        // Update data in toolbar as per response
-        if(errorCode== ErrorCodes.NO_SUCH_USER) {
-            askAndRegisterCustomer();
-        } else if(errorCode==ErrorCodes.NO_ERROR) {
-            // update customer ids to actual fetched - just to be sure
-            updateCustIds();
-            updateTbForCustomer();
-            if(mCashTxnStartPending) {
-                startCashTransFragment();
-            }
-        } else {
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
-                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-        }
-    }
-
-    private void updateCustIds() {
-        mWorkFragment.mCustMobile = mWorkFragment.mCurrCustomer.getMobileNum();
     }
 
     public void onCustRegResponse(int errorCode) {
@@ -1168,17 +1137,72 @@ public class CashbackActivity extends AppCompatActivity implements
                 // cashback successfully created as part of customer registration
                 onCashbackResponse(ErrorCodes.NO_ERROR);
             }
+
+        } else if(errorCode==ErrorCodes.OTP_GENERATED) {
+            // OTP sent successfully to customer mobile, ask for the same
+            if(mWorkFragment.mCustMobile==null || mWorkFragment.mCustCardId==null) {
+                // some issue - not supposed to be null - raise alarm
+                AppAlarms.wtf(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onCustRegResponse",null);
+            } else {
+                // start the dialog again
+                // but this time it will have pre-filled last entered mobile and cardId
+                // based on which it will ask for OTP
+                askAndRegisterCustomer();
+            }
+
         } else {
             // Pop all fragments uptil mobile number one
             restartTxn();
-            DialogFragmentWrapper.createNotification(AppConstants.regFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.regFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 
+    public void onCashbackResponse(int errorCode) {
+        LogMy.d(TAG, "In onCashbackResponse: " + errorCode);
+
+        if(mLastMenuItemId == R.id.menu_customers) {
+            AppCommonUtil.cancelProgressDialog(true);
+            // response against search of particular customer details
+            if(errorCode==ErrorCodes.NO_ERROR) {
+                // show customer details dialog
+                CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(-1);
+                dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
+            } else {
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                        .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            }
+
+            return;
+        }
+
+        // Update data in toolbar as per response
+        if(errorCode== ErrorCodes.NO_SUCH_USER) {
+            askAndRegisterCustomer();
+        } else if(errorCode==ErrorCodes.NO_ERROR) {
+            // update customer ids to actual fetched - just to be sure
+            updateCustIds();
+            updateTbForCustomer();
+            if(mCashTxnStartPending) {
+                startCashTransFragment();
+            } else if(mLastMenuItemId==R.id.menu_reg_customer &&
+                    mMobileNumFragment.isVisible()) {
+                // Register from Menu item - start Billing fragment
+                startBillingFragment();
+            }
+        } else {
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
+    }
+
+    private void updateCustIds() {
+        mWorkFragment.mCustMobile = mWorkFragment.mCurrCustomer.getMobileNum();
+    }
+
     @Override
     public void onTransactionSubmit() {
-        if(customerPinRequired()) {
+        if(CommonUtils.customerPinRequired(mMerchantUser.getMerchant(), mWorkFragment.mCurrTransaction.getTransaction())) {
             // ask for customer PIN
             TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(
                     mWorkFragment.mCurrTransaction.getTransaction().getCl_credit(),
@@ -1190,7 +1214,7 @@ public class CashbackActivity extends AppCompatActivity implements
         }
     }
 
-    private boolean customerPinRequired() {
+    /*private boolean customerPinRequired() {
         int cl_credit_threshold = mMerchantUser.getClCreditLimitForPin();
         int cl_debit_threshold = mMerchantUser.getClDebitLimitForPin();
         int cb_debit_threshold = mMerchantUser.getCbDebitLimitForPin();
@@ -1204,7 +1228,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 (currClDebit > cl_debit_threshold) ||
                 (currCbDebit > cb_debit_threshold) ||
                 ((currClDebit+currCbDebit) > higher_debit_threshold) );
-    }
+    }*/
 
     @Override
     public void onTxnPin(String pinOrOtp, String tag) {
@@ -1218,7 +1242,7 @@ public class CashbackActivity extends AppCompatActivity implements
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             // show progress dialog
@@ -1275,14 +1299,14 @@ public class CashbackActivity extends AppCompatActivity implements
 
     private boolean captureTxnImage(String pin) {
         switch(MyGlobalSettings.getCardImageCaptureMode()) {
-            case DbConstants.TXN_IMAGE_CAPTURE_ALWAYS:
+            case MyGlobalSettings.TXN_IMAGE_CAPTURE_ALWAYS:
                 return true;
-            case DbConstants.TXN_IMAGE_CAPTURE_CARD_REQUIRED:
+            case MyGlobalSettings.TXN_IMAGE_CAPTURE_CARD_REQUIRED:
                 return ( (mWorkFragment.mCurrTransaction.getTransaction().getCl_debit()>0 &&
                         MyGlobalSettings.getCardReqAccDebit()) ||
                         (mWorkFragment.mCurrTransaction.getTransaction().getCb_debit()>0 &&
                                 MyGlobalSettings.getCardReqCbRedeem()) );
-            case DbConstants.TXN_IMAGE_CAPTURE_NEVER:
+            case MyGlobalSettings.TXN_IMAGE_CAPTURE_NEVER:
                 return false;
         }
         return true;
@@ -1323,12 +1347,8 @@ public class CashbackActivity extends AppCompatActivity implements
                 mWorkFragment.uploadTxnImageFile(txnImage);
             }
         } else {
-            String msg = ErrorCodes.appErrorDesc.get(errorCode);
-            if(errorCode == ErrorCodes.CASH_ACCOUNT_LIMIT_RCHD) {
-                msg = String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getCashAccLimit()));
-            }
             // Display failure notification
-            DialogFragmentWrapper.createNotification(AppConstants.commitTransFailureTitle, msg, false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.commitTransFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
@@ -1365,26 +1385,38 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onCustomerRegOk(String name, String mobileNum, String cardId) {
+    public void onCustomerRegOk(String mobileNum, String cardId, String otp) {
 
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             // show progress dialog
             AppCommonUtil.showProgressDialog(CashbackActivity.this, AppConstants.progressRegCustomer);
+            // start in background thread
+            mWorkFragment.registerCustomer(mobileNum, cardId, otp);
             // update values
             mWorkFragment.mCustMobile = mobileNum;
-            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, mobileNum);
             mWorkFragment.mCustCardId = cardId;
-            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, cardId);
             mWorkFragment.mCardPresented = true;
-            // start in background thread
-            mWorkFragment.registerCustomer(name, mobileNum, cardId);
+            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, mobileNum);
+            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, cardId);
         }
     }
+
+    @Override
+    public void onCustomerRegReset() {
+        LogMy.d(TAG, "In onCustomerOpReset: ");
+        // reset
+        mWorkFragment.mCustMobile = null;
+        mWorkFragment.mCustCardId = null;
+        mWorkFragment.mCardPresented = false;
+
+        askAndRegisterCustomer();
+    }
+
 
     @Override
     public void onMobileNumInput(String mobileNum) {
@@ -1414,7 +1446,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
                 if ( resultCode != ErrorCodes.NO_ERROR) {
                     // Show error notification dialog
-                    DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+                    DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else {
                     mWorkFragment.mCustMobile = mobileNum;
@@ -1774,7 +1806,7 @@ public class CashbackActivity extends AppCompatActivity implements
         } else {
             // reset in case of any error
             mWorkFragment.mMerchantOp = null;
-            DialogFragmentWrapper.createNotification(ErrorCodes.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+            DialogFragmentWrapper.createNotification(ErrorCodes.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }

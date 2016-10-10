@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/medium_space"/>
 
-        <LinearLayout
+        <!--LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_cust_name">
 
@@ -39,7 +39,7 @@
                 android:layout_weight="60"
                 android:gravity="left"
                 android:paddingTop="0dp"/>
-        </LinearLayout>
+        </LinearLayout-->
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -56,8 +56,7 @@
                 android:layout_width="0dp"
                 android:text="Mobile"
                 android:layout_weight="40"
-                android:gravity="left"
-                android:paddingTop="0dp"/>
+                android:gravity="left"/>
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_customer_mobile"
@@ -65,8 +64,7 @@
                 android:layout_height="wrap_content"
                 android:text="8800191535"
                 android:layout_weight="60"
-                android:gravity="left"
-                android:paddingTop="0dp"/>
+                android:gravity="left"/>
         </LinearLayout>
 
         <LinearLayout

@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.database.Customers;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.customerbase.entities.CustomerUser;
@@ -60,7 +60,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
     private void initDialogView() {
         Customers cust = CustomerUser.getInstance().getCustomer();
 
-        mName.setText(cust.getName());
+        //mName.setText(cust.getName());
         mInputMobileNum.setText(AppCommonUtil.getPartialVisibleStr(cust.getMobile_num()));
         mCreatedOn.setText(mSdfDateOnly.format(cust.getCreated()));
         mExpiringOn.setText(mSdfDateOnly.format(AppCommonUtil.getExpiryDate(cust)));
@@ -81,7 +81,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
             if(status==DbConstants.USER_STATUS_LOCKED) {
                 mInputStatusDetails.setVisibility(View.VISIBLE);
-                String detail = "Will be unlocked automatically after "+MyGlobalSettings.getCustAccBlockHrs()+" hours.";
+                String detail = "Will be unlocked automatically after "+MyGlobalSettings.getAccBlockHrs(DbConstants.USER_TYPE_CUSTOMER)+" hours.";
                 mInputStatusDetails.setText(detail);
             } else {
                 mInputStatusDetails.setVisibility(View.GONE);
@@ -91,7 +91,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
         }
     }
 
-    private EditText mName;
+    //private EditText mName;
     private EditText mInputMobileNum;
     private EditText mCreatedOn;
     private EditText mExpiringOn;
@@ -108,7 +108,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
     private void bindUiResources(View v) {
 
         mInputMobileNum = (EditText) v.findViewById(R.id.input_customer_mobile);
-        mName = (EditText) v.findViewById(R.id.input_cust_name);
+        //mName = (EditText) v.findViewById(R.id.input_cust_name);
         mCreatedOn = (EditText) v.findViewById(R.id.input_cust_created_on);
         mExpiringOn = (EditText) v.findViewById(R.id.input_expiring_on);
 

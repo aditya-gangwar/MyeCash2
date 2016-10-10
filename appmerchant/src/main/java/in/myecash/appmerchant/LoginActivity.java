@@ -26,7 +26,7 @@ import android.widget.TextView;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements
                 int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(LoginActivity.this);
                 if (resultCode != ErrorCodes.NO_ERROR) {
                     // Show error notification dialog
-                    DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+                    DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                             .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else {
                     if(checkPermissions()) {
@@ -287,13 +287,13 @@ public class LoginActivity extends AppCompatActivity implements
         errorCode = ValidationHelper.validateMerchantId(mLoginId);
         if(errorCode!=ErrorCodes.NO_ERROR) {
             valid = false;
-            mIdTextRes.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
         }
 
         errorCode = ValidationHelper.validatePassword(mPassword);
         if(errorCode!=ErrorCodes.NO_ERROR) {
             valid = false;
-            mPasswdTextRes.setError(ErrorCodes.appErrorDesc.get(errorCode));
+            mPasswdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
         }
 
         return valid;
@@ -326,17 +326,16 @@ public class LoginActivity extends AppCompatActivity implements
                         AppConstants.hintEnterOtp);
                 dialog.show(getFragmentManager(), DIALOG_PIN_LOGIN_NEW_DEVICE);
 
-            } else if(errorCode == ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD) {
+            } /*else if(errorCode == ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD) {
                 mLoginButton.setEnabled(true);
-                String errorMsg = String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getMchntAccBlockHrs()));
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errorMsg, false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 MerchantUser.reset();
 
-            }else {
+            }*/else {
                 mLoginButton.setEnabled(true);
                 // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.loginFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.loginFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 MerchantUser.reset();
             }
@@ -358,7 +357,7 @@ public class LoginActivity extends AppCompatActivity implements
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else {
                 // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
             mProcessingResetPasswd = false;
@@ -370,7 +369,7 @@ public class LoginActivity extends AppCompatActivity implements
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else {
                 // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         }
@@ -397,7 +396,7 @@ public class LoginActivity extends AppCompatActivity implements
                         PasswdResetDialog dialog = new PasswdResetDialog();
                         dialog.show(getFragmentManager(), DIALOG_PASSWD_RESET);
                     } else {
-                        mIdTextRes.setError(ErrorCodes.appErrorDesc.get(errorCode));
+                        mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
                         mProcessingResetPasswd = false;
                     }
                 } else {

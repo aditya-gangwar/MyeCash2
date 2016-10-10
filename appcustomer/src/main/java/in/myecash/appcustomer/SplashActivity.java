@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.backendless.Backendless;
+import com.backendless.exceptions.BackendlessException;
 import com.crashlytics.android.Crashlytics;
 
 import java.text.SimpleDateFormat;
@@ -14,9 +15,10 @@ import java.util.Date;
 
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.constants.BackendSettings;
+import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
@@ -50,7 +52,7 @@ public class SplashActivity extends AppCompatActivity
             int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(SplashActivity.this);
             if ( resultCode != ErrorCodes.NO_ERROR) {
                 // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, ErrorCodes.appErrorDesc.get(resultCode), false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else {
                 AppCommonUtil.showProgressDialog(this, "Loading ...");
@@ -87,7 +89,18 @@ public class SplashActivity extends AppCompatActivity
     private class FetchGlobalSettings extends AsyncTask<Void,Void,Integer> {
         @Override
         protected Integer doInBackground(Void... params) {
-            return MyGlobalSettings.initSync();
+            //return MyGlobalSettings.initSync();
+            try {
+                MyGlobalSettings.initSync(MyGlobalSettings.RunMode.appCustomer);
+            } catch (Exception e) {
+                LogMy.e(TAG,"Failed to fetch global settings: "+e.toString());
+                AppAlarms.handleException(e);
+                if(e instanceof BackendlessException) {
+                    return AppCommonUtil.getLocalErrorCode((BackendlessException) e);
+                }
+                return ErrorCodes.GENERAL_ERROR;
+            }
+            return ErrorCodes.NO_ERROR;
         }
 
         @Override
@@ -100,14 +113,14 @@ public class SplashActivity extends AppCompatActivity
                 } else {
                     // Add time at the end of error message
                     SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
-                    String errorStr = ErrorCodes.appErrorDesc.get(ErrorCodes.SERVICE_GLOBAL_DISABLED)
+                    String errorStr = AppCommonUtil.getErrorDesc(ErrorCodes.SERVICE_GLOBAL_DISABLED)
                             + mSdfDateWithTime.format(disabledUntil);
                     // Show error notification dialog
                     DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errorStr, false, true)
                             .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
             } else {
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         }

@@ -167,14 +167,14 @@ public class CustomerUser {
         return ErrorCodes.NO_ERROR;
     }
 
-    public int changeMobileNum(String verifyParam, String newMobile, String otp) {
+    public int changeMobileNum(String pin, String newMobile, String otp) {
         if(mPseudoLoggedIn) {
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
 
-        int returnCode = ErrorCodes.NO_ERROR;
         try {
-            mCustomer = CustomerServices.getInstance().changeMobile(verifyParam, newMobile, otp);
+            CommonServices.getInstance().execCustomerOp(DbConstants.OP_CHANGE_MOBILE, mCustomer.getMobile_num(),
+                    mCustomer.getMembership_card().getCard_id(), otp, pin, newMobile);
             LogMy.d(TAG,"changeMobileNum success");
 
         } catch (BackendlessException e) {
@@ -182,7 +182,7 @@ public class CustomerUser {
             return AppCommonUtil.getLocalErrorCode(e);
         }
 
-        return returnCode;
+        return ErrorCodes.NO_ERROR;
     }
 
     public int changePin(String oldPin, String newPin, String cardNum) {
@@ -190,9 +190,16 @@ public class CustomerUser {
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
 
-        int returnCode = ErrorCodes.NO_ERROR;
         try {
-            CustomerServices.getInstance().changePin(oldPin, newPin, cardNum);
+            if(oldPin==null || newPin==null) {
+                // PIN reset scenario
+                CommonServices.getInstance().execCustomerOp(DbConstants.OP_RESET_PIN, mCustomer.getMobile_num(),
+                        cardNum, "", oldPin, newPin);
+            }
+
+            //CustomerServices.getInstance().changePin(oldPin, newPin, cardNum);
+            CommonServices.getInstance().execCustomerOp(DbConstants.OP_CHANGE_PIN, mCustomer.getMobile_num(),
+                    cardNum, "", oldPin, newPin);
             LogMy.d(TAG,"changePin success");
 
         } catch (BackendlessException e) {
@@ -200,7 +207,7 @@ public class CustomerUser {
             return AppCommonUtil.getLocalErrorCode(e);
         }
 
-        return returnCode;
+        return ErrorCodes.NO_ERROR;
     }
 
     public List<Cashback> fetchCashbacks(Long updatedSince) throws BackendlessException {

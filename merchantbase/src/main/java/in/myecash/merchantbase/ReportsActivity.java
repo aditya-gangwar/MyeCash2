@@ -17,17 +17,17 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.CsvConverter;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
-import in.myecash.appbase.entities.MyGlobalSettings;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.database.Transaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.common.DateUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.merchantbase.entities.MerchantUser;
-import in.myecash.merchantbase.entities.MyTransaction;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 import java.io.BufferedReader;
@@ -148,7 +148,7 @@ public class ReportsActivity extends AppCompatActivity implements
                 if (mCustomerId.length() > 0) {
                     if( mCustomerId.length() != CommonConstants.CUSTOMER_INTERNAL_ID_LEN &&
                             mCustomerId.length() != CommonConstants.MOBILE_NUM_LENGTH ) {
-                        mInputCustId.setError(ErrorCodes.appErrorDesc.get(ErrorCodes.INVALID_LENGTH));
+                        mInputCustId.setError(AppCommonUtil.getErrorDesc(ErrorCodes.INVALID_LENGTH));
                         return;
                     }
                 }
@@ -158,7 +158,7 @@ public class ReportsActivity extends AppCompatActivity implements
             }
         } catch(Exception e) {
             LogMy.e(TAG, "Exception is ReportsActivity:onClick: "+vId, e);
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.GENERAL_ERROR), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             mWorkFragment.mTxnsFromCsv.clear();
         }
@@ -180,7 +180,7 @@ public class ReportsActivity extends AppCompatActivity implements
                 // invalid state: if from == today, then To has to be == today only
                 LogMy.e(TAG,"ReportsActivity: Invalid state: From is today, but To is not");
                 AppCommonUtil.cancelProgressDialog(true);
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.GENERAL_ERROR), false, true)
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                         .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         } else {
@@ -239,7 +239,7 @@ public class ReportsActivity extends AppCompatActivity implements
         }
 
         if(mWorkFragment.mLastFetchTransactions.isEmpty()) {
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.NO_DATA_FOUND), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.NO_DATA_FOUND), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             return;
         }
@@ -264,14 +264,14 @@ public class ReportsActivity extends AppCompatActivity implements
         mWorkFragment.mMissingFiles.clear();
 
         for(int i=0; i<diffDays; i++) {
-            String filename = AppCommonUtil.getTxnCsvFilename(txnDay.getTime(),merchantId);
+            String filename = CommonUtils.getTxnCsvFilename(txnDay.getTime(),merchantId);
             mWorkFragment.mAllFiles.add(filename);
 
             File file = getFileStreamPath(filename);
             if(file == null || !file.exists()) {
                 // file does not exist
                 LogMy.d(TAG,"Missing file: "+filename);
-                String filepath = AppCommonUtil.getMerchantTxnDir(merchantId) + CommonConstants.FILE_PATH_SEPERATOR + filename;
+                String filepath = CommonUtils.getMerchantTxnDir(merchantId) + CommonConstants.FILE_PATH_SEPERATOR + filename;
                 mWorkFragment.mMissingFiles.add(filepath);
             }
             txnDay.addDays(1);
@@ -358,7 +358,7 @@ public class ReportsActivity extends AppCompatActivity implements
                         generateReport();
                     } else {
                         AppCommonUtil.cancelProgressDialog(true);
-                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                                 .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
                     break;
@@ -372,7 +372,7 @@ public class ReportsActivity extends AppCompatActivity implements
                         onAllTxnFilesAvailable(true);
                     } else {
                         AppCommonUtil.cancelProgressDialog(true);
-                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true)
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                                 .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
                     break;
@@ -395,7 +395,7 @@ public class ReportsActivity extends AppCompatActivity implements
         } catch (Exception e) {
             AppCommonUtil.cancelProgressDialog(true);
             LogMy.e(TAG, "Exception is ReportsActivity:onBgProcessResponse: "+operation+": "+errorCode, e);
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(ErrorCodes.GENERAL_ERROR), false, true)
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             mWorkFragment.mTxnsFromCsv.clear();
         }
@@ -408,7 +408,7 @@ public class ReportsActivity extends AppCompatActivity implements
         String txnImgFileName = mWorkFragment.mLastFetchTransactions.get(currTxnPos).getImgFileName();
         String mchntId = mWorkFragment.mLastFetchTransactions.get(currTxnPos).getMerchant_id();
 
-        String url = AppCommonUtil.getTxnImgDir(mchntId)+txnImgFileName;
+        String url = CommonUtils.getTxnImgDir(mchntId)+txnImgFileName;
         mWorkFragment.fetchImageFile(url);
     }
 

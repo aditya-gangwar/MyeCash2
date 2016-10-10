@@ -111,28 +111,10 @@ import in.myecash.common.database.Merchants;
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "archiveTxns", args, Object.class, callback);
     }
 
-    public Cashback registerCustomer(java.lang.String customerMobile, java.lang.String name, java.lang.String cardId)
+    public Cashback registerCustomer(java.lang.String customerMobile, java.lang.String cardId, java.lang.String otp)
     {
-        Object[] args = new Object[]{customerMobile, name, cardId};
+        Object[] args = new Object[]{customerMobile, otp, cardId};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerCustomer", args, Cashback.class );
-    }
-
-    public void registerCustomerAsync(java.lang.String customerMobile, java.lang.String name, java.lang.String cardId, AsyncCallback<Cashback> callback)
-    {
-        Object[] args = new Object[]{customerMobile, name, cardId};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerCustomer", args, Cashback.class, callback);
-    }
-
-    public void execCustomerOp(java.lang.String opCode, java.lang.String customerId, java.lang.String scannedCardId, java.lang.String otp, java.lang.String pin, java.lang.String opParam)
-    {
-        Object[] args = new Object[]{opCode, customerId, scannedCardId, otp, pin, opParam};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "execCustomerOp", args );
-    }
-
-    public void execCustomerOpAsync(java.lang.String opCode, java.lang.String customerId, java.lang.String scannedCardId, java.lang.String otp, java.lang.String pin, java.lang.String opParam, AsyncCallback<Object> callback)
-    {
-        Object[] args = new Object[]{opCode, customerId, scannedCardId, otp, pin, opParam};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "execCustomerOp", args, Object.class, callback);
     }
 
     public Cashback getCashback(java.lang.String merchantId, java.lang.String merchantCbTable, java.lang.String customerId, boolean debugLogs)

@@ -102,7 +102,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 mSettingsChanged = true;
                 setMobileNumSummary(newValue);
             } else {
-                AndroidUtil.toast(getActivity(),ErrorCodes.appErrorDesc.get(errorCode));
+                AndroidUtil.toast(getActivity(),AppCommonUtil.getErrorDesc(errorCode));
             }
         } */else if (key.equals(KEY_EMAIL)) {
             newValue = sharedPreferences.getString(KEY_EMAIL, null);
@@ -112,7 +112,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 mSettingsChanged = true;
                 setEmailSummary(newValue);
             } else {
-                AppCommonUtil.toast(getActivity(), ErrorCodes.appErrorDesc.get(errorCode));
+                AppCommonUtil.toast(getActivity(), AppCommonUtil.getErrorDesc(errorCode));
             }
         }/* else if (key.equals(KEY_PASSWORD)) {
             newValue = sharedPreferences.getString(KEY_PASSWORD, null);
@@ -121,12 +121,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 mMerchant.setNewPassword(newValue);
                 mSettingsChanged = true;
             } else {
-                AndroidUtil.toast(getActivity(),ErrorCodes.appErrorDesc.get(errorCode));
+                AndroidUtil.toast(getActivity(),AppCommonUtil.getErrorDesc(errorCode));
             }
         }*/
 
         if(errorCode!=ErrorCodes.NO_ERROR) {
-            DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, ErrorCodes.appErrorDesc.get(errorCode), false, true);
+            DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true);
             dialog.setTargetFragment(this, REQ_NOTIFICATION );
             dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
@@ -151,22 +151,24 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if(null==value) {
             return;
         }
-        String summary = String.format("%s%% cashback of eligible bill amount.\n0 means disabled.", value);
         Preference pref = findPreference(KEY_CB_RATE);
-        pref.setSummary(summary);
         if(disable) {
+            pref.setSummary("Not allowed to change, as Cashback Credit not allowed in 'expiry' notice period");
             pref.setEnabled(false);
+        } else {
+            String summary = String.format("%s%% cashback of eligible bill amount.\n0 means disabled.", value);
+            pref.setSummary(summary);
         }
     }
 
     private void setAddCashSummary(boolean value, boolean disable) {
-        String summary = String.format("%s add cash to customer account.", value?"Disable":"Enable");
         Preference pref = findPreference(KEY_ADD_CL_ENABLED);
-        pref.setSummary(summary);
         if(disable) {
+            pref.setSummary("Not allowed to change, as Cash Account Credit not allowed in 'expiry' notice period");
             pref.setEnabled(false);
         } else {
-            // do nothing - let it be in earlier state - even if disabled earlier
+            String summary = String.format("%s add cash to customer account.", value?"Disable":"Enable");
+            pref.setSummary(summary);
         }
     }
 
