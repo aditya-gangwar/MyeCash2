@@ -48,7 +48,6 @@ public class MyCustomer {
     String mPrivateId;
     String mMobileNum;
     int mStatus;
-    int mStatusReason;
     String mStatusUpdateTime;
     String mCardId;
     int mCardStatus;
@@ -57,7 +56,8 @@ public class MyCustomer {
     //String mName;
     Boolean mFirstLoginOk;
     String mCreateTime;
-    String mRemarks;
+    String mStatusReason;
+    //String mRemarks;
     String mCardStatusUpdateTime;
 
     // Init from CSV string
@@ -66,7 +66,6 @@ public class MyCustomer {
         mPrivateId = csvFields[CUST_CSV_PRIVATE_ID];
         mMobileNum = csvFields[CUST_CSV_MOBILE_NUM];
         mStatus = Integer.parseInt(csvFields[CUST_CSV_ACC_STATUS]);
-        mStatusReason = Integer.parseInt(csvFields[CUST_CSV_STATUS_REASON]);
         mStatusUpdateTime = mSdfDateWithTime.format(new Date(Long.parseLong(csvFields[CUST_CSV_STATUS_UPDATE_TIME])));
         mCardId = csvFields[CUST_CSV_CARD_ID];
         mCardStatus = Integer.parseInt(csvFields[CUST_CSV_CARD_STATUS]);
@@ -87,11 +86,11 @@ public class MyCustomer {
         } else {
             mCreateTime = null;
         }
-        /*if(!csvFields[CUST_CSV_ADMIN_REMARKS].isEmpty()) {
-            mRemarks = csvFields[CUST_CSV_ADMIN_REMARKS];
+        if(!csvFields[CUST_CSV_STATUS_REASON].isEmpty()) {
+            mStatusReason = csvFields[CUST_CSV_STATUS_REASON];
         } else {
-            mRemarks = null;
-        }*/
+            mStatusReason = null;
+        }
         if(!csvFields[CUST_CSV_STATUS_UPDATE_TIME].isEmpty()) {
             mCardStatusUpdateTime = mSdfDateWithTime.format(new Date(Long.parseLong(csvFields[CUST_CSV_STATUS_UPDATE_TIME])));
         } else {
@@ -108,7 +107,7 @@ public class MyCustomer {
         csvFields[CUST_CSV_PRIVATE_ID] = customer.getPrivate_id() ;
         csvFields[CUST_CSV_MOBILE_NUM] = customer.getMobile_num() ;
         csvFields[CUST_CSV_ACC_STATUS] = String.valueOf(customer.getAdmin_status()) ;
-        csvFields[CUST_CSV_STATUS_REASON] = String.valueOf(customer.getStatus_reason()) ;
+        csvFields[CUST_CSV_STATUS_REASON] = customer.getStatus_reason();
         csvFields[CUST_CSV_STATUS_UPDATE_TIME] = String.valueOf(customer.getStatus_update_time().getTime()) ;
         csvFields[CUST_CSV_CARD_ID] = card.getCard_id() ;
         csvFields[CUST_CSV_CARD_STATUS] = String.valueOf(card.getStatus()) ;
@@ -162,7 +161,7 @@ public class MyCustomer {
         return mStatus;
     }
 
-    public int getStatusReason() {
+    public String getStatusReason() {
         return mStatusReason;
     }
 
@@ -182,8 +181,8 @@ public class MyCustomer {
         return mCardStatusUpdateTime;
     }
 
-    public String getRemarks() {
+    /*public String getRemarks() {
         return mRemarks;
-    }
+    }*/
 
 }

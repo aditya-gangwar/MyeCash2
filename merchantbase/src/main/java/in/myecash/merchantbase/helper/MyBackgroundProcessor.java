@@ -329,8 +329,11 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
             mRetainedFragment.mCurrCashback = null;
             mRetainedFragment.mCurrCustomer = null;
 
-            LogMy.e(TAG, "Exception in registerCustomer: "+ e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
+            int error = AppCommonUtil.getLocalErrorCode(e);
+            if(error!=ErrorCodes.OTP_GENERATED) {
+                LogMy.e(TAG, "Exception in registerCustomer: "+ e.toString());
+            }
+            return error;
         }
         return ErrorCodes.NO_ERROR;
     }

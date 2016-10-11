@@ -113,7 +113,7 @@ import in.myecash.common.database.Merchants;
 
     public Cashback registerCustomer(java.lang.String customerMobile, java.lang.String cardId, java.lang.String otp)
     {
-        Object[] args = new Object[]{customerMobile, otp, cardId};
+        Object[] args = new Object[]{customerMobile, cardId, otp};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerCustomer", args, Cashback.class );
     }
 

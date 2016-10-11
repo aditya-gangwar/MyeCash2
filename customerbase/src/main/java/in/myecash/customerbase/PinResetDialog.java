@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -48,6 +49,8 @@ public class PinResetDialog extends DialogFragment implements DialogInterface.On
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_pin_reset, null);
         initUiResources(v);
 
+        mLabelInfo1.setText(String.format(getString(R.string.cust_pin_reset_info), MyGlobalSettings.getCustPasswdResetMins().toString()));
+
         // return new dialog
         final AlertDialog alertDialog =  new AlertDialog.Builder(getActivity()).setView(v)
                 .setPositiveButton(R.string.ok, this)
@@ -69,13 +72,13 @@ public class PinResetDialog extends DialogFragment implements DialogInterface.On
                     @Override
                     public void onClick(View view) {
                         AppCommonUtil.hideKeyboard(getDialog());
-                        String value = mInputName.getText().toString();
+                        String value = mInputCardId.getText().toString();
                         int error = ValidationHelper.validateCardId(value);
                         if(error == ErrorCodes.NO_ERROR) {
                             mListener.onPinResetData(value);
                             getDialog().dismiss();
                         } else {
-                            mInputName.setError(AppCommonUtil.getErrorDesc(error));
+                            mInputCardId.setError(AppCommonUtil.getErrorDesc(error));
                         }
                     }
                 });
@@ -98,9 +101,12 @@ public class PinResetDialog extends DialogFragment implements DialogInterface.On
         super.onCancel(dialog);
     }
 
-    private EditText mInputName;
+    private EditText mInputCardId;
+    private EditText mLabelInfo1;
+
     private void initUiResources(View v) {
-        mInputName = (EditText) v.findViewById(R.id.input_secret_1);
+        mInputCardId = (EditText) v.findViewById(R.id.input_secret_1);
+        mLabelInfo1 = (EditText) v.findViewById(R.id.label_info_1);
     }
 }
 

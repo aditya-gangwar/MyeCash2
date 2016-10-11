@@ -25,6 +25,7 @@ public class AgentUser {
     private static final String TAG = "AgentUser";
 
     private BackendlessUser mAgentUser;
+    public String mLastRegMerchantId;
     private String mUserToken;
     /*
      * Singleton class
@@ -138,7 +139,7 @@ public class AgentUser {
             String url = uploadImageSync(imgFile, CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR);
             if(url != null) {
                 merchant.setDisplayImage(imgFile.getName());
-                InternalUserServices.getInstance().registerMerchant(merchant);
+                mLastRegMerchantId = InternalUserServices.getInstance().registerMerchant(merchant);
                 LogMy.d(TAG, "Merchant registration success: " + merchant.getAuto_id());
 
             } else {

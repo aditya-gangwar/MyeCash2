@@ -63,9 +63,10 @@
 
             <EditText
                 style="@style/Edittext_only_view_small"
+                android:id="@+id/label_info_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New PIN will be sent on your current registered mobile number." />
+                android:text="@string/cust_pin_reset_info" />
         </LinearLayout>
 
         <EditText

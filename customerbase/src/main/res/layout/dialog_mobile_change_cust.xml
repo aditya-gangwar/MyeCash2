@@ -17,19 +17,8 @@
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/label_info"
-            android:text="@string/cust_mobile_change_info"
-            android:textColor="@color/accent2"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space"/>
-
-        <EditText
-            style="@style/Edittext_only_view_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/label_info1"
+            android:textStyle="italic"
             android:text="You will also need your PIN to change mobile number" />
 
         <Space
@@ -42,6 +31,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:id="@+id/image_mobile"
                 android:src="@drawable/ic_phone_android_white_24dp"
                 android:tint="@color/primary"
                 android:layout_gravity="center"/>
@@ -109,6 +99,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:id="@+id/image_otp"
                 android:src="@drawable/ic_security_white_24dp"
                 android:tint="@color/primary"
                 android:layout_gravity="center"/>
@@ -133,7 +124,20 @@
 
         <Space
             android:layout_width="match_parent"
+            android:layout_height="@dimen/large_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/label_info"
+            android:text="@string/cust_mobile_change_info"
+            android:textColor="@color/accent2"/>
+
+        <Space
+            android:layout_width="match_parent"
             android:layout_height="@dimen/medium_space"/>
+
 
     </LinearLayout>
 </LinearLayout>

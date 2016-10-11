@@ -1,4 +1,4 @@
-package in.myecash.appmerchant;
+package in.myecash.merchantbase;
 
 import android.Manifest;
 import android.app.Activity;
@@ -33,10 +33,7 @@ import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.RootUtil;
 import in.myecash.appbase.utilities.ValidationHelper;
-import in.myecash.merchantbase.CashbackActivity;
-import in.myecash.merchantbase.ForgotIdDialog;
 import in.myecash.appbase.OtpPinInputDialog;
-import in.myecash.merchantbase.PasswdResetDialog;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 

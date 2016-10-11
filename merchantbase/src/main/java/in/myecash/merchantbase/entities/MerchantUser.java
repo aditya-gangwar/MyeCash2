@@ -215,7 +215,7 @@ public class MerchantUser
     public static int logoutSync() {
         LogMy.d(TAG, "In logoutSync");
 
-        if(!mInstance.mPseudoLoggedIn) {
+        if(mInstance!=null && !mInstance.mPseudoLoggedIn) {
             try {
                 Backendless.UserService.logout();
                 LogMy.d(TAG, "Logout Success: " + mInstance.mMerchant.getAuto_id());

@@ -36,10 +36,10 @@ public class InternalUserServices
         Backendless.initApp( BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, InternalUserServices.APP_VERSION );
     }
 
-    public void registerMerchant(Merchants merchant)
+    public String registerMerchant(Merchants merchant)
     {
         Object[] args = new Object[]{merchant};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerMerchant", args );
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerMerchant", args, String.class );
     }
 
     public void registerMerchantAsync(Merchants merchant, AsyncCallback<Object> callback)

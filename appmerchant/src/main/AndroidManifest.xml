@@ -34,7 +34,7 @@
         </activity>
 
         <activity
-            android:name=".LoginActivity">
+            android:name="in.myecash.merchantbase.LoginActivity">
         </activity>
         <activity
             android:name="in.myecash.merchantbase.TermsConditionsActivity"

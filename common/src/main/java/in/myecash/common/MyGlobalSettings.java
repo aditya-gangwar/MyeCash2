@@ -327,7 +327,7 @@ public class MyGlobalSettings
      * OTP validity
      */
     // As not used by app (but only backend) - so only defining constants against them
-    public static final int OTP_VALID_MINS = 30;
+    public static final int OTP_VALID_MINS = 10;
 
     /*
      * Days for which Merchant is kept in system - after the removal request.

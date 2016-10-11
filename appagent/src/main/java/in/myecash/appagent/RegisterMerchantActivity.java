@@ -31,6 +31,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appbase.entities.MyBusinessCategories;
 import in.myecash.appbase.entities.MyCities;
 import in.myecash.appagent.helper.MyRetainedFragment;
@@ -253,7 +255,8 @@ public class RegisterMerchantActivity extends AppCompatActivity
                 //setResult(RESULT_OK, null);
 
                 // Show dialog
-                DialogFragmentWrapper.createNotification(AppConstants.regSuccessTitle, AppConstants.regSuccessMsg, false, false)
+                String msg = String.format(AppConstants.mchntRegSuccessMsg, AgentUser.getInstance().mLastRegMerchantId);
+                DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, msg, false, false)
                         .show(getFragmentManager(), DIALOG_REG_SUCCESS);
 
             } else {

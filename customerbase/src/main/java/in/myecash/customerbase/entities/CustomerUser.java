@@ -195,12 +195,11 @@ public class CustomerUser {
                 // PIN reset scenario
                 CommonServices.getInstance().execCustomerOp(DbConstants.OP_RESET_PIN, mCustomer.getMobile_num(),
                         cardNum, "", oldPin, newPin);
+            } else {
+                // PIN change scenario
+                CommonServices.getInstance().execCustomerOp(DbConstants.OP_CHANGE_PIN, mCustomer.getMobile_num(),
+                        mCustomer.getMembership_card().getCard_id(), "", oldPin, newPin);
             }
-
-            //CustomerServices.getInstance().changePin(oldPin, newPin, cardNum);
-            CommonServices.getInstance().execCustomerOp(DbConstants.OP_CHANGE_PIN, mCustomer.getMobile_num(),
-                    cardNum, "", oldPin, newPin);
-            LogMy.d(TAG,"changePin success");
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"changePin failed: "+e.toString());

@@ -73,12 +73,14 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
         if(newMobile==null) {
             // first run, otp not generated yet
             // disable OTP and ask for parameters
-            labelNewOtp.setText("OTP will be sent on the New mobile number for verification");
+            labelNewOtp.setText("OTP will be sent on the New Mobile Number for verification");
             inputNewOtp.setVisibility(View.GONE);
         } else {
             // second run, OTP generated
             // disable and show parameter values and ask for otp
-            labelInfo1.setEnabled(false);
+            //labelInfo1.setEnabled(false);
+            labelInfo1.setText("Enter received OTP and submit the request again");
+            mImageMobile.setAlpha(0.5f);
 
             labelNewMobile.setEnabled(false);
             inputNewMobile.setText(newMobile);
@@ -137,16 +139,19 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
         //pass a handler the button doesn't get instantiated
     }
 
-    EditText labelInfo1;
-    EditText labelNewMobile;
-    EditText labelNewMobile2;
-    EditText labelNewOtp;
+    private EditText labelInfo1;
+    private EditText labelNewMobile;
+    private EditText labelNewMobile2;
+    private EditText labelNewOtp;
 
-    EditText inputNewMobile;
-    EditText inputNewMobile2;
-    EditText inputNewOtp;
+    private EditText inputNewMobile;
+    private EditText inputNewMobile2;
+    private EditText inputNewOtp;
 
     private EditText mInfoEnd;
+
+    private View mImageMobile;
+    private View mImageOtp;
 
     private void initUiResources(View view) {
         labelInfo1 = (EditText) view.findViewById(R.id.label_info1);
@@ -159,6 +164,8 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
         inputNewOtp = (EditText) view.findViewById(R.id.input_otp);
 
         mInfoEnd = (EditText) view.findViewById(R.id.label_info);
+        mImageMobile = view.findViewById(R.id.image_mobile);
+        mImageOtp = view.findViewById(R.id.image_otp);
     }
 
     private boolean validate() {

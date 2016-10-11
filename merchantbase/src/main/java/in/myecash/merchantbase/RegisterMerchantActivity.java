@@ -248,7 +248,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
                 // Return response to parent activity (login) and finish this activity
                 setResult(RESULT_OK, null);
 
-                String detail = AppConstants.regSuccessMsg;
+                String detail = AppConstants.mchntRegSuccessMsg;
                 if(mMerchant.getDisplayImage()==null) {
                     // image upload failed
                     String detail_new = "Display image upload failed. Please try it later from 'Settings'.";

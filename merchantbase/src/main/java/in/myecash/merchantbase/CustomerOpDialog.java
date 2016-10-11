@@ -113,7 +113,6 @@ public class CustomerOpDialog extends DialogFragment
                             //pass a handler the button doesn't get instantiated
                         }
                     })
-                //.setPositiveButton(android.R.string.ok, this)
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -141,14 +140,17 @@ public class CustomerOpDialog extends DialogFragment
 
     private void initDialogView(String opCode, boolean isOtpGenerated) {
         // Set title
-        String title = "CUSTOMER: "+opCode;
+        String title = "Customer: "+opCode;
         mTitle.setText(title);
         mInfoEnd.setVisibility(View.GONE);
+        mInfoNewMobile.setVisibility(View.GONE);
 
         // Disable OTP if OTP not generated
         if(!isOtpGenerated) {
             mLabelOTP.setEnabled(false);
             mInputOTP.setEnabled(false);
+            mImageOtp.setAlpha(0.5f);
+            mInfoOtp.setVisibility(View.GONE);
         }
 
         String mobileNum = getArguments().getString(ARG_MOBILE_NUM, null);
@@ -157,6 +159,7 @@ public class CustomerOpDialog extends DialogFragment
             if(isOtpGenerated) {
                 mLabelMobileNum.setEnabled(false);
                 mInputMobileNum.setEnabled(false);
+                mImageMobile.setAlpha(0.5f);
             }
         }
         String cardNum = getArguments().getString(ARG_CARD_NUM, null);
@@ -165,6 +168,7 @@ public class CustomerOpDialog extends DialogFragment
             if(isOtpGenerated) {
                 mLabelQrCard.setEnabled(false);
                 mInputQrCard.setEnabled(false);
+                mImageCard.setAlpha(0.5f);
             }
         } else {
             mInputQrCard.setOnClickListener(this);
@@ -178,6 +182,7 @@ public class CustomerOpDialog extends DialogFragment
                 if(isOtpGenerated) {
                     mLabelReason.setEnabled(false);
                     mInputReason.setEnabled(false);
+                    mImageReason.setAlpha(0.5f);
                 }
             } else {
                 initChoiceReasons(null);
@@ -199,12 +204,20 @@ public class CustomerOpDialog extends DialogFragment
                 if(isOtpGenerated) {
                     mLabelNewMobile.setEnabled(false);
                     mInputNewMobile.setEnabled(false);
+                    mImageNewMobile.setAlpha(0.5f);
+                } else {
+                    mInfoNewMobile.setVisibility(View.VISIBLE);
                 }
             }
         } else {
             mInputNewMobile.setEnabled(false);
             mSpaceNewMobile.setVisibility(View.GONE);
             mLayoutNewMobile.setVisibility(View.GONE);
+        }
+
+        if(opCode.equals(DbConstants.OP_RESET_PIN)) {
+            mInfoEnd.setVisibility(View.VISIBLE);
+            mInfoEnd.setText(String.format(getString(R.string.cust_pin_reset_info), MyGlobalSettings.getCustPasswdResetMins().toString()));
         }
     }
 
@@ -394,7 +407,16 @@ public class CustomerOpDialog extends DialogFragment
     private EditText mLabelReason;
     private EditText mInputReason;
 
+    private EditText mInfoOtp;
     private EditText mInfoEnd;
+    private EditText mInfoNewMobile;
+
+    private View mImageOtp;
+    private View mImageMobile;
+    private View mImageCard;
+    private View mImageNewMobile;
+    private View mImageReason;
+
 
     private void bindUiResources(View v) {
         mTitle = (EditText) v.findViewById(R.id.label_cust_op_title);
@@ -423,6 +445,15 @@ public class CustomerOpDialog extends DialogFragment
         mInputReason = (EditText) v.findViewById(R.id.input_reason);
 
         mInfoEnd = (EditText) v.findViewById(R.id.label_info);
+        mInfoOtp = (EditText) v.findViewById(R.id.label_info_otp);
+        mInfoNewMobile = (EditText) v.findViewById(R.id.label_info_newMobile);
+
+        mImageOtp = v.findViewById(R.id.image_otp);
+        mImageMobile = v.findViewById(R.id.image_mobile);
+        mImageCard = v.findViewById(R.id.image_card);
+        mImageNewMobile = v.findViewById(R.id.image_newMobile);
+        mImageReason = v.findViewById(R.id.image_reason);
+
     }
 
     private void initChoiceReasons(final String selectedReason) {

@@ -5,7 +5,8 @@
     <string name="Forgot_id_link">User ID</string>
 
     <!-- Text used in XML layouts -->
-    <string name="cust_mobile_change_info">Customer will have <b>Restricted</b> access for %s hours after mobile number change. Only \'CREDIT\' transactions will be allowed</string>
+    <string name="cust_mobile_change_info">Customer will have <b>Restricted</b> access for %s hours after Mobile Number change. Only \'CREDIT\' transactions will be allowed</string>
+    <string name="cust_pin_reset_info">New PIN will be sent after %s minutes to the registered mobile number</string>
 
     <string name="empty_in_angle_brackets">\u003Cempty\u003E</string>
     <string name="none_in_angle_brackets">\u003Cnone\u003E</string>

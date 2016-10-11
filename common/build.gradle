@@ -5,6 +5,6 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.backendless:backendless:3.0.20.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
 }

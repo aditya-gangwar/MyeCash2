@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Enter OTP"/>
+        android:text="Enter OTP"
+        android:textColor="@color/accent"/>
 
     <EditText
         style="@style/Edittext_only_view_small"

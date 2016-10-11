@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +24,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
  * Created by adgangwa on 13-04-2016.
  */
 public class CustomerRegDialog extends DialogFragment
-        implements View.OnClickListener {
+        implements View.OnTouchListener {
 
     private static final String TAG = "CustomerRegDialog";
     public static final int RC_BARCODE_CAPTURE_REG_DIALOG = 9002;
@@ -73,26 +74,43 @@ public class CustomerRegDialog extends DialogFragment
 
         bindUiResources(v);
 
-        // Both null means OTP not generated yet
-        if((mobileNum==null || mobileNum.isEmpty()) &&
-                (cardId == null || cardId.isEmpty())) {
-            mLabelOtp.setEnabled(false);
-            mInputOtp.setEnabled(false);
-
-            mInputMobileNum.requestFocus();
-            mInputQrCard.setOnClickListener(this);
-
+        // Any null means OTP not generated yet
+        if(mobileNum==null || mobileNum.isEmpty() ||
+                cardId == null || cardId.isEmpty()) {
+            //mLabelOtp.setEnabled(false);
+            //mInputOtp.setEnabled(false);
+            mInputOtp.setText("");
+            mLayoutOtp.setVisibility(View.GONE);
+            mLabelInfoOtp.setVisibility(View.GONE);
         } else {
-            // Set mobile num
+            mLabelInfoMobile.setVisibility(View.GONE);
+            mInputOtp.requestFocus();
+        }
+
+        // When the dialog is opened from 'mobile number screen' (i.e. not from Menu)
+        // Then it will receive 'mobile number' but not the card id
+
+        // Set mobile num
+        if(mobileNum!=null && !mobileNum.isEmpty()) {
             mInputMobileNum.setText(mobileNum);
             AppCommonUtil.makeEditTextOnlyView(mInputMobileNum);
             mInputMobileNum.clearFocus();
             mInputMobileNum.setEnabled(false);
+            mLabelMobile.setEnabled(false);
+            mImageMobile.setAlpha(0.5f);
+        } else {
+            mInputMobileNum.requestFocus();
+        }
 
-            // Set card Id
+        // Set card Id
+        if(cardId!=null && !cardId.isEmpty()) {
             mInputQrCard.setText(cardId);
             mInputQrCard.setClickable(false);
             mInputQrCard.setEnabled(false);
+            mLabelCard.setEnabled(false);
+            mImageCard.setAlpha(0.5f);
+        } else {
+            mInputQrCard.setOnTouchListener(this);
         }
 
         Dialog dialog = new AlertDialog.Builder(getActivity())
@@ -194,7 +212,8 @@ public class CustomerRegDialog extends DialogFragment
             }
         }
 
-        if(mInputOtp.isEnabled()) {
+        if(mInputOtp.isEnabled() &&
+                mLayoutOtp.getVisibility()==View.VISIBLE) {
             errorCode = ValidationHelper.validateOtp(mInputOtp.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
                 mInputOtp.setError(AppCommonUtil.getErrorDesc(errorCode));
@@ -206,18 +225,20 @@ public class CustomerRegDialog extends DialogFragment
     }
 
     @Override
-    public void onClick(View v) {
-        int vId = v.getId();
-        LogMy.d(TAG, "In onClick: " + vId);
+    public boolean onTouch(View v, MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            int vId = v.getId();
+            LogMy.d(TAG, "In onClick: " + vId);
 
-        if (vId == R.id.input_qr_card) {// launch barcode activity.
-            Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
-            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
-            intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+            if (vId == R.id.input_qr_card) {// launch barcode activity.
+                Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
+                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
 
-            startActivityForResult(intent, RC_BARCODE_CAPTURE_REG_DIALOG);
-
+                startActivityForResult(intent, RC_BARCODE_CAPTURE_REG_DIALOG);
+            }
         }
+        return true;
     }
 
     @Override
@@ -236,20 +257,40 @@ public class CustomerRegDialog extends DialogFragment
     private EditText mInputMobileNum;
     private EditText mInputOtp;
     private EditText mInputQrCard;
-    private EditText mLabelOtp;
+
+    private EditText mLabelMobile;
+    private EditText mLabelCard;
+    private EditText mLabelInfoOtp;
+    private EditText mLabelInfoMobile;
+
+    private View mImageMobile;
+    private View mImageCard;
+    private View mImageOtp;
+
+    private View mLayoutOtp;
 
     private void bindUiResources(View v) {
         mInputMobileNum = (EditText) v.findViewById(R.id.input_customer_mobile);
         mInputQrCard = (EditText) v.findViewById(R.id.input_qr_card);
         mInputOtp = (EditText) v.findViewById(R.id.input_otp);
-        mLabelOtp = (EditText) v.findViewById(R.id.label_otp);
+
+        mLabelMobile = (EditText) v.findViewById(R.id.label_mobile);
+        mLabelCard = (EditText) v.findViewById(R.id.label_card);
+        mLabelInfoOtp = (EditText) v.findViewById(R.id.label_info_otp);
+        mLabelInfoMobile = (EditText) v.findViewById(R.id.label_info_mobile);
+
+        mImageMobile = v.findViewById(R.id.image_mobile);
+        mImageCard = v.findViewById(R.id.image_card);
+        mImageOtp = v.findViewById(R.id.image_otp);
+
+        mLayoutOtp = v.findViewById(R.id.layout_otp);
     }
 
     private void setQrCode(String qrCode) {
         if(ValidationHelper.validateCustQrCode(qrCode) == ErrorCodes.NO_ERROR) {
             mInputQrCard.setText(qrCode);
         } else {
-            Toast.makeText(getActivity(), "Invalid member QR code: " + qrCode, Toast.LENGTH_LONG).show();
+            AppCommonUtil.toast(getActivity(),"Invalid Member Card");
         }
     }
 }

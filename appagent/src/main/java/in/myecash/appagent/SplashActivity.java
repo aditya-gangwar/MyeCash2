@@ -101,7 +101,6 @@ public class SplashActivity extends AppCompatActivity
     private class FetchGlobalSettings extends AsyncTask<Void,Void,Integer> {
         @Override
         protected Integer doInBackground(Void... params) {
-            int errorCode;
             try {
                 MyGlobalSettings.initSync(MyGlobalSettings.RunMode.appInternalUser);
             } catch (Exception e) {
@@ -130,6 +129,9 @@ public class SplashActivity extends AppCompatActivity
                     DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errorStr, false, true)
                             .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
+            } else {
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         }
     }

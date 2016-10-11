@@ -21,7 +21,7 @@
 
     <item
         android:id="@+id/current_subheader"
-        android:title="Current Data">
+        android:title="My Data">
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -32,11 +32,19 @@
                     android:id="@+id/menu_customers"
                     android:title="Customer Data"
                     android:icon="@drawable/ic_group_black_24dp" />
+                <item
+                    android:id="@+id/menu_reports"
+                    android:title="Transactions"
+                    android:icon="@drawable/ic_swap_horiz_black_24dp" />
+                <item
+                    android:id="@+id/menu_operations"
+                    android:title="Change Requests"
+                    android:icon="@drawable/ic_change_history_black_24dp" />
             </group>
         </menu>
     </item>
 
-    <item
+    <!--item
         android:id="@+id/history_subheader"
         android:title="History Data">
         <menu>
@@ -51,11 +59,11 @@
                 android:icon="@drawable/ic_change_history_black_24dp" />
         </group>
         </menu>
-    </item>
+    </item-->
 
     <item
         android:id="@+id/customer_subheader"
-        android:title="For Customer">
+        android:title="Customer Operations">
         <menu>
             <group android:checkableBehavior="single">
             <item

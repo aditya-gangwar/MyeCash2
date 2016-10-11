@@ -68,11 +68,10 @@ public class AppConstants {
     public static final String regConfirmTitle = "Merchant Registration";
     public static final String regConfirmMsg = "Are you sure all information given is correct ?";
 
-    public static final String regSuccessTitle = "Registration Success";
-    public static final String regSuccessMsg = "Please use 'Forget Password' link to get your password and proceed further.";
+    public static final String mchntRegSuccessMsg = "Registered Merchant Id is %s. Please ask Merchant to use 'Forget Password' link to get password and proceed further.";
 
     public static final String custOpNewCardSuccessMsg = "New Customer card registered successfully";
-    public static final String custOpResetPinSuccessMsg = "New PIN is sent to the registered customer mobile. Please try again, if not received in 5-10 mins.";
+    //public static final String custOpResetPinSuccessMsg = "New PIN is sent to the registered customer mobile. Please try again, if not received in 5-10 mins.";
     public static final String custOpChangeMobileSuccessMsg = "Customer registered number updated successfully.";
 
     public static final String customerRegConfirmTitle = "Customer Registration Success";

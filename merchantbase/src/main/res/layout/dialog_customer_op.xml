@@ -25,7 +25,20 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/XXL_space"/>
+            android:layout_height="@dimen/medium_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/label_info_otp"
+            android:text="Please enter received OTP and submit the request again."
+            android:textStyle="italic"
+            android:textColor="@color/accent"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/large_space"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -33,6 +46,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:id="@+id/image_mobile"
                 android:src="@drawable/ic_phone_android_white_24dp"
                 android:tint="@color/primary"/>
             <EditText
@@ -57,7 +71,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
+            android:layout_height="@dimen/medium_space"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -65,6 +79,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:id="@+id/image_card"
                 android:src="@drawable/ic_card_membership_white_24dp"
                 android:tint="@color/primary"/>
             <EditText
@@ -83,7 +98,7 @@
                 android:id="@+id/input_qr_card"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Touch to scan"
+                android:hint="Touch to Scan"
                 android:layout_weight="60"
                 android:gravity="left"
                 android:singleLine="true"
@@ -92,7 +107,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"
+            android:layout_height="@dimen/medium_space"
             android:id="@+id/space_new_mobile"
             android:visibility="visible"/>
 
@@ -105,6 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_phone_android_white_24dp"
+                android:id="@+id/image_newMobile"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_medium"
@@ -125,10 +141,19 @@
                 android:layout_weight="60"
                 android:gravity="left"/>
         </LinearLayout>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/label_info_newMobile"
+            android:gravity="left"
+            android:textStyle="italic"
+            android:text="OTP will be sent on this number for verification."/>
+
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"
+            android:layout_height="@dimen/medium_space"
             android:id="@+id/space_reason"
             android:visibility="visible"/>
 
@@ -140,6 +165,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:id="@+id/image_reason"
                 android:src="@drawable/ic_input_white_24dp"
                 android:tint="@color/primary"/>
             <EditText
@@ -165,7 +191,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"
+            android:layout_height="@dimen/medium_space"
             android:id="@+id/space_otp"
             android:visibility="visible"/>
 
@@ -177,6 +203,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:id="@+id/image_otp"
                 android:src="@drawable/ic_security_white_24dp"
                 android:tint="@color/primary"/>
             <EditText
@@ -202,7 +229,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
+            android:layout_height="@dimen/large_space"/>
 
         <EditText
             style="@style/Edittext_only_view_small"
@@ -214,7 +241,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
+            android:layout_height="@dimen/large_space"/>
 
     </LinearLayout>
 </LinearLayout>

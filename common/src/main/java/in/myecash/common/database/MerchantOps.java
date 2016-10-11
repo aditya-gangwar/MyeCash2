@@ -5,6 +5,8 @@ import com.backendless.BackendlessCollection;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.persistence.BackendlessDataQuery;
 
+import java.util.Date;
+
 public class MerchantOps
 {
   private String ownerId;
@@ -23,6 +25,15 @@ public class MerchantOps
   private String reason;
   private String agentId;
   private String remarks;
+  private java.util.Date createTime;
+
+  public Date getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Date createTime) {
+    this.createTime = createTime;
+  }
 
   public String getRemarks() {
     return remarks;

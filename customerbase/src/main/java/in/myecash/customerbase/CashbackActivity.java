@@ -600,7 +600,7 @@ public class CashbackActivity extends AppCompatActivity implements
             } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY) {
                 // Old request is already pending
                 String msg = String.format(AppConstants.pinGenerateDuplicateRequestMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
-                DialogFragmentWrapper.createNotification(AppConstants.pinResetFailureTitle, msg, false, false)
+                DialogFragmentWrapper.createNotification(AppConstants.pinResetFailureTitle, msg, false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
             } else {

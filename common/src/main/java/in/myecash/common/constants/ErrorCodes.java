@@ -31,10 +31,6 @@ public class ErrorCodes {
     public static final int USER_ALREADY_REGISTERED = 510;
     public static final int USER_MOB_CHANGE_RESTRICTED_ACCESS = 511;
 
-    // Any of sub backend operations failed
-    public static final int SEND_SMS_FAILED = 510;
-    public static final int OTP_GENERATE_FAILED = 511;
-
     // Input / Verification data or permissions failure
     public static final int WRONG_INPUT_DATA = 520;
     public static final int WRONG_OTP = 521;
@@ -63,8 +59,12 @@ public class ErrorCodes {
     public static final int INVALID_VALUE = 553;
     public static final int NO_DATA_FOUND = 554;
 
+    // Any of sub backend operations failed
+    public static final int SEND_SMS_FAILED = 560;
+    public static final int OTP_GENERATE_FAILED = 562;
+
     // Misc errors
-    public static final int DUPLICATE_ENTRY = 6601;
+    public static final int DUPLICATE_ENTRY = 661;
     public static final int DEVICE_ALREADY_REGISTERED = 662;
     public static final int MERCHANT_ID_RANGE_ERROR = 663;
     public static final int NO_INTERNET_CONNECTION = 664;
@@ -166,31 +166,31 @@ public class ErrorCodes {
     // Map from backendless error codes to local error codes
     public static final Map<String, Integer> backendToLocalErrorCode;
     static {
-        Map<String, Integer> aMap = new HashMap<>(50);
+        Map<String, Integer> map = new HashMap<>(50);
 
         // backendless expected error codes
-        aMap.put(BL_ERROR_LOGIN_DISABLED, USER_ACC_DISABLED);
-        aMap.put(BL_ERROR_ALREADY_LOGGOED_IN, USER_ALREADY_LOGGED_IN);
-        aMap.put(BL_ERROR_MULTIPLE_LOGIN_LIMIT, USER_ALREADY_LOGGED_IN);
-        aMap.put(BL_ERROR_INVALID_ID_PASSWD, USER_WRONG_ID_PASSWD);
-        aMap.put(BL_ERROR_EMPTY_ID_PASSWD, USER_WRONG_ID_PASSWD);
-        aMap.put(BL_ERROR_ACCOUNT_LOCKED, USER_ACC_LOCKED);
-        aMap.put(BL_ERROR_DUPLICATE_ENTRY, DUPLICATE_ENTRY);
-        aMap.put(BL_ERROR_DUPLICATE_ENTRY_1, DUPLICATE_ENTRY);
-        aMap.put(BL_ERROR_DUPLICATE_ENTRY_2, DUPLICATE_ENTRY);
-        aMap.put(BL_ERROR_REGISTER_DUPLICATE, USER_ALREADY_REGISTERED);
-        aMap.put(BL_ERROR_NO_PERMISSIONS, OPERATION_NOT_ALLOWED);
-        aMap.put(BL_ERROR_NO_PERMISSIONS_1, OPERATION_NOT_ALLOWED);
-        aMap.put(BL_ERROR_NO_PERMISSIONS_2, OPERATION_NOT_ALLOWED);
-        aMap.put(BL_ERROR_NO_PERMISSIONS_3, OPERATION_NOT_ALLOWED);
-        aMap.put(BL_ERROR_NO_PERMISSIONS_4, OPERATION_NOT_ALLOWED);
-        aMap.put(BL_ERROR_NO_PERMISSIONS_5, OPERATION_NOT_ALLOWED);
-        aMap.put(BL_ERROR_NO_PERMISSIONS_6, OPERATION_NOT_ALLOWED);
-        aMap.put(BL_ERROR_NO_DATA_FOUND, NO_DATA_FOUND);
-        aMap.put(BL_ERROR_NO_DATA_FOUND_1, NO_DATA_FOUND);
-        aMap.put(BL_ERROR_NO_DATA_FOUND_2, NO_DATA_FOUND);
-        aMap.put(BL_ERROR_NO_DATA_FOUND_3, NO_DATA_FOUND);
+        map.put(BL_ERROR_LOGIN_DISABLED, USER_ACC_DISABLED);
+        map.put(BL_ERROR_ALREADY_LOGGOED_IN, USER_ALREADY_LOGGED_IN);
+        map.put(BL_ERROR_MULTIPLE_LOGIN_LIMIT, USER_ALREADY_LOGGED_IN);
+        map.put(BL_ERROR_INVALID_ID_PASSWD, USER_WRONG_ID_PASSWD);
+        map.put(BL_ERROR_EMPTY_ID_PASSWD, USER_WRONG_ID_PASSWD);
+        map.put(BL_ERROR_ACCOUNT_LOCKED, USER_ACC_LOCKED);
+        map.put(BL_ERROR_DUPLICATE_ENTRY, DUPLICATE_ENTRY);
+        map.put(BL_ERROR_DUPLICATE_ENTRY_1, DUPLICATE_ENTRY);
+        map.put(BL_ERROR_DUPLICATE_ENTRY_2, DUPLICATE_ENTRY);
+        map.put(BL_ERROR_REGISTER_DUPLICATE, USER_ALREADY_REGISTERED);
+        map.put(BL_ERROR_NO_PERMISSIONS, OPERATION_NOT_ALLOWED);
+        map.put(BL_ERROR_NO_PERMISSIONS_1, OPERATION_NOT_ALLOWED);
+        map.put(BL_ERROR_NO_PERMISSIONS_2, OPERATION_NOT_ALLOWED);
+        map.put(BL_ERROR_NO_PERMISSIONS_3, OPERATION_NOT_ALLOWED);
+        map.put(BL_ERROR_NO_PERMISSIONS_4, OPERATION_NOT_ALLOWED);
+        map.put(BL_ERROR_NO_PERMISSIONS_5, OPERATION_NOT_ALLOWED);
+        map.put(BL_ERROR_NO_PERMISSIONS_6, OPERATION_NOT_ALLOWED);
+        map.put(BL_ERROR_NO_DATA_FOUND, NO_DATA_FOUND);
+        map.put(BL_ERROR_NO_DATA_FOUND_1, NO_DATA_FOUND);
+        map.put(BL_ERROR_NO_DATA_FOUND_2, NO_DATA_FOUND);
+        map.put(BL_ERROR_NO_DATA_FOUND_3, NO_DATA_FOUND);
 
-        backendToLocalErrorCode = Collections.unmodifiableMap(aMap);
+        backendToLocalErrorCode = Collections.unmodifiableMap(map);
     }
 }

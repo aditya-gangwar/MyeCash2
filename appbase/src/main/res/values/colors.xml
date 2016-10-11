@@ -11,7 +11,7 @@
 
     <color name="divider">#CCCCCC</color>
     <color name="hint">#CCCCCC</color>
-    <color name="disabled">#CCCCCC</color>
+    <color name="disabled">#BBBBBB</color>
     <color name="icon_grey">#777777</color>
 
     <color name="cb_exclusion">#CF0000</color>

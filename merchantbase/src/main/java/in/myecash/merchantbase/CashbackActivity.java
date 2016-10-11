@@ -638,9 +638,9 @@ public class CashbackActivity extends AppCompatActivity implements
         LogMy.d(TAG, "In onCustOpResult: " + errorCode);
         AppCommonUtil.cancelProgressDialog(true);
 
+        String custOp = mWorkFragment.mCustomerOp.getOp_code();
         if(errorCode==ErrorCodes.NO_ERROR) {
             String successMsg = null;
-            String custOp = mWorkFragment.mCustomerOp.getOp_code();
 
             switch (custOp) {
                 case DbConstants.OP_NEW_CARD:
@@ -649,9 +649,9 @@ public class CashbackActivity extends AppCompatActivity implements
                 case DbConstants.OP_CHANGE_MOBILE:
                     successMsg = AppConstants.custOpChangeMobileSuccessMsg;
                     break;
-                case DbConstants.OP_RESET_PIN:
+                /*case DbConstants.OP_RESET_PIN:
                     successMsg = AppConstants.custOpResetPinSuccessMsg;
-                    break;
+                    break;*/
             }
 
             DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, successMsg, false, false)
@@ -670,6 +670,23 @@ public class CashbackActivity extends AppCompatActivity implements
                 CustomerOpDialog.newInstance(mWorkFragment.mCustomerOp.getOp_code(),mWorkFragment.mCustomerOp)
                         .show(mFragMgr, DIALOG_CUSTOMER_OP_OTP);
             }
+
+        } else if(errorCode == ErrorCodes.OP_SCHEDULED &&
+                custOp.equals(DbConstants.OP_RESET_PIN)) {
+            // Show success notification dialog
+            String msg = String.format(AppConstants.pinGenerateSuccessMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
+            DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, msg, false, false)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+
+            // customer operation success, reset to null
+            mWorkFragment.mCustomerOp = null;
+
+        } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY &&
+                custOp.equals(DbConstants.OP_RESET_PIN)) {
+            // Old request is already pending
+            String msg = String.format(AppConstants.pinGenerateDuplicateRequestMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
+            DialogFragmentWrapper.createNotification(AppConstants.pinResetFailureTitle, msg, false, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
         } else {
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
@@ -1060,13 +1077,12 @@ public class CashbackActivity extends AppCompatActivity implements
         MerchantUser.reset();
 
         //Start Login Activity
-        /*
         if(!mExitAfterLogout) {
             Intent intent = new Intent( this, LoginActivity.class );
             // clear cashback activity from backstack
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-        }*/
+        }
         finish();
     }
 
