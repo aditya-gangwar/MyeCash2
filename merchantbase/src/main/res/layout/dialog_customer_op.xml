@@ -100,9 +100,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Touch to Scan"
                 android:layout_weight="60"
-                android:gravity="left"
-                android:singleLine="true"
-                android:ellipsize="end"/>
+                android:gravity="left"/>
         </LinearLayout>
 
         <Space

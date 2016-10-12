@@ -9,7 +9,8 @@ package in.myecash.merchantbase.backendAPI;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 
-import in.myecash.appbase.constants.BackendSettings;
+
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.MerchantOps;
 import in.myecash.common.database.MerchantStats;
@@ -34,9 +35,9 @@ import in.myecash.common.database.Merchants;
 
     public static void initApplication()
     {
-        Backendless.setUrl( BackendSettings.BACKENDLESS_HOST );
+        Backendless.setUrl( CommonConstants.BACKENDLESS_HOST );
         // if you invoke this sample inside of android application, you should use overloaded "initApp" with "context" argument
-        Backendless.initApp( BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, MerchantServices.APP_VERSION );
+        Backendless.initApp( CommonConstants.APPLICATION_ID, CommonConstants.ANDROID_SECRET_KEY, MerchantServices.APP_VERSION );
     }
 
     public Merchants changeMobile(java.lang.String verifyparam, java.lang.String newMobile, java.lang.String otp)

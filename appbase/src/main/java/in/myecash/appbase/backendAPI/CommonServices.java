@@ -7,7 +7,8 @@
 package in.myecash.appbase.backendAPI;
 
   import com.backendless.Backendless;
-  import in.myecash.appbase.constants.BackendSettings;
+
+  import in.myecash.common.constants.CommonConstants;
   import in.myecash.common.database.Customers;
   import in.myecash.common.database.Merchants;
 
@@ -31,9 +32,9 @@ package in.myecash.appbase.backendAPI;
 
       public static void initApplication()
       {
-          Backendless.setUrl( BackendSettings.BACKENDLESS_HOST );
+          Backendless.setUrl( CommonConstants.BACKENDLESS_HOST );
           // if you invoke this sample inside of android application, you should use overloaded "initApp" with "context" argument
-          Backendless.initApp( BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, CommonServices.APP_VERSION );
+          Backendless.initApp( CommonConstants.APPLICATION_ID, CommonConstants.ANDROID_SECRET_KEY, CommonServices.APP_VERSION );
       }
 
       public void changePassword(String userId, String oldPasswd, String newPasswd)

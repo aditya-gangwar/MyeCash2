@@ -43,7 +43,8 @@ public class DbConstants {
             "Locked",
             "Not Registered",
             "Ready to Enable",
-            "In Expiry Period"
+            "In Expiry Period",
+            "Restricted"
     };
 
     // CustomerCards table - 'status' column values

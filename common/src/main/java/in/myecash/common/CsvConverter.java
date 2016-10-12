@@ -146,7 +146,9 @@ public class CsvConverter {
         cb.setTotal_billed(Integer.parseInt(csvFields[CB_CSV_TOTAL_BILL]));
         cb.setCb_billed(Integer.parseInt(csvFields[CB_CSV_BILL]));
         cb.setCreated(new Date(Long.parseLong(csvFields[CB_CSV_CREATE_TIME])));
-        cb.setUpdated(new Date(Long.parseLong(csvFields[CB_CSV_UPDATE_TIME])));
+        if(!csvFields[CB_CSV_UPDATE_TIME].isEmpty()) {
+            cb.setUpdated(new Date(Long.parseLong(csvFields[CB_CSV_UPDATE_TIME])));
+        }
 
         return cb;
     }
@@ -163,7 +165,11 @@ public class CsvConverter {
         csvFields[CB_CSV_TOTAL_BILL] = String.valueOf(cb.getTotal_billed()) ;
         csvFields[CB_CSV_BILL] = String.valueOf(cb.getCb_billed()) ;
         csvFields[CB_CSV_CREATE_TIME] = String.valueOf(cb.getCreated().getTime()) ;
-        csvFields[CB_CSV_UPDATE_TIME] = String.valueOf(cb.getUpdated().getTime()) ;
+        if(cb.getUpdated()!=null) {
+            csvFields[CB_CSV_UPDATE_TIME] = String.valueOf(cb.getUpdated().getTime()) ;
+        } else {
+            csvFields[CB_CSV_UPDATE_TIME] = "";
+        }
         csvFields[CB_CSV_OTHER_DETAILS] = cb.getOther_details() ;
 
         // join the fields in single CSV string

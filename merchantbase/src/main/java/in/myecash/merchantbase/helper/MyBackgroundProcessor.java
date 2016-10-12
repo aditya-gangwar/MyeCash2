@@ -6,7 +6,8 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.backendless.exceptions.BackendlessException;
-import in.myecash.appbase.constants.BackendSettings;
+
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.MerchantStats;
@@ -405,7 +406,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
             }
             /*
             String filepath = missingFiles.get(i);
-            String fileURL = BackendSettings.BACKEND_FILE_BASE_URL + filepath;
+            String fileURL = CommonConstants.BACKEND_FILE_BASE_URL + filepath;
             //String filename = filepath.substring(filepath.lastIndexOf('/')+1);
             String filename = Uri.parse(fileURL).getLastPathSegment();
             LogMy.d(TAG,"Fetching "+fileURL+", Filename: "+filename);
@@ -435,7 +436,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
 
     private int downloadFile(MessageFileDownload msg) {
         String filepath = msg.fileUrl;
-        String fileURL = BackendSettings.BACKEND_FILE_BASE_URL + filepath;
+        String fileURL = CommonConstants.BACKEND_FILE_BASE_URL + filepath;
         //String filename = filepath.substring(filepath.lastIndexOf('/')+1);
         String filename = Uri.parse(fileURL).getLastPathSegment();
         LogMy.d(TAG,"Fetching "+fileURL+", Filename: "+filename);

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import in.myecash.appbase.constants.AppConstants;
-import in.myecash.appbase.constants.BackendSettings;
+
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -42,8 +42,8 @@ public class SplashActivity extends AppCompatActivity
         setContentView(R.layout.activity_splash);
 
         // App level initializations - once in main activity
-        Backendless.initApp(this, BackendSettings.APPLICATION_ID, BackendSettings.ANDROID_SECRET_KEY, BackendSettings.VERSION);
-        com.backendless.Backendless.setUrl( BackendSettings.BACKENDLESS_HOST );
+        Backendless.initApp(this, CommonConstants.APPLICATION_ID, CommonConstants.ANDROID_SECRET_KEY, CommonConstants.VERSION);
+        com.backendless.Backendless.setUrl( CommonConstants.BACKENDLESS_HOST );
 
         // Map all tables to class here - except 'cashback' and 'transaction'
         AppCommonUtil.initTableToClassMappings();

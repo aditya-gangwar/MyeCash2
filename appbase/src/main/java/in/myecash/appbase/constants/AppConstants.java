@@ -18,12 +18,13 @@ public class AppConstants {
     public static final String msgInsecureDevice = "Your device is not secure. Please install and run application on other device.";
     public static final String titleAddTrustedDeviceOtp = "Add as Trusted Device";
     public static final String msgAddTrustedDeviceOtp = "First login from this device. Please enter OTP as received on registered number.";
-    public static final String hintEnterOtp = "Enter OTP";
-    public static final String titleNewCardPin = "New Membership Card";
-    public static final String msgNewCardPin = "Enter PIN to approve registration of new card. Always keep your PIN secret !!";
-    public static final String titleChangeCustMobilePin = "Change Registered Number";
-    public static final String msgChangeCustMobilePin = "Enter PIN to change registered number to %s. Always keep your PIN secret !!";
     public static final String msgChangeMobileOtpGenerated = "OTP generated. Please enter the same on 'Change Mobile' screen through Settings.";
+
+    public static final String hintEnterOtp = "Enter OTP";
+    public static final String titleNewCardPin = "New MyeCash Card";
+    public static final String msgNewCardPin = "Approve registration of new Card.\nKeep your PIN secret !!";
+    public static final String titleChangeCustMobilePin = "Change Mobile";
+    public static final String msgChangeCustMobilePin = "Approve change of registered Mobile to %s.\nKeep your PIN secret !!";
 
     // Msgs shown on toasts
     public static final String toastInProgress = "Operation already in progress. Please wait.";

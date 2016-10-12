@@ -166,9 +166,20 @@ public class AppCommonUtil {
             expCode = e.getCode();
         }
 
+        int errorCode;
+        try {
+            errorCode = Integer.parseInt(expCode);
+        } catch(Exception et) {
+            if(e.getMessage().contains("failed to connect to")) {
+                return ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE;
+            }
+            LogMy.e(TAG,"Non-integer error code: "+expCode,e);
+            return ErrorCodes.GENERAL_ERROR;
+        }
+
         // Check if its defined error code
         // converting code to msg to check for it
-        String errMsg = AppCommonUtil.getErrorDesc(Integer.parseInt(expCode));
+        String errMsg = AppCommonUtil.getErrorDesc(errorCode);
         if(errMsg==null) {
             // may be this is backendless error code
             Integer status = ErrorCodes.backendToLocalErrorCode.get(expCode);
@@ -186,14 +197,14 @@ public class AppCommonUtil {
             }
         } else {
             // its locally defined error
-            return Integer.parseInt(expCode);
+            return errorCode;
         }
     }
     public static String getErrorDesc(int errorCode) {
         // handle all error messages requiring substitution seperatly
         switch(errorCode) {
             case ErrorCodes.USER_MOB_CHANGE_RESTRICTED_ACCESS:
-                break;
+                return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getCustHrsAfterMobChange()));
 
             case ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD:
                 return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getAccBlockHrs(null)));
@@ -204,7 +215,6 @@ public class AppCommonUtil {
             default:
                 return ErrorCodes.appErrorDesc.get(errorCode);
         }
-        return null;
     }
 
     /*

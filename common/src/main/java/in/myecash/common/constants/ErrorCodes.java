@@ -71,6 +71,7 @@ public class ErrorCodes {
     public static final int FILE_UPLOAD_FAILED = 665;
     public static final int FILE_NOT_FOUND = 666;
     public static final int SERVICE_GLOBAL_DISABLED = 667;
+    public static final int REMOTE_SERVICE_NOT_AVAILABLE = 668;
 
     // *******************************************************************
     // IT IS MANDATORY THAT ALL ERROR CODES ABOVE ARE ADDED TO BELOW MAP
@@ -130,10 +131,11 @@ public class ErrorCodes {
         aMap.put(DUPLICATE_ENTRY,"Duplicate entry. Data already exists.");
         aMap.put(DEVICE_ALREADY_REGISTERED,"Device already registered for other merchant. One device can register to only one merchant account.");
         aMap.put(MERCHANT_ID_RANGE_ERROR,"Issue with Merchant ID Range.");
-        aMap.put(NO_INTERNET_CONNECTION,"Please check internet connectivity and try again.");
+        aMap.put(NO_INTERNET_CONNECTION,"Please check Internet connectivity and try again.");
         aMap.put(FILE_UPLOAD_FAILED,"Failed to upload the file. Please try again later.");
         aMap.put(FILE_NOT_FOUND,"");
         aMap.put(SERVICE_GLOBAL_DISABLED,"Service under maintenance. Please try after ");
+        aMap.put(REMOTE_SERVICE_NOT_AVAILABLE,"Not able to connect MyeCash Server. Please try after some time.");
 
         appErrorDesc = Collections.unmodifiableMap(aMap);
     }

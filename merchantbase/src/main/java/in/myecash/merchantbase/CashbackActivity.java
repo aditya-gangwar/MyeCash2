@@ -33,7 +33,7 @@ import com.crashlytics.android.Crashlytics;
 import in.myecash.appbase.OtpPinInputDialog;
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.constants.AppConstants;
-import in.myecash.appbase.constants.BackendSettings;
+
 import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
@@ -394,7 +394,7 @@ public class CashbackActivity extends AppCompatActivity implements
             dwnloadImage = true;
         }
         if(dwnloadImage) {
-            String url = BackendSettings.BACKEND_FILE_BASE_URL+
+            String url = CommonConstants.BACKEND_FILE_BASE_URL+
                     CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR+
                     mMerchantUser.getMerchant().getDisplayImage();
             mWorkFragment.fetchImageFile(url);
@@ -444,10 +444,10 @@ public class CashbackActivity extends AppCompatActivity implements
         mTbTitle2.setVisibility(View.GONE);
         if(mWorkFragment.mCurrCustomer.getStatus()!=DbConstants.USER_STATUS_ACTIVE ) {
             mTbTitle2.setVisibility(View.VISIBLE);
-            //String custName = "~ "+mWorkFragment.mCurrCashback.getCashback().getCustomer().getName();
             mTbTitle2.setText(DbConstants.userStatusDesc[mWorkFragment.mCurrCustomer.getStatus()]);
-            //setTbImage(R.drawable.logo_failure_36dp);
-            setTbImage(R.drawable.ic_block_white_48dp, R.color.failure);
+            if(mWorkFragment.mCurrCustomer.getStatus()!=DbConstants.USER_STATUS_MOB_CHANGE_RECENT) {
+                setTbImage(R.drawable.ic_block_white_48dp, R.color.failure);
+            }
 
         } else if(mWorkFragment.mCurrCustomer.getCardStatus() != DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED) {
 

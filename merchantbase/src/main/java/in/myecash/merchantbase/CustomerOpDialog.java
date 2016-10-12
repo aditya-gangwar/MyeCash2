@@ -31,7 +31,7 @@ import in.myecash.merchantbase.entities.CustomerOps;
  * Created by adgangwa on 21-05-2016.
  */
 public class CustomerOpDialog extends DialogFragment
-        implements View.OnClickListener  {
+        implements View.OnTouchListener  {
     private static final String TAG = "CustomerOpDialog";
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9003;
 
@@ -171,7 +171,7 @@ public class CustomerOpDialog extends DialogFragment
                 mImageCard.setAlpha(0.5f);
             }
         } else {
-            mInputQrCard.setOnClickListener(this);
+            mInputQrCard.setOnTouchListener(this);
         }
 
         if(opCode.equals(DbConstants.OP_NEW_CARD)) {
@@ -348,18 +348,21 @@ public class CustomerOpDialog extends DialogFragment
     }
 
     @Override
-    public void onClick(View v) {
-        int vId = v.getId();
-        LogMy.d(TAG, "In onClick: " + vId);
+    public boolean onTouch(View v, MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            int vId = v.getId();
+            LogMy.d(TAG, "In onClick: " + vId);
 
-        if (vId == R.id.input_qr_card) {// launch barcode activity.
-            Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
-            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
-            intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+            if (vId == R.id.input_qr_card) {// launch barcode activity.
+                Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
+                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
 
-            startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
+                startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
 
+            }
         }
+        return true;
     }
 
     @Override

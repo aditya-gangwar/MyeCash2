@@ -256,7 +256,7 @@ public class MyRetainedFragment extends RetainedFragment {
         protected Bitmap doInBackground(String... params) {
             try {
                 /*
-                String url = BackendSettings.BACKEND_FILE_BASE_URL+
+                String url = CommonConstants.BACKEND_FILE_BASE_URL+
                         CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR+
                         mMerchantUser.getMerchant().getDisplayImage();
                 byte[] bitmapBytes = new FileFetchr().getUrlBytes(url,
