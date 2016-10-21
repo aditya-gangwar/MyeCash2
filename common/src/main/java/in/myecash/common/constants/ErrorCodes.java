@@ -133,7 +133,7 @@ public class ErrorCodes {
         aMap.put(MERCHANT_ID_RANGE_ERROR,"Issue with Merchant ID Range.");
         aMap.put(NO_INTERNET_CONNECTION,"Please check Internet connectivity and try again.");
         aMap.put(FILE_UPLOAD_FAILED,"Failed to upload the file. Please try again later.");
-        aMap.put(FILE_NOT_FOUND,"");
+        aMap.put(FILE_NOT_FOUND,"Requested data not available");
         aMap.put(SERVICE_GLOBAL_DISABLED,"Service under maintenance. Please try after ");
         aMap.put(REMOTE_SERVICE_NOT_AVAILABLE,"Not able to connect MyeCash Server. Please try after some time.");
 

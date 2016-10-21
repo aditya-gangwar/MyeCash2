@@ -21,6 +21,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -329,9 +330,8 @@ public class CashbackActivity extends AppCompatActivity implements
     private boolean refreshMerchantStats() {
         if(mWorkFragment.mMerchantStats==null) {
             // check if available locally
-            String prefName = AppConstants.PREF_MCHNT_STATS_PREFIX +mMerchant.getAuto_id();
-            String storedStats = PreferenceManager.getDefaultSharedPreferences(this).getString(prefName, null);
-            if(storedStats != null) {
+            String storedStats = getStoredMchntStats();
+            if(storedStats != null && !storedStats.isEmpty()) {
                 mWorkFragment.mMerchantStats = MyMerchantStats.fromCsvString(storedStats);
                 return false;
             }
@@ -348,6 +348,26 @@ public class CashbackActivity extends AppCompatActivity implements
             return true;
         }
         return false;
+    }
+
+    private String getStoredMchntStats() {
+        String prefName = AppConstants.PREF_MCHNT_STATS_PREFIX +mMerchant.getAuto_id();
+        return PreferenceManager.getDefaultSharedPreferences(this).getString(prefName, null);
+    }
+    private void setStoredMchntStats(String csvStats) {
+        LogMy.d(TAG,"In setStoredMchntStats: "+csvStats);
+        String prefName = AppConstants.PREF_MCHNT_STATS_PREFIX +mMerchant.getAuto_id();
+        if(csvStats==null) {
+            PreferenceManager.getDefaultSharedPreferences(this)
+                    .edit()
+                    .remove(prefName)
+                    .apply();
+        } else {
+            PreferenceManager.getDefaultSharedPreferences(this)
+                    .edit()
+                    .putString(prefName, csvStats)
+                    .apply();
+        }
     }
 
 
@@ -561,7 +581,7 @@ public class CashbackActivity extends AppCompatActivity implements
             } else {
                 // Merchant stats refresh not required - but file not available locally
                 // so download the same
-                LogMy.w(TAG,"Merchant refresh not required, but file not available locally");
+                LogMy.d(TAG,"Merchant refresh not required, but file not available locally");
                 // set this to null, to indicate that the customer data file is to be downloaded and processed again
                 //mWorkFragment.mLastFetchCashbacks = null;
                 onMerchantStatsResult(ErrorCodes.NO_ERROR);
@@ -856,6 +876,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
     @Override
     public void onBgProcessResponse(int errorCode, int operation) {
+        LogMy.d(TAG,"In onBgProcessResponse: "+operation+", "+errorCode);
         switch(operation) {
             case MyRetainedFragment.REQUEST_FETCH_MERCHANT_OPS:
                 AppCommonUtil.cancelProgressDialog(true);
@@ -919,11 +940,7 @@ public class CashbackActivity extends AppCompatActivity implements
             case MyRetainedFragment.REQUEST_MERCHANT_STATS:
                 if(errorCode == ErrorCodes.NO_ERROR) {
                     // store the fetched stats in shared preference in CSV format
-                    String prefName = AppConstants.PREF_MCHNT_STATS_PREFIX +mMerchant.getAuto_id();
-                    PreferenceManager.getDefaultSharedPreferences(this)
-                            .edit()
-                            .putString(prefName, MyMerchantStats.toCsvString(mWorkFragment.mMerchantStats))
-                            .apply();
+                    setStoredMchntStats(MyMerchantStats.toCsvString(mWorkFragment.mMerchantStats));
                 }
                 onMerchantStatsResult(errorCode);
                 break;
@@ -933,6 +950,14 @@ public class CashbackActivity extends AppCompatActivity implements
                 if(errorCode==ErrorCodes.NO_ERROR) {
                     startCustomerListFrag();
                 } else {
+                    // remove local stored stats - so as file is created again next time
+                    setStoredMchntStats(null);
+                    //raise alarm
+                    Map<String,String> params = new HashMap<>();
+                    params.put("opCode",String.valueOf(MyRetainedFragment.REQUEST_CUST_DATA_FILE_DOWNLOAD));
+                    params.put("erroCode",String.valueOf(errorCode));
+                    AppAlarms.fileDownloadFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onBgProcessResponse",params);
+                    // show error
                     DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
@@ -1495,7 +1520,7 @@ public class CashbackActivity extends AppCompatActivity implements
                     Toast.makeText(this, "Not a valid customer card.", Toast.LENGTH_LONG).show();
                 }
             } else {
-                LogMy.e(TAG,"Failed to read barcode");
+                LogMy.d(TAG,"Failed to read barcode");
             }
         }
     }

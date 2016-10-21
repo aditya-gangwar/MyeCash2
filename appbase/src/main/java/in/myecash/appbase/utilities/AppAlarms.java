@@ -25,6 +25,7 @@ public class AppAlarms {
     private static String ALARM_INVALID_STATE = "classInvalidState";
     private static String ALARM_IGNORE_IF_NOT_MANY = "classIgnoreIfNotMany";
     private static String ALARM_UPLOAD_FAILED = "classUploadFailed";
+    private static String ALARM_DOWNLOAD_FAILED = "classDownloadFailed";
 
     // Alarm names/codes
     private static String ALARM_DEVICE_ROOTED = "deviceRooted";
@@ -33,6 +34,7 @@ public class AppAlarms {
     private static String ALARM_LOCAL_OP_FAILED = "localOpFailed";
     private static String INVALID_CB_DATA = "invalidCbData";
     private static String FILE_UPLOAD_FAILED = "fileUploadFailed";
+    private static String FILE_DOWNLOAD_FAILED = "fileDownloadFailed";
     private static String ALARM_INVALID_MERCHANT_STATE = "invalidMerchantState";
     private static String ALARM_WTF = "iShudNotBeHere";
 
@@ -107,6 +109,16 @@ public class AppAlarms {
                 ALARM_SEVERITY_WARN+ALARM_CSV_DELIM +
                 ALARM_UPLOAD_FAILED+ALARM_CSV_DELIM +
                 FILE_UPLOAD_FAILED+ALARM_CSV_DELIM +
+                methodName+ALARM_CSV_DELIM +
+                getParamStr(params));
+    }
+    public static void fileDownloadFailed(String userId, int userType, String methodName, Map<String,String> params) {
+        raiseAlarm(String.valueOf(System.currentTimeMillis())+ALARM_CSV_DELIM +
+                userId+ALARM_CSV_DELIM +
+                DbConstants.userTypeDesc[userType]+ALARM_CSV_DELIM +
+                ALARM_SEVERITY_ERROR+ALARM_CSV_DELIM +
+                ALARM_DOWNLOAD_FAILED+ALARM_CSV_DELIM +
+                FILE_DOWNLOAD_FAILED+ALARM_CSV_DELIM +
                 methodName+ALARM_CSV_DELIM +
                 getParamStr(params));
     }

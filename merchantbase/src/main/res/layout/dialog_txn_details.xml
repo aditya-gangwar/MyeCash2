@@ -65,6 +65,10 @@
                 />
         </LinearLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/small_space"/>
+
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
 
@@ -373,10 +377,6 @@
                 android:gravity="left"/>
         </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space"/>
-
         <ImageView
             android:id="@+id/txnImage"
             android:background="@color/bg_customercare_data"
@@ -384,7 +384,8 @@
             android:layout_width="@dimen/txn_img_image_width"
             android:layout_height="@dimen/txn_img_image_height"
             android:scaleType="centerInside"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/large_space"/>
 
         <Space
             android:layout_width="match_parent"

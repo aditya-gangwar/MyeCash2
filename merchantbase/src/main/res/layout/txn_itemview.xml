@@ -16,7 +16,9 @@
             android:paddingBottom="@dimen/edittext_padding_less"
             android:paddingLeft="@dimen/edittext_padding_less"
             android:textStyle="bold"
-            android:textColor="@color/accent"/>
+            android:textColor="@color/accent"
+            android:longClickable="false"
+            android:textIsSelectable="false"/>
         <EditText
             style="@style/Edittext_only_click_small"
             android:id="@+id/txn_customer_id"

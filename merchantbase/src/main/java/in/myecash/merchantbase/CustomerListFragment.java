@@ -105,8 +105,16 @@ public class CustomerListFragment extends Fragment {
                 mRetainedFragment.mLastFetchCashbacks.clear();
             }
 
-            // process the file
-            processFile();
+            try {
+                // process the file
+                processFile();
+            } catch(Exception e) {
+                // if any issue processing the file - delete the same
+                String fileName = AppCommonUtil.getMerchantCustFileName(mRetainedFragment.mMerchantUser.getMerchantId());
+                LogMy.e(TAG, "Failed to process the file: "+fileName);
+                getActivity().deleteFile(fileName);
+                throw e;
+            }
 
             int sortType = MyCashback.CB_CMP_TYPE_UPDATE_TIME;
             if(savedInstanceState!=null) {
@@ -235,7 +243,9 @@ public class CustomerListFragment extends Fragment {
                     mUpdatedTime = mSdfDateWithTime.format(new Date(Long.parseLong(csvFields[0])));
                 } else {
                     // ignore empty lines
-                    if(!receiveString.equals(CommonConstants.CSV_NEWLINE)) {
+                    if(receiveString.trim().isEmpty()) {
+                        LogMy.d(TAG, "Read empty line");
+                    } else {
                         processCbCsvRecord(receiveString);
                     }
                 }

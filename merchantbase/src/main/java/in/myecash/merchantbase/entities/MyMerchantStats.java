@@ -36,7 +36,11 @@ public class MyMerchantStats {
     public static String toCsvString(MerchantStats stats) {
 
         String[] csvFields = new String[MRCHNT_STATS_CSV_TOTAL_FIELDS];
-        csvFields[MRCHNT_STATS_CSV_UPDATED] = String.valueOf(stats.getUpdated().getTime());
+        if(stats.getUpdated()!=null) {
+            csvFields[MRCHNT_STATS_CSV_UPDATED] = String.valueOf(stats.getUpdated().getTime());
+        } else {
+            csvFields[MRCHNT_STATS_CSV_UPDATED] = "";
+        }
         csvFields[MRCHNT_STATS_CSV_CREATED] = String.valueOf(stats.getCreated().getTime());
         csvFields[MRCHNT_STATS_CSV_ID] = stats.getMerchant_id() ;
         csvFields[MRCHNT_STATS_CSV_BILL] = stats.getBill_amt_total().toString() ;
@@ -63,7 +67,9 @@ public class MyMerchantStats {
         MerchantStats stats = new MerchantStats();
         String[] csvFields = csvStr.split(CommonConstants.CSV_DELIMETER);
 
-        stats.setUpdated(new Date(Long.parseLong(csvFields[MRCHNT_STATS_CSV_UPDATED])));
+        if(csvFields[MRCHNT_STATS_CSV_UPDATED]!=null && !csvFields[MRCHNT_STATS_CSV_UPDATED].isEmpty()) {
+            stats.setUpdated(new Date(Long.parseLong(csvFields[MRCHNT_STATS_CSV_UPDATED])));
+        }
         stats.setCreated(new Date(Long.parseLong(csvFields[MRCHNT_STATS_CSV_CREATED])));
         stats.setMerchant_id(csvFields[MRCHNT_STATS_CSV_ID]);
         stats.setBill_amt_total(Integer.parseInt(csvFields[MRCHNT_STATS_CSV_BILL]));

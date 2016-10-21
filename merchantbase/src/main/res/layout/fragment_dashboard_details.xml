@@ -162,7 +162,7 @@
                     android:id="@+id/table_row_3_col_2"
                     android:gravity="left"
                     android:layout_height="wrap_content"
-                    android:layout_weight="55"
+                    android:layout_weight="50"
                     android:text="123" />
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"

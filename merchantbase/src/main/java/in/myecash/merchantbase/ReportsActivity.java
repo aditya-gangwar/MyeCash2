@@ -284,6 +284,18 @@ public class ReportsActivity extends AppCompatActivity implements
         // customer and merchant id
         whereClause.append("merchant_id = '").append(mMerchantUser.getMerchantId()).append("'");
 
+        DateUtil from = new DateUtil(mFromDate);
+        from.toMidnight();
+        // Increment by 1 day, and then take midnight
+        DateUtil to = new DateUtil(mFromDate);
+        to.addDays(1);
+        to.toMidnight();
+
+        whereClause.append(" AND create_time >= '").append(from.getTime().getTime()).append("'");
+        // we used '<' and not '<='
+        whereClause.append(" AND create_time < '").append(to.getTime().getTime()).append("'");
+
+        /*
         String fromDateStr = mSdfOnlyDateBackend.format(mFromDate);
         whereClause.append(" AND create_time >= '").append(fromDateStr).append("'");
 
@@ -293,7 +305,7 @@ public class ReportsActivity extends AppCompatActivity implements
         calendar.add(Calendar.DATE, 1);
         String toDateStr = mSdfOnlyDateBackend.format(calendar.getTime());
         // we used '<' and not '<='
-        whereClause.append(" AND create_time < '").append(toDateStr).append("'");
+        whereClause.append(" AND create_time < '").append(toDateStr).append("'");*/
 
         if(mCustomerId.length() == CommonConstants.MOBILE_NUM_LENGTH) {
             whereClause.append(" AND customer_id = '").append(mCustomerId).append("'");

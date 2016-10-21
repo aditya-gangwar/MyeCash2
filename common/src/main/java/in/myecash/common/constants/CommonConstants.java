@@ -16,7 +16,7 @@ public class CommonConstants {
     public static final String ANDROID_SECRET_KEY = "14765681-0A7C-3F4E-FF29-41A948E33500";
     public static final String VERSION = "v1";
 
-    public static final String BACKENDLESS_HOST = "http://52.66.27.237:8080/api";
+    public static final String BACKENDLESS_HOST = "http://52.66.155.6:8080/api";
     public static String BACKEND_FILE_BASE_URL = BACKENDLESS_HOST+"/"+APPLICATION_ID+"/"+VERSION+"/files/";
     public static final String BULK_API_URL  = BACKENDLESS_HOST+"/"+VERSION+"/data/bulk/";
 
@@ -54,6 +54,8 @@ public class CommonConstants {
     // format to show only time in CSV file
     public static final String DATE_FORMAT_ONLY_TIME_24_CSV = "HH:mm:ss";
 
+    public static final int MILLISECS_IN_HOUR = 3600000;
+    public static final int MILLISECS_IN_MINUTE = 60000;
     /*
      * Size, Length and Limits
      */

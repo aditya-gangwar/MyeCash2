@@ -56,7 +56,7 @@ public class TxnListFragment extends Fragment {
     private static final String CSV_REPORT_HEADER_5 = "%s,,,,,,,Currency,INR,,";
     private static final String CSV_REPORT_HEADER_6 = ",,,,,,,,,,";
     private static final String CSV_REPORT_HEADER_7 = ",,,,,,,,,,";
-    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Customer Id,Bill Amount,Cash Account,Cr / Dr,Cashback Debit,Cashback Award,Cashback Rate, PIN used";
+    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Customer Id,Bill Amount,Cash Account,Cr / Dr,Cashback Debit,Cashback Award,Cashback Rate, Card Used, PIN used";
     // 5+10+10+10+10+10+5+5+5+5 = 75
     private static final int CSV_RECORD_MAX_CHARS = 100;
     //TODO: change this to 100 in production
@@ -213,6 +213,10 @@ public class TxnListFragment extends Fragment {
         mTxnRecyclerView = (RecyclerView) view.findViewById(R.id.txn_recycler_view);
         mTxnRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        mHeaderTime = (EditText) view.findViewById(R.id.txnlist_header_time);
+        mHeaderAmts = (EditText) view.findViewById(R.id.txnlist_header_amts);
+        mHeaderBill = (EditText) view.findViewById(R.id.txnlist_header_bill);
+
         return view;
     }
 
@@ -357,7 +361,12 @@ public class TxnListFragment extends Fragment {
                     sb.append("0").append(CommonConstants.CSV_DELIMETER);
                 }
 
-                sb.append(txn.getCb_percent()).append("%");
+                sb.append(txn.getCb_percent()).append("%").append(CommonConstants.CSV_DELIMETER);
+                if(txn.getUsedCardId()==null) {
+                    sb.append("").append(CommonConstants.CSV_DELIMETER);
+                } else {
+                    sb.append(txn.getUsedCardId()).append(CommonConstants.CSV_DELIMETER);
+                }
                 sb.append(txn.getCpin());
                 sb.append(CommonConstants.CSV_NEWLINE);
 
@@ -446,7 +455,7 @@ public class TxnListFragment extends Fragment {
 
         public TxnHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
+            //itemView.setOnClickListener(this);
             mDatetime = (EditText) itemView.findViewById(R.id.txn_time);
             mCustId = (EditText) itemView.findViewById(R.id.txn_customer_id);
             //mTxnId = (EditText) itemView.findViewById(R.id.txn_id);
@@ -470,14 +479,16 @@ public class TxnListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            LogMy.d(TAG,"In onClick: "+getAdapterPosition());
+            LogMy.d(TAG,"In onClick: "+v.getId());
 
             // getRootView was not working, so manually finding root view
             View rootView = null;
             if(v.getId()==mCustId.getId() || v.getId()==mDatetime.getId()) {
                 rootView = (View) v.getParent().getParent();
+                LogMy.d(TAG,"Clicked first level view "+rootView.getId());
             } else {
                 rootView = (View) v.getParent().getParent().getParent();
+                LogMy.d(TAG,"Clicked second level view "+rootView.getId());
             }
             rootView.performClick();
         }
@@ -542,7 +553,7 @@ public class TxnListFragment extends Fragment {
                     if (pos >= 0 && pos < getItemCount()) {
                         showDetailedDialog(pos);
                     } else {
-                        LogMy.e(TAG,"Invalid position in onClickListener of customer list item: "+pos);
+                        LogMy.e(TAG,"Invalid position in onClickListener of txn list item: "+pos);
                     }
                 }
             };
@@ -552,6 +563,7 @@ public class TxnListFragment extends Fragment {
         public TxnHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater.inflate(R.layout.txn_itemview, parent, false);
+            LogMy.d(TAG,"Root view: "+view.getId());
             view.setOnClickListener(mListener);
             return new TxnHolder(view);
         }

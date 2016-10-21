@@ -62,6 +62,10 @@ public class MyCustomer {
 
     // Init from CSV string
     public void init(String customerDetailsInCsvFormat) {
+        if(customerDetailsInCsvFormat== null || customerDetailsInCsvFormat.isEmpty()) {
+
+        }
+
         String[] csvFields = customerDetailsInCsvFormat.split(CUST_CSV_DELIM);
         mPrivateId = csvFields[CUST_CSV_PRIVATE_ID];
         mMobileNum = csvFields[CUST_CSV_MOBILE_NUM];

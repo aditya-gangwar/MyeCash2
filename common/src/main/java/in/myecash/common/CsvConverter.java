@@ -149,6 +149,7 @@ public class CsvConverter {
         if(!csvFields[CB_CSV_UPDATE_TIME].isEmpty()) {
             cb.setUpdated(new Date(Long.parseLong(csvFields[CB_CSV_UPDATE_TIME])));
         }
+        cb.setOther_details(csvFields[CB_CSV_OTHER_DETAILS]);
 
         return cb;
     }
@@ -173,7 +174,9 @@ public class CsvConverter {
         csvFields[CB_CSV_OTHER_DETAILS] = cb.getOther_details() ;
 
         // join the fields in single CSV string
-        StringBuilder sb = new StringBuilder(CB_CSV_MAX_SIZE + cb.getOther_details().length());
+        StringBuilder sb = new StringBuilder(CB_CSV_MAX_SIZE +
+                (csvFields[CB_CSV_OTHER_DETAILS]==null ? 0 : csvFields[CB_CSV_OTHER_DETAILS].length()) );
+
         for(int i=0; i<CB_CSV_TOTAL_FIELDS; i++) {
             sb.append(csvFields[i]).append(CB_CSV_DELIM);
         }

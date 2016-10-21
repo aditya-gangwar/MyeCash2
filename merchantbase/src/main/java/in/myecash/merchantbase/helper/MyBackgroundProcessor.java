@@ -361,7 +361,11 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     }
 
     private int commitCashTrans(String pin) {
-        return MerchantUser.getInstance().commitTxn(mRetainedFragment.mCurrTransaction, pin);
+        int errorCode =  MerchantUser.getInstance().commitTxn(mRetainedFragment.mCurrTransaction, pin);
+        if(errorCode==ErrorCodes.NO_ERROR) {
+            mRetainedFragment.mCurrCashback.setCashback(mRetainedFragment.mCurrTransaction.getTransaction().getCashback());
+        }
+        return errorCode;
     }
 
     private int updateMerchantSettings() {

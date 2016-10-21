@@ -112,7 +112,6 @@ public class MyTransaction {
 
     public int commit(String pin) {
         LogMy.d(TAG, "In commit");
-        int errorCode = ErrorCodes.NO_ERROR;
 
         mCurrTransaction.setCpin(pin);
         try
@@ -125,7 +124,7 @@ public class MyTransaction {
             LogMy.e(TAG, "Commit cash transaction failed: " + e.toString());
             return AppCommonUtil.getLocalErrorCode(e);
         }
-        return errorCode;
+        return ErrorCodes.NO_ERROR;
     }
 
     public static List<Transaction> fetch(String whereClause) {

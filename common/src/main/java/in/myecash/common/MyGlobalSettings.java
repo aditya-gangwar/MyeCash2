@@ -360,6 +360,8 @@ public class MyGlobalSettings
     private static final String SETTINGS_SERVICE_DISABLED_UNTIL = "service_disabled_until";
     private static final String SETTINGS_TXN_IMAGE_CAPTURE_MODE = "txn_image_capture_mode";
     // ** No Constant values defined - as not used by backend **
+    private static final String SETTINGS_WRONG_ATTEMPT_RESET_HRS = "wrong_attempt_reset_hrs";
+    private static final int WRONG_ATTEMPT_RESET_HRS = 2;
 
     public static Integer getCbRedeemLimit() {
         return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CB_REDEEM_LIMIT);
@@ -369,6 +371,11 @@ public class MyGlobalSettings
     }
     public static Integer getCardImageCaptureMode() {
         return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_TXN_IMAGE_CAPTURE_MODE);
+    }
+    public static Integer getWrongAttemptResetHrs() {
+        return (mRunMode==RunMode.backend)?
+                WRONG_ATTEMPT_RESET_HRS:
+                (Integer)MyGlobalSettings.mSettings.get(SETTINGS_WRONG_ATTEMPT_RESET_HRS);
     }
 
     /*
