@@ -65,7 +65,7 @@ public class MyMerchantStats {
     public static MerchantStats fromCsvString(String csvStr) {
 
         MerchantStats stats = new MerchantStats();
-        String[] csvFields = csvStr.split(CommonConstants.CSV_DELIMETER);
+        String[] csvFields = csvStr.split(CommonConstants.CSV_DELIMETER, -1);
 
         if(csvFields[MRCHNT_STATS_CSV_UPDATED]!=null && !csvFields[MRCHNT_STATS_CSV_UPDATED].isEmpty()) {
             stats.setUpdated(new Date(Long.parseLong(csvFields[MRCHNT_STATS_CSV_UPDATED])));

@@ -22,6 +22,7 @@ import java.util.List;
 
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.common.MyMerchant;
@@ -48,7 +49,7 @@ public class CashbackListFragment extends Fragment {
 
     public interface CashbackListFragmentIf {
         MyRetainedFragment getRetainedFragment();
-        void setDrawerState(boolean isEnabled);
+        //void setDrawerState(boolean isEnabled);
     }
 
     private RecyclerView mRecyclerView;
@@ -156,7 +157,7 @@ public class CashbackListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mCallback.setDrawerState(false);
+        //mCallback.setDrawerState(false);
         updateUI();
     }
 
@@ -198,6 +199,7 @@ public class CashbackListFragment extends Fragment {
         private MyCashback mCb;
 
         public EditText mMerchantName;
+        public View mMchntStatusAlert;
         public EditText mCategoryNdCity;
         public EditText mLastTxnTime;
         public EditText mAccBalance;
@@ -207,6 +209,7 @@ public class CashbackListFragment extends Fragment {
             super(itemView);
 
             mMerchantName = (EditText) itemView.findViewById(R.id.input_mchnt_name);
+            mMchntStatusAlert = itemView.findViewById(R.id.icon_mchnt_status_alert);
             mCategoryNdCity = (EditText) itemView.findViewById(R.id.mchnt_category_city);
             mLastTxnTime = (EditText) itemView.findViewById(R.id.input_last_txn);
             mAccBalance = (EditText) itemView.findViewById(R.id.input_acc_bal);
@@ -243,6 +246,11 @@ public class CashbackListFragment extends Fragment {
             MyMerchant merchant = mCb.getMerchant();
 
             mMerchantName.setText(merchant.getName());
+            if(merchant.getStatus()== DbConstants.USER_STATUS_READY_TO_REMOVE) {
+                mMchntStatusAlert.setVisibility(View.VISIBLE);
+            } else {
+                mMchntStatusAlert.setVisibility(View.GONE);
+            }
             String txt = merchant.getBusinessCategory()+", "+merchant.getCity();
             mCategoryNdCity.setText(txt);
             mLastTxnTime.setText(mSdfDateWithTime.format(cb.getUpdateTime()));

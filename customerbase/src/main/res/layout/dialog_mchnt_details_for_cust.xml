@@ -153,8 +153,6 @@
                 android:layout_weight="40"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>
-            <!--View
-                style="@style/Divider_vertical_Medium"/-->
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_total_bill"
@@ -162,9 +160,7 @@
                 android:layout_height="wrap_content"
                 android:text="\u20B9 NA"
                 android:layout_weight="60"
-                android:gravity="left"
-                android:singleLine="true"
-                android:ellipsize="end"/>
+                android:gravity="left" />
         </LinearLayout>
 
         <Space
@@ -204,8 +200,6 @@
                 android:text="+ \u20B9 NA"
                 android:layout_weight="60"
                 android:gravity="left"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:textColor="@color/green_positive"/>
         </LinearLayout>
         <LinearLayout
@@ -300,8 +294,6 @@
                 android:text="+ \u20B9 NA"
                 android:layout_weight="60"
                 android:gravity="left"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:textColor="@color/green_positive"/>
         </LinearLayout>
         <LinearLayout
@@ -516,8 +508,6 @@
                     android:paddingTop="0dp"/>
             </LinearLayout>
         </LinearLayout>
-
-
 
     </LinearLayout>
 </ScrollView>

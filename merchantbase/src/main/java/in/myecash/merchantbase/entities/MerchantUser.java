@@ -173,38 +173,6 @@ public class MerchantUser
             mInstance.loadMerchant(mchntIdorMobile);
             mInstance.mPseudoLoggedIn = true;
 
-            /*
-            // Get backendless user for this merchant
-            BackendlessDataQuery query = new BackendlessDataQuery();
-            query.setWhereClause("user_id = '" + mchntIdorMobile + "'");
-
-            QueryOptions queryOptions = new QueryOptions();
-            queryOptions.addRelated("merchant");
-            queryOptions.addRelated("merchant.trusted_devices");
-            queryOptions.addRelated("merchant.address");
-            queryOptions.addRelated("merchant.address.city");
-            queryOptions.addRelated("merchant.buss_category");
-            query.setQueryOptions(queryOptions);
-
-            BackendlessCollection<BackendlessUser> user = Backendless.Data.of(BackendlessUser.class).find(query);
-            if (user.getTotalObjects() == 0) {
-                reset();
-                return ErrorCodes.NO_SUCH_USER;
-            } else {
-                LogMy.d(TAG,"Fetched Merchant object successfully");
-                //mInstance.mBackendlessUser = user.getData().get(0);
-                //mInstance.mMerchant = (Merchants)mInstance.mBackendlessUser.getProperty("merchant");
-                mInstance.mMerchant = CommonServices.getInstance().getMerchant(mchntIdorMobile);
-
-                // map cashback and transaction table
-                Backendless.Data.mapTableToClass(mInstance.mMerchant.getCashback_table(), Cashback.class);
-                Backendless.Data.mapTableToClass(mInstance.mMerchant.getTxn_table(), Transaction.class);
-
-                // Set user id for crashlytics
-                Crashlytics.setUserIdentifier(mInstance.mMerchant.getAuto_id());
-
-                mInstance.mPseudoLoggedIn = true;
-            }*/
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Exception while pseudo login: "+e.toString());
             return AppCommonUtil.getLocalErrorCode(e);

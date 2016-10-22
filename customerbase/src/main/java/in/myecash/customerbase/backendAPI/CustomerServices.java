@@ -37,9 +37,9 @@ public class CustomerServices
         Backendless.initApp( CommonConstants.APPLICATION_ID, CommonConstants.ANDROID_SECRET_KEY, CustomerServices.APP_VERSION );
     }
 
-    public java.util.List<Cashback> getCashbacks(long updatedSince)
+    public java.util.List<Cashback> getCashbacks(String custPrivateId, long updatedSince)
     {
-        Object[] args = new Object[]{updatedSince};
+        Object[] args = new Object[]{custPrivateId, updatedSince};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCashbacks", args, java.util.List.class );
     }
 

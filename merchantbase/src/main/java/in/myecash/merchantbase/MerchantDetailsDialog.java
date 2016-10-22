@@ -100,7 +100,8 @@ public class MerchantDetailsDialog extends DialogFragment {
 
             if(status==DbConstants.USER_STATUS_READY_TO_REMOVE ) {
                 mLayoutActivation.setVisibility(View.VISIBLE);
-                mInputActivation.setText(AppCommonUtil.getMchntExpiryMsg(merchant));
+                String msg = "Removal on "+AppCommonUtil.getMchntRemovalDate(merchant.getRemoveReqDate());
+                mInputActivation.setText(msg);
 
             } else if(status==DbConstants.USER_STATUS_LOCKED) {
                 mLayoutActivation.setVisibility(View.VISIBLE);

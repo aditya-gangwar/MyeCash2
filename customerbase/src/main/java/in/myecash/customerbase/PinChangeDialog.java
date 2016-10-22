@@ -50,8 +50,8 @@ public class PinChangeDialog extends DialogFragment implements DialogInterface.O
 
         // return new dialog
         final AlertDialog alertDialog =  new AlertDialog.Builder(getActivity()).setView(v)
-                .setPositiveButton(in.myecash.appbase.R.string.ok, this)
-                .setNegativeButton(in.myecash.appbase.R.string.cancel, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, this)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

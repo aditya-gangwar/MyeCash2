@@ -160,7 +160,7 @@ public class AppCommonUtil {
         String expCode;
         if( e.getCode().equals("0") && e.getMessage().startsWith(CommonConstants.PREFIX_ERROR_CODE_AS_MSG) ) {
             LogMy.d(TAG,"Custom error code case: Orig: "+e.getCode()+","+e.getMessage());
-            String[] csvFields = e.getMessage().split("/");
+            String[] csvFields = e.getMessage().split("/", -1);
             expCode = csvFields[1];
         } else {
             expCode = e.getCode();
@@ -449,11 +449,12 @@ public class AppCommonUtil {
         return halfVisibleUserid.toString();
     }
 
-    public static String getMchntExpiryMsg(Merchants merchant) {
-        DateUtil reqTime = new DateUtil(merchant.getRemoveReqDate());
+    public static String getMchntRemovalDate(Date removeReqDate) {
+        DateUtil reqTime = new DateUtil(removeReqDate);
         reqTime.addDays(MyGlobalSettings.getMchntExpiryDays());
         SimpleDateFormat sdf = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
-        return "Expiring on "+sdf.format(reqTime.getTime());
+        //return "Removal on "+sdf.format(reqTime.getTime());
+        return sdf.format(reqTime.getTime());
     }
 
     public static Date getExpiryDate(Merchants merchant) {

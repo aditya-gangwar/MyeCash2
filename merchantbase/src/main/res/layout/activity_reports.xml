@@ -85,6 +85,10 @@
             android:layout_height="wrap_content"
             android:text="Enter Customer 'Internal ID' or 'Mobile number'" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
 

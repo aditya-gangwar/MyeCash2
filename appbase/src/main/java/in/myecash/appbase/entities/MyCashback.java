@@ -53,6 +53,7 @@ public class MyCashback {
 
     public void init(Cashback cb, boolean callingUserIsMchnt) {
         mCurrCashback = cb;
+        LogMy.d(TAG,"Init MyCashback, other details: "+mCurrCashback.getOther_details());
 
         if(callingUserIsMchnt) {
             mCustomer = new MyCustomer();

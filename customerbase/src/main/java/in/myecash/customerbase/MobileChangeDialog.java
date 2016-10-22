@@ -40,6 +40,32 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
 
         try {
             mCallback = (MobileChangeDialogIf) getActivity();
+
+            // set values and views
+            mInfoEnd.setText(String.format(getString(R.string.cust_mobile_change_info), MyGlobalSettings.getCustHrsAfterMobChange().toString()));
+
+            String newMobile = mCallback.getRetainedFragment().mNewMobileNum;
+            if(newMobile==null) {
+                // first run, otp not generated yet
+                // disable OTP and ask for parameters
+                labelNewOtp.setText("OTP will be sent on the New Mobile Number for verification");
+                inputNewOtp.setVisibility(View.GONE);
+            } else {
+                // second run, OTP generated
+                // disable and show parameter values and ask for otp
+                //labelInfo1.setEnabled(false);
+                labelInfo1.setText("Enter received OTP and submit the request again");
+                mImageMobile.setAlpha(0.5f);
+
+                labelNewMobile.setEnabled(false);
+                inputNewMobile.setText(newMobile);
+                inputNewMobile.setEnabled(false);
+
+                labelNewMobile2.setEnabled(false);
+                inputNewMobile2.setText(newMobile);
+                inputNewMobile2.setEnabled(false);
+            }
+
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement MobileChangeDialogIf");
@@ -65,31 +91,6 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
                 })
                 .create();
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-
-        // set values and views
-        mInfoEnd.setText(String.format(getString(R.string.cust_mobile_change_info), MyGlobalSettings.getCustHrsAfterMobChange().toString()));
-
-        String newMobile = mCallback.getRetainedFragment().mNewMobileNum;
-        if(newMobile==null) {
-            // first run, otp not generated yet
-            // disable OTP and ask for parameters
-            labelNewOtp.setText("OTP will be sent on the New Mobile Number for verification");
-            inputNewOtp.setVisibility(View.GONE);
-        } else {
-            // second run, OTP generated
-            // disable and show parameter values and ask for otp
-            //labelInfo1.setEnabled(false);
-            labelInfo1.setText("Enter received OTP and submit the request again");
-            mImageMobile.setAlpha(0.5f);
-
-            labelNewMobile.setEnabled(false);
-            inputNewMobile.setText(newMobile);
-            inputNewMobile.setEnabled(false);
-
-            labelNewMobile2.setEnabled(false);
-            inputNewMobile2.setText(newMobile);
-            inputNewMobile2.setEnabled(false);
-        }
 
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override

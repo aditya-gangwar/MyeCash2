@@ -8,6 +8,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -57,7 +58,8 @@ public class CashbackActivity extends AppCompatActivity implements
         MyRetainedFragment.RetainedFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         PasswdChangeDialog.PasswdChangeDialogIf, MobileChangeDialog.MobileChangeDialogIf,
         OtpPinInputDialog.OtpPinInputDialogIf, CashbackListFragment.CashbackListFragmentIf,
-        PinResetDialog.PinResetDialogIf, PinChangeDialog.PinChangeDialogIf {
+        PinResetDialog.PinResetDialogIf, PinChangeDialog.PinChangeDialogIf,
+        MerchantDetailsDialog.MerchantDetailsDialogIf {
 
     private static final String TAG = "CashbackActivity";
     public static final String INTENT_EXTRA_USER_TOKEN = "extraUserToken";
@@ -140,7 +142,7 @@ public class CashbackActivity extends AppCompatActivity implements
         startCashbackListFrag();
     }
 
-    @Override
+    //@Override
     public void setDrawerState(boolean isEnabled) {
         LogMy.d(TAG, "In setDrawerState: " + isEnabled);
 
@@ -429,12 +431,18 @@ public class CashbackActivity extends AppCompatActivity implements
             String fileName = AppCommonUtil.getCashbackFileName(mCustomerUser.getCustomer().getPrivate_id());
 
             StringBuilder sb = new StringBuilder();
-            int cnt = mRetainedFragment.mCashbacks.size();
+            for (Map.Entry<String, MyCashback> entry : mRetainedFragment.mCashbacks.entrySet()) {
+                MyCashback cb = entry.getValue();
+                String csvStr = CsvConverter.csvStrFromCb(cb.getCurrCashback());
+                sb.append(csvStr).append(CommonConstants.CSV_NEWLINE);
+            }
+
+            /*int cnt = mRetainedFragment.mCashbacks.size();
             for(int i=0; i<cnt; i++) {
                 MyCashback cb = mRetainedFragment.mCashbacks.get(i);
                 String csvStr = CsvConverter.csvStrFromCb(cb.getCurrCashback());
                 sb.append(csvStr).append(CommonConstants.CSV_NEWLINE);
-            }
+            }*/
 
             outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
             outputStream.write(sb.toString().getBytes());
@@ -541,6 +549,14 @@ public class CashbackActivity extends AppCompatActivity implements
 
         AppCommonUtil.cancelProgressDialog(true);
         CustomerUser.reset();
+
+        //Start Login Activity
+        if(!mExitAfterLogout) {
+            Intent intent = new Intent( this, LoginActivity.class );
+            // clear cashback activity from backstack
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
         finish();
     }
 
@@ -628,18 +644,21 @@ public class CashbackActivity extends AppCompatActivity implements
         // trying to start cbList fragment - means all cb records are available now
         // which means stats are also available now
         // so set the same in toolbar
-        mTbSubhead1Text1.setText(AppCommonUtil.getAmtStr(mRetainedFragment.stats.getClBalance()));
-        mTbSubhead1Text2.setText(AppCommonUtil.getAmtStr(mRetainedFragment.stats.getCbBalance()));
+        if(mRetainedFragment.stats != null) {
+            mTbSubhead1Text1.setText(AppCommonUtil.getAmtStr(mRetainedFragment.stats.getClBalance()));
+            mTbSubhead1Text2.setText(AppCommonUtil.getAmtStr(mRetainedFragment.stats.getCbBalance()));
+        }
 
-
-        mMchntListFragment = (CashbackListFragment) mFragMgr.findFragmentByTag(CASHBACK_LIST_FRAGMENT);
-        if (mMchntListFragment == null) {
-            //setDrawerState(false);
-            mMchntListFragment = new CashbackListFragment();
-            mFragMgr.beginTransaction()
-                    .add(R.id.fragment_container_1, mMchntListFragment, CASHBACK_LIST_FRAGMENT)
-                    .addToBackStack(CASHBACK_LIST_FRAGMENT)
-                    .commit();
+        if(mRetainedFragment.mCashbacks != null) {
+            mMchntListFragment = (CashbackListFragment) mFragMgr.findFragmentByTag(CASHBACK_LIST_FRAGMENT);
+            if (mMchntListFragment == null) {
+                //setDrawerState(false);
+                mMchntListFragment = new CashbackListFragment();
+                mFragMgr.beginTransaction()
+                        .add(R.id.fragment_container_1, mMchntListFragment, CASHBACK_LIST_FRAGMENT)
+                        .addToBackStack(CASHBACK_LIST_FRAGMENT)
+                        .commit();
+            }
         }
     }
 
@@ -673,15 +692,16 @@ public class CashbackActivity extends AppCompatActivity implements
             return;
         }
 
-        if (mMchntListFragment.isVisible()) {
+        if ( (mMchntListFragment!=null && mMchntListFragment.isVisible()) ||
+                mFragMgr.getBackStackEntryCount()==0 ) {
             DialogFragmentWrapper.createConfirmationDialog(AppConstants.exitGenTitle, AppConstants.exitAppMsg, false, false)
                     .show(mFragMgr, DIALOG_BACK_BUTTON);
         } else {
             mFragMgr.popBackStackImmediate();
-            if(mMchntListFragment.isVisible()) {
+            /*if(mMchntListFragment.isVisible()) {
                 LogMy.d(TAG,"Mobile num fragment visible");
                 //getReadyForNewTransaction();
-            }
+            }*/
         }
     }
 
@@ -772,7 +792,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 while ( (receiveString = bufferedReader.readLine()) != null ) {
                     if(lineCnt==0) {
                         // first line is header giving file creation epoch time
-                        String[] csvFields = receiveString.split(CommonConstants.CSV_DELIMETER);
+                        String[] csvFields = receiveString.split(CommonConstants.CSV_DELIMETER, -1);
                         long fileCreateTime = Long.parseLong(csvFields[0]);
                         if(custStatsRefreshReq(fileCreateTime) &&
                                 !ignoreTime ) {

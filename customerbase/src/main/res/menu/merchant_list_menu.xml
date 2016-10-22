@@ -7,7 +7,7 @@
         android:title="Sort"
         android:orderInCategory="1"
         android:icon="@drawable/ic_sort_white_24dp"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <!--item
         android:id="@+id/action_download"

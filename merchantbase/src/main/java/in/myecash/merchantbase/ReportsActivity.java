@@ -256,10 +256,14 @@ public class ReportsActivity extends AppCompatActivity implements
         // if not, add in missing file list
         long diff = Math.abs(mToDate.getTime() - mFromDate.getTime());
         int diffDays = (int) (diff / (24 * 60 * 60 * 1000));
-        // Add 1 as both days are inclusive
-        diffDays = diffDays + 1;
 
-        DateUtil txnDay = new DateUtil(mFromDate);
+        // If end date is of today - don't consider the end day - as no file is created for today
+        if(mToDate.getTime()!=mToday.getTime().getTime()) {
+            // Add 1 as both days are inclusive
+            diffDays = diffDays + 1;
+        }
+
+        DateUtil txnDay = new DateUtil(mFromDate, TimeZone.getDefault());
         String merchantId = MerchantUser.getInstance().getMerchantId();
         mWorkFragment.mMissingFiles.clear();
 
@@ -284,14 +288,14 @@ public class ReportsActivity extends AppCompatActivity implements
         // customer and merchant id
         whereClause.append("merchant_id = '").append(mMerchantUser.getMerchantId()).append("'");
 
-        DateUtil from = new DateUtil(mFromDate);
-        from.toMidnight();
+        //DateUtil from = new DateUtil(mFromDate);
+        //from.toMidnight();
         // Increment by 1 day, and then take midnight
-        DateUtil to = new DateUtil(mFromDate);
+        DateUtil to = new DateUtil(mToDate, TimeZone.getDefault());
         to.addDays(1);
         to.toMidnight();
 
-        whereClause.append(" AND create_time >= '").append(from.getTime().getTime()).append("'");
+        whereClause.append(" AND create_time >= '").append(mFromDate.getTime()).append("'");
         // we used '<' and not '<='
         whereClause.append(" AND create_time < '").append(to.getTime().getTime()).append("'");
 

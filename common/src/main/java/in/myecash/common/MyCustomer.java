@@ -66,7 +66,7 @@ public class MyCustomer {
 
         }
 
-        String[] csvFields = customerDetailsInCsvFormat.split(CUST_CSV_DELIM);
+        String[] csvFields = customerDetailsInCsvFormat.split(CUST_CSV_DELIM, -1);
         mPrivateId = csvFields[CUST_CSV_PRIVATE_ID];
         mMobileNum = csvFields[CUST_CSV_MOBILE_NUM];
         mStatus = Integer.parseInt(csvFields[CUST_CSV_ACC_STATUS]);

@@ -49,7 +49,7 @@ public class CsvConverter {
     private static final String TXN_CSV_DELIM = ",";
 
     public static Transaction txnFromCsvStr(String csvString) throws ParseException {
-        String[] csvFields = csvString.split(TXN_CSV_DELIM);
+        String[] csvFields = csvString.split(TXN_CSV_DELIM, -1);
 
         Transaction txn = new Transaction();
         txn.setTrans_id(csvFields[TXN_CSV_IDX_ID]);
@@ -135,7 +135,7 @@ public class CsvConverter {
         }
 
         Cashback cb = new Cashback();
-        String[] csvFields = csvRecord.split(CB_CSV_DELIM);
+        String[] csvFields = csvRecord.split(CB_CSV_DELIM, -1);
 
         cb.setCust_private_id(csvFields[CB_CSV_CUST_PVT_ID]);
         cb.setMerchant_id(csvFields[CB_CSV_MCHNT_ID]);

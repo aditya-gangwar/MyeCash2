@@ -23,6 +23,15 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="in.myecash.customerbase.LoginActivity">
+        </activity>
+        <activity
+            android:name="in.myecash.customerbase.CashbackActivity"
+            android:label="CashbackActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="ff31ec54d8344eb7441145b5161d18520f44eb48" />

@@ -115,11 +115,11 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
     private int loginCustomer(MessageLogin msg) {
         LogMy.d(TAG, "In loginMerchant");
-        return CustomerUser.getInstance().login(msg.userId, msg.password);
+        return CustomerUser.login(msg.userId, msg.password);
     }
 
     private int logoutAgent() {
-        return CustomerUser.getInstance().logout();
+        return CustomerUser.logout();
     }
 
     private int generatePassword(MessageLogin msg) {

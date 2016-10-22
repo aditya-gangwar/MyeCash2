@@ -13,11 +13,13 @@ import android.widget.EditText;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.common.MyMerchant;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.customerbase.helper.MyRetainedFragment;
 
 /**
@@ -56,9 +58,8 @@ public class MerchantDetailsDialog extends DialogFragment  {
                     + " must implement MerchantDetailsDialogIf");
         }
 
-        MyCashback cb = null;
         String mchntId = getArguments().getString(ARG_CB_MCHNTID, null);
-        cb = mCallback.getRetainedFragment().mCashbacks.get(mchntId);
+        MyCashback cb = mCallback.getRetainedFragment().mCashbacks.get(mchntId);
         initDialogView(cb);
     }
 
@@ -93,6 +94,14 @@ public class MerchantDetailsDialog extends DialogFragment  {
         MyMerchant merchant = cb.getMerchant();
 
         if(merchant != null) {
+            if(merchant.getStatus()== DbConstants.USER_STATUS_READY_TO_REMOVE) {
+                mLayoutExpNotice.setVisibility(View.VISIBLE);
+                mInputExpNotice.setText(String.format(getString(R.string.mchnt_remove_notice_to_cust),
+                        AppCommonUtil.getMchntRemovalDate(merchant.getRemoveReqDate())));
+            } else {
+                mLayoutExpNotice.setVisibility(View.GONE);
+            }
+
             mName.setText(merchant.getName());
             String txt = merchant.getBusinessCategory()+", "+merchant.getCity();
             mCategoryNdCity.setText(txt);
@@ -103,7 +112,7 @@ public class MerchantDetailsDialog extends DialogFragment  {
             }
             mLastTxnTime.setText(mSdfDateWithTime.format(time));
 
-            mInputTotalBill.setText(cb.getBillAmt());
+            mInputTotalBill.setText(AppCommonUtil.getAmtStr(cb.getBillAmt()));
 
             mInputAccAvailable.setText(AppCommonUtil.getAmtStr(cb.getCurrClBalance()));
             mInputAccTotalAdd.setText(AppCommonUtil.getAmtStr(cb.getClCredit()));
@@ -114,7 +123,7 @@ public class MerchantDetailsDialog extends DialogFragment  {
             mInputCbTotalRedeem.setText(AppCommonUtil.getAmtStr(cb.getCbRedeem()));
 
             mInputMobileNum.setText(merchant.getMobileNum());
-            mInputStatus.setText(merchant.getStatus());
+            mInputStatus.setText(DbConstants.userStatusDesc[merchant.getStatus()]);
             mAddressLine1.setText(merchant.getAddressLine1());
             mAddressCity.setText(merchant.getCity());
             mAddressState.setText(merchant.getState());
@@ -146,6 +155,9 @@ public class MerchantDetailsDialog extends DialogFragment  {
     private EditText mAddressCity;
     private EditText mAddressState;
 
+    private View mLayoutExpNotice;
+    private EditText mInputExpNotice;
+
     private void bindUiResources(View v) {
 
         mName = (EditText) v.findViewById(R.id.input_brand_name);;
@@ -168,5 +180,8 @@ public class MerchantDetailsDialog extends DialogFragment  {
         mAddressLine1 = (EditText) v.findViewById(R.id.input_address);
         mAddressCity = (EditText) v.findViewById(R.id.input_city);
         mAddressState = (EditText) v.findViewById(R.id.input_state);
+
+        mLayoutExpNotice = v.findViewById(R.id.layout_expiry_notice);
+        mInputExpNotice = (EditText) v.findViewById(R.id.input_expiry_notice);
     }
 }

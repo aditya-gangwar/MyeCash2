@@ -22,10 +22,11 @@ public class MyMerchant {
     private static final int MCHNT_CSV_ADDR_STATE = 7;
     private static final int MCHNT_CSV_STATUS = 8;
     private static final int MCHNT_CSV_STATUS_TIME = 9;
-    private static final int MCHNT_CSV_FIELD_CNT = 10;
+    private static final int MCHNT_CSV_REMOVE_REQ_DATE = 10;
+    private static final int MCHNT_CSV_FIELD_CNT = 11;
 
     // Total size of above fields = 50+50+10*7
-    public static final int MCHNT_CSV_MAX_SIZE = 200;
+    private static final int MCHNT_CSV_MAX_SIZE = 200;
     private static final String MCHNT_CSV_DELIM = ":";
 
     // Merchant properties
@@ -39,12 +40,13 @@ public class MyMerchant {
     String mCity;
     String mState;
     // status data
-    String mStatus;
+    int mStatus;
     Date mStatusUpdateTime;
+    Date mRemoveReqDate;
 
     // Init from CSV string
     public void init(String csvStr) {
-        String[] csvFields = csvStr.split(MCHNT_CSV_DELIM);
+        String[] csvFields = csvStr.split(MCHNT_CSV_DELIM, -1);
 
         mName = csvFields[MCHNT_CSV_NAME];
         mId = csvFields[MCHNT_CSV_ID];
@@ -54,8 +56,11 @@ public class MyMerchant {
         mAddressLine1 = csvFields[MCHNT_CSV_ADDR_LINE1];
         mCity = csvFields[MCHNT_CSV_ADDR_CITY];
         mState = csvFields[MCHNT_CSV_ADDR_STATE];
-        mStatus = csvFields[MCHNT_CSV_STATUS];
+        mStatus = Integer.parseInt(csvFields[MCHNT_CSV_STATUS]);
         mStatusUpdateTime = new Date(Long.parseLong(csvFields[MCHNT_CSV_STATUS_TIME]));
+        if(!csvFields[MCHNT_CSV_REMOVE_REQ_DATE].isEmpty()) {
+            mRemoveReqDate = new Date(Long.parseLong(csvFields[MCHNT_CSV_REMOVE_REQ_DATE]));
+        }
     }
 
     // Convert to CSV string
@@ -71,6 +76,11 @@ public class MyMerchant {
         csvFields[MCHNT_CSV_ADDR_STATE] = merchant.getAddress().getState();
         csvFields[MCHNT_CSV_STATUS] = String.valueOf(merchant.getAdmin_status());
         csvFields[MCHNT_CSV_STATUS_TIME] = Long.toString(merchant.getStatus_update_time().getTime());
+        if(merchant.getRemoveReqDate()==null) {
+            csvFields[MCHNT_CSV_REMOVE_REQ_DATE] = "";
+        } else {
+            csvFields[MCHNT_CSV_REMOVE_REQ_DATE] = Long.toString(merchant.getRemoveReqDate().getTime());
+        }
 
         // join the fields in single CSV string
         StringBuilder sb = new StringBuilder(MCHNT_CSV_MAX_SIZE);
@@ -116,12 +126,16 @@ public class MyMerchant {
         return mState;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return mStatus;
     }
 
     public Date getStatusUpdateTime() {
         return mStatusUpdateTime;
+    }
+
+    public Date getRemoveReqDate() {
+        return mRemoveReqDate;
     }
 }
 

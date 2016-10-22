@@ -239,7 +239,7 @@ public class CustomerListFragment extends Fragment {
             while ( (receiveString = bufferedReader.readLine()) != null ) {
                 if(lineCnt==0) {
                     // first line is header giving file creation time epoch
-                    String[] csvFields = receiveString.split(CommonConstants.CSV_DELIMETER);
+                    String[] csvFields = receiveString.split(CommonConstants.CSV_DELIMETER, -1);
                     mUpdatedTime = mSdfDateWithTime.format(new Date(Long.parseLong(csvFields[0])));
                 } else {
                     // ignore empty lines

@@ -1,8 +1,9 @@
-package in.myecash.appcustomer;
+package in.myecash.customerbase;
 
 import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -24,8 +25,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import in.myecash.common.constants.DbConstants;
-import in.myecash.customerbase.PasswdResetDialog;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.customerbase.helper.MyRetainedFragment;
 import in.myecash.appbase.constants.AppConstants;
@@ -282,7 +281,7 @@ public class LoginActivity extends AppCompatActivity implements
                     // read and set values
                     initOperationData();
                     // validate
-                    int errorCode = ValidationHelper.validateAgentId(mLoginId);
+                    int errorCode = ValidationHelper.validateMobileNo(mLoginId);
                     if (errorCode == ErrorCodes.NO_ERROR) {
                         // Ask for confirmation and the PIN too
                         PasswdResetDialog dialog = new PasswdResetDialog();
@@ -334,11 +333,12 @@ public class LoginActivity extends AppCompatActivity implements
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
-        //TODO: start main activity
-        //Intent intent = new Intent( this, ActionsActivity.class );
+        //Start Cashback Activity
+        Intent intent = new Intent( this, CashbackActivity.class );
+        intent.putExtra(CashbackActivity.INTENT_EXTRA_USER_TOKEN, CustomerUser.getInstance().getUserToken());
         // clear Login activity from backstack
-        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //startActivity(intent);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         finish();
     }
 

@@ -98,7 +98,11 @@
                         android:drawableLeft="@drawable/ic_account_balance_wallet_white_18dp"
                         android:drawablePadding="@dimen/large_space"
                         android:paddingBottom="@dimen/XS_space"
-                        android:paddingTop="0dp"/>
+                        android:paddingTop="0dp"
+                        android:textIsSelectable="false"
+                        android:ellipsize="none"
+                        android:longClickable="false"
+                        android:scrollHorizontally="false"/>
                     <EditText
                         style="@style/Toolbar_subtitle"
                         android:textSize="@dimen/text_size_medium"
@@ -109,7 +113,11 @@
                         android:text="\u20B9 0"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_grade_white_18dp"
-                        android:drawablePadding="@dimen/large_space"/>
+                        android:drawablePadding="@dimen/large_space"
+                        android:longClickable="false"
+                        android:textIsSelectable="false"
+                        android:ellipsize="none"
+                        android:scrollHorizontally="false"/>
                 </LinearLayout>
 
             </LinearLayout>

@@ -81,7 +81,7 @@ public class CustomerUser {
      * CustomerUser singleton instance is created on successfull login
      * and destroyed on logout / explicit reset.
      */
-    public int login(String userId, String password) {
+    public static int login(String userId, String password) {
         LogMy.d(TAG, "In login");
         try {
             BackendlessUser user = Backendless.UserService.login(userId, password, false);
@@ -131,9 +131,9 @@ public class CustomerUser {
         return ErrorCodes.NO_ERROR;
     }
 
-    public int logout() {
+    public static int logout() {
         LogMy.d(TAG, "In logout");
-        if(!mInstance.mPseudoLoggedIn) {
+        if(mInstance!=null && !mInstance.mPseudoLoggedIn) {
             try {
                 Backendless.UserService.logout();
                 LogMy.d(TAG, "Logout Success: " + mInstance.mCustomer.getMobile_num());
@@ -211,7 +211,7 @@ public class CustomerUser {
 
     public List<Cashback> fetchCashbacks(Long updatedSince) throws BackendlessException {
         LogMy.d(TAG, "In fetchCashback");
-        return CustomerServices.getInstance().getCashbacks(updatedSince);
+        return CustomerServices.getInstance().getCashbacks(mCustomer.getPrivate_id(), updatedSince);
     }
 
 

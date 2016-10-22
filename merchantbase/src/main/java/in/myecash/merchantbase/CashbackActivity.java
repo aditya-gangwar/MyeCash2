@@ -21,7 +21,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -454,7 +453,7 @@ public class CashbackActivity extends AppCompatActivity implements
         mTbLayoutSubhead1.setVisibility(View.VISIBLE);
 
         // no error case: all cashback values available
-        mTbTitle.setText(mWorkFragment.mCustMobile);
+        mTbTitle.setText(AppCommonUtil.getPartialVisibleStr(mWorkFragment.mCustMobile));
         // display image
         //mTbLayoutImage.setBackground(ContextCompat.getDrawable(this, R.drawable.circle_border_coconut));
         //mTbImage.setBackground(ContextCompat.getDrawable(this, R.drawable.logo_success_36dp));
@@ -508,7 +507,8 @@ public class CashbackActivity extends AppCompatActivity implements
         mTbTitle2.setVisibility(View.GONE);
         if(mMerchant.getAdmin_status()==DbConstants.USER_STATUS_READY_TO_REMOVE ) {
             mTbTitle2.setVisibility(View.VISIBLE);
-            mTbTitle2.setText(AppCommonUtil.getMchntExpiryMsg(mMerchant));
+            String msg = "Removal on "+AppCommonUtil.getMchntRemovalDate(mMerchant.getRemoveReqDate());
+            mTbTitle2.setText(msg);
 
         } else if(mMerchant.getAdmin_status()!=DbConstants.USER_STATUS_ACTIVE) {
             // User should not be able to login, in any other status scenario

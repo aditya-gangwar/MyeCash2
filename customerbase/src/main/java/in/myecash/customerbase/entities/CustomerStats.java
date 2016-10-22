@@ -6,16 +6,16 @@ import in.myecash.appbase.entities.MyCashback;
  * Created by adgangwa on 28-09-2016.
  */
 public class CustomerStats {
-    private Integer mchnt_cnt;
+    private int mchnt_cnt;
 
-    private Integer bill_amt_total;
-    private Integer bill_amt_no_cb;
+    private int bill_amt_total;
+    private int bill_amt_no_cb;
 
-    private Integer cb_credit;
-    private Integer cb_debit;
+    private int cb_credit;
+    private int cb_debit;
 
-    private Integer acc_credit;
-    private Integer acc_debit;
+    private int acc_credit;
+    private int acc_debit;
 
     // Update stats
     public void addToStats(MyCashback cb) {
@@ -40,31 +40,31 @@ public class CustomerStats {
     }
 
     // Getter methods
-    public Integer getMchnt_cnt() {
+    public int getMchnt_cnt() {
         return mchnt_cnt;
     }
 
-    public Integer getBill_amt_total() {
+    public int getBill_amt_total() {
         return bill_amt_total;
     }
 
-    public Integer getBill_amt_no_cb() {
+    public int getBill_amt_no_cb() {
         return bill_amt_no_cb;
     }
 
-    public Integer getCb_credit() {
+    public int getCb_credit() {
         return cb_credit;
     }
 
-    public Integer getCb_debit() {
+    public int getCb_debit() {
         return cb_debit;
     }
 
-    public Integer getAcc_credit() {
+    public int getAcc_credit() {
         return acc_credit;
     }
 
-    public Integer getAcc_debit() {
+    public int getAcc_debit() {
         return acc_debit;
     }
 }
