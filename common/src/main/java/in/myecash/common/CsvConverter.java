@@ -45,7 +45,7 @@ public class CsvConverter {
     private static int TXN_CSV_TOTAL_FIELDS = 16;
 
     // Total size of above fields = 15*10 + 50;
-    private static final int TXN_CSV_MAX_SIZE = 256;
+    public static final int TXN_CSV_MAX_SIZE = 256;
     private static final String TXN_CSV_DELIM = ",";
 
     public static Transaction txnFromCsvStr(String csvString) throws ParseException {

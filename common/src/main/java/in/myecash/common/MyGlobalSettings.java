@@ -276,23 +276,28 @@ public class MyGlobalSettings
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN);
     }
     /*
-     * Merchant transaction report durations
+     * Number of days, for which older transactions can be fetched
      */
-    private static final String SETTINGS_REPORTS_HISTORY_DAYS = "reports_history_days";
-    private static final String SETTINGS_REPORTS_BLACKOUT_END = "reports_blackout_end";
-    private static final String SETTINGS_REPORTS_BLACKOUT_START = "reports_blackout_start";
+    private static final String SETTINGS_MCHNT_TXN_HISTORY_DAYS = "mchnt_txn_history_days";
+    private static final String SETTINGS_CUST_TXN_HISTORY_DAYS = "cust_txn_history_days";
+
+    /*private static final String SETTINGS_REPORTS_BLACKOUT_END = "reports_blackout_end";
+    private static final String SETTINGS_REPORTS_BLACKOUT_START = "reports_blackout_start";*/
     // ** No Constant values defined - as not used by backend **
 
     // Public Getter fxs
-    public static Integer getMchntReportHistoryDays() {
-        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_REPORTS_HISTORY_DAYS);
+    public static Integer getMchntTxnHistoryDays() {
+        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_MCHNT_TXN_HISTORY_DAYS);
     }
-    public static Integer getMchntNoReportStartHrs() {
+    public static Integer getCustTxnHistoryDays() {
+        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUST_TXN_HISTORY_DAYS);
+    }
+    /*public static Integer getMchntNoReportStartHrs() {
         return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_REPORTS_BLACKOUT_END);
     }
     public static Integer getMchntNoReportEndHrs() {
         return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_REPORTS_BLACKOUT_START);
-    }
+    }*/
 
     /*
      * App will fetch data only once in below defined hours
