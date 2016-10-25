@@ -51,7 +51,7 @@
 
                     <EditText
                         style="@style/Edittext_only_click_large"
-                        android:textSize="@dimen/text_size_XXL"
+                        android:textSize="@dimen/text_size_XL"
                         android:id="@+id/input_cust_cnt"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
@@ -101,12 +101,12 @@
 
                     <EditText
                         style="@style/Edittext_only_click_large"
-                        android:textSize="@dimen/text_size_XXL"
+                        android:textSize="@dimen/text_size_XL"
                         android:id="@+id/input_bill_amt"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:layout_gravity="bottom|center_horizontal"
-                        android:text="\u20B9 234"
+                        android:text="\u20B9 561423"
                         android:textStyle="bold"
                         android:textColor="@color/white"
                         android:drawableTop="@drawable/ic_receipt_white_24dp"
@@ -164,7 +164,7 @@
 
                     <EditText
                         style="@style/Edittext_only_click_large"
-                        android:textSize="@dimen/text_size_XXL"
+                        android:textSize="@dimen/text_size_XL"
                         android:id="@+id/input_account_cash"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
@@ -214,7 +214,7 @@
 
                     <EditText
                         style="@style/Edittext_only_click_large"
-                        android:textSize="@dimen/text_size_XXL"
+                        android:textSize="@dimen/text_size_XL"
                         android:id="@+id/input_cashback"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"

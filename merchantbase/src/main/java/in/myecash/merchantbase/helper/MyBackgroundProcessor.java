@@ -17,7 +17,7 @@ import in.myecash.appbase.utilities.FileFetchr;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.appbase.entities.MyCashback;
-import in.myecash.merchantbase.entities.MyTransaction;
+import in.myecash.appbase.entities.MyTransaction;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -408,31 +408,6 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
                 LogMy.d(TAG,"Txn file found remotely, removing from missing list: "+missingFiles.get(i));
                 mRetainedFragment.mMissingFiles.remove(missingFiles.get(i));
             }
-            /*
-            String filepath = missingFiles.get(i);
-            String fileURL = CommonConstants.BACKEND_FILE_BASE_URL + filepath;
-            //String filename = filepath.substring(filepath.lastIndexOf('/')+1);
-            String filename = Uri.parse(fileURL).getLastPathSegment();
-            LogMy.d(TAG,"Fetching "+fileURL+", Filename: "+filename);
-
-            FileOutputStream outputStream;
-            try {
-                byte[] bitmapBytes = new FileFetchr().getUrlBytes(fileURL, MerchantUser.getInstance().getUserToken());
-
-                outputStream = ctxt.openFileOutput(filename, Context.MODE_PRIVATE);
-                outputStream.write(bitmapBytes);
-                outputStream.close();
-
-                //remove from missing files list
-                mRetainedFragment.mMissingFiles.remove(missingFiles.get(i));
-
-            } catch(FileNotFoundException fnf) {
-                LogMy.d(TAG, "File not found: "+fnf.toString());
-                errorCode = ErrorCodes.FILE_NOT_FOUND;
-            } catch(IOException ioe) {
-                LogMy.e(TAG, "Failed to fetch file: "+ioe.toString());
-                errorCode = ErrorCodes.GENERAL_ERROR;
-            }*/
         }
 
         return errorCode;

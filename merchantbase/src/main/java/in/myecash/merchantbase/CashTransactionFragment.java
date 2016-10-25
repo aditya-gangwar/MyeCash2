@@ -27,7 +27,7 @@ import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.merchantbase.entities.MerchantUser;
-import in.myecash.merchantbase.entities.MyTransaction;
+import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.merchantbase.entities.OrderItem;
 import in.myecash.merchantbase.helper.CashPaid;
 import in.myecash.merchantbase.helper.MyRetainedFragment;

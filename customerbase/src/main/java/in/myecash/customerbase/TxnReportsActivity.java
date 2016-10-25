@@ -1,4 +1,4 @@
-package in.myecash.merchantbase;
+package in.myecash.customerbase;
 
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -14,21 +14,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import in.myecash.appbase.constants.AppConstants;
-import in.myecash.common.CommonUtils;
-import in.myecash.common.CsvConverter;
-import in.myecash.common.constants.CommonConstants;
-import in.myecash.common.constants.ErrorCodes;
-import in.myecash.common.MyGlobalSettings;
-import in.myecash.common.database.Transaction;
-import in.myecash.appbase.utilities.AppCommonUtil;
-import in.myecash.common.DateUtil;
-import in.myecash.appbase.utilities.DialogFragmentWrapper;
-import in.myecash.appbase.utilities.LogMy;
-import in.myecash.merchantbase.entities.MerchantUser;
-import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,40 +23,52 @@ import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
+
+import in.myecash.appbase.DatePickerDialog;
+import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.entities.MyTransaction;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.DialogFragmentWrapper;
+import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.CommonUtils;
+import in.myecash.common.CsvConverter;
+import in.myecash.common.DateUtil;
+import in.myecash.common.MyGlobalSettings;
+import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.ErrorCodes;
+import in.myecash.common.database.Transaction;
+import in.myecash.customerbase.entities.CustomerUser;
+import in.myecash.customerbase.helper.MyRetainedFragment;
 
 /**
  * Created by adgangwa on 04-04-2016.
  */
-public class ReportsActivity extends AppCompatActivity implements
+public class TxnReportsActivity extends AppCompatActivity implements
         View.OnClickListener, MyRetainedFragment.RetainedFragmentIf,
-        DatePickerDialog.DatePickerIf, TxnSummaryFragment.TxnSummaryFragmentIf,
-        TxnListFragment.TxnListFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
-        TxnDetailsDialog.TxnDetailsDialogIf {
-    private static final String TAG = "ReportsActivity";
+        DatePickerDialog.DatePickerIf, TxnListFragment.TxnListFragmentIf,
+        DialogFragmentWrapper.DialogFragmentWrapperIf, TxnDetailsDialog.TxnDetailsDialogIf {
+    private static final String TAG = "TxnReportsActivity";
 
-    public static final String EXTRA_CUSTOMER_ID = "extraCustId";
+    public static final String EXTRA_MERCHANT_ID = "extraMchntId";
+    public static final String EXTRA_MERCHANT_NAME = "extraMchntName";
 
     private static final String RETAINED_FRAGMENT = "retainedFragReports";
     private static final String DIALOG_DATE_FROM = "DialogDateFrom";
     private static final String DIALOG_DATE_TO = "DialogDateTo";
     private static final String TXN_LIST_FRAGMENT = "TxnListFragment";
-    private static final String TXN_SUMMARY_FRAGMENT = "TxnSummaryFragment";
 
     // All required date formatters
-    //private SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
-    private SimpleDateFormat mSdfOnlyDateBackend = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_BACKEND, CommonConstants.DATE_LOCALE);
-    //private SimpleDateFormat mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
     private SimpleDateFormat mSdfOnlyDateDisplay = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
 
     FragmentManager mFragMgr;
     MyRetainedFragment mWorkFragment;
-    private MerchantUser mMerchantUser;
+    //private CustomerUser mCustomerUser;
     private DateUtil mToday;
-    private String mCustomerId;
+    private String mMerchantId;
+    private String mMerchantName;
+    private String mCustPvtId;
 
     // Store and restore as part of instance state
     private Date mFromDate;
@@ -81,11 +78,11 @@ public class ReportsActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reports);
+        setContentView(R.layout.activity_txn_report);
 
         // gets handlers to screen resources
         bindUiResources();
-        mMerchantUser = MerchantUser.getInstance();
+        mCustPvtId = CustomerUser.getInstance().getCustomer().getPrivate_id();
         mToday = new DateUtil(new Date(), TimeZone.getDefault());
         mToday.toMidnight();
 
@@ -98,7 +95,11 @@ public class ReportsActivity extends AppCompatActivity implements
         } else {
             mDetailedTxnPos = -1;
         }
-        mInputCustId.setText(getIntent().getStringExtra(EXTRA_CUSTOMER_ID));
+
+        // get passed merchant details
+        mMerchantId = getIntent().getStringExtra(EXTRA_MERCHANT_ID);
+        mMerchantName = getIntent().getStringExtra(EXTRA_MERCHANT_NAME);
+        mInputMerchant.setText(mMerchantName);
 
         // Initialize retained fragment before other fragments
         // Check to see if we have retained the worker fragment.
@@ -122,14 +123,14 @@ public class ReportsActivity extends AppCompatActivity implements
                 // Find the minimum date for DatePicker
                 //int oldDays = (Integer) MyGlobalSettings.mSettings.get(DbConstants.SETTINGS_REPORTS_HISTORY_DAYS);
                 DateUtil minFrom = new DateUtil(new Date(), TimeZone.getDefault());
-                minFrom.removeDays(MyGlobalSettings.getMchntReportHistoryDays());
+                minFrom.removeDays(MyGlobalSettings.getCustTxnHistoryDays());
 
                 DialogFragment fromDialog = DatePickerDialog.newInstance(mFromDate, minFrom.getTime(), mToday.getTime());
                 fromDialog.show(getFragmentManager(), DIALOG_DATE_FROM);
 
             } else if (vId == R.id.input_date_to) {
                 if (mFromDate == null) {
-                    Toast.makeText(this, "Set From date first", Toast.LENGTH_LONG).show();
+                    AppCommonUtil.toast(this, "Set From Date");
                 } else {
                     DialogFragment toDialog = DatePickerDialog.newInstance(mToDate, mFromDate, mToday.getTime());
                     toDialog.show(getFragmentManager(), DIALOG_DATE_TO);
@@ -144,14 +145,6 @@ public class ReportsActivity extends AppCompatActivity implements
                     mWorkFragment.mLastFetchTransactions.clear();
                     mWorkFragment.mLastFetchTransactions = null;
                 }
-                mCustomerId = mInputCustId.getText().toString();
-                if (mCustomerId.length() > 0) {
-                    if( mCustomerId.length() != CommonConstants.CUSTOMER_INTERNAL_ID_LEN &&
-                            mCustomerId.length() != CommonConstants.MOBILE_NUM_LENGTH ) {
-                        mInputCustId.setError(AppCommonUtil.getErrorDesc(ErrorCodes.INVALID_LENGTH));
-                        return;
-                    }
-                }
                 fetchReportData();
 
             } else {
@@ -165,9 +158,8 @@ public class ReportsActivity extends AppCompatActivity implements
     }
 
     private void fetchReportData() throws Exception{
-        // start thread to fetch data from DB
         // show progress dialog
-        AppCommonUtil.showProgressDialog(ReportsActivity.this, AppConstants.progressReports);
+        AppCommonUtil.showProgressDialog(TxnReportsActivity.this, AppConstants.progressReports);
 
         LogMy.d( TAG, String.valueOf(mToday.getTime().getTime()) +", "+ String.valueOf(mFromDate.getTime()) +", "+ String.valueOf(mToDate.getTime()) );
 
@@ -178,7 +170,7 @@ public class ReportsActivity extends AppCompatActivity implements
                 mWorkFragment.fetchTransactions(buildWhereClause());
             } else {
                 // invalid state: if from == today, then To has to be == today only
-                LogMy.e(TAG,"ReportsActivity: Invalid state: From is today, but To is not");
+                LogMy.e(TAG,"Invalid state: From is today, but To is not");
                 AppCommonUtil.cancelProgressDialog(true);
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                         .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -196,7 +188,7 @@ public class ReportsActivity extends AppCompatActivity implements
             } else {
                 // one or more txn files are not locally available, fetch the same from backend
                 // all files will be processed in single go, after fetching missing files
-                mWorkFragment.fetchTxnFiles(ReportsActivity.this, mWorkFragment.mMissingFiles);
+                mWorkFragment.fetchTxnFiles(TxnReportsActivity.this, mWorkFragment.mMissingFiles);
             }
         }
     }
@@ -244,9 +236,16 @@ public class ReportsActivity extends AppCompatActivity implements
             return;
         }
 
+        // Remove duplicates - this may happen due to some error in backend archive process
+        // which can result same txns to be present in both the DB table and CSV file
+        // A simpler way is to override equals() and hashcode() methods of Transaction class
+        // however didn't want to loose the ability to export class from Backendless and use as it is
+        mWorkFragment.mLastFetchTransactions = new ArrayList<>(MyTransaction.removeDuplicateTxns(mWorkFragment.mLastFetchTransactions));
+
         // create summary and start fragment
-        addToSummary(mWorkFragment.mLastFetchTransactions);
-        startTxnSummaryFragment();
+        //addToSummary(mWorkFragment.mLastFetchTransactions);
+        //startTxnSummaryFragment();
+        startTxnListFragment();
     }
 
     // checks for txn files locally and sets 'mWorkFragment.mAllFiles' and 'mWorkFragment.mMissingFiles' accordingly
@@ -264,18 +263,17 @@ public class ReportsActivity extends AppCompatActivity implements
         }
 
         DateUtil txnDay = new DateUtil(mFromDate, TimeZone.getDefault());
-        String merchantId = MerchantUser.getInstance().getMerchantId();
         mWorkFragment.mMissingFiles.clear();
 
         for(int i=0; i<diffDays; i++) {
-            String filename = CommonUtils.getTxnCsvFilename(txnDay.getTime(),merchantId);
+            String filename = CommonUtils.getTxnCsvFilename(txnDay.getTime(),mMerchantId);
             mWorkFragment.mAllFiles.add(filename);
 
             File file = getFileStreamPath(filename);
             if(file == null || !file.exists()) {
                 // file does not exist
                 LogMy.d(TAG,"Missing file: "+filename);
-                String filepath = CommonUtils.getMerchantTxnDir(merchantId) + CommonConstants.FILE_PATH_SEPERATOR + filename;
+                String filepath = CommonUtils.getMerchantTxnDir(mMerchantId) + CommonConstants.FILE_PATH_SEPERATOR + filename;
                 mWorkFragment.mMissingFiles.add(filepath);
             }
             txnDay.addDays(1);
@@ -286,7 +284,8 @@ public class ReportsActivity extends AppCompatActivity implements
         StringBuilder whereClause = new StringBuilder();
 
         // customer and merchant id
-        whereClause.append("merchant_id = '").append(mMerchantUser.getMerchantId()).append("'");
+        whereClause.append("merchant_id = '").append(mMerchantId).append("'");
+        whereClause.append(" AND cust_private_id = '").append(mCustPvtId).append("'");
 
         //DateUtil from = new DateUtil(mFromDate);
         //from.toMidnight();
@@ -298,24 +297,6 @@ public class ReportsActivity extends AppCompatActivity implements
         whereClause.append(" AND create_time >= '").append(mFromDate.getTime()).append("'");
         // we used '<' and not '<='
         whereClause.append(" AND create_time < '").append(to.getTime().getTime()).append("'");
-
-        /*
-        String fromDateStr = mSdfOnlyDateBackend.format(mFromDate);
-        whereClause.append(" AND create_time >= '").append(fromDateStr).append("'");
-
-        // increment to date by 1 day
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(mToDate);
-        calendar.add(Calendar.DATE, 1);
-        String toDateStr = mSdfOnlyDateBackend.format(calendar.getTime());
-        // we used '<' and not '<='
-        whereClause.append(" AND create_time < '").append(toDateStr).append("'");*/
-
-        if(mCustomerId.length() == CommonConstants.MOBILE_NUM_LENGTH) {
-            whereClause.append(" AND customer_id = '").append(mCustomerId).append("'");
-        } else if(mCustomerId.length() == CommonConstants.CUSTOMER_INTERNAL_ID_LEN) {
-            whereClause.append(" AND cust_private_id = '").append(mCustomerId).append("'");
-        }
 
         whereClause.append(" AND archived = false");
 
@@ -337,11 +318,17 @@ public class ReportsActivity extends AppCompatActivity implements
         mInputDateTo.setOnClickListener(this);
     }
 
+    private void initToolbar() {
+        LogMy.d(TAG, "In initToolbar");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_report);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP);
+    }
 
     @Override
     public void onDateSelected(Date argDate, String tag) {
         LogMy.d(TAG, "Selected date: " + argDate.toString());
-        //SimpleDateFormat format = new SimpleDateFormat(AppConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, AppConstants.DATE_LOCALE);
         if(tag.equals(DIALOG_DATE_FROM)) {
             mFromDate = argDate;
             mInputDateFrom.setText(mSdfOnlyDateDisplay.format(mFromDate));
@@ -349,19 +336,6 @@ public class ReportsActivity extends AppCompatActivity implements
             mToDate = argDate;
             mInputDateTo.setText(mSdfOnlyDateDisplay.format(mToDate));
         }
-    }
-
-    private void initToolbar() {
-        LogMy.d(TAG, "In initToolbar");
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_report);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP);
-
-        /*
-        if(isNewActivity) {
-            getSupportActionBar().setTitle("History");
-        }*/
     }
 
     @Override
@@ -392,20 +366,6 @@ public class ReportsActivity extends AppCompatActivity implements
                                 .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
                     break;
-                case MyRetainedFragment.REQUEST_IMAGE_DOWNLOAD:
-                    AppCommonUtil.cancelProgressDialog(true);
-                    if (errorCode != ErrorCodes.NO_ERROR ||
-                            mWorkFragment.mLastFetchedImage==null) {
-                        AppCommonUtil.toast(this, "Failed to download image file");
-                    }
-                    // re-open the details dialog - but only if 'txn list fragment' is still open
-                    TxnListFragment fragment = (TxnListFragment)mFragMgr.findFragmentByTag(TXN_SUMMARY_FRAGMENT);
-                    if (fragment != null) {
-                        fragment.showDetailedDialog(mDetailedTxnPos);
-                    } else {
-                        LogMy.d(TAG,"Txn list fragment not available, ignoring downloaded file");
-                    }
-                    break;
             }
 
         } catch (Exception e) {
@@ -417,21 +377,10 @@ public class ReportsActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void showTxnImg(int currTxnPos) {
-        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-        mDetailedTxnPos = currTxnPos;
-        String txnImgFileName = mWorkFragment.mLastFetchTransactions.get(currTxnPos).getImgFileName();
-        String mchntId = mWorkFragment.mLastFetchTransactions.get(currTxnPos).getMerchant_id();
-
-        String url = CommonUtils.getTxnImgDir(mchntId)+txnImgFileName;
-        mWorkFragment.fetchImageFile(url);
-    }
-
     // process all files in 'mAllFiles' and add applicable CSV records in mWorkFragment.mFilteredCsvRecords
     private void processFiles() throws Exception {
         boolean isCustomerFilter = false;
-        if(mCustomerId != null && mCustomerId.length() > 0 )
+        if(mCustPvtId != null && mCustPvtId.length() > 0 )
         {
             isCustomerFilter = true;
         }
@@ -492,65 +441,10 @@ public class ReportsActivity extends AppCompatActivity implements
         Transaction txn = CsvConverter.txnFromCsvStr(csvString);
 
         if( !isCustomerFilter ||
-                mCustomerId.equals(txn.getCustomer_id()) ||
-                mCustomerId.equals(txn.getCust_private_id()) ) {
+                mCustPvtId.equals(txn.getCust_private_id()) ) {
 
             mWorkFragment.mTxnsFromCsv.add(txn);
         }
-
-        /*
-        if(!isCustomerFilter ||
-                mCustomerId.equals(csvFields[CommonConstants.TXN_CSV_IDX_CUSTOMER_ID]) ) {
-            // convert csv record to Transaction object and add to list
-            mWorkFragment.mTxnsFromCsv.add(MyTransaction.getTxnFromCsv(csvFields));
-        }*/
-    }
-
-    private void addToSummary(List<Transaction> txns) {
-        LogMy.d(TAG, "In addToSummary: "+txns.size());
-        int summary[] = mWorkFragment.mSummary;
-
-        // reset first
-        summary[AppConstants.INDEX_TXN_COUNT] = 0;
-        summary[AppConstants.INDEX_BILL_AMOUNT] = 0;
-        summary[AppConstants.INDEX_ADD_ACCOUNT] = 0;
-        summary[AppConstants.INDEX_DEBIT_ACCOUNT] = 0;
-        summary[AppConstants.INDEX_CASHBACK] = 0;
-        summary[AppConstants.INDEX_DEBIT_CASHBACK] = 0;
-
-        for (Transaction txn : txns) {
-            summary[AppConstants.INDEX_TXN_COUNT]++;
-            summary[AppConstants.INDEX_BILL_AMOUNT] = summary[AppConstants.INDEX_BILL_AMOUNT] + txn.getTotal_billed();
-            summary[AppConstants.INDEX_ADD_ACCOUNT] = summary[AppConstants.INDEX_ADD_ACCOUNT] + txn.getCl_credit();
-            summary[AppConstants.INDEX_DEBIT_ACCOUNT] = summary[AppConstants.INDEX_DEBIT_ACCOUNT] + txn.getCl_debit();
-            summary[AppConstants.INDEX_CASHBACK] = summary[AppConstants.INDEX_CASHBACK] + txn.getCb_credit();
-            summary[AppConstants.INDEX_DEBIT_CASHBACK] = summary[AppConstants.INDEX_DEBIT_CASHBACK] + txn.getCb_debit();
-        }
-    }
-
-    private void startTxnSummaryFragment() {
-        Fragment fragment = mFragMgr.findFragmentByTag(TXN_SUMMARY_FRAGMENT);
-        if (fragment == null) {
-            LogMy.d(TAG,"Creating new txn summary fragment");
-
-            // Create new fragment and transaction
-            fragment = TxnSummaryFragment.newInstance(mWorkFragment.mSummary);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-            // Add over the existing fragment
-            mMainLayout.setVisibility(View.GONE);
-            mFragmentContainer.setVisibility(View.VISIBLE);
-            transaction.replace(R.id.fragment_container_report, fragment, TXN_SUMMARY_FRAGMENT);
-            transaction.addToBackStack(TXN_SUMMARY_FRAGMENT);
-
-            // Commit the transaction
-            transaction.commit();
-        }
-    }
-
-    @Override
-    public void showTxnDetails() {
-        startTxnListFragment();
     }
 
     private void startTxnListFragment() {
@@ -560,7 +454,7 @@ public class ReportsActivity extends AppCompatActivity implements
 
             // Create new fragment and transaction
             //fragment = new TxnListFragment_2();
-            fragment = TxnListFragment.getInstance(mFromDate,mToDate);
+            fragment = TxnListFragment.getInstance(mFromDate,mToDate,mMerchantName);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
             // Add over the existing fragment
@@ -600,7 +494,7 @@ public class ReportsActivity extends AppCompatActivity implements
             getFragmentManager().popBackStackImmediate();
 
             if(mFragmentContainer.getVisibility()==View.VISIBLE && count==1) {
-                getSupportActionBar().setTitle("History");
+                getSupportActionBar().setTitle("Transactions");
                 mMainLayout.setVisibility(View.VISIBLE);
                 mFragmentContainer.setVisibility(View.GONE);
             }
@@ -626,7 +520,7 @@ public class ReportsActivity extends AppCompatActivity implements
 
     private EditText mInputDateFrom;
     private EditText mInputDateTo;
-    private EditText mInputCustId;
+    private EditText mInputMerchant;
     private AppCompatButton mBtnGetReport;
 
     private LinearLayout mMainLayout;
@@ -635,33 +529,17 @@ public class ReportsActivity extends AppCompatActivity implements
     private void bindUiResources() {
         mInputDateFrom = (EditText) findViewById(R.id.input_date_from);
         mInputDateTo = (EditText) findViewById(R.id.input_date_to);
-        mInputCustId = (EditText) findViewById(R.id.input_customer_id);
+        mInputMerchant = (EditText) findViewById(R.id.input_merchant);
         mBtnGetReport = (AppCompatButton) findViewById(R.id.btn_get_report);
 
         mMainLayout = (LinearLayout) findViewById(R.id.layout_report_main);
         mFragmentContainer = (FrameLayout) findViewById(R.id.fragment_container_report);
     }
 
-    /*
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        TxnListFragment fragment = (TxnListFragment)mFragMgr.findFragmentByTag(TXN_LIST_FRAGMENT);
-        if (fragment != null) {
-            fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }*/
-
     @Override
     protected void onResume() {
         LogMy.d(TAG, "In onResume: ");
         super.onResume();
-
-        /*
-        getSupportActionBar().setTitle("History");
-        mMainLayout.setVisibility(View.VISIBLE);
-        mFragmentContainer.setVisibility(View.GONE);*/
 
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
@@ -674,12 +552,6 @@ public class ReportsActivity extends AppCompatActivity implements
         super.onPause();
         AppCommonUtil.cancelProgressDialog(false);
     }
-
-    /*
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }*/
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

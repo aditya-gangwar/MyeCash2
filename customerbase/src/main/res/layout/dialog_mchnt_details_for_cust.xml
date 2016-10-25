@@ -374,6 +374,31 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="MyeCash ID"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_merchant_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TBS"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_phone_android_white_24dp"
                 android:tint="@color/primary"/>
             <EditText

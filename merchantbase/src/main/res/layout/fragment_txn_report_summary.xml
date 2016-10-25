@@ -234,7 +234,7 @@
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left|center_vertical"
-                            android:text="Total Award"/>
+                            android:text="Total Add"/>
                         <EditText
                             style="@style/Edittext_only_click_medium"
                             android:layout_width="wrap_content"
@@ -252,7 +252,7 @@
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left|center_vertical"
-                            android:text="Total Redeem"/>
+                            android:text="Total Debit"/>
                         <EditText
                             style="@style/Edittext_only_click_medium"
                             android:layout_width="wrap_content"

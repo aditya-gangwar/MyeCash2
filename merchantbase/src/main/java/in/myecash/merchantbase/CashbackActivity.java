@@ -741,6 +741,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
     private void startReportsActivity(String custId) {
         // check for reports blackout period
+        /*
         Integer startHour = MyGlobalSettings.getMchntNoReportStartHrs();
         Integer endHour = MyGlobalSettings.getMchntNoReportEndHrs();
 
@@ -764,11 +765,11 @@ public class CashbackActivity extends AppCompatActivity implements
                         .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 return;
             }
-        }
+        }*/
 
         // start reports activity
-        Intent intent = new Intent( this, ReportsActivity.class );
-        intent.putExtra(ReportsActivity.EXTRA_CUSTOMER_ID, custId);
+        Intent intent = new Intent( this, TxnReportsActivity.class );
+        intent.putExtra(TxnReportsActivity.EXTRA_CUSTOMER_ID, custId);
         startActivity(intent);
     }
 

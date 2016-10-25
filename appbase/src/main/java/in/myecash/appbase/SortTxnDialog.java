@@ -1,4 +1,4 @@
-package in.myecash.merchantbase;
+package in.myecash.appbase;
 
 import android.app.Activity;
 import android.app.Dialog;

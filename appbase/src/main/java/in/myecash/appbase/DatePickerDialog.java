@@ -1,4 +1,4 @@
-package in.myecash.merchantbase;
+package in.myecash.appbase;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -16,9 +16,7 @@ import java.util.GregorianCalendar;
 public class DatePickerDialog extends DialogFragment
         implements android.app.DatePickerDialog.OnDateSetListener {
 
-    private static final String TAG = "DatePickerFragment";
     private static final String ARG_DATE = "date";
-    private static final String ARG_TITLE = "title";
     private static final String ARG_MIN_DATE = "min_date";
     private static final String ARG_MAX_DATE = "max_date";
 

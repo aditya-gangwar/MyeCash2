@@ -627,6 +627,19 @@ public class CashbackActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    public void getMchntTxns(String id, String name) {
+        startTxnReportActivity(id, name);
+    }
+
+    private void startTxnReportActivity(String mchntId, String name) {
+        // start reports activity
+        Intent intent = new Intent( this, TxnReportsActivity.class );
+        intent.putExtra(TxnReportsActivity.EXTRA_MERCHANT_ID, mchntId);
+        intent.putExtra(TxnReportsActivity.EXTRA_MERCHANT_NAME, name);
+        startActivity(intent);
+    }
+
     public void onDialogResult(String tag, int indexOrResultCode, ArrayList<Integer> selectedItemsIndexList) {
         LogMy.d(TAG, "In onDialogResult: " + tag);
 

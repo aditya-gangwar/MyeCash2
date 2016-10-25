@@ -1,12 +1,16 @@
 package in.myecash.customerbase.helper;
 
+import android.content.Context;
 import android.os.Handler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyCashback;
+import in.myecash.common.database.Transaction;
 import in.myecash.customerbase.entities.CustomerStats;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.appbase.utilities.BackgroundProcessor;
@@ -27,6 +31,8 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_CHANGE_MOBILE = 4;
     public static final int REQUEST_FETCH_CB = 5;
     public static final int REQUEST_CHANGE_PIN = 6;
+    public static final int REQUEST_FETCH_TXNS = 7;
+    public static final int REQUEST_FETCH_TXN_FILES = 8;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -46,6 +52,13 @@ public class MyRetainedFragment extends RetainedFragment {
     public String mPinMobileChange;
     public String mNewMobileNum;
     public String mOtpMobileChange;
+
+    // members used by 'Txn Reports Activity' to store its state, and its fragments
+    public List<String> mAllFiles = new ArrayList<>();
+    public List<String> mMissingFiles = new ArrayList<>();
+    public List<Transaction> mTxnsFromCsv = new ArrayList<>();
+    //public int mSummary[] = new int[AppConstants.INDEX_SUMMARY_MAX_VALUE];
+    public List<Transaction> mLastFetchTransactions;
 
     public void reset() {
         LogMy.d(TAG,"In reset");
@@ -78,6 +91,12 @@ public class MyRetainedFragment extends RetainedFragment {
     }
     public void changePin(String oldPin, String newPin, String cardNum) {
         mBackgroundProcessor.addPinChangeRequest(oldPin, newPin, cardNum);
+    }
+    public void fetchTransactions(String whereClause) {
+        mBackgroundProcessor.addFetchTxnsRequest(whereClause);
+    }
+    public void fetchTxnFiles(Context context, List<String> missingFiles) {
+        mBackgroundProcessor.addFetchTxnFilesRequest(context, missingFiles);
     }
 
     @Override

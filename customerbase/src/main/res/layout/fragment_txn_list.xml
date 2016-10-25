@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/txnlist_root"
+    android:background="?android:attr/windowBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_report"
+        android:id="@+id/txnlist_filters"
+        android:background="@color/bg_filters"
+        android:paddingTop="@dimen/small_space">
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="wrap_content"
+            android:id="@+id/txnlist_filter_mchnt"
+            android:layout_height="wrap_content"
+            android:text="Ganga Stores and Sons Pvt Ltd, Noida "
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingTop="0dp"
+            android:visibility="visible"
+            android:textColor="@color/accent2"/>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/txnlist_filter_mchnt"
+            android:id="@+id/txnlist_filter_duration"
+            android:layout_height="wrap_content"
+            android:text="From: 16 Oct 2016,  To: 20 Oct 2016"
+            android:paddingTop="0dp"
+            android:textStyle="italic"/>
+
+        <View
+            style="@style/Divider_horizontal_Large"
+            android:id="@+id/txnlist_divider_0"
+            android:layout_below="@id/txnlist_filter_duration"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txnlist_filters"
+        android:id="@+id/txnlist_header"
+        android:background="@color/bg_list_header">
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="wrap_content"
+            android:id="@+id/txnlist_header_time"
+            android:layout_height="wrap_content"
+            android:text="Date Time"
+            android:paddingBottom="@dimen/edittext_padding_less"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/txnlist_header_bill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Total Bill  |  Cashback @ x%"
+            android:paddingBottom="@dimen/edittext_padding_less"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/txnlist_header_amts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txnlist_header_bill"
+            android:layout_alignParentRight="true"
+            android:text="Account |  Cashback Debit"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingTop="0dp"/>
+
+        <View
+            style="@style/Divider_horizontal_Large"
+            android:id="@+id/txnlist_divider_1"
+            android:layout_below="@id/txnlist_header_amts"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/txn_recycler_view"
+        android:layout_below="@id/txnlist_header">
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

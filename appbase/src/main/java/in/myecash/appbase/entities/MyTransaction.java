@@ -1,4 +1,4 @@
-package in.myecash.merchantbase.entities;
+package in.myecash.appbase.entities;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
@@ -13,8 +13,11 @@ import in.myecash.appbase.utilities.LogMy;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by adgangwa on 07-05-2016.
@@ -27,6 +30,80 @@ public class MyTransaction {
 
     public MyTransaction(Transaction txn){
         mCurrTransaction = txn;
+    }
+
+    public Transaction getTransaction() {
+        return mCurrTransaction;
+    }
+
+    public int commit(String pin) {
+        LogMy.d(TAG, "In commit");
+
+        mCurrTransaction.setCpin(pin);
+        try
+        {
+            mCurrTransaction = Backendless.Persistence.save( mCurrTransaction );
+            //myCashback.setCashback(mCurrTransaction.getCashback());
+        }
+        catch( BackendlessException e )
+        {
+            LogMy.e(TAG, "Commit cash transaction failed: " + e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    public static List<Transaction> fetch(String whereClause) {
+        LogMy.d(TAG, "In fetchTransactionsSync: "+whereClause);
+        // init values
+        List<Transaction> transactions = null;
+
+        // fetch cashback object from DB
+        try {
+            BackendlessDataQuery dataQuery = new BackendlessDataQuery();
+            QueryOptions queryOptions = new QueryOptions("created");
+            dataQuery.setQueryOptions(queryOptions);
+            dataQuery.setPageSize(CommonConstants.dbQueryMaxPageSize);
+            dataQuery.setWhereClause(whereClause);
+
+            LogMy.d(TAG, "Before remote call");
+            BackendlessCollection<Transaction> collection = Backendless.Data.of(Transaction.class).find(dataQuery);
+
+            int size = collection.getTotalObjects();
+            LogMy.d(TAG, "Got transactions from DB: " + size+", "+collection.getData().size()+", Address:"+System.identityHashCode(collection));
+            /*
+            if (size == 0) {
+                errorCode = ErrorCodes.NO_DATA_FOUND;
+            } else {*/
+            transactions = collection.getData();
+                LogMy.d(TAG,"mLastFetchTransactions size: "+transactions.size());
+
+                while(collection.getCurrentPage().size() > 0) {
+                    collection = collection.nextPage();
+                    LogMy.d(TAG,"nextPage size: "+collection.getData().size()+", "+collection.getTotalObjects()+", Address:"+System.identityHashCode(collection));
+                    transactions.addAll(collection.getData());
+
+                    LogMy.d(TAG, "mLastFetchTransactions size: " + transactions.size());
+                }
+                LogMy.d(TAG, "mLastFetchTransactions final size: " + transactions.size());
+//            }
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Failed to fetch transactions: "+e.toString());
+            return null;
+        }
+
+        return transactions;
+    }
+
+    public static Collection<Transaction> removeDuplicateTxns(List<Transaction> txnList) {
+        Map<String, Transaction> map = new HashMap<>();
+        for (Transaction txn : txnList) {
+            String key = txn.getTrans_id();
+            if (!map.containsKey(key)) {
+                map.put(key, txn);
+            }
+        }
+        return map.values();
     }
 
     /*
@@ -103,69 +180,5 @@ public class MyTransaction {
                     : a > b ? 1
                     : 0;
         }
-    }
-
-
-    public Transaction getTransaction() {
-        return mCurrTransaction;
-    }
-
-    public int commit(String pin) {
-        LogMy.d(TAG, "In commit");
-
-        mCurrTransaction.setCpin(pin);
-        try
-        {
-            mCurrTransaction = Backendless.Persistence.save( mCurrTransaction );
-            //myCashback.setCashback(mCurrTransaction.getCashback());
-        }
-        catch( BackendlessException e )
-        {
-            LogMy.e(TAG, "Commit cash transaction failed: " + e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;
-    }
-
-    public static List<Transaction> fetch(String whereClause) {
-        LogMy.d(TAG, "In fetchTransactionsSync: "+whereClause);
-        // init values
-        List<Transaction> transactions = null;
-
-        // fetch cashback object from DB
-        try {
-            BackendlessDataQuery dataQuery = new BackendlessDataQuery();
-            QueryOptions queryOptions = new QueryOptions("created");
-            dataQuery.setQueryOptions(queryOptions);
-            dataQuery.setPageSize(CommonConstants.dbQueryMaxPageSize);
-            dataQuery.setWhereClause(whereClause);
-
-            LogMy.d(TAG, "Before remote call");
-            BackendlessCollection<Transaction> collection = Backendless.Data.of(Transaction.class).find(dataQuery);
-
-            int size = collection.getTotalObjects();
-            LogMy.d(TAG, "Got transactions from DB: " + size+", "+collection.getData().size()+", Address:"+System.identityHashCode(collection));
-            /*
-            if (size == 0) {
-                errorCode = ErrorCodes.NO_DATA_FOUND;
-            } else {*/
-            transactions = collection.getData();
-                LogMy.d(TAG,"mLastFetchTransactions size: "+transactions.size());
-
-                while(collection.getCurrentPage().size() > 0) {
-                    collection = collection.nextPage();
-                    LogMy.d(TAG,"nextPage size: "+collection.getData().size()+", "+collection.getTotalObjects()+", Address:"+System.identityHashCode(collection));
-                    transactions.addAll(collection.getData());
-
-                    LogMy.d(TAG, "mLastFetchTransactions size: " + transactions.size());
-                }
-                LogMy.d(TAG, "mLastFetchTransactions final size: " + transactions.size());
-//            }
-        } catch (BackendlessException e) {
-            LogMy.e(TAG,"Failed to fetch transactions: "+e.toString());
-            return null;
-        }
-
-        return transactions;
     }
 }

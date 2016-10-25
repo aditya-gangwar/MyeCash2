@@ -20,7 +20,7 @@ import in.myecash.merchantbase.entities.CustomerOps;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.common.MyCustomer;
-import in.myecash.merchantbase.entities.MyTransaction;
+import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.merchantbase.entities.OrderItem;
 
 import java.io.File;
@@ -87,7 +87,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public String mNewMobileNum;
     public String mOtpMobileChange;
 
-    // members used by 'Reports Activity' to store its state, and its fragments
+    // members used by 'Txn Reports Activity' to store its state, and its fragments
     public List<String> mAllFiles = new ArrayList<>();
     public List<String> mMissingFiles = new ArrayList<>();
     public List<Transaction> mTxnsFromCsv = new ArrayList<>();

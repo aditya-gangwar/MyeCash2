@@ -65,6 +65,56 @@
                 />
         </LinearLayout>
 
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_card_membership_white_18dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Card Used"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_card_used"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TBS"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_lock_outline_white_18dp"
+                android:tint="@color/primary"
+                />
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="PIN Used"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_pin_used"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="@dimen/small_space"/>
@@ -81,7 +131,7 @@
                 style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="Bill Amount"
+                android:text="Total Bill"
                 android:layout_weight="40"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>
@@ -110,7 +160,7 @@
                 style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="Cashback Bill"
+                android:text="Bill Cashback"
                 android:layout_weight="40"
                 android:gravity="left"
                 />
@@ -271,7 +321,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Customer"
+            android:text="Merchant"
             android:textStyle="bold"
             android:textColor="@color/accent"
             android:paddingLeft="0dp"/>
@@ -282,110 +332,52 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_perm_identity_white_18dp"
+                android:src="@drawable/ic_store_white_18dp"
                 android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/label_merchant"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:text="Merchant"
+                android:layout_weight="40"
+                android:gravity="center_vertical"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_merchant_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Ganga Stores and Sons Pvt Ltd"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_store_white_18dp"
+                android:tint="@color/primary"
+                android:visibility="invisible"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/label_customer_id"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="Internal ID"
+                android:text="MyeCash ID"
                 android:layout_weight="40"
                 android:gravity="left"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_customer_id"
+                android:id="@+id/input_merchant_id"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="AUX789R5"
                 android:layout_weight="60"
                 android:gravity="left"/>
         </LinearLayout>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/label_customer_mobile"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="Mobile"
-                android:layout_weight="40"
-                android:gravity="left"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_customer_mobile"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="xxxxx91535"
-                android:layout_weight="60"
-                android:gravity="left"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_card_membership_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="Card Used"
-                android:layout_weight="40"
-                android:gravity="left"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_card_used"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="TBS"
-                android:layout_weight="60"
-                android:gravity="left"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_lock_outline_white_18dp"
-                android:tint="@color/primary"
-                />
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="PIN Used"
-                android:layout_weight="40"
-                android:gravity="left"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_pin_used"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                android:layout_weight="60"
-                android:gravity="left"/>
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/txnImage"
-            android:background="@color/bg_customercare_data"
-            android:src="@drawable/ic_block_white_48dp"
-            android:layout_width="@dimen/txn_img_image_width"
-            android:layout_height="@dimen/txn_img_image_height"
-            android:scaleType="centerInside"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/large_space"/>
 
         <Space
             android:layout_width="match_parent"

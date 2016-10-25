@@ -1,4 +1,4 @@
-package in.myecash.merchantbase;
+package in.myecash.customerbase;
 
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -21,18 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import in.myecash.appbase.SortTxnDialog;
-import in.myecash.appbase.constants.AppConstants;
-import in.myecash.common.constants.CommonConstants;
-import in.myecash.common.constants.ErrorCodes;
-import in.myecash.common.database.Transaction;
-import in.myecash.appbase.utilities.AppCommonUtil;
-import in.myecash.appbase.utilities.DialogFragmentWrapper;
-import in.myecash.appbase.utilities.LogMy;
-import in.myecash.merchantbase.entities.MerchantUser;
-import in.myecash.appbase.entities.MyTransaction;
-import in.myecash.merchantbase.helper.MyRetainedFragment;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -40,31 +28,45 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import in.myecash.appbase.SortTxnDialog;
+import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.entities.MyTransaction;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.DialogFragmentWrapper;
+import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.ErrorCodes;
+import in.myecash.common.database.Customers;
+import in.myecash.common.database.Transaction;
+import in.myecash.customerbase.entities.CustomerUser;
+import in.myecash.customerbase.helper.MyRetainedFragment;
+
 /**
  * Created by adgangwa on 07-04-2016.
  */
 public class TxnListFragment extends Fragment {
     private static final String TAG = "TxnListFragment";
 
-    private static final String CSV_REPORT_HEADER_1 = ",,MyeCash Merchant Statement,,,,,,,,";
-    // <Store name>,,,,,,,,,,
-    private static final String CSV_REPORT_HEADER_2 = "\"=\"\"%s\"\"\",,,,,,,,,,";
-    // <address line 1>,,,,,,Merchant Id.,<id>,,,
-    private static final String CSV_REPORT_HEADER_3 = "\"=\"\"%s\"\"\",,,,,,,Merchant Id.,%s,,";
-    // <City>,,,,,,Period,From <start date> to <end date>,,,
-    private static final String CSV_REPORT_HEADER_4 = "%s,,,,,,,Period,From %s to %s,,";
-    // <State>,,,,,,Currency,INR,,,
-    private static final String CSV_REPORT_HEADER_5 = "%s,,,,,,,Currency,INR,,";
+    private static final String CSV_REPORT_HEADER_1 = ",,MyeCash Customer Statement,,,,,,,,,,,,,";
+    // Merchant Id.,<id>,,,,,,,,,
+    private static final String CSV_REPORT_HEADER_2 = "\"=\"\"Customer Id.\"\"\",%s,,,,,,,,,,,,,";
+    // Card Num.,<card id>,,,,,,,,,
+    private static final String CSV_REPORT_HEADER_3 = "\"=\"\"Membership Card.\"\"\",%s,,,,,,,,,,,,,";
+    // ,,,,,,Period,From <start date> to <end date>,,,
+    private static final String CSV_REPORT_HEADER_4 = ",,,,,,,Period,From %s to %s,,";
+    // ,,,,,,Currency,INR,,,
+    private static final String CSV_REPORT_HEADER_5 = ",,,,,,,Currency,INR,,";
     private static final String CSV_REPORT_HEADER_6 = ",,,,,,,,,,";
     private static final String CSV_REPORT_HEADER_7 = ",,,,,,,,,,";
-    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Customer Id,Bill Amount,Cash Account,Cr / Dr,Cashback Debit,Cashback Award,Cashback Rate, Card Used, PIN used";
-    // 5+10+10+10+10+10+5+5+5+5 = 75
-    private static final int CSV_RECORD_MAX_CHARS = 100;
+    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Merchant Id,Merchant Name,Bill Amount,Cash Account,Cr / Dr,Cashback Debit,Cashback Award,Cashback Rate, Card Used, PIN used";
+    // 5+10+10+10+10+10+10+5+5+5+5 = 85
+    private static final int CSV_RECORD_MAX_CHARS = 128;
     //TODO: change this to 100 in production
     private static final int CSV_LINES_BUFFER = 5;
 
     private static final String ARG_START_TIME = "startTime";
     private static final String ARG_END_TIME = "endTime";
+    private static final String ARG_FILTER_MCHNT = "filterMchnt";
 
     private static final int REQ_NOTIFY_ERROR = 1;
     private static final int REQ_SORT_TXN_TYPES = 2;
@@ -75,16 +77,20 @@ public class TxnListFragment extends Fragment {
     private SimpleDateFormat mSdfDateWithTime;
     private SimpleDateFormat mSdfOnlyDateCSV;
     private SimpleDateFormat mSdfOnlyTimeCSV;
+    private SimpleDateFormat mSdfOnlyDate;
 
-    private RecyclerView mTxnRecyclerView;
+    private EditText mFilterMchnt;
+    private EditText mFilterDuration;
     private EditText mHeaderBill;
     private EditText mHeaderAmts;
     private EditText mHeaderTime;
+    private RecyclerView mTxnRecyclerView;
 
     private MyRetainedFragment mRetainedFragment;
     private TxnListFragmentIf mCallback;
     private Date mStartTime;
     private Date mEndTime;
+    private Boolean mForSingleMchnt;
     // instance state - store and restore
     private int mSelectedSortType;
 
@@ -93,10 +99,13 @@ public class TxnListFragment extends Fragment {
         MyRetainedFragment getRetainedFragment();
     }
 
-    public static TxnListFragment getInstance(Date startTime, Date endTime) {
+    public static TxnListFragment getInstance(Date startTime, Date endTime, String mchntName) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_START_TIME, startTime);
         args.putSerializable(ARG_END_TIME, endTime);
+        if(mchntName!=null) {
+            args.putString(ARG_FILTER_MCHNT, mchntName);
+        }
 
         TxnListFragment fragment = new TxnListFragment();
         fragment.setArguments(args);
@@ -116,11 +125,27 @@ public class TxnListFragment extends Fragment {
             mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
             mSdfOnlyDateCSV = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_CSV, CommonConstants.DATE_LOCALE);
             mSdfOnlyTimeCSV = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_TIME_24_CSV, CommonConstants.DATE_LOCALE);
+            mSdfOnlyDate = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
             //updateUI();
 
             // get arguments and store in instance
             mStartTime = (Date)getArguments().getSerializable(ARG_START_TIME);
             mEndTime = (Date)getArguments().getSerializable(ARG_END_TIME);
+
+            // show filters
+            String filterMchnt = getArguments().getString(ARG_FILTER_MCHNT);
+            if(filterMchnt!=null) {
+                // Txns are for particular merchant only
+                mFilterMchnt.setVisibility(View.VISIBLE);
+                mFilterMchnt.setText(filterMchnt);
+                mForSingleMchnt = true;
+            } else {
+                mFilterMchnt.setVisibility(View.GONE);
+                mForSingleMchnt = false;
+            }
+            String durationFilter = "From: "+mSdfOnlyDate.format(mStartTime)+
+                    ",  To: "+mSdfOnlyDate.format(mEndTime);
+            mFilterDuration.setText(durationFilter);
 
             int sortType = SortTxnDialog.TXN_SORT_DATE_TIME;
             if(savedInstanceState!=null) {
@@ -211,12 +236,15 @@ public class TxnListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_txn_list, container, false);
 
-        mTxnRecyclerView = (RecyclerView) view.findViewById(R.id.txn_recycler_view);
-        mTxnRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mFilterMchnt = (EditText) view.findViewById(R.id.txnlist_filter_mchnt);
+        mFilterDuration = (EditText) view.findViewById(R.id.txnlist_filter_duration);
 
         mHeaderTime = (EditText) view.findViewById(R.id.txnlist_header_time);
         mHeaderAmts = (EditText) view.findViewById(R.id.txnlist_header_amts);
         mHeaderBill = (EditText) view.findViewById(R.id.txnlist_header_bill);
+
+        mTxnRecyclerView = (RecyclerView) view.findViewById(R.id.txn_recycler_view);
+        mTxnRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
     }
@@ -265,12 +293,12 @@ public class TxnListFragment extends Fragment {
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
             // The intent does not have a URI, so declare the "text/plain" MIME type
             emailIntent.setType("text/csv");
-            String emailId = MerchantUser.getInstance().getMerchant().getEmail();
+            /*String emailId = MerchantUser.getInstance().getMerchant().getEmail();
             if(emailId!=null && emailId.length()>0) {
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {emailId}); // recipients
-            }
+            }*/
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyeCash Statement");
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find attached the requested MyeCash transaction statement.\nThanks.\nRegards,\nMyeCash Team.");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find attached the requested MyeCash transaction statement.\n\nThanks.\n\nRegards,\nMyeCash Team.");
             emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(csvFile));
 
             // check if there's activity available for the intent
@@ -308,21 +336,20 @@ public class TxnListFragment extends Fragment {
             String endDate = mSdfOnlyDateCSV.format(mEndTime);
 
             // append all headers
-            MerchantUser user = MerchantUser.getInstance();
+            Customers user = CustomerUser.getInstance().getCustomer();
             sb.append(CSV_REPORT_HEADER_1).append(CommonConstants.CSV_NEWLINE);
-            sb.append(String.format(CSV_REPORT_HEADER_2,user.getMerchantName())).append(CommonConstants.CSV_NEWLINE);
-            sb.append(String.format(CSV_REPORT_HEADER_3,user.getMerchant().getAddress().getLine_1(),user.getMerchantId()))
-                    .append(CommonConstants.CSV_NEWLINE);
-            sb.append(String.format(CSV_REPORT_HEADER_4,user.getMerchant().getAddress().getCity(),startDate,endDate))
-                    .append(CommonConstants.CSV_NEWLINE);
-            sb.append(String.format(CSV_REPORT_HEADER_5,user.getMerchant().getAddress().getState()))
-                    .append(CommonConstants.CSV_NEWLINE);
+            sb.append(String.format(CSV_REPORT_HEADER_2,user.getMobile_num())).append(CommonConstants.CSV_NEWLINE);
+            sb.append(String.format(CSV_REPORT_HEADER_3,user.getMembership_card().getCard_id())).append(CommonConstants.CSV_NEWLINE);
+            sb.append(String.format(CSV_REPORT_HEADER_4,startDate,endDate)).append(CommonConstants.CSV_NEWLINE);
+            sb.append(CSV_REPORT_HEADER_5).append(CommonConstants.CSV_NEWLINE);
             sb.append(CSV_REPORT_HEADER_6).append(CommonConstants.CSV_NEWLINE);
             sb.append(CSV_REPORT_HEADER_7).append(CommonConstants.CSV_NEWLINE);
 
             sb.append(CSV_HEADER).append(CommonConstants.CSV_NEWLINE);
 
             int cnt = mRetainedFragment.mLastFetchTransactions.size();
+            // CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Merchant Id,Merchant Name,
+            // Bill Amount,Cash Account,Cr / Dr,Cashback Debit,Cashback Award,Cashback Rate, Card Used, PIN used";
             for(int i=0; i<cnt; i++) {
                 if(sb==null) {
                     // +1 for buffer
@@ -336,7 +363,8 @@ public class TxnListFragment extends Fragment {
                 sb.append(mSdfOnlyDateCSV.format(txn.getCreate_time())).append(CommonConstants.CSV_DELIMETER);
                 sb.append(mSdfOnlyTimeCSV.format(txn.getCreate_time())).append(CommonConstants.CSV_DELIMETER);
                 sb.append(txn.getTrans_id()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(txn.getCustomer_id()).append(CommonConstants.CSV_DELIMETER);
+                sb.append(txn.getMerchant_id()).append(CommonConstants.CSV_DELIMETER);
+                sb.append(txn.getMerchant_name()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(txn.getTotal_billed()).append(CommonConstants.CSV_DELIMETER);
 
                 if(txn.getCl_credit() > 0) {
@@ -406,7 +434,7 @@ public class TxnListFragment extends Fragment {
     }
 
     private void updateUI() {
-        mTxnRecyclerView.setAdapter(new TxnAdapter(mRetainedFragment.mLastFetchTransactions));
+        mTxnRecyclerView.setAdapter(new TxnAdapter(mRetainedFragment.mLastFetchTransactions, mForSingleMchnt));
         mCallback.setToolbarTitle(mRetainedFragment.mLastFetchTransactions.size() + " Transactions");
     }
 
@@ -442,7 +470,7 @@ public class TxnListFragment extends Fragment {
         private Transaction mTxn;
 
         public EditText mDatetime;
-        public EditText mCustId;
+        //public EditText mCustId;
         //public EditText mTxnId;
 
         public EditText mBillAmount;
@@ -452,13 +480,15 @@ public class TxnListFragment extends Fragment {
         public View mCashbackIcon;
         public EditText mCashbackAmt;
 
+        public EditText mMchntName;
+
         //public ImageView mSecureIcon;
 
         public TxnHolder(View itemView) {
             super(itemView);
             //itemView.setOnClickListener(this);
             mDatetime = (EditText) itemView.findViewById(R.id.txn_time);
-            mCustId = (EditText) itemView.findViewById(R.id.txn_customer_id);
+            mMchntName = (EditText) itemView.findViewById(R.id.txn_mchnt_name);
             //mTxnId = (EditText) itemView.findViewById(R.id.txn_id);
 
             mBillAmount = (EditText) itemView.findViewById(R.id.txn_bill);
@@ -470,7 +500,7 @@ public class TxnListFragment extends Fragment {
             mCashbackAward = (EditText) itemView.findViewById(R.id.txn_cashback_award);
             //mSecureIcon = (ImageView)itemView.findViewById(R.id.txn_secure_icon);
 
-            mCustId.setOnClickListener(this);
+            mMchntName.setOnClickListener(this);
             mDatetime.setOnClickListener(this);
             mBillAmount.setOnClickListener(this);
             mAccountAmt.setOnClickListener(this);
@@ -484,7 +514,7 @@ public class TxnListFragment extends Fragment {
 
             // getRootView was not working, so manually finding root view
             View rootView = null;
-            if(v.getId()==mCustId.getId() || v.getId()==mDatetime.getId()) {
+            if(v.getId()==mMchntName.getId() || v.getId()==mDatetime.getId()) {
                 rootView = (View) v.getParent().getParent();
                 LogMy.d(TAG,"Clicked first level view "+rootView.getId());
             } else {
@@ -494,11 +524,17 @@ public class TxnListFragment extends Fragment {
             rootView.performClick();
         }
 
-        public void bindTxn(Transaction txn) {
+        public void bindTxn(Transaction txn, boolean forSingleMchnt) {
             mTxn = txn;
 
             mDatetime.setText(mSdfDateWithTime.format(mTxn.getCreate_time()));
-            mCustId.setText(mTxn.getCust_private_id());
+
+            if(forSingleMchnt) {
+                mMchntName.setVisibility(View.GONE);
+            } else {
+                mMchntName.setVisibility(View.VISIBLE);
+                mMchntName.setText(mTxn.getMerchant_name());
+            }
             //mTxnId.setText(mTxn.getTrans_id());
 
             if(mTxn.getTotal_billed() > 0) {
@@ -542,10 +578,13 @@ public class TxnListFragment extends Fragment {
 
     private class TxnAdapter extends RecyclerView.Adapter<TxnHolder> {
         private List<Transaction> mTxns;
+        private boolean mForSingleMchnt;
+
         private View.OnClickListener mListener;
 
-        public TxnAdapter(List<Transaction> txns) {
+        public TxnAdapter(List<Transaction> txns, boolean forSingleMchnt) {
             mTxns = txns;
+            mForSingleMchnt = forSingleMchnt;
             mListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -571,7 +610,7 @@ public class TxnListFragment extends Fragment {
         @Override
         public void onBindViewHolder(TxnHolder holder, int position) {
             Transaction txn = mTxns.get(position);
-            holder.bindTxn(txn);
+            holder.bindTxn(txn, mForSingleMchnt);
         }
         @Override
         public int getItemCount() {
@@ -579,66 +618,3 @@ public class TxnListFragment extends Fragment {
         }
     }
 }
-
-
-    /*
-    private boolean checkPermission() {
-        // check for external storage permission
-        int rc = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        return (rc == PackageManager.PERMISSION_GRANTED);
-    }
-
-    public void requestStoragePermission() {
-        String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            ActivityCompat.requestPermissions(getActivity(), permissions, REQ_STORAGE_PERMISSION);
-            return;
-        }
-
-        // show permission rationale
-        DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalInfoTitle,
-                getString(R.string.permission_write_storage_rationale), true, false);
-        notDialog.setTargetFragment(this, REQ_STORAGE_PERMISSION);
-        notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode != RC_HANDLE_WRITE_STORAGE) {
-            LogMy.w(TAG, "Got unexpected permission result: " + requestCode);
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            return;
-        }
-
-        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // permission granted - complete invoked action
-            switch (mActiveMenuItemId) {
-                case R.id.action_download:
-                    downloadReport();
-                    break;
-
-                case R.id.action_email:
-                    emailReport();
-                    break;
-            }
-        } else {
-            LogMy.i(TAG, "Permission not granted: results len = " + grantResults.length +
-                    " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
-
-            DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.noPermissionTitle,
-                    "Cannot download/email reports as write storage permission not provided.",
-                    true, true);
-            notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
-            notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("mActiveMenuItemId", mActiveMenuItemId);
-    }
-    */

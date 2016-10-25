@@ -1,15 +1,23 @@
 package in.myecash.customerbase.helper;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 
 import com.backendless.exceptions.BackendlessException;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import in.myecash.appbase.entities.MyCashback;
+import in.myecash.appbase.entities.MyTransaction;
+import in.myecash.appbase.utilities.FileFetchr;
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.Cashback;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.common.constants.ErrorCodes;
@@ -42,6 +50,10 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         public String oldPin;
         public String newPin;
         public String cardNum;
+    }
+    private class MessageFileDownload implements Serializable {
+        public Context ctxt;
+        public String fileUrl;
     }
 
     /*
@@ -82,6 +94,14 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         msg.cardNum = cardNum;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CHANGE_PIN,msg).sendToTarget();
     }
+    public void addFetchTxnsRequest(String query) {
+        LogMy.d(TAG, "In addFetchTxnsRequest");
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_TXNS, query).sendToTarget();
+    }
+    public void addFetchTxnFilesRequest(Context context, List<String> missingFiles) {
+        LogMy.d(TAG, "In addFetchTxnFilesRequest: " + missingFiles.size());
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_TXN_FILES, context).sendToTarget();
+    }
 
 
     @Override
@@ -108,6 +128,12 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_CHANGE_PIN:
                 error = changePin((MessageChangePin) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_FETCH_TXNS:
+                error = fetchTransactions((String) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_FETCH_TXN_FILES:
+                error = fetchTxnFiles((Context) msg.obj);
                 break;
         }
         return error;
@@ -160,4 +186,67 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     private int changePin(MessageChangePin msg) {
         return CustomerUser.getInstance().changePin(msg.oldPin, msg.newPin, msg.cardNum);
     }
+
+    private int fetchTransactions(String query) {
+        mRetainedFragment.mLastFetchTransactions = null;
+        int errorCode = ErrorCodes.NO_ERROR;
+
+        mRetainedFragment.mLastFetchTransactions = MyTransaction.fetch(query);
+
+        if(mRetainedFragment.mLastFetchTransactions == null) {
+            errorCode = ErrorCodes.GENERAL_ERROR;
+        } else if(mRetainedFragment.mLastFetchTransactions.size()==0) {
+            errorCode = ErrorCodes.NO_DATA_FOUND;
+        }
+        return errorCode;
+    }
+
+    private int fetchTxnFiles(Context ctxt) {
+        int errorCode = ErrorCodes.NO_ERROR;
+
+        // create a copy of list
+        List<String> missingFiles = new ArrayList<>(mRetainedFragment.mMissingFiles);
+
+        MessageFileDownload msg = new MessageFileDownload();
+        for(int i=0; i<missingFiles.size(); i++) {
+            // convert filepath to complete URL
+            //https://api.backendless.com/09667f8b-98a7-e6b9-ffeb-b2b6ee831a00/v1/files/<filepath>
+            msg.ctxt = ctxt;
+            msg.fileUrl = missingFiles.get(i);
+            errorCode = downloadFile(msg);
+            //remove from missing files list
+            if(errorCode==ErrorCodes.NO_ERROR) {
+                LogMy.d(TAG,"Txn file found remotely, removing from missing list: "+missingFiles.get(i));
+                mRetainedFragment.mMissingFiles.remove(missingFiles.get(i));
+            }
+        }
+
+        return errorCode;
+    }
+
+    private int downloadFile(MessageFileDownload msg) {
+        String filepath = msg.fileUrl;
+        String fileURL = CommonConstants.BACKEND_FILE_BASE_URL + filepath;
+        //String filename = filepath.substring(filepath.lastIndexOf('/')+1);
+        String filename = Uri.parse(fileURL).getLastPathSegment();
+        LogMy.d(TAG,"Fetching "+fileURL+", Filename: "+filename);
+
+        FileOutputStream outputStream;
+        try {
+            byte[] bytes = new FileFetchr().getUrlBytes(fileURL, mRetainedFragment.mUserToken);
+
+            outputStream = msg.ctxt.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(bytes);
+            outputStream.close();
+
+        } catch(FileNotFoundException fnf) {
+            LogMy.d(TAG, "File not found: "+fnf.toString());
+            return ErrorCodes.FILE_NOT_FOUND;
+        } catch(IOException ioe) {
+            LogMy.e(TAG, "Failed to fetch file: "+ioe.toString());
+            return ErrorCodes.GENERAL_ERROR;
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
 }

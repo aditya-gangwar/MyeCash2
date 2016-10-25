@@ -34,7 +34,7 @@ public class MerchantDetailsDialog extends DialogFragment  {
 
     public interface MerchantDetailsDialogIf {
         MyRetainedFragment getRetainedFragment();
-        //void getCustTxns(String id);
+        void getMchntTxns(String id, String name);
     }
 
     public static MerchantDetailsDialog newInstance(String merchantId) {
@@ -78,6 +78,14 @@ public class MerchantDetailsDialog extends DialogFragment  {
                                 dialog.dismiss();
                             }
                         })
+                .setNeutralButton("Get Txns", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mCallback.getMchntTxns(mInputMchntId.getText().toString(),
+                                mName.getText().toString());
+                        dialog.dismiss();
+                    }
+                })
                 .create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -122,6 +130,7 @@ public class MerchantDetailsDialog extends DialogFragment  {
             mInputCbTotalAward.setText(AppCommonUtil.getAmtStr(cb.getCbCredit()));
             mInputCbTotalRedeem.setText(AppCommonUtil.getAmtStr(cb.getCbRedeem()));
 
+            mInputMchntId.setText(merchant.getId());
             mInputMobileNum.setText(merchant.getMobileNum());
             mInputStatus.setText(DbConstants.userStatusDesc[merchant.getStatus()]);
             mAddressLine1.setText(merchant.getAddressLine1());
@@ -149,6 +158,7 @@ public class MerchantDetailsDialog extends DialogFragment  {
     private EditText mInputCbTotalAward;
     private EditText mInputCbTotalRedeem;
 
+    private EditText mInputMchntId;
     private EditText mInputMobileNum;
     private EditText mInputStatus;
     private EditText mAddressLine1;
@@ -175,6 +185,7 @@ public class MerchantDetailsDialog extends DialogFragment  {
         mInputAccTotalAdd = (EditText) v.findViewById(R.id.input_acc_add);
         mInputAccTotalDebit = (EditText) v.findViewById(R.id.input_acc_debit);
 
+        mInputMchntId = (EditText) v.findViewById(R.id.input_merchant_id);
         mInputMobileNum = (EditText) v.findViewById(R.id.input_mobile);
         mInputStatus = (EditText) v.findViewById(R.id.input_status);
         mAddressLine1 = (EditText) v.findViewById(R.id.input_address);

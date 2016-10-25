@@ -38,8 +38,7 @@
                     android:icon="@drawable/ic_lock_outline_black_24dp" />
                 <item
                     android:id="@+id/menu_forgot_pin"
-                    android:title="Forgot PIN"
-                    android:icon="@drawable/ic_lock_outline_black_24dp" />
+                    android:title="Forgot PIN"/>
             </group>
         </menu>
     </item>
