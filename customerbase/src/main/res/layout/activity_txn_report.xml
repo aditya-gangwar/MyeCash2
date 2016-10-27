@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_customer_id"
-            android:layout_weight="10"/>
+            android:layout_weight="5"/>
 
         <EditText
             style="@style/Edittext_only_view_medium"
@@ -172,7 +172,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_end"
-            android:layout_weight="65"/>
+            android:layout_weight="70"/>
 
     </LinearLayout>
 

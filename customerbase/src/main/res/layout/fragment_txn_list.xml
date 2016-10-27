@@ -75,6 +75,16 @@
             android:paddingBottom="@dimen/edittext_padding_less"
             android:paddingTop="0dp"/>
 
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/txnlist_header_mchnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txnlist_header_time"
+            android:text="Merchant"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingTop="0dp"/>
+
         <View
             style="@style/Divider_horizontal_Large"
             android:id="@+id/txnlist_divider_1"
@@ -82,12 +92,29 @@
 
     </RelativeLayout>
 
+    <EditText
+        style="@style/Edittext_only_view_small"
+        android:id="@+id/info_old_txns"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingTop="0dp"
+        android:text="* For Older Txns, select particular 'Merchant' from main screen and click 'Get Txns'"
+        android:textStyle="italic"
+        android:gravity="left"
+        android:layout_marginTop="@dimen/medium_space"/>
+
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/txn_recycler_view"
-        android:layout_below="@id/txnlist_header">
+        android:layout_below="@id/txnlist_header"
+        android:layout_above="@id/info_old_txns">
     </android.support.v7.widget.RecyclerView>
+
+    <View
+        style="@style/Divider_horizontal_Large"
+        android:layout_below="@id/txn_recycler_view"/>
 
 </RelativeLayout>

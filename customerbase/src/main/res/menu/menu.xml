@@ -5,13 +5,13 @@
 
     <group android:checkableBehavior="single"
         android:id="@+id/grp1">
-        <item
+        <!--item
             android:id="@+id/menu_dashboard"
             android:title="Dashboard"
-            android:icon="@drawable/ic_dashboard_black_24dp" />
+            android:icon="@drawable/ic_dashboard_black_24dp" /-->
         <item
             android:id="@+id/menu_txns"
-            android:title="Transactions"
+            android:title="Latest Transactions"
             android:icon="@drawable/ic_swap_horiz_black_24dp" />
         <!--item
             android:id="@+id/menu_logout"

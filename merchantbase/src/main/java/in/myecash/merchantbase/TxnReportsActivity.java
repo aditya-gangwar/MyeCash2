@@ -697,4 +697,8 @@ public class TxnReportsActivity extends AppCompatActivity implements
         outState.putInt("mDetailedTxnPos", mDetailedTxnPos);
     }
 
+    @Override
+    public void onBgThreadCreated() {
+
+    }
 }

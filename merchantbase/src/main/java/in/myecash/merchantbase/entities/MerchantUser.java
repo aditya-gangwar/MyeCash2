@@ -495,7 +495,7 @@ public class MerchantUser
         mMerchant = CommonServices.getInstance().getMerchant(idOrMobileNum);
 
         // map cashback and transaction table
-        //Backendless.Data.mapTableToClass(mMerchant.getCashback_table(), Cashback.class);
+        Backendless.Data.mapTableToClass(mMerchant.getCashback_table(), Cashback.class);
         Backendless.Data.mapTableToClass(mMerchant.getTxn_table(), Transaction.class);
 
         // Set user id for crashlytics

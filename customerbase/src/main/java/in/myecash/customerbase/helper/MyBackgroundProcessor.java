@@ -7,6 +7,7 @@ import android.os.Message;
 
 import com.backendless.exceptions.BackendlessException;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,8 +18,10 @@ import java.util.List;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.FileFetchr;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.Cashback;
+import in.myecash.common.database.Transaction;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -50,6 +53,10 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         public String oldPin;
         public String newPin;
         public String cardNum;
+    }
+    private class MessageGetCb implements Serializable {
+        public Context ctxt;
+        public Long updatedSince;
     }
     private class MessageFileDownload implements Serializable {
         public Context ctxt;
@@ -84,8 +91,11 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     public void addChangeMobileRequest() {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CHANGE_MOBILE,null).sendToTarget();
     }
-    public void addFetchCbRequest(Long updatedSince) {
-        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_CB,updatedSince).sendToTarget();
+    public void addFetchCbRequest(Long updatedSince, Context ctxt) {
+        MessageGetCb msg = new MessageGetCb();
+        msg.ctxt = ctxt;
+        msg.updatedSince = updatedSince;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_CB,msg).sendToTarget();
     }
     public void addPinChangeRequest(String oldPin, String newPin, String cardNum) {
         MessageChangePin msg = new MessageChangePin();
@@ -124,7 +134,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 error = changeMobileNum();
                 break;
             case MyRetainedFragment.REQUEST_FETCH_CB:
-                error = fetchCashbacks((Long) msg.obj);
+                error = fetchCashbacks((MessageGetCb) msg.obj);
                 break;
             case MyRetainedFragment.REQUEST_CHANGE_PIN:
                 error = changePin((MessageChangePin) msg.obj);
@@ -161,10 +171,10 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 mRetainedFragment.mNewMobileNum, mRetainedFragment.mOtpMobileChange);
     }
 
-    private int fetchCashbacks(Long updatedSince) {
+    private int fetchCashbacks(MessageGetCb msg) {
         mRetainedFragment.mLastFetchCashbacks = null;
         try {
-            List<Cashback> cashbacks = CustomerUser.getInstance().fetchCashbacks(updatedSince);
+            List<Cashback> cashbacks = CustomerUser.getInstance().fetchCashbacks(msg.updatedSince);
 
             if(cashbacks.size() > 0) {
                 mRetainedFragment.mLastFetchCashbacks = new ArrayList<>(cashbacks.size());
@@ -175,12 +185,59 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                     mRetainedFragment.mLastFetchCashbacks.add(myCb);
                 }
             }
+
+            // fetch mchnt DPs
+            // ignore any error
+            try {
+                fetchMchntDpFiles(msg.ctxt);
+            } catch(Exception ex) {
+                LogMy.e(TAG,"Exception from fetchMchntDpFiles",ex);
+            }
+
         } catch (BackendlessException e) {
             mRetainedFragment.mLastFetchCashbacks = null;
             LogMy.e(TAG, "Exception in fetchCashbacks: "+ e.toString());
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;
+    }
+
+    private int fetchMchntDpFiles(Context ctxt) {
+        int errorCode = ErrorCodes.NO_ERROR;
+
+        // check which files need to be fetched
+        // i.e. not present locally
+        List<String> missingFiles = null;
+        for (MyCashback myCb :
+                mRetainedFragment.mLastFetchCashbacks) {
+            String dpFilename = myCb.getMerchant().getDpFilename();
+
+            File file = ctxt.getFileStreamPath(dpFilename);
+            if(file == null || !file.exists()) {
+                if(missingFiles==null) {
+                    missingFiles = new ArrayList<>(mRetainedFragment.mLastFetchCashbacks.size());
+                }
+                // file does not exist
+                LogMy.d(TAG,"Missing mchnt dp file: "+dpFilename);
+                String filepath = CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR + dpFilename;
+                missingFiles.add(filepath);
+            }
+        }
+
+        if(missingFiles!=null) {
+            MessageFileDownload msg = new MessageFileDownload();
+            for(int i=0; i<missingFiles.size(); i++) {
+                msg.ctxt = ctxt;
+                msg.fileUrl = missingFiles.get(i);
+                errorCode = downloadFile(msg);
+                //remove from missing files list
+                if(errorCode==ErrorCodes.NO_ERROR) {
+                    LogMy.d(TAG,"Downloaded mchnt dp file: "+missingFiles.get(i));
+                }
+            }
+        }
+
+        return errorCode;
     }
 
     private int changePin(MessageChangePin msg) {
@@ -191,13 +248,19 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         mRetainedFragment.mLastFetchTransactions = null;
         int errorCode = ErrorCodes.NO_ERROR;
 
-        mRetainedFragment.mLastFetchTransactions = MyTransaction.fetch(query);
-
-        if(mRetainedFragment.mLastFetchTransactions == null) {
-            errorCode = ErrorCodes.GENERAL_ERROR;
-        } else if(mRetainedFragment.mLastFetchTransactions.size()==0) {
-            errorCode = ErrorCodes.NO_DATA_FOUND;
+        try {
+            List<Transaction> txns = CustomerUser.getInstance().fetchTxns(query);
+            if(txns!=null && txns.size() > 0) {
+                mRetainedFragment.mLastFetchTransactions = txns;
+            } else {
+                errorCode = ErrorCodes.NO_DATA_FOUND;
+            }
+        } catch (BackendlessException e) {
+            mRetainedFragment.mLastFetchCashbacks = null;
+            LogMy.e(TAG, "Exception in fetchTransactions: "+ e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
         }
+
         return errorCode;
     }
 
@@ -248,5 +311,6 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         }
         return ErrorCodes.NO_ERROR;
     }
+
 
 }

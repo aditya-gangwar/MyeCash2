@@ -400,19 +400,19 @@ public class AppCommonUtil {
         return CommonConstants.MERCHANT_CUST_DATA_FILE_PREFIX+merchantId+CommonConstants.CSV_FILE_EXT;
     }
     public static String getCashbackFileName(String userId) {
-        // File name: customers_<merchant_id>.csv
+        // File name: customers_<user_id>.csv
         return CommonConstants.CASHBACK_DATA_FILE_PREFIX+userId+CommonConstants.CSV_FILE_EXT;
     }
     public static String getTxnImgFilename(String txnId) {
         return CommonConstants.PREFIX_TXN_IMG_FILE_NAME +txnId+".webp";
     }
-    public static File getMchntDpFilename(Context context) {
+    public static File getTmpMchntDpFilename(Context context) {
         File filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (filesDir == null) {
             return null;
         }
 
-        String photoFileName = "IMG_" + System.currentTimeMillis() + ".jpg";
+        String photoFileName = "IMG_" + System.currentTimeMillis() + CommonConstants.PHOTO_FILE_FORMAT;
         return new File(filesDir, photoFileName);
     }
 

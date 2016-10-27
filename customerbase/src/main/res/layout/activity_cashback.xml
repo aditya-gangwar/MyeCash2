@@ -47,8 +47,8 @@
                     android:layout_height="@dimen/toolbar_image_height"
                     android:padding="@dimen/toolbar_image_padding"
                     android:layout_gravity="center_vertical|left"
-                    android:src="@drawable/ic_person"
-                    android:scaleType="fitXY"
+                    android:src="@drawable/logo_red"
+                    android:scaleType="centerInside"
                     android:layout_marginRight="@dimen/small_space"/>
 
                 <!-- the title view -->

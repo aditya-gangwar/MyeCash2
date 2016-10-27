@@ -11,7 +11,8 @@ public abstract class RetainedFragment extends Fragment {
 
     // Container Activity must implement this interface
     public interface RetainedFragmentIf {
-        public void onBgProcessResponse(int errorCode, int operation);
+        void onBgThreadCreated();
+        void onBgProcessResponse(int errorCode, int operation);
     }
 
     // Activity callback
@@ -84,6 +85,8 @@ public abstract class RetainedFragment extends Fragment {
         }
 
         doOnActivityCreated();
+        // background thread will be initiated fully by now
+        mCallback.onBgThreadCreated();
 
         // We are ready for any waiting thread response to go.
         synchronized (mListener) {

@@ -53,13 +53,15 @@ public class MyTransaction {
         return ErrorCodes.NO_ERROR;
     }
 
-    public static List<Transaction> fetch(String whereClause) {
+    public static List<Transaction> fetch(String whereClause, String tableName) {
         LogMy.d(TAG, "In fetchTransactionsSync: "+whereClause);
         // init values
         List<Transaction> transactions = null;
 
         // fetch cashback object from DB
         try {
+            Backendless.Data.mapTableToClass(tableName, Transaction.class);
+
             BackendlessDataQuery dataQuery = new BackendlessDataQuery();
             QueryOptions queryOptions = new QueryOptions("created");
             dataQuery.setQueryOptions(queryOptions);

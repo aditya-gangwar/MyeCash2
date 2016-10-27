@@ -137,13 +137,31 @@ public class CashbackActivity extends AppCompatActivity implements
 
         // Setup navigation drawer
         initNavDrawer();
+    }
 
-        // setup mobile number fragment
-        startCashbackListFrag();
+    @Override
+    public void onBgThreadCreated() {
+        // read file, if 'cashback store' is empty
+        boolean fetchData = false;
+        if(mRetainedFragment.mCashbacks == null) {
+            if(!processCbDataFile(false)) {
+                fetchData = true;
+            }
+        } else if(custStatsRefreshReq(mRetainedFragment.mCbsUpdateTime.getTime())) {
+            // data in memory, but has expired
+            fetchData = true;
+            mGetCbSince = mRetainedFragment.mCbsUpdateTime.getTime();
+        }
+        if(fetchData) {
+            // fetch data from DB
+            fetchCbData();
+        } else {
+            startCashbackListFrag();
+        }
     }
 
     //@Override
-    public void setDrawerState(boolean isEnabled) {
+    private void setDrawerState(boolean isEnabled) {
         LogMy.d(TAG, "In setDrawerState: " + isEnabled);
 
         if ( isEnabled ) {
@@ -223,9 +241,9 @@ public class CashbackActivity extends AppCompatActivity implements
         int i = item.getItemId();
 
         // Not able to use switch() - as not allowed in library modules
-        if (i == R.id.menu_dashboard) {
-
-        } else if (i == R.id.menu_txns) {
+        if (i == R.id.menu_txns) {
+            // show latest txns
+            startTxnReportActivity(null,null);
 
         } else if (i == R.id.menu_change_mobile) {
             // show mobile change dialog
@@ -338,7 +356,7 @@ public class CashbackActivity extends AppCompatActivity implements
         LogMy.d(TAG, "In onChangeMobileResponse: " + errorCode);
         AppCommonUtil.cancelProgressDialog(true);
 
-        // read data from file, ir-respective of result from DB i.e.e error, 0 records or whatever
+        // read data from file, ir-respective of result from DB i.e. error, 0 records or whatever
         // dont read though - if records fetched are from scratch
         if(mGetCbSince != 0) {
             // some data was there in file earlier - read the same
@@ -431,6 +449,8 @@ public class CashbackActivity extends AppCompatActivity implements
             String fileName = AppCommonUtil.getCashbackFileName(mCustomerUser.getCustomer().getPrivate_id());
 
             StringBuilder sb = new StringBuilder();
+            // current time as first line in file
+            sb.append(System.currentTimeMillis()).append(CommonConstants.CSV_NEWLINE);
             for (Map.Entry<String, MyCashback> entry : mRetainedFragment.mCashbacks.entrySet()) {
                 MyCashback cb = entry.getValue();
                 String csvStr = CsvConverter.csvStrFromCb(cb.getCurrCashback());
@@ -635,8 +655,12 @@ public class CashbackActivity extends AppCompatActivity implements
     private void startTxnReportActivity(String mchntId, String name) {
         // start reports activity
         Intent intent = new Intent( this, TxnReportsActivity.class );
-        intent.putExtra(TxnReportsActivity.EXTRA_MERCHANT_ID, mchntId);
-        intent.putExtra(TxnReportsActivity.EXTRA_MERCHANT_NAME, name);
+        if(mchntId!=null) {
+            intent.putExtra(TxnReportsActivity.EXTRA_MERCHANT_ID, mchntId);
+        }
+        if(name!=null) {
+            intent.putExtra(TxnReportsActivity.EXTRA_MERCHANT_NAME, name);
+        }
         startActivity(intent);
     }
 
@@ -756,23 +780,7 @@ public class CashbackActivity extends AppCompatActivity implements
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
 
-        boolean fetchData = false;
-        // read file, if 'cashback store' is empty
-        if(mRetainedFragment.mCashbacks == null) {
-            if(!processCbDataFile(false)) {
-                fetchData = true;
-            }
-        } else if(custStatsRefreshReq(mRetainedFragment.mCbsUpdateTime.getTime())) {
-            // data in memory, but has expired
-            fetchData = true;
-            mGetCbSince = mRetainedFragment.mCbsUpdateTime.getTime();
-        }
-        if(fetchData) {
-            // fetch data from DB
-            fetchCbData();
-        }
-
-        setDrawerState(true);
+       setDrawerState(true);
     }
 
     private void fetchCbData() {
@@ -784,7 +792,7 @@ public class CashbackActivity extends AppCompatActivity implements
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
-            mRetainedFragment.fetchCashback(mGetCbSince);
+            mRetainedFragment.fetchCashback(mGetCbSince, this);
         }
     }
 

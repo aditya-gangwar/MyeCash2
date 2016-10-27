@@ -7,18 +7,18 @@
     <Space
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="10" />
+        android:layout_weight="30" />
 
     <ImageView
         android:id="@+id/imgLogo"
         android:layout_width="@dimen/splash_logo_image_width"
         android:layout_height="@dimen/splash_logo_image_height"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/logo_red_base_180"/>
+        android:src="@drawable/logo_red"/>
 
     <Space
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="90" />
+        android:layout_weight="70" />
 
 </LinearLayout>

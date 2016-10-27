@@ -424,7 +424,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
         pickImageIntent.putExtra("scale", true);
         pickImageIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
 
-        mPhotoFile = AppCommonUtil.getMchntDpFilename(this);
+        mPhotoFile = AppCommonUtil.getTmpMchntDpFilename(this);
         PackageManager packageManager = this.getPackageManager();
 
         boolean canTakePhoto = (mPhotoFile != null) && pickImageIntent.resolveActivity(packageManager) != null;

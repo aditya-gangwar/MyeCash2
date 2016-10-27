@@ -118,7 +118,7 @@ public class MerchantDetailsFragment extends Fragment
 
         mMerchantId.setText(merchant.getAuto_id());
         mStoreName.setText(merchant.getName());
-        mStoreCategory.setText(merchant.getBuss_category().getCategory_name());
+        mStoreCategory.setText(merchant.getBuss_category());
         mRegisteredOn.setText(mSdfDateWithTime.format(merchant.getCreated()));
         mFirstLogin.setText(merchant.getFirst_login_ok().toString());
         mDoB.setText(merchant.getDob());

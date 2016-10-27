@@ -86,8 +86,8 @@ public class MyRetainedFragment extends RetainedFragment {
     public void changeMobileNum() {
         mBackgroundProcessor.addChangeMobileRequest();
     }
-    public void fetchCashback(Long updatedSince) {
-        mBackgroundProcessor.addFetchCbRequest(updatedSince);
+    public void fetchCashback(Long updatedSince, Context ctxt) {
+        mBackgroundProcessor.addFetchCbRequest(updatedSince, ctxt);
     }
     public void changePin(String oldPin, String newPin, String cardNum) {
         mBackgroundProcessor.addPinChangeRequest(oldPin, newPin, cardNum);

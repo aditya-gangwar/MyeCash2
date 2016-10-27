@@ -29,7 +29,7 @@ public class Merchants
   private String tempDevId;
   private String cb_rate;
   private java.util.List<MerchantDevice> trusted_devices;
-  private BusinessCategories buss_category;
+  private String buss_category;
   private Address address;
   private Integer cl_debit_limit_for_pin;
   private Integer cb_debit_limit_for_pin;
@@ -292,12 +292,12 @@ public class Merchants
     this.trusted_devices = trusted_devices;
   }
 
-  public BusinessCategories getBuss_category()
+  public String getBuss_category()
   {
     return buss_category;
   }
 
-  public void setBuss_category( BusinessCategories buss_category )
+  public void setBuss_category( String buss_category )
   {
     this.buss_category = buss_category;
   }

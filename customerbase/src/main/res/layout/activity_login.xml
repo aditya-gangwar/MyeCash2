@@ -13,7 +13,7 @@
                 android:layout_weight="10" />
 
             <ImageView
-                android:src="@drawable/logo_red_base_128"
+                android:src="@drawable/logo_red"
                 android:layout_width="@dimen/login_logo_image_width"
                 android:layout_height="@dimen/login_logo_image_height"
                 android:layout_gravity="center_horizontal"/>

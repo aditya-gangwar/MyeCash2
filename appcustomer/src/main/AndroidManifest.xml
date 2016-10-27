@@ -14,7 +14,6 @@
         android:theme="@style/MyTheme">
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard|screenLayout"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -30,6 +29,10 @@
             android:name="in.myecash.customerbase.CashbackActivity"
             android:label="CashbackActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity
+            android:name="in.myecash.customerbase.TxnReportsActivity"
+            android:label="Transactions">
         </activity>
 
         <meta-data

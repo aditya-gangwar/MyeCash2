@@ -367,6 +367,8 @@ public class MyGlobalSettings
     // ** No Constant values defined - as not used by backend **
     private static final String SETTINGS_WRONG_ATTEMPT_RESET_HRS = "wrong_attempt_reset_hrs";
     private static final int WRONG_ATTEMPT_RESET_HRS = 2;
+    private static final String SETTINGS_CUST_TXNS_KEEP_DAYS = "cust_txns_keep_days";
+    private static final int CUST_TXNS_KEEP_DAYS = 5;
 
     public static Integer getCbRedeemLimit() {
         return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CB_REDEEM_LIMIT);
@@ -381,6 +383,11 @@ public class MyGlobalSettings
         return (mRunMode==RunMode.backend)?
                 WRONG_ATTEMPT_RESET_HRS:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_WRONG_ATTEMPT_RESET_HRS);
+    }
+    public static Integer getCustTxnKeepDays() {
+        return (mRunMode==RunMode.backend)?
+                CUST_TXNS_KEEP_DAYS:
+                (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUST_TXNS_KEEP_DAYS);
     }
 
     /*

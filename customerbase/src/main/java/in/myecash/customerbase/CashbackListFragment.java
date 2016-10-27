@@ -3,6 +3,8 @@ package in.myecash.customerbase;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -198,16 +202,18 @@ public class CashbackListFragment extends Fragment {
 
         private MyCashback mCb;
 
-        public EditText mMerchantName;
-        public View mMchntStatusAlert;
-        public EditText mCategoryNdCity;
-        public EditText mLastTxnTime;
-        public EditText mAccBalance;
-        public EditText mCbBalance;
+        private ImageView mMerchantDp;
+        private EditText mMerchantName;
+        private View mMchntStatusAlert;
+        private EditText mCategoryNdCity;
+        private EditText mLastTxnTime;
+        private EditText mAccBalance;
+        private EditText mCbBalance;
 
         public CbHolder(View itemView) {
             super(itemView);
 
+            mMerchantDp = (ImageView) itemView.findViewById(R.id.img_merchant);
             mMerchantName = (EditText) itemView.findViewById(R.id.input_mchnt_name);
             mMchntStatusAlert = itemView.findViewById(R.id.icon_mchnt_status_alert);
             mCategoryNdCity = (EditText) itemView.findViewById(R.id.mchnt_category_city);
@@ -215,6 +221,7 @@ public class CashbackListFragment extends Fragment {
             mAccBalance = (EditText) itemView.findViewById(R.id.input_acc_bal);
             mCbBalance = (EditText) itemView.findViewById(R.id.input_cb_bal);
 
+            mMerchantDp.setOnClickListener(this);
             mMerchantName.setOnClickListener(this);
             mCategoryNdCity.setOnClickListener(this);
             mLastTxnTime.setOnClickListener(this);
@@ -228,14 +235,18 @@ public class CashbackListFragment extends Fragment {
 
             // getRootView was not working, so manually finding root view
             // depending upon views on which listener is set
-            //View rootView = (View) v.getParent().getParent();
             View rootView = null;
-            if(v.getId()==mCategoryNdCity.getId() || v.getId()==mLastTxnTime.getId()) {
+            if(v.getId()==mMerchantDp.getId()) {
                 rootView = (View) v.getParent().getParent();
                 LogMy.d(TAG,"Clicked first level view "+rootView.getId());
-            } else {
+
+            } else if(v.getId()==mCategoryNdCity.getId() || v.getId()==mLastTxnTime.getId()) {
                 rootView = (View) v.getParent().getParent().getParent();
                 LogMy.d(TAG,"Clicked second level view "+rootView.getId());
+
+            } else {
+                rootView = (View) v.getParent().getParent().getParent().getParent();
+                LogMy.d(TAG,"Clicked third level view "+rootView.getId());
             }
 
             rootView.performClick();
@@ -245,6 +256,7 @@ public class CashbackListFragment extends Fragment {
             mCb = cb;
             MyMerchant merchant = mCb.getMerchant();
 
+            setMchntDp(merchant.getDpFilename());
             mMerchantName.setText(merchant.getName());
             if(merchant.getStatus()== DbConstants.USER_STATUS_READY_TO_REMOVE) {
                 mMchntStatusAlert.setVisibility(View.VISIBLE);
@@ -257,6 +269,30 @@ public class CashbackListFragment extends Fragment {
             mAccBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrClBalance()));
             mCbBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrCbBalance()));
         }
+
+        private void setMchntDp(String filename) {
+            if(filename!=null) {
+                File file = getActivity().getFileStreamPath(filename);
+                if(file!=null) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+                    if(bitmap==null) {
+                        LogMy.e(TAG,"Not able to decode mchnt dp file: "+file.getName());
+                    } else {
+                        // convert to round image
+                        int radiusInDp = (int) getResources().getDimension(R.dimen.dp_item_image_width);
+                        int radiusInPixels = AppCommonUtil.dpToPx(radiusInDp);
+
+                        Bitmap scaledImg = Bitmap.createScaledBitmap(bitmap,radiusInPixels,radiusInPixels,true);
+                        Bitmap roundImage = AppCommonUtil.getCircleBitmap(scaledImg);
+                        mMerchantDp.setImageBitmap(roundImage);
+                    }
+                } else {
+                    LogMy.e(TAG,"Mchnt Dp file not available locally: "+filename);
+                }
+            }
+        }
+
+
     }
 
     private class CbAdapter extends RecyclerView.Adapter<CbHolder> {

@@ -378,4 +378,9 @@ public class LoginActivity extends AppCompatActivity implements
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
     }
+
+    @Override
+    public void onBgThreadCreated() {
+        // nothing to do
+    }
 }

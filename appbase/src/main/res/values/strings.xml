@@ -1,4 +1,8 @@
 <resources>
+    <string name="merchant_app_name">MyeCash Merchant</string>
+    <string name="customer_app_name">MyeCash Customer</string>
+    <string name="agent_app_name">MyeCash Agent</string>
+
     <string name="Forgot_id_passwd_label">Forgot  User ID  or  Password ?</string>
     <string name="Forgot_passwd_label">Forgot  Password ?</string>
     <string name="Forgot_passwd_link">Password</string>
@@ -13,10 +17,6 @@
 
     <string name="empty_in_angle_brackets">\u003Cempty\u003E</string>
     <string name="none_in_angle_brackets">\u003Cnone\u003E</string>
-
-    <string name="merchant_app_name">MyeCash-Merchant</string>
-    <string name="agent_app_name">MyeCash-Agent</string>
-    <string name="customer_app_name">MyeCash-Customer</string>
 
     <string name="Rs">\u20B9</string>
     <string name="Rs_space">\u20B9\u0020</string>

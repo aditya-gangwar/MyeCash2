@@ -23,7 +23,8 @@ public class MyMerchant {
     private static final int MCHNT_CSV_STATUS = 8;
     private static final int MCHNT_CSV_STATUS_TIME = 9;
     private static final int MCHNT_CSV_REMOVE_REQ_DATE = 10;
-    private static final int MCHNT_CSV_FIELD_CNT = 11;
+    private static final int MCHNT_CSV_DP_FILENAME = 11;
+    private static final int MCHNT_CSV_FIELD_CNT = 12;
 
     // Total size of above fields = 50+50+10*7
     private static final int MCHNT_CSV_MAX_SIZE = 200;
@@ -43,6 +44,7 @@ public class MyMerchant {
     int mStatus;
     Date mStatusUpdateTime;
     Date mRemoveReqDate;
+    String mDpFilename;
 
     // Init from CSV string
     public void init(String csvStr) {
@@ -61,6 +63,7 @@ public class MyMerchant {
         if(!csvFields[MCHNT_CSV_REMOVE_REQ_DATE].isEmpty()) {
             mRemoveReqDate = new Date(Long.parseLong(csvFields[MCHNT_CSV_REMOVE_REQ_DATE]));
         }
+        mDpFilename = csvFields[MCHNT_CSV_DP_FILENAME];
     }
 
     // Convert to CSV string
@@ -70,7 +73,7 @@ public class MyMerchant {
         csvFields[MCHNT_CSV_ID] = merchant.getAuto_id();
         csvFields[MCHNT_CSV_MOBILE] = merchant.getMobile_num();
         csvFields[MCHNT_CSV_CB_RATE] = merchant.getCb_rate();
-        csvFields[MCHNT_CSV_BUSS_CATEGORY] = merchant.getBuss_category().getCategory_name();
+        csvFields[MCHNT_CSV_BUSS_CATEGORY] = merchant.getBuss_category();
         csvFields[MCHNT_CSV_ADDR_LINE1] = merchant.getAddress().getLine_1();
         csvFields[MCHNT_CSV_ADDR_CITY] = merchant.getAddress().getCity();
         csvFields[MCHNT_CSV_ADDR_STATE] = merchant.getAddress().getState();
@@ -81,6 +84,7 @@ public class MyMerchant {
         } else {
             csvFields[MCHNT_CSV_REMOVE_REQ_DATE] = Long.toString(merchant.getRemoveReqDate().getTime());
         }
+        csvFields[MCHNT_CSV_DP_FILENAME] = merchant.getDisplayImage();
 
         // join the fields in single CSV string
         StringBuilder sb = new StringBuilder(MCHNT_CSV_MAX_SIZE);
@@ -136,6 +140,10 @@ public class MyMerchant {
 
     public Date getRemoveReqDate() {
         return mRemoveReqDate;
+    }
+
+    public String getDpFilename() {
+        return mDpFilename;
     }
 }
 

@@ -85,7 +85,7 @@ public class MerchantDetailsDialog extends DialogFragment {
         }
 
         mStoreName.setText(merchant.getName());
-        mStoreCategory.setText(merchant.getBuss_category().getCategory_name());
+        mStoreCategory.setText(merchant.getBuss_category());
         mMerchantId.setText(merchant.getAuto_id());
         mRegisteredOn.setText(mSdfOnlyDate.format(merchant.getCreated()));
         mExpiringOn.setText(mSdfOnlyDate.format(AppCommonUtil.getExpiryDate(merchant)));

@@ -337,5 +337,9 @@ public class ActionsActivity extends AppCompatActivity implements
         startActivity(registrationIntent);
     }
 
+    @Override
+    public void onBgThreadCreated() {
+        // nothing to do
+    }
 }
 

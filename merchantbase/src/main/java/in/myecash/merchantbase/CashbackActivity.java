@@ -401,8 +401,9 @@ public class CashbackActivity extends AppCompatActivity implements
         String prefName = AppConstants.PREF_IMAGE_PATH_PREFIX +mMerchant.getAuto_id();
         String imagePath = PreferenceManager.getDefaultSharedPreferences(this).getString(prefName, null);
         if( imagePath != null) {
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath,bmOptions);
+            //BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            //Bitmap bitmap = BitmapFactory.decodeFile(imagePath,bmOptions);
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             if(bitmap==null) {
                 dwnloadImage = true;
             } else {
@@ -1143,7 +1144,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
             //Drawable drawable = new BitmapDrawable(getResources(), image);
             // store in SD card and path in preferences
-            File photoFile = AppCommonUtil.getMchntDpFilename(this);
+            File photoFile = AppCommonUtil.getTmpMchntDpFilename(this);
             if (AppCommonUtil.createImageFromBitmap(image, photoFile)) {
                 // Store image path
                 String prefName = AppConstants.PREF_IMAGE_PATH_PREFIX +mMerchant.getAuto_id();
@@ -1800,6 +1801,11 @@ public class CashbackActivity extends AppCompatActivity implements
         outState.putBoolean("mExitAfterLogout", mExitAfterLogout);
         outState.putBoolean("mTbImageIsMerchant", mTbImageIsMerchant);
         outState.putInt("mLastMenuItemId", mLastMenuItemId);
+    }
+
+    @Override
+    public void onBgThreadCreated() {
+        // nothing to do
     }
 }
 

@@ -380,7 +380,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         mRetainedFragment.mLastFetchTransactions = null;
         int errorCode = ErrorCodes.NO_ERROR;
 
-        mRetainedFragment.mLastFetchTransactions = MyTransaction.fetch(query);
+        mRetainedFragment.mLastFetchTransactions = MyTransaction.fetch(query, MerchantUser.getInstance().getMerchant().getTxn_table());
 
         if(mRetainedFragment.mLastFetchTransactions == null) {
             errorCode = ErrorCodes.GENERAL_ERROR;

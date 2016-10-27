@@ -15,6 +15,7 @@ import in.myecash.common.database.Cashback;
 import in.myecash.common.database.Customers;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.database.Transaction;
 import in.myecash.customerbase.backendAPI.CustomerServices;
 import in.myecash.customerbase.backendAPI.CustomerServicesNoLogin;
 
@@ -212,6 +213,11 @@ public class CustomerUser {
     public List<Cashback> fetchCashbacks(Long updatedSince) throws BackendlessException {
         LogMy.d(TAG, "In fetchCashback");
         return CustomerServices.getInstance().getCashbacks(mCustomer.getPrivate_id(), updatedSince);
+    }
+
+    public List<Transaction> fetchTxns(String whereClause) throws BackendlessException {
+        LogMy.d(TAG, "In fetchTxns");
+        return CustomerServices.getInstance().getTransactions(mCustomer.getPrivate_id(), whereClause);
     }
 
 

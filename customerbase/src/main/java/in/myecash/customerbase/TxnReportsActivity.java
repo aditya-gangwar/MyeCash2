@@ -96,10 +96,6 @@ public class TxnReportsActivity extends AppCompatActivity implements
             mDetailedTxnPos = -1;
         }
 
-        // get passed merchant details
-        mMerchantId = getIntent().getStringExtra(EXTRA_MERCHANT_ID);
-        mMerchantName = getIntent().getStringExtra(EXTRA_MERCHANT_NAME);
-        mInputMerchant.setText(mMerchantName);
 
         // Initialize retained fragment before other fragments
         // Check to see if we have retained the worker fragment.
@@ -110,6 +106,31 @@ public class TxnReportsActivity extends AppCompatActivity implements
             LogMy.d(TAG, "Creating retained fragment instance");
             mWorkFragment = new MyRetainedFragment();
             mFragMgr.beginTransaction().add(mWorkFragment, RETAINED_FRAGMENT).commit();
+        }
+
+        // get passed merchant details
+        mMerchantId = getIntent().getStringExtra(EXTRA_MERCHANT_ID);
+        mMerchantName = getIntent().getStringExtra(EXTRA_MERCHANT_NAME);
+    }
+
+    @Override
+    public void onBgThreadCreated() {
+        // was facing race condition - where mBtnGetReport.performClick() was getting called
+        // before bg thread is initialized properly
+        // so added this callback
+
+        // if 'Merchant ID' not provided - means fetch only latest txns from DB table
+        if(mMerchantId==null || mMerchantId.isEmpty()) {
+            DateUtil from = new DateUtil(new Date(), TimeZone.getDefault());
+            // -1 as 'today' is inclusive in 'cust txn keep days'
+            from.removeDays(MyGlobalSettings.getCustTxnKeepDays()-1);
+            from.toMidnight();
+            mFromDate = from.getTime();
+            mToDate = mToday.getTime();
+            // simulate click to generate report
+            mBtnGetReport.performClick();
+        } else {
+            mInputMerchant.setText(mMerchantName);
         }
     }
 
@@ -176,19 +197,24 @@ public class TxnReportsActivity extends AppCompatActivity implements
                         .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         } else {
-            // older txns are required
-            // may be today's txns are also required - will be checked once all old txns are in memory
-
-            // find which txn csv files are not locally available
-            getTxnCsvFilePaths();
-            if (mWorkFragment.mMissingFiles.isEmpty()) {
-                // all required txn files are locally available
-                // process all files and store applicable CSV records in 'mWorkFragment.mFilteredCsvRecords'
-                onAllTxnFilesAvailable(false);
+            if(mMerchantId==null || mMerchantId.isEmpty()) {
+                // fetch only txns available in DB table
+                mWorkFragment.fetchTransactions(buildWhereClause());
             } else {
-                // one or more txn files are not locally available, fetch the same from backend
-                // all files will be processed in single go, after fetching missing files
-                mWorkFragment.fetchTxnFiles(TxnReportsActivity.this, mWorkFragment.mMissingFiles);
+                // older txns are required
+                // may be today's txns are also required - will be checked once all old txns are in memory
+
+                // find which txn csv files are not locally available
+                getTxnCsvFilePaths();
+                if (mWorkFragment.mMissingFiles.isEmpty()) {
+                    // all required txn files are locally available
+                    // process all files and store applicable CSV records in 'mWorkFragment.mFilteredCsvRecords'
+                    onAllTxnFilesAvailable(false);
+                } else {
+                    // one or more txn files are not locally available, fetch the same from backend
+                    // all files will be processed in single go, after fetching missing files
+                    mWorkFragment.fetchTxnFiles(TxnReportsActivity.this, mWorkFragment.mMissingFiles);
+                }
             }
         }
     }
@@ -284,8 +310,10 @@ public class TxnReportsActivity extends AppCompatActivity implements
         StringBuilder whereClause = new StringBuilder();
 
         // customer and merchant id
-        whereClause.append("merchant_id = '").append(mMerchantId).append("'");
-        whereClause.append(" AND cust_private_id = '").append(mCustPvtId).append("'");
+        whereClause.append("cust_private_id = '").append(mCustPvtId).append("'");
+        if(mMerchantId!=null && !mMerchantId.isEmpty()) {
+            whereClause.append("AND merchant_id = '").append(mMerchantId).append("'");
+        }
 
         //DateUtil from = new DateUtil(mFromDate);
         //from.toMidnight();
@@ -493,7 +521,12 @@ public class TxnReportsActivity extends AppCompatActivity implements
         } else {
             getFragmentManager().popBackStackImmediate();
 
-            if(mFragmentContainer.getVisibility()==View.VISIBLE && count==1) {
+            if(mMerchantId==null || mMerchantId.isEmpty()) {
+                // Case when latest txns are directly shown
+                // i.e. the main layout to enter from, to dates - was not shown
+                super.onBackPressed();
+
+            } else if(mFragmentContainer.getVisibility()==View.VISIBLE && count==1) {
                 getSupportActionBar().setTitle("Transactions");
                 mMainLayout.setVisibility(View.VISIBLE);
                 mFragmentContainer.setVisibility(View.GONE);

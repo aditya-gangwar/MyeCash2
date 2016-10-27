@@ -33,47 +33,45 @@
                 android:gravity="left"/>
         </LinearLayout>
 
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_store_white_24dp"
-                android:tint="@color/primary"/>
+                android:id="@+id/img_merchant"
+                android:src="@drawable/untitled"
+                android:layout_width="@dimen/dp_dialog_image_width"
+                android:layout_height="@dimen/dp_dialog_image_height"
+                android:scaleType="centerInside"
+                android:layout_marginRight="@dimen/medium_space"
+                android:layout_gravity="bottom"/>
+
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_brand_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="Ganga Stores"
-                android:layout_weight="40"
+                android:inputType="textCapSentences"
+                android:text="TBS"
+                android:layout_toRightOf="@id/img_merchant"
                 android:gravity="left"/>
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_perm_identity_white_24dp"
-                android:tint="@color/primary"
-                android:visibility="invisible"
-                android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:id="@+id/input_category_city"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="Grocery, North Delhi"
-                android:layout_weight="40"
+                android:layout_below="@+id/input_brand_name"
+                android:layout_toRightOf="@id/img_merchant"
                 android:gravity="left"
+                android:id="@+id/input_category_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TBS"
                 android:paddingTop="0dp"
                 android:textStyle="italic"/>
-        </LinearLayout>
 
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/large_space" />
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -81,17 +79,15 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_24dp"
-                android:tint="@color/primary"
-                android:visibility="invisible"/>
+                android:src="@drawable/ic_grade_white_18dp"
+                android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Cashback Rate"
                 android:layout_weight="40"
-                android:gravity="left"
-                android:paddingTop="0dp"/>
+                android:gravity="left"/>
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_cb_rate"
@@ -100,7 +96,6 @@
                 android:text="5 %"
                 android:layout_weight="60"
                 android:gravity="left"
-                android:paddingTop="0dp"
                 android:textColor="@color/green_positive"
                 android:textStyle="bold"/>
         </LinearLayout>
@@ -111,7 +106,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_24dp"
+                android:src="@drawable/ic_phone_android_white_18dp"
                 android:tint="@color/primary"
                 android:visibility="invisible"/>
             <EditText
@@ -143,7 +138,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_receipt_white_24dp"
+                android:src="@drawable/ic_receipt_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
@@ -182,7 +177,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_grade_white_24dp"
+                android:src="@drawable/ic_grade_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
@@ -209,7 +204,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_grade_white_24dp"
+                android:src="@drawable/ic_grade_white_18dp"
                 android:visibility="invisible"
                 android:paddingTop="0dp"/>
             <EditText
@@ -238,7 +233,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_grade_white_24dp"
+                android:src="@drawable/ic_grade_white_18dp"
                 android:visibility="invisible"
                 android:paddingTop="0dp"/>
             <EditText
@@ -276,7 +271,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                android:src="@drawable/ic_account_balance_wallet_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
@@ -303,7 +298,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                android:src="@drawable/ic_account_balance_wallet_white_18dp"
                 android:visibility="invisible"
                 android:paddingTop="0dp"/>
             <EditText
@@ -332,7 +327,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                android:src="@drawable/ic_account_balance_wallet_white_18dp"
                 android:visibility="invisible"
                 android:paddingTop="0dp"/>
             <EditText
@@ -374,7 +369,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:src="@drawable/ic_perm_identity_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
@@ -399,7 +394,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_24dp"
+                android:src="@drawable/ic_phone_android_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
@@ -426,7 +421,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_input_white_24dp"
+                android:src="@drawable/ic_input_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
@@ -453,7 +448,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_place_white_24dp"
+                android:src="@drawable/ic_place_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
@@ -481,7 +476,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_place_white_24dp"
+                    android:src="@drawable/ic_place_white_18dp"
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
@@ -510,7 +505,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_place_white_24dp"
+                    android:src="@drawable/ic_place_white_18dp"
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText

@@ -27,6 +27,15 @@ public class Customers
   private Boolean first_login_ok;
   private Boolean debugLogs;
   private Date lastRenewDate;
+  private String txn_tables;
+
+  public String getTxn_tables() {
+    return txn_tables;
+  }
+
+  public void setTxn_tables(String txn_tables) {
+    this.txn_tables = txn_tables;
+  }
 
   public Date getLastRenewDate() {
     return lastRenewDate;

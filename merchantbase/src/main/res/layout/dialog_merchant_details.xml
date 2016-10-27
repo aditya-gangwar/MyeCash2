@@ -18,8 +18,8 @@
             <ImageView
                 android:id="@+id/display_image"
                 android:src="@drawable/untitled"
-                android:layout_width="@dimen/register_image_width"
-                android:layout_height="@dimen/register_image_height"
+                android:layout_width="@dimen/dp_dialog_image_width"
+                android:layout_height="@dimen/dp_dialog_image_height"
                 android:scaleType="centerInside"
                 android:layout_marginRight="@dimen/large_space"
                 android:layout_gravity="bottom"/>

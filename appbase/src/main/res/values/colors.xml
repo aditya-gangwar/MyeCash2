@@ -2,10 +2,11 @@
 <resources>
     <color name="primary">#166a8f</color>
     <color name="primary_dark">#1a5e80</color>
+
     <color name="accent">#8f5d16</color>
     <color name="accent2">#8f2016</color>
-    <color name="button_fill">#999999</color>
 
+    <color name="button_fill">#999999</color>
     <color name="primary_text">#333333</color>
     <color name="secondary_text">#888888</color>
 
@@ -67,18 +68,4 @@
     <color name="coconut">#6CA669</color>
     <color name="fuji_red">#BF2A23</color>
 
-
-    <!--color name="primary">#8C2C23</color>
-    <color name="primary_dark">#6E2C23</color>
-    <color name="accent">#009688</color>
-
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#727272</color>
-    <color name="divider">#CCCCCC</color>
-    <color name="hint">#CCCCCC</color>
-    <color name="icon_grey">#727272</color>
-
-    <color name="button_fill">#607D8B</color>
-    <color name="cb_exclusion">#009688</color>
-    <color name="link_blue">#007AFF</color-->
 </resources>

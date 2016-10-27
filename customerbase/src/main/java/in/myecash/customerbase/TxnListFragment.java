@@ -34,6 +34,7 @@ import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Customers;
@@ -84,7 +85,9 @@ public class TxnListFragment extends Fragment {
     private EditText mHeaderBill;
     private EditText mHeaderAmts;
     private EditText mHeaderTime;
+    private EditText mHeaderMchnt;
     private RecyclerView mTxnRecyclerView;
+    private EditText mInfoOldTxns;
 
     private MyRetainedFragment mRetainedFragment;
     private TxnListFragmentIf mCallback;
@@ -110,6 +113,26 @@ public class TxnListFragment extends Fragment {
         TxnListFragment fragment = new TxnListFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_txn_list, container, false);
+
+        mFilterMchnt = (EditText) view.findViewById(R.id.txnlist_filter_mchnt);
+        mFilterDuration = (EditText) view.findViewById(R.id.txnlist_filter_duration);
+
+        mHeaderTime = (EditText) view.findViewById(R.id.txnlist_header_time);
+        mHeaderAmts = (EditText) view.findViewById(R.id.txnlist_header_amts);
+        mHeaderBill = (EditText) view.findViewById(R.id.txnlist_header_bill);
+        mHeaderMchnt = (EditText) view.findViewById(R.id.txnlist_header_mchnt);
+
+        mTxnRecyclerView = (RecyclerView) view.findViewById(R.id.txn_recycler_view);
+        mTxnRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mInfoOldTxns = (EditText) view.findViewById(R.id.info_old_txns);
+
+        return view;
     }
 
     @Override
@@ -139,13 +162,23 @@ public class TxnListFragment extends Fragment {
                 mFilterMchnt.setVisibility(View.VISIBLE);
                 mFilterMchnt.setText(filterMchnt);
                 mForSingleMchnt = true;
+                mInfoOldTxns.setVisibility(View.GONE);
+                mHeaderMchnt.setVisibility(View.GONE);
+
+                String durationFilter = "From: "+mSdfOnlyDate.format(mStartTime)+
+                        ",  To: "+mSdfOnlyDate.format(mEndTime);
+                mFilterDuration.setText(durationFilter);
+
             } else {
                 mFilterMchnt.setVisibility(View.GONE);
                 mForSingleMchnt = false;
+                mInfoOldTxns.setVisibility(View.VISIBLE);
+                mHeaderMchnt.setVisibility(View.VISIBLE);
+
+                String durationFilter = "Duration: Last "+ MyGlobalSettings.getCustTxnKeepDays()+" days";
+                mFilterDuration.setText(durationFilter);
             }
-            String durationFilter = "From: "+mSdfOnlyDate.format(mStartTime)+
-                    ",  To: "+mSdfOnlyDate.format(mEndTime);
-            mFilterDuration.setText(durationFilter);
+
 
             int sortType = SortTxnDialog.TXN_SORT_DATE_TIME;
             if(savedInstanceState!=null) {
@@ -229,24 +262,6 @@ public class TxnListFragment extends Fragment {
 
         // store existing sortType
         mSelectedSortType = sortType;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_txn_list, container, false);
-
-        mFilterMchnt = (EditText) view.findViewById(R.id.txnlist_filter_mchnt);
-        mFilterDuration = (EditText) view.findViewById(R.id.txnlist_filter_duration);
-
-        mHeaderTime = (EditText) view.findViewById(R.id.txnlist_header_time);
-        mHeaderAmts = (EditText) view.findViewById(R.id.txnlist_header_amts);
-        mHeaderBill = (EditText) view.findViewById(R.id.txnlist_header_bill);
-
-        mTxnRecyclerView = (RecyclerView) view.findViewById(R.id.txn_recycler_view);
-        mTxnRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        return view;
     }
 
     public void showDetailedDialog(int pos) {

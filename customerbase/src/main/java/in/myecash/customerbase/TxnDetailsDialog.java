@@ -189,7 +189,7 @@ public class TxnDetailsDialog extends DialogFragment {
         mInputCbAward = (EditText) v.findViewById(R.id.input_cb_award);
         mInputCbRedeem = (EditText) v.findViewById(R.id.input_cb_redeem);
 
-        mInputMerchant = (EditText) v.findViewById(R.id.input_merchant);
+        mInputMerchant = (EditText) v.findViewById(R.id.input_merchant_name);
         mInputMchntId = (EditText) v.findViewById(R.id.input_merchant_id);;
 
     }

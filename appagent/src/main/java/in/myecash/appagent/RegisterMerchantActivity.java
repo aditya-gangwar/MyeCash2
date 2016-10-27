@@ -37,6 +37,7 @@ import in.myecash.appbase.entities.MyBusinessCategories;
 import in.myecash.appbase.entities.MyCities;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Address;
 import in.myecash.common.database.Cities;
@@ -184,7 +185,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
                 break;
             case DIALOG_CATEGORY:
                 String category = String.valueOf(MyBusinessCategories.getCategoryValueSet()[indexOrResultCode]);
-                mWorkFragment.mCurrMerchant.setBuss_category(MyBusinessCategories.getCategoryWithName(category));
+                mWorkFragment.mCurrMerchant.setBuss_category(MyBusinessCategories.getCategoryWithName(category).getCategory_name());
                 mCategoryTextRes.setText(category);
                 mCategoryTextRes.setError(null);
                 break;
@@ -428,9 +429,9 @@ public class RegisterMerchantActivity extends AppCompatActivity
         pickImageIntent.putExtra("aspectX", 1);
         pickImageIntent.putExtra("aspectY", 1);
         pickImageIntent.putExtra("scale", true);
-        pickImageIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        pickImageIntent.putExtra("outputFormat", CommonConstants.PHOTO_FILE_FORMAT);
 
-        mPhotoFile = AppCommonUtil.getMchntDpFilename(this);
+        mPhotoFile = AppCommonUtil.getTmpMchntDpFilename(this);
         PackageManager packageManager = this.getPackageManager();
 
         boolean canTakePhoto = (mPhotoFile != null) && pickImageIntent.resolveActivity(packageManager) != null;
@@ -639,6 +640,10 @@ public class RegisterMerchantActivity extends AppCompatActivity
                 .show();
     }
 
+    @Override
+    public void onBgThreadCreated() {
+        // do nothing
+    }
 }
 
 

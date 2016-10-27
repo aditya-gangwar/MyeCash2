@@ -24,7 +24,6 @@
 
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard|screenLayout"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -47,7 +46,7 @@
         </activity>
         <activity
             android:name="in.myecash.merchantbase.TxnReportsActivity"
-            android:label="History">
+            android:label="Transactions">
         </activity>
         <activity android:name="in.myecash.appbase.barcodeReader.BarcodeCaptureActivity"
             android:label="Read Barcode"/>
