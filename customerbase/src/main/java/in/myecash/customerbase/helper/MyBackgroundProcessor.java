@@ -108,8 +108,8 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         LogMy.d(TAG, "In addFetchTxnsRequest");
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_TXNS, query).sendToTarget();
     }
-    public void addFetchTxnFilesRequest(Context context, List<String> missingFiles) {
-        LogMy.d(TAG, "In addFetchTxnFilesRequest: " + missingFiles.size());
+    public void addFetchTxnFilesRequest(Context context) {
+        LogMy.d(TAG, "In addFetchTxnFilesRequest");
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_TXN_FILES, context).sendToTarget();
     }
 
@@ -203,6 +203,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     }
 
     private int fetchMchntDpFiles(Context ctxt) {
+        LogMy.d(TAG,"In fetchMchntDpFiles");
         int errorCode = ErrorCodes.NO_ERROR;
 
         // check which files need to be fetched
@@ -220,6 +221,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 // file does not exist
                 LogMy.d(TAG,"Missing mchnt dp file: "+dpFilename);
                 String filepath = CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR + dpFilename;
+                LogMy.d(TAG,"Missing mchnt dp filepath: "+filepath);
                 missingFiles.add(filepath);
             }
         }

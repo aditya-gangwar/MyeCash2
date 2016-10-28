@@ -10,6 +10,7 @@ import java.util.Map;
 
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyCashback;
+import in.myecash.appbase.utilities.TxnReportsHelper;
 import in.myecash.common.database.Transaction;
 import in.myecash.customerbase.entities.CustomerStats;
 import in.myecash.customerbase.entities.CustomerUser;
@@ -54,11 +55,20 @@ public class MyRetainedFragment extends RetainedFragment {
     public String mOtpMobileChange;
 
     // members used by 'Txn Reports Activity' to store its state, and its fragments
+    //public List<String> mAllFiles = new ArrayList<>();
+    public List<String> mMissingFiles;
+    // 'Txn Reports Activity' store the helper instance here in onSaveInstance
+    public TxnReportsHelper mTxnReportHelper;
+    //public List<Transaction> mTxnsFromCsv = new ArrayList<>();
+    //public int mSummary[] = new int[AppConstants.INDEX_SUMMARY_MAX_VALUE];
+    public List<Transaction> mLastFetchTransactions;
+
+    /*
     public List<String> mAllFiles = new ArrayList<>();
     public List<String> mMissingFiles = new ArrayList<>();
     public List<Transaction> mTxnsFromCsv = new ArrayList<>();
     //public int mSummary[] = new int[AppConstants.INDEX_SUMMARY_MAX_VALUE];
-    public List<Transaction> mLastFetchTransactions;
+    public List<Transaction> mLastFetchTransactions;*/
 
     public void reset() {
         LogMy.d(TAG,"In reset");
@@ -95,8 +105,8 @@ public class MyRetainedFragment extends RetainedFragment {
     public void fetchTransactions(String whereClause) {
         mBackgroundProcessor.addFetchTxnsRequest(whereClause);
     }
-    public void fetchTxnFiles(Context context, List<String> missingFiles) {
-        mBackgroundProcessor.addFetchTxnFilesRequest(context, missingFiles);
+    public void fetchTxnFiles(Context context) {
+        mBackgroundProcessor.addFetchTxnFilesRequest(context);
     }
 
     @Override

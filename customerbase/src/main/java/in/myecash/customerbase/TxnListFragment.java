@@ -175,7 +175,7 @@ public class TxnListFragment extends Fragment {
                 mInfoOldTxns.setVisibility(View.VISIBLE);
                 mHeaderMchnt.setVisibility(View.VISIBLE);
 
-                String durationFilter = "Duration: Last "+ MyGlobalSettings.getCustTxnKeepDays()+" days";
+                String durationFilter = "Duration: Last "+ MyGlobalSettings.getTxnsIntableKeepDays()+" days";
                 mFilterDuration.setText(durationFilter);
             }
 

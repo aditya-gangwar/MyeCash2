@@ -429,9 +429,12 @@ public class RegisterMerchantActivity extends AppCompatActivity
         pickImageIntent.putExtra("aspectX", 1);
         pickImageIntent.putExtra("aspectY", 1);
         pickImageIntent.putExtra("scale", true);
-        pickImageIntent.putExtra("outputFormat", CommonConstants.PHOTO_FILE_FORMAT);
+        //pickImageIntent.putExtra("outputFormat", CommonConstants.PHOTO_FILE_FORMAT);
+        //pickImageIntent.putExtra("outputFormat", Bitmap.CompressFormat.WEBP.toString());
+        pickImageIntent.putExtra("outputFormat", Bitmap.CompressFormat.WEBP.toString());
 
-        mPhotoFile = AppCommonUtil.getTmpMchntDpFilename(this);
+        String tmpDpFilename = "IMG_" + System.currentTimeMillis() + CommonConstants.PHOTO_FILE_FORMAT;
+        mPhotoFile = AppCommonUtil.createLocalImageFile(this, tmpDpFilename);
         PackageManager packageManager = this.getPackageManager();
 
         boolean canTakePhoto = (mPhotoFile != null) && pickImageIntent.resolveActivity(packageManager) != null;

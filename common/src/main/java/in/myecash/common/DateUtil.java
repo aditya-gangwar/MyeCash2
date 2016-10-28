@@ -76,6 +76,16 @@ public class DateUtil {
         return this;
     }
 
+    public DateUtil toEndOfDay() {
+
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND,999);
+
+        return this;
+    }
+
     /**
      * Make the date go back of the specified amount of days
      * The internal date is changed after this call.

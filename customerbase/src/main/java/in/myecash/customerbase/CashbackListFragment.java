@@ -278,13 +278,16 @@ public class CashbackListFragment extends Fragment {
                     if(bitmap==null) {
                         LogMy.e(TAG,"Not able to decode mchnt dp file: "+file.getName());
                     } else {
+                        LogMy.d(TAG,"Decoded file as bitmap: "+file.getPath());
+                        mMerchantDp.setImageBitmap(bitmap);
                         // convert to round image
+                        /*
                         int radiusInDp = (int) getResources().getDimension(R.dimen.dp_item_image_width);
                         int radiusInPixels = AppCommonUtil.dpToPx(radiusInDp);
 
                         Bitmap scaledImg = Bitmap.createScaledBitmap(bitmap,radiusInPixels,radiusInPixels,true);
                         Bitmap roundImage = AppCommonUtil.getCircleBitmap(scaledImg);
-                        mMerchantDp.setImageBitmap(roundImage);
+                        mMerchantDp.setImageBitmap(roundImage);*/
                     }
                 } else {
                     LogMy.e(TAG,"Mchnt Dp file not available locally: "+filename);

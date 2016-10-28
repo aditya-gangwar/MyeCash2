@@ -228,7 +228,7 @@ public class AppCommonUtil {
 
             // Here we Resize the Image ...
             //ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.JPEG, 80,
+            bmp.compress(Bitmap.CompressFormat.WEBP, 100,
                     fileOutputStream); // bm is the bitmap object
             //byte[] bsResized = byteArrayOutputStream.toByteArray();
 
@@ -406,14 +406,15 @@ public class AppCommonUtil {
     public static String getTxnImgFilename(String txnId) {
         return CommonConstants.PREFIX_TXN_IMG_FILE_NAME +txnId+".webp";
     }
-    public static File getTmpMchntDpFilename(Context context) {
-        File filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+    public static File createLocalImageFile(Context context, String name) {
+        //File filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File filesDir = context.getFilesDir();
         if (filesDir == null) {
             return null;
         }
 
-        String photoFileName = "IMG_" + System.currentTimeMillis() + CommonConstants.PHOTO_FILE_FORMAT;
-        return new File(filesDir, photoFileName);
+        return new File(filesDir, name);
     }
 
 
