@@ -158,8 +158,8 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         LogMy.d(TAG, "In addFetchTxnsRequest");
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_TXNS, query).sendToTarget();
     }
-    public void addFetchTxnFilesRequest(Context context, List<String> missingFiles) {
-        LogMy.d(TAG, "In addFetchTxnFilesRequest: " + missingFiles.size());
+    public void addFetchTxnFilesRequest(Context context) {
+        LogMy.d(TAG, "In addFetchTxnFilesRequest");
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_TXN_FILES, context).sendToTarget();
     }
     public void addCustFileDownloadReq(Context context, String fileURL) {

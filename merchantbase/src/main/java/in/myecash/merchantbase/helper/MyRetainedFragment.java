@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import com.crashlytics.android.Crashlytics;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.TxnReportsHelper;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.MerchantOps;
 import in.myecash.common.database.MerchantStats;
@@ -88,9 +89,11 @@ public class MyRetainedFragment extends RetainedFragment {
     public String mOtpMobileChange;
 
     // members used by 'Txn Reports Activity' to store its state, and its fragments
-    public List<String> mAllFiles = new ArrayList<>();
-    public List<String> mMissingFiles = new ArrayList<>();
-    public List<Transaction> mTxnsFromCsv = new ArrayList<>();
+    //public List<String> mAllFiles = new ArrayList<>();
+    public List<String> mMissingFiles;
+    // 'Txn Reports Activity' store the helper instance here in onSaveInstance
+    public TxnReportsHelper mTxnReportHelper;
+    //public List<Transaction> mTxnsFromCsv = new ArrayList<>();
     public int mSummary[] = new int[AppConstants.INDEX_SUMMARY_MAX_VALUE];
     public List<Transaction> mLastFetchTransactions;
 
@@ -161,8 +164,8 @@ public class MyRetainedFragment extends RetainedFragment {
         mBackgroundProcessor.addPasswordRequest(brandName, deviceId, userId);
     }
 
-    public void fetchTxnFiles(Context context,List<String> missingFiles) {
-        mBackgroundProcessor.addFetchTxnFilesRequest(context, missingFiles);
+    public void fetchTxnFiles(Context context) {
+        mBackgroundProcessor.addFetchTxnFilesRequest(context);
     }
 
     public void fetchTransactions(String whereClause) {
@@ -282,80 +285,4 @@ public class MyRetainedFragment extends RetainedFragment {
             }
         }
     }
-
-    /*
-    private class RegisterMerchantTask extends AsyncTask<File,Void,Integer> {
-        @Override
-        protected Integer doInBackground(File... params) {
-            int retValue = ErrorCodes.NO_ERROR;
-            for (File imageFile : params) {
-                // register irrespecive of image upload status
-                retValue = mMerchantUser.register(imageFile);
-                // first upload image, so as the 'image URL' can be set as merchant property
-                // thus avoiding extra API call to save URL value
-                //mMerchantUser.setUser_id(null);
-                //mMerchantUser.getMerchant().setDisplayImage(mMerchantUser.uploadDisplayImage(imageFile));
-            }
-            return retValue;
-        }
-
-        @Override
-        protected void onPostExecute(Integer errorCode) {
-            mCallback.onBgProcessResponse(errorCode, REQUEST_REGISTER_MERCHANT);
-        }
-    }*/
-
 }
-
-                /*
-                switch(operation) {
-                    case BackgroundProcessor.MESSAGE_GET_CASHBACK:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_GET_CASHBACK);
-                        break;
-                    case BackgroundProcessor.MESSAGE_REGISTER_CUSTOMER:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_REGISTER_CUSTOMER);
-                        break;
-                    case BackgroundProcessor.MESSAGE_LOGIN:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_LOGIN);
-                        break;
-                    case BackgroundProcessor.MESSAGE_COMMIT_TRANS:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_COMMIT_TRANS);
-                        break;
-                    case BackgroundProcessor.MESSAGE_UPDATE_MERCHANT_SETTINGS:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_UPDATE_MERCHANT_SETTINGS);
-                        break;
-                    case BackgroundProcessor.MESSAGE_LOGOUT_MERCHANT:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_LOGOUT_MERCHANT);
-                        break;
-                    case BackgroundProcessor.MESSAGE_FETCH_TRANSACTIONS:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_FETCH_TXNS);
-                        break;
-                    case BackgroundProcessor.MESSAGE_FETCH_TXN_FILES:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_FETCH_TXN_FILES);
-                        break;
-                    case BackgroundProcessor.MESSAGE_GENERATE_PASSWORD:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_GENERATE_MERCHANT_PWD);
-                        break;
-                    case BackgroundProcessor.MESSAGE_CUSTOMER_OP:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_ADD_CUSTOMER_OP);
-                        break;
-                    case BackgroundProcessor.MESSAGE_CHANGE_PASSWD:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_CHANGE_PASSWD);
-                        break;
-                    case BackgroundProcessor.MESSAGE_UPLOAD_FILE:
-                    case BackgroundProcessor.MESSAGE_UPDATE_CUSTOMER:
-                        // do nothing
-                        break;
-                    case BackgroundProcessor.MESSAGE_DELETE_DEVICE:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_DELETE_TRUSTED_DEVICE);
-                        break;
-                    case BackgroundProcessor.MESSAGE_CHANGE_MOBILE:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_CHANGE_MOBILE);
-                        break;
-                    case BackgroundProcessor.MESSAGE_MERCHANT_STATS:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_MERCHANT_STATS);
-                        break;
-                    case BackgroundProcessor.MESSAGE_FORGOT_ID:
-                        mCallback.onBgProcessResponse(errorCode, REQUEST_FORGOT_ID);
-                        break;
-                }*/

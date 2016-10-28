@@ -7,6 +7,7 @@ package in.myecash.merchantbase;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -52,6 +53,8 @@ import in.myecash.merchantbase.entities.MyMerchantStats;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -403,10 +406,15 @@ public class CashbackActivity extends AppCompatActivity implements
         if( imagePath != null) {
             //BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             //Bitmap bitmap = BitmapFactory.decodeFile(imagePath,bmOptions);
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            LogMy.d(TAG,"Mchnt DP available locally: "+imagePath);
+
+            File file = getFileStreamPath(imagePath);
+
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
             if(bitmap==null) {
                 dwnloadImage = true;
             } else {
+                LogMy.d(TAG,"Decoded file as bitmap: "+imagePath);
                 mMerchantUser.setDisplayImage(bitmap);
             }
         //} else if(mMerchant.getDisplayImage()!=null) {
@@ -1142,9 +1150,28 @@ public class CashbackActivity extends AppCompatActivity implements
             // store in MerchantUser for later use
             mMerchantUser.setDisplayImage(image);
 
+            FileOutputStream fos = null;
+            try {
+                fos = openFileOutput(mMerchant.getDisplayImage(), Context.MODE_PRIVATE);
+                image.compress(Bitmap.CompressFormat.WEBP, 100, fos);
+                // Store image path
+                String prefName = AppConstants.PREF_IMAGE_PATH_PREFIX +mMerchant.getAuto_id();
+                PreferenceManager.getDefaultSharedPreferences(this)
+                        .edit()
+                        .putString(prefName, mMerchant.getDisplayImage())
+                        .apply();
+
+            } catch (Exception e) {
+                // TODO
+                LogMy.e(TAG,"Exception while decoding stored merchant DP: "+mMerchant.getDisplayImage());
+            }
+
+
+
             //Drawable drawable = new BitmapDrawable(getResources(), image);
             // store in SD card and path in preferences
-            File photoFile = AppCommonUtil.getTmpMchntDpFilename(this);
+            /*
+            File photoFile = AppCommonUtil.createLocalImageFile(this, mMerchant.getDisplayImage());
             if (AppCommonUtil.createImageFromBitmap(image, photoFile)) {
                 // Store image path
                 String prefName = AppConstants.PREF_IMAGE_PATH_PREFIX +mMerchant.getAuto_id();
@@ -1154,7 +1181,7 @@ public class CashbackActivity extends AppCompatActivity implements
                         .apply();
             } else {
                 LogMy.e(TAG, "Error while creating image file from bitmap");
-            }
+            }*/
         } else {
             // TODO: set default image
         }

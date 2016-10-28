@@ -41,7 +41,7 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="20"/>
+            android:layout_weight="15"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_cash_account"
-            android:layout_weight="20"/>
+            android:layout_weight="15"/>
 
         <LinearLayout
             style="@style/LL_Vertical"
@@ -485,7 +485,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_above_button"
-            android:layout_weight="20"/>
+            android:layout_weight="30"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
