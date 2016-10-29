@@ -401,26 +401,31 @@ public class CashbackActivity extends AppCompatActivity implements
         // Set merchant DP as toolbar icon
         // Check if local path available, else download from server
         boolean dwnloadImage = false;
-        String prefName = AppConstants.PREF_IMAGE_PATH_PREFIX +mMerchant.getAuto_id();
-        String imagePath = PreferenceManager.getDefaultSharedPreferences(this).getString(prefName, null);
-        if( imagePath != null) {
+        //String prefName = AppConstants.PREF_IMAGE_PATH_PREFIX +mMerchant.getAuto_id();
+        //String imageName = PreferenceManager.getDefaultSharedPreferences(this).getString(prefName, null);
+        //if( imageName != null) {
             //BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             //Bitmap bitmap = BitmapFactory.decodeFile(imagePath,bmOptions);
-            LogMy.d(TAG,"Mchnt DP available locally: "+imagePath);
+            //LogMy.d(TAG,"Mchnt DP available locally: "+imageName);
 
-            File file = getFileStreamPath(imagePath);
+            File file = getFileStreamPath(mMerchant.getDisplayImage());
+            if(file!=null) {
+                LogMy.d(TAG,"Mchnt DP available locally: "+file.getPath());
 
-            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
-            if(bitmap==null) {
-                dwnloadImage = true;
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+                if(bitmap==null) {
+                    dwnloadImage = true;
+                } else {
+                    LogMy.d(TAG,"Decoded file as bitmap: "+file.getPath());
+                    mMerchantUser.setDisplayImage(bitmap);
+                }
             } else {
-                LogMy.d(TAG,"Decoded file as bitmap: "+imagePath);
-                mMerchantUser.setDisplayImage(bitmap);
+                dwnloadImage = true;
             }
         //} else if(mMerchant.getDisplayImage()!=null) {
-        } else {
-            dwnloadImage = true;
-        }
+//        } else {
+  //          dwnloadImage = true;
+    //    }
         if(dwnloadImage) {
             String url = CommonConstants.BACKEND_FILE_BASE_URL+
                     CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR+
@@ -1154,19 +1159,19 @@ public class CashbackActivity extends AppCompatActivity implements
             try {
                 fos = openFileOutput(mMerchant.getDisplayImage(), Context.MODE_PRIVATE);
                 image.compress(Bitmap.CompressFormat.WEBP, 100, fos);
+                fos.close();
+
                 // Store image path
-                String prefName = AppConstants.PREF_IMAGE_PATH_PREFIX +mMerchant.getAuto_id();
+                /*String prefName = AppConstants.PREF_IMAGE_PATH_PREFIX +mMerchant.getAuto_id();
                 PreferenceManager.getDefaultSharedPreferences(this)
                         .edit()
                         .putString(prefName, mMerchant.getDisplayImage())
-                        .apply();
+                        .apply();*/
 
             } catch (Exception e) {
                 // TODO
-                LogMy.e(TAG,"Exception while decoding stored merchant DP: "+mMerchant.getDisplayImage());
+                LogMy.e(TAG,"Exception while storing merchant DP: "+mMerchant.getDisplayImage());
             }
-
-
 
             //Drawable drawable = new BitmapDrawable(getResources(), image);
             // store in SD card and path in preferences
@@ -1277,7 +1282,8 @@ public class CashbackActivity extends AppCompatActivity implements
             TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(
                     mWorkFragment.mCurrTransaction.getTransaction().getCl_credit(),
                     mWorkFragment.mCurrTransaction.getTransaction().getCl_debit(),
-                    mWorkFragment.mCurrTransaction.getTransaction().getCb_debit());
+                    mWorkFragment.mCurrTransaction.getTransaction().getCb_debit(),
+                    null);
             dialog.show(mFragMgr, DIALOG_PIN_CASH_TXN);
         } else {
             commitTxn(null);

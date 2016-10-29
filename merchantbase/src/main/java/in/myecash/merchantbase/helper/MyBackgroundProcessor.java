@@ -68,6 +68,11 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         public String mobileNum;
         public String deviceId;
     }
+    private class MessageCancelTxn implements Serializable {
+        public String txnId;
+        public String cardId;
+        public String pin;
+    }
 
     /*
      * Add request methods - Assumes that MerchantUser is instantiated
@@ -169,6 +174,13 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         msg.fileUrl = fileURL;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CUST_DATA_FILE_DOWNLOAD, msg).sendToTarget();
     }
+    public void addCancelTxnReq(String txnId, String cardId, String pin) {
+        MessageCancelTxn msg = new MessageCancelTxn();
+        msg.cardId = cardId;
+        msg.txnId = txnId;
+        msg.pin = pin;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CANCEL_TXN, msg).sendToTarget();
+    }
 
     @Override
     protected int handleMsg(Message msg) {
@@ -231,6 +243,8 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_FETCH_MERCHANT_OPS:
                 error = fetchMerchantOps();
+            case MyRetainedFragment.REQUEST_CANCEL_TXN:
+                error = cancelTxn((MessageCancelTxn) msg.obj);
         }
         return error;
     }
@@ -389,6 +403,11 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         }
         return errorCode;
     }
+
+    private int cancelTxn(MessageCancelTxn msg) {
+        return MerchantUser.getInstance().cancelTxn(msg.txnId, msg.cardId, msg.pin);
+    }
+
 
     private int fetchTxnFiles(Context ctxt) {
         int errorCode = ErrorCodes.NO_ERROR;

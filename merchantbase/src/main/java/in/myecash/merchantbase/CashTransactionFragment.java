@@ -461,7 +461,7 @@ public class CashTransactionFragment extends Fragment implements
 
             case REQ_NEW_BILL_AMT:
                 LogMy.d(TAG, "Received new bill amount.");
-                String newBillAmt = (String)data.getSerializableExtra(InputNumberDialog.EXTRA_INPUT_HUMBER);
+                String newBillAmt = (String)data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
                 mRetainedFragment.mBillTotal = Integer.parseInt(newBillAmt);
                 displayInputBillAmt();
                 // update order item amount
@@ -477,21 +477,21 @@ public class CashTransactionFragment extends Fragment implements
                 break;
 
             case REQ_NEW_ADD_CL:
-                String newValue = (String) data.getSerializableExtra(InputNumberDialog.EXTRA_INPUT_HUMBER);
+                String newValue = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
                 setAddCashload(Integer.parseInt(newValue));
                 setAddClStatus(STATUS_MANUAL_SET);
                 calcAndSetAmts();
                 break;
 
             case REQ_NEW_REDEEM_CL:
-                String newRedeemCl = (String) data.getSerializableExtra(InputNumberDialog.EXTRA_INPUT_HUMBER);
+                String newRedeemCl = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
                 setRedeemCashload(Integer.parseInt(newRedeemCl));
                 setRedeemClStatus(STATUS_MANUAL_SET);
                 calcAndSetAmts();
                 break;
 
             case REQ_NEW_REDEEM_CB:
-                String newRedeemCB = (String) data.getSerializableExtra(InputNumberDialog.EXTRA_INPUT_HUMBER);
+                String newRedeemCB = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
                 setRedeemCashback(Integer.parseInt(newRedeemCB));
                 setRedeemCbStatus(STATUS_MANUAL_SET);
                 calcAndSetAmts();
@@ -722,7 +722,7 @@ public class CashTransactionFragment extends Fragment implements
     private void startNumInputDialog(int reqCode, String label, EditText input, int maxValue) {
         FragmentManager manager = getFragmentManager();
         String amount = input.getText().toString().replace(AppConstants.SYMBOL_RS,"");
-        InputNumberDialog dialog = InputNumberDialog.newInstance(label, amount, true, maxValue);
+        NumberInputDialog dialog = NumberInputDialog.newInstance(label, amount, true, maxValue);
         dialog.setTargetFragment(this, reqCode);
         dialog.show(manager, DIALOG_NUM_INPUT);
     }

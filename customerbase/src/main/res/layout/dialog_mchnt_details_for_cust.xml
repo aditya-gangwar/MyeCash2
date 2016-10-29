@@ -39,7 +39,7 @@
 
             <ImageView
                 android:id="@+id/img_merchant"
-                android:src="@drawable/untitled"
+                android:src="@drawable/ic_store_grey_48dp"
                 android:layout_width="@dimen/dp_dialog_image_width"
                 android:layout_height="@dimen/dp_dialog_image_height"
                 android:scaleType="centerInside"
@@ -54,7 +54,8 @@
                 android:inputType="textCapSentences"
                 android:text="TBS"
                 android:layout_toRightOf="@id/img_merchant"
-                android:gravity="left"/>
+                android:gravity="left"
+                android:textStyle="bold"/>
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:layout_below="@+id/input_brand_name"
@@ -64,16 +65,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TBS"
-                android:paddingTop="0dp"
-                android:textStyle="italic"/>
+                android:paddingTop="0dp"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:layout_below="@+id/input_category_city"
+                android:layout_toRightOf="@id/img_merchant">
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Cashback @ "
+                    android:gravity="left"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:id="@+id/input_cb_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5 %"
+                    android:paddingLeft="0dp"
+                    android:gravity="left"
+                    android:textColor="@color/green_positive"
+                    android:textStyle="bold"
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
 
         </RelativeLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space" />
+            android:layout_height="@dimen/medium_space" />
 
-        <LinearLayout
+        <!--LinearLayout
             style="@style/LL_Horizontal_wrap">
 
             <ImageView
@@ -98,7 +123,7 @@
                 android:gravity="left"
                 android:textColor="@color/green_positive"
                 android:textStyle="bold"/>
-        </LinearLayout>
+        </LinearLayout-->
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -106,17 +131,15 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_18dp"
-                android:tint="@color/primary"
-                android:visibility="invisible"/>
+                android:src="@drawable/ic_access_time_white_18dp"
+                android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Last Txn"
                 android:layout_weight="40"
-                android:gravity="left"
-                android:paddingTop="0dp"/>
+                android:gravity="left"/>
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_last_txn_time"
@@ -124,13 +147,8 @@
                 android:layout_height="wrap_content"
                 android:text="22 July 16, 23:00"
                 android:layout_weight="60"
-                android:gravity="left"
-                android:paddingTop="0dp"/>
+                android:gravity="left"/>
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/small_space"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">

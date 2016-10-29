@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -110,6 +111,9 @@ public class MerchantDetailsDialog extends DialogFragment  {
                 mLayoutExpNotice.setVisibility(View.GONE);
             }
 
+            if(cb.getDpMerchant()!=null) {
+                mImgMerchant.setImageBitmap(cb.getDpMerchant());
+            }
             mName.setText(merchant.getName());
             String txt = merchant.getBusinessCategory()+", "+merchant.getCity();
             mCategoryNdCity.setText(txt);
@@ -143,6 +147,7 @@ public class MerchantDetailsDialog extends DialogFragment  {
         }
     }
 
+    private ImageView mImgMerchant;
     private EditText mName;
     private EditText mCategoryNdCity;
     private EditText mCbRate;
@@ -169,6 +174,8 @@ public class MerchantDetailsDialog extends DialogFragment  {
     private EditText mInputExpNotice;
 
     private void bindUiResources(View v) {
+
+        mImgMerchant = (ImageView) v.findViewById(R.id.img_merchant);;
 
         mName = (EditText) v.findViewById(R.id.input_brand_name);;
         mCategoryNdCity = (EditText) v.findViewById(R.id.input_category_city);;

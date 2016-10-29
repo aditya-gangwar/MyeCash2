@@ -6,6 +6,7 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.persistence.BackendlessDataQuery;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Transaction implements Serializable
 {
@@ -31,6 +32,15 @@ public class Transaction implements Serializable
   private String merchant_name;
   private String usedCardId;
   private String imgFileName;
+  private java.util.Date cancelTime;
+
+  public Date getCancelTime() {
+    return cancelTime;
+  }
+
+  public void setCancelTime(Date cancelTime) {
+    this.cancelTime = cancelTime;
+  }
 
   public String getImgFileName() {
     return imgFileName;

@@ -19,6 +19,7 @@
             android:textColor="@color/accent"
             android:longClickable="false"
             android:textIsSelectable="false"/>
+
         <EditText
             style="@style/Edittext_only_click_small"
             android:id="@+id/txn_customer_id"
@@ -29,43 +30,6 @@
             android:paddingTop="0dp"
             android:paddingBottom="@dimen/edittext_padding_less"
             android:paddingLeft="@dimen/edittext_padding_less"/>
-
-        <!--LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:layout_below="@id/txn_customer_id"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:paddingLeft="@dimen/edittext_padding_less">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txn_secure_icon"
-                android:src="@drawable/ic_lock_outline_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_click_small"
-                android:id="@+id/txn_id"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="A67GHTR54"
-                android:textStyle="italic"
-                android:paddingTop="0dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingLeft="0dp"/>
-        </LinearLayout-->
-
-        <!--EditText
-            style="@style/Edittext_only_click_small"
-            android:id="@+id/txn_id"
-            android:layout_below="@id/txn_customer_id"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:paddingTop="0dp"
-            android:paddingBottom="@dimen/edittext_padding_less"
-            android:paddingLeft="@dimen/edittext_padding_less"
-            android:text="A67GHTR54"
-            android:textStyle="italic"/-->
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
@@ -88,7 +52,6 @@
                 android:layout_width="wrap_content"
                 android:id="@+id/txn_bill_divider"
                 android:text="|"
-                android:paddingTop="0dp"
                 android:paddingBottom="@dimen/edittext_padding_less"
                 android:paddingRight="@dimen/edittext_padding_less"
                 android:paddingLeft="@dimen/edittext_padding_less"/>
@@ -101,7 +64,6 @@
                 android:layout_below="@id/txn_amts_layout"
                 android:layout_alignParentRight="true"
                 android:text="\u20B9 23  @ 4%"
-                android:paddingTop="0dp"
                 android:paddingBottom="@dimen/edittext_padding_less"
                 android:paddingRight="@dimen/edittext_padding_less"
                 android:paddingLeft="@dimen/edittext_padding_less"
@@ -159,6 +121,37 @@
                 android:paddingBottom="@dimen/edittext_padding_less"
                 android:paddingRight="@dimen/edittext_padding_less"
                 android:paddingLeft="@dimen/edittext_padding_less"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_cancelled"
+            android:layout_below="@id/txn_customer_id"
+            android:layout_width="wrap_content">
+
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="CANCELLED AT "
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingRight="0dp"
+                android:paddingTop="0dp"
+                android:textColor="@color/red_negative"
+                android:paddingLeft="@dimen/edittext_padding_less"/>
+
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:id="@+id/input_cancel_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="22 JULY 2016 22:34"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingRight="@dimen/edittext_padding_less"
+                android:paddingLeft="@dimen/edittext_padding_less"
+                android:textColor="@color/red_negative"/>
 
         </LinearLayout>
 

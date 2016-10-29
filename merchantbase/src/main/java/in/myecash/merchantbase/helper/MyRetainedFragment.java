@@ -56,6 +56,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_ARCHIVE_TXNS = 18;
     public static final int REQUEST_CUST_DATA_FILE_DOWNLOAD = 19;
     public static final int REQUEST_FETCH_MERCHANT_OPS = 20;
+    public static final int REQUEST_CANCEL_TXN = 21;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -214,16 +215,9 @@ public class MyRetainedFragment extends RetainedFragment {
         }
     }
 
-    /*
-    public void registerMerchant(File displayImage) {
-        LogMy.d(TAG, "In registerMerchant");
-        // start new thread if old thread already running and not finished
-        if( (mRegMerchantTask!=null && mRegMerchantTask.getStatus()==RegisterMerchantTask.Status.FINISHED) ||
-                mRegMerchantTask == null) {
-            mRegMerchantTask = new RegisterMerchantTask();
-            mRegMerchantTask.execute(displayImage);
-        }
-    }*/
+    public void cancelTxn(String txnId, String cardId, String pin) {
+        mBackgroundProcessor.addCancelTxnReq(txnId, cardId, pin);
+    }
 
     @Override
     protected void doOnActivityCreated() {

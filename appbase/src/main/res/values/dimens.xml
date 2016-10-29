@@ -13,8 +13,8 @@
     <dimen name="dp_item_image_width">50dp</dimen>
     <dimen name="dp_item_image_height">50dp</dimen>
 
-    <dimen name="dp_dialog_image_width">50dp</dimen>
-    <dimen name="dp_dialog_image_height">50dp</dimen>
+    <dimen name="dp_dialog_image_width">70dp</dimen>
+    <dimen name="dp_dialog_image_height">70dp</dimen>
 
     <dimen name="toolbar_icon_width">32dp</dimen>
     <dimen name="toolbar_icon_height">32dp</dimen>

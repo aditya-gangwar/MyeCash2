@@ -8,7 +8,8 @@
     <LinearLayout
         style="@style/LL_Vertical"
         android:layout_height="wrap_content"
-        android:background="@color/iron2">
+        android:background="@color/bg_filters"
+        android:id="@+id/layout_amounts">
 
         <Space
             android:layout_width="match_parent"
@@ -82,7 +83,7 @@
 
     <EditText
         style="@style/Edittext_only_view_small"
-        android:id="@+id/label_information_4"
+        android:id="@+id/label_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="italic"

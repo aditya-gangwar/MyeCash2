@@ -8,8 +8,7 @@
 
         <ImageView
             android:id="@+id/img_merchant"
-            android:src="@drawable/ic_store_white_48dp"
-            android:tint="@color/disabled"
+            android:src="@drawable/ic_store_grey_48dp"
             android:layout_width="@dimen/dp_item_image_width"
             android:layout_height="match_parent"
             android:scaleType="centerInside"

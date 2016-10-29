@@ -130,4 +130,11 @@ import in.myecash.common.database.Merchants;
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCashback", args, Cashback.class, callback);
     }
 
+    public void cancelTxn(java.lang.String txnId, java.lang.String cardId, java.lang.String pin)
+    {
+        Object[] args = new Object[]{txnId, cardId, pin};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "cancelTxn", args);
+    }
+
+
 }

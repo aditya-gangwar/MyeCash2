@@ -58,15 +58,17 @@ public class TxnReportsHelper {
         mContext = callingActivity;
         mCallback = (TxnReportsHelperIf) callingActivity;
 
+        LogMy.d( TAG, "mTxnInDbFrom: "+ String.valueOf(mTxnInDbFrom.getTime()) );
+    }
+
+    public static Date getTxnInDbStartTime() {
         // time after which txns should be in DB
         DateUtil now = new DateUtil(new Date(), TimeZone.getDefault());
         LogMy.d( TAG, "now: "+ String.valueOf(now.getTime().getTime()) );
         // -1 as 'today' is inclusive
         now.removeDays(MyGlobalSettings.getTxnsIntableKeepDays()-1);
         LogMy.d( TAG, "now: "+ String.valueOf(now.getTime().getTime()) );
-        mTxnInDbFrom = now.toMidnight().getTime();
-
-        LogMy.d( TAG, "mTxnInDbFrom: "+ String.valueOf(mTxnInDbFrom.getTime()) );
+        return now.toMidnight().getTime();
     }
 
     /*
@@ -79,6 +81,8 @@ public class TxnReportsHelper {
     public void startTxnFetch(Date from, Date to, String merchantId, String customerId) throws Exception{
         mFromDate = from;
         mToDate = to;
+        mTxnInDbFrom = getTxnInDbStartTime();
+        LogMy.d( TAG, "mTxnInDbFrom: "+ String.valueOf(mTxnInDbFrom.getTime()) );
         mMerchantId = merchantId;
         mCustomerId = customerId;
 
@@ -116,6 +120,7 @@ public class TxnReportsHelper {
 
         DateUtil txnDay = new DateUtil(mFromDate, TimeZone.getDefault());
         mMissingFiles.clear();
+        mAllFiles.clear();
 
         for(int i=0; i<diffDays; i++) {
             String filename = CommonUtils.getTxnCsvFilename(txnDay.getTime(),mMerchantId);
@@ -205,6 +210,8 @@ public class TxnReportsHelper {
 
     // process all files in 'mAllFiles' and add applicable CSV records in mWorkFragment.mFilteredCsvRecords
     private void processFiles() throws Exception {
+        mTxnsFromCsv.clear();
+
         boolean isCustomerFilter = false;
         if(mCustomerId != null && mCustomerId.length() > 0 )
         {

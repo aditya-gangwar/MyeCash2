@@ -15,16 +15,19 @@ public class CommonUtils {
     private static final SimpleDateFormat mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
 
     public static boolean customerPinRequired(Merchants merchant, Transaction txn) {
-        int cl_credit_threshold = (merchant.getCl_credit_limit_for_pin()<0) ? MyGlobalSettings.getAccAddPinLimit() : merchant.getCl_credit_limit_for_pin();
-        int cl_debit_threshold = (merchant.getCl_debit_limit_for_pin()<0) ? MyGlobalSettings.getAccDebitPinLimit() : merchant.getCl_debit_limit_for_pin();
-        int cb_debit_threshold = (merchant.getCb_debit_limit_for_pin()<0) ? MyGlobalSettings.getCbDebitPinLimit() : merchant.getCb_debit_limit_for_pin();
+        if(txn.getCancelTime()==null) {
+            int cl_credit_threshold = (merchant.getCl_credit_limit_for_pin() < 0) ? MyGlobalSettings.getAccAddPinLimit() : merchant.getCl_credit_limit_for_pin();
+            int cl_debit_threshold = (merchant.getCl_debit_limit_for_pin() < 0) ? MyGlobalSettings.getAccDebitPinLimit() : merchant.getCl_debit_limit_for_pin();
+            int cb_debit_threshold = (merchant.getCb_debit_limit_for_pin() < 0) ? MyGlobalSettings.getCbDebitPinLimit() : merchant.getCb_debit_limit_for_pin();
 
-        int higher_debit_threshold = Math.max(cl_debit_threshold, cb_debit_threshold);
+            int higher_debit_threshold = Math.max(cl_debit_threshold, cb_debit_threshold);
 
-        return (txn.getCl_credit() > cl_credit_threshold ||
-                txn.getCl_debit() > cl_debit_threshold ||
-                txn.getCb_debit() > cb_debit_threshold ||
-                (txn.getCl_debit()+txn.getCb_debit()) > higher_debit_threshold);
+            return (txn.getCl_credit() > cl_credit_threshold ||
+                    txn.getCl_debit() > cl_debit_threshold ||
+                    txn.getCb_debit() > cb_debit_threshold ||
+                    (txn.getCl_debit() + txn.getCb_debit()) > higher_debit_threshold);
+        }
+        return true;
     }
 
     /*

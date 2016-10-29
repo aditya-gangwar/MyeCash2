@@ -400,6 +400,21 @@ public class MerchantUser
         return ErrorCodes.NO_ERROR;
     }
 
+    public int cancelTxn(String txnId, String cardId, String pin) {
+        LogMy.d(TAG, "In cancelTxn: " + txnId);
+        if(mPseudoLoggedIn) {
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
+        }
+        try {
+            MerchantServices.getInstance().cancelTxn(txnId, cardId, pin);
+            LogMy.d(TAG, "Txn cancel success: " + txnId);
+        } catch(BackendlessException e) {
+            LogMy.e(TAG, "Txn cncel failed: " + e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
     /*
      * Getter / Setter
      */

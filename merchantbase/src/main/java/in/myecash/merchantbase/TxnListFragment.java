@@ -5,6 +5,7 @@ import android.app.DownloadManager;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -452,6 +453,9 @@ public class TxnListFragment extends Fragment {
         public View mCashbackIcon;
         public EditText mCashbackAmt;
 
+        public View mLayoutCancel;
+        public EditText mCancelTime;
+
         //public ImageView mSecureIcon;
 
         public TxnHolder(View itemView) {
@@ -469,6 +473,9 @@ public class TxnListFragment extends Fragment {
 
             mCashbackAward = (EditText) itemView.findViewById(R.id.txn_cashback_award);
             //mSecureIcon = (ImageView)itemView.findViewById(R.id.txn_secure_icon);
+
+            mLayoutCancel = itemView.findViewById(R.id.layout_cancelled);
+            mCancelTime = (EditText) itemView.findViewById(R.id.input_cancel_time);
 
             mCustId.setOnClickListener(this);
             mDatetime.setOnClickListener(this);
@@ -531,6 +538,29 @@ public class TxnListFragment extends Fragment {
                 mCashbackAward.setText(cbData);
             } else {
                 mCashbackAward.setText("-");
+            }
+
+            // changes if txn was cancelled
+            if(mTxn.getCancelTime()==null) {
+                mLayoutCancel.setVisibility(View.GONE);
+            } else {
+                mLayoutCancel.setVisibility(View.VISIBLE);
+                mCancelTime.setText(mSdfDateWithTime.format(txn.getCancelTime()));
+
+                if(txn.getTotal_billed()>0) {
+                    mBillAmount.setPaintFlags(mBillAmount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+
+                if(txn.getCb_credit() > 0) {
+                    mCashbackAward.setPaintFlags(mCashbackAward.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+                if(txn.getCb_debit()>0) {
+                    mCashbackAmt.setPaintFlags(mCashbackAmt.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+
+                if(txn.getCl_debit()>0) {
+                    mAccountAmt.setPaintFlags(mAccountAmt.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }
             }
 
             /*

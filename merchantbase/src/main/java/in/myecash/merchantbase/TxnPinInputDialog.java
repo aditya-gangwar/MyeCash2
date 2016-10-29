@@ -34,21 +34,25 @@ public class TxnPinInputDialog extends DialogFragment
     private static final String ARG_CASH_CREDIT = "cashCredit";
     private static final String ARG_CASH_DEBIT = "cashDebit";
     private static final String ARG_CASHBACK_DEBIT = "cashbackDebit";
+    private static final String ARG_CANCEL_TXNID = "cancelTxnId";
 
     private static Integer[] keys = {0,1,2,3,4,5,6,7,8,9};
 
     private TxnPinInputDialogIf mCallback;
 
     public interface TxnPinInputDialogIf {
-        void onTxnPin(String pinOrOtp, String tag);
+        void onTxnPin(String pin, String tag);
     }
 
 
-    public static TxnPinInputDialog newInstance(int cashCredit, int cashDebit, int cashbackDebit) {
+    public static TxnPinInputDialog newInstance(int cashCredit, int cashDebit, int cashbackDebit, String cancelTxnId) {
         Bundle args = new Bundle();
         args.putInt(ARG_CASH_CREDIT, cashCredit);
         args.putInt(ARG_CASH_DEBIT, cashDebit);
         args.putInt(ARG_CASHBACK_DEBIT, cashbackDebit);
+        if(cancelTxnId!=null && !cancelTxnId.isEmpty()) {
+            args.putString(ARG_CANCEL_TXNID, cancelTxnId);
+        }
 
         TxnPinInputDialog fragment = new TxnPinInputDialog();
         fragment.setArguments(args);
@@ -75,25 +79,33 @@ public class TxnPinInputDialog extends DialogFragment
         bindUiResources(v);
 
         // set values
-        int cashCredit = getArguments().getInt(ARG_CASH_CREDIT);
-        int cashDebit = getArguments().getInt(ARG_CASH_DEBIT);
-        int cashbackDebit = getArguments().getInt(ARG_CASHBACK_DEBIT);
+        String cancelTxnId = getArguments().getString(ARG_CANCEL_TXNID);
+        if(cancelTxnId!=null) {
+            mLayoutAmts.setVisibility(View.GONE);
+            String msg = "Cancel Transaction "+cancelTxnId+" ?";
+            mLabelInfo.setText(msg);
 
-        if(cashCredit > 0) {
-            mInputCashAmount.setText(AppCommonUtil.getSignedAmtStr(cashCredit, true));
-            mInputCashAmount.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
-        } else if(cashDebit > 0) {
-            mInputCashAmount.setText(AppCommonUtil.getSignedAmtStr(cashDebit, false));
-            mInputCashAmount.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
         } else {
-            mLayoutCashAmount.setVisibility(View.GONE);
-        }
+            int cashCredit = getArguments().getInt(ARG_CASH_CREDIT);
+            int cashDebit = getArguments().getInt(ARG_CASH_DEBIT);
+            int cashbackDebit = getArguments().getInt(ARG_CASHBACK_DEBIT);
 
-        if(cashbackDebit > 0) {
-            mInputCashbackAmount.setText(AppCommonUtil.getSignedAmtStr(cashCredit, false));
-            mInputCashAmount.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
-        } else {
-            mLayoutCashbackAmount.setVisibility(View.GONE);
+            if (cashCredit > 0) {
+                mInputCashAmount.setText(AppCommonUtil.getSignedAmtStr(cashCredit, true));
+                mInputCashAmount.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
+            } else if (cashDebit > 0) {
+                mInputCashAmount.setText(AppCommonUtil.getSignedAmtStr(cashDebit, false));
+                mInputCashAmount.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+            } else {
+                mLayoutCashAmount.setVisibility(View.GONE);
+            }
+
+            if (cashbackDebit > 0) {
+                mInputCashbackAmount.setText(AppCommonUtil.getSignedAmtStr(cashCredit, false));
+                mInputCashAmount.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+            } else {
+                mLayoutCashbackAmount.setVisibility(View.GONE);
+            }
         }
 
         initKeyboard();
@@ -183,10 +195,12 @@ public class TxnPinInputDialog extends DialogFragment
         }
     }
 
+    private View mLayoutAmts;
     private EditText mInputCashAmount;
     private EditText mInputCashbackAmount;
     private LinearLayout mLayoutCashAmount;
     private LinearLayout mLayoutCashbackAmount;
+    private EditText mLabelInfo;
     private EditText mInputSecretPin;
 
     private AppCompatButton mKeys[];
@@ -194,10 +208,13 @@ public class TxnPinInputDialog extends DialogFragment
     private AppCompatImageButton mKeyBspace;
 
     private void bindUiResources(View v) {
+        mLayoutAmts = v.findViewById(R.id.layout_amounts);
         mInputCashAmount = (EditText) v.findViewById(R.id.input_cash_amount);
         mInputCashbackAmount = (EditText) v.findViewById(R.id.input_cashback_amount);
         mLayoutCashAmount = (LinearLayout) v.findViewById(R.id.layout_cash_amount);
         mLayoutCashbackAmount = (LinearLayout) v.findViewById(R.id.layout_cashback_amount);
+
+        mLabelInfo = (EditText) v.findViewById(R.id.label_information);
         mInputSecretPin = (EditText) v.findViewById(R.id.input_secret_pin);
 
         mKeys = new AppCompatButton[10];

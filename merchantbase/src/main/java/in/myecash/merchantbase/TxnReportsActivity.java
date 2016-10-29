@@ -14,14 +14,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import in.myecash.appbase.DatePickerDialog;
 import in.myecash.appbase.constants.AppConstants;
-import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.TxnReportsHelper;
 import in.myecash.common.CommonUtils;
-import in.myecash.common.CsvConverter;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.MyGlobalSettings;
@@ -33,12 +30,6 @@ import in.myecash.appbase.utilities.LogMy;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,7 +43,8 @@ public class TxnReportsActivity extends AppCompatActivity implements
         View.OnClickListener, MyRetainedFragment.RetainedFragmentIf,
         DatePickerDialog.DatePickerIf, TxnSummaryFragment.TxnSummaryFragmentIf,
         TxnListFragment.TxnListFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
-        TxnDetailsDialog.TxnDetailsDialogIf, TxnReportsHelper.TxnReportsHelperIf {
+        TxnDetailsDialog.TxnDetailsDialogIf, TxnReportsHelper.TxnReportsHelperIf,
+        TxnCancelDialog.TxnCancelDialogIf, TxnPinInputDialog.TxnPinInputDialogIf {
     private static final String TAG = "TxnReportsActivity";
 
     public static final String EXTRA_CUSTOMER_ID = "extraCustId";
@@ -62,6 +54,8 @@ public class TxnReportsActivity extends AppCompatActivity implements
     private static final String DIALOG_DATE_TO = "DialogDateTo";
     private static final String TXN_LIST_FRAGMENT = "TxnListFragment";
     private static final String TXN_SUMMARY_FRAGMENT = "TxnSummaryFragment";
+    private static final String DIALOG_TXN_CANCEL_CONFIRM = "dialogTxnCanConf";
+    private static final String DIALOG_PIN_CANCEL_TXN = "dialogPinCanTxn";
 
     // All required date formatters
     private SimpleDateFormat mSdfOnlyDateDisplay = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
@@ -78,6 +72,8 @@ public class TxnReportsActivity extends AppCompatActivity implements
     private Date mFromDate;
     private Date mToDate;
     private int mDetailedTxnPos;
+    private String mCancelTxnId;
+    private String mCancelTxnCardId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +114,8 @@ public class TxnReportsActivity extends AppCompatActivity implements
         mBtnGetReport.setOnClickListener(this);
         if(savedInstanceState!=null) {
             mDetailedTxnPos = savedInstanceState.getInt("mDetailedTxnPos");
+            mCancelTxnId = savedInstanceState.getString("mCancelTxnId");
+            mCancelTxnCardId = savedInstanceState.getString("mCancelTxnCardId");
         } else {
             mDetailedTxnPos = -1;
         }
@@ -272,13 +270,11 @@ public class TxnReportsActivity extends AppCompatActivity implements
                         // one or more files not found, may be corresponding day txns are present in table, try to fetch the same
                         mHelper.onAllTxnFilesAvailable(true);
                     } else {
-                        AppCommonUtil.cancelProgressDialog(true);
                         DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                                 .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
                     break;
                 case MyRetainedFragment.REQUEST_IMAGE_DOWNLOAD:
-                    AppCommonUtil.cancelProgressDialog(true);
                     if (errorCode != ErrorCodes.NO_ERROR ||
                             mWorkFragment.mLastFetchedImage==null) {
                         AppCommonUtil.toast(this, "Failed to download image file");
@@ -289,6 +285,15 @@ public class TxnReportsActivity extends AppCompatActivity implements
                         fragment.showDetailedDialog(mDetailedTxnPos);
                     } else {
                         LogMy.d(TAG,"Txn list fragment not available, ignoring downloaded file");
+                    }
+                    break;
+                case MyRetainedFragment.REQUEST_CANCEL_TXN:
+                    if (errorCode == ErrorCodes.NO_ERROR) {
+                        // txn cancel success - refresh the list
+                        mBtnGetReport.performClick();
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
                     break;
             }
@@ -310,6 +315,31 @@ public class TxnReportsActivity extends AppCompatActivity implements
 
         String url = CommonUtils.getTxnImgDir(mchntId)+txnImgFileName;
         mWorkFragment.fetchImageFile(url);
+    }
+
+    @Override
+    public void cancelTxn(int txnPos) {
+        // show confirmation dialog - and ask for card scan
+        Transaction txn = mWorkFragment.mLastFetchTransactions.get(txnPos);
+        TxnCancelDialog dialog = TxnCancelDialog.newInstance(txn);
+        dialog.show(mFragMgr, DIALOG_TXN_CANCEL_CONFIRM);
+    }
+
+    @Override
+    public void onCancelTxnConfirm(String txnId, String cardId) {
+        mCancelTxnId = txnId;
+        mCancelTxnCardId = cardId;
+        // ask for customer PIN
+        TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(0,0,0,txnId);
+        dialog.show(mFragMgr, DIALOG_PIN_CANCEL_TXN);
+    }
+
+    @Override
+    public void onTxnPin(String pin, String tag) {
+        if(tag.equals(DIALOG_PIN_CANCEL_TXN)) {
+            AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+            mWorkFragment.cancelTxn(mCancelTxnId, mCancelTxnCardId, pin);
+        }
     }
 
     private void addToSummary(List<Transaction> txns) {
@@ -472,6 +502,8 @@ public class TxnReportsActivity extends AppCompatActivity implements
         outState.putSerializable("mFromDate", mFromDate);
         outState.putSerializable("mToDate", mToDate);
         outState.putInt("mDetailedTxnPos", mDetailedTxnPos);
+        outState.putString("mCancelTxnId",mCancelTxnId);
+        outState.putString("mCancelTxnCardId",mCancelTxnCardId);
         mWorkFragment.mTxnReportHelper = mHelper;
     }
 

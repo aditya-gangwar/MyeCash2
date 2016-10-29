@@ -1,6 +1,8 @@
 package in.myecash.customerbase.helper;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -313,6 +315,33 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         }
         return ErrorCodes.NO_ERROR;
     }
+
+    /*
+    private int downloadImageFile(MessageFileDownload msg) {
+        String filepath = msg.fileUrl;
+        String fileURL = CommonConstants.BACKEND_FILE_BASE_URL + filepath;
+        //String filename = filepath.substring(filepath.lastIndexOf('/')+1);
+        String filename = Uri.parse(fileURL).getLastPathSegment();
+        LogMy.d(TAG,"Fetching "+fileURL+", Filename: "+filename);
+
+        FileOutputStream fos;
+        try {
+            byte[] bitmapBytes = new FileFetchr().getUrlBytes(fileURL, mRetainedFragment.mUserToken);
+            Bitmap bmp = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+
+            fos = msg.ctxt.openFileOutput(filename, Context.MODE_PRIVATE);
+            bmp.compress(Bitmap.CompressFormat.WEBP, 100, fos);
+            fos.close();
+
+        } catch(FileNotFoundException fnf) {
+            LogMy.d(TAG, "File not found: "+fnf.toString());
+            return ErrorCodes.FILE_NOT_FOUND;
+        } catch(IOException ioe) {
+            LogMy.e(TAG, "Failed to fetch file: "+ioe.toString());
+            return ErrorCodes.GENERAL_ERROR;
+        }
+        return ErrorCodes.NO_ERROR;
+    }*/
 
 
 }

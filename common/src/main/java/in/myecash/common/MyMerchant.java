@@ -31,20 +31,20 @@ public class MyMerchant {
     private static final String MCHNT_CSV_DELIM = ":";
 
     // Merchant properties
-    String mName;
-    String mId;
-    String mMobileNum;
-    String mCbRate;
-    String mBusinessCategory;
+    private String mName;
+    private String mId;
+    private String mMobileNum;
+    private String mCbRate;
+    private String mBusinessCategory;
     // address data
-    String mAddressLine1;
-    String mCity;
-    String mState;
+    private String mAddressLine1;
+    private String mCity;
+    private String mState;
     // status data
-    int mStatus;
-    Date mStatusUpdateTime;
-    Date mRemoveReqDate;
-    String mDpFilename;
+    private int mStatus;
+    private Date mStatusUpdateTime;
+    private Date mRemoveReqDate;
+    private String mDpFilename;
 
     // Init from CSV string
     public void init(String csvStr) {

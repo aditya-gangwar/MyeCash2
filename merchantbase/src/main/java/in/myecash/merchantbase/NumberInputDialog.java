@@ -22,7 +22,7 @@ import in.myecash.appbase.utilities.LogMy;
 /**
  * Created by adgangwa on 28-03-2016.
  */
-public class InputNumberDialog extends DialogFragment implements View.OnClickListener {
+public class NumberInputDialog extends DialogFragment implements View.OnClickListener {
     public static final String TAG = "InputNumberDialog";
 
     public static final String EXTRA_INPUT_HUMBER = "cashPaid";
@@ -33,7 +33,7 @@ public class InputNumberDialog extends DialogFragment implements View.OnClickLis
 
     private int maxValue;
 
-    public static InputNumberDialog newInstance(String label, String curValue, Boolean isAmount, int maxValue) {
+    public static NumberInputDialog newInstance(String label, String curValue, Boolean isAmount, int maxValue) {
         LogMy.d(TAG, "Creating new input number dialog");
         Bundle args = new Bundle();
         args.putString(ARG_LABEL, label);
@@ -41,7 +41,7 @@ public class InputNumberDialog extends DialogFragment implements View.OnClickLis
         args.putString(ARG_CUR_VALUE, curValue);
         args.putInt(ARG_MAX_VALUE, maxValue);
 
-        InputNumberDialog fragment = new InputNumberDialog();
+        NumberInputDialog fragment = new NumberInputDialog();
         fragment.setArguments(args);
         return fragment;
     }
@@ -98,7 +98,7 @@ public class InputNumberDialog extends DialogFragment implements View.OnClickLis
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                AppCommonUtil.setDialogTextSize(InputNumberDialog.this, (AlertDialog) dialog);
+                AppCommonUtil.setDialogTextSize(NumberInputDialog.this, (AlertDialog) dialog);
             }
         });
 

@@ -1,5 +1,7 @@
 package in.myecash.appbase.entities;
 
+import android.graphics.Bitmap;
+
 import com.backendless.exceptions.BackendlessException;
 
 import in.myecash.common.CsvConverter;
@@ -42,6 +44,7 @@ public class MyCashback {
     // they are provided by the backend in the other_details field as CSV string
     private MyCustomer mCustomer;
     private MyMerchant mMerchant;
+    private Bitmap mDpMerchant;
 
     /*
      * Init object values from given CSV string
@@ -85,9 +88,17 @@ public class MyCashback {
         return mCurrCashback.getMerchant_id();
     }
 
+    public Bitmap getDpMerchant() {
+        return mDpMerchant;
+    }
+
+    public void setDpMerchant(Bitmap mDpMerchant) {
+        this.mDpMerchant = mDpMerchant;
+    }
+
     /*
-     * Current cashback Getter methods
-     */
+         * Current cashback Getter methods
+         */
     public Cashback getCurrCashback() {
         return mCurrCashback;
     }

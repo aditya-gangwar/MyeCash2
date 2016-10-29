@@ -251,7 +251,7 @@ public class CustomerCardDialog  extends DialogFragment
         if(ValidationHelper.validateCustQrCode(qrCode) == ErrorCodes.NO_ERROR) {
             mInputQrCard.setText(qrCode);
         } else {
-            Toast.makeText(getActivity(), "Invalid member QR code: " + qrCode, Toast.LENGTH_LONG).show();
+            AppCommonUtil.toast(getActivity(), "Invalid Membership card");
         }
     }
 }

@@ -256,7 +256,12 @@ public class CashbackListFragment extends Fragment {
             mCb = cb;
             MyMerchant merchant = mCb.getMerchant();
 
-            setMchntDp(merchant.getDpFilename());
+            Bitmap dp = getMchntDp(merchant.getDpFilename());
+            if(dp!=null) {
+                mCb.setDpMerchant(dp);
+                mMerchantDp.setImageBitmap(dp);
+            }
+
             mMerchantName.setText(merchant.getName());
             if(merchant.getStatus()== DbConstants.USER_STATUS_READY_TO_REMOVE) {
                 mMchntStatusAlert.setVisibility(View.VISIBLE);
@@ -270,7 +275,7 @@ public class CashbackListFragment extends Fragment {
             mCbBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrCbBalance()));
         }
 
-        private void setMchntDp(String filename) {
+        private Bitmap getMchntDp(String filename) {
             if(filename!=null) {
                 File file = getActivity().getFileStreamPath(filename);
                 if(file!=null) {
@@ -279,20 +284,19 @@ public class CashbackListFragment extends Fragment {
                         LogMy.e(TAG,"Not able to decode mchnt dp file: "+file.getName());
                     } else {
                         LogMy.d(TAG,"Decoded file as bitmap: "+file.getPath());
-                        mMerchantDp.setImageBitmap(bitmap);
                         // convert to round image
-                        /*
                         int radiusInDp = (int) getResources().getDimension(R.dimen.dp_item_image_width);
                         int radiusInPixels = AppCommonUtil.dpToPx(radiusInDp);
 
                         Bitmap scaledImg = Bitmap.createScaledBitmap(bitmap,radiusInPixels,radiusInPixels,true);
                         Bitmap roundImage = AppCommonUtil.getCircleBitmap(scaledImg);
-                        mMerchantDp.setImageBitmap(roundImage);*/
+                        return roundImage;
                     }
                 } else {
                     LogMy.e(TAG,"Mchnt Dp file not available locally: "+filename);
                 }
             }
+            return null;
         }
 
 

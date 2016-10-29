@@ -110,7 +110,7 @@ public class OrderListViewFragment extends ListFragment implements
 
         FragmentManager manager = getFragmentManager();
         // cash to be paid
-        InputNumberDialog dialog = InputNumberDialog.newInstance("Unit Price:",
+        NumberInputDialog dialog = NumberInputDialog.newInstance("Unit Price:",
                 mRetainedFragment.mOrderItems.get(position).getUnitPriceStr(), true, 0);
         dialog.setTargetFragment(this, REQ_NEW_UNIT_PRICE);
         dialog.show(manager, DIALOG_NUM_INPUT);
@@ -123,7 +123,7 @@ public class OrderListViewFragment extends ListFragment implements
 
         FragmentManager manager = getFragmentManager();
         // cash to be paid
-        InputNumberDialog dialog = InputNumberDialog.newInstance("Quantity:",
+        NumberInputDialog dialog = NumberInputDialog.newInstance("Quantity:",
                 mRetainedFragment.mOrderItems.get(position).getQuantityStr(), false, 0);
         dialog.setTargetFragment(this, REQ_NEW_QTY);
         dialog.show(manager, DIALOG_NUM_INPUT);
@@ -163,7 +163,7 @@ public class OrderListViewFragment extends ListFragment implements
 
         } else if(requestCode == REQ_NEW_UNIT_PRICE) {
             LogMy.d(TAG, "Received new unit price.");
-            String newUnitPrice = (String) data.getSerializableExtra(InputNumberDialog.EXTRA_INPUT_HUMBER);
+            String newUnitPrice = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
 
             OrderItem item = mRetainedFragment.mOrderItems.remove(mChangePosition);
             if (!item.getUnitPriceStr().equals(newUnitPrice)) {
@@ -174,7 +174,7 @@ public class OrderListViewFragment extends ListFragment implements
 
         } else if(requestCode == REQ_NEW_QTY) {
             LogMy.d(TAG, "Received new quantity.");
-            String newQty = (String) data.getSerializableExtra(InputNumberDialog.EXTRA_INPUT_HUMBER);
+            String newQty = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
 
             OrderItem item = mRetainedFragment.mOrderItems.remove(mChangePosition);
             if (!item.getQuantityStr().equals(newQty)) {
