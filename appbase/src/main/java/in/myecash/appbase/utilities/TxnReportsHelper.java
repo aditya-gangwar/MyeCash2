@@ -57,8 +57,6 @@ public class TxnReportsHelper {
     public TxnReportsHelper(Activity callingActivity) {
         mContext = callingActivity;
         mCallback = (TxnReportsHelperIf) callingActivity;
-
-        LogMy.d( TAG, "mTxnInDbFrom: "+ String.valueOf(mTxnInDbFrom.getTime()) );
     }
 
     public static Date getTxnInDbStartTime() {

@@ -53,7 +53,7 @@
 
                 <!-- the title view -->
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:layout_weight="1"
@@ -93,7 +93,7 @@
                         android:textSize="@dimen/text_size_medium"
                         android:id="@+id/tb_curr_cashload"
                         android:gravity="left|center_vertical"
-                        android:text="\u20B9 0"
+                        android:text="\u20B9 123"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_account_balance_wallet_white_18dp"
                         android:drawablePadding="@dimen/large_space"

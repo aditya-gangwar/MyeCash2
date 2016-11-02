@@ -33,6 +33,7 @@
     <string name="Register_label">No account yet? Register now</string>
     <string name="register_link">Register now</string>
 
+    <string name="cash_paid_other_label">Other</string>
 
     <string name="title_activity_register_merchant">Register Merchant</string>
     <string name="title_activity_terms_conditions">Terms and Conditions</string>

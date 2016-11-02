@@ -17,9 +17,12 @@ import android.widget.LinearLayout;
 
 import in.myecash.appbase.DatePickerDialog;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.entities.MyTransaction;
+import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.TxnReportsHelper;
 import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.database.Transaction;
@@ -33,7 +36,9 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -71,7 +76,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
     private TxnReportsHelper mHelper;
     private Date mFromDate;
     private Date mToDate;
-    private int mDetailedTxnPos;
+    private int mLastTxnPos;
     private String mCancelTxnId;
     private String mCancelTxnCardId;
 
@@ -113,11 +118,11 @@ public class TxnReportsActivity extends AppCompatActivity implements
 
         mBtnGetReport.setOnClickListener(this);
         if(savedInstanceState!=null) {
-            mDetailedTxnPos = savedInstanceState.getInt("mDetailedTxnPos");
+            mLastTxnPos = savedInstanceState.getInt("mLastTxnPos");
             mCancelTxnId = savedInstanceState.getString("mCancelTxnId");
             mCancelTxnCardId = savedInstanceState.getString("mCancelTxnCardId");
         } else {
-            mDetailedTxnPos = -1;
+            mLastTxnPos = -1;
         }
         mInputCustId.setText(getIntent().getStringExtra(EXTRA_CUSTOMER_ID));
 
@@ -282,7 +287,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
                     // re-open the details dialog - but only if 'txn list fragment' is still open
                     TxnListFragment fragment = (TxnListFragment)mFragMgr.findFragmentByTag(TXN_SUMMARY_FRAGMENT);
                     if (fragment != null) {
-                        fragment.showDetailedDialog(mDetailedTxnPos);
+                        fragment.showDetailedDialog(mLastTxnPos);
                     } else {
                         LogMy.d(TAG,"Txn list fragment not available, ignoring downloaded file");
                     }
@@ -290,7 +295,23 @@ public class TxnReportsActivity extends AppCompatActivity implements
                 case MyRetainedFragment.REQUEST_CANCEL_TXN:
                     if (errorCode == ErrorCodes.NO_ERROR) {
                         // txn cancel success - refresh the list
-                        mBtnGetReport.performClick();
+                        // update old list for new cancelled txn
+                        Transaction cancelledTxn = mWorkFragment.mCurrTransaction.getTransaction();
+                        if(mWorkFragment.mLastFetchTransactions.get(mLastTxnPos).getTrans_id().equals(cancelledTxn.getTrans_id())) {
+                            mWorkFragment.mLastFetchTransactions.remove(mLastTxnPos);
+                            mWorkFragment.mLastFetchTransactions.add(cancelledTxn);
+                            startTxnListFragment();
+
+                        } else {
+                            // some logic issue - I shudn't be here - raise alarm
+                            LogMy.e(TAG,"Current and Cancelled Txns are not same");
+                            Map<String,String> params = new HashMap<>();
+                            params.put("currentTxnID",mWorkFragment.mLastFetchTransactions.get(mLastTxnPos).getTrans_id());
+                            params.put("cancelledTxnID",cancelledTxn.getTrans_id());
+                            AppAlarms.wtf(MerchantUser.getInstance().getMerchantId(), DbConstants.USER_TYPE_MERCHANT,
+                                    "TxnReportsActivity:onBgProcessResponse:REQUEST_CANCEL_TXN",params);
+                        }
+
                     } else {
                         DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                                 .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -309,7 +330,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
     @Override
     public void showTxnImg(int currTxnPos) {
         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-        mDetailedTxnPos = currTxnPos;
+        mLastTxnPos = currTxnPos;
         String txnImgFileName = mWorkFragment.mLastFetchTransactions.get(currTxnPos).getImgFileName();
         String mchntId = mWorkFragment.mLastFetchTransactions.get(currTxnPos).getMerchant_id();
 
@@ -320,7 +341,10 @@ public class TxnReportsActivity extends AppCompatActivity implements
     @Override
     public void cancelTxn(int txnPos) {
         // show confirmation dialog - and ask for card scan
+        mLastTxnPos = txnPos;
         Transaction txn = mWorkFragment.mLastFetchTransactions.get(txnPos);
+        mWorkFragment.mCurrTransaction = new MyTransaction(txn);
+
         TxnCancelDialog dialog = TxnCancelDialog.newInstance(txn);
         dialog.show(mFragMgr, DIALOG_TXN_CANCEL_CONFIRM);
     }
@@ -407,6 +431,10 @@ public class TxnReportsActivity extends AppCompatActivity implements
 
             // Commit the transaction
             transaction.commit();
+        } else {
+            // update the UI
+            TxnListFragment txnListFrag = (TxnListFragment) fragment;
+            txnListFrag.sortNupdateUI();
         }
     }
 
@@ -436,7 +464,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
             getFragmentManager().popBackStackImmediate();
 
             if(mFragmentContainer.getVisibility()==View.VISIBLE && count==1) {
-                getSupportActionBar().setTitle("History");
+                setToolbarTitle("Transactions");
                 mMainLayout.setVisibility(View.VISIBLE);
                 mFragmentContainer.setVisibility(View.GONE);
             }
@@ -501,7 +529,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
 
         outState.putSerializable("mFromDate", mFromDate);
         outState.putSerializable("mToDate", mToDate);
-        outState.putInt("mDetailedTxnPos", mDetailedTxnPos);
+        outState.putInt("mLastTxnPos", mLastTxnPos);
         outState.putString("mCancelTxnId",mCancelTxnId);
         outState.putString("mCancelTxnCardId",mCancelTxnCardId);
         mWorkFragment.mTxnReportHelper = mHelper;

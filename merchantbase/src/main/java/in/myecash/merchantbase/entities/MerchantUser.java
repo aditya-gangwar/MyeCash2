@@ -360,6 +360,38 @@ public class MerchantUser
         return txn.commit(pin);
     }
 
+    /*
+    public int cancelTxn(String txnId, String cardId, String pin) {
+        LogMy.d(TAG, "In cancelTxn: " + txnId);
+        if(mPseudoLoggedIn) {
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
+        }
+        try {
+            MerchantServices.getInstance().cancelTxn(txnId, cardId, pin);
+            LogMy.d(TAG, "Txn cancel success: " + txnId);
+        } catch(BackendlessException e) {
+            LogMy.e(TAG, "Txn cncel failed: " + e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }*/
+
+    public int cancelTxn(MyTransaction txn, String cardId, String pin) {
+        if(mPseudoLoggedIn) {
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
+        }
+        try {
+            Transaction newTxn = MerchantServices.getInstance().cancelTxn(txn.getTransaction().getTrans_id(), cardId, pin);
+            LogMy.d(TAG, "Txn cancel success: " + newTxn.getTrans_id());
+            txn.setCurrTransaction(newTxn);
+
+        } catch(BackendlessException e) {
+            LogMy.e(TAG, "Txn cancel failed: " + e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
     public void uploadTxnImgFile(File file) throws Exception {
         if(mPseudoLoggedIn) {
             throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
@@ -395,21 +427,6 @@ public class MerchantUser
             LogMy.d(TAG, "Device delete success: " + mMerchant.getAuto_id());
         } catch(BackendlessException e) {
             LogMy.e(TAG, "Device delete failed: " + e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;
-    }
-
-    public int cancelTxn(String txnId, String cardId, String pin) {
-        LogMy.d(TAG, "In cancelTxn: " + txnId);
-        if(mPseudoLoggedIn) {
-            return ErrorCodes.OPERATION_NOT_ALLOWED;
-        }
-        try {
-            MerchantServices.getInstance().cancelTxn(txnId, cardId, pin);
-            LogMy.d(TAG, "Txn cancel success: " + txnId);
-        } catch(BackendlessException e) {
-            LogMy.e(TAG, "Txn cncel failed: " + e.toString());
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;

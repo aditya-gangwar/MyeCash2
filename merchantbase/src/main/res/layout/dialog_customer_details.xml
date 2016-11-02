@@ -6,6 +6,7 @@
 
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesLarge"
+        android:layout_height="wrap_content"
         android:scrollbars="vertical"
         android:scrollbarAlwaysDrawVerticalTrack="true">
 

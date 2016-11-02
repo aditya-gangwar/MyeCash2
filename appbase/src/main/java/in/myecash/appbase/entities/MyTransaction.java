@@ -24,7 +24,6 @@ import java.util.Map;
  */
 public class MyTransaction {
     private static final String TAG = "MyTransaction";
-    private static SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
 
     private Transaction mCurrTransaction;
 
@@ -36,21 +35,8 @@ public class MyTransaction {
         return mCurrTransaction;
     }
 
-    public int commit(String pin) {
-        LogMy.d(TAG, "In commit");
-
-        mCurrTransaction.setCpin(pin);
-        try
-        {
-            mCurrTransaction = Backendless.Persistence.save( mCurrTransaction );
-            //myCashback.setCashback(mCurrTransaction.getCashback());
-        }
-        catch( BackendlessException e )
-        {
-            LogMy.e(TAG, "Commit cash transaction failed: " + e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;
+    public void setCurrTransaction(Transaction mCurrTransaction) {
+        this.mCurrTransaction = mCurrTransaction;
     }
 
     public static List<Transaction> fetch(String whereClause, String tableName) {
@@ -106,6 +92,22 @@ public class MyTransaction {
             }
         }
         return map.values();
+    }
+
+    public int commit(String pin) {
+        LogMy.d(TAG, "In commit");
+
+        mCurrTransaction.setCpin(pin);
+        try
+        {
+            mCurrTransaction = Backendless.Persistence.save( mCurrTransaction );
+        }
+        catch( BackendlessException e )
+        {
+            LogMy.e(TAG, "Commit cash transaction failed: " + e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
     }
 
     /*

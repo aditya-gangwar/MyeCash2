@@ -406,6 +406,11 @@ public class TxnListFragment extends Fragment {
         return file;
     }
 
+    public void sortNupdateUI() {
+        sortTxnList(mSelectedSortType);
+        updateUI();
+    }
+
     private void updateUI() {
         mTxnRecyclerView.setAdapter(new TxnAdapter(mRetainedFragment.mLastFetchTransactions));
         mCallback.setToolbarTitle(mRetainedFragment.mLastFetchTransactions.size() + " Transactions");

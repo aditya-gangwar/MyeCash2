@@ -12,12 +12,6 @@
         android:elevation="4dp"/-->
     <!--include layout="@layout/activity_cashback"/-->
 
-    <!--android.support.v7.widget.AppCompatButton
-        style="@style/button_normal"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/btn_collect_cash"
-        android:text="Collect    + \u20B9 256"/-->
-
     <LinearLayout
         style="@style/LL_Vertical"
         android:layout_height="wrap_content"
@@ -26,22 +20,30 @@
 
         <View
             style="@style/Divider_horizontal_Medium"
-            android:id="@+id/divider_btn_collect_cash"/>
+            android:id="@+id/divider_btn_collect_cash"
+            android:background="@color/green_positive"/>
         <android.support.v7.widget.AppCompatButton
             style="@style/button_normal_white"
             android:id="@+id/btn_collect_cash"
-            android:text="Collect       + \u20B9 TBS"/>
+            android:text="OK"
+            android:textColor="@color/green_positive"/>
     </LinearLayout>
 
-    <LinearLayout
-        style="@style/LL_Vertical_paddingSidesLarge"
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:layout_above="@id/layout_last_row_btn">
+        android:layout_above="@id/layout_last_row_btn"
+        android:fillViewport="true" >
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesLarge">
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="15"/>
+            android:layout_weight="10"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
@@ -76,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_cash_account"
-            android:layout_weight="15"/>
+            android:layout_weight="20"/>
 
         <LinearLayout
             style="@style/LL_Vertical"
@@ -114,31 +116,22 @@
                     android:textColor="@color/secondary_text"
                     android:layout_marginRight="@dimen/small_space"/>
 
-                    <View
-                        style="@style/Divider_horizontal_Medium"
-                        android:layout_weight="50"
-                        android:background="@color/primary"/>
+                <View
+                    style="@style/Divider_horizontal_Medium"
+                    android:layout_weight="50"
+                    android:background="@color/primary"/>
             </LinearLayout>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_add_cl">
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <android.support.v7.widget.AppCompatCheckBox
                     android:id="@+id/radio_add_cl"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginRight="@dimen/medium_space"
                     android:clickable="false"/>
-
-                <!--android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/checkbox_add_cl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="@dimen/medium_space"
-                    android:checked="false"
-                    android:clickable="false"
-                    android:onClick="onCashTxnCheckboxClick"/-->
 
                 <EditText
                     style="@style/Edittext_only_view_medium"
@@ -162,7 +155,7 @@
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_redeem_cl">
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <android.support.v7.widget.AppCompatCheckBox
                     android:id="@+id/radio_redeem_cl"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -193,7 +186,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_cashback"
-            android:layout_weight="20"
+            android:layout_weight="25"
             android:visibility="visible"/>
 
         <LinearLayout
@@ -258,6 +251,41 @@
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_add_cb">
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkbox_add_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/medium_space"
+                    android:checked="true"
+                    android:clickable="false"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="Award"
+                    android:id="@+id/label_trans_add_cb"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:layout_weight="1"
+                    android:text="(4% of  \u20B9 4567)"
+                    android:id="@+id/label_trans_add_cb_sub"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/input_trans_add_cb"
+                    android:text="\u20B9 234"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_redeem_cb">
 
                 <android.support.v7.widget.AppCompatCheckBox
@@ -287,37 +315,7 @@
                     android:textStyle="normal"/>
             </LinearLayout>
 
-            <LinearLayout
-                style="@style/LL_Horizontal_wrap"
-                android:id="@+id/layout_add_cb">
-
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/checkbox_add_cb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="@dimen/medium_space"
-                    android:checked="true"
-                    android:clickable="false"/>
-
-                <EditText
-                    style="@style/Edittext_only_view_medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:layout_weight="1"
-                    android:text="Award"
-                    android:id="@+id/label_trans_add_cb"
-                    android:paddingBottom="0dp"/>
-                <EditText
-                    style="@style/Edittext_only_view_medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/input_trans_add_cb"
-                    android:text="\u20B9 0"
-                    android:paddingBottom="0dp"/>
-            </LinearLayout>
-
-            <LinearLayout
+            <!--LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/section_trans_add_cb_sub">
 
@@ -337,7 +335,7 @@
                     android:id="@+id/label_trans_add_cb_sub"
                     android:paddingTop="0dp"
                     android:text="\@ 0%"/>
-            </LinearLayout>
+            </LinearLayout-->
 
         </LinearLayout>
 
@@ -345,7 +343,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_cash_paid"
-            android:layout_weight="20"
+            android:layout_weight="30"
             android:visibility="visible"/>
 
         <include layout="@layout/cash_paid"/>
@@ -386,112 +384,113 @@
                     android:background="@color/primary"/>
             </LinearLayout-->
 
-            <!--EditText
-                style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="CASH PAID"
-                android:textStyle="normal"
-                android:padding="@dimen/edittext_padding_less"
-                android:background="@color/white"
-                android:drawableLeft="@drawable/cash_logo_24dp"
-                android:drawablePadding="@dimen/medium_space"
-                android:textColor="@color/secondary_text"/>
+        <!--EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="CASH PAID"
+            android:textStyle="normal"
+            android:padding="@dimen/edittext_padding_less"
+            android:background="@color/white"
+            android:drawableLeft="@drawable/cash_logo_24dp"
+            android:drawablePadding="@dimen/medium_space"
+            android:textColor="@color/secondary_text"/>
 
-            <View
-                style="@style/Divider_horizontal_Medium"
-                android:background="@color/primary"/-->
+        <View
+            style="@style/Divider_horizontal_Medium"
+            android:background="@color/primary"/-->
 
-            <!--Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/XXL_space"/>
+        <!--Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XXL_space"/>
 
-            <LinearLayout
-                style="@style/LL_Horizontal_wrap"
-                android:layout_marginLeft="@dimen/small_space"
-                android:layout_marginRight="@dimen/small_space">
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_marginRight="@dimen/small_space">
 
-                <EditText
-                    style="@style/Edittext_only_view_medium"
-                    android:layout_width="0dp"
-                    android:layout_weight="30"
-                    android:id="@+id/choice_cash_pay_1"
-                    android:text="\u20B9 0"
-                    android:textColor="@color/secondary_text"
-                    android:background="@drawable/rounded_rectangle_border" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="5"/>
-
-                <EditText
-                    style="@style/Edittext_only_view_medium"
-                    android:layout_width="0dp"
-                    android:layout_weight="30"
-                    android:id="@+id/choice_cash_pay_2"
-                    android:text="\u20B9 0"
-                    android:textColor="@color/secondary_text"
-                    android:background="@drawable/rounded_rectangle_border" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="5"/>
-
-                <EditText
-                    style="@style/Edittext_only_view_medium"
-                    android:layout_width="0dp"
-                    android:layout_weight="30"
-                    android:id="@+id/choice_cash_pay_3"
-                    android:text="\u20B9 0"
-                    android:textColor="@color/secondary_text"
-                    android:background="@drawable/rounded_rectangle_border" />
-            </LinearLayout>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="0dp"
+                android:layout_weight="30"
+                android:id="@+id/choice_cash_pay_1"
+                android:text="\u20B9 0"
+                android:textColor="@color/secondary_text"
+                android:background="@drawable/rounded_rectangle_border" />
 
             <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"/>
+
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="0dp"
+                android:layout_weight="30"
+                android:id="@+id/choice_cash_pay_2"
+                android:text="\u20B9 0"
+                android:textColor="@color/secondary_text"
+                android:background="@drawable/rounded_rectangle_border" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"/>
+
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="0dp"
+                android:layout_weight="30"
+                android:id="@+id/choice_cash_pay_3"
+                android:text="\u20B9 0"
+                android:textColor="@color/secondary_text"
+                android:background="@drawable/rounded_rectangle_border" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginRight="@dimen/small_space">
+
+            <EditText
+                style="@style/Edittext_rupee_large"
+                android:layout_width="wrap_content"
+                android:text="@string/Rs_space"
+                android:id="@+id/rs_cash_pay_custom"/>
+
+            <EditText
+                style="@style/MyEdittext_Medium"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/XL_space"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|left"
+                android:id="@+id/choice_cash_pay_custom"
+                android:hint="Other Amount"
+                android:cursorVisible="true"
+                android:maxLength="@string/cash_char_limit"
+                android:inputType="number"
+                android:digits="1234567890">
+            </EditText>
+        </LinearLayout>
 
-            <LinearLayout
-                style="@style/LL_Horizontal_wrap"
-                android:layout_marginRight="@dimen/small_space">
-
-                <EditText
-                    style="@style/Edittext_rupee_large"
-                    android:layout_width="wrap_content"
-                    android:text="@string/Rs_space"
-                    android:id="@+id/rs_cash_pay_custom"/>
-
-                <EditText
-                    style="@style/MyEdittext_Medium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|left"
-                    android:id="@+id/choice_cash_pay_custom"
-                    android:hint="Other Amount"
-                    android:cursorVisible="true"
-                    android:maxLength="@string/cash_char_limit"
-                    android:inputType="number"
-                    android:digits="1234567890">
-                </EditText>
-            </LinearLayout>
-
-        </LinearLayout-->
+    </LinearLayout-->
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_above_button"
-            android:layout_weight="30"/>
+            android:layout_weight="15"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:layout_width="wrap_content"
             android:id="@+id/layout_cash_paid_link"
-            android:paddingBottom="@dimen/small_space">
+            android:paddingBottom="@dimen/small_space"
+            android:visibility="gone">
 
             <EditText
                 style="@style/Edittext_only_view_medium"
@@ -508,12 +507,14 @@
                 android:id="@+id/input_cash_paid"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="0"
+                android:text="\?"
                 android:textColor="@color/link_blue"
                 android:paddingLeft="0dp"/>
 
         </LinearLayout>
+
     </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
 

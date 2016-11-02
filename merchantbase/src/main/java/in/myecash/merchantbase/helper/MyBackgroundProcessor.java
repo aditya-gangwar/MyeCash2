@@ -405,7 +405,8 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     }
 
     private int cancelTxn(MessageCancelTxn msg) {
-        return MerchantUser.getInstance().cancelTxn(msg.txnId, msg.cardId, msg.pin);
+        //return MerchantUser.getInstance().cancelTxn(msg.txnId, msg.cardId, msg.pin);
+        return MerchantUser.getInstance().cancelTxn(mRetainedFragment.mCurrTransaction, msg.cardId, msg.pin);
     }
 
 

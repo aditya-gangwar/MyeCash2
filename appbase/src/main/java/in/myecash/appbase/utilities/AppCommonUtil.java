@@ -228,7 +228,7 @@ public class AppCommonUtil {
 
             // Here we Resize the Image ...
             //ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.WEBP, 100,
+            bmp.compress(getImgCompressFormat(), 100,
                     fileOutputStream); // bm is the bitmap object
             //byte[] bsResized = byteArrayOutputStream.toByteArray();
 
@@ -246,15 +246,15 @@ public class AppCommonUtil {
         return status;
     }
 
-    public static boolean compressWebpAndStore(Context context, Bitmap bmp, String fileName) {
+    public static boolean compressBmpAndStore(Context context, Bitmap bmp, String fileName) {
         FileOutputStream out = null;
         try {
             out = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             //Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            bmp.compress(Bitmap.CompressFormat.WEBP, 50, out);
+            bmp.compress(getImgCompressFormat(), 90, out);
         } catch (Exception e) {
             //e.printStackTrace();
-            LogMy.e(TAG,"Exception in compressWebpAndStore",e);
+            LogMy.e(TAG,"Exception in compressBmpAndStore",e);
             return false;
         } finally {
             try {
@@ -262,6 +262,18 @@ public class AppCommonUtil {
             } catch (Exception ignored) {}
         }
         return true;
+    }
+
+    public static Bitmap.CompressFormat getImgCompressFormat() {
+        if(CommonConstants.PHOTO_FILE_FORMAT.equals("webp")) {
+            return Bitmap.CompressFormat.WEBP;
+        } else if(CommonConstants.PHOTO_FILE_FORMAT.equals("png")) {
+            return Bitmap.CompressFormat.PNG;
+        } else if(CommonConstants.PHOTO_FILE_FORMAT.equals("jpeg")) {
+            return Bitmap.CompressFormat.JPEG;
+        }
+        LogMy.e(TAG,"Invalid image format: "+CommonConstants.PHOTO_FILE_FORMAT);
+        return Bitmap.CompressFormat.JPEG;
     }
 
     public static Bitmap addDateTime(Context context, Bitmap bitmap) {
@@ -390,7 +402,14 @@ public class AppCommonUtil {
     public static String getAmtStr(String value) {
         return AppConstants.SYMBOL_RS +value;
     }
-
+    // reverse of getAmtStr()
+    public static int getValueAmtStr(String amtStr) {
+        return Integer.parseInt(amtStr.replace(AppConstants.SYMBOL_RS,"").replace(" ",""));
+    }
+    // reverse of getSignedAmtStr()
+    public static int getValueSignedAmtStr(String amtStr) {
+        return Integer.parseInt(amtStr.replace(AppConstants.SYMBOL_RS,"").replace("+","").replace("-","").replace(" ",""));
+    }
 
     /*
      * Fxs. to get Filename for various files
@@ -402,9 +421,6 @@ public class AppCommonUtil {
     public static String getCashbackFileName(String userId) {
         // File name: customers_<user_id>.csv
         return CommonConstants.CASHBACK_DATA_FILE_PREFIX+userId+CommonConstants.CSV_FILE_EXT;
-    }
-    public static String getTxnImgFilename(String txnId) {
-        return CommonConstants.PREFIX_TXN_IMG_FILE_NAME +txnId+".webp";
     }
 
     public static File createLocalImageFile(Context context, String name) {

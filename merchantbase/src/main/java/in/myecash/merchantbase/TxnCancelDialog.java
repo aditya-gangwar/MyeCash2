@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +29,7 @@ import in.myecash.common.database.Transaction;
  * Created by adgangwa on 30-10-2016.
  */
 public class TxnCancelDialog extends DialogFragment
-        implements View.OnClickListener {
+        implements View.OnTouchListener {
 
     private static final String TAG = "TxnCancelDialog";
     private static final String ARG_TXN = "txn";
@@ -65,8 +66,8 @@ public class TxnCancelDialog extends DialogFragment
                 .inflate(R.layout.dialog_txn_cancel, null);
 
         bindUiResources(v);
-
         displayTransactionValues();
+        mInputQrCard.setOnTouchListener(this);
 
         Dialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
@@ -132,18 +133,22 @@ public class TxnCancelDialog extends DialogFragment
     }
 
     @Override
-    public void onClick(View v) {
-        int vId = v.getId();
-        LogMy.d(TAG, "In onClick: " + vId);
+    public boolean onTouch(View v, MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            int vId = v.getId();
+            LogMy.d(TAG, "In onTouch: " + vId);
 
-        if (vId == R.id.input_qr_card) {// launch barcode activity.
-            Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
-            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
-            intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+            if (vId == R.id.input_qr_card) {// launch barcode activity.
+                Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
+                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
 
-            startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
+                startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
 
+            }
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -190,7 +195,7 @@ public class TxnCancelDialog extends DialogFragment
                 mLayoutAccDebit.setVisibility(View.GONE);
             }
             if(txn.getCl_credit()>0) {
-                mInputAccAdd.setText(AppCommonUtil.getSignedAmtStr(txn.getCl_credit(), false));
+                mInputAccAdd.setText(AppCommonUtil.getSignedAmtStr(txn.getCl_credit(), true));
             } else {
                 mLayoutAccAdd.setVisibility(View.GONE);
             }
@@ -207,7 +212,7 @@ public class TxnCancelDialog extends DialogFragment
                 mLayoutCbDebit.setVisibility(View.GONE);
             }
             if(txn.getCb_credit()>0) {
-                mInputCbAdd.setText(AppCommonUtil.getSignedAmtStr(txn.getCb_credit(), false));
+                mInputCbAdd.setText(AppCommonUtil.getSignedAmtStr(txn.getCb_credit(), true));
             } else {
                 mLayoutCbAdd.setVisibility(View.GONE);
             }

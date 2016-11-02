@@ -109,8 +109,6 @@ public class CashbackActivity extends AppCompatActivity implements
 
     private static final String DIALOG_CUSTOMER_DATA = "dialogCustomerData";
 
-    private final SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
-
     MyRetainedFragment mWorkFragment;
     FragmentManager mFragMgr;
     // this will never be null, as it only gets destroyed with cashback activity itself
@@ -1158,7 +1156,7 @@ public class CashbackActivity extends AppCompatActivity implements
             FileOutputStream fos = null;
             try {
                 fos = openFileOutput(mMerchant.getDisplayImage(), Context.MODE_PRIVATE);
-                image.compress(Bitmap.CompressFormat.WEBP, 100, fos);
+                image.compress(AppCommonUtil.getImgCompressFormat(), 100, fos);
                 fos.close();
 
                 // Store image path
@@ -1325,42 +1323,9 @@ public class CashbackActivity extends AppCompatActivity implements
             AppCommonUtil.showProgressDialog(CashbackActivity.this, AppConstants.progressDefault);
 
             if(mWorkFragment.mCardImageFile!=null) {
-                // get file object for the stored file
-                File txnImage = new File(getFilesDir() + "/" + mWorkFragment.mCardImageFile);
                 // check if txn image is to be captured
-                if(captureTxnImage(pin)) {
-                    // check if image of card exists
-                    if(txnImage.exists()) {
-                        // rename the file to include txn id
-                        // filename format: txnImage_<txn id>.webp
-                        File directory = txnImage.getParentFile();
-                        File to = new File(directory,
-                                AppCommonUtil.getTxnImgFilename(mWorkFragment.mCurrTransaction.getTransaction().getTrans_id()));
-                        // Change name to complete path - so as File object can be created
-                        // while uploading image after successful txn commit
-                        if(txnImage.renameTo(to)) {
-                            mWorkFragment.mCardImageFile = to.getAbsolutePath();
-                            mWorkFragment.mCurrTransaction.getTransaction().setImgFileName(to.getName());
-                        } else {
-                            // if failed, keep name as original
-                            LogMy.w(TAG, "Txn Image file rename failed");
-                            mWorkFragment.mCardImageFile = txnImage.getAbsolutePath();
-                            mWorkFragment.mCurrTransaction.getTransaction().setImgFileName(txnImage.getName());
-                        }
-
-                    } else {
-                        // for some reason file does not exist
-                        LogMy.w(TAG,"Txn image file does not exist: "+txnImage.getAbsolutePath());
-                        mWorkFragment.mCardImageFile = null;
-                        //raise alarm
-                        Map<String,String> params = new HashMap<>();
-                        params.put("FilePath",txnImage.getAbsolutePath());
-                        AppAlarms.localOpFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"commitTxn",params);
-
-                        // don't deny transaction even if image file not present
-                    }
-                } else {
-                    // delete file
+                if(!captureTxnImage(pin)) {
+                    // delete earlier stored captured image file
                     deleteFile(mWorkFragment.mCardImageFile);
                     /*if(!txnImage.delete()) {
                         LogMy.w(TAG,"Failed to delete txn image file: "+txnImage.getAbsolutePath());
@@ -1369,6 +1334,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 }
             }
 
+            mWorkFragment.mCurrTransaction.getTransaction().setImgFileName(mWorkFragment.mCardImageFile);
             mWorkFragment.commitCashTransaction(pin);
         }
     }
@@ -1405,27 +1371,44 @@ public class CashbackActivity extends AppCompatActivity implements
 
             // if required, start upload of txn image file in background thread
             if(mWorkFragment.mCardImageFile != null) {
-                File txnImage = new File(mWorkFragment.mCardImageFile);
-                /*
-                File directory = txnImage.getParentFile();
-                // filename format: txnImage_<txn id>.webp
-                File to = new File(directory,
-                        AppCommonUtil.getTxnImgFilename(mWorkFragment.mCurrTransaction.getTransaction().getTrans_id()));
-                // if failed, keep name as original
-                if(!txnImage.renameTo(to)) {
-                    LogMy.e(TAG, "Txn Image file rename failed");
-                    to = txnImage;
-                } else {
-                    // add upload request
-                    mWorkFragment.uploadTxnImageFile(to);
-                }*/
-                // add upload request
-                mWorkFragment.uploadTxnImageFile(txnImage);
+                uploadTxnImage(mWorkFragment.mCardImageFile);
+                mWorkFragment.mCardImageFile = null;
             }
         } else {
             // Display failure notification
             DialogFragmentWrapper.createNotification(AppConstants.commitTransFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
+    }
+
+    public void uploadTxnImage(String localStoredFileName) {
+        // get file object for the stored file
+        File txnImage = new File(getFilesDir() + "/" + localStoredFileName);
+        // check if image of card exists
+        if(txnImage.exists()) {
+            // rename the file to one provided by backend
+            File to = new File(txnImage.getParentFile(),
+                    mWorkFragment.mCurrTransaction.getTransaction().getImgFileName());
+            if(txnImage.renameTo(to)) {
+                // add upload request
+                mWorkFragment.uploadTxnImageFile(to);
+            } else {
+                // if failed, keep name as original
+                LogMy.w(TAG, "Txn Image file rename failed: "+txnImage.getAbsolutePath());
+                //raise alarm
+                Map<String,String> params = new HashMap<>();
+                params.put("FromFilePath",txnImage.getAbsolutePath());
+                params.put("ToFilePath",to.getAbsolutePath());
+                AppAlarms.localOpFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"uploadTxnImage",params);
+            }
+
+        } else {
+            // for some reason file does not exist
+            LogMy.w(TAG,"Txn image file does not exist: "+txnImage.getAbsolutePath());
+            //raise alarm
+            Map<String,String> params = new HashMap<>();
+            params.put("FilePath",txnImage.getAbsolutePath());
+            AppAlarms.localOpFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"uploadTxnImage",params);
         }
     }
 
@@ -1514,7 +1497,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 Intent intent = new Intent(this, BarcodeCaptureActivity.class);
                 intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
                 intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
-                mWorkFragment.mCardImageFile = "txnImg_"+Long.toString(System.currentTimeMillis())+".webp";
+                mWorkFragment.mCardImageFile = "txnImg_"+Long.toString(System.currentTimeMillis())+CommonConstants.PHOTO_FILE_FORMAT;
                 intent.putExtra(BarcodeCaptureActivity.ImageFileName,mWorkFragment.mCardImageFile);
 
                 startActivityForResult(intent, RC_BARCODE_CAPTURE);

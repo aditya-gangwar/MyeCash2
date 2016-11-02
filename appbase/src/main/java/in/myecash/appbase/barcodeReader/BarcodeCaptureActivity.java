@@ -239,12 +239,12 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
 
             YuvImage yuvimage = new YuvImage(byteBuffer.array(), ImageFormat.NV21, w, h, null);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            yuvimage.compressToJpeg(new Rect(0, 0, w, h), 90, baos); // Where 80 is the quality of the generated jpeg
+            yuvimage.compressToJpeg(new Rect(0, 0, w, h), 100, baos); // Where 80 is the quality of the generated jpeg
             byte[] jpegArray = baos.toByteArray();
             Bitmap bitmap = BitmapFactory.decodeByteArray(jpegArray, 0, jpegArray.length);
-            Bitmap bmp = AppCommonUtil.addDateTime(BarcodeCaptureActivity.this, bitmap);
+            //Bitmap bmp = AppCommonUtil.addDateTime(BarcodeCaptureActivity.this, bitmap);
             LogMy.d(TAG, "Got bmp from the Frame: "+bitmap.getByteCount());
-            AppCommonUtil.compressWebpAndStore(BarcodeCaptureActivity.this, bmp, mImageFileName);
+            AppCommonUtil.compressBmpAndStore(BarcodeCaptureActivity.this, bitmap, mImageFileName);
             LogMy.d(TAG, "After compress and store");
         }
     }

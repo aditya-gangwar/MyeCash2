@@ -16,7 +16,7 @@ public class CommonConstants {
     public static final String ANDROID_SECRET_KEY = "14765681-0A7C-3F4E-FF29-41A948E33500";
     public static final String VERSION = "v1";
     
-    public static final String BACKENDLESS_HOST = "http://52.66.47.147:8080/api";
+    public static final String BACKENDLESS_HOST = "http://35.154.6.90:8080/api";
     public static String BACKEND_FILE_BASE_URL = BACKENDLESS_HOST+"/"+APPLICATION_ID+"/"+VERSION+"/files/";
     public static final String BULK_API_URL  = BACKENDLESS_HOST+"/"+VERSION+"/data/bulk/";
 
@@ -100,7 +100,6 @@ public class CommonConstants {
     // number to character mapping
     public static final String numToChar[] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
     // File format for photos
-    // This should match 'Bitmap.CompressFormat.WEBP.toString()'
-    // Also make sure to use WEBP as compression format always
+    // Supported Values: "webp", "jpeg", "png"
     public static final String PHOTO_FILE_FORMAT = "webp";
 }

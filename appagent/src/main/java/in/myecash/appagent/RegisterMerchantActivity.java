@@ -431,7 +431,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
         pickImageIntent.putExtra("scale", true);
         //pickImageIntent.putExtra("outputFormat", CommonConstants.PHOTO_FILE_FORMAT);
         //pickImageIntent.putExtra("outputFormat", Bitmap.CompressFormat.WEBP.toString());
-        pickImageIntent.putExtra("outputFormat", Bitmap.CompressFormat.WEBP.toString());
+        pickImageIntent.putExtra("outputFormat", AppCommonUtil.getImgCompressFormat().toString());
 
         String tmpDpFilename = "IMG_" + System.currentTimeMillis() + CommonConstants.PHOTO_FILE_FORMAT;
         mPhotoFile = AppCommonUtil.createLocalImageFile(this, tmpDpFilename);
