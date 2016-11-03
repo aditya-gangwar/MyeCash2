@@ -41,10 +41,7 @@ public class MerchantUser
     // instance members
     private Bitmap mDisplayImage;
     private String mUserToken;
-    //private String mDeviceInfo;
-    //private String mDeviceId;
 
-    //private BackendlessUser mBackendlessUser;
     private Merchants mMerchant;
     private boolean mPseudoLoggedIn;
 
@@ -52,22 +49,17 @@ public class MerchantUser
     private String mNewCbRate;
     private int mNewIsAddClEnabled;
     private String mNewEmail;
+    private Boolean mNewInvNumAsk;
+    private Boolean mNewInvNumOptional;
+    private Boolean mNewInvNumOnlyNumbers;
 
     /*
      * Singleton class
      */
     private MerchantUser(){
-        //mBackendlessUser = new BackendlessUser();
-        //mMerchant = new Merchants();
     }
 
     public static MerchantUser getInstance() {
-        /*
-        if(mInstance==null) {
-            mInstance = new MerchantUser();
-            mInstance.mNewIsAddClEnabled = CommonConstants.BOOLEAN_VALUE_INVALID;
-            mInstance.mPseudoLoggedIn = false;
-        }*/
         return mInstance;
     }
 
@@ -86,7 +78,6 @@ public class MerchantUser
     public static void reset() {
         if(mInstance!=null) {
             mInstance.mMerchant = null;
-            //mInstance.mBackendlessUser = null;
             mInstance = null;
         }
     }
@@ -234,22 +225,20 @@ public class MerchantUser
             if(mNewEmail==null) {
                 mNewEmail = mMerchant.getEmail();
             }
+            if(mNewInvNumAsk==null) {
+                mNewInvNumAsk = mMerchant.isInvoiceNumAsk();
+            }
+            if(mNewInvNumOptional==null) {
+                mNewInvNumOptional = mMerchant.isInvoiceNumOptional();
+            }
+            if(mNewInvNumOnlyNumbers==null) {
+                mNewInvNumOnlyNumbers = mMerchant.isInvoiceNumOnlyNumbers();
+            }
 
-            mMerchant = MerchantServices.getInstance().updateSettings(mNewCbRate, newAddClEnabled, mNewEmail);
+            mMerchant = MerchantServices.getInstance().updateSettings(mNewCbRate, newAddClEnabled, mNewEmail,
+                    mNewInvNumAsk, mNewInvNumOptional, mNewInvNumOnlyNumbers);
             LogMy.d(TAG,"updateSettings success");
 
-            // reload merchant object
-            /*
-            try {
-                loadMerchant();
-            } catch(BackendlessException e) {
-                LogMy.e(TAG,"Failed to load merchant object, after settings update");
-                // manually update locally
-                mMerchant.setCb_rate(mNewCbRate);
-                mMerchant.setCl_add_enable(newAddClEnabled);
-                mMerchant.setEmail(mNewEmail);
-                throw e;
-            }*/
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Merchant settings update failed: "+e.toString());
             return AppCommonUtil.getLocalErrorCode(e);
@@ -259,6 +248,9 @@ public class MerchantUser
         mNewCbRate = null;
         mNewIsAddClEnabled = CommonConstants.BOOLEAN_VALUE_INVALID;
         mNewEmail = null;
+        mNewInvNumAsk = null;
+        mNewInvNumOptional = null;
+        mNewInvNumOnlyNumbers = null;
 
         return ErrorCodes.NO_ERROR;
     }
@@ -272,16 +264,6 @@ public class MerchantUser
         try {
             mMerchant = MerchantServices.getInstance().changeMobile(verifyparam, newMobile, otp);
             LogMy.d(TAG,"changeMobileNum success");
-
-            /*
-            try {
-                loadMerchant();
-            } catch(BackendlessException e) {
-                LogMy.e(TAG,"Failed to load merchant object, after settings update");
-                // manually update locally
-                setMobileNum(newMobile);
-                throw e;
-            }*/
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Merchant settings update failed: "+e.toString());
@@ -360,22 +342,6 @@ public class MerchantUser
         return txn.commit(pin);
     }
 
-    /*
-    public int cancelTxn(String txnId, String cardId, String pin) {
-        LogMy.d(TAG, "In cancelTxn: " + txnId);
-        if(mPseudoLoggedIn) {
-            return ErrorCodes.OPERATION_NOT_ALLOWED;
-        }
-        try {
-            MerchantServices.getInstance().cancelTxn(txnId, cardId, pin);
-            LogMy.d(TAG, "Txn cancel success: " + txnId);
-        } catch(BackendlessException e) {
-            LogMy.e(TAG, "Txn cncel failed: " + e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;
-    }*/
-
     public int cancelTxn(MyTransaction txn, String cardId, String pin) {
         if(mPseudoLoggedIn) {
             return ErrorCodes.OPERATION_NOT_ALLOWED;
@@ -433,35 +399,35 @@ public class MerchantUser
     }
 
     /*
-     * Getter / Setter
+     * Public methods for changing merchant properties/settings
      */
-    /*public Integer getClDebitLimitForPin() {
-        int retValue = MyGlobalSettings.getAccDebitPinLimit();
-
-        if( mMerchant.getCl_debit_limit_for_pin() >= 0 ) {
-            retValue = mMerchant.getCl_debit_limit_for_pin();
-        }
-        return retValue;
+    public void setNewEmail(String newEmail) {
+        mNewEmail = newEmail;
     }
 
-    public Integer getCbDebitLimitForPin() {
-        int retValue = MyGlobalSettings.getCbDebitPinLimit();
-
-        if( mMerchant.getCb_debit_limit_for_pin() >= 0 ) {
-            retValue = mMerchant.getCb_debit_limit_for_pin();
-        }
-        return retValue;
+    public void setNewIsAddClEnabled(boolean newIsAddClEnabled) {
+        mNewIsAddClEnabled = newIsAddClEnabled ? CommonConstants.BOOLEAN_VALUE_TRUE : CommonConstants.BOOLEAN_VALUE_FALSE;
     }
 
-    public Integer getClCreditLimitForPin() {
-        int retValue = MyGlobalSettings.getAccAddPinLimit();
+    public void setNewCbRate(String newCbRate) {
+        mNewCbRate = newCbRate;
+    }
 
-        if( mMerchant.getCl_credit_limit_for_pin() >= 0 ) {
-            retValue = mMerchant.getCl_credit_limit_for_pin();
-        }
-        return retValue;
-    }*/
+    public void setNewInvNumAsk(boolean newInvNumAsk) {
+        this.mNewInvNumAsk = newInvNumAsk;
+    }
 
+    public void setNewInvNumOptional(boolean newInvNumOptional) {
+        this.mNewInvNumOptional = newInvNumOptional;
+    }
+
+    public void setNewInvNumOnlyNumbers(boolean newInvNumOnlyNumbers) {
+        this.mNewInvNumOnlyNumbers = newInvNumOnlyNumbers;
+    }
+
+    /*
+         * Getter fxs
+         */
     public String getUserToken() {
         return mUserToken;
     }
@@ -497,20 +463,6 @@ public class MerchantUser
     public boolean isPseudoLoggedIn() {
         return mPseudoLoggedIn;
     }
-
-    // Public methods for changing merchant properties
-    public void setNewEmail(String newEmail) {
-        mNewEmail = newEmail;
-    }
-
-    public void setNewIsAddClEnabled(boolean newIsAddClEnabled) {
-        mNewIsAddClEnabled = newIsAddClEnabled ? CommonConstants.BOOLEAN_VALUE_TRUE : CommonConstants.BOOLEAN_VALUE_FALSE;
-    }
-
-    public void setNewCbRate(String newCbRate) {
-        mNewCbRate = newCbRate;
-    }
-
 
     /*
      * Private helper functions

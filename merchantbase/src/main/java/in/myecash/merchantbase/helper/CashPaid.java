@@ -69,11 +69,11 @@ public class CashPaid implements Serializable, View.OnTouchListener {
     public void initView(View v) {
         LogMy.d(TAG,"In initView");
         initUiResources(v);
-        if(mBtnCashpaid.getTag()==null) {
+        //if(mBtnCashpaid.getTag()==null) {
             // not yet set - means first init of the screen and not fragment restore case
             // set to default i.e. to clear
             setBtnAsClear();
-        }
+        //}
         buildValueSet();
         setValuesInUi();
         setListeners();
@@ -91,27 +91,27 @@ public class CashPaid implements Serializable, View.OnTouchListener {
         return mInputAmt.getError()==null ? null : mInputAmt.getError().toString();
     }*/
 
-    public void refreshValues(int minCashToPay) {
-        LogMy.d(TAG,"In refreshValues: "+minCashToPay);
+    public void refreshValues(int minCashToPay, int oldValue) {
+        LogMy.d(TAG,"In refreshValues: "+minCashToPay+" ,"+oldValue);
         mMinCashToPay = minCashToPay;
         buildValueSet();
         setValuesInUi();
 
         // restore earlier selected amount - if still valid
         boolean foundMatch = false;
-        Integer oldAmt = (Integer)mInputAmt.getTag();
-        LogMy.d(TAG,"In refreshValues, oldAmt: "+oldAmt);
+        //Integer oldValue = (Integer)mInputAmt.getTag();
+        LogMy.d(TAG,"In refreshValues, oldValue: "+oldValue);
 
-        if(oldAmt!=null && oldAmt!=-1 && oldAmt >= minCashToPay) {
+        if(oldValue!=0 && oldValue >= minCashToPay) {
 
             // first check if old amount matches old custom amount
             String val = mInputAmt.getText().toString();
             if(!val.isEmpty() &&
-                    oldAmt == AppCommonUtil.getValueAmtStr(mInputAmt.getText().toString())) {
+                    oldValue == AppCommonUtil.getValueAmtStr(mInputAmt.getText().toString())) {
                 foundMatch = true;
                 markInputAmt(mInputAmt);
                 setBtnAsClear(); //not required, but jst to be safe
-                mCallback.onAmountEnterFinal(AppCommonUtil.getValueAmtStr(mInputAmt.getText().toString()));
+                //mCallback.onAmountEnterFinal(AppCommonUtil.getValueAmtStr(mInputAmt.getText().toString()));
 
             } else {
                 clearCustomAmt();
@@ -119,19 +119,19 @@ public class CashPaid implements Serializable, View.OnTouchListener {
                 // also check if matches any of slots
                 for(int i=0; i<UI_SLOT_COUNT; i++) {
                     if(mInputCashPay[i].isEnabled() &&
-                            oldAmt == AppCommonUtil.getValueAmtStr(mInputCashPay[i].getText().toString())) {
+                            oldValue == AppCommonUtil.getValueAmtStr(mInputCashPay[i].getText().toString())) {
                         foundMatch = true;
                         markInputAmt(mInputCashPay[i]);
-                        mCallback.onAmountEnterFinal(AppCommonUtil.getValueAmtStr(mInputCashPay[i].getText().toString()));
+                        //mCallback.onAmountEnterFinal(AppCommonUtil.getValueAmtStr(mInputCashPay[i].getText().toString()));
                     }
                 }
             }
         }
 
         if(!foundMatch) {
-            LogMy.d(TAG,"Match not found with old value: "+oldAmt);
+            LogMy.d(TAG,"Match not found with old value: "+oldValue);
             // remove/reset tag
-            mInputAmt.setTag(-1);
+            //mInputAmt.setTag(-1);
             clearCustomAmt();
             mCallback.onAmountEnterFinal(0);
         }
@@ -246,7 +246,7 @@ public class CashPaid implements Serializable, View.OnTouchListener {
                         }
                     }
                     // remove/reset tag
-                    mInputAmt.setTag(-1);
+                    //mInputAmt.setTag(-1);
                     mCallback.onAmountEnterFinal(0);
 
                 } else {
@@ -272,7 +272,7 @@ public class CashPaid implements Serializable, View.OnTouchListener {
                     int value = AppCommonUtil.getValueAmtStr(mInputCashPay[i].getText().toString());
                     mCallback.onAmountEnterFinal(value);
                     // store selected value as tag
-                    mInputAmt.setTag(value);
+                    //mInputAmt.setTag(value);
 
                 } else if(mInputCashPay[i].isEnabled()) {
                     unmarkInputAmt(mInputCashPay[i]);
@@ -303,7 +303,7 @@ public class CashPaid implements Serializable, View.OnTouchListener {
             markInputAmt(mInputAmt);
             mCallback.onAmountEnterFinal(value);
             // store selected value as tag
-            mInputAmt.setTag(value);
+            //mInputAmt.setTag(value);
 
             setBtnAsClear();
             for(int i=0; i<UI_SLOT_COUNT; i++) {

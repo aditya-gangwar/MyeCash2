@@ -72,7 +72,8 @@ public class CashbackActivity extends AppCompatActivity implements
         TxnPinInputDialog.TxnPinInputDialogIf, MobileChangePreference.MobileChangePreferenceIf,
         DashboardTxnFragment.DashboardFragmentIf, DashboardFragment.DashboardSummaryFragmentIf,
         CustomerDetailsDialog.CustomerDetailsDialogIf, CustomerDataDialog.CustomerDataDialogIf,
-        CustomerListFragment.CustomerListFragmentIf, MerchantOpListFrag.MerchantOpListFragIf {
+        CustomerListFragment.CustomerListFragmentIf, MerchantOpListFrag.MerchantOpListFragIf,
+        TxnConfirmFragment.TxnConfirmFragmentIf {
 
     private static final String TAG = "CashbackActivity";
 
@@ -91,6 +92,7 @@ public class CashbackActivity extends AppCompatActivity implements
     private static final String DASHBOARD_SUMMARY_FRAG = "DashboardSummaryFrag";
     private static final String CUSTOMER_LIST_FRAG = "CustomerListFrag";
     private static final String MERCHANT_OPS_LIST_FRAG = "MerchantOpsListFrag";
+    private static final String TXN_CONFIRM_FRAGMENT = "TxnConfirmFragment";
 
     private static final String DIALOG_BACK_BUTTON = "dialogBackButton";
     private static final String DIALOG_LOGOUT = "dialogLogout";
@@ -1274,7 +1276,13 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onTransactionSubmit() {
+    public void onTransactionSubmit(int cashPaid) {
+        // start txn confirm fragment
+        startTxnConfirmFrag(cashPaid);
+    }
+
+    @Override
+    public void onTransactionConfirm() {
         if(CommonUtils.customerPinRequired(mMerchantUser.getMerchant(), mWorkFragment.mCurrTransaction.getTransaction())) {
             // ask for customer PIN
             TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(
@@ -1540,6 +1548,22 @@ public class CashbackActivity extends AppCompatActivity implements
             } else {
                 LogMy.d(TAG,"Failed to read barcode");
             }
+        }
+    }
+
+    private void startTxnConfirmFrag(int cashPaid) {
+        if (mFragMgr.findFragmentByTag(TXN_CONFIRM_FRAGMENT) == null) {
+            //setDrawerState(false);
+
+            Fragment fragment = TxnConfirmFragment.getInstance(cashPaid);
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container_1, fragment, TXN_CONFIRM_FRAGMENT);
+            transaction.addToBackStack(TXN_CONFIRM_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
         }
     }
 

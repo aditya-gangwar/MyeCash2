@@ -107,7 +107,7 @@
     <string name="customer_internal_id_char_limit">6</string>
     <string name="agent_id_char_limit">7</string>
     <string name="card_number_limit">11</string>
-    <string name="max_str_limit">400</string>
+    <string name="max_str_limit">300</string>
 
     <string name="return_cash_detail">[ - %1$d ]</string>
     <!--string name="cb_detail">\u0040 %1$d\u0025 of \u20B9 %2$d</string>

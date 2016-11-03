@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground">
+
+    <!--android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"/-->
+    <!--include layout="@layout/activity_cashback"/-->
+
+    <LinearLayout
+        style="@style/LL_Vertical"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_last_row_btn"
+        android:layout_alignParentBottom="true">
+
+        <View
+            style="@style/Divider_horizontal_Medium"
+            android:id="@+id/divider_btn_collect_cash"
+            android:background="@color/green_positive"/>
+
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_normal_white"
+            android:id="@+id/btn_txn_confirm"
+            android:text="CONFIRM"
+            android:textColor="@color/green_positive"/>
+    </LinearLayout>
+
+    <!--LinearLayout
+        style="@style/LL_Vertical"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_header"
+        android:layout_below="@id/toolbar"
+        android:layout_marginBottom="@dimen/small_space">
+
+        <EditText
+            style="@style/Edittext_only_view_medium_more_pad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            android:text="CHECK AND CONFIRM !!"
+            android:textStyle="bold"
+            android:textColor="@color/accent"/>
+        <View
+            style="@style/Divider_horizontal_Large"/>
+    </LinearLayout-->
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/layout_last_row_btn"
+        android:fillViewport="true" >
+
+        <LinearLayout
+            style="@style/LL_Vertical_paddingSidesXL"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_bill_amt"
+                android:layout_marginBottom="@dimen/small_space"
+                android:layout_marginTop="@dimen/medium_space">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_receipt_white_18dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:text="Bill Amount"
+                    android:layout_weight="1"
+                    android:gravity="left"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/input_bill_amt"
+                    android:layout_width="wrap_content"
+                    android:text="+ \u20B9 NA"
+                    android:gravity="right"
+                    android:textColor="@color/green_positive"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_debit_account"
+                android:layout_marginBottom="@dimen/small_space"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:text="Debit Account"
+                    android:layout_weight="1"
+                    android:gravity="left" />
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/input_debit_account"
+                    android:layout_width="wrap_content"
+                    android:text="- \u20B9 NA"
+                    android:gravity="right"
+                    android:textColor="@color/red_negative"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_redeem_cb"
+                android:layout_marginBottom="@dimen/small_space">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_grade_white_18dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:text="Redeem Cashback"
+                    android:layout_weight="1"
+                    android:gravity="left"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/input_redeem_cb"
+                    android:layout_width="wrap_content"
+                    android:text="- \u20B9 NA"
+                    android:gravity="right"
+                    android:textColor="@color/red_negative"/>
+            </LinearLayout>
+
+            <View
+                style="@style/Divider_horizontal_Large"
+                android:id="@+id/divider_to_pay"
+                android:layout_marginBottom="@dimen/small_space"/>
+
+            <!-- left margin equal to image dp in other rows-->
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_to_pay"
+                android:layout_marginBottom="@dimen/small_space"
+                android:background="@color/lightest_grey">
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:text="TO PAY"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_marginLeft="24dp"
+                    android:padding="@dimen/edittext_padding_less"
+                    android:textStyle="italic"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/input_to_pay"
+                    android:layout_width="wrap_content"
+                    android:text="+ \u20B9 NA"
+                    android:gravity="right"
+                    android:padding="@dimen/edittext_padding_less"
+                    android:textStyle="italic"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_cash_paid"
+                android:layout_marginBottom="@dimen/small_space">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/cash_logo_18dp" />
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:text="Cash Paid"
+                    android:layout_weight="1"
+                    android:gravity="left"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/input_cash_paid"
+                    android:layout_width="wrap_content"
+                    android:text="- \u20B9 NA"
+                    android:gravity="right" />
+            </LinearLayout>
+
+            <View
+                style="@style/Divider_horizontal_Large"
+                android:id="@+id/divider_balance"
+                android:layout_marginBottom="@dimen/small_space"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_balance"
+                android:layout_marginBottom="@dimen/small_space"
+                android:background="@color/lightest_grey">
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:text="TO RETURN"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_marginLeft="24dp"
+                    android:padding="@dimen/edittext_padding_less"
+                    android:textStyle="italic"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/input_balance"
+                    android:layout_width="wrap_content"
+                    android:text="- \u20B9 NA"
+                    android:gravity="right"
+                    android:padding="@dimen/edittext_padding_less"
+                    android:textStyle="italic"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_add_account"
+                android:layout_marginBottom="@dimen/small_space">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:text="Add Account"
+                    android:layout_weight="1"
+                    android:gravity="left"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/input_add_account"
+                    android:layout_width="wrap_content"
+                    android:text="+ \u20B9 NA"
+                    android:gravity="right"
+                    android:textColor="@color/green_positive"/>
+            </LinearLayout>
+
+            <View
+                style="@style/Divider_horizontal_Large"
+                android:layout_marginBottom="@dimen/small_space"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_return_cash"
+                android:layout_marginBottom="@dimen/small_space"
+                android:background="@color/lightest_grey">
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/label_cash_to_pay"
+                    android:layout_width="wrap_content"
+                    android:text="BALANCE"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:layout_marginLeft="24dp"
+                    android:padding="@dimen/edittext_padding_less"
+                    android:textStyle="italic"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/input_return_cash"
+                    android:layout_width="wrap_content"
+                    android:text="\u20B9 NA"
+                    android:gravity="right"
+                    android:padding="@dimen/edittext_padding_less"
+                    android:textStyle="italic"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_add_cb">
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_width="wrap_content"
+                    android:text="Award Cashback:"
+                    android:textStyle="italic"
+                    android:gravity="left"/>
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:id="@+id/input_add_cb"
+                    android:layout_width="wrap_content"
+                    android:text="\u20B9 99"
+                    android:textStyle="italic"
+                    android:textColor="@color/accent2"/>
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <View
+                    style="@style/Divider_horizontal_Medium"
+                    android:layout_weight="50"
+                    android:background="@color/primary"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/label_cash_back"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="EXTRA DETAILS"
+                    android:textColor="@color/primary"/>
+
+                <View
+                    style="@style/Divider_horizontal_Medium"
+                    android:layout_weight="50"
+                    android:background="@color/primary"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_invoice_num">
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:text="Linked Invoice"/>
+                <EditText
+                    style="@style/MyEdittext_Medium"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="40"
+                    android:gravity="left"
+                    android:id="@+id/input_invoice_num"
+                    android:hint="Invoice#"
+                    android:inputType="text"/>
+            </LinearLayout>
+
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="left"
+                android:inputType="textMultiLine"
+                android:text="Any Comments:"/>
+
+            <EditText
+                style="@style/MyEdittext_Medium"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="left"
+                android:id="@+id/input_comments"
+                android:hint="Text here"
+                android:maxLength="@string/max_str_limit"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

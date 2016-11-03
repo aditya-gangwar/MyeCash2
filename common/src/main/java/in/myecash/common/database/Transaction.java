@@ -33,6 +33,24 @@ public class Transaction implements Serializable
   private String usedCardId;
   private String imgFileName;
   private java.util.Date cancelTime;
+  private String invoiceNum;
+  private String comments;
+
+  public String getInvoiceNum() {
+    return invoiceNum;
+  }
+
+  public void setInvoiceNum(String invoiceNum) {
+    this.invoiceNum = invoiceNum;
+  }
+
+  public String getComments() {
+    return comments;
+  }
+
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
 
   public Date getCancelTime() {
     return cancelTime;

@@ -77,7 +77,7 @@ public class CashTransactionFragment extends Fragment implements
     private int mAddCashload;
     private int mAwardCashback;
     private int mCashPaid;
-    private int mToPayCash;
+    //private int mToPayCash;
     private int mReturnCash;
 
     private int mClBalance;
@@ -93,7 +93,7 @@ public class CashTransactionFragment extends Fragment implements
     // Container Activity must implement this interface
     public interface CashTransactionFragmentIf {
         MyRetainedFragment getRetainedFragment();
-        void onTransactionSubmit();
+        void onTransactionSubmit(int cashPaid);
         void setDrawerState(boolean isEnabled);
         void restartTxn();
     }
@@ -124,18 +124,47 @@ public class CashTransactionFragment extends Fragment implements
         mRetainedFragment = mCallback.getRetainedFragment();
         mMerchantUser = MerchantUser.getInstance();
 
-        if(savedInstanceState == null) {
-            initAmtUiStates();
-        } else {
-            // restore status from stored values
-            mClBalance = savedInstanceState.getInt("mClBalance");
-            mCbBalance = savedInstanceState.getInt("mCbBalance");
-            mMinCashToPay = savedInstanceState.getInt("mMinCashToPay");
+        /*
+         * Instead of checking for 'savedInstanceState==null', checking
+         * for any 'not saved member' value (here, mCashPaidHelper)
+         * The reason being, that for scenarios wherein fragment was stored in backstack and
+         * has come to foreground again - like after pressing 'back' from 'txn confirm fragment'
+         * then, the savedInstanceState will be NULL only.
+         * In backstack cases, only view is destroyed, while the fragment is saved as it is
+         * Thus not even onSaveInstance() gets called.
+         *
+         * mCashPaidHelper will be null - for both 'fragment create' and 'fragment re-create' scenarios
+         * but not for 'backstack' scenarios
+         */
+        boolean isBackstackCase = false;
+        if(mCashPaidHelper != null) {
+            isBackstackCase = true;
+        }
 
-            setAwardCbStatus(savedInstanceState.getInt("mAwardCbStatus"));
-            setAddClStatus(savedInstanceState.getInt("mAddClStatus"));
-            setRedeemClStatus(savedInstanceState.getInt("mDebitClStatus"));
-            setRedeemCbStatus(savedInstanceState.getInt("mRedeemCbStatus"));
+        if(!isBackstackCase) {
+            // either of fragment 'create' or 'recreate' scenarios
+            if(savedInstanceState==null) {
+                // fragment create case
+                initAmtUiStates();
+            } else {
+                // fragment re-create case
+                LogMy.d(TAG,"Fragment re-create case");
+                // restore status from stored values
+                mClBalance = savedInstanceState.getInt("mClBalance");
+                mCbBalance = savedInstanceState.getInt("mCbBalance");
+                mMinCashToPay = savedInstanceState.getInt("mMinCashToPay");
+
+                setAwardCbStatus(savedInstanceState.getInt("mAwardCbStatus"));
+                setAddClStatus(savedInstanceState.getInt("mAddClStatus"));
+                setRedeemClStatus(savedInstanceState.getInt("mDebitClStatus"));
+                setRedeemCbStatus(savedInstanceState.getInt("mRedeemCbStatus"));
+            }
+        } else {
+            // these fxs update onscreen view also, so need to be run for backstack scenario too
+            setAwardCbStatus(mAwardCbStatus);
+            setAddClStatus(mAddClStatus);
+            setRedeemClStatus(mDebitClStatus);
+            setRedeemCbStatus(mRedeemCbStatus);
         }
 
         // Init view - only to be done after states are set above
@@ -144,19 +173,26 @@ public class CashTransactionFragment extends Fragment implements
         displayInputBillAmt();
         calcAndSetAddCb();
 
-        if(savedInstanceState == null) {
-            calcAndSetAmts(false);
-        } else {
-            setDebitCashload(savedInstanceState.getInt("mDebitCashload"));
-            setRedeemCashback(savedInstanceState.getInt("mRedeemCashback"));
-            setAddCashload(savedInstanceState.getInt("mAddCashload"));
-            setAddCashback(savedInstanceState.getInt("mAwardCashback"));
-            setCashPaid(savedInstanceState.getInt("mCashPaid"));
+        if(!isBackstackCase) {
+            if (savedInstanceState == null) {
+                calcAndSetAmts(false);
 
-            //mToPayCash = savedInstanceState.getInt("mToPayCash");
-            mReturnCash = savedInstanceState.getInt("mReturnCash");
-            setCashBalance();
+            } else {
+                // restore earlier calculated values
+                setDebitCashload(savedInstanceState.getInt("mDebitCashload"));
+                setRedeemCashback(savedInstanceState.getInt("mRedeemCashback"));
+                setAddCashload(savedInstanceState.getInt("mAddCashload"));
+                setAddCashback(savedInstanceState.getInt("mAwardCashback"));
+                setCashPaid(savedInstanceState.getInt("mCashPaid"));
+
+                //mToPayCash = savedInstanceState.getInt("mToPayCash");
+                mReturnCash = savedInstanceState.getInt("mReturnCash");
+            }
         }
+
+        // both of below concerns view - so run again in all cases
+        mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid);
+        setCashBalance();
     }
 
     private void displayInputBillAmt() {
@@ -199,7 +235,8 @@ public class CashTransactionFragment extends Fragment implements
             mDividerInputToPayCash.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
 
         } else if(mReturnCash == 0) {
-            mInputToPayCash.setText("OK");
+            String str = "Collect "+AppConstants.SYMBOL_RS+" 0";
+            mInputToPayCash.setText(str);
             mInputToPayCash.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             mDividerInputToPayCash.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
 
@@ -249,6 +286,24 @@ public class CashTransactionFragment extends Fragment implements
         // calculate add/redeem amounts fresh
         calculateAmts();
 
+        // For merging - first try to adjust 'mRedeemCashback'
+        // and then 'mDebitCashload'
+
+        // try merging 'add cashload' and 'redeem cashback'
+        // do not touch if value is manually set
+        //if(mAddClStatus!=STATUS_MANUAL_SET && mRedeemCbStatus!=STATUS_MANUAL_SET) {
+        if (mAddCashload > 0 && mRedeemCashback > 0) {
+            if (mRedeemCashback > mAddCashload) {
+                setRedeemCashback(mRedeemCashback - mAddCashload);
+                setAddCashload(0);
+            } else {
+                setAddCashload(mAddCashload - mRedeemCashback);
+                setRedeemCashback(0);
+            }
+        }
+        //}
+        LogMy.d(TAG,"After merge cashload & cashback: "+mAddCashload+", "+mRedeemCashback);
+
         // Merge 'redeem cashload' and 'add cashload' values
         // do not touch if value is manually set
         //if(mAddClStatus!=STATUS_MANUAL_SET && mDebitClStatus !=STATUS_MANUAL_SET) {
@@ -261,21 +316,6 @@ public class CashTransactionFragment extends Fragment implements
             }
         //}
         LogMy.d(TAG,"After merge cashload: "+mAddCashload+", "+ mDebitCashload);
-
-        // try merging 'add cashload' and 'redeem cashback'
-        // do not touch if value is manually set
-        //if(mAddClStatus!=STATUS_MANUAL_SET && mRedeemCbStatus!=STATUS_MANUAL_SET) {
-            if (mAddCashload > 0 && mRedeemCashback > 0) {
-                if (mRedeemCashback > mAddCashload) {
-                    setRedeemCashback(mRedeemCashback - mAddCashload);
-                    setAddCashload(0);
-                } else {
-                    setAddCashload(mAddCashload - mRedeemCashback);
-                    setRedeemCashback(0);
-                }
-            }
-        //}
-        LogMy.d(TAG,"After merge cashload & cashback: "+mAddCashload+", "+mRedeemCashback);
 
         // calculate cash to pay
         int effectiveToPay = mRetainedFragment.mBillTotal - mRedeemCashback - mDebitCashload;
@@ -356,7 +396,7 @@ public class CashTransactionFragment extends Fragment implements
             // 'payment' is visible on main screen itself
             //mCashPaidHelper.refreshValues(mToPayCash);
             calcMinCashToPay();
-            mCashPaidHelper.refreshValues(mMinCashToPay);
+            mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid);
         }
 
         // Mark if previously set 'cash paid' value not enough, due to recalculations of amount
@@ -484,12 +524,12 @@ public class CashTransactionFragment extends Fragment implements
             /*case REQUEST_CASH_PAY:
                 setCashPaid((int) data.getSerializableExtra(CashPaidDialog.EXTRA_CASH_PAID));
                 calcAndSetAmts();
-                break;*/
+                break;
 
             case REQ_CONFIRM_TRANS_COMMIT:
                 LogMy.d(TAG, "Received commit transaction confirmation.");
                 mCallback.onTransactionSubmit();
-                break;
+                break;*/
 
             case REQ_NEW_BILL_AMT:
                 LogMy.d(TAG, "Received new bill amount.");
@@ -746,10 +786,11 @@ public class CashTransactionFragment extends Fragment implements
                         AppCommonUtil.toast(getActivity(), "Balance not 0 yet");
                     } else {
                         setTransactionValues();
+                        mCallback.onTransactionSubmit(mCashPaid);
                         // Show confirmation dialog
-                        TxnConfirmDialog dialog = TxnConfirmDialog.newInstance(mRetainedFragment.mCurrTransaction.getTransaction(), mCashPaid);
+                        /*TxnConfirmDialog dialog = TxnConfirmDialog.newInstance(mRetainedFragment.mCurrTransaction.getTransaction(), mCashPaid);
                         dialog.setTargetFragment(CashTransactionFragment.this, REQ_CONFIRM_TRANS_COMMIT);
-                        dialog.show(getFragmentManager(), DIALOG_CONFIRM_TXN);
+                        dialog.show(getFragmentManager(), DIALOG_CONFIRM_TXN);*/
                     }
                     /*if(getAddClError()==null) {
                         setTransactionValues();
@@ -940,6 +981,7 @@ public class CashTransactionFragment extends Fragment implements
     }
 
     private void initAmtUiStates() {
+        LogMy.d(TAG, "In initAmtUiStates");
 
         // Init 'add cash' status
         if(mMerchantUser.getMerchant().getCl_add_enable()) {
@@ -994,6 +1036,8 @@ public class CashTransactionFragment extends Fragment implements
     }
 
     private void initAmtUiVisibility() {
+        LogMy.d(TAG, "In initAmtUiVisibility");
+
         float extraSpace = 0.0f;
         boolean cashAccountViewGone = false;
         boolean cashBackViewGone = false;
@@ -1030,8 +1074,11 @@ public class CashTransactionFragment extends Fragment implements
         mLayoutCashPaid.setVisibility(View.VISIBLE);
         mSpaceCashPaid.setVisibility(View.VISIBLE);
 
-        calcMinCashToPay();
-        mCashPaidHelper = new CashPaid(mMinCashToPay, mRetainedFragment.mBillTotal, this, getActivity());
+        if(mCashPaidHelper==null) {
+            calcMinCashToPay();
+            mCashPaidHelper = new CashPaid(mMinCashToPay, mRetainedFragment.mBillTotal, this, getActivity());
+        }
+        // initView for 'backstack' scenarios also - as it contain pointers to onscreen views
         mCashPaidHelper.initView(getView());
 
         /*if(cashAccountViewGone || cashBackViewGone) {
@@ -1152,12 +1199,14 @@ public class CashTransactionFragment extends Fragment implements
 
     @Override
     public void onResume() {
+        LogMy.d(TAG, "In onResume");
         super.onResume();
         mCallback.setDrawerState(false);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        LogMy.d(TAG, "In onSaveInstanceState");
         super.onSaveInstanceState(outState);
 
         outState.putInt("mClBalance", mClBalance);

@@ -42,11 +42,44 @@ public class CsvConverter {
     private static int TXN_CSV_IDX_CB_RATE = 13;
     private static int TXN_CSV_IDX_CUST_PIN = 14;
     private static int TXN_CSV_IDX_IMG_FILE = 15;
-    private static int TXN_CSV_TOTAL_FIELDS = 16;
+    private static int TXN_CSV_IDX_INV_NUM = 16;
+    private static int TXN_CSV_IDX_COMMENTS = 17;
+    private static int TXN_CSV_TOTAL_FIELDS = 18;
 
     // Total size of above fields = 15*10 + 50;
     public static final int TXN_CSV_MAX_SIZE = 256;
     private static final String TXN_CSV_DELIM = ",";
+
+    public static String csvStrFromTxn(Transaction txn) {
+        String[] csvFields = new String[TXN_CSV_TOTAL_FIELDS];
+
+        csvFields[TXN_CSV_IDX_ID] = txn.getTrans_id();
+        csvFields[TXN_CSV_IDX_TIME] = mSdfDateWithTime.format(txn.getCreate_time());
+        csvFields[TXN_CSV_IDX_MERCHANT_ID] = txn.getMerchant_id();
+        csvFields[TXN_CSV_IDX_MERCHANT_NAME] = txn.getMerchant_name();
+        csvFields[TXN_CSV_IDX_CUSTOMER_ID] = txn.getCustomer_id();
+        csvFields[TXN_CSV_IDX_CUSTOMER_PVT_ID] = txn.getCust_private_id();
+        csvFields[TXN_CSV_IDX_USED_CARD_ID] = txn.getUsedCardId();
+        csvFields[TXN_CSV_IDX_TOTAL_BILLED] = String.valueOf(txn.getTotal_billed());
+        csvFields[TXN_CSV_IDX_CB_BILLED] = String.valueOf(txn.getCb_billed());
+        csvFields[TXN_CSV_IDX_ACC_DEBIT] = String.valueOf(txn.getCl_debit());
+        csvFields[TXN_CSV_IDX_ACC_CREDIT] = String.valueOf(txn.getCl_credit());
+        csvFields[TXN_CSV_IDX_CB_REDEEM] = String.valueOf(txn.getCb_debit());
+        csvFields[TXN_CSV_IDX_CB_AWARD] = String.valueOf(txn.getCb_credit());
+        csvFields[TXN_CSV_IDX_CB_RATE] = txn.getCb_percent();
+        csvFields[TXN_CSV_IDX_CUST_PIN] = txn.getCpin();
+        String imgFilename = txn.getImgFileName();
+        csvFields[TXN_CSV_IDX_IMG_FILE] = (imgFilename==null)?"":imgFilename;
+        csvFields[TXN_CSV_IDX_INV_NUM] = (txn.getInvoiceNum()==null)?"":txn.getInvoiceNum();
+        csvFields[TXN_CSV_IDX_COMMENTS] = (txn.getComments()==null)?"":txn.getComments();
+
+        // join the fields in single CSV string
+        StringBuilder sb = new StringBuilder(TXN_CSV_MAX_SIZE+txn.getComments().length());
+        for(int i=0; i<TXN_CSV_TOTAL_FIELDS; i++) {
+            sb.append(csvFields[i]).append(TXN_CSV_DELIM);
+        }
+        return sb.toString();
+    }
 
     public static Transaction txnFromCsvStr(String csvString) throws ParseException {
         String[] csvFields = csvString.split(TXN_CSV_DELIM, -1);
@@ -68,39 +101,10 @@ public class CsvConverter {
         txn.setCb_percent(csvFields[TXN_CSV_IDX_CB_RATE]);
         txn.setCpin(csvFields[TXN_CSV_IDX_CUST_PIN]);
         txn.setImgFileName(csvFields[TXN_CSV_IDX_IMG_FILE]);
+        txn.setInvoiceNum(csvFields[TXN_CSV_IDX_INV_NUM]);
+        txn.setInvoiceNum(csvFields[TXN_CSV_IDX_COMMENTS]);
         return txn;
     }
-
-    public static String csvStrFromTxn(Transaction txn) {
-        String[] csvFields = new String[TXN_CSV_TOTAL_FIELDS];
-
-        csvFields[TXN_CSV_IDX_ID] = txn.getTrans_id();
-        csvFields[TXN_CSV_IDX_TIME] = mSdfDateWithTime.format(txn.getCreate_time());
-        csvFields[TXN_CSV_IDX_MERCHANT_ID] = txn.getMerchant_id();
-        csvFields[TXN_CSV_IDX_MERCHANT_NAME] = txn.getMerchant_name();
-        csvFields[TXN_CSV_IDX_CUSTOMER_ID] = txn.getCustomer_id();
-        csvFields[TXN_CSV_IDX_CUSTOMER_PVT_ID] = txn.getCust_private_id();
-        csvFields[TXN_CSV_IDX_USED_CARD_ID] = txn.getUsedCardId();
-        csvFields[TXN_CSV_IDX_TOTAL_BILLED] = String.valueOf(txn.getTotal_billed());
-        csvFields[TXN_CSV_IDX_CB_BILLED] = String.valueOf(txn.getCb_billed());
-        csvFields[TXN_CSV_IDX_ACC_DEBIT] = String.valueOf(txn.getCl_debit());
-        csvFields[TXN_CSV_IDX_ACC_CREDIT] = String.valueOf(txn.getCl_credit());
-        csvFields[TXN_CSV_IDX_CB_REDEEM] = String.valueOf(txn.getCb_debit());
-        csvFields[TXN_CSV_IDX_CB_AWARD] = String.valueOf(txn.getCb_credit());
-        csvFields[TXN_CSV_IDX_CB_RATE] = txn.getCb_percent();
-        csvFields[TXN_CSV_IDX_CUST_PIN] = txn.getCpin();
-        String imgFilename = txn.getImgFileName();
-        csvFields[TXN_CSV_IDX_IMG_FILE] = (imgFilename==null||imgFilename.isEmpty())?"":imgFilename;
-        csvFields[TXN_CSV_IDX_IMG_FILE] = txn.getImgFileName();
-
-        // join the fields in single CSV string
-        StringBuilder sb = new StringBuilder(TXN_CSV_MAX_SIZE);
-        for(int i=0; i<TXN_CSV_TOTAL_FIELDS; i++) {
-            sb.append(csvFields[i]).append(TXN_CSV_DELIM);
-        }
-        return sb.toString();
-    }
-
 
     /*
      * Index of various parameters in Cashback CSV records (stored in CustData CSV files)

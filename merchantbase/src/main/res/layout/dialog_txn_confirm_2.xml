@@ -16,7 +16,7 @@
 
     <View
         style="@style/Divider_horizontal_Large"
-        android:layout_marginBottom="@dimen/XL_space"/>
+        android:layout_marginBottom="@dimen/large_space"/>
 
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesXL">

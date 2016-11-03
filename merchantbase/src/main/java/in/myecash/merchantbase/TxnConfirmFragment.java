@@ -2,87 +2,96 @@ package in.myecash.merchantbase;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import in.myecash.common.database.Transaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.database.Merchants;
+import in.myecash.common.database.Transaction;
+import in.myecash.merchantbase.entities.MerchantUser;
+import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 /**
- * Created by adgangwa on 14-04-2016.
+ * Created by adgangwa on 04-11-2016.
  */
-public class TxnConfirmDialog extends DialogFragment
-        implements DialogInterface.OnClickListener {
-
-    private static final String TAG = "TxnConfirmDialog";
-    private static final String ARG_TXN = "txn";
+public class TxnConfirmFragment extends Fragment {
+    private static final String TAG = "TxnConfirmFragment";
     private static final String ARG_CASH_PAID = "cashPaid";
 
-    public static TxnConfirmDialog newInstance(Transaction txn, int cashPaid) {
+    private Merchants mMerchant;
+    private TxnConfirmFragmentIf mCallback;
+
+    // Container Activity must implement this interface
+    public interface TxnConfirmFragmentIf {
+        MyRetainedFragment getRetainedFragment();
+        void onTransactionConfirm();
+        void setDrawerState(boolean isEnabled);
+    }
+
+    public static TxnConfirmFragment getInstance(int cashPaid) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_TXN, txn);
         args.putInt(ARG_CASH_PAID, cashPaid);
-        TxnConfirmDialog fragment = new TxnConfirmDialog();
+        TxnConfirmFragment fragment = new TxnConfirmFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View v = LayoutInflater.from(getActivity())
-                .inflate(R.layout.dialog_txn_confirm_2, null);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_txn_confirm, container, false);
 
         bindUiResources(v);
 
-        displayTransactionValues();
-
-        Dialog dialog = new AlertDialog.Builder(getActivity())
-                .setView(v)
-                .setPositiveButton(android.R.string.ok, this)
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        mBtnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onShow(DialogInterface dialog) {
-                AppCommonUtil.setDialogTextSize(TxnConfirmDialog.this, (AlertDialog) dialog);
+            public void onClick(View v) {
+                // check if invoice num is mandatory
+                if(!mMerchant.isInvoiceNumOptional() &&
+                        mInputInvoiceNum.getText().toString().isEmpty()) {
+                    mInputInvoiceNum.setError("Enter Linked Invoice Number");
+                } else {
+                    AppCommonUtil.hideKeyboard(getActivity());
+                    Transaction curTxn = mCallback.getRetainedFragment().mCurrTransaction.getTransaction();
+                    curTxn.setInvoiceNum(mInputInvoiceNum.getText().toString());
+                    curTxn.setComments(mInputComments.getText().toString());
+                    mCallback.onTransactionConfirm();
+                }
             }
         });
 
-        return dialog;
+        return v;
     }
 
     @Override
-    public void onClick(DialogInterface dialog, int which) {
-        sendResult(Activity.RESULT_OK);
-        dialog.dismiss();
-    }
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-    private void sendResult(int resultCode) {
-        LogMy.d(TAG, "In sendResult");
-        if (getTargetFragment() == null) {
-            return;
+        try {
+            mCallback = (TxnConfirmFragmentIf) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement TxnConfirmFragmentIf");
         }
-        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, null);
+
+        mMerchant = MerchantUser.getInstance().getMerchant();
+        displayTransactionValues();
     }
 
     private void displayTransactionValues() {
 
-        Transaction curTransaction = (Transaction) getArguments().getSerializable(ARG_TXN);
+        Transaction curTransaction = mCallback.getRetainedFragment().mCurrTransaction.getTransaction();
         int cashPaid = getArguments().getInt(ARG_CASH_PAID);
 
         //int total = 0;
@@ -176,6 +185,15 @@ public class TxnConfirmDialog extends DialogFragment
         } else {
             mInputAddCb.setText(AppCommonUtil.getSignedAmtStr(value, true));
         }
+
+        if(mMerchant.isInvoiceNumAsk()) {
+            mLayoutInvoiceNum.setVisibility(View.VISIBLE);
+            if(mMerchant.isInvoiceNumOnlyNumbers()) {
+                mInputInvoiceNum.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+            }
+        } else {
+            mLayoutInvoiceNum.setVisibility(View.GONE);
+        }
     }
 
     //private EditText mInputCustomer;
@@ -211,6 +229,12 @@ public class TxnConfirmDialog extends DialogFragment
     private LinearLayout mLayoutAddCb;
     private EditText mInputAddCb;
 
+    private View mLayoutInvoiceNum;
+    private EditText mInputInvoiceNum;
+    private EditText mInputComments;
+
+    private AppCompatButton mBtnConfirm;
+
     private void bindUiResources(View v) {
         //mInputCustomer = (EditText) v.findViewById(R.id.input_customer);
 
@@ -244,5 +268,18 @@ public class TxnConfirmDialog extends DialogFragment
 
         mLayoutAddCb = (LinearLayout) v.findViewById(R.id.layout_add_cb);
         mInputAddCb = (EditText) v.findViewById(R.id.input_add_cb);
+
+        mLayoutInvoiceNum = v.findViewById(R.id.layout_invoice_num);
+        mInputInvoiceNum = (EditText) v.findViewById(R.id.input_invoice_num);
+        mInputComments = (EditText) v.findViewById(R.id.input_comments);
+
+        mBtnConfirm = (AppCompatButton) v.findViewById(R.id.btn_txn_confirm);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mCallback.setDrawerState(false);
+    }
+
 }

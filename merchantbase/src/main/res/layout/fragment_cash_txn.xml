@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root_cashTxnFragment"
     android:background="?android:attr/windowBackground">
 
     <!--android.support.v7.widget.Toolbar
@@ -38,7 +39,8 @@
         android:fillViewport="true" >
 
     <LinearLayout
-        style="@style/LL_Vertical_paddingSidesLarge">
+        style="@style/LL_Vertical_paddingSidesLarge"
+        android:id="@+id/layout_whole">
 
         <Space
             android:layout_width="match_parent"

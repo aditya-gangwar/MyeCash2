@@ -30,6 +30,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public static final String KEY_ADD_CL_ENABLED = "settings_cl_add_enabled";
     public static final String KEY_MOBILE_NUM = "settings_change_mobile";
     public static final String KEY_EMAIL = "settings_email_id";
+    public static final String KEY_LINKED_INV = "settings_linked_invoice";
+    public static final String KEY_LINKED_INV_OPTIONAL = "settings_invoice_optional";
+    public static final String KEY_LINKED_INV_ONLY_NMBRS = "settings_invoice_numbers_only";
 
     private MerchantUser mMerchantUser;
 
@@ -57,14 +60,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         LogMy.d(TAG, "In onActivityCreated");
-
-        /*
-        try {
-            mCallback = (SettingsFragmentIf) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement MobileFragmentIf");
-        }*/
 
         //TODO: use '?android:attr/windowBackground' instead of white
         getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
@@ -94,17 +89,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 mSettingsChanged = true;
                 setAddCashSummary(isAddClEnabled, false);
             }
-        } /*else if (key.equals(KEY_MOBILE_NUM)) {
-            newValue = sharedPreferences.getString(KEY_MOBILE_NUM, null);
-            errorCode = ValidationHelper.validateMobileNo(newValue);
-            if(errorCode==ErrorCodes.NO_ERROR) {
-                mMerchantUser.setNewMobileNum(newValue);
-                mSettingsChanged = true;
-                setMobileNumSummary(newValue);
-            } else {
-                AndroidUtil.toast(getActivity(),AppCommonUtil.getErrorDesc(errorCode));
-            }
-        } */else if (key.equals(KEY_EMAIL)) {
+        } else if (key.equals(KEY_EMAIL)) {
             newValue = sharedPreferences.getString(KEY_EMAIL, null);
             errorCode = ValidationHelper.validateEmail(newValue);
             if(errorCode==ErrorCodes.NO_ERROR) {
@@ -114,16 +99,25 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             } else {
                 AppCommonUtil.toast(getActivity(), AppCommonUtil.getErrorDesc(errorCode));
             }
-        }/* else if (key.equals(KEY_PASSWORD)) {
-            newValue = sharedPreferences.getString(KEY_PASSWORD, null);
-            errorCode = ValidationHelper.validatePassword(newValue);
-            if(errorCode==ErrorCodes.NO_ERROR) {
-                mMerchant.setNewPassword(newValue);
+        } else if(key.equals(KEY_LINKED_INV)) {
+            boolean askLinkedInvNum = sharedPreferences.getBoolean(KEY_LINKED_INV, mMerchantUser.getMerchant().isInvoiceNumAsk());
+            if(askLinkedInvNum != mMerchantUser.getMerchant().isInvoiceNumAsk()) {
+                mMerchantUser.setNewInvNumAsk(askLinkedInvNum);
                 mSettingsChanged = true;
-            } else {
-                AndroidUtil.toast(getActivity(),AppCommonUtil.getErrorDesc(errorCode));
             }
-        }*/
+        }  else if(key.equals(KEY_LINKED_INV_OPTIONAL)) {
+            boolean linkedInvOptional = sharedPreferences.getBoolean(KEY_LINKED_INV_OPTIONAL, mMerchantUser.getMerchant().isInvoiceNumOptional());
+            if(linkedInvOptional != mMerchantUser.getMerchant().isInvoiceNumOptional()) {
+                mMerchantUser.setNewInvNumOptional(linkedInvOptional);
+                mSettingsChanged = true;
+            }
+        }   else if(key.equals(KEY_LINKED_INV_ONLY_NMBRS)) {
+            boolean linkedInvOnlyNmbrs = sharedPreferences.getBoolean(KEY_LINKED_INV_ONLY_NMBRS, mMerchantUser.getMerchant().isInvoiceNumOnlyNumbers());
+            if(linkedInvOnlyNmbrs != mMerchantUser.getMerchant().isInvoiceNumOnlyNumbers()) {
+                mMerchantUser.setNewInvNumOnlyNumbers(linkedInvOnlyNmbrs);
+                mSettingsChanged = true;
+            }
+        }
 
         if(errorCode!=ErrorCodes.NO_ERROR) {
             DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true);

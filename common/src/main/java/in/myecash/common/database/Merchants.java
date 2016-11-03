@@ -31,15 +31,42 @@ public class Merchants
   private java.util.List<MerchantDevice> trusted_devices;
   private String buss_category;
   private Address address;
-  private Integer cl_debit_limit_for_pin;
+  /*private Integer cl_debit_limit_for_pin;
   private Integer cb_debit_limit_for_pin;
-  private Integer cl_credit_limit_for_pin;
+  private Integer cl_credit_limit_for_pin;*/
   private Boolean first_login_ok;
   private Boolean debugLogs;
   private String dob;
   private String agentId;
   private Date lastRenewDate;
   private Date removeReqDate;
+  private boolean invoiceNumAsk;
+  private boolean invoiceNumOptional;
+  private boolean invoiceNumOnlyNumbers;
+
+  public boolean isInvoiceNumAsk() {
+    return invoiceNumAsk;
+  }
+
+  public boolean isInvoiceNumOptional() {
+    return invoiceNumOptional;
+  }
+
+  public boolean isInvoiceNumOnlyNumbers() {
+    return invoiceNumOnlyNumbers;
+  }
+
+  public void setInvoiceNumAsk(boolean invoiceNumAsk) {
+    this.invoiceNumAsk = invoiceNumAsk;
+  }
+
+  public void setInvoiceNumOptional(boolean invoiceNumOptional) {
+    this.invoiceNumOptional = invoiceNumOptional;
+  }
+
+  public void setInvoiceNumOnlyNumbers(boolean invoiceNumOnlyNumbers) {
+    this.invoiceNumOnlyNumbers = invoiceNumOnlyNumbers;
+  }
 
   public Date getRemoveReqDate() {
     return removeReqDate;
@@ -100,7 +127,7 @@ public class Merchants
     this.first_login_ok = first_login_ok;
   }
 
-  public Integer getCl_debit_limit_for_pin() {
+  /*public Integer getCl_debit_limit_for_pin() {
     return cl_debit_limit_for_pin;
   }
 
@@ -110,7 +137,7 @@ public class Merchants
 
   public Integer getCl_credit_limit_for_pin() {
     return cl_credit_limit_for_pin;
-  }
+  }*/
 
   public String getName()
   {

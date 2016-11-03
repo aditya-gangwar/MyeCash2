@@ -53,9 +53,10 @@ import in.myecash.common.database.Transaction;
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changeMobile", args, Merchants.class, callback);
     }
 
-    public Merchants updateSettings(java.lang.String cbRate, boolean addClEnabled, java.lang.String email)
+    public Merchants updateSettings(java.lang.String cbRate, boolean addClEnabled, java.lang.String email,
+                                    boolean askLinkedInvNum, boolean linkedInvNumOptional, boolean invNumOnlyNmbrs)
     {
-        Object[] args = new Object[]{cbRate, addClEnabled, email};
+        Object[] args = new Object[]{cbRate, addClEnabled, email, askLinkedInvNum, linkedInvNumOptional, invNumOnlyNmbrs};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "updateSettings", args, Merchants.class );
     }
 

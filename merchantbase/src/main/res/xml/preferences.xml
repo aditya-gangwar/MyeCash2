@@ -24,7 +24,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="ACCOUNT">
+        android:title="PROFILE">
 
         <in.myecash.merchantbase.PasswordPreference
             android:title="Change Password"
@@ -52,6 +52,30 @@
             android:maxLength="@string/email_char_limit">
         </EditTextPreference>
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="LINKED EXTERNAL INVOICE">
+
+        <SwitchPreference
+            android:title="Ask Linked Invoice#"
+            android:key="settings_linked_invoice"
+            android:summary="Ask for Linked External Invoice Number for each Transaction?">
+        </SwitchPreference>
+
+        <SwitchPreference
+            android:title="Linked Invoice# Optional"
+            android:key="settings_invoice_optional"
+            android:summary="Is Linked Invoice Number for Txn Optional?"
+            android:dependency="settings_linked_invoice">
+        </SwitchPreference>
+
+        <SwitchPreference
+            android:title="Invoice# Only Numbers"
+            android:key="settings_invoice_numbers_only"
+            android:summary="Invoice Number contain only numbers from 0-9?"
+            android:dependency="settings_linked_invoice">
+        </SwitchPreference>
 
     </PreferenceCategory>
 
