@@ -30,7 +30,7 @@
     <color name="toolbar_text_primary">#FFFFFF</color>
     <color name="toolbar_background">#166a8f</color>
 
-    <color name="bg_list_header">#EEEEEE</color>
+    <color name="bg_light_grey">#EEEEEE</color>
     <color name="bg_customercare_data">#d4f1ff</color>
     <color name="bg_light_pink">#fbd1d5</color>
     <color name="bg_light_green">#d6eed4</color>
@@ -57,7 +57,6 @@
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
     <color name="iron2">#EEEEEE</color>
-    <color name="lightest_grey">#F1F1F1</color>
     <color name="white">#FFFFFF</color>
 
     <color name="frame">#b4b4b4</color>

@@ -1,5 +1,6 @@
 package in.myecash.merchantbase;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -33,6 +34,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public static final String KEY_LINKED_INV = "settings_linked_invoice";
     public static final String KEY_LINKED_INV_OPTIONAL = "settings_invoice_optional";
     public static final String KEY_LINKED_INV_ONLY_NMBRS = "settings_invoice_numbers_only";
+    public static final String KEY_CAMERA_FLASH = "settings_camera_flash";
 
     private MerchantUser mMerchantUser;
 
@@ -72,54 +74,57 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                                           String key) {
         LogMy.d(TAG, "In onSharedPreferenceChanged");
         String newValue;
-        int errorCode = ErrorCodes.NO_ERROR;
 
-        if (key.equals(KEY_CB_RATE)) {
-            newValue = sharedPreferences.getString(KEY_CB_RATE, null);
-            errorCode = ValidationHelper.validateCbRate(newValue);
-            if(errorCode==ErrorCodes.NO_ERROR) {
-                mMerchantUser.setNewCbRate(newValue);
-                mSettingsChanged = true;
-                setCbRateSummary(newValue, false);
-            }
-        } else if (key.equals(KEY_ADD_CL_ENABLED)) {
-            boolean isAddClEnabled = sharedPreferences.getBoolean(KEY_ADD_CL_ENABLED, mMerchantUser.getMerchant().getCl_add_enable());
-            if(isAddClEnabled != mMerchantUser.getMerchant().getCl_add_enable()) {
-                mMerchantUser.setNewIsAddClEnabled(isAddClEnabled);
-                mSettingsChanged = true;
-                setAddCashSummary(isAddClEnabled, false);
-            }
-        } else if (key.equals(KEY_EMAIL)) {
-            newValue = sharedPreferences.getString(KEY_EMAIL, null);
-            errorCode = ValidationHelper.validateEmail(newValue);
-            if(errorCode==ErrorCodes.NO_ERROR) {
-                mMerchantUser.setNewEmail(newValue);
-                mSettingsChanged = true;
-                setEmailSummary(newValue);
-            } else {
-                AppCommonUtil.toast(getActivity(), AppCommonUtil.getErrorDesc(errorCode));
-            }
-        } else if(key.equals(KEY_LINKED_INV)) {
-            boolean askLinkedInvNum = sharedPreferences.getBoolean(KEY_LINKED_INV, mMerchantUser.getMerchant().isInvoiceNumAsk());
-            if(askLinkedInvNum != mMerchantUser.getMerchant().isInvoiceNumAsk()) {
-                mMerchantUser.setNewInvNumAsk(askLinkedInvNum);
-                mSettingsChanged = true;
-            }
-        }  else if(key.equals(KEY_LINKED_INV_OPTIONAL)) {
-            boolean linkedInvOptional = sharedPreferences.getBoolean(KEY_LINKED_INV_OPTIONAL, mMerchantUser.getMerchant().isInvoiceNumOptional());
-            if(linkedInvOptional != mMerchantUser.getMerchant().isInvoiceNumOptional()) {
-                mMerchantUser.setNewInvNumOptional(linkedInvOptional);
-                mSettingsChanged = true;
-            }
-        }   else if(key.equals(KEY_LINKED_INV_ONLY_NMBRS)) {
-            boolean linkedInvOnlyNmbrs = sharedPreferences.getBoolean(KEY_LINKED_INV_ONLY_NMBRS, mMerchantUser.getMerchant().isInvoiceNumOnlyNumbers());
-            if(linkedInvOnlyNmbrs != mMerchantUser.getMerchant().isInvoiceNumOnlyNumbers()) {
-                mMerchantUser.setNewInvNumOnlyNumbers(linkedInvOnlyNmbrs);
-                mSettingsChanged = true;
+        int errorCode = AppCommonUtil.isNetworkAvailableAndConnected(getActivity());
+        if ( errorCode == ErrorCodes.NO_ERROR) {
+            if (key.equals(KEY_CB_RATE)) {
+                newValue = sharedPreferences.getString(KEY_CB_RATE, null);
+                errorCode = ValidationHelper.validateCbRate(newValue);
+                if (errorCode == ErrorCodes.NO_ERROR) {
+                    mMerchantUser.setNewCbRate(newValue);
+                    mSettingsChanged = true;
+                    setCbRateSummary(newValue, false);
+                }
+            } else if (key.equals(KEY_ADD_CL_ENABLED)) {
+                boolean isAddClEnabled = sharedPreferences.getBoolean(KEY_ADD_CL_ENABLED, mMerchantUser.getMerchant().getCl_add_enable());
+                if (isAddClEnabled != mMerchantUser.getMerchant().getCl_add_enable()) {
+                    mMerchantUser.setNewIsAddClEnabled(isAddClEnabled);
+                    mSettingsChanged = true;
+                    setAddCashSummary(isAddClEnabled, false);
+                }
+            } else if (key.equals(KEY_EMAIL)) {
+                newValue = sharedPreferences.getString(KEY_EMAIL, null);
+                errorCode = ValidationHelper.validateEmail(newValue);
+                if (errorCode == ErrorCodes.NO_ERROR) {
+                    mMerchantUser.setNewEmail(newValue);
+                    mSettingsChanged = true;
+                    setEmailSummary(newValue);
+                } else {
+                    AppCommonUtil.toast(getActivity(), AppCommonUtil.getErrorDesc(errorCode));
+                }
+            } else if (key.equals(KEY_LINKED_INV)) {
+                boolean askLinkedInvNum = sharedPreferences.getBoolean(KEY_LINKED_INV, mMerchantUser.getMerchant().isInvoiceNumAsk());
+                if (askLinkedInvNum != mMerchantUser.getMerchant().isInvoiceNumAsk()) {
+                    mMerchantUser.setNewInvNumAsk(askLinkedInvNum);
+                    mSettingsChanged = true;
+                }
+            } else if (key.equals(KEY_LINKED_INV_OPTIONAL)) {
+                boolean linkedInvOptional = sharedPreferences.getBoolean(KEY_LINKED_INV_OPTIONAL, mMerchantUser.getMerchant().isInvoiceNumOptional());
+                if (linkedInvOptional != mMerchantUser.getMerchant().isInvoiceNumOptional()) {
+                    mMerchantUser.setNewInvNumOptional(linkedInvOptional);
+                    mSettingsChanged = true;
+                }
+            } else if (key.equals(KEY_LINKED_INV_ONLY_NMBRS)) {
+                boolean linkedInvOnlyNmbrs = sharedPreferences.getBoolean(KEY_LINKED_INV_ONLY_NMBRS, mMerchantUser.getMerchant().isInvoiceNumOnlyNumbers());
+                if (linkedInvOnlyNmbrs != mMerchantUser.getMerchant().isInvoiceNumOnlyNumbers()) {
+                    mMerchantUser.setNewInvNumOnlyNumbers(linkedInvOnlyNmbrs);
+                    mSettingsChanged = true;
+                }
             }
         }
 
-        if(errorCode!=ErrorCodes.NO_ERROR) {
+        if(errorCode!=ErrorCodes.NO_ERROR &&
+                !key.equals(KEY_CAMERA_FLASH)) {
             DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true);
             dialog.setTargetFragment(this, REQ_NOTIFICATION );
             dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);

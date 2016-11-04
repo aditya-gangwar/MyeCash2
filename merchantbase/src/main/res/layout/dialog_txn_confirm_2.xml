@@ -107,7 +107,7 @@
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_to_pay"
             android:layout_marginBottom="@dimen/medium_space"
-            android:background="@color/lightest_grey">
+            android:background="@color/bg_light_grey">
 
             <EditText
                 style="@style/Edittext_only_view_medium"
@@ -157,7 +157,7 @@
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_balance"
             android:layout_marginBottom="@dimen/medium_space"
-            android:background="@color/lightest_grey">
+            android:background="@color/bg_light_grey">
 
             <EditText
                 style="@style/Edittext_only_view_medium"

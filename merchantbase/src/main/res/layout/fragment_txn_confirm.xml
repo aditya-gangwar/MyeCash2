@@ -24,7 +24,7 @@
             android:background="@color/green_positive"/>
 
         <android.support.v7.widget.AppCompatButton
-            style="@style/button_normal_white"
+            style="@style/button_normal_border"
             android:id="@+id/btn_txn_confirm"
             android:text="CONFIRM"
             android:textColor="@color/green_positive"/>
@@ -64,8 +64,8 @@
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_bill_amt"
-                android:layout_marginBottom="@dimen/small_space"
-                android:layout_marginTop="@dimen/medium_space">
+                android:layout_marginBottom="@dimen/medium_space"
+                android:layout_marginTop="@dimen/large_space">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_debit_account"
-                android:layout_marginBottom="@dimen/small_space"
+                android:layout_marginBottom="@dimen/medium_space"
                 android:visibility="visible">
 
                 <ImageView
@@ -116,7 +116,7 @@
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_redeem_cb"
-                android:layout_marginBottom="@dimen/small_space">
+                android:layout_marginBottom="@dimen/medium_space">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -147,8 +147,8 @@
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_to_pay"
-                android:layout_marginBottom="@dimen/small_space"
-                android:background="@color/lightest_grey">
+                android:layout_marginBottom="@dimen/medium_space"
+                android:background="@color/bg_filters">
 
                 <EditText
                     style="@style/Edittext_only_view_medium"
@@ -172,7 +172,7 @@
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_cash_paid"
-                android:layout_marginBottom="@dimen/small_space">
+                android:layout_marginBottom="@dimen/medium_space">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -199,8 +199,8 @@
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_balance"
-                android:layout_marginBottom="@dimen/small_space"
-                android:background="@color/lightest_grey">
+                android:layout_marginBottom="@dimen/medium_space"
+                android:background="@color/bg_filters">
 
                 <EditText
                     style="@style/Edittext_only_view_medium"
@@ -224,7 +224,7 @@
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_add_account"
-                android:layout_marginBottom="@dimen/small_space">
+                android:layout_marginBottom="@dimen/medium_space">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -253,8 +253,8 @@
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_return_cash"
-                android:layout_marginBottom="@dimen/small_space"
-                android:background="@color/lightest_grey">
+                android:layout_marginBottom="@dimen/medium_space"
+                android:background="@color/bg_light_grey">
 
                 <EditText
                     style="@style/Edittext_only_view_medium"
@@ -300,7 +300,8 @@
                 android:layout_weight="40"/>
 
             <LinearLayout
-                style="@style/LL_Horizontal_wrap">
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_extra_details">
 
                 <View
                     style="@style/Divider_horizontal_Medium"
@@ -341,10 +342,10 @@
                     android:gravity="left"
                     android:id="@+id/input_invoice_num"
                     android:hint="Invoice#"
-                    android:inputType="text"/>
+                    android:inputType="textCapCharacters"/>
             </LinearLayout>
 
-            <EditText
+            <!--EditText
                 style="@style/Edittext_only_view_medium"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -359,7 +360,7 @@
                 android:gravity="left"
                 android:id="@+id/input_comments"
                 android:hint="Text here"
-                android:maxLength="@string/max_str_limit"/>
+                android:maxLength="@string/max_str_limit"/-->
 
             <Space
                 android:layout_width="match_parent"

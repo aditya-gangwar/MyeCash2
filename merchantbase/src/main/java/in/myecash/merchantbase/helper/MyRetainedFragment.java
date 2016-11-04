@@ -8,7 +8,9 @@ import android.os.Handler;
 
 import com.crashlytics.android.Crashlytics;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.TxnReportsHelper;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.MerchantOps;
 import in.myecash.common.database.MerchantStats;
@@ -17,7 +19,7 @@ import in.myecash.appbase.utilities.BackgroundProcessor;
 import in.myecash.appbase.utilities.FileFetchr;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.RetainedFragment;
-import in.myecash.merchantbase.entities.CustomerOps;
+import in.myecash.merchantbase.entities.MyCustomerOps;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.common.MyCustomer;
@@ -25,8 +27,9 @@ import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.merchantbase.entities.OrderItem;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by adgangwa on 02-03-2016.
@@ -52,7 +55,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_CHANGE_MOBILE = 14;
     public static final int REQUEST_MERCHANT_STATS = 15;
     public static final int REQUEST_FORGOT_ID = 16;
-    public static final int REQUEST_UPLOAD_TXN_IMG = 17;
+    public static final int REQUEST_UPLOAD_IMG = 17;
     public static final int REQUEST_ARCHIVE_TXNS = 18;
     public static final int REQUEST_CUST_DATA_FILE_DOWNLOAD = 19;
     public static final int REQUEST_FETCH_MERCHANT_OPS = 20;
@@ -68,7 +71,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public String mCustMobile;
     public String mCustCardId;
     public boolean mCardPresented;
-    public String mCardImageFile;
+    public String mCardImageFilename;
 
     public MyCashback mCurrCashback;
     public MyCustomer mCurrCustomer;
@@ -83,7 +86,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public List<OrderItem> mOrderItems;
     public int toDeleteTrustedDeviceIndex = -1;
 
-    public CustomerOps mCustomerOp;
+    public MyCustomerOps mCustomerOp;
     // params for merchant mobile number change operation
     public String mVerifyParamMobileChange;
     public String mNewMobileNum;
@@ -110,7 +113,7 @@ public class MyRetainedFragment extends RetainedFragment {
 
         mCustMobile = null;
         mCustCardId = null;
-        mCardImageFile = null;
+        mCardImageFilename = null;
         mCardPresented = false;
         toDeleteTrustedDeviceIndex = -1;
 
@@ -145,9 +148,39 @@ public class MyRetainedFragment extends RetainedFragment {
         mBackgroundProcessor.addDeleteDeviceRequest(toDeleteTrustedDeviceIndex);
     }
 
-    public void uploadTxnImageFile(File file) {
-        mBackgroundProcessor.addTxnImgUploadRequest(file);
+    public void uploadImageFile(Context ctxt, String localStoredFileName, String remoteFileName, String remoteDir) {
+        // get file object for the stored file
+        File txnImage = new File(ctxt.getFilesDir() + "/" + localStoredFileName);
+        // check if image of card exists
+        if(txnImage.exists()) {
+            // rename the file
+            File to = new File(txnImage.getParentFile(), remoteFileName);
+            if(txnImage.renameTo(to)) {
+                // add upload request
+                mBackgroundProcessor.addImgUploadRequest(to, remoteDir);
+            } else {
+                LogMy.w(TAG, "Txn Image file rename failed: "+txnImage.getAbsolutePath());
+                ctxt.deleteFile(localStoredFileName);
+                //raise alarm
+                Map<String,String> params = new HashMap<>();
+                params.put("FromFilePath",txnImage.getAbsolutePath());
+                params.put("ToFilePath",to.getAbsolutePath());
+                AppAlarms.localOpFailed(MerchantUser.getInstance().getMerchantId(), DbConstants.USER_TYPE_MERCHANT,"uploadImage",params);
+            }
+
+        } else {
+            // for some reason file does not exist
+            LogMy.w(TAG,"Image file does not exist: "+txnImage.getAbsolutePath());
+            //raise alarm
+            Map<String,String> params = new HashMap<>();
+            params.put("FilePath",txnImage.getAbsolutePath());
+            AppAlarms.localOpFailed(MerchantUser.getInstance().getMerchantId(),DbConstants.USER_TYPE_MERCHANT,"uploadImage",params);
+        }
     }
+
+    /*public void uploadImageFile(File file, String remoteDir) {
+        mBackgroundProcessor.addImgUploadRequest(file, remoteDir);
+    }*/
 
     public void changePassword(String oldPasswd, String newPasswd) {
         mBackgroundProcessor.changePassword(oldPasswd, newPasswd);

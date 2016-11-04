@@ -34,7 +34,7 @@ public class Transaction implements Serializable
   private String imgFileName;
   private java.util.Date cancelTime;
   private String invoiceNum;
-  private String comments;
+  private String canImgFileName;
 
   public String getInvoiceNum() {
     return invoiceNum;
@@ -44,12 +44,12 @@ public class Transaction implements Serializable
     this.invoiceNum = invoiceNum;
   }
 
-  public String getComments() {
-    return comments;
+  public String getCanImgFileName() {
+    return canImgFileName;
   }
 
-  public void setComments(String comments) {
-    this.comments = comments;
+  public void setCanImgFileName(String canImgFileName) {
+    this.canImgFileName = canImgFileName;
   }
 
   public Date getCancelTime() {

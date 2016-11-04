@@ -71,10 +71,10 @@ public class CsvConverter {
         String imgFilename = txn.getImgFileName();
         csvFields[TXN_CSV_IDX_IMG_FILE] = (imgFilename==null)?"":imgFilename;
         csvFields[TXN_CSV_IDX_INV_NUM] = (txn.getInvoiceNum()==null)?"":txn.getInvoiceNum();
-        csvFields[TXN_CSV_IDX_COMMENTS] = (txn.getComments()==null)?"":txn.getComments();
+        csvFields[TXN_CSV_IDX_COMMENTS] = (txn.getCanImgFileName()==null)?"":txn.getCanImgFileName();
 
         // join the fields in single CSV string
-        StringBuilder sb = new StringBuilder(TXN_CSV_MAX_SIZE+txn.getComments().length());
+        StringBuilder sb = new StringBuilder(TXN_CSV_MAX_SIZE+csvFields[TXN_CSV_IDX_COMMENTS].length());
         for(int i=0; i<TXN_CSV_TOTAL_FIELDS; i++) {
             sb.append(csvFields[i]).append(TXN_CSV_DELIM);
         }

@@ -531,7 +531,7 @@ public class TxnListFragment extends Fragment {
             }
 
             if(mTxn.getCb_debit() > 0) {
-                mCashbackAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCl_debit(), false));
+                mCashbackAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCb_debit(), false));
                 mCashbackAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
             } else {
                 mCashbackIcon.setVisibility(View.GONE);

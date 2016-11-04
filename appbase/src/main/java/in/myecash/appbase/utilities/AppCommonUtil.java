@@ -157,6 +157,7 @@ public class AppCommonUtil {
      * Error codes related
      */
     public static int getLocalErrorCode(BackendlessException e) {
+        LogMy.d(TAG,"Entering getLocalErrorCode: "+e.getCode());
         String expCode;
         if( e.getCode().equals("0") && e.getMessage().startsWith(CommonConstants.PREFIX_ERROR_CODE_AS_MSG) ) {
             LogMy.d(TAG,"Custom error code case: Orig: "+e.getCode()+","+e.getMessage());
@@ -170,7 +171,8 @@ public class AppCommonUtil {
         try {
             errorCode = Integer.parseInt(expCode);
         } catch(Exception et) {
-            if(e.getMessage().contains("failed to connect to")) {
+            if(e.getMessage().contains(CommonConstants.BACKENDLESS_HOST_IP)) {
+                LogMy.d(TAG,"Exiting getLocalErrorCode: "+ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE);
                 return ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE;
             }
             LogMy.e(TAG,"Non-integer error code: "+expCode,e);
@@ -190,13 +192,16 @@ public class AppCommonUtil {
                 // so return generic error code instead
                 // Also log the same for analysis
                 AppAlarms.handleException(e);
+                LogMy.d(TAG,"Exiting getLocalErrorCode: "+ErrorCodes.GENERAL_ERROR);
                 return ErrorCodes.GENERAL_ERROR;
             } else {
                 // its backendless code
+                LogMy.d(TAG,"Exiting getLocalErrorCode: "+status);
                 return status;
             }
         } else {
             // its locally defined error
+            LogMy.d(TAG,"Exiting getLocalErrorCode: "+errorCode);
             return errorCode;
         }
     }
@@ -252,6 +257,8 @@ public class AppCommonUtil {
             out = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             //Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
             bmp.compress(getImgCompressFormat(), 90, out);
+            LogMy.d(TAG, "Compressed image to file: "+fileName);
+
         } catch (Exception e) {
             //e.printStackTrace();
             LogMy.e(TAG,"Exception in compressBmpAndStore",e);

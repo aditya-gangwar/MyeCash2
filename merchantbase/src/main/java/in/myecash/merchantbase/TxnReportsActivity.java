@@ -302,6 +302,14 @@ public class TxnReportsActivity extends AppCompatActivity implements
                             mWorkFragment.mLastFetchTransactions.add(cancelledTxn);
                             startTxnListFragment();
 
+                            // if required, start upload of txn image file in background thread
+                            if(mWorkFragment.mCardImageFilename != null) {
+                                mWorkFragment.uploadImageFile(this, mWorkFragment.mCardImageFilename,
+                                        cancelledTxn.getCanImgFileName(),
+                                        CommonUtils.getTxnImgDir(cancelledTxn.getMerchant_id()));
+                                mWorkFragment.mCardImageFilename = null;
+                            }
+
                         } else {
                             // some logic issue - I shudn't be here - raise alarm
                             LogMy.e(TAG,"Current and Cancelled Txns are not same");
@@ -313,10 +321,30 @@ public class TxnReportsActivity extends AppCompatActivity implements
                         }
 
                     } else {
+                        // delete file, if available
+                        if(mWorkFragment.mCardImageFilename != null) {
+                            deleteFile(mWorkFragment.mCardImageFilename);
+                            mWorkFragment.mCardImageFilename = null;
+                        }
                         DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                                 .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
                     break;
+
+                case MyRetainedFragment.REQUEST_UPLOAD_IMG:
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        LogMy.d(TAG,"Uploaded image file successfully");
+                    } else {
+                        LogMy.e(TAG,"Failed to upload image file");
+                        //raise alarm
+                        Map<String,String> params = new HashMap<>();
+                        params.put("opCode",String.valueOf(MyRetainedFragment.REQUEST_UPLOAD_IMG));
+                        params.put("erroCode",String.valueOf(errorCode));
+                        AppAlarms.fileUploadFailed(MerchantUser.getInstance().getMerchantId(),
+                                DbConstants.USER_TYPE_MERCHANT,"onBgProcessResponse",params);
+                    }
+                    break;
+
             }
 
         } catch (Exception e) {
@@ -350,9 +378,11 @@ public class TxnReportsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onCancelTxnConfirm(String txnId, String cardId) {
+    public void onCancelTxnConfirm(String txnId, String cardId, String imgFileName) {
         mCancelTxnId = txnId;
         mCancelTxnCardId = cardId;
+        mWorkFragment.mCardImageFilename = imgFileName;
+
         // ask for customer PIN
         TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(0,0,0,txnId);
         dialog.show(mFragMgr, DIALOG_PIN_CANCEL_TXN);

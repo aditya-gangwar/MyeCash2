@@ -282,22 +282,13 @@ public class MerchantUser
     /*
      * Methods for customer specific tasks - allowed to merchants
      */
-    public int executeCustOp(CustomerOps custOp) {
+    public String executeCustOp(MyCustomerOps custOp) {
         if(mPseudoLoggedIn) {
-            return ErrorCodes.OPERATION_NOT_ALLOWED;
+            throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
         }
 
-        try
-        {
-            CommonServices.getInstance().execCustomerOp(custOp.getOp_code(),custOp.getMobile_num(),custOp.getQr_card(),
-                    custOp.getOtp(),custOp.getPin(),custOp.getExtra_op_params());
-        }
-        catch( BackendlessException e )
-        {
-            LogMy.e(TAG, "exec customer op failed: "+ e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;
+        return CommonServices.getInstance().execCustomerOp(custOp.getOp_code(),custOp.getMobile_num(),custOp.getQr_card(),
+                custOp.getOtp(),custOp.getPin(),custOp.getExtra_op_params());
     }
 
     public Cashback registerCustomer(String mobileNum, String qrCode, String otp) {
@@ -358,12 +349,21 @@ public class MerchantUser
         return ErrorCodes.NO_ERROR;
     }
 
-    public void uploadTxnImgFile(File file) throws Exception {
+    public void uploadImgFile(File file, String remoteDir) throws Exception {
+        if(mPseudoLoggedIn) {
+            throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
+        }
+        // upload file
+        BackendlessFile newfile = Backendless.Files.upload(file, remoteDir, true);
+        LogMy.d(TAG, "Image uploaded successfully at :" + newfile.getFileURL());
+    }
+
+    /*public void uploadImgFile(File file) throws Exception {
         if(mPseudoLoggedIn) {
             throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
         }
         uploadImageSync(file, CommonUtils.getTxnImgDir(mMerchant.getAuto_id()));
-    }
+    }*/
 
     /*
      * Methods for other DB actions
@@ -467,12 +467,12 @@ public class MerchantUser
     /*
      * Private helper functions
      */
-    private String uploadImageSync(File imgFile, String remoteDir) throws Exception {
+    /*private String uploadImageSync(File imgFile, String remoteDir) throws Exception {
         // upload file
         BackendlessFile file = Backendless.Files.upload(imgFile, remoteDir, true);
         LogMy.d(TAG, "Image uploaded successfully at :" + file.getFileURL());
         return file.getFileURL();
-    }
+    }*/
 
     private void loadMerchant(String idOrMobileNum) {
 

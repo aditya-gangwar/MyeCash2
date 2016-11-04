@@ -65,7 +65,7 @@ public class TxnConfirmFragment extends Fragment {
                     AppCommonUtil.hideKeyboard(getActivity());
                     Transaction curTxn = mCallback.getRetainedFragment().mCurrTransaction.getTransaction();
                     curTxn.setInvoiceNum(mInputInvoiceNum.getText().toString());
-                    curTxn.setComments(mInputComments.getText().toString());
+                    //curTxn.setComments(mInputComments.getText().toString());
                     mCallback.onTransactionConfirm();
                 }
             }
@@ -168,6 +168,7 @@ public class TxnConfirmFragment extends Fragment {
         }
 
         if(returnCash > 0) {
+            // I shudn't be here
             mLabelReturnCash.setText("RETURN");
             mInputReturnCash.setText(AppCommonUtil.getSignedAmtStr(returnCash, false));
             mInputReturnCash.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
@@ -175,7 +176,7 @@ public class TxnConfirmFragment extends Fragment {
         } else {
             mLabelReturnCash.setText("BALANCE");
             mInputReturnCash.setText(AppCommonUtil.getSignedAmtStr(Math.abs(returnCash), true));
-            mLayoutReturnCash.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.bg_light_green));
+            mLayoutReturnCash.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.bg_light_grey));
         }
 
         // add cashback
@@ -187,11 +188,13 @@ public class TxnConfirmFragment extends Fragment {
         }
 
         if(mMerchant.isInvoiceNumAsk()) {
+            mLayoutExtraDetails.setVisibility(View.VISIBLE);
             mLayoutInvoiceNum.setVisibility(View.VISIBLE);
             if(mMerchant.isInvoiceNumOnlyNumbers()) {
                 mInputInvoiceNum.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
             }
         } else {
+            mLayoutExtraDetails.setVisibility(View.GONE);
             mLayoutInvoiceNum.setVisibility(View.GONE);
         }
     }
@@ -229,9 +232,10 @@ public class TxnConfirmFragment extends Fragment {
     private LinearLayout mLayoutAddCb;
     private EditText mInputAddCb;
 
+    private View mLayoutExtraDetails;
     private View mLayoutInvoiceNum;
     private EditText mInputInvoiceNum;
-    private EditText mInputComments;
+    //private EditText mInputComments;
 
     private AppCompatButton mBtnConfirm;
 
@@ -269,9 +273,10 @@ public class TxnConfirmFragment extends Fragment {
         mLayoutAddCb = (LinearLayout) v.findViewById(R.id.layout_add_cb);
         mInputAddCb = (EditText) v.findViewById(R.id.input_add_cb);
 
+        mLayoutExtraDetails = v.findViewById(R.id.layout_extra_details);
         mLayoutInvoiceNum = v.findViewById(R.id.layout_invoice_num);
         mInputInvoiceNum = (EditText) v.findViewById(R.id.input_invoice_num);
-        mInputComments = (EditText) v.findViewById(R.id.input_comments);
+        //mInputComments = (EditText) v.findViewById(R.id.input_comments);
 
         mBtnConfirm = (AppCompatButton) v.findViewById(R.id.btn_txn_confirm);
     }

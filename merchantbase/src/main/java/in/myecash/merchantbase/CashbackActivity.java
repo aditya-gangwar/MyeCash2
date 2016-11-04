@@ -47,15 +47,13 @@ import in.myecash.common.DateUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
-import in.myecash.merchantbase.entities.CustomerOps;
+import in.myecash.merchantbase.entities.MyCustomerOps;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.merchantbase.entities.MyMerchantStats;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -356,6 +354,7 @@ public class CashbackActivity extends AppCompatActivity implements
         String prefName = AppConstants.PREF_MCHNT_STATS_PREFIX +mMerchant.getAuto_id();
         return PreferenceManager.getDefaultSharedPreferences(this).getString(prefName, null);
     }
+
     private void setStoredMchntStats(String csvStats) {
         LogMy.d(TAG,"In setStoredMchntStats: "+csvStats);
         String prefName = AppConstants.PREF_MCHNT_STATS_PREFIX +mMerchant.getAuto_id();
@@ -605,10 +604,12 @@ public class CashbackActivity extends AppCompatActivity implements
 
     // Callback from 'customer card change' dialog
     @Override
-    public void onCustomerOpOk(String tag, String mobileNum, String qrCode, String extraParam) {
-        mWorkFragment.mCustomerOp = new CustomerOps();
+    public void onCustomerOpOk(String tag, String mobileNum, String qrCode, String extraParam, String imgFilename) {
+        mWorkFragment.mCustomerOp = new MyCustomerOps();
         mWorkFragment.mCustomerOp.setMobile_num(mobileNum);
         mWorkFragment.mCustomerOp.setQr_card(qrCode);
+
+        mWorkFragment.mCardImageFilename = imgFilename;
 
         boolean askPin = true;
         String txnTitle = null;
@@ -650,6 +651,26 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onPinOtp(String pin, String tag) {
+        if(tag.equals(DIALOG_PIN_CUSTOMER_OP)) {
+            mWorkFragment.mCustomerOp.setPin(pin);
+            executeCustomerOp();
+        }
+    }
+
+    private void executeCustomerOp() {
+        int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
+        if ( resultCode != ErrorCodes.NO_ERROR) {
+            // Show error notification dialog
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        } else {
+            AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+            mWorkFragment.executeCustomerOp();
+        }
+    }
+
+    @Override
     public void onCustomerOpReset(String tag) {
         LogMy.d(TAG, "In onCustomerOpReset: ");
         mWorkFragment.mCustomerOp = null;
@@ -672,6 +693,7 @@ public class CashbackActivity extends AppCompatActivity implements
         LogMy.d(TAG, "In onCustOpResult: " + errorCode);
         AppCommonUtil.cancelProgressDialog(true);
 
+        String toUploadImgFilename = null;
         String custOp = mWorkFragment.mCustomerOp.getOp_code();
         if(errorCode==ErrorCodes.NO_ERROR) {
             String successMsg = null;
@@ -692,11 +714,12 @@ public class CashbackActivity extends AppCompatActivity implements
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
             // customer operation success, reset to null
+            toUploadImgFilename = mWorkFragment.mCustomerOp.getImageFilename();
             mWorkFragment.mCustomerOp = null;
 
         } else if(errorCode==ErrorCodes.OTP_GENERATED) {
             // OTP sent successfully to registered customer mobile, ask for the same
-            mWorkFragment.mCustomerOp.setOp_status(CustomerOps.CUSTOMER_OP_STATUS_OTP_GENERATED);
+            mWorkFragment.mCustomerOp.setOp_status(MyCustomerOps.CUSTOMER_OP_STATUS_OTP_GENERATED);
             if(mWorkFragment.mCustomerOp==null) {
                 // some issue - not supposed to be null - raise alarm
                 AppAlarms.wtf(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onCustomerOpResult",null);
@@ -713,38 +736,30 @@ public class CashbackActivity extends AppCompatActivity implements
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
             // customer operation success, reset to null
+            toUploadImgFilename = mWorkFragment.mCustomerOp.getImageFilename();
             mWorkFragment.mCustomerOp = null;
 
         } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY &&
                 custOp.equals(DbConstants.OP_RESET_PIN)) {
+            deleteFile(mWorkFragment.mCardImageFilename);
             // Old request is already pending
             String msg = String.format(AppConstants.pinGenerateDuplicateRequestMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
             DialogFragmentWrapper.createNotification(AppConstants.pinResetFailureTitle, msg, false, true)
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
         } else {
+            deleteFile(mWorkFragment.mCardImageFilename);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
-    }
 
-    @Override
-    public void onPinOtp(String pin, String tag) {
-        if(tag.equals(DIALOG_PIN_CUSTOMER_OP)) {
-            mWorkFragment.mCustomerOp.setPin(pin);
-            executeCustomerOp();
-        }
-    }
-
-    private void executeCustomerOp() {
-        int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
-        if ( resultCode != ErrorCodes.NO_ERROR) {
-            // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
-                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-        } else {
-            AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-            mWorkFragment.executeCustomerOp();
+        // if required, start upload of txn image file in background thread
+        // storing it in txnImageDir only
+        if(toUploadImgFilename != null) {
+            mWorkFragment.uploadImageFile(this, mWorkFragment.mCardImageFilename,
+                    toUploadImgFilename,
+                    CommonUtils.getTxnImgDir(mMerchant.getAuto_id()));
+            mWorkFragment.mCardImageFilename = null;
         }
     }
 
@@ -788,12 +803,12 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     private SettingsFragment startSettingsFragment() {
-        int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
+        /*int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
             DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-        } else {
+        } else {*/
             // Store DB settings to app preferences
             if( restoreSettings() ) {
                 //setDrawerState(false);
@@ -811,7 +826,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                         .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
-        }
+        //}
         return null;
     }
 
@@ -827,17 +842,15 @@ public class CashbackActivity extends AppCompatActivity implements
         return prefs.commit();
     }
 
-    private void logoutMerchant() {
+    private int logoutMerchant() {
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
-        if ( resultCode != ErrorCodes.NO_ERROR) {
-            // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
-                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-        } else {
+        // if internet not available - dont try logout
+        if ( resultCode == ErrorCodes.NO_ERROR) {
             // show progress dialog
             AppCommonUtil.showProgressDialog(this, AppConstants.progressLogout);
             mWorkFragment.logoutMerchant();
         }
+        return resultCode;
     }
 
     private void onSettingsChange() {
@@ -876,7 +889,10 @@ public class CashbackActivity extends AppCompatActivity implements
         if(errorCode==ErrorCodes.NO_ERROR) {
             DialogFragmentWrapper.createNotification(AppConstants.pwdChangeSuccessTitle, AppConstants.pwdChangeSuccessMsg, false, false)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            logoutMerchant();
+            int error = logoutMerchant();
+            if(error != ErrorCodes.NO_ERROR) {
+                onLogoutResponse(error);
+            }
         } else {
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -977,14 +993,14 @@ public class CashbackActivity extends AppCompatActivity implements
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
                 break;
-            case MyRetainedFragment.REQUEST_UPLOAD_TXN_IMG:
+            case MyRetainedFragment.REQUEST_UPLOAD_IMG:
                 if(errorCode==ErrorCodes.NO_ERROR) {
-                    LogMy.d(TAG,"Uploaded txn image file successfully");
+                    LogMy.d(TAG,"Uploaded image file successfully");
                 } else {
-                    LogMy.e(TAG,"Failed to upload txn image file");
+                    LogMy.e(TAG,"Failed to upload image file");
                     //raise alarm
                     Map<String,String> params = new HashMap<>();
-                    params.put("opCode",String.valueOf(MyRetainedFragment.REQUEST_UPLOAD_TXN_IMG));
+                    params.put("opCode",String.valueOf(MyRetainedFragment.REQUEST_UPLOAD_IMG));
                     params.put("erroCode",String.valueOf(errorCode));
                     AppAlarms.fileUploadFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onBgProcessResponse",params);
                 }
@@ -1330,19 +1346,19 @@ public class CashbackActivity extends AppCompatActivity implements
             // show progress dialog
             AppCommonUtil.showProgressDialog(CashbackActivity.this, AppConstants.progressDefault);
 
-            if(mWorkFragment.mCardImageFile!=null) {
+            if(mWorkFragment.mCardImageFilename !=null) {
                 // check if txn image is to be captured
                 if(!captureTxnImage(pin)) {
                     // delete earlier stored captured image file
-                    deleteFile(mWorkFragment.mCardImageFile);
+                    deleteFile(mWorkFragment.mCardImageFilename);
                     /*if(!txnImage.delete()) {
                         LogMy.w(TAG,"Failed to delete txn image file: "+txnImage.getAbsolutePath());
                     }*/
-                    mWorkFragment.mCardImageFile = null;
+                    mWorkFragment.mCardImageFilename = null;
                 }
             }
 
-            mWorkFragment.mCurrTransaction.getTransaction().setImgFileName(mWorkFragment.mCardImageFile);
+            mWorkFragment.mCurrTransaction.getTransaction().setImgFileName(mWorkFragment.mCardImageFilename);
             mWorkFragment.commitCashTransaction(pin);
         }
     }
@@ -1378,54 +1394,63 @@ public class CashbackActivity extends AppCompatActivity implements
             dialog.show(mFragMgr, DIALOG_TXN_SUCCESS);
 
             // if required, start upload of txn image file in background thread
-            if(mWorkFragment.mCardImageFile != null) {
-                uploadTxnImage(mWorkFragment.mCardImageFile);
-                mWorkFragment.mCardImageFile = null;
+            if(mWorkFragment.mCardImageFilename != null) {
+                mWorkFragment.uploadImageFile(this, mWorkFragment.mCardImageFilename,
+                        mWorkFragment.mCurrTransaction.getTransaction().getImgFileName(),
+                        CommonUtils.getTxnImgDir(mMerchant.getAuto_id()));
+                mWorkFragment.mCardImageFilename = null;
             }
         } else {
+            // delete file, if available
+            if(mWorkFragment.mCardImageFilename != null) {
+                deleteFile(mWorkFragment.mCardImageFilename);
+                mWorkFragment.mCardImageFilename = null;
+            }
             // Display failure notification
             DialogFragmentWrapper.createNotification(AppConstants.commitTransFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 
-    public void uploadTxnImage(String localStoredFileName) {
+    /*public void uploadImage(String localStoredFileName, String remoteFileName, String remoteDir) {
         // get file object for the stored file
         File txnImage = new File(getFilesDir() + "/" + localStoredFileName);
         // check if image of card exists
         if(txnImage.exists()) {
             // rename the file to one provided by backend
-            File to = new File(txnImage.getParentFile(),
-                    mWorkFragment.mCurrTransaction.getTransaction().getImgFileName());
+            File to = new File(txnImage.getParentFile(), remoteFileName);
             if(txnImage.renameTo(to)) {
                 // add upload request
-                mWorkFragment.uploadTxnImageFile(to);
+                mWorkFragment.uploadImageFile(to, remoteDir);
             } else {
-                // if failed, keep name as original
                 LogMy.w(TAG, "Txn Image file rename failed: "+txnImage.getAbsolutePath());
+                deleteFile(localStoredFileName);
                 //raise alarm
                 Map<String,String> params = new HashMap<>();
                 params.put("FromFilePath",txnImage.getAbsolutePath());
                 params.put("ToFilePath",to.getAbsolutePath());
-                AppAlarms.localOpFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"uploadTxnImage",params);
+                AppAlarms.localOpFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"uploadImage",params);
             }
 
         } else {
             // for some reason file does not exist
-            LogMy.w(TAG,"Txn image file does not exist: "+txnImage.getAbsolutePath());
+            LogMy.w(TAG,"Image file does not exist: "+txnImage.getAbsolutePath());
             //raise alarm
             Map<String,String> params = new HashMap<>();
             params.put("FilePath",txnImage.getAbsolutePath());
-            AppAlarms.localOpFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"uploadTxnImage",params);
+            AppAlarms.localOpFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"uploadImage",params);
         }
-    }
+    }*/
 
     public void onDialogResult(String tag, int indexOrResultCode, ArrayList<Integer> selectedItemsIndexList) {
         LogMy.d(TAG, "In onDialogResult: " + tag);
 
         if (tag.equals(DIALOG_BACK_BUTTON)) {
             mExitAfterLogout = true;
-            logoutMerchant();
+            int error = logoutMerchant();
+            if(error != ErrorCodes.NO_ERROR) {
+                onLogoutResponse(error);
+            }
         }/* else if(tag.equals(DIALOG_LOGOUT)) {
             mExitAfterLogout = false;
             logoutMerchant();
@@ -1504,9 +1529,10 @@ public class CashbackActivity extends AppCompatActivity implements
                 // launch barcode activity.
                 Intent intent = new Intent(this, BarcodeCaptureActivity.class);
                 intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                ///intent.putExtra(BarcodeCaptureActivity.UseFlash, SettingsFragment.useCameraFlash(this));
                 intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
-                mWorkFragment.mCardImageFile = "txnImg_"+Long.toString(System.currentTimeMillis())+CommonConstants.PHOTO_FILE_FORMAT;
-                intent.putExtra(BarcodeCaptureActivity.ImageFileName,mWorkFragment.mCardImageFile);
+                mWorkFragment.mCardImageFilename = CommonConstants.PREFIX_TXN_IMG_FILE_NAME+Long.toString(System.currentTimeMillis())+"."+CommonConstants.PHOTO_FILE_FORMAT;
+                intent.putExtra(BarcodeCaptureActivity.ImageFileName,mWorkFragment.mCardImageFilename);
 
                 startActivityForResult(intent, RC_BARCODE_CAPTURE);
             } else {

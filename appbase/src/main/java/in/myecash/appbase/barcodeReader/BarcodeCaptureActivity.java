@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ScaleGestureDetector;
 import android.widget.Toast;
@@ -91,7 +93,11 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
 
         // read parameters from the intent used to launch the activity.
         boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, false);
-        boolean useFlash = getIntent().getBooleanExtra(UseFlash, false);
+        //boolean useFlash = getIntent().getBooleanExtra(UseFlash, false);
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean useFlash = sharedPref.getBoolean("settings_camera_flash", false);
+
         mImageFileName = getIntent().getStringExtra(ImageFileName);
 
         createCameraSource(autoFocus, useFlash);
@@ -227,7 +233,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
 
     @Override
     public void onDetection(Frame frame) {
-        LogMy.d(TAG, "In onDetection");
+        //LogMy.d(TAG, "In onDetection");
         if(mImageFileName!=null &&
                 !mFirstImage ) {
             mFirstImage = true;
@@ -239,13 +245,12 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
 
             YuvImage yuvimage = new YuvImage(byteBuffer.array(), ImageFormat.NV21, w, h, null);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            yuvimage.compressToJpeg(new Rect(0, 0, w, h), 100, baos); // Where 80 is the quality of the generated jpeg
+            yuvimage.compressToJpeg(new Rect(0, 0, w, h), 90, baos); // Where 80 is the quality of the generated jpeg
             byte[] jpegArray = baos.toByteArray();
             Bitmap bitmap = BitmapFactory.decodeByteArray(jpegArray, 0, jpegArray.length);
             //Bitmap bmp = AppCommonUtil.addDateTime(BarcodeCaptureActivity.this, bitmap);
             LogMy.d(TAG, "Got bmp from the Frame: "+bitmap.getByteCount());
             AppCommonUtil.compressBmpAndStore(BarcodeCaptureActivity.this, bitmap, mImageFileName);
-            LogMy.d(TAG, "After compress and store");
         }
     }
 

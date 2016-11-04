@@ -19,13 +19,14 @@ import android.widget.Toast;
 
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.common.MyGlobalSettings;
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
-import in.myecash.merchantbase.entities.CustomerOps;
+import in.myecash.merchantbase.entities.MyCustomerOps;
 
 /**
  * Created by adgangwa on 21-05-2016.
@@ -46,19 +47,22 @@ public class CustomerOpDialog extends DialogFragment
     private static final String DIALOG_REASON = "dialogReason";
 
     private CustomerOpDialogIf mCallback;
+    // we may loos this during screen rotation etc
+    // but ignoring it for now
+    private String mImgFilename;
 
     public interface CustomerOpDialogIf {
-        void onCustomerOpOk(String tag, String mobileNum, String qrCode, String extraParam);
+        void onCustomerOpOk(String tag, String mobileNum, String qrCode, String extraParam, String imgFilename);
         void onCustomerOpOtp(String otp);
         void onCustomerOpReset(String tag);
     }
 
-    public static CustomerOpDialog newInstance(String opCode, CustomerOps custOp) {
+    public static CustomerOpDialog newInstance(String opCode, MyCustomerOps custOp) {
         Bundle args = new Bundle();
         args.putString(ARG_OP_CODE, opCode);
         if(custOp != null) {
             if(custOp.getOp_status() != null &&
-                    custOp.getOp_status().equals(CustomerOps.CUSTOMER_OP_STATUS_OTP_GENERATED)) {
+                    custOp.getOp_status().equals(MyCustomerOps.CUSTOMER_OP_STATUS_OTP_GENERATED)) {
                 args.putBoolean(ARG_OTP_GENERATED,true);
             } else {
                 args.putBoolean(ARG_OTP_GENERATED,false);
@@ -226,6 +230,8 @@ public class CustomerOpDialog extends DialogFragment
     {
         super.onStart();    //super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after this point
         final AlertDialog d = (AlertDialog)getDialog();
+        final String opCode = getArguments().getString(ARG_OP_CODE);
+
         if(d != null)
         {
             Button positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
@@ -254,7 +260,8 @@ public class CustomerOpDialog extends DialogFragment
                                     getTag(),
                                     mInputMobileNum.getText().toString(),
                                     mInputQrCard.getText().toString(),
-                                    extraParam);
+                                    extraParam,
+                                    mImgFilename);
                         }
                         wantToCloseDialog = true;
                     }
@@ -266,36 +273,6 @@ public class CustomerOpDialog extends DialogFragment
             });
         }
     }
-
-    /*
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-
-        if(validate()) {
-            // OTP is only enabled for old dialogs
-            String otp = null;
-            if(mInputOTP.isEnabled()) {
-                otp = mInputOTP.getText().toString();
-                mCallback.onCustomerOpOtp(otp);
-
-            } else {
-                String extraParam = null;
-
-                if( mInputReason.isEnabled() ) {
-                    extraParam = mInputReason.getText().toString();
-                } else if( mInputNewMobile.isEnabled() ) {
-                    extraParam = mInputNewMobile.getText().toString();
-                }
-
-                mCallback.onCustomerOpOk(
-                        getTag(),
-                        mInputMobileNum.getText().toString(),
-                        mInputQrCard.getText().toString(),
-                        extraParam);
-            }
-            dialog.dismiss();
-        }
-    }*/
 
     private boolean validate() {
         boolean retValue = true;
@@ -357,6 +334,9 @@ public class CustomerOpDialog extends DialogFragment
                 Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
                 intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
                 intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+                String opCode = getArguments().getString(ARG_OP_CODE);
+                mImgFilename = getTempImgFilename(opCode);
+                intent.putExtra(BarcodeCaptureActivity.ImageFileName, mImgFilename);
 
                 startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
 
@@ -506,6 +486,12 @@ public class CustomerOpDialog extends DialogFragment
         } else {
             Toast.makeText(getActivity(), "Invalid member QR code: " + qrCode, Toast.LENGTH_LONG).show();
         }
+    }
+
+    private String getTempImgFilename(String opCode) {
+        LogMy.d(TAG,"In getTempImgFilename: "+opCode);
+        String filename = opCode+"_"+Long.toString(System.currentTimeMillis())+"."+ CommonConstants.PHOTO_FILE_FORMAT;
+        return filename.replace(" ","_");
     }
     
 }

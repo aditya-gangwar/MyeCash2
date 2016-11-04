@@ -20,9 +20,9 @@
 
         <View
             style="@style/Divider_horizontal_Medium"
-            android:background="@color/accent2"/>
+            android:background="@color/accent"/>
         <android.support.v7.widget.AppCompatButton
-            style="@style/button_normal_white"
+            style="@style/button_normal_border"
             android:id="@+id/btn_process"
             android:text="PROCESS"/>
     </LinearLayout>

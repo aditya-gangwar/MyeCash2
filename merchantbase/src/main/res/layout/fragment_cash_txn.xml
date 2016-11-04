@@ -24,9 +24,9 @@
             android:id="@+id/divider_btn_collect_cash"
             android:background="@color/green_positive"/>
         <android.support.v7.widget.AppCompatButton
-            style="@style/button_normal_white"
+            style="@style/button_normal_border"
             android:id="@+id/btn_collect_cash"
-            android:text="OK"
+            android:text="Collect      \u20B9 0"
             android:textColor="@color/green_positive"/>
     </LinearLayout>
 
@@ -188,7 +188,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_cashback"
-            android:layout_weight="25"
+            android:layout_weight="22.5"
             android:visibility="visible"/>
 
         <LinearLayout
@@ -345,7 +345,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_cash_paid"
-            android:layout_weight="30"
+            android:layout_weight="27.5"
             android:visibility="visible"/>
 
         <include layout="@layout/cash_paid"/>
@@ -485,7 +485,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_above_button"
-            android:layout_weight="15"/>
+            android:layout_weight="20"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"

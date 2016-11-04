@@ -149,12 +149,12 @@ public class TxnDetailsDialog extends DialogFragment {
                 mLayoutInvNum.setVisibility(View.VISIBLE);
                 mInvoiceNum.setText(txn.getInvoiceNum());
             }
-            if(txn.getComments()==null || txn.getComments().isEmpty()) {
+            /*if(txn.getComments()==null || txn.getComments().isEmpty()) {
                 mLayoutComments.setVisibility(View.GONE);
             } else {
                 mLayoutComments.setVisibility(View.VISIBLE);
                 mComments.setText(txn.getComments());
-            }
+            }*/
 
             mInputTotalBill.setText(AppCommonUtil.getAmtStr(txn.getTotal_billed()));
             mInputCbBill.setText(AppCommonUtil.getAmtStr(txn.getCb_billed()));
@@ -249,8 +249,8 @@ public class TxnDetailsDialog extends DialogFragment {
 
     private View mLayoutInvNum;
     private EditText mInvoiceNum;
-    private View mLayoutComments;
-    private EditText mComments;
+    //private View mLayoutComments;
+    //private EditText mComments;
 
     private EditText mInputTotalBill;
     private EditText mInputCbBill;
@@ -278,8 +278,8 @@ public class TxnDetailsDialog extends DialogFragment {
 
         mLayoutInvNum = v.findViewById(R.id.layout_invoice_num);
         mInvoiceNum = (EditText) v.findViewById(R.id.input_invoice_num);
-        mLayoutComments = v.findViewById(R.id.layout_comments);
-        mComments = (EditText) v.findViewById(R.id.input_comments);
+        //mLayoutComments = v.findViewById(R.id.layout_comments);
+        //mComments = (EditText) v.findViewById(R.id.input_comments);
 
         mInputTotalBill = (EditText) v.findViewById(R.id.input_total_bill);
         mInputCbBill = (EditText) v.findViewById(R.id.input_cb_bill);

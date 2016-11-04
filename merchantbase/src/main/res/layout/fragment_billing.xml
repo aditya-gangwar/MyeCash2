@@ -28,9 +28,9 @@
             style="@style/Divider_horizontal_Medium"
             android:background="@color/green_positive"/>
         <android.support.v7.widget.AppCompatButton
-            style="@style/button_normal_white"
+            style="@style/button_normal_border"
             android:id="@+id/btn_bill_total"
-            android:text="Bill   =    \u20B9 256"
+            android:text="Collect    \u20B9 256"
             android:textColor="@color/green_positive"/>
     </LinearLayout>
 

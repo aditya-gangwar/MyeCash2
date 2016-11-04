@@ -18,12 +18,22 @@
         android:layout_height="match_parent"
         android:drawSelectorOnTop="false"
         android:layout_below="@id/toolbar"
-        android:layout_above="@+id/btn_bill_total"/>
+        android:layout_above="@+id/layout_last_row_btn"/>
 
-    <android.support.v7.widget.AppCompatButton
-        style="@style/button_normal"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/btn_bill_total"
-        android:text="Charge   \u20B9 256"/>
+    <LinearLayout
+        style="@style/LL_Vertical"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_last_row_btn"
+        android:layout_alignParentBottom="true">
+
+        <View
+            style="@style/Divider_horizontal_Medium"
+            android:background="@color/accent"/>
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_normal_border"
+            android:id="@+id/btn_bill_total"
+            android:text="Charge      \u20B9 0"
+            android:textColor="@color/accent"/>
+    </LinearLayout>
 
 </RelativeLayout>

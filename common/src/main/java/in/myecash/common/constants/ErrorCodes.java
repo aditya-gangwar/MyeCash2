@@ -135,7 +135,7 @@ public class ErrorCodes {
         aMap.put(FILE_UPLOAD_FAILED,"Failed to upload the file. Please try again later.");
         aMap.put(FILE_NOT_FOUND,"Requested data not available");
         aMap.put(SERVICE_GLOBAL_DISABLED,"Service under maintenance. Please try after ");
-        aMap.put(REMOTE_SERVICE_NOT_AVAILABLE,"Not able to connect MyeCash Server. Please try after some time.");
+        aMap.put(REMOTE_SERVICE_NOT_AVAILABLE,"MyeCash Server not reachable. Please check Internet connection.");
 
         appErrorDesc = Collections.unmodifiableMap(aMap);
     }

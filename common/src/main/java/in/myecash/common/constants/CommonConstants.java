@@ -15,8 +15,9 @@ public class CommonConstants {
     public static final String APPLICATION_ID = "927292A7-D4D3-7742-FFED-86CED1441100";
     public static final String ANDROID_SECRET_KEY = "14765681-0A7C-3F4E-FF29-41A948E33500";
     public static final String VERSION = "v1";
-    
-    public static final String BACKENDLESS_HOST = "http://35.154.2.170:8080/api";
+
+    public static final String BACKENDLESS_HOST_IP = "35.154.6.90";
+    public static final String BACKENDLESS_HOST = "http://"+BACKENDLESS_HOST_IP+":8080/api";
     public static String BACKEND_FILE_BASE_URL = BACKENDLESS_HOST+"/"+APPLICATION_ID+"/"+VERSION+"/files/";
     public static final String BULK_API_URL  = BACKENDLESS_HOST+"/"+VERSION+"/data/bulk/";
 
@@ -49,6 +50,8 @@ public class CommonConstants {
     public static final String DATE_FORMAT_WITH_TIME = "dd/MM/yyyy HH:mm";
     // date format to be used in filename
     public static final String DATE_FORMAT_ONLY_DATE_FILENAME = "ddMMMyy";
+    // date format with time, to be used in filename
+    public static final String DATE_FORMAT_WITH_TIME_FILENAME = "ddMMMyy_HH_mm";
     // format to show only time in 12 hr format
     public static final String DATE_FORMAT_ONLY_TIME_12 = "hh:mm a";
     // format to show only time in CSV file
@@ -86,8 +89,9 @@ public class CommonConstants {
 
     public static final String MERCHANT_TXN_FILE_PREFIX = "txns_";
     public static final String MERCHANT_CUST_DATA_FILE_PREFIX = "customers_";
-    public static final String PREFIX_TXN_IMG_FILE_NAME = "txnImg_";
     public static final String CASHBACK_DATA_FILE_PREFIX = "cashback_";
+    public static final String PREFIX_TXN_IMG_FILE_NAME = "txnImg_";
+    public static final String PREFIX_TXN_CANCEL_IMG_FILE_NAME = "txnCancel_";
 
     public static final String CSV_DELIMETER = ",";
     public static final String CSV_FILE_EXT = ".csv";

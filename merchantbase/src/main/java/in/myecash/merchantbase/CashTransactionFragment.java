@@ -235,13 +235,13 @@ public class CashTransactionFragment extends Fragment implements
             mDividerInputToPayCash.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
 
         } else if(mReturnCash == 0) {
-            String str = "Collect "+AppConstants.SYMBOL_RS+" 0";
+            String str = "Collect      "+AppConstants.SYMBOL_RS+" 0";
             mInputToPayCash.setText(str);
             mInputToPayCash.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             mDividerInputToPayCash.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
 
         } else {
-            String str = "Collect     "+ AppCommonUtil.getSignedAmtStr(Math.abs(mReturnCash), true);
+            String str = "Collect      "+ AppCommonUtil.getSignedAmtStr(Math.abs(mReturnCash), true);
             mInputToPayCash.setText(str);
             mInputToPayCash.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             mDividerInputToPayCash.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.green_positive));

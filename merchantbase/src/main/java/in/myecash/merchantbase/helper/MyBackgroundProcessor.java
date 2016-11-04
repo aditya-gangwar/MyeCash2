@@ -73,6 +73,10 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         public String cardId;
         public String pin;
     }
+    private class MessageImgUpload implements Serializable {
+        public File file;
+        public String remoteDir;
+    }
 
     /*
      * Add request methods - Assumes that MerchantUser is instantiated
@@ -96,9 +100,12 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     public void addChangeMobileRequest() {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CHANGE_MOBILE,null).sendToTarget();
     }
-    public void addTxnImgUploadRequest(File file) {
-        LogMy.d(TAG, "In addTxnImgUploadRequest");
-        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_UPLOAD_TXN_IMG, file).sendToTarget();
+    public void addImgUploadRequest(File file, String remoteDir) {
+        LogMy.d(TAG, "In addImgUploadRequest");
+        MessageImgUpload msg = new MessageImgUpload();
+        msg.file = file;
+        msg.remoteDir = remoteDir;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_UPLOAD_IMG, msg).sendToTarget();
     }
     public void changePassword(String oldPasswd, String newPasswd) {
         LogMy.d(TAG, "In changePassword:  ");
@@ -220,8 +227,8 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
             case MyRetainedFragment.REQUEST_CHANGE_PASSWD:
                 error = changePassword((MessageChangePassword) msg.obj);
                 break;
-            case MyRetainedFragment.REQUEST_UPLOAD_TXN_IMG:
-                error = uploadTxnImgFile((File) msg.obj);
+            case MyRetainedFragment.REQUEST_UPLOAD_IMG:
+                error = uploadImgFile((MessageImgUpload) msg.obj);
                 break;
             case MyRetainedFragment.REQUEST_DELETE_TRUSTED_DEVICE:
                 error = deleteDevice((Integer) msg.obj);
@@ -243,8 +250,10 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_FETCH_MERCHANT_OPS:
                 error = fetchMerchantOps();
+                break;
             case MyRetainedFragment.REQUEST_CANCEL_TXN:
                 error = cancelTxn((MessageCancelTxn) msg.obj);
+                break;
         }
         return error;
     }
@@ -295,20 +304,23 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         return MerchantUser.getInstance().deleteTrustedDevice(index);
     }
 
-    private int uploadTxnImgFile(File file) {
+    private int uploadImgFile(MessageImgUpload msg) {
+        File file = msg.file;
         try {
-            MerchantUser.getInstance().uploadTxnImgFile(file);
-            LogMy.d(TAG,"Succesfully uploaded txn image file: "+file.getName());
+            MerchantUser.getInstance().uploadImgFile(file, msg.remoteDir);
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"BackendlessException in uploadImgFile: "+file.getAbsolutePath()+", "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+
+        } catch(Exception e) {
+            LogMy.e(TAG,"Exception in uploadImgFile: "+file.getAbsolutePath()+", "+e.toString(),e);
+            return ErrorCodes.GENERAL_ERROR;
+        } finally {
             // delete local file
             if(!file.delete()) {
-                LogMy.w(TAG,"Failed to delete txn image file: "+file.getAbsolutePath());
+                LogMy.w(TAG,"Failed to delete local image file: "+file.getAbsolutePath());
             }
-        } catch (BackendlessException e) {
-            LogMy.e(TAG,"BackendlessException in uploadTxnImgFile: "+file.getAbsolutePath()+", "+e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        } catch(Exception e) {
-            LogMy.e(TAG,"Exception in uploadTxnImgFile: "+file.getAbsolutePath()+", "+e.toString(),e);
-            return ErrorCodes.GENERAL_ERROR;
         }
         return ErrorCodes.NO_ERROR;
     }
@@ -318,7 +330,27 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     }
 
     private int executeCustOp() {
-        return MerchantUser.getInstance().executeCustOp(mRetainedFragment.mCustomerOp);
+        try
+        {
+            String imgFilename = MerchantUser.getInstance().executeCustOp(mRetainedFragment.mCustomerOp);
+            LogMy.d(TAG,"executeCustOp returned img filename as: "+imgFilename);
+            mRetainedFragment.mCustomerOp.setImageFilename(imgFilename);
+        }
+        catch( BackendlessException e )
+        {
+            int errCode = AppCommonUtil.getLocalErrorCode(e);
+            if(errCode==ErrorCodes.OP_SCHEDULED) {
+                // Retrive imgFilename from exception message
+                String imgFilename = e.getMessage();
+                LogMy.d(TAG,"executeCustOp returned img filename as: "+imgFilename);
+                mRetainedFragment.mCustomerOp.setImageFilename(imgFilename);
+
+            } else if(errCode!=ErrorCodes.OTP_GENERATED) {
+                LogMy.e(TAG, "exec customer op failed: "+ e.toString());
+            }
+            return errCode;
+        }
+        return ErrorCodes.NO_ERROR;
     }
 
     private int generatePassword(MessageResetPassword msg) {

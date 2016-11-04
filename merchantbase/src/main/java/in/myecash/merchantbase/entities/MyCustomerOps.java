@@ -6,7 +6,7 @@ import in.myecash.appbase.constants.AppConstants;
 /**
  * Created by adgangwa on 28-08-2016.
  */
-public class CustomerOps {
+public class MyCustomerOps {
     public static String CUSTOMER_OP_STATUS_OTP_GENERATED = "OtpGenerated";
 
     private String extra_op_params;
@@ -16,6 +16,15 @@ public class CustomerOps {
     private String op_status;
     private String otp;
     private String pin;
+    private String imageFilename;
+
+    public String getImageFilename() {
+        return imageFilename;
+    }
+
+    public void setImageFilename(String imageFilename) {
+        this.imageFilename = imageFilename;
+    }
 
     public String getExtra_op_params() {
         return extra_op_params;

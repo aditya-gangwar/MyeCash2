@@ -55,28 +55,43 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="LINKED EXTERNAL INVOICE">
+        android:title="LINKED INVOICE">
+
+        <PreferenceScreen
+            android:title="External Invoice Settings">
+
+            <SwitchPreference
+                android:title="Ask Linked Invoice#"
+                android:key="settings_linked_invoice"
+                android:summary="Ask for Linked External Invoice Number for each Transaction?">
+            </SwitchPreference>
+
+            <SwitchPreference
+                android:title="Linked Invoice# Optional"
+                android:key="settings_invoice_optional"
+                android:summary="Is Linked Invoice Number for Txn Optional?"
+                android:dependency="settings_linked_invoice">
+            </SwitchPreference>
+
+            <SwitchPreference
+                android:title="Invoice# Only Numbers"
+                android:key="settings_invoice_numbers_only"
+                android:summary="Invoice Number contain only numbers from 0-9?"
+                android:dependency="settings_linked_invoice">
+            </SwitchPreference>
+
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="OTHERS">
 
         <SwitchPreference
-            android:title="Ask Linked Invoice#"
-            android:key="settings_linked_invoice"
-            android:summary="Ask for Linked External Invoice Number for each Transaction?">
+            android:title="Use Camera Flash"
+            android:key="settings_camera_flash"
+            android:summary="Always use Camera Flash while Scanning Card"
+            android:defaultValue="false">
         </SwitchPreference>
-
-        <SwitchPreference
-            android:title="Linked Invoice# Optional"
-            android:key="settings_invoice_optional"
-            android:summary="Is Linked Invoice Number for Txn Optional?"
-            android:dependency="settings_linked_invoice">
-        </SwitchPreference>
-
-        <SwitchPreference
-            android:title="Invoice# Only Numbers"
-            android:key="settings_invoice_numbers_only"
-            android:summary="Invoice Number contain only numbers from 0-9?"
-            android:dependency="settings_linked_invoice">
-        </SwitchPreference>
-
     </PreferenceCategory>
 
 </PreferenceScreen>

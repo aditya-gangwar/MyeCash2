@@ -22,6 +22,7 @@ import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Transaction;
 
@@ -36,8 +37,13 @@ public class TxnCancelDialog extends DialogFragment
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9003;
 
     private TxnCancelDialogIf mCallback;
+    // we may loos this during screen rotation etc
+    // but ignoring it for now
+    private String mImgFilename;
+    private String mTxnId;
+
     public interface TxnCancelDialogIf {
-        void onCancelTxnConfirm(String txnId, String cardId);
+        void onCancelTxnConfirm(String txnId, String cardId, String imgFileName);
     }
     
     public static TxnCancelDialog newInstance(Transaction txn) {
@@ -120,7 +126,8 @@ public class TxnCancelDialog extends DialogFragment
                     if(errorCode==ErrorCodes.NO_ERROR) {
                         mCallback.onCancelTxnConfirm(
                                 mInputTxnId.getText().toString(),
-                                mInputQrCard.getText().toString());
+                                mInputQrCard.getText().toString(),
+                                mImgFilename);
                         wantToCloseDialog = true;
                     }
 
@@ -142,7 +149,8 @@ public class TxnCancelDialog extends DialogFragment
                 Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
                 intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
                 intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
-
+                mImgFilename = getTempImgFilename(mTxnId);
+                intent.putExtra(BarcodeCaptureActivity.ImageFileName, mImgFilename);
                 startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
 
             }
@@ -181,6 +189,7 @@ public class TxnCancelDialog extends DialogFragment
             return;
         }
 
+        mTxnId = txn.getTrans_id();
         mInputTxnId.setText(txn.getTrans_id());
         mInputCustId.setText(AppCommonUtil.getPartialVisibleStr(txn.getCustomer_id()));
 
@@ -219,6 +228,11 @@ public class TxnCancelDialog extends DialogFragment
         }
 
     }
+
+    private String getTempImgFilename(String txnId) {
+        return CommonConstants.PREFIX_TXN_CANCEL_IMG_FILE_NAME+Long.toString(System.currentTimeMillis())+"."+CommonConstants.PHOTO_FILE_FORMAT;
+    }
+
 
     private EditText mInputTxnId;
     private EditText mInputCustId;
