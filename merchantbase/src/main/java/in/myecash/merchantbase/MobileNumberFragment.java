@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -110,11 +111,15 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
                 mCallback.onMobileNumInput(mobileNum);
             }
         });
-        mInputCustMobile.setOnClickListener(new View.OnClickListener() {
+
+        mInputCustMobile.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                LogMy.d(TAG, "Clicked skip");
-                mCallback.onMobileNumInput(null);
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    LogMy.d(TAG, "Clicked skip");
+                    mCallback.onMobileNumInput(null);
+                }
+                return true;
             }
         });
     }

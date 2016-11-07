@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -114,15 +115,19 @@ public class CashbackListFragment extends Fragment {
     }
 
     private void sortList(int sortType) {
-        Collections.sort(mMyCbs, new MyCashback.MyCashbackComparator(sortType));
+        if(mMyCbs!=null) {
+            Collections.sort(mMyCbs, new MyCashback.MyCashbackComparator(sortType));
 
-        if(sortType!=MyCashback.CB_CMP_TYPE_MCHNT_NAME &&
-                sortType!=MyCashback.CB_CMP_TYPE_MCHNT_CITY) {
-            // Make it in decreasing order - if not string comparison
-            Collections.reverse(mMyCbs);
+            if (sortType != MyCashback.CB_CMP_TYPE_MCHNT_NAME &&
+                    sortType != MyCashback.CB_CMP_TYPE_MCHNT_CITY) {
+                // Make it in decreasing order - if not string comparison
+                Collections.reverse(mMyCbs);
+            }
+            // store existing sortType
+            mSelectedSortType = sortType;
+        } else {
+            LogMy.e(TAG,"In sortList: mCashbacks is null");
         }
-        // store existing sortType
-        mSelectedSortType = sortType;
     }
 
     @Override
@@ -140,8 +145,33 @@ public class CashbackListFragment extends Fragment {
     }
 
     private void updateUI() {
-        if(mRetainedFragment.mCashbacks!=null) {
+        if(mMyCbs!=null) {
+            CbAdapter adapter = (CbAdapter) mRecyclerView.getAdapter();
+            if(adapter==null) {
+                LogMy.d(TAG, "Adaptor not set yet");
+                mRecyclerView.setAdapter(new CbAdapter(mMyCbs));
+            } else {
+                adapter.refresh(mMyCbs);
+            }
+            /*mRecyclerView.removeAllViews();
             mRecyclerView.setAdapter(new CbAdapter(mMyCbs));
+            mRecyclerView.invalidate();
+            mRecyclerView.getAdapter().notifyDataSetChanged();*/
+        } else {
+            LogMy.e(TAG,"In updateUI: mCashbacks is null");
+        }
+    }
+
+    public void refreshData() {
+        if(mRetainedFragment.mCashbacks!=null) {
+            mMyCbs = new ArrayList<>(mRetainedFragment.mCashbacks.values());
+            for(MyCashback cb:mMyCbs) {
+                LogMy.d(TAG,"In refreshData: "+cb.getMerchantId()+", "+cb.getClCredit()+", "+cb.getCbCredit());
+            }
+            sortList(mSelectedSortType);
+            updateUI();
+        } else {
+            LogMy.e(TAG,"In refreshData: mCashbacks is null");
         }
     }
 
@@ -171,7 +201,7 @@ public class CashbackListFragment extends Fragment {
         outState.putInt("mSelectedSortType", mSelectedSortType);
     }
 
-    @Override
+    /*@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.merchant_list_menu, menu);
     }
@@ -195,10 +225,25 @@ public class CashbackListFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }*/
+
+    public void sortMerchantList() {
+        try {
+            SortMchntDialog dialog = SortMchntDialog.newInstance(mSelectedSortType);
+            dialog.setTargetFragment(this, REQ_SORT_CUST_TYPES);
+            dialog.show(getFragmentManager(), DIALOG_SORT_CUST_TYPES);
+
+        } catch(Exception e) {
+            LogMy.e(TAG, "Exception in sortMerchantList", e);
+            // unexpected exception - show error
+            DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true);
+            notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
+            notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
     }
 
     private class CbHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+            implements View.OnTouchListener {
 
         private MyCashback mCb;
 
@@ -221,35 +266,38 @@ public class CashbackListFragment extends Fragment {
             mAccBalance = (EditText) itemView.findViewById(R.id.input_acc_bal);
             mCbBalance = (EditText) itemView.findViewById(R.id.input_cb_bal);
 
-            mMerchantDp.setOnClickListener(this);
-            mMerchantName.setOnClickListener(this);
-            mCategoryNdCity.setOnClickListener(this);
-            mLastTxnTime.setOnClickListener(this);
-            mAccBalance.setOnClickListener(this);;
-            mCbBalance.setOnClickListener(this);;
+            mMerchantDp.setOnTouchListener(this);
+            mMerchantName.setOnTouchListener(this);
+            mCategoryNdCity.setOnTouchListener(this);
+            mLastTxnTime.setOnTouchListener(this);
+            mAccBalance.setOnTouchListener(this);;
+            mCbBalance.setOnTouchListener(this);;
         }
 
         @Override
-        public void onClick(View v) {
-            LogMy.d(TAG,"In onClick: "+v.getId());
+        public boolean onTouch(View v, MotionEvent event) {
+            if(event.getAction()==MotionEvent.ACTION_UP) {
+                LogMy.d(TAG,"In onTouch: "+v.getId());
 
-            // getRootView was not working, so manually finding root view
-            // depending upon views on which listener is set
-            View rootView = null;
-            if(v.getId()==mMerchantDp.getId()) {
-                rootView = (View) v.getParent().getParent();
-                LogMy.d(TAG,"Clicked first level view "+rootView.getId());
+                // getRootView was not working, so manually finding root view
+                // depending upon views on which listener is set
+                View rootView = null;
+                if(v.getId()==mMerchantDp.getId()) {
+                    rootView = (View) v.getParent().getParent();
+                    LogMy.d(TAG,"Clicked first level view "+rootView.getId());
 
-            } else if(v.getId()==mCategoryNdCity.getId() || v.getId()==mLastTxnTime.getId()) {
-                rootView = (View) v.getParent().getParent().getParent();
-                LogMy.d(TAG,"Clicked second level view "+rootView.getId());
+                } else if(v.getId()==mCategoryNdCity.getId() || v.getId()==mLastTxnTime.getId()) {
+                    rootView = (View) v.getParent().getParent().getParent().getParent();
+                    LogMy.d(TAG,"Clicked second level view "+rootView.getId());
 
-            } else {
-                rootView = (View) v.getParent().getParent().getParent().getParent();
-                LogMy.d(TAG,"Clicked third level view "+rootView.getId());
+                } else {
+                    rootView = (View) v.getParent().getParent().getParent().getParent().getParent();
+                    LogMy.d(TAG,"Clicked third level view "+rootView.getId());
+                }
+
+                rootView.performClick();
             }
-
-            rootView.performClick();
+            return true;
         }
 
         public void bindCb(MyCashback cb) {
@@ -270,7 +318,8 @@ public class CashbackListFragment extends Fragment {
             }
             String txt = merchant.getBusinessCategory()+", "+merchant.getCity();
             mCategoryNdCity.setText(txt);
-            mLastTxnTime.setText(mSdfDateWithTime.format(cb.getUpdateTime()));
+            String str = "Last: "+mSdfDateWithTime.format(cb.getUpdateTime());
+            mLastTxnTime.setText(str);
             mAccBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrClBalance()));
             mCbBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrCbBalance()));
         }
@@ -321,6 +370,11 @@ public class CashbackListFragment extends Fragment {
                     }
                 }
             };
+        }
+
+        public void refresh(List<MyCashback> cbs) {
+            mCbs = cbs;
+            notifyDataSetChanged();
         }
 
         @Override

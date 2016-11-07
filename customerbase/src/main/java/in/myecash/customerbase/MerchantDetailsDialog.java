@@ -117,7 +117,8 @@ public class MerchantDetailsDialog extends DialogFragment  {
             mName.setText(merchant.getName());
             String txt = merchant.getBusinessCategory()+", "+merchant.getCity();
             mCategoryNdCity.setText(txt);
-            mCbRate.setText(merchant.getCbRate());
+            String text = merchant.getCbRate()+" %";
+            mCbRate.setText(text);
             Date time = cb.getUpdateTime();
             if(time==null) {
                 time = cb.getCreateTime();

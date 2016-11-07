@@ -135,7 +135,8 @@ public class TxnReportsActivity extends AppCompatActivity implements
 
         // if 'Merchant ID' not provided - means fetch only latest txns from DB table
         if(mMerchantId==null || mMerchantId.isEmpty()) {
-            mFromDate = mHelper.getTxnInDbFrom();
+            mFromDate = new Date();
+            mFromDate.setTime(mHelper.getTxnInDbFrom().getTime());
             mToDate = mTodayEoD;
             // simulate click to generate report
             mBtnGetReport.performClick();

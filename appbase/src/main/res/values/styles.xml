@@ -312,6 +312,13 @@
         <item name="android:clickable">false</item>
     </style>
 
+    <style name="Edittext_only_view_medium_lessPad" parent="Edittext_only_view_medium">
+        <item name="android:paddingLeft">@dimen/edittext_padding_less</item>
+        <item name="android:paddingRight">@dimen/edittext_padding_less</item>
+        <item name="android:paddingBottom">@dimen/edittext_padding_less</item>
+        <item name="android:paddingTop">@dimen/edittext_padding_less</item>
+    </style>
+
     <style name="Edittext_only_view_medium" parent="Edittext_only_click_medium">
         <item name="android:clickable">false</item>
     </style>

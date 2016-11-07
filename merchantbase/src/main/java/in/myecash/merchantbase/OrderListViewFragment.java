@@ -165,7 +165,7 @@ public class OrderListViewFragment extends ListFragment implements
             LogMy.d(TAG, "Received new unit price.");
             String newUnitPrice = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
 
-            OrderItem item = mRetainedFragment.mOrderItems.remove(mChangePosition);
+            OrderItem item = mRetainedFragment.mOrderItems.get(mChangePosition);
             if (!item.getUnitPriceStr().equals(newUnitPrice)) {
                 int oldPrice = item.getPrice();
                 item.setUnitPriceStr(newUnitPrice);
@@ -176,7 +176,7 @@ public class OrderListViewFragment extends ListFragment implements
             LogMy.d(TAG, "Received new quantity.");
             String newQty = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
 
-            OrderItem item = mRetainedFragment.mOrderItems.remove(mChangePosition);
+            OrderItem item = mRetainedFragment.mOrderItems.get(mChangePosition);
             if (!item.getQuantityStr().equals(newQty)) {
                 int oldPrice = item.getPrice();
                 item.setQuantityStr(newQty);

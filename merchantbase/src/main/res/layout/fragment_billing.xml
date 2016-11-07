@@ -39,9 +39,19 @@
         android:layout_below="@id/toolbar"
         android:layout_above="@id/layout_last_row_btn">
 
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/input_more_info"
+            android:layout_weight="7.5"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:gravity="left"
+            android:text="* Cashback excluded"
+            android:textColor="@color/accent2"/>
+
         <LinearLayout
             style="@style/LL_Horizontal_weighted"
-            android:layout_weight="32.5">
+            android:layout_weight="22.5">
 
             <EditText
                 style="@style/Edittext_biggest_main_input"
@@ -65,8 +75,10 @@
             android:id="@+id/label_item_cnt"
             android:layout_height="0dp"
             android:layout_width="wrap_content"
-            android:layout_weight="7.5"
+            android:layout_weight="10"
             android:text="Items: 0"
+            android:paddingRight="@dimen/XXL_space"
+            android:paddingTop="@dimen/large_space"
             android:textColor="@color/link_blue"/>
 
         <LinearLayout

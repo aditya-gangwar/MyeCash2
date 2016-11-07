@@ -23,7 +23,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="* Updated:"
+            android:text="* Last Updated:"
             android:textStyle="italic"
             android:paddingBottom="@dimen/edittext_padding_less"/>
         <EditText

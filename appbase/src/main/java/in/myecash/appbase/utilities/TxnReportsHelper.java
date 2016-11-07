@@ -57,6 +57,7 @@ public class TxnReportsHelper {
     public TxnReportsHelper(Activity callingActivity) {
         mContext = callingActivity;
         mCallback = (TxnReportsHelperIf) callingActivity;
+        mTxnInDbFrom = getTxnInDbStartTime();
     }
 
     public static Date getTxnInDbStartTime() {
@@ -79,7 +80,6 @@ public class TxnReportsHelper {
     public void startTxnFetch(Date from, Date to, String merchantId, String customerId) throws Exception{
         mFromDate = from;
         mToDate = to;
-        mTxnInDbFrom = getTxnInDbStartTime();
         LogMy.d( TAG, "mTxnInDbFrom: "+ String.valueOf(mTxnInDbFrom.getTime()) );
         mMerchantId = merchantId;
         mCustomerId = customerId;

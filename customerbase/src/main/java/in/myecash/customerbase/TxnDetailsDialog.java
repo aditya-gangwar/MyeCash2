@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -90,42 +91,19 @@ public class TxnDetailsDialog extends DialogFragment {
     private void initDialogView(final int position) {
         final Transaction txn = mCallback.getRetainedFragment().mLastFetchTransactions.get(position);
 
-        // hide fields for customer care logins only
-        /*if(mCallback.getRetainedFragment().mMerchantUser.isPseudoLoggedIn()) {
-
-            // check if file locally available - will be after the call to showTxnImg()
-            // if not, set the listener
-            Bitmap image = mCallback.getRetainedFragment().mLastFetchedImage;
-            if(image != null) {
-                int radiusInDp = (int) getResources().getDimension(R.dimen.txn_img_image_width);
-                int radiusInPixels = AppCommonUtil.dpToPx(radiusInDp);
-                Bitmap scaledImg = Bitmap.createScaledBitmap(image,radiusInPixels,radiusInPixels,true);
-
-                mTxnImage.setVisibility(View.VISIBLE);
-                mTxnImage.setImageBitmap(scaledImg);
-
-            } else {
-                mTxnImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(txn.getImgFileName()==null || txn.getImgFileName().isEmpty()) {
-                            AppCommonUtil.toast(getActivity(), "Card image not required for this txn");
-                        } else {
-                            // start file download
-                            // pass index of current shown txn - so as this dialog can be started again to show the same txn
-                            mCallback.showTxnImg(position);
-                            getDialog().dismiss();
-                        }
-                    }
-                });
-            }
-        } else {
-            mTxnImage.setVisibility(View.GONE);
-        }*/
-
         if(txn != null) {
+            mLayoutCancelled.setVisibility(View.GONE);
+
             mInputTxnId.setText(txn.getTrans_id());
             mInputTxnTime.setText(mSdfDateWithTime.format(txn.getCreate_time()));
+
+            if(txn.getInvoiceNum()==null || txn.getInvoiceNum().isEmpty()) {
+                mLayoutInvNum.setVisibility(View.GONE);
+            } else {
+                mLayoutInvNum.setVisibility(View.VISIBLE);
+                mInvoiceNum.setText(txn.getInvoiceNum());
+            }
+
             mCardUsed.setText(txn.getUsedCardId());
             mPinUsed.setText(txn.getCpin());
 
@@ -142,6 +120,30 @@ public class TxnDetailsDialog extends DialogFragment {
             mInputMerchant.setText(txn.getMerchant_name());
             mInputMchntId.setText(txn.getMerchant_id());
 
+            // Changes if cancelled txn
+            if(txn.getCancelTime()!=null) {
+                mLayoutCancelled.setVisibility(View.VISIBLE);
+                mInputCancelTime.setText(mSdfDateWithTime.format(txn.getCancelTime()));
+
+                if(txn.getTotal_billed()>0) {
+                    mInputTotalBill.setPaintFlags(mInputTotalBill.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+                if(txn.getCb_billed() > 0) {
+                    mInputCbBill.setPaintFlags(mInputCbBill.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+
+                if(txn.getCb_credit() > 0) {
+                    mInputCbAward.setPaintFlags(mInputCbAward.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+                if(txn.getCb_debit()>0) {
+                    mInputCbRedeem.setPaintFlags(mInputCbRedeem.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+
+                if(txn.getCl_debit()>0) {
+                    mInputAccDebit.setPaintFlags(mInputAccDebit.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+            }
+
         } else {
             LogMy.wtf(TAG, "Txn object is null !!");
             getDialog().dismiss();
@@ -155,8 +157,15 @@ public class TxnDetailsDialog extends DialogFragment {
         //mCallback.getRetainedFragment().mLastFetchedImage = null;
     }
 
+    private View mLayoutCancelled;
+    private EditText mInputCancelTime;
+
     private EditText mInputTxnId;
     private EditText mInputTxnTime;
+
+    private View mLayoutInvNum;
+    private EditText mInvoiceNum;
+
     private EditText mCardUsed;
     private EditText mPinUsed;
 
@@ -175,8 +184,15 @@ public class TxnDetailsDialog extends DialogFragment {
 
     private void bindUiResources(View v) {
 
+        mLayoutCancelled = v.findViewById(R.id.layout_cancelled);
+        mInputCancelTime = (EditText) v.findViewById(R.id.input_cancel_time);
+
         mInputTxnId = (EditText) v.findViewById(R.id.input_txn_id);
         mInputTxnTime = (EditText) v.findViewById(R.id.input_txn_time);
+
+        mLayoutInvNum = v.findViewById(R.id.layout_invoice_num);
+        mInvoiceNum = (EditText) v.findViewById(R.id.input_invoice_num);
+
         mCardUsed = (EditText) v.findViewById(R.id.input_card_used);
         mPinUsed = (EditText) v.findViewById(R.id.input_pin_used);
 

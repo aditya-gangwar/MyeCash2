@@ -152,7 +152,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     }
 
     private int loginCustomer(MessageLogin msg) {
-        LogMy.d(TAG, "In loginMerchant");
+        LogMy.d(TAG, "In loginCustomer");
         return CustomerUser.login(msg.userId, msg.password);
     }
 
@@ -186,16 +186,15 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                     myCb.init(cb, false);
                     mRetainedFragment.mLastFetchCashbacks.add(myCb);
                 }
-            }
 
-            // fetch mchnt DPs
-            // ignore any error
-            try {
-                fetchMchntDpFiles(msg.ctxt);
-            } catch(Exception ex) {
-                LogMy.e(TAG,"Exception from fetchMchntDpFiles",ex);
+                // fetch mchnt DPs for newly fetched cashbacks - if not already in memory
+                // ignore any error
+                try {
+                    fetchMchntDpFiles(msg.ctxt);
+                } catch(Exception ex) {
+                    LogMy.e(TAG,"Exception from fetchMchntDpFiles",ex);
+                }
             }
-
         } catch (BackendlessException e) {
             mRetainedFragment.mLastFetchCashbacks = null;
             LogMy.e(TAG, "Exception in fetchCashbacks: "+ e.toString());

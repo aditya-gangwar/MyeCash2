@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -33,13 +34,14 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
     // fragment state: these too be stored across configuration changes
     private boolean mTempCbExcluded;
     private int mOldColor;
+    private boolean mCalcMode;
 
     // Container Activity must implement this interface
     public interface BillingFragmentIf {
-        public MyRetainedFragment getRetainedFragment();
-        public void onTotalBill();
-        public void onViewOrderList();
-        public void setDrawerState(boolean isEnabled);
+        MyRetainedFragment getRetainedFragment();
+        void onTotalBill();
+        void onViewOrderList();
+        void setDrawerState(boolean isEnabled);
     }
 
     @Override
@@ -55,6 +57,8 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         initKeyboard();
         //setup buttons
         initButtons();
+
+        mInputMoreInfo.setVisibility(View.INVISIBLE);
 
         return v;
     }
@@ -75,6 +79,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
             LogMy.d(TAG,"Restoring saved state");
             mTempCbExcluded = savedInstanceState.getBoolean("mTempCbExcluded");
             mOldColor = savedInstanceState.getInt("mOldColor");
+            mCalcMode = savedInstanceState.getBoolean("mCalcMode");
         }
 
         mRetainedFragment = mCallback.getRetainedFragment();
@@ -108,12 +113,17 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setTotalAmt() {
-        String str = "Bill    "+ AppConstants.SYMBOL_RS + String.valueOf(mRetainedFragment.mBillTotal);
-        mBtnTotal.setText(str);
+        if(!mCalcMode) {
+            String str = "Bill    " + AppConstants.SYMBOL_RS + String.valueOf(mRetainedFragment.mBillTotal);
+            mBtnTotal.setText(str);
+        }
     }
 
     public void disableFurtherProcess() {
-        mBtnTotal.setEnabled(false);
+        mBtnTotal.setText("* Calculator Only");
+        mBtnTotal.setTextColor(ContextCompat.getColor(getActivity(), R.color.secondary_text));
+        //mBtnTotal.setEnabled(false);
+        mCalcMode = true;
     }
 
     @Override
@@ -126,15 +136,17 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         String effectiveStr = actualStr.replace(AppConstants.SYMBOL_RS, "");
         LogMy.d(TAG, "In onClick, actualStr: " + actualStr + ", effectiveStr: " + effectiveStr);
 
-        if (resId == R.id.label_item_cnt) {
+        /*if (resId == R.id.label_item_cnt) {
             if (mRetainedFragment.mOrderItems.size() > 0) {
                 //handlePlus(effectiveStr);
                 mCallback.onViewOrderList();
+            } else {
+                AppCommonUtil.toast(getActivity(), "No Items added");
             }
 
-        } else if (resId == R.id.btn_bill_total) {
-            if (!mBtnTotal.isEnabled()) {
-                AppCommonUtil.toast(getActivity(), "Customer Id not available.");
+        } else */if (resId == R.id.btn_bill_total) {
+            if (mCalcMode) {
+                AppCommonUtil.toast(getActivity(), "Customer ID not provided");
                 return;
             }
             // do processing for +, just in case user forgets to press it in end
@@ -235,6 +247,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         LogMy.d(TAG, "In onSaveInstanceState");
         outState.putBoolean("mTempCbExcluded", mTempCbExcluded);
         outState.putInt("mOldColor", mOldColor);
+        outState.putBoolean("mCalcMode", mCalcMode);
     }
 
     private void initKeyboard() {
@@ -255,18 +268,37 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
 
     private void initButtons() {
         mBtnTotal.setOnClickListener(this);
-        mLabelItemCnt.setOnClickListener(this);
+        mLabelItemCnt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if (mRetainedFragment.mOrderItems.size() > 0) {
+                        //handlePlus(effectiveStr);
+                        mCallback.onViewOrderList();
+                    } else {
+                        AppCommonUtil.toast(getActivity(), "No Items added");
+                    }
+                }
+                return true;
+            }
+        });
     }
 
     private void initInputItemAmt() {
-        mInputItemAmt.setOnClickListener(new View.OnClickListener() {
+
+        mInputItemAmt.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                if(mTempCbExcluded) {
-                    removeItemAmtExclusion();
-                } else {
-                    setItemAmtExclusion();
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(!mCalcMode) {
+                        if (mTempCbExcluded) {
+                            removeItemAmtExclusion();
+                        } else {
+                            setItemAmtExclusion();
+                        }
+                    }
                 }
+                return true;
             }
         });
     }
@@ -275,12 +307,15 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         mTempCbExcluded = true;
         mOldColor = mInputItemAmt.getCurrentTextColor();
         mInputItemAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.cb_exclusion));
+        mInputMoreInfo.setVisibility(View.VISIBLE);
     }
     private void removeItemAmtExclusion() {
         mTempCbExcluded = false;
         mInputItemAmt.setTextColor(mOldColor);
+        mInputMoreInfo.setVisibility(View.INVISIBLE);
     }
 
+    private EditText mInputMoreInfo;
     private EditText mInputItemAmt;
     private AppCompatButton mKey1;
     private AppCompatButton mKey2;
@@ -300,6 +335,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
     private EditText mLabelItemCnt;
 
     private void bindUiResources(View v) {
+        mInputMoreInfo = (EditText) v.findViewById(R.id.input_more_info);
         mInputItemAmt = (EditText) v.findViewById(R.id.input_item_amt);
         mKey1 = (AppCompatButton) v.findViewById(R.id.input_kb_1);
         mKey2 = (AppCompatButton) v.findViewById(R.id.input_kb_2);

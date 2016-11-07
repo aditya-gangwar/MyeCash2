@@ -488,6 +488,7 @@ public class TxnListFragment extends Fragment {
             mAccountAmt.setOnClickListener(this);
             mCashbackAmt.setOnClickListener(this);
             mCashbackAward.setOnClickListener(this);
+            mCancelTime.setOnClickListener(this);
         }
 
         @Override

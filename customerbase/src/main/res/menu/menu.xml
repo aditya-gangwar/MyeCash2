@@ -5,19 +5,28 @@
 
     <group android:checkableBehavior="single"
         android:id="@+id/grp1">
-        <!--item
-            android:id="@+id/menu_dashboard"
-            android:title="Dashboard"
-            android:icon="@drawable/ic_dashboard_black_24dp" /-->
         <item
             android:id="@+id/menu_txns"
             android:title="Latest Transactions"
             android:icon="@drawable/ic_swap_horiz_black_24dp" />
-        <!--item
-            android:id="@+id/menu_logout"
-            android:title="Log out"
-            android:icon="@drawable/ic_power_settings_new_black_24dp" /-->
     </group>
+
+    <item
+        android:id="@+id/current_subheader_1"
+        android:title="Merchant List">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_sort_mchnts"
+                    android:title="Sort Merchants"
+                    android:icon="@drawable/ic_sort_black_24dp" />
+                <item
+                    android:id="@+id/menu_refresh_mchnts"
+                    android:title="Refresh Merchants"
+                    android:icon="@drawable/ic_refresh_black_24dp" />
+            </group>
+        </menu>
+    </item>
 
     <item
         android:id="@+id/current_subheader"

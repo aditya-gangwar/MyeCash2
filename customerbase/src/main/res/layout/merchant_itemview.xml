@@ -15,8 +15,8 @@
             android:layout_marginRight="@dimen/small_space"
             android:layout_gravity="center"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <LinearLayout
+            style="@style/LL_Vertical"
             android:layout_height="wrap_content">
 
             <LinearLayout
@@ -48,90 +48,100 @@
                     android:paddingLeft="@dimen/edittext_padding_less"/>
             </LinearLayout>
 
-            <EditText
-                style="@style/Edittext_only_click_small"
-                android:id="@+id/mchnt_category_city"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_below="@id/layout_mchnt_name"
-                android:text="Electronics, Faridabad"
-                android:paddingTop="0dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="0dp"/>
-
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:id="@+id/layout_cb"
-                android:layout_width="wrap_content"
-                android:layout_below="@id/layout_mchnt_name"
-                android:layout_alignParentRight="true">
+                android:layout_width="match_parent">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_grade_white_18dp"
-                    android:tint="@color/primary"
-                    android:clickable="false"/>
                 <EditText
                     style="@style/Edittext_only_click_small"
-                    android:id="@+id/input_cb_bal"
+                    android:id="@+id/mchnt_category_city"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="\u20B9 56"
-                    android:paddingRight="0dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="74"
+                    android:gravity="left"
+                    android:text="Electronics, Faridabad"
                     android:paddingTop="0dp"
-                    android:paddingBottom="@dimen/edittext_padding_less"/>
+                    android:paddingBottom="@dimen/edittext_padding_less"
+                    android:paddingRight="0dp"/>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap"
+                    android:id="@+id/layout_cb"
+                    android:layout_width="72dp"
+                    android:gravity="end">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_grade_white_18dp"
+                        android:tint="@color/primary"
+                        android:clickable="false"
+                        android:layout_gravity="center_vertical"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="@dimen/edittext_padding_less"/>
+                    <EditText
+                        style="@style/Edittext_only_click_small"
+                        android:id="@+id/input_cb_bal"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end|center_vertical"
+                        android:text="\u20B9 13456"
+                        android:paddingRight="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="@dimen/edittext_padding_less"
+                        android:paddingLeft="@dimen/edittext_padding_less"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:id="@+id/layout_acc"
-                android:layout_width="wrap_content"
-                android:layout_below="@id/mchnt_category_city"
-                android:layout_alignParentRight="true">
+                android:layout_width="match_parent">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_account_balance_wallet_white_18dp"
-                    android:tint="@color/primary"
-                    android:clickable="false"/>
                 <EditText
                     style="@style/Edittext_only_click_small"
-                    android:id="@+id/input_acc_bal"
+                    android:id="@+id/input_last_txn"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="\u20B9 3456"
-                    android:paddingRight="0dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="74"
+                    android:gravity="left"
+                    android:text="Last: 08 Apr,16  20:15"
                     android:paddingTop="0dp"
-                    android:paddingBottom="@dimen/edittext_padding_less"/>
+                    android:paddingBottom="@dimen/edittext_padding_less"
+                    android:paddingRight="0dp"/>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap"
+                    android:id="@+id/layout_acc"
+                    android:layout_width="72dp"
+                    android:gravity="end">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                        android:tint="@color/primary"
+                        android:clickable="false"
+                        android:layout_gravity="center_vertical"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="@dimen/edittext_padding_less"/>
+                    <EditText
+                        style="@style/Edittext_only_click_small"
+                        android:id="@+id/input_acc_bal"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="\u20B9 56"
+                        android:paddingRight="0dp"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="@dimen/edittext_padding_less"
+                        android:paddingLeft="@dimen/edittext_padding_less"/>
+                </LinearLayout>
+
             </LinearLayout>
-
-            <EditText
-                style="@style/Edittext_only_click_small"
-                android:id="@+id/input_last_txn"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_below="@id/mchnt_category_city"
-                android:text="Last: 08 Apr,16  20:15"
-                android:paddingTop="0dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="0dp"/>
-
-            <!--EditText
-                style="@style/Edittext_only_click_small"
-                android:id="@+id/input_status_alert"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_below="@id/input_last_txn"
-                android:gravity="left"
-                android:text="This Merchant is closing its MyeCash account. Please redeem all your balance before 30th dec, 2017."
-                android:paddingTop="0dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="0dp"
-                android:paddingLeft="0dp"
-                android:textColor="@color/red_negative"/-->
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
