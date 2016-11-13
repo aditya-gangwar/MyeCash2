@@ -26,7 +26,7 @@ public static final String TAG = "PasswdResetDialog";
 private PasswdResetDialogIf mListener;
 
 public interface PasswdResetDialogIf {
-    void onPasswdResetData(String brandName);
+    void onPasswdResetData(String dob);
 }
 
     @Override
@@ -72,13 +72,11 @@ public interface PasswdResetDialogIf {
                     @Override
                     public void onClick(View view) {
                         AppCommonUtil.hideKeyboard(getDialog());
-                        String dob = mInputDob.getText().toString();
-                        int error = ValidationHelper.validateDob(dob);
-                        if(error == ErrorCodes.NO_ERROR) {
-                            mListener.onPasswdResetData(dob);
+
+                        if(validate()) {
+                            //mListener.onPasswdResetData(mInputDob.getText().toString(), mInputStoreName.getText().toString());
+                            mListener.onPasswdResetData(mInputDob.getText().toString());
                             getDialog().dismiss();
-                        } else {
-                            mInputDob.setError(AppCommonUtil.getErrorDesc(error));
                         }
                     }
                 });
@@ -87,6 +85,22 @@ public interface PasswdResetDialogIf {
 
         alertDialog.setCanceledOnTouchOutside(false);
         return alertDialog;
+    }
+
+    private boolean validate() {
+        int error = ValidationHelper.validateDob(mInputDob.getText().toString());
+        if(error != ErrorCodes.NO_ERROR) {
+            mInputDob.setError(AppCommonUtil.getErrorDesc(error));
+            return false;
+        }
+
+        /*error = ValidationHelper.validateBrandName(mInputStoreName.getText().toString());
+        if(error != ErrorCodes.NO_ERROR) {
+            mInputStoreName.setError(AppCommonUtil.getErrorDesc(error));
+            return false;
+        }*/
+
+        return true;
     }
 
     @Override
@@ -103,7 +117,9 @@ public interface PasswdResetDialogIf {
     }
 
     private EditText mInputDob;
+    //private EditText mInputStoreName;
     private void initUiResources(View v) {
         mInputDob = (EditText) v.findViewById(R.id.input_dob);
+        //mInputStoreName = (EditText) v.findViewById(R.id.input_storeName);
     }
 }

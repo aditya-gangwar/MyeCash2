@@ -104,7 +104,7 @@ public class TxnDetailsDialog extends DialogFragment {
                 mInvoiceNum.setText(txn.getInvoiceNum());
             }
 
-            mCardUsed.setText(txn.getUsedCardId());
+            mCardUsed.setText(AppCommonUtil.getPartialVisibleStr(txn.getUsedCardId()));
             mPinUsed.setText(txn.getCpin());
 
             mInputTotalBill.setText(AppCommonUtil.getAmtStr(txn.getTotal_billed()));

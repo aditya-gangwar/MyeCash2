@@ -12,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.common.constants.ErrorCodes;
@@ -29,23 +28,31 @@ public class CustomerRegDialog extends DialogFragment
     private static final String TAG = "CustomerRegDialog";
     public static final int RC_BARCODE_CAPTURE_REG_DIALOG = 9002;
 
+    private static final String ARG_FIRST_NAME = "firstName";
+    private static final String ARG_LAST_NAME = "lastName";
     private static final String ARG_MOBILE_NUM = "mobile_num";
     private static final String ARG_QRCODE = "qrcode";
 
     private CustomerRegFragmentIf mCallback;
 
     public interface CustomerRegFragmentIf {
-        void onCustomerRegOk(String name, String mobileNum, String qrCode);
+        void onCustomerRegOk(String name, String mobileNum, String qrCode, String firstName, String lastName);
         void onCustomerRegReset();
     }
 
-    public static CustomerRegDialog newInstance(String mobileNo, String cardId) {
+    public static CustomerRegDialog newInstance(String mobileNo, String cardId, String firstName, String lastName) {
         Bundle args = new Bundle();
         if(mobileNo != null) {
             args.putString(ARG_MOBILE_NUM, mobileNo);
         }
         if(cardId != null) {
             args.putString(ARG_QRCODE, cardId);
+        }
+        if(firstName != null) {
+            args.putString(ARG_FIRST_NAME, firstName);
+        }
+        if(lastName != null) {
+            args.putString(ARG_LAST_NAME, lastName);
         }
         CustomerRegDialog fragment = new CustomerRegDialog();
         fragment.setArguments(args);
@@ -68,6 +75,8 @@ public class CustomerRegDialog extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String mobileNum = getArguments().getString(ARG_MOBILE_NUM, null);
         String cardId = getArguments().getString(ARG_QRCODE, null);
+        String firstName = getArguments().getString(ARG_FIRST_NAME, null);
+        String lastName = getArguments().getString(ARG_LAST_NAME, null);
 
         View v = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_register_customer, null);
@@ -77,20 +86,19 @@ public class CustomerRegDialog extends DialogFragment
         // Any null means OTP not generated yet
         if(mobileNum==null || mobileNum.isEmpty() ||
                 cardId == null || cardId.isEmpty()) {
-            //mLabelOtp.setEnabled(false);
-            //mInputOtp.setEnabled(false);
             mInputOtp.setText("");
             mLayoutOtp.setVisibility(View.GONE);
             mLabelInfoOtp.setVisibility(View.GONE);
         } else {
             mLabelInfoMobile.setVisibility(View.GONE);
+            mLabelInfoName.setVisibility(View.GONE);
             mInputOtp.requestFocus();
         }
 
         // When the dialog is opened from 'mobile number screen' (i.e. not from Menu)
         // Then it will receive 'mobile number' but not the card id
 
-        // Set mobile num
+        // Set mobile num and make non-editable
         if(mobileNum!=null && !mobileNum.isEmpty()) {
             mInputMobileNum.setText(mobileNum);
             AppCommonUtil.makeEditTextOnlyView(mInputMobileNum);
@@ -98,11 +106,9 @@ public class CustomerRegDialog extends DialogFragment
             mInputMobileNum.setEnabled(false);
             mLabelMobile.setEnabled(false);
             mImageMobile.setAlpha(0.5f);
-        } else {
-            mInputMobileNum.requestFocus();
         }
 
-        // Set card Id
+        // Set card Id and make non-editable
         if(cardId!=null && !cardId.isEmpty()) {
             mInputQrCard.setText(cardId);
             mInputQrCard.setClickable(false);
@@ -111,6 +117,21 @@ public class CustomerRegDialog extends DialogFragment
             mImageCard.setAlpha(0.5f);
         } else {
             mInputQrCard.setOnTouchListener(this);
+        }
+
+        // Set name and make non-editable
+        if(firstName!=null && !firstName.isEmpty()) {
+            mInputFirstName.setText(firstName);
+            mInputFirstName.setClickable(false);
+            mInputFirstName.setEnabled(false);
+            mLabelFirstName.setEnabled(false);
+
+            mInputLastName.setText(lastName);
+            mInputLastName.setClickable(false);
+            mInputLastName.setEnabled(false);
+            mInputLastName.setEnabled(false);
+
+            mImageName.setAlpha(0.5f);
         }
 
         Dialog dialog = new AlertDialog.Builder(getActivity())
@@ -180,7 +201,9 @@ public class CustomerRegDialog extends DialogFragment
                         mCallback.onCustomerRegOk(
                                 mInputMobileNum.getText().toString(),
                                 mInputQrCard.getText().toString(),
-                                mInputOtp.getText().toString());
+                                mInputOtp.getText().toString(),
+                                mInputFirstName.getText().toString(),
+                                mInputLastName.getText().toString());
                         wantToCloseDialog = true;
                     }
 
@@ -205,7 +228,7 @@ public class CustomerRegDialog extends DialogFragment
         }
 
         if(mInputQrCard.isEnabled()) {
-            errorCode = ValidationHelper.validateCustQrCode(mInputQrCard.getText().toString());
+            errorCode = ValidationHelper.validateMemberCard(mInputQrCard.getText().toString());
             if (errorCode != ErrorCodes.NO_ERROR) {
                 mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
@@ -217,6 +240,22 @@ public class CustomerRegDialog extends DialogFragment
             errorCode = ValidationHelper.validateOtp(mInputOtp.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
                 mInputOtp.setError(AppCommonUtil.getErrorDesc(errorCode));
+                retValue = false;
+            }
+        }
+
+        if(mInputFirstName.isEnabled()) {
+            errorCode = ValidationHelper.validateCustName(mInputFirstName.getText().toString());
+            if (errorCode != ErrorCodes.NO_ERROR) {
+                mInputFirstName.setError(AppCommonUtil.getErrorDesc(errorCode));
+                retValue = false;
+            }
+        }
+
+        if(mInputLastName.isEnabled()) {
+            errorCode = ValidationHelper.validateCustName(mInputLastName.getText().toString());
+            if (errorCode != ErrorCodes.NO_ERROR) {
+                mInputLastName.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
         }
@@ -254,40 +293,51 @@ public class CustomerRegDialog extends DialogFragment
         }
     }
 
+    private EditText mInputFirstName;
+    private EditText mInputLastName;
     private EditText mInputMobileNum;
     private EditText mInputOtp;
     private EditText mInputQrCard;
 
+    private EditText mLabelFirstName;
+    private EditText mLabelLastName;
     private EditText mLabelMobile;
     private EditText mLabelCard;
     private EditText mLabelInfoOtp;
     private EditText mLabelInfoMobile;
+    private EditText mLabelInfoName;
 
     private View mImageMobile;
     private View mImageCard;
-    private View mImageOtp;
+    private View mImageName;
 
     private View mLayoutOtp;
 
     private void bindUiResources(View v) {
+
+        mInputFirstName = (EditText) v.findViewById(R.id.input_firstName);
+        mInputLastName = (EditText) v.findViewById(R.id.input_lastName);
         mInputMobileNum = (EditText) v.findViewById(R.id.input_customer_mobile);
         mInputQrCard = (EditText) v.findViewById(R.id.input_qr_card);
         mInputOtp = (EditText) v.findViewById(R.id.input_otp);
 
+        mLabelFirstName = (EditText) v.findViewById(R.id.label_firstName);
+        mLabelLastName = (EditText) v.findViewById(R.id.label_lastName);
         mLabelMobile = (EditText) v.findViewById(R.id.label_mobile);
         mLabelCard = (EditText) v.findViewById(R.id.label_card);
         mLabelInfoOtp = (EditText) v.findViewById(R.id.label_info_otp);
         mLabelInfoMobile = (EditText) v.findViewById(R.id.label_info_mobile);
+        mLabelInfoName = (EditText) v.findViewById(R.id.label_info_name);
 
         mImageMobile = v.findViewById(R.id.image_mobile);
         mImageCard = v.findViewById(R.id.image_card);
-        mImageOtp = v.findViewById(R.id.image_otp);
+        mImageName = v.findViewById(R.id.image_name);
 
         mLayoutOtp = v.findViewById(R.id.layout_otp);
     }
 
     private void setQrCode(String qrCode) {
-        if(ValidationHelper.validateCustQrCode(qrCode) == ErrorCodes.NO_ERROR) {
+        if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
             mInputQrCard.setText(qrCode);
         } else {
             AppCommonUtil.toast(getActivity(),"Invalid Member Card");

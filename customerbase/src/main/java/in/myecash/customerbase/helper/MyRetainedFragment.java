@@ -53,6 +53,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public String mPinMobileChange;
     public String mNewMobileNum;
     public String mOtpMobileChange;
+    public String mCardMobileChange;
 
     // members used by 'Txn Reports Activity' to store its state, and its fragments
     //public List<String> mAllFiles = new ArrayList<>();

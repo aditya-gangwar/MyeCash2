@@ -116,7 +116,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
             }
             mFirstUsedHere.setText(mSdfDateWithTime.format(cb.getCreateTime()));
 
-            mInputQrCard.setText(cust.getCardId());
+            mInputQrCard.setText(AppCommonUtil.getPartialVisibleStr(cust.getCardId()));
             mInputCardStatus.setText(DbConstants.cardStatusDescriptions[cust.getCardStatus()]);
             if(cust.getCardStatus() != DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED) {
                 mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));

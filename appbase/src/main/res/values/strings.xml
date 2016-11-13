@@ -9,7 +9,7 @@
     <string name="Forgot_id_link">User ID</string>
 
     <!-- Text used in XML layouts -->
-    <string name="cust_mobile_change_info">Customer will have <b>Restricted</b> access for %s hours after Mobile Number change. Only \'CREDIT\' transactions will be allowed</string>
+    <string name="cust_mobile_change_info">Customer will have <b>Limited</b> access for %s hours after Mobile Number change. Only \'CREDIT\' transactions will be allowed</string>
     <string name="cust_pin_reset_info">New PIN will be sent after %s minutes to the registered mobile number</string>
     <string name="mchnt_remove_notice_to_cust">This Merchant is under Removal notice. Please use all your balance with it, before %s.</string>
 
@@ -93,7 +93,7 @@
     <string name="address_section_label">Address</string>
 
     <string name="brand_char_limit">32</string>
-    <string name="customer_name_char_limit">20</string>
+    <string name="customer_name_char_limit">15</string>
     <string name="email_char_limit">150</string>
     <string name="dob_char_limit">8</string>
     <string name="passwd_char_limit">10</string>

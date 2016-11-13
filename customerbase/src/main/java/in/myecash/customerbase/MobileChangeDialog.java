@@ -25,7 +25,7 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
     private static final String TAG = "MobileChangeDialog";
 
     public interface MobileChangeDialogIf {
-        void changeMobileNumOk(String newMobile);
+        void changeMobileNumOk(String newMobile, String cardNum);
         void changeMobileNumOtp(String otp);
         //void changeMobileNumReset(boolean showMobilePref);
         //MerchantOps getMobileChangeMerchantOp();
@@ -53,9 +53,9 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
             } else {
                 // second run, OTP generated
                 // disable and show parameter values and ask for otp
-                //labelInfo1.setEnabled(false);
                 labelInfo1.setText("Enter received OTP and submit the request again");
                 mImageMobile.setAlpha(0.5f);
+                mImageCardNum.setAlpha(0.5f);
 
                 labelNewMobile.setEnabled(false);
                 inputNewMobile.setText(newMobile);
@@ -64,6 +64,10 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
                 labelNewMobile2.setEnabled(false);
                 inputNewMobile2.setText(newMobile);
                 inputNewMobile2.setEnabled(false);
+
+                labelCardNum.setEnabled(false);
+                inputCardNum.setText(mCallback.getRetainedFragment().mCardMobileChange);
+                inputCardNum.setEnabled(false);
             }
 
         } catch (ClassCastException e) {
@@ -120,7 +124,7 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
                                     return;
                                 }
 
-                                mCallback.changeMobileNumOk(inputNewMobile.getText().toString());
+                                mCallback.changeMobileNumOk(inputNewMobile.getText().toString(), inputCardNum.getText().toString());
                             }
                             getDialog().dismiss();
                         }
@@ -143,30 +147,34 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
     private EditText labelInfo1;
     private EditText labelNewMobile;
     private EditText labelNewMobile2;
+    private EditText labelCardNum;
     private EditText labelNewOtp;
 
     private EditText inputNewMobile;
     private EditText inputNewMobile2;
+    private EditText inputCardNum;
     private EditText inputNewOtp;
 
     private EditText mInfoEnd;
 
     private View mImageMobile;
-    private View mImageOtp;
+    private View mImageCardNum;
 
     private void initUiResources(View view) {
         labelInfo1 = (EditText) view.findViewById(R.id.label_info1);
         labelNewMobile = (EditText) view.findViewById(R.id.label_new_mobile);
         labelNewMobile2 = (EditText) view.findViewById(R.id.label_new_mobile2);
+        labelCardNum = (EditText) view.findViewById(R.id.label_card_num);
         labelNewOtp = (EditText) view.findViewById(R.id.label_otp);
 
         inputNewMobile = (EditText) view.findViewById(R.id.input_new_mobile);
         inputNewMobile2 = (EditText) view.findViewById(R.id.input_new_mobile2);
+        inputCardNum = (EditText) view.findViewById(R.id.input_card_num);
         inputNewOtp = (EditText) view.findViewById(R.id.input_otp);
 
         mInfoEnd = (EditText) view.findViewById(R.id.label_info);
         mImageMobile = view.findViewById(R.id.image_mobile);
-        mImageOtp = view.findViewById(R.id.image_otp);
+        mImageCardNum = view.findViewById(R.id.image_cardNum);
     }
 
     private boolean validate() {
@@ -185,6 +193,14 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
             errorCode = ValidationHelper.validateOtp(inputNewOtp.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
                 inputNewOtp.setError(AppCommonUtil.getErrorDesc(errorCode));
+                retValue = false;
+            }
+        }
+
+        if( inputCardNum.isEnabled()) {
+            errorCode = ValidationHelper.validateMemberCard(inputCardNum.getText().toString());
+            if(errorCode != ErrorCodes.NO_ERROR) {
+                inputCardNum.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
         }

@@ -98,7 +98,7 @@ public class MerchantDetailsDialog extends DialogFragment {
             mInputStatusDate.setText(mSdfDateWithTime.format(merchant.getStatus_update_time()));
             mInputReason.setText(merchant.getStatus_reason());
 
-            if(status==DbConstants.USER_STATUS_READY_TO_REMOVE ) {
+            if(status==DbConstants.USER_STATUS_UNDER_CLOSURE ) {
                 mLayoutActivation.setVisibility(View.VISIBLE);
                 String msg = "Removal on "+AppCommonUtil.getMchntRemovalDate(merchant.getRemoveReqDate());
                 mInputActivation.setText(msg);

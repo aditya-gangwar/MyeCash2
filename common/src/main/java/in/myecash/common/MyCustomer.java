@@ -45,20 +45,20 @@ public class MyCustomer {
     private static final String CUST_CSV_DELIM = ":";
 
     // Customer properties
-    String mPrivateId;
-    String mMobileNum;
-    int mStatus;
-    String mStatusUpdateTime;
-    String mCardId;
-    int mCardStatus;
+    private String mPrivateId;
+    private String mMobileNum;
+    private int mStatus;
+    private String mStatusUpdateTime;
+    private String mCardId;
+    private int mCardStatus;
 
     // optional properties
     //String mName;
-    Boolean mFirstLoginOk;
-    String mCreateTime;
-    String mStatusReason;
+    private Boolean mFirstLoginOk;
+    private String mCreateTime;
+    private String mStatusReason;
     //String mRemarks;
-    String mCardStatusUpdateTime;
+    private String mCardStatusUpdateTime;
 
     // Init from CSV string
     public void init(String customerDetailsInCsvFormat) {

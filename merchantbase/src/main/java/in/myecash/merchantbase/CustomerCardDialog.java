@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.common.constants.ErrorCodes;
@@ -161,7 +160,7 @@ public class CustomerCardDialog  extends DialogFragment
             retValue = false;
         }
 
-        errorCode = ValidationHelper.validateCustQrCode(mInputQrCard.getText().toString());
+        errorCode = ValidationHelper.validateMemberCard(mInputQrCard.getText().toString());
         if(errorCode != ErrorCodes.NO_ERROR) {
             mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
             retValue = false;
@@ -248,7 +247,7 @@ public class CustomerCardDialog  extends DialogFragment
     }
 
     private void setQrCode(String qrCode) {
-        if(ValidationHelper.validateCustQrCode(qrCode) == ErrorCodes.NO_ERROR) {
+        if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
             mInputQrCard.setText(qrCode);
         } else {
             AppCommonUtil.toast(getActivity(), "Invalid Membership card");

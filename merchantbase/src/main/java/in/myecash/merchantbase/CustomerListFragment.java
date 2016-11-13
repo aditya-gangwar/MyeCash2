@@ -404,7 +404,7 @@ public class CustomerListFragment extends Fragment {
                 sb.append(i+1).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cust.getPrivateId()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cust.getMobileNum()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cust.getCardId()).append(CommonConstants.CSV_DELIMETER);
+                sb.append(AppCommonUtil.getPartialVisibleStr(cust.getCardId())).append(CommonConstants.CSV_DELIMETER);
                 sb.append(DbConstants.userStatusDesc[cust.getStatus()]).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cb.getCurrClBalance()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cb.getClCredit()).append(CommonConstants.CSV_DELIMETER);

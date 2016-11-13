@@ -168,14 +168,14 @@ public class CustomerUser {
         return ErrorCodes.NO_ERROR;
     }
 
-    public int changeMobileNum(String pin, String newMobile, String otp) {
+    public int changeMobileNum(String cardNum, String pin, String newMobile, String otp) {
         if(mPseudoLoggedIn) {
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
 
         try {
             CommonServices.getInstance().execCustomerOp(DbConstants.OP_CHANGE_MOBILE, mCustomer.getMobile_num(),
-                    mCustomer.getMembership_card().getCard_id(), otp, pin, newMobile);
+                    cardNum, otp, pin, newMobile);
             LogMy.d(TAG,"changeMobileNum success");
 
         } catch (BackendlessException e) {

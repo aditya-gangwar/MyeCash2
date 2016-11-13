@@ -311,7 +311,7 @@ public class CashbackListFragment extends Fragment {
             }
 
             mMerchantName.setText(merchant.getName());
-            if(merchant.getStatus()== DbConstants.USER_STATUS_READY_TO_REMOVE) {
+            if(merchant.getStatus()== DbConstants.USER_STATUS_UNDER_CLOSURE) {
                 mMchntStatusAlert.setVisibility(View.VISIBLE);
             } else {
                 mMchntStatusAlert.setVisibility(View.GONE);

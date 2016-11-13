@@ -52,6 +52,8 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         public String deviceId;
     }
     private class MessageCustRegister implements Serializable {
+        public String firstName;
+        public String lastName;
         public String mobileNum;
         public String otp;
         public String qrCode;
@@ -141,9 +143,11 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         LogMy.d(TAG, "In addCashbackRequest:  " + custId);
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_GET_CASHBACK, custId).sendToTarget();
     }
-    public void addCustRegRequest(String mobileNum, String qrCode, String otp) {
+    public void addCustRegRequest(String mobileNum, String qrCode, String otp, String firstName, String lastName) {
         LogMy.d(TAG, "In addCustRegRequest:  " + mobileNum);
         MessageCustRegister msg = new MessageCustRegister();
+        msg.firstName = firstName;
+        msg.lastName = lastName;
         msg.mobileNum = mobileNum;
         msg.otp = otp;
         msg.qrCode = qrCode;
@@ -366,7 +370,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         mRetainedFragment.mCurrCustomer = null;
 
         try {
-            Cashback cashback = MerchantUser.getInstance().registerCustomer(data.mobileNum, data.qrCode, data.otp);
+            Cashback cashback = MerchantUser.getInstance().registerCustomer(data.mobileNum, data.qrCode, data.otp, data.firstName, data.lastName);
 
             mRetainedFragment.mCurrCashback = new MyCashback();
             mRetainedFragment.mCurrCashback.init(cashback, true);

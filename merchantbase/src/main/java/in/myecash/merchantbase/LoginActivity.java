@@ -429,11 +429,11 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onPasswdResetData(String brandName) {
-        if(brandName!=null) {
+    public void onPasswdResetData(String dob) {
+        if(dob!=null) {
             // show progress dialog
             AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-            mWorkFragment.generatePassword(brandName, AppCommonUtil.getDeviceId(this), mLoginId);
+            mWorkFragment.generatePassword(dob, AppCommonUtil.getDeviceId(this), mLoginId);
         } else {
             mProcessingResetPasswd = false;
         }

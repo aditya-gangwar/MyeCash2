@@ -43,7 +43,7 @@ public final class ValidationHelper{
         }
     }
 
-    public static int validateCustQrCode(String value) {
+    public static int validateMemberCard(String value) {
         if (value.length() != CommonConstants.CUSTOMER_CARDID_LEN) {
             return ErrorCodes.INVALID_LENGTH;
         }
@@ -81,6 +81,14 @@ public final class ValidationHelper{
     }
 
     public static int validateBrandName(String value) {
+        if (value.isEmpty()) {
+            return ErrorCodes.EMPTY_VALUE;
+        } else {
+            return ErrorCodes.NO_ERROR;
+        }
+    }
+
+    public static int validateCustName(String value) {
         if (value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else {

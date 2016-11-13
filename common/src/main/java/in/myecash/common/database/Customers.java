@@ -20,7 +20,8 @@ public class Customers
   private String objectId;
   private String cashback_table;
   private Integer admin_status;
-  //private String name;
+  private String firstName;
+  private String lastName;
   private String private_id;
   private CustomerCards membership_card;
   private String cardId;
@@ -28,6 +29,22 @@ public class Customers
   private Boolean debugLogs;
   private Date lastRenewDate;
   private String txn_tables;
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
   public String getTxn_tables() {
     return txn_tables;

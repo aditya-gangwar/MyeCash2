@@ -135,7 +135,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         boolean disablePref = false;
-        if(mMerchantUser.getMerchant().getAdmin_status()== DbConstants.USER_STATUS_READY_TO_REMOVE) {
+        if(mMerchantUser.getMerchant().getAdmin_status()== DbConstants.USER_STATUS_UNDER_CLOSURE) {
             disablePref = true;
         }
 

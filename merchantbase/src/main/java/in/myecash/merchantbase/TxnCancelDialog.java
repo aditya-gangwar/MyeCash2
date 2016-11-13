@@ -1,25 +1,20 @@
 package in.myecash.merchantbase;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.utilities.AppCommonUtil;
-import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.constants.CommonConstants;
@@ -118,7 +113,7 @@ public class TxnCancelDialog extends DialogFragment
                 public void onClick(View v) {
                     Boolean wantToCloseDialog = false;
 
-                    int errorCode = ValidationHelper.validateCustQrCode(mInputQrCard.getText().toString());
+                    int errorCode = ValidationHelper.validateMemberCard(mInputQrCard.getText().toString());
                     if(errorCode != ErrorCodes.NO_ERROR) {
                         mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
                     }
@@ -174,7 +169,7 @@ public class TxnCancelDialog extends DialogFragment
     }
 
     private void setQrCode(String qrCode) {
-        if(ValidationHelper.validateCustQrCode(qrCode) == ErrorCodes.NO_ERROR) {
+        if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
             mInputQrCard.setText(qrCode);
         } else {
             AppCommonUtil.toast(getActivity(), "Invalid Membership card");

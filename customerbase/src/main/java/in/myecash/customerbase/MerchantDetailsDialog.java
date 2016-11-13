@@ -103,7 +103,7 @@ public class MerchantDetailsDialog extends DialogFragment  {
         MyMerchant merchant = cb.getMerchant();
 
         if(merchant != null) {
-            if(merchant.getStatus()== DbConstants.USER_STATUS_READY_TO_REMOVE) {
+            if(merchant.getStatus()== DbConstants.USER_STATUS_UNDER_CLOSURE) {
                 mLayoutExpNotice.setVisibility(View.VISIBLE);
                 mInputExpNotice.setText(String.format(getString(R.string.mchnt_remove_notice_to_cust),
                         AppCommonUtil.getMchntRemovalDate(merchant.getRemoveReqDate())));

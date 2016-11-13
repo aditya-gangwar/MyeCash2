@@ -114,9 +114,9 @@ import in.myecash.common.database.Transaction;
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "archiveTxns", args, Object.class, callback);
     }
 
-    public Cashback registerCustomer(java.lang.String customerMobile, java.lang.String cardId, java.lang.String otp)
+    public Cashback registerCustomer(java.lang.String customerMobile, java.lang.String cardId, java.lang.String otp, java.lang.String firstName, java.lang.String lastName)
     {
-        Object[] args = new Object[]{customerMobile, cardId, otp};
+        Object[] args = new Object[]{customerMobile, cardId, otp, firstName, lastName};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerCustomer", args, Cashback.class );
     }
 

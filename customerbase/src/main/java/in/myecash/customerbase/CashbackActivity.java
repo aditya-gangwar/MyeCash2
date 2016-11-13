@@ -199,7 +199,8 @@ public class CashbackActivity extends AppCompatActivity implements
 
         View headerLayout = mNavigationView.getHeaderView(0);
         TextView headerTitle = (TextView)headerLayout.findViewById(R.id.drawer_header_title);
-        headerTitle.setText(mCustomer.getMobile_num());
+        String fullName = mCustomer.getFirstName()+" "+mCustomer.getLastName();
+        headerTitle.setText(fullName);
         TextView headerMobile = (TextView)headerLayout.findViewById(R.id.drawer_header_mobile);
         headerMobile.setText(mCustomer.getMobile_num());
 
@@ -575,8 +576,9 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void changeMobileNumOk(String newMobile) {
+    public void changeMobileNumOk(String newMobile, String cardNum) {
         mRetainedFragment.mNewMobileNum = newMobile;
+        mRetainedFragment.mCardMobileChange = cardNum;
 
         // ask for customer PIN
         String txnDetail = String.format(AppConstants.msgChangeCustMobilePin,newMobile);

@@ -23,22 +23,7 @@
         <item name="android:textColorLink">@color/link_blue</item>
         <item name="android:textColorHint">@color/hint</item>
 
-        <!--item name="android:textAppearance">@style/MyTextAppearance</item>
-        <item name="android:textAppearanceLarge">@style/MyTextAppearanceLarge</item>
-        <item name="android:textAppearanceMedium">@style/MyTextAppearanceMedium</item>
-        <item name="android:textAppearanceSmall">@style/MyTextAppearanceSmall</item-->
-
-        <!--item name="editTextStyle">@style/MyEdittext_Medium</item-->
-        <!--item name="textAppearance">?android:attr/textAppearanceMediumInverse</item-->
-        <!--item name="android:textSize">@dimen/text_size_medium</item-->
-
-        <!--item name="colorControlNormal">@color/white</item-->
-        <!--item name="colorControlActivated">@color/accent2</item-->
-        <!--item name="colorControlHighlight">@color/accent</item-->
-        <!--item name="android:colorAccent">@color/fuji_red</item-->
-
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <!--item name="android:homeAsUpIndicator">@null</item-->
         <item name="toolbarNavigationButtonStyle">@style/MyNavButtonStyle</item>
 
     </style>

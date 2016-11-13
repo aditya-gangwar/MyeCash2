@@ -73,6 +73,9 @@ public class MyRetainedFragment extends RetainedFragment {
     public boolean mCardPresented;
     public String mCardImageFilename;
 
+    public String mCustRegFirstName;
+    public String mCustRegLastName;
+
     public MyCashback mCurrCashback;
     public MyCustomer mCurrCustomer;
     public MyTransaction mCurrTransaction;
@@ -125,6 +128,9 @@ public class MyRetainedFragment extends RetainedFragment {
         mVerifyParamMobileChange = null;
         mNewMobileNum = null;
         mOtpMobileChange = null;
+
+        mCustRegFirstName = null;
+        mCustRegLastName = null;
 
         Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, "");
         Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, "");
@@ -194,8 +200,8 @@ public class MyRetainedFragment extends RetainedFragment {
         mBackgroundProcessor.addForgotIdRequest(mobileNum, deviceId);
     }
 
-    public void generatePassword(String brandName, String deviceId, String userId) {
-        mBackgroundProcessor.addPasswordRequest(brandName, deviceId, userId);
+    public void generatePassword(String dob, String deviceId, String userId) {
+        mBackgroundProcessor.addPasswordRequest(dob, deviceId, userId);
     }
 
     public void fetchTxnFiles(Context context) {
@@ -222,8 +228,8 @@ public class MyRetainedFragment extends RetainedFragment {
         mBackgroundProcessor.addCashbackRequest(custId);
     }
 
-    public void registerCustomer(String mobileNum, String qrCode, String otp) {
-        mBackgroundProcessor.addCustRegRequest(mobileNum, qrCode, otp);
+    public void registerCustomer(String mobileNum, String qrCode, String otp, String firstName, String lastName) {
+        mBackgroundProcessor.addCustRegRequest(mobileNum, qrCode, otp, firstName, lastName);
     }
 
     public void commitCashTransaction(String pin) {

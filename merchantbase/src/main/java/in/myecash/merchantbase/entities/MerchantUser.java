@@ -291,12 +291,12 @@ public class MerchantUser
                 custOp.getOtp(),custOp.getPin(),custOp.getExtra_op_params());
     }
 
-    public Cashback registerCustomer(String mobileNum, String qrCode, String otp) {
+    public Cashback registerCustomer(String mobileNum, String qrCode, String otp, String firstName, String lastName) {
         if(mPseudoLoggedIn) {
             // intentionally using 'Backend' error code - as calling fx. will try to convert
             throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
         }
-        return MerchantServices.getInstance().registerCustomer(mobileNum, qrCode, otp);
+        return MerchantServices.getInstance().registerCustomer(mobileNum, qrCode, otp, firstName, lastName);
     }
 
     /*

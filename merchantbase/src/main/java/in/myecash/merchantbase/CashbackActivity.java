@@ -518,7 +518,7 @@ public class CashbackActivity extends AppCompatActivity implements
         setTbTitle(mMerchant.getName());
 
         mTbTitle2.setVisibility(View.GONE);
-        if(mMerchant.getAdmin_status()==DbConstants.USER_STATUS_READY_TO_REMOVE ) {
+        if(mMerchant.getAdmin_status()==DbConstants.USER_STATUS_UNDER_CLOSURE ) {
             mTbTitle2.setVisibility(View.VISIBLE);
             String msg = "Removal on "+AppCommonUtil.getMchntRemovalDate(mMerchant.getRemoveReqDate());
             mTbTitle2.setText(msg);
@@ -550,7 +550,8 @@ public class CashbackActivity extends AppCompatActivity implements
         LogMy.d(TAG, "In askAndRegisterCustomer");
         // Show user registration confirmation dialogue
         // confirm for registration
-        CustomerRegDialog.newInstance(mWorkFragment.mCustMobile, mWorkFragment.mCustCardId).
+        CustomerRegDialog.newInstance(mWorkFragment.mCustMobile, mWorkFragment.mCustCardId,
+                mWorkFragment.mCustRegFirstName, mWorkFragment.mCustRegLastName).
                 show(mFragMgr, DIALOG_REG_CUSTOMER);
     }
 
@@ -1477,7 +1478,7 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onCustomerRegOk(String mobileNum, String cardId, String otp) {
+    public void onCustomerRegOk(String mobileNum, String cardId, String otp, String firstName, String lastName) {
 
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
@@ -1488,11 +1489,15 @@ public class CashbackActivity extends AppCompatActivity implements
             // show progress dialog
             AppCommonUtil.showProgressDialog(CashbackActivity.this, AppConstants.progressRegCustomer);
             // start in background thread
-            mWorkFragment.registerCustomer(mobileNum, cardId, otp);
+            mWorkFragment.registerCustomer(mobileNum, cardId, otp, firstName, lastName);
             // update values
             mWorkFragment.mCustMobile = mobileNum;
             mWorkFragment.mCustCardId = cardId;
             mWorkFragment.mCardPresented = true;
+
+            mWorkFragment.mCustRegFirstName = firstName;
+            mWorkFragment.mCustRegLastName = lastName;
+
             Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, mobileNum);
             Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, cardId);
         }
@@ -1561,7 +1566,7 @@ public class CashbackActivity extends AppCompatActivity implements
             if (resultCode == ErrorCodes.NO_ERROR &&
                     qrCode != null) {
                 LogMy.d(TAG, "Read customer QR code: " + qrCode);
-                if(ValidationHelper.validateCustQrCode(qrCode) == ErrorCodes.NO_ERROR) {
+                if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
                     mWorkFragment.mCustCardId = qrCode;
                     Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, qrCode);
                     mWorkFragment.mCardPresented = true;

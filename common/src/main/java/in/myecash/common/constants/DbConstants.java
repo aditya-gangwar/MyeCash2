@@ -31,7 +31,7 @@ public class DbConstants {
     // Error during registration - to be manually deleted
     public static final int USER_STATUS_REG_ERROR = 4;
     public static final int USER_STATUS_READY_TO_ACTIVE = 5;
-    public static final int USER_STATUS_READY_TO_REMOVE = 6;
+    public static final int USER_STATUS_UNDER_CLOSURE = 6;
     // mainly for customer users: indicate mobile number is changed recently
     // and access to account will be restricted. Only 'Credit' txns will be allowed
     public static final int USER_STATUS_MOB_CHANGE_RECENT = 7;
@@ -43,8 +43,8 @@ public class DbConstants {
             "Locked",
             "Not Registered",
             "Ready to Enable",
-            "In Expiry Period",
-            "Restricted"
+            "Under Closure Notice",
+            "Limited: Credit Only"
     };
 
     // CustomerCards table - 'status' column values
