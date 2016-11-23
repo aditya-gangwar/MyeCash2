@@ -369,6 +369,8 @@ public class MyGlobalSettings
     private static final int WRONG_ATTEMPT_RESET_HRS = 2;
     private static final String SETTINGS_TXNS_INTABLE_KEEP_DAYS = "txns_intable_keep_days";
     private static final int CUST_TXNS_KEEP_DAYS = 5;
+    private static final String SETTINGS_FAILED_SMS_RETRY_MINS = "failed_sms_retry_mins";
+    private static final int FAILED_SMS_RETRY_MINS = 30;
 
     public static Integer getCbRedeemLimit() {
         return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CB_REDEEM_LIMIT);
@@ -388,6 +390,11 @@ public class MyGlobalSettings
         return (mRunMode==RunMode.backend)?
                 CUST_TXNS_KEEP_DAYS:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_TXNS_INTABLE_KEEP_DAYS);
+    }
+    public static Integer getFailedSmsRetryMins() {
+        return (mRunMode==RunMode.backend)?
+                FAILED_SMS_RETRY_MINS:
+                (Integer)MyGlobalSettings.mSettings.get(SETTINGS_FAILED_SMS_RETRY_MINS);
     }
 
     /*

@@ -466,7 +466,7 @@ public class CashbackActivity extends AppCompatActivity implements
         mTbLayoutSubhead1.setVisibility(View.VISIBLE);
 
         // no error case: all cashback values available
-        mTbTitle.setText(AppCommonUtil.getPartialVisibleStr(mWorkFragment.mCustMobile));
+        mTbTitle.setText(CommonUtils.getPartialVisibleStr(mWorkFragment.mCustMobile));
         // display image
         //mTbLayoutImage.setBackground(ContextCompat.getDrawable(this, R.drawable.circle_border_coconut));
         //mTbImage.setBackground(ContextCompat.getDrawable(this, R.drawable.logo_success_36dp));
@@ -477,7 +477,7 @@ public class CashbackActivity extends AppCompatActivity implements
         if(mWorkFragment.mCurrCustomer.getStatus()!=DbConstants.USER_STATUS_ACTIVE ) {
             mTbTitle2.setVisibility(View.VISIBLE);
             mTbTitle2.setText(DbConstants.userStatusDesc[mWorkFragment.mCurrCustomer.getStatus()]);
-            if(mWorkFragment.mCurrCustomer.getStatus()!=DbConstants.USER_STATUS_MOB_CHANGE_RECENT) {
+            if(mWorkFragment.mCurrCustomer.getStatus()!=DbConstants.USER_STATUS_LIMITED_CREDIT_ONLY) {
                 setTbImage(R.drawable.ic_block_white_48dp, R.color.failure);
             }
 

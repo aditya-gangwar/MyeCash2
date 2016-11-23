@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.Transaction;
 import in.myecash.customerbase.helper.MyRetainedFragment;
@@ -104,7 +105,7 @@ public class TxnDetailsDialog extends DialogFragment {
                 mInvoiceNum.setText(txn.getInvoiceNum());
             }
 
-            mCardUsed.setText(AppCommonUtil.getPartialVisibleStr(txn.getUsedCardId()));
+            mCardUsed.setText(CommonUtils.getPartialVisibleStr(txn.getUsedCardId()));
             mPinUsed.setText(txn.getCpin());
 
             mInputTotalBill.setText(AppCommonUtil.getAmtStr(txn.getTotal_billed()));

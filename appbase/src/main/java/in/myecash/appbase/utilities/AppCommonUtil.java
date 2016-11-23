@@ -462,17 +462,6 @@ public class AppCommonUtil {
             b.setTextSize(TypedValue.COMPLEX_UNIT_PX, small);
     }
 
-    public static String getPartialVisibleStr(String userId) {
-        // build half visible userid : XXXXX91535
-        StringBuilder halfVisibleUserid = new StringBuilder();
-        int hiddenlen = userId.length() - (userId.length() / 3);
-        for(int i=0; i<hiddenlen; i++) {
-            halfVisibleUserid.append("x");
-        }
-        halfVisibleUserid.append(userId.substring(hiddenlen));
-        return halfVisibleUserid.toString();
-    }
-
     public static String getMchntRemovalDate(Date removeReqDate) {
         DateUtil reqTime = new DateUtil(removeReqDate);
         reqTime.addDays(MyGlobalSettings.getMchntExpiryDays());

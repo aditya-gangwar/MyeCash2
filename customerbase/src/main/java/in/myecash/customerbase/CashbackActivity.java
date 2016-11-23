@@ -92,7 +92,7 @@ public class CashbackActivity extends AppCompatActivity implements
     private AppCompatImageView mTbImage;
     private EditText mTbTitle;
     private EditText mTbTitle2;
-    private LinearLayout mTbLayoutSubhead1;
+    //private LinearLayout mTbLayoutSubhead1;
     private EditText mTbSubhead1Text1;
     private EditText mTbSubhead1Text2;
 
@@ -248,7 +248,7 @@ public class CashbackActivity extends AppCompatActivity implements
             // show latest txns
             startTxnReportActivity(null,null);
 
-        } else if (i == R.id.menu_sort_mchnts) {
+        } /*else if (i == R.id.menu_sort_mchnts) {
             // sort current shown merchants list
             if(mMchntListFragment != null && mMchntListFragment.isVisible()) {
                 mMchntListFragment.sortMerchantList();
@@ -290,7 +290,7 @@ public class CashbackActivity extends AppCompatActivity implements
                         .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
 
-        } else if (i == R.id.menu_change_mobile) {
+        } */else if (i == R.id.menu_change_mobile) {
             // show mobile change dialog
             MobileChangeDialog dialog = new MobileChangeDialog();
             dialog.show(mFragMgr, DIALOG_CHANGE_MOBILE);
@@ -322,8 +322,25 @@ public class CashbackActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public boolean refreshMchntList() {
+        if(custStatsRefreshReq(mRetainedFragment.mCbsUpdateTime.getTime())) {
+            // Fetch from scratch
+            // While we could have implemented fetching only latest data here
+            // However intentionally fetching from scratch - to avoid scenario wherein due to
+            // some un-foreseen bug - wrong CB data is getting displayed always from local file
+            mGetCbSince = 0;
+            mRetainedFragment.mCashbacks = null;
+            mRetainedFragment.mCbsUpdateTime = null;
+            deleteCbFile();
+            fetchCbData();
+            return true;
+        }
+        return false;
+    }
+
     private void updateTbForCustomer() {
-        mTbLayoutSubhead1.setVisibility(View.VISIBLE);
+        //mTbLayoutSubhead1.setVisibility(View.VISIBLE);
 
         // no error case: all cashback values available
         mTbTitle.setText(mCustomer.getMobile_num());
@@ -363,7 +380,7 @@ public class CashbackActivity extends AppCompatActivity implements
         mTbImage = (AppCompatImageView) mToolbar.findViewById(R.id.tb_image) ;
         mTbTitle = (EditText) mToolbar.findViewById(R.id.tb_title) ;
         mTbTitle2 = (EditText) mToolbar.findViewById(R.id.tb_title_2) ;
-        mTbLayoutSubhead1 = (LinearLayout) mToolbar.findViewById(R.id.tb_layout_subhead1) ;
+        //mTbLayoutSubhead1 = (LinearLayout) mToolbar.findViewById(R.id.tb_layout_subhead1) ;
         mTbSubhead1Text1 = (EditText) mToolbar.findViewById(R.id.tb_curr_cashload) ;
         mTbSubhead1Text2 = (EditText) mToolbar.findViewById(R.id.tb_curr_cashback) ;
     }

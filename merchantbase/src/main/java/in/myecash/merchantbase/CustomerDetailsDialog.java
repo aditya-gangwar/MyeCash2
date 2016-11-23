@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import in.myecash.common.CommonUtils;
 import in.myecash.common.DateUtil;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
@@ -108,7 +109,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
         if(cust != null) {
             mInputCustomerId.setText(cust.getPrivateId());
-            mInputMobileNum.setText(AppCommonUtil.getPartialVisibleStr(cust.getMobileNum()));
+            mInputMobileNum.setText(CommonUtils.getPartialVisibleStr(cust.getMobileNum()));
             if(cb.getUpdateTime()!=null) {
                 mLastUsedHere.setText(mSdfDateWithTime.format(cb.getUpdateTime()));
             } else {
@@ -116,7 +117,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
             }
             mFirstUsedHere.setText(mSdfDateWithTime.format(cb.getCreateTime()));
 
-            mInputQrCard.setText(AppCommonUtil.getPartialVisibleStr(cust.getCardId()));
+            mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cust.getCardId()));
             mInputCardStatus.setText(DbConstants.cardStatusDescriptions[cust.getCardStatus()]);
             if(cust.getCardStatus() != DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED) {
                 mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
@@ -137,7 +138,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
                     String detail = "Will be Unlocked at "+mSdfDateWithTime.format(time.getTime());
                     mInputStatusDetails.setText(detail);
 
-                } else if(status==DbConstants.USER_STATUS_MOB_CHANGE_RECENT) {
+                } else if(status==DbConstants.USER_STATUS_LIMITED_CREDIT_ONLY) {
                     mInputStatusDetails.setVisibility(View.VISIBLE);
                     DateUtil time = new DateUtil(cust.getStatusUpdateTime());
                     time.addMinutes(MyGlobalSettings.getCustHrsAfterMobChange() * 60);

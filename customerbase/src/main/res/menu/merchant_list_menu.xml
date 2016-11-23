@@ -5,18 +5,18 @@
     <item
         android:id="@+id/action_sort"
         android:title="Sort"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:icon="@drawable/ic_sort_white_24dp"
         app:showAsAction="never" />
 
-    <!--item
-        android:id="@+id/action_download"
-        android:title="Download"
-        android:orderInCategory="2"
-        android:icon="@drawable/ic_file_download_white_24dp"
+    <item
+        android:id="@+id/action_refresh"
+        android:title="Refresh"
+        android:orderInCategory="1"
+        android:icon="@drawable/ic_refresh_white_24dp"
         app:showAsAction="ifRoom" />
 
-    <item
+    <!--item
         android:id="@+id/action_email"
         android:title="Email"
         android:orderInCategory="3"

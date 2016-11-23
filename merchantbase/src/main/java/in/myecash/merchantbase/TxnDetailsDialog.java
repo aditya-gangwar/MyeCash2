@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import in.myecash.appbase.utilities.TxnReportsHelper;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.Transaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -160,7 +161,7 @@ public class TxnDetailsDialog extends DialogFragment {
             mInputCbBill.setText(AppCommonUtil.getAmtStr(txn.getCb_billed()));
 
             mInputCustomerId.setText(txn.getCust_private_id());
-            mInputMobileNum.setText(AppCommonUtil.getPartialVisibleStr(txn.getCustomer_id()));
+            mInputMobileNum.setText(CommonUtils.getPartialVisibleStr(txn.getCustomer_id()));
             mCardUsed.setText(txn.getUsedCardId());
             mPinUsed.setText(txn.getCpin());
 

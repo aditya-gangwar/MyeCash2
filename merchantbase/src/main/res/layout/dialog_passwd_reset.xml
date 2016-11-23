@@ -29,7 +29,7 @@
                 android:id="@+id/label_information_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Provide your 'Date of Birth' in DDMMYYYY format \n(as provided during registration)" />
+                android:text="Provide your 'Date of Birth' in DDMMYYYY format \n(as given during Registration)" />
         </LinearLayout>
 
 

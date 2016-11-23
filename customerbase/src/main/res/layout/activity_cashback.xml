@@ -69,12 +69,13 @@
                 </LinearLayout>
 
                 <!-- the description view -->
-                <LinearLayout
+                <!--LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tb_layout_subhead1"
                     android:orientation="vertical"
-                    android:layout_marginRight="@dimen/medium_space">
+                    android:layout_marginRight="@dimen/medium_space"
+                    android:layout_marginLeft="@dimen/large_space">
 
                     <EditText
                         style="@style/Edittext_only_view_medium_lessPad"
@@ -82,7 +83,7 @@
                         android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:id="@+id/tb_curr_cashback"
-                        android:gravity="right|center_vertical"
+                        android:gravity="left|center_vertical"
                         android:text="\u20B9 987"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_grade_white_18dp"
@@ -91,25 +92,124 @@
                         style="@style/Edittext_only_view_medium_lessPad"
                         android:layout_width="match_parent"
                         android:id="@+id/tb_curr_cashload"
-                        android:gravity="right|center_vertical"
+                        android:gravity="left|center_vertical"
                         android:text="\u20B9 3456"
                         android:drawableLeft="@drawable/ic_account_balance_wallet_white_18dp"
                         android:drawablePadding="@dimen/large_space"
                         android:textColor="@color/toolbar_text_primary"
                         android:textStyle="bold"
                         android:paddingTop="0dp"/>
-                </LinearLayout>
+                </LinearLayout-->
 
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/balance_toolbar"
+            android:paddingLeft="@dimen/screen_side_padding"
+            android:paddingRight="@dimen/screen_side_padding"
+            android:orientation="vertical"
+            android:layout_below="@id/toolbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left">
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="Balance"
+                    android:textStyle="bold"
+                    android:textColor="@color/secondary_text"
+                    android:layout_weight="1"
+                    android:gravity="left"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_grade_white_18dp"
+                    android:tint="@color/primary"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/tb_curr_cashback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="\u20B9 9874"
+                    android:textStyle="bold"
+                    android:textColor="@color/secondary_text"/>
+
+                <Space
+                    android:layout_width="@dimen/XL_space"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                    android:tint="@color/primary"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/tb_curr_cashload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="\u20B9 9898"
+                    android:textStyle="bold"
+                    android:textColor="@color/secondary_text"/>
+
+            </LinearLayout>
+
+            <!--EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Updated: 08 Apr,16  20:15"
+                android:textStyle="italic"
+                android:gravity="left"
+                android:paddingTop="0dp"/-->
+
+            <!--LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/medium_space">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                    android:tint="@color/primary"
+                    android:paddingRight="@dimen/small_space"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/tb_curr_cashload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="\u20B9 98456"
+                    android:textStyle="bold"
+                    android:textColor="@color/secondary_text"/>
+            </LinearLayout-->
+
+        </LinearLayout>
+
+        <View
+            style="@style/Divider_horizontal_Large"
+            android:id="@+id/balance_divider"
+            android:layout_below="@id/balance_toolbar"
+            android:background="@color/primary"/>
 
         <!-- The main content view where fragments are loaded -->
         <FrameLayout
             android:id="@+id/fragment_container_1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
+            android:layout_below="@id/balance_divider"
             android:background="?android:attr/windowBackground">
         </FrameLayout>
 

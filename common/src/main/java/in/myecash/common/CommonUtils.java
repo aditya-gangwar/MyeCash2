@@ -34,6 +34,17 @@ public class CommonUtils {
         return true;
     }
 
+    public static String getPartialVisibleStr(String userId) {
+        // build half visible userid : XXXXX91535
+        StringBuilder halfVisibleUserid = new StringBuilder();
+        int hiddenlen = userId.length() - (userId.length() / 3);
+        for(int i=0; i<hiddenlen; i++) {
+            halfVisibleUserid.append("x");
+        }
+        halfVisibleUserid.append(userId.substring(hiddenlen));
+        return halfVisibleUserid.toString();
+    }
+
     /*
      * Methods to get file paths (in backend) for various types of user files
      */

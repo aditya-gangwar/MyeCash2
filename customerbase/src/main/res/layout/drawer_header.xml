@@ -6,21 +6,36 @@
     android:background="@color/primary_dark"
     android:paddingTop="@dimen/XXL_space"
     android:paddingBottom="@dimen/medium_space"
-    android:orientation="vertical"
     android:gravity="bottom|left">
 
-    <TextView
-        style="@style/Toolbar_title"
-        android:id="@+id/drawer_header_title"
-        android:gravity="left"
-        android:layout_gravity="left|bottom"
-        android:text="Username" />
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/tb_image"
+        android:layout_width="@dimen/toolbar_image_width"
+        android:layout_height="match_parent"
+        android:padding="@dimen/toolbar_image_padding"
+        android:src="@drawable/logo_red"
+        android:scaleType="centerInside"
+        android:layout_marginRight="@dimen/small_space"
+        android:layout_marginLeft="@dimen/medium_space"/>
 
-    <TextView
-        style="@style/Toolbar_subtitle"
-        android:id="@+id/drawer_header_mobile"
-        android:gravity="left"
-        android:layout_gravity="left|bottom"
-        android:text="Mobile Number"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Toolbar_title"
+            android:id="@+id/drawer_header_title"
+            android:gravity="left"
+            android:layout_gravity="left|bottom"
+            android:text="Username" />
+
+        <TextView
+            style="@style/Toolbar_subtitle"
+            android:id="@+id/drawer_header_mobile"
+            android:gravity="left"
+            android:layout_gravity="left|bottom"
+            android:text="Mobile Number"/>
+    </LinearLayout>
 
 </LinearLayout>

@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import java.text.SimpleDateFormat;
 
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.MyGlobalSettings;
@@ -61,11 +62,11 @@ public class CustomerDetailsDialog extends DialogFragment  {
         Customers cust = CustomerUser.getInstance().getCustomer();
 
         //mName.setText(cust.getName());
-        mInputMobileNum.setText(AppCommonUtil.getPartialVisibleStr(cust.getMobile_num()));
+        mInputMobileNum.setText(CommonUtils.getPartialVisibleStr(cust.getMobile_num()));
         mCreatedOn.setText(mSdfDateOnly.format(cust.getCreated()));
         mExpiringOn.setText(mSdfDateOnly.format(AppCommonUtil.getExpiryDate(cust)));
 
-        mInputQrCard.setText(AppCommonUtil.getPartialVisibleStr(cust.getCardId()));
+        mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cust.getCardId()));
         mInputCardStatus.setText(DbConstants.cardStatusDescriptions[cust.getMembership_card().getStatus()]);
         if(cust.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED) {
             mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));

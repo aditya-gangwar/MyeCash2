@@ -10,8 +10,8 @@
     <dimen name="register_image_width">90dp</dimen>
     <dimen name="register_image_height">90dp</dimen>
 
-    <dimen name="dp_item_image_width">67dp</dimen>
-    <dimen name="dp_item_image_height">67dp</dimen>
+    <dimen name="dp_item_image_width">60dp</dimen>
+    <dimen name="dp_item_image_height">60dp</dimen>
 
     <dimen name="dp_dialog_image_width">105dp</dimen>
     <dimen name="dp_dialog_image_height">105dp</dimen>

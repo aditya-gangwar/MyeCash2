@@ -11,7 +11,7 @@
             android:icon="@drawable/ic_swap_horiz_black_24dp" />
     </group>
 
-    <item
+    <!--item
         android:id="@+id/current_subheader_1"
         android:title="Merchant List">
         <menu>
@@ -26,7 +26,7 @@
                     android:icon="@drawable/ic_refresh_black_24dp" />
             </group>
         </menu>
-    </item>
+    </item-->
 
     <item
         android:id="@+id/current_subheader"

@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -175,7 +176,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if(null==value) {
             return;
         }
-        String summary = String.format("Change '%s' as registered mobile number.", AppCommonUtil.getPartialVisibleStr(value));
+        String summary = String.format("Change '%s' as registered mobile number.", CommonUtils.getPartialVisibleStr(value));
         Preference pref = findPreference(KEY_MOBILE_NUM);
         pref.setSummary(summary);
     }

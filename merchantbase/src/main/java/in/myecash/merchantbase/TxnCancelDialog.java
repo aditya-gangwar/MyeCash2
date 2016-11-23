@@ -17,6 +17,7 @@ import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Transaction;
@@ -186,7 +187,7 @@ public class TxnCancelDialog extends DialogFragment
 
         mTxnId = txn.getTrans_id();
         mInputTxnId.setText(txn.getTrans_id());
-        mInputCustId.setText(AppCommonUtil.getPartialVisibleStr(txn.getCustomer_id()));
+        mInputCustId.setText(CommonUtils.getPartialVisibleStr(txn.getCustomer_id()));
 
         if(txn.getCl_credit()<=0 && txn.getCl_debit()<=0) {
             mLayoutAccount.setVisibility(View.GONE);

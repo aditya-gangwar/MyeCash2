@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -54,6 +55,7 @@ public class CashbackListFragment extends Fragment {
 
     public interface CashbackListFragmentIf {
         MyRetainedFragment getRetainedFragment();
+        boolean refreshMchntList();
         //void setDrawerState(boolean isEnabled);
     }
 
@@ -201,7 +203,7 @@ public class CashbackListFragment extends Fragment {
         outState.putInt("mSelectedSortType", mSelectedSortType);
     }
 
-    /*@Override
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.merchant_list_menu, menu);
     }
@@ -211,9 +213,23 @@ public class CashbackListFragment extends Fragment {
         try {
             int i = item.getItemId();
             if (i == R.id.action_sort) {
-                SortMchntDialog dialog = SortMchntDialog.newInstance(mSelectedSortType);
-                dialog.setTargetFragment(this, REQ_SORT_CUST_TYPES);
-                dialog.show(getFragmentManager(), DIALOG_SORT_CUST_TYPES);
+                sortMerchantList();
+
+            } else if(i == R.id.action_refresh) {
+                if(!mCallback.refreshMchntList()) {
+                    String msg = null;
+                    if(MyGlobalSettings.getCustNoRefreshHrs()==24) {
+                        // 24 is treated as special case as 'once in a day'
+                        msg = "Refresh is allowed once a day.";
+                    } else {
+                        msg = "Refresh allowed once every "+String.valueOf(MyGlobalSettings.getCustNoRefreshHrs())+" hours";
+                    }
+
+                    msg = msg+"\n\n"+"* Last Updated: "+mSdfDateWithTime.format(mRetainedFragment.mCbsUpdateTime);
+
+                    DialogFragmentWrapper.createNotification(AppConstants.generalInfoTitle, msg, true, false)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
             }
 
         } catch(Exception e) {
@@ -225,9 +241,9 @@ public class CashbackListFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
-    public void sortMerchantList() {
+    private void sortMerchantList() {
         try {
             SortMchntDialog dialog = SortMchntDialog.newInstance(mSelectedSortType);
             dialog.setTargetFragment(this, REQ_SORT_CUST_TYPES);

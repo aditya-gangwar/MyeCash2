@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -404,7 +405,7 @@ public class CustomerListFragment extends Fragment {
                 sb.append(i+1).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cust.getPrivateId()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cust.getMobileNum()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(AppCommonUtil.getPartialVisibleStr(cust.getCardId())).append(CommonConstants.CSV_DELIMETER);
+                sb.append(CommonUtils.getPartialVisibleStr(cust.getCardId())).append(CommonConstants.CSV_DELIMETER);
                 sb.append(DbConstants.userStatusDesc[cust.getStatus()]).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cb.getCurrClBalance()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cb.getClCredit()).append(CommonConstants.CSV_DELIMETER);
