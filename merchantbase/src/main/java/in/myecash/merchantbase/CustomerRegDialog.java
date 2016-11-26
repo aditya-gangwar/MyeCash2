@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -32,15 +34,17 @@ public class CustomerRegDialog extends DialogFragment
     private static final String ARG_LAST_NAME = "lastName";
     private static final String ARG_MOBILE_NUM = "mobile_num";
     private static final String ARG_QRCODE = "qrcode";
+    private static final String ARG_WRONG_OTP = "wrongOtp";
 
     private CustomerRegFragmentIf mCallback;
+    private String scannedCardId;
 
     public interface CustomerRegFragmentIf {
         void onCustomerRegOk(String name, String mobileNum, String qrCode, String firstName, String lastName);
         void onCustomerRegReset();
     }
 
-    public static CustomerRegDialog newInstance(String mobileNo, String cardId, String firstName, String lastName) {
+    public static CustomerRegDialog newInstance(String mobileNo, String cardId, String firstName, String lastName, boolean wrongOtp) {
         Bundle args = new Bundle();
         if(mobileNo != null) {
             args.putString(ARG_MOBILE_NUM, mobileNo);
@@ -54,6 +58,8 @@ public class CustomerRegDialog extends DialogFragment
         if(lastName != null) {
             args.putString(ARG_LAST_NAME, lastName);
         }
+        args.putBoolean(ARG_WRONG_OTP, wrongOtp);
+
         CustomerRegDialog fragment = new CustomerRegDialog();
         fragment.setArguments(args);
         return fragment;
@@ -83,16 +89,35 @@ public class CustomerRegDialog extends DialogFragment
 
         bindUiResources(v);
 
+        if(savedInstanceState!=null) {
+            LogMy.d(TAG,"Restoring scannedCardId");
+            scannedCardId = savedInstanceState.getString("scannedCardId");
+        }
+
         // Any null means OTP not generated yet
         if(mobileNum==null || mobileNum.isEmpty() ||
                 cardId == null || cardId.isEmpty()) {
             mInputOtp.setText("");
             mLayoutOtp.setVisibility(View.GONE);
             mLabelInfoOtp.setVisibility(View.GONE);
+
+            mLabelInfoMobile.setVisibility(View.VISIBLE);
+            mLabelInfoName.setVisibility(View.VISIBLE);
+
         } else {
             mLabelInfoMobile.setVisibility(View.GONE);
             mLabelInfoName.setVisibility(View.GONE);
+
+            mLabelInfoOtp.setVisibility(View.VISIBLE);
+            mLayoutOtp.setVisibility(View.VISIBLE);
             mInputOtp.requestFocus();
+
+            boolean wrongOtpCase = getArguments().getBoolean(ARG_WRONG_OTP,false);
+            if(wrongOtpCase) {
+                mLabelInfoOtp.setText("Wrong OTP.  Please Try again");
+                mLabelInfoOtp.setTypeface(null, Typeface.BOLD_ITALIC);
+                mInputOtp.setError("Wrong OTP value");
+            }
         }
 
         // When the dialog is opened from 'mobile number screen' (i.e. not from Menu)
@@ -110,7 +135,8 @@ public class CustomerRegDialog extends DialogFragment
 
         // Set card Id and make non-editable
         if(cardId!=null && !cardId.isEmpty()) {
-            mInputQrCard.setText(cardId);
+            scannedCardId = cardId;
+            mInputQrCard.setText(CommonUtils.getPartialVisibleStr(scannedCardId));
             mInputQrCard.setClickable(false);
             mInputQrCard.setEnabled(false);
             mLabelCard.setEnabled(false);
@@ -125,6 +151,7 @@ public class CustomerRegDialog extends DialogFragment
             mInputFirstName.setClickable(false);
             mInputFirstName.setEnabled(false);
             mLabelFirstName.setEnabled(false);
+            mLabelLastName.setEnabled(false);
 
             mInputLastName.setText(lastName);
             mInputLastName.setClickable(false);
@@ -200,7 +227,7 @@ public class CustomerRegDialog extends DialogFragment
                     if(validate()) {
                         mCallback.onCustomerRegOk(
                                 mInputMobileNum.getText().toString(),
-                                mInputQrCard.getText().toString(),
+                                scannedCardId,
                                 mInputOtp.getText().toString(),
                                 mInputFirstName.getText().toString(),
                                 mInputLastName.getText().toString());
@@ -228,7 +255,7 @@ public class CustomerRegDialog extends DialogFragment
         }
 
         if(mInputQrCard.isEnabled()) {
-            errorCode = ValidationHelper.validateMemberCard(mInputQrCard.getText().toString());
+            errorCode = ValidationHelper.validateMemberCard(scannedCardId);
             if (errorCode != ErrorCodes.NO_ERROR) {
                 mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
@@ -338,9 +365,16 @@ public class CustomerRegDialog extends DialogFragment
 
     private void setQrCode(String qrCode) {
         if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
-            mInputQrCard.setText(qrCode);
+            scannedCardId = qrCode;
+            mInputQrCard.setText(CommonUtils.getPartialVisibleStr(scannedCardId));
         } else {
             AppCommonUtil.toast(getActivity(),"Invalid Member Card");
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("scannedCardId", scannedCardId);
     }
 }

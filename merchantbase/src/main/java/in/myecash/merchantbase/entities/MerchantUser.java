@@ -76,6 +76,7 @@ public class MerchantUser
      * Static public methods
      */
     public static void reset() {
+        LogMy.d(TAG, "In reset");
         if(mInstance!=null) {
             mInstance.mMerchant = null;
             mInstance = null;

@@ -208,9 +208,6 @@ public class AppCommonUtil {
     public static String getErrorDesc(int errorCode) {
         // handle all error messages requiring substitution seperatly
         switch(errorCode) {
-            case ErrorCodes.USER_MOB_CHANGE_RESTRICTED_ACCESS:
-                return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getCustHrsAfterMobChange()));
-
             case ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD:
                 return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getAccBlockHrs(null)));
 

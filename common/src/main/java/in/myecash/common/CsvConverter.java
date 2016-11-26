@@ -59,7 +59,7 @@ public class CsvConverter {
         csvFields[TXN_CSV_IDX_MERCHANT_NAME] = txn.getMerchant_name();
         csvFields[TXN_CSV_IDX_CUSTOMER_ID] = txn.getCustomer_id();
         csvFields[TXN_CSV_IDX_CUSTOMER_PVT_ID] = txn.getCust_private_id();
-        csvFields[TXN_CSV_IDX_USED_CARD_ID] = txn.getUsedCardId();
+        csvFields[TXN_CSV_IDX_USED_CARD_ID] = CommonUtils.getPartialVisibleStr(txn.getUsedCardId());
         csvFields[TXN_CSV_IDX_TOTAL_BILLED] = String.valueOf(txn.getTotal_billed());
         csvFields[TXN_CSV_IDX_CB_BILLED] = String.valueOf(txn.getCb_billed());
         csvFields[TXN_CSV_IDX_ACC_DEBIT] = String.valueOf(txn.getCl_debit());

@@ -120,6 +120,7 @@ public class AppConstants {
     public static final String merchantDisableSuccessMsg = "Merchant disabled successfully.";
 
     public static final String custMobileChangeSuccessMsg = "Mobile Number changed successfully. Please login again with new mobile number.";
+    public static final String enableAccSuccessMsg = "Account is Active now. Please login to proceed.";
 
     // Progress dialog messages
     public static final String progressDefault = "Processing ...";

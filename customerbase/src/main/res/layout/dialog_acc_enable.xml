@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    style="@style/LL_Vertical_paddingSidesLarge"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="?android:attr/windowBackground">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_space"/>
+
+    <EditText
+        style="@style/Edittext_only_view_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/label_info1"
+        android:textStyle="bold"
+        android:textColor="@color/accent2"
+        android:text="Account Disabled"
+        android:layout_marginBottom="@dimen/large_space"/>
+
+    <EditText
+        style="@style/Edittext_only_view_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/label_info3"
+        android:textStyle="italic"
+        android:text="Enable account ?  Enter OTP as received on your registered mobile number."
+        android:layout_marginBottom="@dimen/medium_space"/>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:id="@+id/layout_otp"
+        android:layout_marginBottom="@dimen/XL_space">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/image_otp"
+            android:src="@drawable/ic_security_white_24dp"
+            android:tint="@color/primary"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/medium_space"/>
+
+        <EditText
+            android:id="@+id/input_otp"
+            style="@style/MyEdittext_Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Enter OTP"
+            android:maxLength="@string/otp_char_limit"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <EditText
+        style="@style/Edittext_only_view_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/label_info2"
+        android:textStyle="italic"
+        android:text="No OTP ?\nTo Generate OTP, provide below atleast one of 'Member Card#' or 'PIN'"
+        android:layout_marginBottom="@dimen/XL_space"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/layout_cardNum">
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/image_cardNum"
+                android:src="@drawable/ic_card_membership_white_24dp"
+                android:tint="@color/primary"
+                android:layout_marginRight="@dimen/medium_space"/>
+
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/label_card_num"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Provide Member Card Number" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_card_membership_white_24dp"
+                android:tint="@color/primary"
+                android:visibility="invisible"
+                android:layout_marginRight="@dimen/medium_space"/>
+
+            <EditText
+                android:id="@+id/input_card_num"
+                style="@style/MyEdittext_Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Card Number"
+                android:maxLength="@string/card_number_limit"
+                android:gravity="center"
+                android:inputType="number"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <EditText
+        style="@style/Edittext_only_view_small"
+        android:id="@+id/label_or"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="OR"
+        android:layout_marginTop="@dimen/small_space"
+        android:layout_marginBottom="@dimen/small_space"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/layout_pin">
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_lock_outline_white_24dp"
+                android:tint="@color/primary"
+                android:layout_marginRight="@dimen/medium_space"/>
+
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Provide existing PIN" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_lock_outline_white_24dp"
+                android:visibility="invisible"
+                android:layout_marginRight="@dimen/medium_space"/>
+
+            <EditText
+                android:id="@+id/input_pin"
+                style="@style/MyEdittext_Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberPassword"
+                android:hint="Current PIN"
+                android:maxLength="@string/pin_char_limit"
+                android:gravity="center"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/large_space"/>
+
+</LinearLayout>

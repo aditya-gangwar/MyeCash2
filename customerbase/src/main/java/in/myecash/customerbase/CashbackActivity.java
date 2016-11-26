@@ -985,7 +985,7 @@ public class CashbackActivity extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        CustomerUser.reset();
+        //CustomerUser.reset();
     }
 
     @Override

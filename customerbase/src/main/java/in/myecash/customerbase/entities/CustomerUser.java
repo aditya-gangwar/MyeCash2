@@ -148,6 +148,18 @@ public class CustomerUser {
         return ErrorCodes.NO_ERROR;
     }
 
+    public static int enableAccount(String userId, String passwd, String rcvdOtp, String cardNum, String pin) {
+        LogMy.d(TAG, "In enableAccount");
+        try {
+            CustomerServicesNoLogin.getInstance().enableCustAccount(userId, passwd, rcvdOtp, cardNum, pin);
+            LogMy.d(TAG,"enableAccount success");
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"enableAccount failed: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
     /*
      * Methods to change profile / settings
      */

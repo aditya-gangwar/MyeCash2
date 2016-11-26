@@ -288,7 +288,7 @@ public class CashbackActivity extends AppCompatActivity implements
                         .show(mFragMgr, DIALOG_LOGOUT);
                 break;*/
         } else if (i == R.id.menu_reg_customer) {
-            askAndRegisterCustomer();
+            askAndRegisterCustomer(false);
 
         } else if (i == R.id.menu_new_card) {
             if (mWorkFragment.mCustomerOp != null) {
@@ -546,12 +546,12 @@ public class CashbackActivity extends AppCompatActivity implements
         mTbSubhead1Text2 = (EditText) mToolbar.findViewById(R.id.tb_curr_cashback) ;
     }
 
-    private void askAndRegisterCustomer() {
+    private void askAndRegisterCustomer(boolean wrongOtpCase) {
         LogMy.d(TAG, "In askAndRegisterCustomer");
         // Show user registration confirmation dialogue
         // confirm for registration
         CustomerRegDialog.newInstance(mWorkFragment.mCustMobile, mWorkFragment.mCustCardId,
-                mWorkFragment.mCustRegFirstName, mWorkFragment.mCustRegLastName).
+                mWorkFragment.mCustRegFirstName, mWorkFragment.mCustRegLastName, wrongOtpCase).
                 show(mFragMgr, DIALOG_REG_CUSTOMER);
     }
 
@@ -1239,7 +1239,17 @@ public class CashbackActivity extends AppCompatActivity implements
                 // start the dialog again
                 // but this time it will have pre-filled last entered mobile and cardId
                 // based on which it will ask for OTP
-                askAndRegisterCustomer();
+                askAndRegisterCustomer(false);
+            }
+
+        } else if(errorCode==ErrorCodes.WRONG_OTP) {
+            // OTP sent successfully to customer mobile, ask for the same
+            if(mWorkFragment.mCustMobile==null || mWorkFragment.mCustCardId==null) {
+                // some issue - not supposed to be null - raise alarm
+                AppAlarms.wtf(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onCustRegResponse",null);
+            } else {
+                // start the dialog again
+                askAndRegisterCustomer(true);
             }
 
         } else {
@@ -1270,7 +1280,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
         // Update data in toolbar as per response
         if(errorCode== ErrorCodes.NO_SUCH_USER) {
-            askAndRegisterCustomer();
+            askAndRegisterCustomer(false);
         } else if(errorCode==ErrorCodes.NO_ERROR) {
             // update customer ids to actual fetched - just to be sure
             updateCustIds();
@@ -1510,8 +1520,10 @@ public class CashbackActivity extends AppCompatActivity implements
         mWorkFragment.mCustMobile = null;
         mWorkFragment.mCustCardId = null;
         mWorkFragment.mCardPresented = false;
+        mWorkFragment.mCustRegLastName = null;
+        mWorkFragment.mCustRegFirstName = null;
 
-        askAndRegisterCustomer();
+        askAndRegisterCustomer(false);
     }
 
 
@@ -1815,7 +1827,7 @@ public class CashbackActivity extends AppCompatActivity implements
     // NOTE! Make sure to override the method with only a single `Bundle` argument
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
-        LogMy.d(TAG,"In onPostCreate: ");
+        LogMy.d(TAG,"In onPostCreate");
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
@@ -1842,7 +1854,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
     @Override
     protected void onResume() {
-        LogMy.d(TAG, "In onResume: ");
+        LogMy.d(TAG, "In onResume");
         super.onResume();
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
@@ -1852,7 +1864,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
     @Override
     protected void onPause() {
-        LogMy.d(TAG,"In onPause: ");
+        LogMy.d(TAG,"In onPause");
         super.onPause();
         AppCommonUtil.cancelProgressDialog(false);
         setDrawerState(false);
@@ -1860,12 +1872,14 @@ public class CashbackActivity extends AppCompatActivity implements
 
     @Override
     protected void onDestroy() {
+        LogMy.d(TAG,"In onDestroy");
         super.onDestroy();
-        MerchantUser.reset();
+        //MerchantUser.reset();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        LogMy.d(TAG,"In onSaveInstanceState");
         super.onSaveInstanceState(outState);
 
         outState.putBoolean("mCashTxnStartPending", mCashTxnStartPending);

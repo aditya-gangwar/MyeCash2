@@ -37,7 +37,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
 
 public class LoginActivity extends AppCompatActivity implements
         MyRetainedFragment.RetainedFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
-        PasswdResetDialog.PasswdResetDialogIf {
+        PasswdResetDialog.PasswdResetDialogIf, AccEnableDialog.AccEnableDialogIf {
 
     private static final String TAG = "LoginActivity";
 
@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     private static final String RETAINED_FRAGMENT_TAG = "workLogin";
     private static final String DIALOG_PASSWD_RESET = "dialogPaswdReset";
+    private static final String DIALOG_ENABLE_ACC = "dialogEnableAcc";
 
     MyRetainedFragment      mWorkFragment;
 
@@ -228,7 +229,17 @@ public class LoginActivity extends AppCompatActivity implements
             if(errorCode == ErrorCodes.NO_ERROR) {
                 onLoginSuccess();
 
-            } /*else if(errorCode == ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD) {
+            } else if(errorCode == ErrorCodes.USER_ACC_DISABLED) {
+                mLoginButton.setEnabled(true);
+                // reset Enable account parameters
+                mWorkFragment.mAccEnableCardNum = null;
+                mWorkFragment.mAccEnablePin = null;
+                mWorkFragment.mAccEnableOtp = null;
+                // Show Enable account dialog
+                AccEnableDialog dialog = AccEnableDialog.newInstance(null, null);
+                dialog.show(getFragmentManager(), DIALOG_ENABLE_ACC);
+
+            }/*else if(errorCode == ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD) {
                 mLoginButton.setEnabled(true);
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -263,6 +274,25 @@ public class LoginActivity extends AppCompatActivity implements
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
             mProcessingResetPasswd = false;
+
+        } else if(operation== MyRetainedFragment.REQUEST_ENABLE_ACC) {
+            AppCommonUtil.cancelProgressDialog(true);
+            if(errorCode == ErrorCodes.NO_ERROR) {
+                // Show success notification dialog
+                DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.enableAccSuccessMsg, false, false)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+
+            } else if(errorCode==ErrorCodes.OTP_GENERATED) {
+                // OTP sent successfully to registered mobile, ask for the same
+                // show the 'enable account dialog' again
+                AccEnableDialog dialog = AccEnableDialog.newInstance(mWorkFragment.mAccEnableCardNum, mWorkFragment.mAccEnablePin);
+                dialog.show(getFragmentManager(), DIALOG_ENABLE_ACC);
+
+            } else {
+                // Show error notification dialog
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            }
         }
     }
 
@@ -315,6 +345,18 @@ public class LoginActivity extends AppCompatActivity implements
         } else {
             mProcessingResetPasswd = false;
         }
+    }
+
+    @Override
+    public void enableAccOk(String otp, String cardNum, String pin) {
+        // update values
+        mWorkFragment.mAccEnableOtp = otp;
+        mWorkFragment.mAccEnableCardNum = cardNum;
+        mWorkFragment.mAccEnablePin = pin;
+
+        // show progress dialog
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mWorkFragment.enableAccount(mLoginId, mPassword);
     }
 
     /**

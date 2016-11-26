@@ -59,7 +59,7 @@
                 android:id="@+id/input_firstName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="textCapWords"
                 android:maxLength="@string/customer_name_char_limit"
                 android:layout_weight="63"
                 android:gravity="left"/>
@@ -85,7 +85,7 @@
                 android:id="@+id/input_lastName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="textCapWords"
                 android:maxLength="@string/customer_name_char_limit"
                 android:layout_weight="63"
                 android:gravity="left"/>
@@ -184,7 +184,8 @@
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
-            android:id="@+id/layout_otp">
+            android:id="@+id/layout_otp"
+            android:layout_marginBottom="@dimen/XL_space">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -209,13 +210,9 @@
                 android:hint="Enter OTP"
                 android:layout_weight="63"
                 android:gravity="left"
-                android:inputType="numberPassword"
+                android:inputType="number"
                 android:maxLength="@string/otp_char_limit"/>
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
 
     </LinearLayout>
 </LinearLayout>

@@ -29,7 +29,7 @@ public class ErrorCodes {
     public static final int USER_WRONG_ID_PASSWD = 508;
     public static final int FATAL_ERROR_ACC_DISABLED = 509;
     public static final int USER_ALREADY_REGISTERED = 510;
-    public static final int USER_MOB_CHANGE_RESTRICTED_ACCESS = 511;
+    public static final int LIMITED_ACCESS_CREDIT_TXN_ONLY = 511;
 
     // Input / Verification data or permissions failure
     public static final int WRONG_INPUT_DATA = 520;
@@ -98,9 +98,9 @@ public class ErrorCodes {
         aMap.put(USER_WRONG_ID_PASSWD, "Wrong user id or password. Please try again.");
         aMap.put(FATAL_ERROR_ACC_DISABLED,"User account disabled temporarily by system for safety purpose. You will receive notification from customer care in next 24-48 hours.");
         aMap.put(USER_ALREADY_REGISTERED, "User is already registered");
-        aMap.put(USER_MOB_CHANGE_RESTRICTED_ACCESS,"Mobile number changed in last %s hours. Only 'CREDIT' transactions are allowed.");
+        aMap.put(LIMITED_ACCESS_CREDIT_TXN_ONLY,"Limited Access. Only 'CREDIT' transactions are allowed.");
 
-        aMap.put(SEND_SMS_FAILED,"Failed to send SMS");
+        aMap.put(SEND_SMS_FAILED,"Sorry, but we failed to send SMS to you. Request to please try again later.");
         aMap.put(OTP_GENERATE_FAILED,"Failed to generate OTP. Please tru again later.");
 
         aMap.put(WRONG_INPUT_DATA,"Invalid input data");

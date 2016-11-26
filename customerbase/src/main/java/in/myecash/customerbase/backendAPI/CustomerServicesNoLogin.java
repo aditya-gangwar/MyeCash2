@@ -40,4 +40,10 @@ package in.myecash.customerbase.backendAPI;
         Object[] args = new Object[]{mobileNum, secret};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "resetCustomerPassword", args );
     }
+
+    public void enableCustAccount(String userId, String passwd, String rcvdOtp, String cardNum, String pin)
+    {
+        Object[] args = new Object[]{userId, passwd, rcvdOtp, cardNum, pin};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "enableCustAccount", args );
+    }
 }

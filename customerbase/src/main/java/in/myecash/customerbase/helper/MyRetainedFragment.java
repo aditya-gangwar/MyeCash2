@@ -34,6 +34,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_CHANGE_PIN = 6;
     public static final int REQUEST_FETCH_TXNS = 7;
     public static final int REQUEST_FETCH_TXN_FILES = 8;
+    public static final int REQUEST_ENABLE_ACC = 9;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -56,20 +57,15 @@ public class MyRetainedFragment extends RetainedFragment {
     public String mCardMobileChange;
 
     // members used by 'Txn Reports Activity' to store its state, and its fragments
-    //public List<String> mAllFiles = new ArrayList<>();
     public List<String> mMissingFiles;
     // 'Txn Reports Activity' store the helper instance here in onSaveInstance
     public TxnReportsHelper mTxnReportHelper;
-    //public List<Transaction> mTxnsFromCsv = new ArrayList<>();
-    //public int mSummary[] = new int[AppConstants.INDEX_SUMMARY_MAX_VALUE];
     public List<Transaction> mLastFetchTransactions;
 
-    /*
-    public List<String> mAllFiles = new ArrayList<>();
-    public List<String> mMissingFiles = new ArrayList<>();
-    public List<Transaction> mTxnsFromCsv = new ArrayList<>();
-    //public int mSummary[] = new int[AppConstants.INDEX_SUMMARY_MAX_VALUE];
-    public List<Transaction> mLastFetchTransactions;*/
+    // params for enabling account
+    public String mAccEnableCardNum;
+    public String mAccEnablePin;
+    public String mAccEnableOtp;
 
     public void reset() {
         LogMy.d(TAG,"In reset");
@@ -108,6 +104,9 @@ public class MyRetainedFragment extends RetainedFragment {
     }
     public void fetchTxnFiles(Context context) {
         mBackgroundProcessor.addFetchTxnFilesRequest(context);
+    }
+    public void enableAccount(String loginId, String passwd) {
+        mBackgroundProcessor.addEnableRequest(loginId, passwd);
     }
 
     @Override

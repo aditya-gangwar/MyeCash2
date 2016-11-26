@@ -18,6 +18,7 @@ import android.widget.Space;
 import android.widget.Toast;
 
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
@@ -168,7 +169,7 @@ public class CustomerOpDialog extends DialogFragment
         }
         String cardNum = getArguments().getString(ARG_CARD_NUM, null);
         if(cardNum != null) {
-            mInputQrCard.setText(cardNum);
+            mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cardNum));
             if(isOtpGenerated) {
                 mLabelQrCard.setEnabled(false);
                 mInputQrCard.setEnabled(false);

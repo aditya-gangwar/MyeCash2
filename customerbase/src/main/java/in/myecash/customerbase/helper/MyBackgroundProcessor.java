@@ -114,6 +114,13 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         LogMy.d(TAG, "In addFetchTxnFilesRequest");
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_TXN_FILES, context).sendToTarget();
     }
+    public void addEnableRequest(String userId, String password) {
+        LogMy.d(TAG, "In addEnableRequest");
+        MessageLogin msg = new MessageLogin();
+        msg.userId = userId;
+        msg.password = password;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_ENABLE_ACC, msg).sendToTarget();
+    }
 
 
     @Override
@@ -146,6 +153,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_FETCH_TXN_FILES:
                 error = fetchTxnFiles((Context) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_ENABLE_ACC:
+                error = enableAccount((MessageLogin) msg.obj);
                 break;
         }
         return error;
@@ -313,6 +323,12 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
             return ErrorCodes.GENERAL_ERROR;
         }
         return ErrorCodes.NO_ERROR;
+    }
+
+    private int enableAccount(MessageLogin msg) {
+        LogMy.d(TAG, "In enableAccount");
+        return CustomerUser.enableAccount(msg.userId, msg.password,
+                mRetainedFragment.mAccEnableOtp, mRetainedFragment.mAccEnableCardNum, mRetainedFragment.mAccEnablePin);
     }
 
     /*
