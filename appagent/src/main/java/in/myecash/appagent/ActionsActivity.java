@@ -18,6 +18,7 @@ import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.appbase.PasswdChangeDialog;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
@@ -340,6 +341,16 @@ public class ActionsActivity extends AppCompatActivity implements
     @Override
     public void onBgThreadCreated() {
         // nothing to do
+    }
+
+    @Override
+    protected void onResume() {
+        LogMy.d(TAG, "In onResume");
+        super.onResume();
+        if(AppCommonUtil.getProgressDialogMsg()!=null) {
+            AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
+        }
+        AppCommonUtil.setUserType(DbConstants.USER_TYPE_CC);
     }
 }
 

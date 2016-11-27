@@ -71,9 +71,14 @@ public class AppCommonUtil {
     private static ProgressDialog mProgressDialog;
     private static String mProgressDialogMsg;
 
+    private static int mUserType;
+    public static void setUserType(int userType) {
+        AppCommonUtil.mUserType = userType;
+    }
+
     /*
-     * Progress Dialog related fxs
-     */
+         * Progress Dialog related fxs
+         */
     public static void showProgressDialog(final Context context, String message) {
         cancelProgressDialog(true);
         mProgressDialogMsg = message;
@@ -206,13 +211,20 @@ public class AppCommonUtil {
         }
     }
     public static String getErrorDesc(int errorCode) {
+        LogMy.d(TAG,"In getErrorDesc: "+mUserType);
         // handle all error messages requiring substitution seperatly
         switch(errorCode) {
             case ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD:
-                return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getAccBlockHrs(null)));
+                return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getAccBlockHrs(mUserType)));
 
             case ErrorCodes.CASH_ACCOUNT_LIMIT_RCHD:
                 return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getCashAccLimit()));
+
+            case ErrorCodes.WRONG_PIN:
+            case ErrorCodes.VERIFICATION_FAILED:
+            case ErrorCodes.USER_WRONG_ID_PASSWD:
+                int confMaxAttempts = MyGlobalSettings.userTypeToWrongLimit.get(mUserType);
+                return String.format(ErrorCodes.appErrorDesc.get(errorCode),String.valueOf(confMaxAttempts));
 
             default:
                 return ErrorCodes.appErrorDesc.get(errorCode);

@@ -94,20 +94,11 @@ public class MyTransaction {
         return map.values();
     }
 
-    public int commit(String pin) {
+    public void commit(String pin) {
         LogMy.d(TAG, "In commit");
 
         mCurrTransaction.setCpin(pin);
-        try
-        {
-            mCurrTransaction = Backendless.Persistence.save( mCurrTransaction );
-        }
-        catch( BackendlessException e )
-        {
-            LogMy.e(TAG, "Commit cash transaction failed: " + e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;
+        mCurrTransaction = Backendless.Persistence.save( mCurrTransaction );
     }
 
     /*

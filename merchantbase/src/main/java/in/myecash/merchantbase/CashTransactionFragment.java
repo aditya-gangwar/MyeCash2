@@ -589,11 +589,17 @@ public class CashTransactionFragment extends Fragment implements
     }*/
 
     @Override
-    public void onAmountEnterFinal(int value) {
+    public void onAmountEnterFinal(int value, boolean clearCase) {
         LogMy.d(TAG,"In onAmountEnterFinal: "+value);
         //AppCommonUtil.hideKeyboard(getActivity());
         setCashPaid(value);
-        calcAndSetAmts(true);
+        if(clearCase) {
+            // in case clear button was clicked, we want refreshValues() to be called
+            // as minCashToPay will be re-calculated
+            calcAndSetAmts(false);
+        } else {
+            calcAndSetAmts(true);
+        }
 
         //mInputToPayCash.requestFocus();
         /*

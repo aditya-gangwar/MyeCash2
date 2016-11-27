@@ -256,8 +256,8 @@ public class MyGlobalSettings
     private static final String SETTINGS_CB_DEBIT_LIMIT_FOR_PIN = "cb_debit_limit_for_pin";
     // ** Constant values against above **
     private static final int CL_CREDIT_LIMIT_FOR_PIN = 10;
-    private static final int CL_DEBIT_LIMIT_FOR_PIN = 10;
-    private static final int CB_DEBIT_LIMIT_FOR_PIN = 50;
+    private static final int CL_DEBIT_LIMIT_FOR_PIN = 0;
+    private static final int CB_DEBIT_LIMIT_FOR_PIN = 20;
 
     // Public Getter fxs
     public static Integer getAccAddPinLimit() {

@@ -1,7 +1,6 @@
 package in.myecash.merchantbase.helper;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageButton;
@@ -47,7 +46,7 @@ public class CashPaid implements Serializable, View.OnTouchListener {
 
     public interface CashPaidIf {
         //void onAmountEnter(int value);
-        void onAmountEnterFinal(int value);
+        void onAmountEnterFinal(int value, boolean clearCase);
     }
 
     /*
@@ -69,7 +68,7 @@ public class CashPaid implements Serializable, View.OnTouchListener {
     public void initView(View v) {
         LogMy.d(TAG,"In initView");
         initUiResources(v);
-        //if(mBtnCashpaid.getTag()==null) {
+        //if(mBtnClear.getTag()==null) {
             // not yet set - means first init of the screen and not fragment restore case
             // set to default i.e. to clear
             setBtnAsClear();
@@ -133,7 +132,7 @@ public class CashPaid implements Serializable, View.OnTouchListener {
             // remove/reset tag
             //mInputAmt.setTag(-1);
             clearCustomAmt();
-            mCallback.onAmountEnterFinal(0);
+            mCallback.onAmountEnterFinal(0, false);
         }
     }
 
@@ -232,10 +231,10 @@ public class CashPaid implements Serializable, View.OnTouchListener {
 
         mInputAmt.addTextChangedListener(textWatcher);
 
-        mBtnCashpaid.setOnClickListener(new View.OnClickListener() {
+        mBtnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogMy.d(TAG,"In initUiResources: "+mBtnCashpaid.getTag());
+                LogMy.d(TAG,"In initUiResources: "+ mBtnClear.getTag());
                 if(isBtnAsClear()) {
                     // remove any value in mInputAmt
                     clearCustomAmt();
@@ -247,7 +246,7 @@ public class CashPaid implements Serializable, View.OnTouchListener {
                     }
                     // remove/reset tag
                     //mInputAmt.setTag(-1);
-                    mCallback.onAmountEnterFinal(0);
+                    mCallback.onAmountEnterFinal(0,true);
 
                 } else {
                     handleCustomAmtEnter();
@@ -270,7 +269,7 @@ public class CashPaid implements Serializable, View.OnTouchListener {
                     // highlight touched amount
                     markInputAmt(mInputCashPay[i]);
                     int value = AppCommonUtil.getValueAmtStr(mInputCashPay[i].getText().toString());
-                    mCallback.onAmountEnterFinal(value);
+                    mCallback.onAmountEnterFinal(value, false);
                     // store selected value as tag
                     //mInputAmt.setTag(value);
 
@@ -301,7 +300,7 @@ public class CashPaid implements Serializable, View.OnTouchListener {
             mInputAmt.clearFocus();
 
             markInputAmt(mInputAmt);
-            mCallback.onAmountEnterFinal(value);
+            mCallback.onAmountEnterFinal(value, false);
             // store selected value as tag
             //mInputAmt.setTag(value);
 
@@ -319,23 +318,23 @@ public class CashPaid implements Serializable, View.OnTouchListener {
 
     private void setBtnAsClear() {
         LogMy.d(TAG,"In setBtnAsClear");
-        if(TAG_BTN_AS_CLEAR != mBtnCashpaid.getTag()) {
-            mBtnCashpaid.setTag(TAG_BTN_AS_CLEAR);
-            mBtnCashpaid.setImageDrawable(AppCommonUtil.getTintedDrawable(mActivity,R.drawable.ic_cancel_white_24dp,R.color.icon_grey));
+        if(TAG_BTN_AS_CLEAR != mBtnClear.getTag()) {
+            mBtnClear.setTag(TAG_BTN_AS_CLEAR);
+            mBtnClear.setImageDrawable(AppCommonUtil.getTintedDrawable(mActivity,R.drawable.ic_cancel_white_24dp,R.color.icon_grey));
         }
     }
 
     private void setBtnAsDone() {
         LogMy.d(TAG,"In setBtnAsDone");
-        if(TAG_BTN_AS_DONE != mBtnCashpaid.getTag()) {
-            mBtnCashpaid.setTag(TAG_BTN_AS_DONE);
-            mBtnCashpaid.setImageDrawable(AppCommonUtil.getTintedDrawable(mActivity, R.drawable.ic_check_circle_white_24dp, R.color.green_positive));
+        if(TAG_BTN_AS_DONE != mBtnClear.getTag()) {
+            mBtnClear.setTag(TAG_BTN_AS_DONE);
+            mBtnClear.setImageDrawable(AppCommonUtil.getTintedDrawable(mActivity, R.drawable.ic_check_circle_white_24dp, R.color.green_positive));
         }
     }
 
     private boolean isBtnAsClear() {
         LogMy.d(TAG,"In isBtnAsClear");
-        return (TAG_BTN_AS_CLEAR == mBtnCashpaid.getTag());
+        return (TAG_BTN_AS_CLEAR == mBtnClear.getTag());
     }
 
     private void markInputAmt(EditText et) {
@@ -372,7 +371,7 @@ public class CashPaid implements Serializable, View.OnTouchListener {
 
     private EditText[] mInputCashPay;
     private EditText mInputAmt;
-    private AppCompatImageButton mBtnCashpaid;
+    private AppCompatImageButton mBtnClear;
 
     private void initUiResources(View v) {
         LogMy.d(TAG,"In initUiResources");
@@ -381,7 +380,7 @@ public class CashPaid implements Serializable, View.OnTouchListener {
         mInputCashPay[2] = (EditText) v.findViewById(R.id.choice_cash_pay_3);
         mInputCashPay[3] = (EditText) v.findViewById(R.id.choice_cash_pay_4);
         mInputAmt = (EditText) v.findViewById(R.id.choice_cash_pay_custom);
-        mBtnCashpaid = (AppCompatImageButton) v.findViewById(R.id.btn_cashpaid);
+        mBtnClear = (AppCompatImageButton) v.findViewById(R.id.btn_clear);
     }
 
     private final TextWatcher textWatcher = new TextWatcher() {

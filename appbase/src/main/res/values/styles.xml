@@ -26,6 +26,13 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="toolbarNavigationButtonStyle">@style/MyNavButtonStyle</item>
 
+        <!-- The style for the widgets on the ActionBar. -->
+        <!--item name="actionBarWidgetTheme">@style/WidgetStyle</item-->
+
+    </style>
+
+    <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/white</item>
     </style>
 
     <!--style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">

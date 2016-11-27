@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import in.myecash.common.constants.DbConstants;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.customerbase.helper.MyRetainedFragment;
 import in.myecash.appbase.constants.AppConstants;
@@ -419,6 +420,7 @@ public class LoginActivity extends AppCompatActivity implements
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        AppCommonUtil.setUserType(DbConstants.USER_TYPE_CUSTOMER);
     }
 
     @Override

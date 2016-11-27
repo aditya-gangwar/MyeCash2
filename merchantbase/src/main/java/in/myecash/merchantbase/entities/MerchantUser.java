@@ -144,6 +144,7 @@ public class MerchantUser
                 logoutSync();
                 return ErrorCodes.GENERAL_ERROR;
             }
+
             LogMy.d(TAG, "Login Success: " + mInstance.mMerchant.getAuto_id());
 
         } catch (BackendlessException e) {
@@ -331,7 +332,14 @@ public class MerchantUser
         if(mPseudoLoggedIn) {
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
-        return txn.commit(pin);
+        try {
+            txn.commit(pin);
+
+        } catch( BackendlessException e ) {
+            LogMy.e(TAG, "Commit cash transaction failed: " + e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
     }
 
     public int cancelTxn(MyTransaction txn, String cardId, String pin) {

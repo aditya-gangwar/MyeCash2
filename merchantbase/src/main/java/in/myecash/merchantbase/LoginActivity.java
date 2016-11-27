@@ -498,6 +498,7 @@ public class LoginActivity extends AppCompatActivity implements
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
+        AppCommonUtil.setUserType(DbConstants.USER_TYPE_MERCHANT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
     }
 

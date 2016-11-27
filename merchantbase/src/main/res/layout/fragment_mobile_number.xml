@@ -38,12 +38,22 @@
 
             <EditText
                 style="@style/Edittext_biggest_main_input"
+                android:layout_width="wrap_content"
                 android:id="@+id/input_cust_mobile"
                 android:maxLength="@string/mobile_char_limit"
                 android:hint="Mobile Number"
                 android:drawableLeft="@drawable/ic_mobile"
-                android:text="8800191535"
+                android:text="8800"
                 android:typeface="monospace"/>
+            <!--EditText
+                style="@style/Edittext_biggest_main_input"
+                android:layout_width="wrap_content"
+                android:id="@+id/input_mobile_empty"
+                android:maxLength="@string/mobile_char_limit"
+                android:text="...."
+                android:typeface="monospace"
+                android:paddingLeft="0dp"
+                android:layout_marginLeft="0dp"/-->
         </LinearLayout>
 
         <LinearLayout

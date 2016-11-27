@@ -24,7 +24,10 @@ import in.myecash.appbase.utilities.LogMy;
 public class MobileNumberFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "MobileNumberFragment";
 
+    private static final String MOBILE_NUM_EMPTY_CHAR = ".";
+
     private MobileFragmentIf mCallback;
+    private StringBuffer mStrDots = new StringBuffer(CommonConstants.MOBILE_NUM_LENGTH);
 
     // Container Activity must implement this interface
     public interface MobileFragmentIf {
@@ -63,20 +66,40 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
     public void onClick(View v) {
         // process the keys
         String curStr = mInputCustMobile.getText().toString();
+        // remove dots
+        curStr = curStr.replace(MOBILE_NUM_EMPTY_CHAR,"");
+        String newStr="";
+
         if(v.getId() == R.id.input_kb_bs) {
             if(curStr.length()>0) {
-                mInputCustMobile.setText("");
-                mInputCustMobile.append(curStr,0,(curStr.length()-1));
+                //mInputCustMobile.setText("");
+                //mInputCustMobile.append(curStr,0,(curStr.length()-1));
+                newStr = curStr.substring(0,(curStr.length()-1));
             }
         } else if(v.getId() == R.id.input_kb_clear) {
-            mInputCustMobile.setText("");
-            //mCallback.updateTbForMerchant();
+            //mInputCustMobile.setText("");
+            newStr="";
         } else {
             Button key = (Button)v;
             // ignore 0 as first entered digit
             if( !(v.getId()== R.id.input_kb_0 && curStr.isEmpty())) {
-                mInputCustMobile.append(key.getText());
+                //mInputCustMobile.append(key.getText());
+                newStr = curStr+key.getText();
             }
+        }
+
+        // Add dots for remaining length
+        //String strWithoutDots = mInputCustMobile.getText().toString();
+        if(newStr.length() > 0) {
+            mStrDots.delete(0, mStrDots.length());
+            for(int i=newStr.length(); i<CommonConstants.MOBILE_NUM_LENGTH; i++) {
+                mStrDots.append(MOBILE_NUM_EMPTY_CHAR);
+            }
+            String finalStr = newStr+mStrDots.toString();
+            //String finalStr = newStr;
+            mInputCustMobile.setText(finalStr);
+        } else {
+            mInputCustMobile.setText(newStr);
         }
     }
 

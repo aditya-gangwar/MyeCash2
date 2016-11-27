@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:src="@drawable/logo_success_96dp"
         android:background="@color/iron2"
-        android:paddingTop="@dimen/XXXXL_space"/>
+        android:paddingTop="@dimen/XXL_space"/>
 
 
     <EditText
@@ -24,7 +24,7 @@
         android:gravity="center"
         android:text="Transaction Success"
         android:background="@color/iron2"
-        android:paddingBottom="@dimen/XXXXL_space"/>
+        android:paddingBottom="@dimen/XXL_space"/>
 
     <View
         style="@style/Divider_horizontal_Large" />
@@ -98,7 +98,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space" />
+            android:layout_height="@dimen/large_space" />
 
         <EditText
             style="@style/Edittext_only_view_small"
@@ -162,7 +162,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space" />
+            android:layout_height="@dimen/small_space" />
 
 
     </LinearLayout>

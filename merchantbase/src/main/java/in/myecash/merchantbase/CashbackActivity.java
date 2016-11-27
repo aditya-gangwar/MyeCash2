@@ -1860,6 +1860,7 @@ public class CashbackActivity extends AppCompatActivity implements
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
         setDrawerState(true);
+        AppCommonUtil.setUserType(DbConstants.USER_TYPE_MERCHANT);
     }
 
     @Override

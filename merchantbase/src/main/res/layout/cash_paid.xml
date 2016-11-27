@@ -135,7 +135,7 @@
 
         <android.support.v7.widget.AppCompatImageButton
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:id="@+id/btn_cashpaid"
+            android:id="@+id/btn_clear"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="29"

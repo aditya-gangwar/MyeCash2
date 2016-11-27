@@ -856,8 +856,8 @@ public class CashbackActivity extends AppCompatActivity implements
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
-
-       setDrawerState(true);
+        setDrawerState(true);
+        AppCommonUtil.setUserType(DbConstants.USER_TYPE_CUSTOMER);
     }
 
     private void fetchCbData() {

@@ -95,7 +95,7 @@ public class ErrorCodes {
         aMap.put(NOT_LOGGED_IN,"User not logged in.");
         aMap.put(CUST_NOT_REG_WITH_MCNT,"Customer has done no transaction with the merchant.");
         aMap.put(ACC_UNDER_EXPIRY,"Account under Expiry duration");
-        aMap.put(USER_WRONG_ID_PASSWD, "Wrong user id or password. Please try again.");
+        aMap.put(USER_WRONG_ID_PASSWD, "Wrong User id or Password. Account gets Locked after %s incorrect attempts.");
         aMap.put(FATAL_ERROR_ACC_DISABLED,"User account disabled temporarily by system for safety purpose. You will receive notification from customer care in next 24-48 hours.");
         aMap.put(USER_ALREADY_REGISTERED, "User is already registered");
         aMap.put(LIMITED_ACCESS_CREDIT_TXN_ONLY,"Limited Access. Only 'CREDIT' transactions are allowed.");
@@ -104,9 +104,9 @@ public class ErrorCodes {
         aMap.put(OTP_GENERATE_FAILED,"Failed to generate OTP. Please tru again later.");
 
         aMap.put(WRONG_INPUT_DATA,"Invalid input data");
-        aMap.put(WRONG_OTP,"Wrong OTP value");
-        aMap.put(WRONG_PIN,"Wrong PIN");
-        aMap.put(VERIFICATION_FAILED,"Request verification failed");
+        aMap.put(WRONG_OTP,"Wrong OTP value.");
+        aMap.put(WRONG_PIN,"Wrong PIN. Account gets Locked after %s incorrect attempts.");
+        aMap.put(VERIFICATION_FAILED,"Verification failed. Account gets Locked after %s incorrect attempts.");
         aMap.put(OPERATION_NOT_ALLOWED,"You do not have permissions for this operation");
         aMap.put(NOT_TRUSTED_DEVICE,"This device is not in trusted device list");
         aMap.put(TEMP_PASSWD_EXPIRED,"Temporary password expired. Please generate new password using 'Forget Password' link on login screen.");
@@ -117,7 +117,7 @@ public class ErrorCodes {
         aMap.put(WRONG_CARD,"Invalid customer card.");
         aMap.put(CARD_ALREADY_IN_USE,"Membership card already in use");
 
-        aMap.put(FAILED_ATTEMPT_LIMIT_RCHD,"Failed attempt limit reached. This account is locked temporarily for next %s hours.");
+        aMap.put(FAILED_ATTEMPT_LIMIT_RCHD,"Failed attempt limit reached. Account is Locked for next %s hours.");
         aMap.put(TRUSTED_DEVICE_LIMIT_RCHD,"Trusted device limit reached. To continue, login from any trusted device and delete any from the trusted devices.");
         aMap.put(CASH_ACCOUNT_LIMIT_RCHD,"Cash Account balance more than INR %s. Change 'Cash Paid'.");
 
