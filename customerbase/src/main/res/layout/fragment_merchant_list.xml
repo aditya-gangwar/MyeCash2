@@ -8,16 +8,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/cust_recycler_view"
-        android:background="@color/bg_light_grey">
+        android:background="@color/bg_light_grey"
+        android:layout_weight="1">
     </android.support.v7.widget.RecyclerView>
 
-    <Space
+    <!--Space
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="100"/>
+        android:layout_weight="100"/-->
 
     <LinearLayout
         style="@style/LL_Horizontal_wrap"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/medium_space">
 
         <EditText

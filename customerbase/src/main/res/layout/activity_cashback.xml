@@ -22,7 +22,8 @@
             android:background="@color/primary"
             android:elevation="4dp"
             app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp">
+            app:contentInsetStart="0dp"
+            app:theme="@style/ToolbarStyle">
 
             <LinearLayout
                 android:layout_width="match_parent"

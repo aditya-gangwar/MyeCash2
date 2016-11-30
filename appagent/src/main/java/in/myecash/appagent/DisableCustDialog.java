@@ -15,17 +15,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
+import in.myecash.common.constants.ErrorCodes;
 
 /**
- * Created by adgangwa on 20-09-2016.
+ * Created by adgangwa on 29-11-2016.
  */
-public class DisableMchntDialog extends DialogFragment
+public class DisableCustDialog extends DialogFragment
         implements DialogInterface.OnClickListener, AdapterView.OnItemSelectedListener {
-    public static final String TAG = "DisableMchntDialog";
+    public static final String TAG = "DisableCustDialog";
 
     public static final String EXTRA_TICKET_ID = "ticketId";
     public static final String EXTRA_REASON = "reason";
@@ -33,10 +33,10 @@ public class DisableMchntDialog extends DialogFragment
 
 
     private String reasonStr;
-    private DisableMchntDialogIf mListener;
+    private DisableCustDialogIf mListener;
 
-    public interface DisableMchntDialogIf {
-        void disableMerchant(String ticketId, String reason, String remarks);
+    public interface DisableCustDialogIf {
+        void disableCustomer(String ticketId, String reason, String remarks);
     }
 
     @Override
@@ -44,15 +44,15 @@ public class DisableMchntDialog extends DialogFragment
         super.onActivityCreated(savedInstanceState);
 
         try {
-            mListener = (DisableMchntDialogIf) getActivity();
+            mListener = (DisableCustDialogIf) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
-                    + " must implement DisableMchntDialogIf");
+                    + " must implement DisableCustDialogIf");
         }
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.mchnt_disable_reasons_array, android.R.layout.simple_spinner_item);
+                R.array.cust_disable_reasons_array, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -65,17 +65,16 @@ public class DisableMchntDialog extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LogMy.d(TAG, "In onCreateDialog");
 
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_disable_mchnt, null);
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_disable_cust, null);
         initUiResources(v);
 
         // return new dialog
         final AlertDialog alertDialog =  new AlertDialog.Builder(getActivity()).setView(v)
-                .setPositiveButton(in.myecash.merchantbase.R.string.ok, this)
-                .setNegativeButton(in.myecash.merchantbase.R.string.cancel, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, this)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         AppCommonUtil.hideKeyboard(getDialog());
-                        //mListener.onPasswdResetData(null);
                         dialog.dismiss();
                     }
                 })
@@ -85,7 +84,7 @@ public class DisableMchntDialog extends DialogFragment
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                AppCommonUtil.setDialogTextSize(DisableMchntDialog.this, (AlertDialog) dialog);
+                AppCommonUtil.setDialogTextSize(DisableCustDialog.this, (AlertDialog) dialog);
 
                 Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 b.setOnClickListener(new View.OnClickListener() {
@@ -113,8 +112,7 @@ public class DisableMchntDialog extends DialogFragment
                         }
 
                         if(allOk) {
-                            mListener.disableMerchant(ticketId, reasonStr, remarks);
-                            //sendResult(Activity.RESULT_OK, ticketId, reasonStr, remarks);
+                            mListener.disableCustomer(ticketId, reasonStr, remarks);
                             getDialog().dismiss();
                         }
                     }
@@ -125,19 +123,6 @@ public class DisableMchntDialog extends DialogFragment
         alertDialog.setCanceledOnTouchOutside(false);
         return alertDialog;
     }
-
-    /*
-    private void sendResult(int resultCode, String ticketId, String reason, String remarks) {
-        LogMy.d(TAG,"In sendResult");
-        if (getTargetFragment() == null) {
-            return;
-        }
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_TICKET_ID, ticketId);
-        intent.putExtra(EXTRA_REASON, reason);
-        intent.putExtra(EXTRA_REMARKS, remarks);
-        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
-    }*/
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -159,7 +144,6 @@ public class DisableMchntDialog extends DialogFragment
     @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
-        //mListener.onPasswdResetData(null);
     }
 
     private EditText mTicketNum;
@@ -173,4 +157,5 @@ public class DisableMchntDialog extends DialogFragment
     }
 
 }
+
 

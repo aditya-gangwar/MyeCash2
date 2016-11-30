@@ -36,7 +36,7 @@ import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
 
-public class LoginActivity extends AppCompatActivity implements
+public class LoginCustActivity extends AppCompatActivity implements
         MyRetainedFragment.RetainedFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         PasswdResetDialog.PasswdResetDialogIf, AccEnableDialog.AccEnableDialogIf {
 
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 // check internet connectivity
-                int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(LoginActivity.this);
+                int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(LoginCustActivity.this);
                 if (resultCode != ErrorCodes.NO_ERROR) {
                     // Show error notification dialog
                     DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     private void initOperationData() {
         // instance may have been destroyed due to wrong login / account disabled etc
-        AppCommonUtil.hideKeyboard(LoginActivity.this);
+        AppCommonUtil.hideKeyboard(LoginCustActivity.this);
         getUiResourceValues();
     }
 
@@ -322,7 +322,7 @@ public class LoginActivity extends AppCompatActivity implements
                         mProcessingResetPasswd = false;
                     }
                 } else {
-                    AppCommonUtil.toast(LoginActivity.this, "Already in progress. Please wait.");
+                    AppCommonUtil.toast(LoginCustActivity.this, "Already in progress. Please wait.");
                 }
             }
         };
@@ -367,7 +367,7 @@ public class LoginActivity extends AppCompatActivity implements
     private void onLoginSuccess() {
         LogMy.d(TAG, "In onLoginSuccess");
         // Store latest succesfull login userid to preferences
-        PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
+        PreferenceManager.getDefaultSharedPreferences(LoginCustActivity.this)
                 .edit()
                 .putString(AppConstants.PREF_LOGIN_ID, mLoginId)
                 .apply();
@@ -377,8 +377,8 @@ public class LoginActivity extends AppCompatActivity implements
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 
         //Start Cashback Activity
-        Intent intent = new Intent( this, CashbackActivity.class );
-        intent.putExtra(CashbackActivity.INTENT_EXTRA_USER_TOKEN, CustomerUser.getInstance().getUserToken());
+        Intent intent = new Intent( this, CashbackActivityCust.class );
+        intent.putExtra(CashbackActivityCust.INTENT_EXTRA_USER_TOKEN, CustomerUser.getInstance().getUserToken());
         // clear Login activity from backstack
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

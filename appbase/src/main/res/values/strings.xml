@@ -62,13 +62,20 @@
     <string name="permission_camera_rationale">Access to the camera is required for scannbing membership cards.</string>
     <string name="no_camera_permission">camera permission is mandatory. Cannot proceed with login.</string>
 
-    <string-array name="acc_disable_reasons_array">
+    <string-array name="mchnt_disable_reasons_array">
         <item>None</item>
-        <item>Lost Mobile + No Trusted Device</item>
-        <item>Lost Mobile + Forgot Password</item>
-        <item>Forgot Password + No Trusted Device</item>
-        <item>Forgot Password + No Trusted Device + Lost Mobile</item>
-        <item>Doubt Security Breach</item>
+        <item>Lost Mobile</item>
+        <item>Forgot Password</item>
+        <item>Suspect Security Issue</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="cust_disable_reasons_array">
+        <item>None</item>
+        <item>Lost Mobile</item>
+        <item>Lost Member Card</item>
+        <item>Forgot PIN</item>
+        <item>Suspect Security Issue</item>
         <item>Other</item>
     </string-array>
 

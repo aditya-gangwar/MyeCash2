@@ -9,12 +9,11 @@
 
     <EditText
         style="@style/Edittext_only_view_small_more_pad"
-        android:id="@+id/label_cash_pay_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
         android:gravity="left"
-        android:text="MERCHANT: Search"
+        android:text="CUSTOMER: Search"
         android:textStyle="bold"/>
 
     <View
@@ -33,29 +32,25 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:src="@drawable/ic_phone_android_white_24dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_medium"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="ID"
-                android:layout_weight="30"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
-            <!--View
-                style="@style/Divider_vertical_Medium"/-->
+                android:text="Mobile"
+                android:layout_weight="35"
+                android:gravity="left"/>
             <EditText
                 style="@style/MyEdittext_Medium"
-                android:id="@+id/input_id"
+                android:id="@+id/input_mobile_num"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="8 Digit ID"
-                android:layout_weight="70"
-                android:gravity="center"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:inputType="number"/>
+                android:hint="10 Digit Mobile#"
+                android:inputType="phone"
+                android:maxLength="@string/mobile_char_limit"
+                android:layout_weight="65"
+                android:gravity="center"/>
         </LinearLayout>
 
         <EditText
@@ -71,25 +66,30 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_24dp"
+                android:src="@drawable/ic_perm_identity_white_24dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_medium"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="Mobile"
-                android:layout_weight="30"
-                android:gravity="left"/>
+                android:text="Internal ID"
+                android:layout_weight="35"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <!--View
+                style="@style/Divider_vertical_Medium"/-->
             <EditText
                 style="@style/MyEdittext_Medium"
-                android:id="@+id/input_mobile_num"
+                android:id="@+id/input_id"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="10 Digit Mobile#"
-                android:inputType="phone"
-                android:maxLength="@string/mobile_char_limit"
-                android:layout_weight="70"
-                android:gravity="center"/>
+                android:hint="6 Digit ID"
+                android:layout_weight="65"
+                android:gravity="center"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:maxLength="@string/customer_internal_id_char_limit"
+                android:inputType="textCapCharacters"/>
         </LinearLayout>
 
         <!--EditText

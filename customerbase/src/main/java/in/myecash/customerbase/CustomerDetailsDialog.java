@@ -25,7 +25,6 @@ import in.myecash.customerbase.entities.CustomerUser;
  */
 public class CustomerDetailsDialog extends DialogFragment  {
     private static final String TAG = "CustomerDetailsDialog";
-    private static final String ARG_CB_POSITION = "cbPosition";
 
     private SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
     private SimpleDateFormat mSdfDateOnly = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
@@ -61,7 +60,8 @@ public class CustomerDetailsDialog extends DialogFragment  {
     private void initDialogView() {
         Customers cust = CustomerUser.getInstance().getCustomer();
 
-        //mName.setText(cust.getName());
+        String name = cust.getFirstName()+" "+cust.getLastName();
+        mName.setText(name);
         mInputMobileNum.setText(CommonUtils.getPartialVisibleStr(cust.getMobile_num()));
         mCreatedOn.setText(mSdfDateOnly.format(cust.getCreated()));
         mExpiringOn.setText(mSdfDateOnly.format(AppCommonUtil.getExpiryDate(cust)));
@@ -92,7 +92,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
         }
     }
 
-    //private EditText mName;
+    private EditText mName;
     private EditText mInputMobileNum;
     private EditText mCreatedOn;
     private EditText mExpiringOn;
@@ -109,7 +109,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
     private void bindUiResources(View v) {
 
         mInputMobileNum = (EditText) v.findViewById(R.id.input_customer_mobile);
-        //mName = (EditText) v.findViewById(R.id.input_cust_name);
+        mName = (EditText) v.findViewById(R.id.input_cust_name);
         mCreatedOn = (EditText) v.findViewById(R.id.input_cust_created_on);
         mExpiringOn = (EditText) v.findViewById(R.id.input_expiring_on);
 

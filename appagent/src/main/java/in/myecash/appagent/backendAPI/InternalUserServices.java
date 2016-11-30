@@ -55,6 +55,12 @@ public class InternalUserServices
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "disableMerchant", args );
     }
 
+    public void disableCustomer(java.lang.String customerId, java.lang.String ticketNum, java.lang.String reason, java.lang.String remarks)
+    {
+        Object[] args = new Object[]{customerId, ticketNum, reason, remarks};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "disableCustomer", args );
+    }
+
     public void disableMerchantAsync(java.lang.String merchantId, java.lang.String ticketNum, java.lang.String reason, java.lang.String remarks, AsyncCallback<Object> callback)
     {
         Object[] args = new Object[]{merchantId, ticketNum, reason, remarks};

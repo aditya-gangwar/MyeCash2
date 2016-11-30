@@ -263,6 +263,8 @@ public class CashbackListFragment extends Fragment {
 
         private MyCashback mCb;
 
+        private View mCardView;
+        private View mLayoutMchntItem;
         private ImageView mMerchantDp;
         private EditText mMerchantName;
         private View mMchntStatusAlert;
@@ -274,6 +276,8 @@ public class CashbackListFragment extends Fragment {
         public CbHolder(View itemView) {
             super(itemView);
 
+            mCardView = itemView.findViewById(R.id.card_view);
+            mLayoutMchntItem = itemView.findViewById(R.id.layout_mchnt_item);
             mMerchantDp = (ImageView) itemView.findViewById(R.id.img_merchant);
             mMerchantName = (EditText) itemView.findViewById(R.id.input_mchnt_name);
             mMchntStatusAlert = itemView.findViewById(R.id.icon_mchnt_status_alert);
@@ -282,6 +286,8 @@ public class CashbackListFragment extends Fragment {
             mAccBalance = (EditText) itemView.findViewById(R.id.input_acc_bal);
             mCbBalance = (EditText) itemView.findViewById(R.id.input_cb_bal);
 
+            mCardView.setOnTouchListener(this);
+            mLayoutMchntItem.setOnTouchListener(this);
             mMerchantDp.setOnTouchListener(this);
             mMerchantName.setOnTouchListener(this);
             mCategoryNdCity.setOnTouchListener(this);
@@ -298,17 +304,25 @@ public class CashbackListFragment extends Fragment {
                 // getRootView was not working, so manually finding root view
                 // depending upon views on which listener is set
                 View rootView = null;
-                if(v.getId()==mMerchantDp.getId()) {
-                    rootView = (View) v.getParent().getParent();
+                if(v.getId()==mCardView.getId()) {
+                    rootView = (View) v.getParent();
                     LogMy.d(TAG,"Clicked first level view "+rootView.getId());
 
+                } else if(v.getId()==mLayoutMchntItem.getId()) {
+                    rootView = (View) v.getParent().getParent();
+                    LogMy.d(TAG,"Clicked first-a level view "+rootView.getId());
+
+                } else if(v.getId()==mMerchantDp.getId()) {
+                    rootView = (View) v.getParent().getParent().getParent();
+                    LogMy.d(TAG,"Clicked 2nd level view "+rootView.getId());
+
                 } else if(v.getId()==mCategoryNdCity.getId() || v.getId()==mLastTxnTime.getId()) {
-                    rootView = (View) v.getParent().getParent().getParent().getParent();
-                    LogMy.d(TAG,"Clicked second level view "+rootView.getId());
+                    rootView = (View) v.getParent().getParent().getParent().getParent().getParent();
+                    LogMy.d(TAG,"Clicked 3rd level view "+rootView.getId());
 
                 } else {
-                    rootView = (View) v.getParent().getParent().getParent().getParent().getParent();
-                    LogMy.d(TAG,"Clicked third level view "+rootView.getId());
+                    rootView = (View) v.getParent().getParent().getParent().getParent().getParent().getParent();
+                    LogMy.d(TAG,"Clicked 4th level view "+rootView.getId());
                 }
 
                 rootView.performClick();

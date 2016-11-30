@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     style="@style/LL_Vertical_paddingSidesLarge"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:clickable="false">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
@@ -11,151 +12,158 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/medium_space"
         android:elevation="3dp"
-        card_view:cardCornerRadius="4dp">
-
-    <LinearLayout
-        style="@style/LL_Horizontal_wrap"
-        android:layout_marginRight="@dimen/small_space"
-        android:layout_marginLeft="@dimen/small_space">
-
-        <ImageView
-            android:id="@+id/img_merchant"
-            android:src="@drawable/ic_store_grey_48dp"
-            android:layout_width="@dimen/dp_item_image_width"
-            android:layout_height="match_parent"
-            android:scaleType="centerInside"
-            android:layout_marginRight="@dimen/small_space"
-            android:layout_gravity="center"/>
+        card_view:cardCornerRadius="2dp">
 
         <LinearLayout
-            style="@style/LL_Vertical"
-            android:layout_height="wrap_content">
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_mchnt_item"
+            android:layout_marginRight="@dimen/small_space"
+            android:layout_marginLeft="@dimen/small_space"
+            android:clickable="false">
+
+            <ImageView
+                android:id="@+id/img_merchant"
+                android:src="@drawable/ic_store_grey_48dp"
+                android:layout_width="@dimen/dp_item_image_width"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:layout_marginRight="@dimen/small_space"
+                android:layout_gravity="center"/>
 
             <LinearLayout
-                style="@style/LL_Horizontal_wrap"
-                android:id="@+id/layout_mchnt_name"
-                android:layout_width="match_parent">
-
-                <EditText
-                    style="@style/Edittext_only_click_small"
-                    android:id="@+id/input_mchnt_name"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="90"
-                    android:text="Ganga Stores and Cosmetics"
-                    android:paddingBottom="@dimen/edittext_padding_less"
-                    android:textStyle="bold"
-                    android:gravity="left"/>
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="10"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/icon_mchnt_status_alert"
-                    android:src="@drawable/ic_warning_white_18dp"
-                    android:tint="@color/red_negative"
-                    android:clickable="false"
-                    android:paddingTop="@dimen/edittext_padding"
-                    android:paddingBottom="@dimen/edittext_padding_less"
-                    android:paddingRight="0dp"
-                    android:paddingLeft="@dimen/edittext_padding_less"/>
-            </LinearLayout>
-
-            <LinearLayout
-                style="@style/LL_Horizontal_wrap"
-                android:layout_width="match_parent">
-
-                <EditText
-                    style="@style/Edittext_only_click_small"
-                    android:id="@+id/mchnt_category_city"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="74"
-                    android:gravity="left"
-                    android:text="Electronics, Faridabad"
-                    android:paddingTop="0dp"
-                    android:paddingBottom="@dimen/edittext_padding_less"
-                    android:paddingRight="0dp"/>
+                style="@style/LL_Vertical"
+                android:layout_height="wrap_content"
+                android:clickable="false">
 
                 <LinearLayout
                     style="@style/LL_Horizontal_wrap"
-                    android:id="@+id/layout_cb"
-                    android:layout_width="72dp"
-                    android:gravity="end">
+                    android:id="@+id/layout_mchnt_name"
+                    android:layout_width="match_parent"
+                    android:clickable="false">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ic_grade_white_18dp"
-                        android:tint="@color/primary"
-                        android:clickable="false"
-                        android:layout_gravity="center_vertical"
-                        android:paddingTop="0dp"
-                        android:paddingBottom="@dimen/edittext_padding_less"/>
                     <EditText
                         style="@style/Edittext_only_click_small"
-                        android:id="@+id/input_cb_bal"
+                        android:id="@+id/input_mchnt_name"
                         android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end|center_vertical"
-                        android:text="\u20B9 13456"
-                        android:paddingRight="0dp"
-                        android:paddingTop="0dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="90"
+                        android:text="Ganga Stores and Cosmetics"
                         android:paddingBottom="@dimen/edittext_padding_less"
+                        android:textStyle="bold"
+                        android:gravity="left"/>
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="10"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/icon_mchnt_status_alert"
+                        android:src="@drawable/ic_warning_white_18dp"
+                        android:tint="@color/red_negative"
+                        android:clickable="false"
+                        android:paddingTop="@dimen/edittext_padding"
+                        android:paddingBottom="@dimen/edittext_padding_less"
+                        android:paddingRight="0dp"
                         android:paddingLeft="@dimen/edittext_padding_less"/>
                 </LinearLayout>
 
-            </LinearLayout>
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap"
+                    android:layout_width="match_parent"
+                    android:clickable="false">
 
-            <LinearLayout
-                style="@style/LL_Horizontal_wrap"
-                android:layout_width="match_parent">
+                    <EditText
+                        style="@style/Edittext_only_click_small"
+                        android:id="@+id/mchnt_category_city"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="74"
+                        android:gravity="left"
+                        android:text="Electronics, Faridabad"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="@dimen/edittext_padding_less"
+                        android:paddingRight="0dp"/>
 
-                <EditText
-                    style="@style/Edittext_only_click_small"
-                    android:id="@+id/input_last_txn"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="74"
-                    android:gravity="left"
-                    android:text="Last: 08 Apr,16  20:15"
-                    android:paddingTop="0dp"
-                    android:paddingBottom="@dimen/edittext_padding_less"
-                    android:paddingRight="0dp"/>
+                    <LinearLayout
+                        style="@style/LL_Horizontal_wrap"
+                        android:id="@+id/layout_cb"
+                        android:layout_width="72dp"
+                        android:gravity="end">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_grade_white_18dp"
+                            android:tint="@color/primary"
+                            android:clickable="false"
+                            android:layout_gravity="center_vertical"
+                            android:paddingTop="0dp"
+                            android:paddingBottom="@dimen/edittext_padding_less"/>
+                        <EditText
+                            style="@style/Edittext_only_click_small"
+                            android:id="@+id/input_cb_bal"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end|center_vertical"
+                            android:text="\u20B9 13456"
+                            android:paddingRight="0dp"
+                            android:paddingTop="0dp"
+                            android:paddingBottom="@dimen/edittext_padding_less"
+                            android:paddingLeft="@dimen/edittext_padding_less"/>
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <LinearLayout
                     style="@style/LL_Horizontal_wrap"
-                    android:id="@+id/layout_acc"
-                    android:layout_width="72dp"
-                    android:gravity="end">
+                    android:layout_width="match_parent"
+                    android:clickable="false">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_account_balance_wallet_white_18dp"
-                        android:tint="@color/primary"
-                        android:clickable="false"
-                        android:layout_gravity="center_vertical"
-                        android:paddingTop="0dp"
-                        android:paddingBottom="@dimen/edittext_padding_less"/>
                     <EditText
                         style="@style/Edittext_only_click_small"
-                        android:id="@+id/input_acc_bal"
+                        android:id="@+id/input_last_txn"
                         android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_weight="74"
+                        android:gravity="left"
+                        android:text="Last: 08 Apr,16  20:15"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="@dimen/edittext_padding_less"
+                        android:paddingRight="0dp"/>
+
+                    <LinearLayout
+                        style="@style/LL_Horizontal_wrap"
+                        android:id="@+id/layout_acc"
+                        android:layout_width="72dp"
                         android:gravity="end"
-                        android:text="\u20B9 56"
-                        android:paddingRight="0dp"
-                        android:paddingTop="0dp"
-                        android:paddingBottom="@dimen/edittext_padding_less"
-                        android:paddingLeft="@dimen/edittext_padding_less"/>
+                        android:clickable="false">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                            android:tint="@color/primary"
+                            android:clickable="false"
+                            android:layout_gravity="center_vertical"
+                            android:paddingTop="0dp"
+                            android:paddingBottom="@dimen/edittext_padding_less"/>
+                        <EditText
+                            style="@style/Edittext_only_click_small"
+                            android:id="@+id/input_acc_bal"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="\u20B9 56"
+                            android:paddingRight="0dp"
+                            android:paddingTop="0dp"
+                            android:paddingBottom="@dimen/edittext_padding_less"
+                            android:paddingLeft="@dimen/edittext_padding_less"/>
+                    </LinearLayout>
+
                 </LinearLayout>
-
             </LinearLayout>
-        </LinearLayout>
 
-    </LinearLayout>
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 

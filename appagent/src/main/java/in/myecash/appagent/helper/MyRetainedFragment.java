@@ -3,6 +3,7 @@ package in.myecash.appagent.helper;
 import android.os.Handler;
 
 import in.myecash.appagent.entities.AgentUser;
+import in.myecash.common.database.Customers;
 import in.myecash.common.database.Merchants;
 import in.myecash.appbase.utilities.BackgroundProcessor;
 import in.myecash.appbase.utilities.LogMy;
@@ -24,6 +25,8 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_CHANGE_PASSWD = 7;
     public static final int REQUEST_SEARCH_MERCHANT = 8;
     public static final int REQUEST_DISABLE_MERCHANT = 9;
+    public static final int REQUEST_SEARCH_CUSTOMER = 10;
+    public static final int REQUEST_DISABLE_CUSTOMER = 11;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -32,10 +35,12 @@ public class MyRetainedFragment extends RetainedFragment {
 
     // temporary members
     public Merchants mCurrMerchant;
+    public Customers mCurrCustomer;
 
     public void reset() {
         LogMy.d(TAG,"In reset");
         mCurrMerchant = null;
+        mCurrCustomer = null;
     }
 
     /*
@@ -62,6 +67,12 @@ public class MyRetainedFragment extends RetainedFragment {
     }
     public void disableMerchant(String ticketId, String reason, String remarks) {
         mBackgroundProcessor.addDisableMerchantReq(ticketId, reason, remarks);
+    }
+    public void searchCustomer(String key, boolean searchById) {
+        mBackgroundProcessor.addSearchCustReq(key, searchById);
+    }
+    public void disableCustomer(String ticketId, String reason, String remarks) {
+        mBackgroundProcessor.addDisableCustomerReq(ticketId, reason, remarks);
     }
 
     @Override

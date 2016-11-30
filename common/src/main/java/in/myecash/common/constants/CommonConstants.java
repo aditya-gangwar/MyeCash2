@@ -10,13 +10,18 @@ import java.util.Locale;
 public class CommonConstants {
 
     /*
+     * Common Settings
+     */
+    public static final boolean IS_PRODUCTION_RELEASE = false;
+
+    /*
      * Backend server settings
      */
     public static final String APPLICATION_ID = "927292A7-D4D3-7742-FFED-86CED1441100";
     public static final String ANDROID_SECRET_KEY = "14765681-0A7C-3F4E-FF29-41A948E33500";
     public static final String VERSION = "v1";
 
-    public static final String BACKENDLESS_HOST_IP = "35.154.26.214";
+    public static final String BACKENDLESS_HOST_IP = "35.154.65.53";
     public static final String BACKENDLESS_HOST = "http://"+BACKENDLESS_HOST_IP+":8080/api";
     public static String BACKEND_FILE_BASE_URL = BACKENDLESS_HOST+"/"+APPLICATION_ID+"/"+VERSION+"/files/";
     public static final String BULK_API_URL  = BACKENDLESS_HOST+"/"+VERSION+"/data/bulk/";

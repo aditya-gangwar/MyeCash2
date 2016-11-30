@@ -21,7 +21,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -55,7 +54,7 @@ import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 
 
-public class CashbackActivity extends AppCompatActivity implements
+public class CashbackActivityCust extends AppCompatActivity implements
         MyRetainedFragment.RetainedFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         PasswdChangeDialog.PasswdChangeDialogIf, MobileChangeDialog.MobileChangeDialogIf,
         OtpPinInputDialog.OtpPinInputDialogIf, CashbackListFragment.CashbackListFragmentIf,
@@ -132,6 +131,10 @@ public class CashbackActivity extends AppCompatActivity implements
             mLastMenuItemId = savedInstanceState.getInt("mLastMenuItemId");
             mGetCbSince = savedInstanceState.getLong("mGetCbSince");
         }
+
+        // reference to views
+        mTbSubhead1Text1 = (EditText) findViewById(R.id.tb_curr_cashload) ;
+        mTbSubhead1Text2 = (EditText) findViewById(R.id.tb_curr_cashback) ;
 
         // Setup a toolbar to replace the action bar.
         initToolbar();
@@ -381,8 +384,8 @@ public class CashbackActivity extends AppCompatActivity implements
         mTbTitle = (EditText) mToolbar.findViewById(R.id.tb_title) ;
         mTbTitle2 = (EditText) mToolbar.findViewById(R.id.tb_title_2) ;
         //mTbLayoutSubhead1 = (LinearLayout) mToolbar.findViewById(R.id.tb_layout_subhead1) ;
-        mTbSubhead1Text1 = (EditText) mToolbar.findViewById(R.id.tb_curr_cashload) ;
-        mTbSubhead1Text2 = (EditText) mToolbar.findViewById(R.id.tb_curr_cashback) ;
+        //mTbSubhead1Text1 = (EditText) mToolbar.findViewById(R.id.tb_curr_cashload) ;
+        //mTbSubhead1Text2 = (EditText) mToolbar.findViewById(R.id.tb_curr_cashback) ;
     }
 
     @Override
@@ -643,7 +646,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
         //Start Login Activity
         if(!mExitAfterLogout) {
-            Intent intent = new Intent( this, LoginActivity.class );
+            Intent intent = new Intent( this, LoginCustActivity.class );
             // clear cashback activity from backstack
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -725,12 +728,12 @@ public class CashbackActivity extends AppCompatActivity implements
 
     private void startTxnReportActivity(String mchntId, String name) {
         // start reports activity
-        Intent intent = new Intent( this, TxnReportsActivity.class );
+        Intent intent = new Intent( this, TxnReportsCustActivity.class );
         if(mchntId!=null) {
-            intent.putExtra(TxnReportsActivity.EXTRA_MERCHANT_ID, mchntId);
+            intent.putExtra(TxnReportsCustActivity.EXTRA_MERCHANT_ID, mchntId);
         }
         if(name!=null) {
-            intent.putExtra(TxnReportsActivity.EXTRA_MERCHANT_NAME, name);
+            intent.putExtra(TxnReportsCustActivity.EXTRA_MERCHANT_NAME, name);
         }
         startActivity(intent);
     }

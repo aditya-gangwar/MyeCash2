@@ -13,6 +13,7 @@ import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.BackgroundProcessor;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.merchantbase.entities.MerchantUser;
 
 import java.io.File;
@@ -40,11 +41,11 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         public String oldPasswd;
         public String newPasswd;
     }
-    private class MessageSearchMerchant implements Serializable {
+    private class MessageSearchUser implements Serializable {
         public String key;
         public boolean serachById;
     }
-    private class MessageDisableMerchant implements Serializable {
+    private class MessageDisableUser implements Serializable {
         public String ticketId;
         public String reason;
         public String remarks;
@@ -81,17 +82,30 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_REGISTER_MERCHANT, file).sendToTarget();
     }
     public void addSearchMerchantReq(String key, boolean searchById) {
-        MessageSearchMerchant msg = new MessageSearchMerchant();
+        MessageSearchUser msg = new MessageSearchUser();
         msg.key = key;
         msg.serachById = searchById;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_SEARCH_MERCHANT,msg).sendToTarget();
     }
     public void addDisableMerchantReq(String ticketId, String reason, String remarks) {
-        MessageDisableMerchant msg = new MessageDisableMerchant();
+        MessageDisableUser msg = new MessageDisableUser();
         msg.ticketId = ticketId;
         msg.reason = reason;
         msg.remarks = remarks;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DISABLE_MERCHANT,msg).sendToTarget();
+    }
+    public void addSearchCustReq(String key, boolean searchById) {
+        MessageSearchUser msg = new MessageSearchUser();
+        msg.key = key;
+        msg.serachById = searchById;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_SEARCH_CUSTOMER,msg).sendToTarget();
+    }
+    public void addDisableCustomerReq(String ticketId, String reason, String remarks) {
+        MessageDisableUser msg = new MessageDisableUser();
+        msg.ticketId = ticketId;
+        msg.reason = reason;
+        msg.remarks = remarks;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DISABLE_CUSTOMER,msg).sendToTarget();
     }
 
 
@@ -115,10 +129,16 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 error = changePassword((MessageChangePassword) msg.obj);
                 break;
             case MyRetainedFragment.REQUEST_SEARCH_MERCHANT:
-                error = searchMerchant((MessageSearchMerchant) msg.obj);
+                error = searchMerchant((MessageSearchUser) msg.obj);
                 break;
             case MyRetainedFragment.REQUEST_DISABLE_MERCHANT:
-                error = disableMerchant((MessageDisableMerchant) msg.obj);
+                error = disableMerchant((MessageDisableUser) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_SEARCH_CUSTOMER:
+                error = searchCustomer((MessageSearchUser) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_DISABLE_CUSTOMER:
+                error = disableCustomer((MessageDisableUser) msg.obj);
                 break;
         }
         return error;
@@ -161,7 +181,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         return AgentUser.getInstance().registerMerchant(mRetainedFragment.mCurrMerchant, imageFile);
     }
 
-    private int searchMerchant(MessageSearchMerchant data) {
+    private int searchMerchant(MessageSearchUser data) {
         return MerchantUser.pseudoLogin(data.key);
         /*
         try {
@@ -172,7 +192,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         return ErrorCodes.NO_ERROR;*/
     }
 
-    private int disableMerchant(MessageDisableMerchant data) {
+    private int disableMerchant(MessageDisableUser data) {
         try {
             InternalUserServices.getInstance().disableMerchant(mRetainedFragment.mCurrMerchant.getAuto_id(),
                     data.ticketId, data.reason, data.remarks);
@@ -180,6 +200,23 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Exception in disableMerchant: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    private int searchCustomer(MessageSearchUser data) {
+        return CustomerUser.pseudoLogin(data.key);
+    }
+
+    private int disableCustomer(MessageDisableUser data) {
+        try {
+            InternalUserServices.getInstance().disableCustomer(mRetainedFragment.mCurrCustomer.getPrivate_id(),
+                    data.ticketId, data.reason, data.remarks);
+            LogMy.d(TAG,"disableCustomer success");
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Exception in disableCustomer: "+e.toString());
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;

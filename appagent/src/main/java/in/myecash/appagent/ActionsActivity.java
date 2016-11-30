@@ -23,6 +23,8 @@ import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.customerbase.CashbackActivityCust;
+import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.merchantbase.CashbackActivity;
 import in.myecash.merchantbase.entities.MerchantUser;
 
@@ -35,18 +37,22 @@ public class ActionsActivity extends AppCompatActivity implements
         MyRetainedFragment.RetainedFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         ActionsFragment.ActionsFragmentIf, PasswdChangeDialog.PasswdChangeDialogIf,
         SearchMerchantDialog.SearchMerchantDialogIf, MerchantDetailsFragment.MerchantDetailsFragmentIf,
-        DisableMchntDialog.DisableMchntDialogIf
+        DisableMchntDialog.DisableMchntDialogIf, SearchCustomerDialog.SearchCustomerDialogIf,
+        CustomerDetailsFragment.CustomerDetailsFragmentIf, DisableCustDialog.DisableCustDialogIf
 {
 
     private static final String TAG = "ActionsActivity";
     private static final String RETAINED_FRAGMENT = "retainedFragActions";
     private static final String ACTIONS_FRAGMENT = "actionsFragment";
     private static final String MCHNT_DETAILS_FRAGMENT = "mchntDetailsFragment";
+    private static final String CUST_DETAILS_FRAGMENT = "custDetailsFragment";
     private static final String SETTINGS_LIST_FRAGMENT = "settingsListFragment";
 
     private static final String DIALOG_BACK_BUTTON = "dialogBackButton";
     private static final String DIALOG_CHANGE_PASSWORD = "dialogChangePassword";
     private static final String DIALOG_SEARCH_MCHNT = "searchMchnt";
+    private static final String DIALOG_SEARCH_CUSTOMER = "searchCustomer";
+
 
     // this will never be null, as it only gets destroyed with cashback activity itself
     ActionsFragment mActionsFragment;
@@ -148,6 +154,29 @@ public class ActionsActivity extends AppCompatActivity implements
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
                 break;
+
+            case MyRetainedFragment.REQUEST_SEARCH_CUSTOMER:
+                AppCommonUtil.cancelProgressDialog(true);
+                if(errorCode==ErrorCodes.NO_ERROR) {
+                    mWorkFragment.mCurrCustomer = CustomerUser.getInstance().getCustomer();
+                    startCustDetailsFragment();
+                } else {
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
+                break;
+
+            case MyRetainedFragment.REQUEST_DISABLE_CUSTOMER:
+                AppCommonUtil.cancelProgressDialog(true);
+                if(errorCode==ErrorCodes.NO_ERROR) {
+                    DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.customerDisableSuccessMsg, false, false)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                } else {
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
+                break;
+
         }
     }
 
@@ -236,9 +265,8 @@ public class ActionsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void disableMerchant(String ticketId, String reason, String remarks) {
-        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-        mWorkFragment.disableMerchant(ticketId, reason, remarks);
+    public MyRetainedFragment getRetainedFragment() {
+        return mWorkFragment;
     }
 
     @Override
@@ -248,10 +276,16 @@ public class ActionsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public MyRetainedFragment getRetainedFragment() {
-        return mWorkFragment;
+    public void disableMerchant(String ticketId, String reason, String remarks) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mWorkFragment.disableMerchant(ticketId, reason, remarks);
     }
 
+    @Override
+    public void disableCustomer(String ticketId, String reason, String remarks) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mWorkFragment.disableCustomer(ticketId, reason, remarks);
+    }
 
     @Override
     public void launchMchntApp() {
@@ -259,6 +293,17 @@ public class ActionsActivity extends AppCompatActivity implements
         //Start Cashback Activity
         Intent intent = new Intent( this, CashbackActivity.class );
         intent.putExtra(CashbackActivity.INTENT_EXTRA_USER_TOKEN, AgentUser.getInstance().getUserToken());
+        // clear Login activity from backstack
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    @Override
+    public void launchCustApp() {
+        // pseudo login done - launch cashback activity
+        //Start Cashback Activity
+        Intent intent = new Intent( this, CashbackActivityCust.class );
+        intent.putExtra(CashbackActivityCust.INTENT_EXTRA_USER_TOKEN, AgentUser.getInstance().getUserToken());
         // clear Login activity from backstack
         //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -274,6 +319,10 @@ public class ActionsActivity extends AppCompatActivity implements
                 SearchMerchantDialog dialog = new SearchMerchantDialog();
                 dialog.show(getFragmentManager(), DIALOG_SEARCH_MCHNT);
                 break;
+            case ActionsFragment.CUSTOMER_SEARCH:
+                SearchCustomerDialog custDialog = new SearchCustomerDialog();
+                custDialog.show(getFragmentManager(), DIALOG_SEARCH_CUSTOMER);
+                break;
             case ActionsFragment.OTHER_GLOBAL_SETTINGS:
                 startSettingsListFrag();
                 break;
@@ -286,6 +335,15 @@ public class ActionsActivity extends AppCompatActivity implements
             AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
             mWorkFragment.mCurrMerchant = null;
             mWorkFragment.searchMerchant(value, searchById);
+        }
+    }
+
+    @Override
+    public void onCustInputData(String value, boolean searchById) {
+        if(value!=null && !value.isEmpty()) {
+            AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+            mWorkFragment.mCurrCustomer = null;
+            mWorkFragment.searchCustomer(value, searchById);
         }
     }
 
@@ -312,6 +370,21 @@ public class ActionsActivity extends AppCompatActivity implements
             // Add over the existing fragment
             transaction.replace(R.id.fragment_container, fragment, MCHNT_DETAILS_FRAGMENT);
             transaction.addToBackStack(MCHNT_DETAILS_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+    }
+
+    private void startCustDetailsFragment() {
+        if (mFragMgr.findFragmentByTag(CUST_DETAILS_FRAGMENT) == null) {
+            LogMy.d(TAG, "Creating new customer details fragment");
+            Fragment fragment = new CustomerDetailsFragment();
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container, fragment, CUST_DETAILS_FRAGMENT);
+            transaction.addToBackStack(CUST_DETAILS_FRAGMENT);
 
             // Commit the transaction
             transaction.commit();

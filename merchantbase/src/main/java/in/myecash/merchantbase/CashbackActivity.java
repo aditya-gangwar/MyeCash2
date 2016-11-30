@@ -297,14 +297,14 @@ public class CashbackActivity extends AppCompatActivity implements
             CustomerOpDialog.newInstance(DbConstants.OP_NEW_CARD, mWorkFragment.mCustomerOp)
                     .show(mFragMgr, DIALOG_CUSTOMER_OP_NEW_CARD);
 
-        } else if (i == R.id.menu_change_mobile) {
+        } /*else if (i == R.id.menu_change_mobile) {
             if (mWorkFragment.mCustomerOp != null) {
                 mWorkFragment.mCustomerOp.setOp_code(DbConstants.OP_CHANGE_MOBILE);
             }
             CustomerOpDialog.newInstance(DbConstants.OP_CHANGE_MOBILE, mWorkFragment.mCustomerOp)
                     .show(mFragMgr, DIALOG_CUSTOMER_OP_CHANGE_MOBILE);
 
-        } else if (i == R.id.menu_reset_pin) {
+        } */else if (i == R.id.menu_reset_pin) {
             if (mWorkFragment.mCustomerOp != null) {
                 mWorkFragment.mCustomerOp.setOp_code(DbConstants.OP_RESET_PIN);
             }

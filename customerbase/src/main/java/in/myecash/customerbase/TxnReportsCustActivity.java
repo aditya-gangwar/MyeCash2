@@ -47,7 +47,7 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
 /**
  * Created by adgangwa on 04-04-2016.
  */
-public class TxnReportsActivity extends AppCompatActivity implements
+public class TxnReportsCustActivity extends AppCompatActivity implements
         View.OnClickListener, MyRetainedFragment.RetainedFragmentIf,
         DatePickerDialog.DatePickerIf, TxnListFragment.TxnListFragmentIf,
         DialogFragmentWrapper.DialogFragmentWrapperIf, TxnDetailsDialog.TxnDetailsDialogIf,

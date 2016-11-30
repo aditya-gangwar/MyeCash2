@@ -38,7 +38,7 @@
                     android:icon="@drawable/ic_swap_horiz_black_24dp" />
                 <item
                     android:id="@+id/menu_operations"
-                    android:title="Change Requests"
+                    android:title="Operations History"
                     android:icon="@drawable/ic_change_history_black_24dp" />
             </group>
         </menu>
@@ -74,10 +74,10 @@
                 android:id="@+id/menu_new_card"
                 android:title="New Card"
                 android:icon="@drawable/ic_card_membership_black_24dp" />
-            <item
+            <!--item
                 android:id="@+id/menu_change_mobile"
                 android:title="Change Mobile"
-                android:icon="@drawable/ic_contact_phone_black_24dp" />
+                android:icon="@drawable/ic_contact_phone_black_24dp" /-->
             <item
                 android:id="@+id/menu_reset_pin"
                 android:title="Reset PIN"

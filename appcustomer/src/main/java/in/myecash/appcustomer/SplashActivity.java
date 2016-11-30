@@ -17,13 +17,12 @@ import in.myecash.appbase.constants.AppConstants;
 
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.common.constants.CommonConstants;
-import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
-import in.myecash.customerbase.LoginActivity;
+import in.myecash.customerbase.LoginCustActivity;
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -75,7 +74,7 @@ public class SplashActivity extends AppCompatActivity
     }
 
     private void startLoginActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, LoginCustActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();

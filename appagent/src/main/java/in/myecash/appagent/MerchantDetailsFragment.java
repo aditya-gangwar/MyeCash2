@@ -68,51 +68,6 @@ public class MerchantDetailsFragment extends Fragment
         return v;
     }
 
-    /*
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_mchnt_details_internal, null);
-
-        bindUiResources(v);
-
-        Dialog dialog = new AlertDialog.Builder(getActivity())
-                .setView(v)
-                .setNegativeButton(android.R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                /*
-                                int selectedId = mRadioGroup.getCheckedRadioButtonId();
-                                switch (selectedId) {
-                                    case R.id.radioButtonStatus:
-                                        if(mStatusChange.isEnabled()) {
-                                            mCallback.disableMerchant();
-                                        }
-                                        break;
-                                    case R.id.radioButtonTxns:
-                                        mCallback.getMerchantTxns();
-                                        break;
-                                    case R.id.radioButtonCb:
-                                        mCallback.getMerchantCbs();
-                                        break;
-                                }*//*
-
-                                dialog.dismiss();
-                            }
-                        })
-                .create();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                AppCommonUtil.setDialogTextSize(MerchantDetailsFragment.this, (AlertDialog) dialog);
-            }
-        });
-
-        return dialog;
-    }*/
-
     private void initDialogView() {
         Merchants merchant = mCallback.getRetainedFragment().mCurrMerchant;
 

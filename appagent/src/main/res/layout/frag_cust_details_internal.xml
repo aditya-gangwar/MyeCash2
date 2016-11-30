@@ -2,44 +2,14 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        style="@style/LL_Vertical_paddingSidesLarge"
-        android:scrollbars="vertical"
-        android:scrollbarAlwaysDrawVerticalTrack="true">
+        style="@style/LL_Vertical_paddingSidesLarge">
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="@dimen/medium_space"/>
-
-        <!--LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:id="@+id/layout_cust_name">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_perm_identity_white_24dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="Name"
-                android:layout_weight="40"
-                android:gravity="left"
-                android:paddingTop="0dp"/>
-            <EditText
-                style="@style/Edittext_only_view_small"
-                android:id="@+id/input_cust_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Aditya"
-                android:layout_weight="60"
-                android:gravity="left"
-                android:paddingTop="0dp"/>
-        </LinearLayout-->
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -50,14 +20,14 @@
                 android:src="@drawable/ic_perm_identity_white_24dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Name"
                 android:layout_weight="40"
                 android:gravity="left"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_cust_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -72,10 +42,39 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:visibility="invisible"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Internal ID"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_cust_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TBS"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_phone_android_white_24dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/label_customer_mobile"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
@@ -83,13 +82,40 @@
                 android:layout_weight="40"
                 android:gravity="left"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_customer_mobile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="8800191535"
+                android:text="xxxxx91535"
                 android:layout_weight="60"
                 android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:visibility="visible">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_input_white_24dp"
+                android:visibility="invisible"
+                android:paddingTop="0dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="App Login"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:id="@+id/input_first_login"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=""/>
         </LinearLayout>
 
         <LinearLayout
@@ -103,22 +129,20 @@
                 android:tint="@color/primary"
                 android:visibility="invisible"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="Registered"
+                android:text="Registered on"
                 android:layout_weight="40"
-                android:gravity="left"
-                android:paddingTop="0dp"/>
+                android:gravity="left"/>
             <EditText
-                style="@style/Edittext_only_view_small"
-                android:id="@+id/input_cust_created_on"
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_registered_on"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="22 July 16"
+                android:text="TBS - 22 July 16"
                 android:layout_weight="60"
-                android:gravity="left"
-                android:paddingTop="0dp"/>
+                android:gravity="left"/>
         </LinearLayout>
 
         <LinearLayout
@@ -132,27 +156,25 @@
                 android:tint="@color/primary"
                 android:visibility="invisible"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Expiring On"
                 android:layout_weight="40"
-                android:gravity="left"
-                android:paddingTop="0dp"/>
+                android:gravity="left"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_expiring_on"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="22 July 16"
                 android:layout_weight="60"
-                android:gravity="left"
-                android:paddingTop="0dp"/>
+                android:gravity="left"/>
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/small_space" />
+            android:layout_height="@dimen/medium_space"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
@@ -164,7 +186,7 @@
                 android:src="@drawable/ic_input_white_24dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Status"
@@ -172,7 +194,7 @@
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_weight="60"
                 android:gravity="left"
                 android:id="@+id/input_status"
@@ -185,11 +207,9 @@
         <LinearLayout
             style="@style/LL_Vertical"
             android:id="@+id/layout_status_details">
-
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:visibility="visible">
-
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -197,50 +217,25 @@
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
-                    style="@style/Edittext_only_view_small"
-                    android:layout_weight="60"
-                    android:gravity="left"
-                    android:id="@+id/input_reason"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Wrong password attempts limit reached."
-                    android:paddingTop="0dp"
-                    android:textStyle="italic"/>
-            </LinearLayout>
-
-            <LinearLayout
-                style="@style/LL_Horizontal_wrap"
-                android:visibility="visible">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_input_white_24dp"
-                    android:visibility="invisible"
-                    android:paddingTop="0dp"/>
-                <EditText
-                    style="@style/Edittext_only_view_small"
+                    style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="Changed on"
+                    android:text="Changed On"
                     android:layout_weight="40"
                     android:gravity="left|bottom"
-                    android:layout_gravity="bottom"
-                    android:paddingTop="0dp"/>
+                    android:layout_gravity="bottom"/>
                 <EditText
-                    style="@style/Edittext_only_view_small"
+                    style="@style/Edittext_only_view_small_lessPad"
                     android:layout_weight="60"
                     android:gravity="left"
                     android:id="@+id/input_status_date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="22 July 16, 23:00"
-                    android:paddingTop="0dp"/>
+                    android:text="22 July 16, 23:00"/>
             </LinearLayout>
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:visibility="visible">
-
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -248,22 +243,27 @@
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
-                    style="@style/Edittext_only_view_small"
-                    android:id="@+id/input_activation"
+                    style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="Will be automatically activated within 24 hours"
-                    android:layout_weight="100"
+                    android:text="Reason"
+                    android:layout_weight="40"
                     android:gravity="left|bottom"
-                    android:layout_gravity="bottom"
-                    android:paddingTop="0dp"
-                    android:textStyle="italic"/>
+                    android:layout_gravity="bottom"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_status_reason"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""/>
             </LinearLayout>
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/small_space"/>
+            android:layout_height="@dimen/medium_space"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -274,7 +274,7 @@
                 android:src="@drawable/ic_card_membership_white_24dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/label_qr_card"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
@@ -285,8 +285,8 @@
             <!--View
                 style="@style/Divider_vertical_Medium"/-->
             <EditText
-                style="@style/Edittext_only_view_small"
-                android:id="@+id/input_qr_card"
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_card_id"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="1234 5678 345"
@@ -310,29 +310,84 @@
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
-                    style="@style/Edittext_only_view_small"
+                    style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:text="Status"
                     android:layout_weight="40"
                     android:gravity="left|bottom"
-                    android:layout_gravity="bottom"
-                    android:paddingTop="0dp"/>
+                    android:layout_gravity="bottom"/>
                 <EditText
-                    style="@style/Edittext_only_view_small"
+                    style="@style/Edittext_only_view_small_lessPad"
                     android:layout_weight="60"
                     android:gravity="left"
                     android:id="@+id/input_card_status"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Invalid"
+                    android:text="Invalid"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible"
+                android:id="@+id/layout_card_status_date">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_input_white_24dp"
+                    android:visibility="invisible"
                     android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Changed on"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_card_status_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="22 July 16, 23:00"/>
             </LinearLayout>
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/small_space"/>
+            android:layout_height="@dimen/XL_space"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:id="@+id/btn_acc_status"
+                android:layout_width="0dp"
+                android:text="Disable"
+                android:layout_weight="47.5"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"/>
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:id="@+id/btn_launch_app"
+                android:layout_width="0dp"
+                android:text="Launch App"
+                android:layout_weight="47.5"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/large_space"/>
 
     </LinearLayout>
 </ScrollView>

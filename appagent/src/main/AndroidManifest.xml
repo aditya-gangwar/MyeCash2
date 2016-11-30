@@ -50,6 +50,8 @@
             android:name="in.myecash.merchantbase.TermsConditionsActivity"
             android:label="@string/title_activity_terms_conditions">
         </activity>
+
+
         <activity
             android:name="in.myecash.merchantbase.CashbackActivity"
             android:label="CashbackActivity"
@@ -57,10 +59,22 @@
         </activity>
         <activity
             android:name="in.myecash.merchantbase.TxnReportsActivity"
-            android:label="History">
+            android:label="Transactions">
         </activity>
         <activity android:name="in.myecash.appbase.barcodeReader.BarcodeCaptureActivity"
             android:label="Read Barcode"/>
+
+
+        <activity
+            android:name="in.myecash.customerbase.CashbackActivityCust"
+            android:label="CashbackActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+        <activity
+            android:name="in.myecash.customerbase.TxnReportsCustActivity"
+            android:label="Transactions">
+        </activity>
+
 
         <meta-data
             android:name="io.fabric.ApiKey"

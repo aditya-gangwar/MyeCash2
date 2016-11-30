@@ -118,6 +118,7 @@ public class AppConstants {
     public static final String forgotIdSuccessMsg = "Your user id is sent to your registered mobile number. If not received in next few minutes, please try again.";
     public static final String mobileChangeSuccessMsg = "New mobile number registered successfully.";
     public static final String merchantDisableSuccessMsg = "Merchant disabled successfully.";
+    public static final String customerDisableSuccessMsg = "Customer disabled successfully.";
 
     public static final String custMobileChangeSuccessMsg = "Mobile Number changed successfully. Please login again with new mobile number.";
     public static final String enableAccSuccessMsg = "Account is Active now. Please login to proceed.";

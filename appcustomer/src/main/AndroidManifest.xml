@@ -23,15 +23,15 @@
         </activity>
 
         <activity
-            android:name="in.myecash.customerbase.LoginActivity">
+            android:name="in.myecash.customerbase.LoginCustActivity">
         </activity>
         <activity
-            android:name="in.myecash.customerbase.CashbackActivity"
+            android:name="in.myecash.customerbase.CashbackActivityCust"
             android:label="CashbackActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
         <activity
-            android:name="in.myecash.customerbase.TxnReportsActivity"
+            android:name="in.myecash.customerbase.TxnReportsCustActivity"
             android:label="Transactions">
         </activity>
 

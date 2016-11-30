@@ -18,7 +18,7 @@ import in.myecash.appbase.utilities.LogMy;
 public class ActionsFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "ActionsFragment";
 
-    // Possible merchant actions
+    // Possible Merchant actions
     public static final String MERCHANT_REGISTER = "Register Merchant";
     public static final String MERCHANT_SEARCH = "Search Merchant";
 
@@ -26,6 +26,14 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
     // elements has to be <= MAX_MERCHANT_BUTTONS
     public static final String[] agentMerchantActions = {MERCHANT_SEARCH, MERCHANT_REGISTER};
     public static final String[] ccMerchantActions = {MERCHANT_SEARCH};
+
+    // Possible Customer actions
+    public static final String CUSTOMER_SEARCH = "Search Customer";
+
+    public static final int MAX_CUSTOMER_BUTTONS = 2;
+    // elements has to be <= MAX_CUSTOMER_BUTTONS
+    public static final String[] agentCustomerActions = {};
+    public static final String[] ccCustomerActions = {CUSTOMER_SEARCH};
 
     // Possible other actions
     public static final String OTHER_GLOBAL_SETTINGS = "Global Settings";
@@ -77,6 +85,8 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
         switch(vId) {
             case R.id.btn_merchant_0:
             case R.id.btn_merchant_1:
+            case R.id.btn_customer_0:
+            case R.id.btn_customer_1:
             case R.id.btn_others_0:
             case R.id.btn_others_1:
                 String btnLabel = ((AppCompatButton)v).getText().toString();
@@ -103,7 +113,34 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
                 mMerchantBtns[i].setOnClickListener(this);
             } else {
                 mMerchantBtns[i].setVisibility(View.INVISIBLE);
+                mMerchantBtns[i].setEnabled(false);
             }
+        }
+
+        // Init buttons for customer actions
+        if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_AGENT) {
+            actions = agentCustomerActions;
+        } else if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_CC) {
+            // customer care
+            actions = ccCustomerActions;
+        }
+
+        boolean noBtnsVisible = true;
+        for(int i=0; i<MAX_CUSTOMER_BUTTONS; i++) {
+            if(i<actions.length) {
+                mCustomerBtns[i].setVisibility(View.VISIBLE);
+                mCustomerBtns[i].setText(actions[i]);
+                mCustomerBtns[i].setOnClickListener(this);
+                noBtnsVisible = false;
+            } else {
+                mCustomerBtns[i].setVisibility(View.INVISIBLE);
+                mCustomerBtns[i].setEnabled(false);
+            }
+        }
+        // only in case of customer - as for agent customer has no valid actions
+        if(noBtnsVisible) {
+            mLabelCustBtns.setVisibility(View.GONE);
+            mLayoutCustBtns.setVisibility(View.GONE);
         }
 
         // Init buttons for other actions
@@ -121,19 +158,30 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
                 mOtherBtns[i].setOnClickListener(this);
             } else {
                 mOtherBtns[i].setVisibility(View.INVISIBLE);
+                mOtherBtns[i].setEnabled(false);
             }
         }
 
     }
 
     private AppCompatButton mMerchantBtns[] = new AppCompatButton[MAX_MERCHANT_BUTTONS];
+    private AppCompatButton mCustomerBtns[] = new AppCompatButton[MAX_CUSTOMER_BUTTONS];
     private AppCompatButton mOtherBtns[] = new AppCompatButton[MAX_OTHER_BUTTONS];
+
+    private View mLabelCustBtns;
+    private View mLayoutCustBtns;
 
     private void bindUiResources(View v) {
         mMerchantBtns[0] = (AppCompatButton) v.findViewById(R.id.btn_merchant_0);
         mMerchantBtns[1] = (AppCompatButton) v.findViewById(R.id.btn_merchant_1);
 
+        mCustomerBtns[0] = (AppCompatButton) v.findViewById(R.id.btn_customer_0);
+        mCustomerBtns[1] = (AppCompatButton) v.findViewById(R.id.btn_customer_1);
+
         mOtherBtns[0] = (AppCompatButton) v.findViewById(R.id.btn_others_0);
         mOtherBtns[1] = (AppCompatButton) v.findViewById(R.id.btn_others_1);
+
+        mLabelCustBtns = v.findViewById(R.id.label_cust_btns);
+        mLayoutCustBtns = v.findViewById(R.id.layout_cust_btns);
     }
 }

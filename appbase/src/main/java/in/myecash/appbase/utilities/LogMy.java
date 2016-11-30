@@ -5,15 +5,19 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
+import in.myecash.common.constants.CommonConstants;
+
 /**
  * Created by adgangwa on 30-08-2016.
  */
 public class LogMy {
     public static void d(String tag, String msg) {
+        if(!CommonConstants.IS_PRODUCTION_RELEASE) return;
         Log.d(tag,msg);
         Crashlytics.log(msg);
     }
     public static void i(String tag, String msg) {
+        if(!CommonConstants.IS_PRODUCTION_RELEASE) return;
         Log.i(tag,msg);
         Crashlytics.log(msg);
     }
