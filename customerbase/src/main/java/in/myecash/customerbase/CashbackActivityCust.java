@@ -28,7 +28,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -75,6 +74,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
     private static final String DIALOG_PIN_RESET = "dialogPinReset";
     private static final String DIALOG_PIN_CHANGE = "dialogPinChange";
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
+    private static final String CUSTOMER_OPS_LIST_FRAG = "CustomerOpsListFrag";
 
     private static final String DIALOG_NOTIFY_CB_FETCH_ERROR = "dialogCbFetchError";
 
@@ -95,7 +95,6 @@ public class CashbackActivityCust extends AppCompatActivity implements
     private EditText mTbSubhead1Text1;
     private EditText mTbSubhead1Text2;
 
-    private static final SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
     private CustomerUser mCustomerUser;
     private Customers mCustomer;
 
@@ -251,7 +250,10 @@ public class CashbackActivityCust extends AppCompatActivity implements
             // show latest txns
             startTxnReportActivity(null,null);
 
-        } /*else if (i == R.id.menu_sort_mchnts) {
+        } else if(i == R.id.menu_operations) {
+            AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+            mRetainedFragment.fetchCustomerOps();
+        }/*else if (i == R.id.menu_sort_mchnts) {
             // sort current shown merchants list
             if(mMchntListFragment != null && mMchntListFragment.isVisible()) {
                 mMchntListFragment.sortMerchantList();
@@ -413,6 +415,15 @@ public class CashbackActivityCust extends AppCompatActivity implements
                 break;
             case MyRetainedFragment.REQUEST_CHANGE_PIN:
                 onPinChangeResponse(errorCode);
+                break;
+            case MyRetainedFragment.REQUEST_FETCH_CUSTOMER_OPS:
+                AppCommonUtil.cancelProgressDialog(true);
+                if(errorCode==ErrorCodes.NO_ERROR) {
+                    startCashbackListFrag();
+                } else {
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
                 break;
         }
     }
@@ -789,6 +800,21 @@ public class CashbackActivityCust extends AppCompatActivity implements
             // Add over the existing fragment
             transaction.replace(R.id.fragment_container_1, fragment, ERROR_FRAGMENT);
             //transaction.addToBackStack(CASHBACK_LIST_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+    }
+
+    private void startCustomerOpsFrag() {
+        if (mFragMgr.findFragmentByTag(CUSTOMER_OPS_LIST_FRAG) == null) {
+
+            Fragment fragment = new CustomerOpListFrag();
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container_1, fragment, CUSTOMER_OPS_LIST_FRAG);
+            transaction.addToBackStack(CUSTOMER_OPS_LIST_FRAG);
 
             // Commit the transaction
             transaction.commit();

@@ -3,14 +3,13 @@ package in.myecash.customerbase.helper;
 import android.content.Context;
 import android.os.Handler;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.appbase.utilities.TxnReportsHelper;
+import in.myecash.common.database.CustomerOps;
 import in.myecash.common.database.Transaction;
 import in.myecash.customerbase.entities.CustomerStats;
 import in.myecash.customerbase.entities.CustomerUser;
@@ -35,6 +34,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_FETCH_TXNS = 7;
     public static final int REQUEST_FETCH_TXN_FILES = 8;
     public static final int REQUEST_ENABLE_ACC = 9;
+    public static final int REQUEST_FETCH_CUSTOMER_OPS = 10;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -49,6 +49,7 @@ public class MyRetainedFragment extends RetainedFragment {
 
     // stats for the customer
     public CustomerStats stats;
+    public List<CustomerOps> mLastFetchCustOps;
 
     // params for mobile number change operation
     public String mPinMobileChange;
@@ -107,6 +108,9 @@ public class MyRetainedFragment extends RetainedFragment {
     }
     public void enableAccount(String loginId, String passwd) {
         mBackgroundProcessor.addEnableRequest(loginId, passwd);
+    }
+    public void fetchCustomerOps() {
+        mBackgroundProcessor.addCustomerOpsReq();
     }
 
     @Override

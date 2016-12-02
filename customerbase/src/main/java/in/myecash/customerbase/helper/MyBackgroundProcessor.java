@@ -121,6 +121,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         msg.password = password;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_ENABLE_ACC, msg).sendToTarget();
     }
+    public void addCustomerOpsReq() {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_CUSTOMER_OPS, null).sendToTarget();
+    }
 
 
     @Override
@@ -156,6 +159,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_ENABLE_ACC:
                 error = enableAccount((MessageLogin) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_FETCH_CUSTOMER_OPS:
+                error = fetchCustomerOps();
                 break;
         }
         return error;
@@ -329,6 +335,20 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         LogMy.d(TAG, "In enableAccount");
         return CustomerUser.enableAccount(msg.userId, msg.password,
                 mRetainedFragment.mAccEnableOtp, mRetainedFragment.mAccEnableCardNum, mRetainedFragment.mAccEnablePin);
+    }
+
+    private int fetchCustomerOps() {
+        mRetainedFragment.mLastFetchCustOps = null;
+
+        try {
+            mRetainedFragment.mLastFetchCustOps = CustomerUser.getInstance().fetchCustomerOps();
+            LogMy.d(TAG,"fetchCustomerOps success: "+mRetainedFragment.mLastFetchCustOps.size());
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Exception in fetchCustomerOps: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
     }
 
     /*

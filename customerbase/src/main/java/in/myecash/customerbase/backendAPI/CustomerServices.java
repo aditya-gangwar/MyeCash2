@@ -11,7 +11,9 @@ import com.backendless.Backendless;
 
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.Cashback;
+import in.myecash.common.database.CustomerOps;
 import in.myecash.common.database.Customers;
+import in.myecash.common.database.MerchantOps;
 import in.myecash.common.database.Transaction;
 
   public class CustomerServices
@@ -48,6 +50,12 @@ import in.myecash.common.database.Transaction;
     {
         Object[] args = new Object[]{custPrivateId, whereClause};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getTransactions", args, java.util.List.class );
+    }
+
+    public java.util.List<CustomerOps> getCustomerOps(java.lang.String privateId)
+    {
+        Object[] args = new Object[]{privateId};
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCustomerOps", args, java.util.List.class );
     }
 
     /*public void changePin(String oldPin, String newPin, String cardNum)

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical_paddingSidesLarge"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/input_opname"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Change Mobile"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:paddingLeft="0dp"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/input_op_time"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="08 Apr,16  20:15"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/input_init_by"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/input_opname"
+            android:text="By Merchant Via Call to Customer Care"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/input_params"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/input_init_by"
+            android:text="Old Mobile: 8800191535, New Mobile: 9818689532"
+            android:gravity="left"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/input_status"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/input_params"
+            android:text="Status: Completed"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:gravity="left"
+            android:background="@color/bg_customercare_data"/>
+
+        <EditText
+            style="@style/Edittext_only_click_small"
+            android:id="@+id/input_ticketId"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/input_status"
+            android:text="Ticket ID: ADFT65834JUI"
+            android:gravity="left"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:background="@color/bg_customercare_data"/>
+
+        <EditText
+            style="@style/Edittext_only_click_small"
+            android:id="@+id/input_reason"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/input_ticketId"
+            android:text="Reason: Customer lost the mobile phone"
+            android:gravity="left"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:background="@color/bg_customercare_data"/>
+
+        <EditText
+            style="@style/Edittext_only_click_small"
+            android:id="@+id/input_remarks"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/input_reason"
+            android:text="Remarks: Customer lost the mobile phone"
+            android:gravity="left"
+            android:paddingTop="0dp"
+            android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingRight="0dp"
+            android:paddingLeft="0dp"
+            android:background="@color/bg_customercare_data"/>
+
+    </RelativeLayout>
+
+    <View
+        style="@style/Divider_horizontal_Large"
+        android:id="@+id/cust_divider_1"/>
+
+</LinearLayout>

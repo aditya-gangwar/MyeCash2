@@ -21,7 +21,7 @@ public class CommonConstants {
     public static final String ANDROID_SECRET_KEY = "14765681-0A7C-3F4E-FF29-41A948E33500";
     public static final String VERSION = "v1";
 
-    public static final String BACKENDLESS_HOST_IP = "35.154.65.53";
+    public static final String BACKENDLESS_HOST_IP = "35.154.67.129";
     public static final String BACKENDLESS_HOST = "http://"+BACKENDLESS_HOST_IP+":8080/api";
     public static String BACKEND_FILE_BASE_URL = BACKENDLESS_HOST+"/"+APPLICATION_ID+"/"+VERSION+"/files/";
     public static final String BULK_API_URL  = BACKENDLESS_HOST+"/"+VERSION+"/data/bulk/";

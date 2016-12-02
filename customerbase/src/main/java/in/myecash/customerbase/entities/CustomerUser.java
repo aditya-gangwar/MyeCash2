@@ -12,9 +12,11 @@ import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Cashback;
+import in.myecash.common.database.CustomerOps;
 import in.myecash.common.database.Customers;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.database.MerchantOps;
 import in.myecash.common.database.Transaction;
 import in.myecash.customerbase.backendAPI.CustomerServices;
 import in.myecash.customerbase.backendAPI.CustomerServicesNoLogin;
@@ -158,6 +160,12 @@ public class CustomerUser {
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;
+    }
+
+    public List<CustomerOps> fetchCustomerOps() throws BackendlessException {
+        LogMy.d(TAG, "In fetchCustomerOps");
+
+        return CustomerServices.getInstance().getCustomerOps(mCustomer.getPrivate_id());
     }
 
     /*
