@@ -42,11 +42,11 @@
         <EditText
             style="@style/Edittext_only_view_small"
             android:id="@+id/input_more_info"
-            android:layout_weight="7.5"
             android:layout_height="0dp"
+            android:layout_weight="7.5"
             android:layout_width="match_parent"
             android:gravity="left"
-            android:text="* Cashback excluded"
+            android:text="* Cashback Excluded"
             android:textColor="@color/accent2"/>
 
         <LinearLayout

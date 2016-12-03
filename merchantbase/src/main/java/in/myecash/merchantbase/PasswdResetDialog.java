@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -47,6 +48,9 @@ public interface PasswdResetDialogIf {
 
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_passwd_reset, null);
         initUiResources(v);
+
+        String txt = String.format(getActivity().getString(R.string.mchnt_reset_passwd_info), MyGlobalSettings.getMchntPasswdResetMins().toString());
+        mInfo.setText(txt);
 
         // return new dialog
         final AlertDialog alertDialog =  new AlertDialog.Builder(getActivity()).setView(v)
@@ -117,9 +121,11 @@ public interface PasswdResetDialogIf {
     }
 
     private EditText mInputDob;
+    private EditText mInfo;
     //private EditText mInputStoreName;
     private void initUiResources(View v) {
         mInputDob = (EditText) v.findViewById(R.id.input_dob);
+        mInfo = (EditText) v.findViewById(R.id.labelInfo);
         //mInputStoreName = (EditText) v.findViewById(R.id.input_storeName);
     }
 }

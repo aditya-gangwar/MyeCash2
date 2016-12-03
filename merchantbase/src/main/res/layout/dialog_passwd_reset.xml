@@ -53,42 +53,6 @@
             android:inputType="number"
             android:gravity="center"/>
 
-        <!--Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_store_white_24dp"
-                android:tint="@color/primary"
-                android:layout_gravity="top"/>
-
-            <EditText
-                style="@style/Edittext_only_view_small"
-                android:id="@+id/label_information_2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Provide Store Name - as registered with us" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"/>
-
-        <EditText
-            android:id="@+id/input_storeName"
-            style="@style/MyEdittext_Medium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Store/Brand Name"
-            android:maxLength="@string/dob_char_limit"
-            android:inputType="number"
-            android:gravity="center"/-->
-
         <Space
             android:layout_width="match_parent"
             android:layout_height="@dimen/XL_space"/>
@@ -106,9 +70,10 @@
 
             <EditText
                 style="@style/Edittext_only_view_small"
+                android:id="@+id/labelInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New password will be sent on your current registered mobile number." />
+                android:text="@string/mchnt_reset_passwd_info"/>
         </LinearLayout>
 
         <Space

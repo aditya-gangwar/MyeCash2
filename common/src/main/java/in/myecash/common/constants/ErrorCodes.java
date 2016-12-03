@@ -101,7 +101,7 @@ public class ErrorCodes {
         aMap.put(LIMITED_ACCESS_CREDIT_TXN_ONLY,"Limited Access. Only 'CREDIT' transactions are allowed.");
 
         aMap.put(SEND_SMS_FAILED,"Sorry, but we failed to send SMS to you. Request to please try again later.");
-        aMap.put(OTP_GENERATE_FAILED,"Failed to generate OTP. Please tru again later.");
+        aMap.put(OTP_GENERATE_FAILED,"Failed to generate OTP. Please try again later.");
 
         aMap.put(WRONG_INPUT_DATA,"Invalid input data");
         aMap.put(WRONG_OTP,"Wrong OTP value.");

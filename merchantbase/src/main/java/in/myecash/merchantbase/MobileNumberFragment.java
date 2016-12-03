@@ -123,6 +123,8 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
             @Override
             public void onClick(View v) {
                 String mobileNum = mInputCustMobile.getText().toString();
+                // remove dots
+                mobileNum = mobileNum.replace(MOBILE_NUM_EMPTY_CHAR,"");
                 LogMy.d(TAG, "Clicked process: "+mobileNum);
 
                 // If less then MOBILE_NUM_PROCESS_MIN_LENGTH, attempt QR code scan

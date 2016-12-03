@@ -398,8 +398,10 @@ public class MerchantUser
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
         try {
-            mMerchant = MerchantServices.getInstance().deleteTrustedDevice(mMerchant.getTrusted_devices().get(index).getDevice_id());
+            MerchantServices.getInstance().deleteTrustedDevice(mMerchant.getTrusted_devices().get(index).getDevice_id());
             LogMy.d(TAG, "Device delete success: " + mMerchant.getAuto_id());
+            mInstance.loadMerchant(mMerchant.getAuto_id());
+
         } catch(BackendlessException e) {
             LogMy.e(TAG, "Device delete failed: " + e.toString());
             return AppCommonUtil.getLocalErrorCode(e);

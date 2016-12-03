@@ -9,6 +9,7 @@ import com.crashlytics.android.Crashlytics;
 import java.util.List;
 
 import in.myecash.appbase.backendAPI.CommonServices;
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Cashback;
@@ -88,6 +89,7 @@ public class CustomerUser {
         LogMy.d(TAG, "In login");
         try {
             BackendlessUser user = Backendless.UserService.login(userId, password, false);
+            LogMy.d(TAG, "Customer Login Success: " + userId);
             int userType = (Integer)user.getProperty("user_type");
             if( userType != DbConstants.USER_TYPE_CUSTOMER) {
                 // wrong user type
@@ -100,6 +102,7 @@ public class CustomerUser {
             createInstance();
             // load all child objects
             mInstance.loadCustomer(userId);
+            LogMy.d(TAG, "Customer Load Success: " + mInstance.mCustomer.getMobile_num());
 
             // Store user token
             mInstance.mUserToken = HeadersManager.getInstance().getHeader(HeadersManager.HeadersEnum.USER_TOKEN_KEY);
@@ -107,7 +110,6 @@ public class CustomerUser {
                 logout();
                 return ErrorCodes.GENERAL_ERROR;
             }
-            LogMy.d(TAG, "Customer Login Success: " + mInstance.mCustomer.getMobile_num());
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Login failed: "+e.toString());
@@ -139,7 +141,7 @@ public class CustomerUser {
         if(mInstance!=null && !mInstance.mPseudoLoggedIn) {
             try {
                 Backendless.UserService.logout();
-                LogMy.d(TAG, "Logout Success: " + mInstance.mCustomer.getMobile_num());
+                //LogMy.d(TAG, "Logout Success: " + mInstance.mCustomer.getMobile_num());
             } catch (BackendlessException e) {
                 LogMy.e(TAG, "Logout failed: " + e.toString());
                 return AppCommonUtil.getLocalErrorCode(e);
@@ -265,8 +267,11 @@ public class CustomerUser {
         mCustomer = CommonServices.getInstance().getCustomer(mobileNum);
 
         // map cashback and transaction table
-        //Backendless.Data.mapTableToClass(mMerchant.getCashback_table(), Cashback.class);
-        //Backendless.Data.mapTableToClass(mMerchant.getTxn_table(), Transaction.class);
+        Backendless.Data.mapTableToClass(mCustomer.getCashback_table(), Cashback.class);
+        String[] csvFields = mCustomer.getTxn_tables().split(CommonConstants.CSV_DELIMETER, -1);
+        for (String str : csvFields) {
+            Backendless.Data.mapTableToClass(str, Transaction.class);
+        }
 
         // Set user id for crashlytics
         Crashlytics.setUserIdentifier(mCustomer.getPrivate_id());

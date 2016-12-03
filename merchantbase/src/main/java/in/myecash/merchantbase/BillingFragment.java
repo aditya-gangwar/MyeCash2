@@ -113,15 +113,17 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setTotalAmt() {
-        if(!mCalcMode) {
+        //if(!mCalcMode) {
             String str = "Bill    " + AppConstants.SYMBOL_RS + String.valueOf(mRetainedFragment.mBillTotal);
             mBtnTotal.setText(str);
-        }
+        //}
     }
 
     public void disableFurtherProcess() {
-        mBtnTotal.setText("* Calculator Only");
-        mBtnTotal.setTextColor(ContextCompat.getColor(getActivity(), R.color.secondary_text));
+        mInputMoreInfo.setVisibility(View.VISIBLE);
+        mInputMoreInfo.setText("* Calculator Only");
+        //mBtnTotal.setText("* Calculator Only");
+        //mBtnTotal.setTextColor(ContextCompat.getColor(getActivity(), R.color.secondary_text));
         //mBtnTotal.setEnabled(false);
         mCalcMode = true;
     }
@@ -131,10 +133,11 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         int resId = v.getId();
         LogMy.d(TAG, "In onClick, resId: " + resId);
 
-        String actualStr = mInputItemAmt.getText().toString();
-        // remove rupee symbol for processing
-        String effectiveStr = actualStr.replace(AppConstants.SYMBOL_RS, "");
-        LogMy.d(TAG, "In onClick, actualStr: " + actualStr + ", effectiveStr: " + effectiveStr);
+        try {
+            String actualStr = mInputItemAmt.getText().toString();
+            // remove rupee symbol for processing
+            String effectiveStr = actualStr.replace(AppConstants.SYMBOL_RS, "");
+            LogMy.d(TAG, "In onClick, actualStr: " + actualStr + ", effectiveStr: " + effectiveStr);
 
         /*if (resId == R.id.label_item_cnt) {
             if (mRetainedFragment.mOrderItems.size() > 0) {
@@ -144,52 +147,56 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
                 AppCommonUtil.toast(getActivity(), "No Items added");
             }
 
-        } else */if (resId == R.id.btn_bill_total) {
-            if (mCalcMode) {
-                AppCommonUtil.toast(getActivity(), "Customer ID not provided");
-                return;
-            }
-            // do processing for +, just in case user forgets to press it in end
-            handlePlus(effectiveStr);
-            //if(mRetainedFragment.mBillTotal <= 0) {
-            //    AndroidUtil.toast(getActivity(), "Bill amount is 0");
-            //} else {
-            mCallback.onTotalBill();
-            //}
+        } else */
+            if (resId == R.id.btn_bill_total) {
+                if (mCalcMode) {
+                    AppCommonUtil.toast(getActivity(), "No Input Customer");
+                    return;
+                }
+                // do processing for +, just in case user forgets to press it in end
+                handlePlus(effectiveStr);
+                //if(mRetainedFragment.mBillTotal <= 0) {
+                //    AndroidUtil.toast(getActivity(), "Bill amount is 0");
+                //} else {
+                mCallback.onTotalBill();
+                //}
 
-        } else if (resId == R.id.input_kb_plus) {
-            handlePlus(effectiveStr);
+            } else if (resId == R.id.input_kb_plus) {
+                handlePlus(effectiveStr);
 
-        } else if (resId == R.id.input_kb_X) {// not allowed as first character, also only single multiply is allowed
-            if (!(effectiveStr.isEmpty() || effectiveStr.contains(MULTIPLY_STR))) {
-                mInputItemAmt.append(MULTIPLY_STR);
-            }
+            } else if (resId == R.id.input_kb_X) {// not allowed as first character, also only single multiply is allowed
+                if (!(effectiveStr.isEmpty() || effectiveStr.contains(MULTIPLY_STR))) {
+                    mInputItemAmt.append(MULTIPLY_STR);
+                }
 
-        } else if (resId == R.id.input_kb_bs) {
-            mInputItemAmt.setText("");
-            if (effectiveStr.length() > 1) {
-                // if not 'last character removal' case
-                if (actualStr.endsWith(MULTIPLY_STR)) {
-                    // remove complete multiply string
-                    mInputItemAmt.setText(actualStr.toCharArray(), 0, (actualStr.length() - MULTIPLY_STR.length()));
+            } else if (resId == R.id.input_kb_bs) {
+                mInputItemAmt.setText("");
+                if (effectiveStr.length() > 1) {
+                    // if not 'last character removal' case
+                    if (actualStr.endsWith(MULTIPLY_STR)) {
+                        // remove complete multiply string
+                        mInputItemAmt.setText(actualStr.toCharArray(), 0, (actualStr.length() - MULTIPLY_STR.length()));
+                    } else {
+                        mInputItemAmt.setText(actualStr.toCharArray(), 0, (actualStr.length() - 1));
+                    }
                 } else {
-                    mInputItemAmt.setText(actualStr.toCharArray(), 0, (actualStr.length() - 1));
+                    mInputItemAmt.setText(AppConstants.SYMBOL_RS_0);
                 }
-            } else {
-                mInputItemAmt.setText(AppConstants.SYMBOL_RS_0);
-            }
 
-        } else {// process keys 0 - 9
-            // ignore 0 as first entered digit
-            if (!(resId == R.id.input_kb_0 && effectiveStr.isEmpty())) {
-                AppCompatButton key = (AppCompatButton) v;
-                // AppConstants.SYMBOL_RS_0 is set after doing calculation in handlePlus
-                if (actualStr.isEmpty() || actualStr.equals(AppConstants.SYMBOL_RS_0)) {
-                    // set rupee symbol as first character
-                    mInputItemAmt.setText(AppConstants.SYMBOL_RS);
+            } else {// process keys 0 - 9
+                // ignore 0 as first entered digit
+                if (!(resId == R.id.input_kb_0 && effectiveStr.isEmpty())) {
+                    AppCompatButton key = (AppCompatButton) v;
+                    // AppConstants.SYMBOL_RS_0 is set after doing calculation in handlePlus
+                    if (actualStr.isEmpty() || actualStr.equals(AppConstants.SYMBOL_RS_0)) {
+                        // set rupee symbol as first character
+                        mInputItemAmt.setText(AppConstants.SYMBOL_RS);
+                    }
+                    mInputItemAmt.append(key.getText());
                 }
-                mInputItemAmt.append(key.getText());
             }
+        } catch (NumberFormatException e) {
+            AppCommonUtil.toast(getActivity(), "Invalid Number");
         }
     }
 

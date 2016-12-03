@@ -419,7 +419,11 @@ public class CashbackActivityCust extends AppCompatActivity implements
             case MyRetainedFragment.REQUEST_FETCH_CUSTOMER_OPS:
                 AppCommonUtil.cancelProgressDialog(true);
                 if(errorCode==ErrorCodes.NO_ERROR) {
-                    startCashbackListFrag();
+                    startCustomerOpsFrag();
+                } else if(errorCode==ErrorCodes.NO_DATA_FOUND){
+                    String error = String.format(getString(R.string.ops_no_data_info), MyGlobalSettings.getOpsKeepDays().toString());
+                    DialogFragmentWrapper.createNotification(AppConstants.noDataFailureTitle, error, false, false)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else {
                     DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);

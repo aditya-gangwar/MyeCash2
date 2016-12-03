@@ -47,12 +47,6 @@ import in.myecash.common.database.Transaction;
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changeMobile", args, Merchants.class );
     }
 
-    public void changeMobileAsync(java.lang.String currentMobile, java.lang.String newMobile, java.lang.String otp, AsyncCallback<Merchants> callback)
-    {
-        Object[] args = new Object[]{currentMobile, newMobile, otp};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changeMobile", args, Merchants.class, callback);
-    }
-
     public Merchants updateSettings(java.lang.String cbRate, boolean addClEnabled, java.lang.String email,
                                     boolean askLinkedInvNum, boolean linkedInvNumOptional, boolean invNumOnlyNmbrs)
     {
@@ -60,22 +54,10 @@ import in.myecash.common.database.Transaction;
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "updateSettings", args, Merchants.class );
     }
 
-    public void updateSettingsAsync(java.lang.String cbRate, boolean addClEnabled, java.lang.String email, AsyncCallback<Merchants> callback)
-    {
-        Object[] args = new Object[]{cbRate, addClEnabled, email};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "updateSettings", args, Merchants.class, callback);
-    }
-
-    public Merchants deleteTrustedDevice(java.lang.String deviceId)
+    public void deleteTrustedDevice(java.lang.String deviceId)
     {
         Object[] args = new Object[]{deviceId};
-        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "deleteTrustedDevice", args, Merchants.class );
-    }
-
-    public void deleteTrustedDeviceAsync(java.lang.String deviceId, AsyncCallback<Merchants> callback)
-    {
-        Object[] args = new Object[]{deviceId};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "deleteTrustedDevice", args, Merchants.class, callback);
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "deleteTrustedDevice", args);
     }
 
     public MerchantStats getMerchantStats(java.lang.String mchntId)
@@ -84,34 +66,16 @@ import in.myecash.common.database.Transaction;
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMerchantStats", args, MerchantStats.class );
     }
 
-    public void getMerchantStatsAsync(java.lang.String mchntId, AsyncCallback<MerchantStats> callback)
-    {
-        Object[] args = new Object[]{mchntId};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMerchantStats", args, MerchantStats.class, callback);
-    }
-
     public java.util.List<MerchantOps> getMerchantOps(java.lang.String merchantId)
     {
         Object[] args = new Object[]{merchantId};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMerchantOps", args, java.util.List.class );
     }
 
-    public void getMerchantOpsAsync(java.lang.String merchantId, AsyncCallback<java.util.List<MerchantOps>> callback)
-    {
-        Object[] args = new Object[]{merchantId};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMerchantOps", args, java.util.List.class, callback);
-    }
-
     public void archiveTxns()
     {
         Object[] args = new Object[]{};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "archiveTxns", args );
-    }
-
-    public void archiveTxnsAsync(AsyncCallback<Object> callback)
-    {
-        Object[] args = new Object[]{};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "archiveTxns", args, Object.class, callback);
     }
 
     public Cashback registerCustomer(java.lang.String customerMobile, java.lang.String cardId, java.lang.String otp, java.lang.String firstName, java.lang.String lastName)

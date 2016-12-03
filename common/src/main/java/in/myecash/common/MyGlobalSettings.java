@@ -365,10 +365,14 @@ public class MyGlobalSettings
     private static final String SETTINGS_SERVICE_DISABLED_UNTIL = "service_disabled_until";
     private static final String SETTINGS_TXN_IMAGE_CAPTURE_MODE = "txn_image_capture_mode";
     // ** No Constant values defined - as not used by backend **
+
     private static final String SETTINGS_WRONG_ATTEMPT_RESET_HRS = "wrong_attempt_reset_hrs";
     private static final int WRONG_ATTEMPT_RESET_HRS = 2;
     private static final String SETTINGS_TXNS_INTABLE_KEEP_DAYS = "txns_intable_keep_days";
     private static final int CUST_TXNS_KEEP_DAYS = 5;
+    private static final String SETTINGS_OPS_KEEP_DAYS = "ops_keep_days";
+    private static final int OPS_KEEP_DAYS = 90;
+
     // As not used by app (but only backend) - so only defining constants against them
     public static final int FAILED_SMS_RETRY_MINS = 30;
 
@@ -390,6 +394,11 @@ public class MyGlobalSettings
         return (mRunMode==RunMode.backend)?
                 CUST_TXNS_KEEP_DAYS:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_TXNS_INTABLE_KEEP_DAYS);
+    }
+    public static Integer getOpsKeepDays() {
+        return (mRunMode==RunMode.backend)?
+                OPS_KEEP_DAYS:
+                (Integer)MyGlobalSettings.mSettings.get(SETTINGS_OPS_KEEP_DAYS);
     }
 
     /*

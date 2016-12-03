@@ -333,15 +333,18 @@ public class CashbackActivity extends AppCompatActivity implements
             String storedStats = getStoredMchntStats();
             if(storedStats != null && !storedStats.isEmpty()) {
                 mWorkFragment.mMerchantStats = MyMerchantStats.fromCsvString(storedStats);
-                return false;
+            } else {
+                return true;
             }
-            return true;
         }
+
+        // check if available stats to be refreshed
         Date now = new Date();
         Date updateTime = mWorkFragment.mMerchantStats.getUpdated();
         if(updateTime==null) {
             updateTime = mWorkFragment.mMerchantStats.getCreated();
         }
+
         long timeDiff = now.getTime() - updateTime.getTime();
         long noRefreshDuration = 60*60*1000*MyGlobalSettings.getMchntDashBNoRefreshHrs();
         if( timeDiff > noRefreshDuration ) {
@@ -914,6 +917,10 @@ public class CashbackActivity extends AppCompatActivity implements
                 AppCommonUtil.cancelProgressDialog(true);
                 if(errorCode==ErrorCodes.NO_ERROR) {
                     startMerchantOpsFrag();
+                } else if(errorCode==ErrorCodes.NO_DATA_FOUND){
+                    String error = String.format(getString(R.string.ops_no_data_info), MyGlobalSettings.getOpsKeepDays().toString());
+                    DialogFragmentWrapper.createNotification(AppConstants.noDataFailureTitle, error, false, false)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else {
                     DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -1014,6 +1021,11 @@ public class CashbackActivity extends AppCompatActivity implements
 
         if(errorCode==ErrorCodes.NO_ERROR) {
             if(mLastMenuItemId==R.id.menu_dashboard) {
+                // delete old available customer data file
+                // so as next time new file is downloaded, created during this call
+                if(!deleteFile(getFilesDir() + "/" + AppCommonUtil.getMerchantCustFileName(mMerchantUser.getMerchantId()))) {
+                    LogMy.d(TAG,"Failed to delete merchant customer data file");
+                }
                 startDBoardSummaryFrag();
 
             } else if(mLastMenuItemId==R.id.menu_customers) {
