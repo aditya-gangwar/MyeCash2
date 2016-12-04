@@ -99,7 +99,7 @@
     </string-array>
 
     <string name="category_hint">Business category</string>
-    <string name="city_hint">City</string>
+    <string name="city_hint">City/District</string>
     <string name="state_hint">State</string>
 
     <string name="address_section_label">Address</string>

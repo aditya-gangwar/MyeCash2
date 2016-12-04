@@ -1,5 +1,7 @@
 package in.myecash.appbase.utilities;
 
+import com.backendless.HeadersManager;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +18,11 @@ public class FileFetchr {
 
         URL url = new URL(urlSpec);
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-        connection.setRequestProperty("user-token", userToken);
+
+        for( String key : HeadersManager.getInstance().getHeaders().keySet() )
+            connection.addRequestProperty( key, HeadersManager.getInstance().getHeaders().get( key ) );
+
+        //connection.setRequestProperty("user-token", userToken);
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             InputStream in = connection.getInputStream();

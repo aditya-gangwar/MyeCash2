@@ -70,17 +70,17 @@ public class AppConstants {
     public static final String regConfirmTitle = "Merchant Registration";
     public static final String regConfirmMsg = "Are you sure all information given is correct ?";
 
-    public static final String mchntRegSuccessMsg = "Registered Merchant Id is %s. Please ask Merchant to use 'Forget Password' link to get password and proceed further.";
+    public static final String mchntRegSuccessMsg = "Registered Merchant Id is %s. \nPlease ask Merchant to use 'Forget Password' link to get password and proceed further.";
 
     public static final String custOpNewCardSuccessMsg = "New Customer card registered successfully";
     //public static final String custOpResetPinSuccessMsg = "New PIN is sent to the registered customer mobile. Please try again, if not received in 5-10 mins.";
     public static final String custOpChangeMobileSuccessMsg = "Customer registered number updated successfully.";
 
     public static final String customerRegConfirmTitle = "Customer Registration Success";
-    public static final String custRegSuccessMsg = "Customer PIN is sent to the provided mobile number. Please proceed with transaction.";
+    public static final String custRegSuccessMsg = "Customer PIN is sent to the provided mobile number. \nPlease proceed with transaction.";
 
     public static final String deviceDeleteTitle = "Remove Trusted Device";
-    public static final String deviceDeleteMsg = "Remove '%s' from Trusted Device list ? You will need to login again after device delete.";
+    public static final String deviceDeleteMsg = "Remove '%s' from Trusted Device list ? \nYou will need to login again after device delete.";
 
     public static final String exitGenTitle = "Exit";
     public static final String exitRegActivityMsg = "You will loose all changes done.";
@@ -100,28 +100,28 @@ public class AppConstants {
     public static final String reportBlackoutMsg = "Reports are not available between %s and %s. Please try later.";
 
     public static final String pwdGenerateSuccessTitle = "Password reset success";
-    public static final String genericPwdGenerateSuccessMsg = "Password generated and sent to your registered mobile number. If not received in few minutes, please try again.";
+    public static final String genericPwdGenerateSuccessMsg = "Password generated and sent to your registered mobile number. \nIf not received in few minutes, please try again.";
 
-    public static final String pwdGenerateDuplicateRequestMsg = "Old Password reset request already pending. Please note that Password is sent to registered mobile, only %s minutes after request is submitted.";
-    public static final String pwdGenerateSuccessMsg = "For security reasons, Password will be sent to your registered mobile number only after %s minutes. If not received by then, please try again.";
+    public static final String pwdGenerateDuplicateRequestMsg = "Old Password reset request already pending.\n\nPlease note that Password is sent to registered mobile, only %s minutes after request is submitted.";
+    public static final String pwdGenerateSuccessMsg = "For security reasons, Password will be sent to your registered mobile number only after %s minutes. \nIf not received by then, please try again.";
     //public static final String firstPwdGenerateSuccessMsg = "First password generated and sent to your registered mobile number. If not received in few minutes, please try again.";
 
     public static final String pwdChangeSuccessTitle = "Password changed";
-    public static final String pwdChangeSuccessMsg = "Logging out as password changed. Please login with new password.";
+    public static final String pwdChangeSuccessMsg = "Logging out as password changed. \nPlease login with new password.";
 
     public static final String pinChangeSuccessMsg = "PIN changed successfully";
     public static final String pinChangeFailureTitle = "PIN Change Failed";
 
     public static final String pinResetFailureTitle = "PIN Change Failed";
-    public static final String pinGenerateSuccessMsg = "For security reasons, PIN will be sent to your registered mobile number only after %s minutes. If not received by then, please try again.";
-    public static final String pinGenerateDuplicateRequestMsg = "Old PIN reset request already pending. Please note that PIN is sent to registered mobile, only %s minutes after request is submitted.";
+    public static final String pinGenerateSuccessMsg = "For security reasons, PIN will be sent to the registered mobile number after %s minutes. \n\nIf not received by then, please try again.";
+    public static final String pinGenerateDuplicateRequestMsg = "Old PIN reset request already pending. \n\nPlease note that PIN is sent to registered mobile, only %s minutes after request is submitted.";
 
-    public static final String forgotIdSuccessMsg = "Your user id is sent to your registered mobile number. If not received in next few minutes, please try again.";
+    public static final String forgotIdSuccessMsg = "Your user id is sent to your registered mobile number. \nIf not received in next few minutes, please try again.";
     public static final String mobileChangeSuccessMsg = "New mobile number registered successfully.";
     public static final String merchantDisableSuccessMsg = "Merchant disabled successfully.";
     public static final String customerDisableSuccessMsg = "Customer disabled successfully.";
 
-    public static final String custMobileChangeSuccessMsg = "Mobile Number changed successfully. Please login again with new mobile number.";
+    public static final String custMobileChangeSuccessMsg = "Mobile Number changed successfully. \n\nPlease login again with new mobile number.";
     public static final String enableAccSuccessMsg = "Account is Active now. Please login to proceed.";
 
     // Progress dialog messages

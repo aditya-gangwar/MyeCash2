@@ -745,14 +745,20 @@ public class CashbackActivity extends AppCompatActivity implements
 
         } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY &&
                 custOp.equals(DbConstants.OP_RESET_PIN)) {
-            deleteFile(mWorkFragment.mCardImageFilename);
+            File file = new File(mWorkFragment.mCardImageFilename);
+            if(file.exists()) {
+                deleteFile(mWorkFragment.mCardImageFilename);
+            }
             // Old request is already pending
             String msg = String.format(AppConstants.pinGenerateDuplicateRequestMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
             DialogFragmentWrapper.createNotification(AppConstants.pinResetFailureTitle, msg, false, true)
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
         } else {
-            deleteFile(mWorkFragment.mCardImageFilename);
+            File file = new File(mWorkFragment.mCardImageFilename);
+            if(file.exists()) {
+                deleteFile(mWorkFragment.mCardImageFilename);
+            }
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
@@ -1023,8 +1029,10 @@ public class CashbackActivity extends AppCompatActivity implements
             if(mLastMenuItemId==R.id.menu_dashboard) {
                 // delete old available customer data file
                 // so as next time new file is downloaded, created during this call
-                if(!deleteFile(getFilesDir() + "/" + AppCommonUtil.getMerchantCustFileName(mMerchantUser.getMerchantId()))) {
-                    LogMy.d(TAG,"Failed to delete merchant customer data file");
+                String filePath = getFilesDir() + "/" + AppCommonUtil.getMerchantCustFileName(mMerchantUser.getMerchantId());
+                File file = new File(filePath);
+                if(file.exists()) {
+                    deleteFile(filePath);
                 }
                 startDBoardSummaryFrag();
 
@@ -1373,10 +1381,10 @@ public class CashbackActivity extends AppCompatActivity implements
                 // check if txn image is to be captured
                 if(!captureTxnImage(pin)) {
                     // delete earlier stored captured image file
-                    deleteFile(mWorkFragment.mCardImageFilename);
-                    /*if(!txnImage.delete()) {
-                        LogMy.w(TAG,"Failed to delete txn image file: "+txnImage.getAbsolutePath());
-                    }*/
+                    File file = new File(mWorkFragment.mCardImageFilename);
+                    if(file.exists()) {
+                        deleteFile(mWorkFragment.mCardImageFilename);
+                    }
                     mWorkFragment.mCardImageFilename = null;
                 }
             }
@@ -1426,7 +1434,10 @@ public class CashbackActivity extends AppCompatActivity implements
         } else {
             // delete file, if available
             if(mWorkFragment.mCardImageFilename != null) {
-                deleteFile(mWorkFragment.mCardImageFilename);
+                File file = new File(mWorkFragment.mCardImageFilename);
+                if(file.exists()) {
+                    deleteFile(mWorkFragment.mCardImageFilename);
+                }
                 mWorkFragment.mCardImageFilename = null;
             }
             // Display failure notification

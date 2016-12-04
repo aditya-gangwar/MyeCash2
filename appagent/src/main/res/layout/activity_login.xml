@@ -18,6 +18,14 @@
                 android:layout_height="@dimen/login_logo_image_height"
                 android:layout_gravity="center_horizontal"/>
 
+            <EditText
+                style="@style/Edittext_only_view_medium_lessPad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I N T E R N A L"
+                android:textColor="@color/secondary_text"
+                android:textStyle="bold"/>
+
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"

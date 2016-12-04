@@ -80,11 +80,17 @@ public class CustomerDetailsFragment extends Fragment
         mInternalId.setText(customer.getPrivate_id());
         mInputMobileNum.setText(customer.getMobile_num());
         mFirstLogin.setText(customer.getFirst_login_ok().toString());
+        if(customer.getFirst_login_ok()) {
+            mFirstLogin.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+        }
         mRegisteredOn.setText(mSdfDateOnly.format(customer.getCreated()));
         mExpiringOn.setText(mSdfDateOnly.format(AppCommonUtil.getExpiryDate(customer)));
 
         int status = customer.getAdmin_status();
         mInputStatus.setText(DbConstants.userStatusDesc[status]);
+        if(status != DbConstants.USER_STATUS_ACTIVE) {
+            mInputStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+        }
         mInputStatusDate.setText(mSdfDateWithTime.format(customer.getStatus_update_time()));
         mInputReason.setText(customer.getStatus_reason());
 

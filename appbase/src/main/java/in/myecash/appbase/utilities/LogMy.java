@@ -12,12 +12,12 @@ import in.myecash.common.constants.CommonConstants;
  */
 public class LogMy {
     public static void d(String tag, String msg) {
-        if(!CommonConstants.IS_PRODUCTION_RELEASE) return;
+        if(CommonConstants.IS_PRODUCTION_RELEASE) return;
         Log.d(tag,msg);
         Crashlytics.log(msg);
     }
     public static void i(String tag, String msg) {
-        if(!CommonConstants.IS_PRODUCTION_RELEASE) return;
+        if(CommonConstants.IS_PRODUCTION_RELEASE) return;
         Log.i(tag,msg);
         Crashlytics.log(msg);
     }

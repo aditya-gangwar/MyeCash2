@@ -3,6 +3,7 @@ package in.myecash.appagent;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,10 +77,16 @@ public class MerchantDetailsFragment extends Fragment
         mStoreCategory.setText(merchant.getBuss_category());
         mRegisteredOn.setText(mSdfDateWithTime.format(merchant.getCreated()));
         mFirstLogin.setText(merchant.getFirst_login_ok().toString());
+        if(merchant.getFirst_login_ok()) {
+            mFirstLogin.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+        }
         mDoB.setText(merchant.getDob());
 
         int status = merchant.getAdmin_status();
         mInputStatus.setText(DbConstants.userStatusDesc[status]);
+        if(status != DbConstants.USER_STATUS_ACTIVE) {
+            mInputStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+        }
         mInputStatusDate.setText(mSdfDateWithTime.format(merchant.getStatus_update_time()));
 
         mInputReason.setText(merchant.getStatus_reason());

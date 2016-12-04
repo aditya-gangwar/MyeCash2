@@ -42,7 +42,7 @@
                     style="@style/MyEdittext_Small"
                     android:id="@+id/input_merchant_name"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapSentences"
+                    android:inputType="textCapWords"
                     android:hint="Brand name"
                     android:maxLength="@string/brand_char_limit"/>
             </android.support.design.widget.TextInputLayout>
@@ -144,7 +144,7 @@
                 android:id="@+id/input_merchant_dob"
                 style="@style/MyEdittext_Small"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:hint="Date of Birth (DDMMYYYY)"
                 android:maxLength="@string/dob_char_limit"/>
         </android.support.design.widget.TextInputLayout>
@@ -181,7 +181,7 @@
                 android:id="@+id/input_address_1"
                 style="@style/MyEdittext_Small"
                 android:layout_height="wrap_content"
-                android:inputType="textCapSentences"
+                android:inputType="textCapWords"
                 android:hint="Address"
                 android:maxLength="@string/address_char_limit"/>
         </android.support.design.widget.TextInputLayout>

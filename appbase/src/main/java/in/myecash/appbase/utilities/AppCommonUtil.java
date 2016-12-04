@@ -440,8 +440,8 @@ public class AppCommonUtil {
     }
 
     public static File createLocalImageFile(Context context, String name) {
-        //File filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File filesDir = context.getFilesDir();
+        File filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        //File filesDir = context.getFilesDir();
         if (filesDir == null) {
             return null;
         }

@@ -7,6 +7,8 @@ import com.backendless.HeadersManager;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.files.BackendlessFile;
 import com.backendless.persistence.BackendlessDataQuery;
+import com.backendless.servercode.InvocationContext;
+
 import in.myecash.appagent.backendAPI.InternalUserServices;
 import in.myecash.appagent.backendAPI.InternalUserServicesNoLogin;
 import in.myecash.common.constants.CommonConstants;
@@ -116,7 +118,7 @@ public class AgentUser {
     /*
      * Public member methods for merchant operations
      */
-    public Merchants searchMerchant(String key, boolean searchById) {
+    /*public Merchants searchMerchant(String key, boolean searchById) {
         BackendlessDataQuery query = new BackendlessDataQuery();
         if(searchById) {
             query.setWhereClause("auto_id = '"+key+"'");
@@ -131,7 +133,7 @@ public class AgentUser {
         } else {
             return user.getData().get(0);
         }
-    }
+    }*/
 
     public int registerMerchant(Merchants merchant, File imgFile) {
         // register merchant
@@ -162,6 +164,12 @@ public class AgentUser {
     private String uploadImageSync(File imgFile, String remoteDir) {
         // upload file
         try {
+            //LogMy.d(TAG,"In uploadImageSync: "+mUserToken+","+HeadersManager.getInstance().getHeader(HeadersManager.HeadersEnum.USER_TOKEN_KEY));
+            //HeadersManager.getInstance().addHeader( HeadersManager.HeadersEnum.USER_TOKEN_KEY, mUserToken );
+
+            for( String key : HeadersManager.getInstance().getHeaders().keySet() )
+                LogMy.d(TAG,"In uploadImageSync: "+key+","+HeadersManager.getInstance().getHeaders().get( key ));
+
             BackendlessFile file = Backendless.Files.upload(imgFile, remoteDir, true);
             LogMy.d(TAG, "Image uploaded successfully at :" + file.getFileURL());
             return file.getFileURL();
