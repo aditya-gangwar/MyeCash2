@@ -117,9 +117,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
-            android:hint="New Mobile"
+            android:hint="Confirm New Mobile"
             android:maxLength="@string/mobile_char_limit"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:imeOptions="actionDone"/>
 
         <Space
             android:layout_width="match_parent"
@@ -151,7 +152,8 @@
             android:inputType="numberPassword"
             android:hint="Enter OTP"
             android:maxLength="@string/otp_char_limit"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:imeOptions="actionDone"/>
 
         <Space
             android:layout_width="match_parent"

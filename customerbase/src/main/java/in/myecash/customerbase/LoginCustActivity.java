@@ -261,12 +261,14 @@ public class LoginCustActivity extends AppCompatActivity implements
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else if(errorCode == ErrorCodes.OP_SCHEDULED) {
                 // Show success notification dialog
-                String msg = String.format(AppConstants.pwdGenerateSuccessMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
+                Integer mins = MyGlobalSettings.getCustPasswdResetMins() + MyGlobalSettings.CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL;
+                String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
                 DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, msg, false, false)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY) {
                 // Old request is already pending
-                String msg = String.format(AppConstants.pwdGenerateDuplicateRequestMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
+                Integer mins = MyGlobalSettings.getCustPasswdResetMins() + MyGlobalSettings.CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL;
+                String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else {

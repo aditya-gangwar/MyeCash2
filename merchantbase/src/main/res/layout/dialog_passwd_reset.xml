@@ -51,7 +51,8 @@
             android:hint="Date of Birth (DDMMYYYY)"
             android:maxLength="@string/dob_char_limit"
             android:inputType="number"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:imeOptions="actionDone"/>
 
         <Space
             android:layout_width="match_parent"

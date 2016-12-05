@@ -20,7 +20,7 @@
     <dimen name="toolbar_icon_height">32dp</dimen>
     <dimen name="toolbar_image_width">46dp</dimen>
     <dimen name="toolbar_image_height">46dp</dimen>
-    <dimen name="toolbar_image_padding">4dp</dimen>
+    <dimen name="toolbar_image_padding">2dp</dimen>
     <!--dimen name="toolbar_image_border_radius">42dp</dimen-->
     <dimen name="toolbar_btn_min_width">42dp</dimen>
 

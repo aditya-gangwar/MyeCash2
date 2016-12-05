@@ -32,7 +32,8 @@
             android:hint="Mobile Number"
             android:maxLength="@string/mobile_char_limit"
             android:gravity="center"
-            android:inputType="phone"/>
+            android:inputType="phone"
+            android:imeOptions="actionDone"/>
 
         <Space
             android:layout_width="match_parent"

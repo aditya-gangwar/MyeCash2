@@ -43,7 +43,8 @@
             android:hint="Internal ID"
             android:maxLength="@string/customer_internal_id_char_limit"
             android:gravity="center"
-            android:inputType="textCapCharacters"/>
+            android:inputType="textCapCharacters"
+            android:imeOptions="actionDone"/>
 
         <Space
             android:layout_width="match_parent"

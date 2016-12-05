@@ -8,7 +8,7 @@
     <LinearLayout
         style="@style/LL_Vertical"
         android:layout_height="wrap_content"
-        android:background="@color/bg_filters"
+        android:background="@color/bg_light_pink"
         android:id="@+id/layout_amounts">
 
         <Space

@@ -849,6 +849,10 @@ public class CashbackActivity extends AppCompatActivity implements
         prefs.putString(SettingsFragment.KEY_MOBILE_NUM, mMerchant.getMobile_num());
         prefs.putString(SettingsFragment.KEY_EMAIL, mMerchant.getEmail());
 
+        prefs.putBoolean(SettingsFragment.KEY_LINKED_INV, mMerchant.isInvoiceNumAsk());
+        prefs.putBoolean(SettingsFragment.KEY_LINKED_INV_OPTIONAL, mMerchant.isInvoiceNumOptional());
+        prefs.putBoolean(SettingsFragment.KEY_LINKED_INV_ONLY_NMBRS, mMerchant.isInvoiceNumOnlyNumbers());
+
         return prefs.commit();
     }
 
@@ -1330,6 +1334,8 @@ public class CashbackActivity extends AppCompatActivity implements
 
     @Override
     public void onTransactionConfirm() {
+        LogMy.d(TAG,"In onTransactionConfirm");
+
         if(CommonUtils.customerPinRequired(mMerchantUser.getMerchant(), mWorkFragment.mCurrTransaction.getTransaction())) {
             // ask for customer PIN
             TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(
@@ -1339,6 +1345,7 @@ public class CashbackActivity extends AppCompatActivity implements
                     null);
             dialog.show(mFragMgr, DIALOG_PIN_CASH_TXN);
         } else {
+            LogMy.d(TAG,"In onTransactionConfirm, PIN not required");
             commitTxn(null);
         }
     }

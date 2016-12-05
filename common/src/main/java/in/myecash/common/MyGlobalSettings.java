@@ -149,7 +149,7 @@ public class MyGlobalSettings
     // as they depend on above 'passwd reset mins' values - keep the values 1/6th of them
     // TODO: Keep the 'backend passwd reset timer' duration (below defined) 1/6th of 'password reset mins' values
     // So, if Cool_off_mins is 60, then timer should run every 10 mins
-    public static final int MERCHANT_PASSWORD_RESET_TIMER_INTERVAL = 10;
+    public static final int MERCHANT_PASSWORD_RESET_TIMER_INTERVAL = 5;
     public static final int CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL = 10;
 
 

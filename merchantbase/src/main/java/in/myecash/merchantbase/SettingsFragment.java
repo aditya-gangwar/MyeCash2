@@ -32,6 +32,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public static final String KEY_ADD_CL_ENABLED = "settings_cl_add_enabled";
     public static final String KEY_MOBILE_NUM = "settings_change_mobile";
     public static final String KEY_EMAIL = "settings_email_id";
+
     public static final String KEY_LINKED_INV = "settings_linked_invoice";
     public static final String KEY_LINKED_INV_OPTIONAL = "settings_invoice_optional";
     public static final String KEY_LINKED_INV_ONLY_NMBRS = "settings_invoice_numbers_only";

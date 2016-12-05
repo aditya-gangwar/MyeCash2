@@ -6,11 +6,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.ErrorCodes;
@@ -71,7 +74,7 @@ public interface PasswdResetDialogIf {
             public void onShow(DialogInterface dialog) {
                 AppCommonUtil.setDialogTextSize(PasswdResetDialog.this, (AlertDialog) dialog);
 
-                Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                final Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -82,6 +85,17 @@ public interface PasswdResetDialogIf {
                             mListener.onPasswdResetData(mInputDob.getText().toString());
                             getDialog().dismiss();
                         }
+                    }
+                });
+
+                mInputDob.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            b.performClick();
+                            return true;
+                        }
+                        return false;
                     }
                 });
             }

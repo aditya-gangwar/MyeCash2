@@ -298,10 +298,12 @@
 
     <style name="Edittext_only_view_small" parent="Edittext_only_click_small">
         <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
     </style>
 
     <style name="Edittext_only_view_large" parent="Edittext_only_click_large">
         <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
     </style>
 
     <style name="Edittext_only_view_medium_lessPad" parent="Edittext_only_view_medium">
@@ -313,6 +315,7 @@
 
     <style name="Edittext_only_view_medium" parent="Edittext_only_click_medium">
         <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
     </style>
 
     <style name="Edittext_only_click_medium_fill" parent="Edittext_only_click_medium">

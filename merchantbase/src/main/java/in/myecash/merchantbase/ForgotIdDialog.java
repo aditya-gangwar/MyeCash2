@@ -85,6 +85,7 @@ public class ForgotIdDialog extends DialogFragment implements DialogInterface.On
             }
         });
 
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         alertDialog.setCanceledOnTouchOutside(false);
         return alertDialog;
     }

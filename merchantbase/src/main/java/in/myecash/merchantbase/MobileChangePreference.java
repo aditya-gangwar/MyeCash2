@@ -80,6 +80,7 @@ public class MobileChangePreference extends DialogPreference
         super.showDialog(bundle);
         getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         getDialog().setCanceledOnTouchOutside(false);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         //MerchantOps op = mCallback.getMobileChangeMerchantOp();
         String verifyParam = mCallback.getRetainedFragment().mVerifyParamMobileChange;

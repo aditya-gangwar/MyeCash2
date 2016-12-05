@@ -130,7 +130,8 @@
                 android:inputType="phone"
                 android:maxLength="@string/mobile_char_limit"
                 android:layout_weight="63"
-                android:gravity="left"/>
+                android:gravity="left"
+                android:imeOptions="actionDone"/>
         </LinearLayout>
         <EditText
             style="@style/Edittext_only_view_small"
@@ -211,7 +212,8 @@
                 android:layout_weight="63"
                 android:gravity="left"
                 android:inputType="number"
-                android:maxLength="@string/otp_char_limit"/>
+                android:maxLength="@string/otp_char_limit"
+                android:imeOptions="actionDone"/>
         </LinearLayout>
 
     </LinearLayout>

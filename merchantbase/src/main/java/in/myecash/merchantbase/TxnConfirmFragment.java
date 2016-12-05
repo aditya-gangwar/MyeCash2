@@ -58,7 +58,8 @@ public class TxnConfirmFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // check if invoice num is mandatory
-                if(!mMerchant.isInvoiceNumOptional() &&
+                if( mMerchant.isInvoiceNumAsk() &&
+                        !mMerchant.isInvoiceNumOptional() &&
                         mInputInvoiceNum.getText().toString().isEmpty()) {
                     mInputInvoiceNum.setError("Enter Linked Invoice Number");
                 } else {

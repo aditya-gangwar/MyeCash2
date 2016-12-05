@@ -86,6 +86,7 @@ public class CustomerDataDialog extends DialogFragment implements DialogInterfac
             }
         });
 
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         alertDialog.setCanceledOnTouchOutside(false);
         return alertDialog;
     }

@@ -55,6 +55,7 @@ public class PasswordPreference extends DialogPreference
         super.showDialog(bundle);
         getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         getDialog().setCanceledOnTouchOutside(false);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         Button pos = ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_POSITIVE);
         pos.setOnClickListener(this);
