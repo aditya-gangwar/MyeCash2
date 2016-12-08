@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.helpshift.support.Support;
+
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -75,13 +77,15 @@ public class LoginActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_login);
 
         // show the keyboard and adjust screen for the same
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         bindUiResources();
 
         // local activity initializations
         //mMerchantUser = MerchantUser.getInstance();
         makeForgotIdPasswordLink();
+        makeHelpTnCLink();
 
         // Check to see if we have retained the worker fragment.
         FragmentManager fm = getFragmentManager();
@@ -427,6 +431,54 @@ public class LoginActivity extends AppCompatActivity implements
 
         TextView promptView = (TextView) findViewById( R.id.link_forgot_id_passwd );
         promptView.setText(forgotPrompt);
+        promptView.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private void makeHelpTnCLink()
+    {
+        SpannableString helpTnCPrompt = new SpannableString( getString( R.string.Help_TnC_label ) );
+
+        ClickableSpan clickableSpanHelp = new ClickableSpan()
+        {
+            @Override
+            public void onClick( View widget )
+            {
+                // read and set values
+                initOperationData();
+                // validate
+                int errorCode = ValidationHelper.validateMerchantId(mLoginId);
+                if(errorCode==ErrorCodes.NO_ERROR) {
+                    // TODO: show 'FAQ'
+                    Support.setUserIdentifier(mLoginId);
+                    Support.showFAQs(LoginActivity.this);
+                } else {
+                    mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
+                }
+            }
+        };
+
+        String linkHelp = getString( R.string.Help_link );
+        int linkStartIndex = helpTnCPrompt.toString().indexOf( linkHelp );
+        int linkEndIndex = linkStartIndex + linkHelp.length();
+        helpTnCPrompt.setSpan(clickableSpanHelp, linkStartIndex, linkEndIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // Cliackable span for 'Help'
+        ClickableSpan clickableSpanTnC = new ClickableSpan()
+        {
+            @Override
+            public void onClick( View widget )
+            {
+                // TODO: redirect to T&C section for Merchants on the website
+            }
+        };
+
+        String linkTnC = getString( R.string.TnC_link );
+        int linkStartIndexId = helpTnCPrompt.toString().indexOf( linkTnC );
+        int linkEndIndexId = linkStartIndexId + linkTnC.length();
+        helpTnCPrompt.setSpan(clickableSpanTnC, linkStartIndexId, linkEndIndexId, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        TextView promptView = (TextView) findViewById( R.id.link_help_TnC );
+        promptView.setText(helpTnCPrompt);
         promptView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 

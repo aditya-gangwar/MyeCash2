@@ -86,6 +86,7 @@ public class PinResetDialog extends DialogFragment implements DialogInterface.On
         });
 
         alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return alertDialog;
     }
 

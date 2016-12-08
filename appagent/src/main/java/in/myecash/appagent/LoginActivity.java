@@ -20,6 +20,9 @@ import android.widget.TextView;
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.AppAlarms;
+import in.myecash.appbase.utilities.RootUtil;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
@@ -27,6 +30,8 @@ import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements
         MyRetainedFragment.RetainedFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
@@ -133,6 +138,20 @@ public class LoginActivity extends AppCompatActivity implements
 
         // validate complete form and mark errors
         if (validate()) {
+            // Check if device is rooted
+            // Intentionally doing only on button press and not earlier - as we intend to collect user id too
+            if(RootUtil.isDeviceRooted()) {
+                // Show error notification dialog
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppConstants.msgInsecureDevice, false, true)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                Map<String,String> params = new HashMap<>();
+                params.put("IMEI",AppCommonUtil.getIMEI(this));
+                params.put("Manufacturer",AppCommonUtil.getDeviceManufacturer());
+                params.put("Model",AppCommonUtil.getDeviceModel());
+                params.put("AndroidVersion",AppCommonUtil.getAndroidVersion());
+                AppAlarms.deviceRooted(mLoginId, DbConstants.USER_TYPE_AGENT,"loginAgent",params);
+            }
+
             // disable login button
             mLoginButton.setEnabled(false);
             // show progress dialog

@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".MerchantApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/merchant_app_name"
@@ -35,21 +36,31 @@
         <activity
             android:name="in.myecash.merchantbase.LoginActivity">
         </activity>
+
         <activity
             android:name="in.myecash.merchantbase.TermsConditionsActivity"
             android:label="@string/title_activity_terms_conditions">
         </activity>
+
         <activity
             android:name="in.myecash.merchantbase.CashbackActivity"
             android:label="CashbackActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
+
         <activity
             android:name="in.myecash.merchantbase.TxnReportsActivity"
             android:label="Transactions">
         </activity>
+
         <activity android:name="in.myecash.appbase.barcodeReader.BarcodeCaptureActivity"
             android:label="Read Barcode"/>
+
+        <activity
+            android:name="com.helpshift.support.activities.ParentActivity"
+            android:theme="@style/Helpshift.Theme.Activity"
+            android:screenOrientation="portrait" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="ff31ec54d8344eb7441145b5161d18520f44eb48" />

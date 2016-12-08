@@ -160,7 +160,8 @@
                 android:inputType="numberPassword"
                 android:hint="Current PIN"
                 android:maxLength="@string/pin_char_limit"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:imeOptions="actionDone"/>
         </LinearLayout>
 
     </LinearLayout>

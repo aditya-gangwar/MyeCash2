@@ -73,7 +73,7 @@ public class DbConstants {
     public static final String OP_CHANGE_PASSWD = "Password Change";
 
     public static final String OP_SEND_PASSWD_RESET_HINT = "Send Password Reset Hint";
-    public static final String OP_RESET_TRUSTED_DEVICES = "Reset Trusted Devices";
+    //public static final String OP_RESET_TRUSTED_DEVICES = "Reset Trusted Devices";
     public static final String OP_ENABLE_ACC = "Enable Account";
     public static final String OP_DISABLE_ACC = "Disable Account";
     public static final String OP_ACC_CLOSURE = "Account Closure";

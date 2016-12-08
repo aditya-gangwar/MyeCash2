@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.helpshift.support.Support;
 
 import in.myecash.appbase.OtpPinInputDialog;
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
@@ -313,10 +314,12 @@ public class CashbackActivity extends AppCompatActivity implements
                     .show(mFragMgr, DIALOG_CUSTOMER_OP_RESET_PIN);
 
         } else if (i == R.id.menu_faq) {
-        } else if (i == R.id.menu_terms) {
+            Support.setUserIdentifier(mMerchantUser.getMerchantId());
+            Support.showFAQs(CashbackActivity.this);
+        }/* else if (i == R.id.menu_terms) {
         } else if (i == R.id.menu_contact_us) {
         } else {
-        }
+        }*/
 
         // Highlight the selected item has been done by NavigationView
         //item.setChecked(true);

@@ -72,7 +72,7 @@ public class MyGlobalSettings
     private static final int MERCHANT_ACCOUNT_BLOCKED_HOURS = 1;
 
     private static final String SETTINGS_CUSTOMER_ACCOUNT_BLOCK_HRS = "customer_account_block_hrs";
-    private static final int CUSTOMER_ACCOUNT_BLOCKED_HOURS = 24;
+    private static final int CUSTOMER_ACCOUNT_BLOCKED_HOURS = 1;
 
     private static final String SETTINGS_CB_REDEEM_CARD_REQ = "cb_redeem_card_req";
     private static final boolean CB_REDEEM_CARD_REQ = true;
@@ -99,16 +99,25 @@ public class MyGlobalSettings
     private static final int MCHNT_REMOVAL_EXPIRY_DAYS = 30;
 
     private static final String SETTINGS_CUST_HRS_AFTER_MOB_CHANGE = "cust_hrs_after_mob_change";
-    private static final int CUST_HRS_AFTER_MOB_CHANGE = 6;
+    private static final int CUST_HRS_AFTER_MOB_CHANGE = 1;
 
     private static final String SETTINGS_WRONG_ATTEMPT_RESET_HRS = "wrong_attempt_reset_hrs";
     private static final int WRONG_ATTEMPT_RESET_HRS = 2;
 
     private static final String SETTINGS_TXNS_INTABLE_KEEP_DAYS = "txns_intable_keep_days";
-    private static final int CUST_TXNS_KEEP_DAYS = 5;
+    private static final int CUST_TXNS_KEEP_DAYS = 2;
 
     private static final String SETTINGS_OPS_KEEP_DAYS = "ops_keep_days";
     private static final int OPS_KEEP_DAYS = 90;
+
+    private static final String SETTINGS_OTP_VALID_MINS = "otp_valid_mins";
+    private static final int OTP_VALID_MINS = 10;
+
+    private static final String SETTINGS_MERCHANT_WRONG_ATTEMPT_LIMIT = "merchant_wrong_attempts";
+    private static final int MERCHANT_WRONG_ATTEMPT_LIMIT = 5;
+
+    private static final String SETTINGS_CUSTOMER_WRONG_ATTEMPT_LIMIT = "customer_wrong_attempts";
+    private static final int CUSTOMER_WRONG_ATTEMPT_LIMIT = 5;
 
 
     /*
@@ -128,12 +137,9 @@ public class MyGlobalSettings
      * Ones defined only in backend as constant values - as not used by App
      */
     public static final int FAILED_SMS_RETRY_MINS = 30;
-    public static final int OTP_VALID_MINS = 10;
 
-    private static final int MERCHANT_WRONG_ATTEMPT_LIMIT = 5;
-    private static final int CUSTOMER_WRONG_ATTEMPT_LIMIT = 5;
+    // Map of user type to 'wrong attempt limits'
     private static final int INTERNAL_USER_WRONG_ATTEMPT_LIMIT = 5;
-    // Map of user type to above values
     public static final Map<Integer, Integer> userTypeToWrongLimit;
     static {
         Map<Integer, Integer> aMap = new HashMap<>(10);
@@ -167,7 +173,6 @@ public class MyGlobalSettings
                 CUSTOMER_PASSWORD_RESET_COOL_OFF_MINS:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUSTOMER_PASSWD_RESET_MINS);
     }
-
     public static Integer getAccBlockHrs(Integer userType) {
         if(userType==DbConstants.USER_TYPE_CUSTOMER || mRunMode==RunMode.appCustomer) {
             return (mRunMode==RunMode.backend)?
@@ -179,7 +184,6 @@ public class MyGlobalSettings
                 MERCHANT_ACCOUNT_BLOCKED_HOURS:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_MERCHANT_ACCOUNT_BLOCK_HRS);
     }
-
     public static Boolean getCardReqCbRedeem() {
         return (mRunMode==RunMode.backend)?
                 CB_REDEEM_CARD_REQ:
@@ -190,14 +194,6 @@ public class MyGlobalSettings
                 ACC_DEBIT_CARD_REQ:
                 (Boolean)MyGlobalSettings.mSettings.get(SETTINGS_ACC_DB_CARD_REQ);
     }
-
-    public static Integer getMchntRenewalDuration() {
-        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_MCHNT_RENEW_DURATION);
-    }
-    public static Integer getCustRenewalDuration() {
-        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUST_RENEW_DURATION);
-    }
-
     public static Integer getAccAddPinLimit() {
         return (mRunMode==RunMode.backend)?
                 CL_CREDIT_LIMIT_FOR_PIN:
@@ -213,71 +209,70 @@ public class MyGlobalSettings
                 CB_DEBIT_LIMIT_FOR_PIN:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN);
     }
-
-    public static Integer getMchntTxnHistoryDays() {
-        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_MCHNT_TXN_HISTORY_DAYS);
+    public static Integer getOtpValidMins() {
+        return (mRunMode==RunMode.backend)?
+                OTP_VALID_MINS:
+                (Integer)MyGlobalSettings.mSettings.get(OTP_VALID_MINS);
     }
-
-    public static Integer getCustTxnHistoryDays() {
-        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUST_TXN_HISTORY_DAYS);
-    }
-
-    public static Integer getCustNoRefreshHrs() {
-        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUSTOMER_NO_REFRESH_HRS);
-    }
-
     public static Integer getMchntDashBNoRefreshHrs() {
         return (mRunMode==RunMode.backend)?
                 MCHNT_STATS_NO_REFRESH_HOURS:
             (Integer)MyGlobalSettings.mSettings.get(SETTINGS_STATS_NO_REFRESH_HRS);
     }
-
     public static Integer getCashAccLimit() {
         return (mRunMode==RunMode.backend)?
                 CUSTOMER_CASH_MAX_LIMIT:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUSTOMER_CASH_LIMIT);
     }
-
     public static Integer getMchntExpiryDays() {
         return (mRunMode==RunMode.backend)?
                 MCHNT_REMOVAL_EXPIRY_DAYS:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS);
     }
-
     public static Integer getCustHrsAfterMobChange() {
         return (mRunMode==RunMode.backend)?
                 CUST_HRS_AFTER_MOB_CHANGE:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUST_HRS_AFTER_MOB_CHANGE);
     }
-
-    public static Integer getCbRedeemLimit() {
-        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CB_REDEEM_LIMIT);
-    }
-
-    public static Date getServiceDisabledUntil() {
-        return (Date)MyGlobalSettings.mSettings.get(SETTINGS_SERVICE_DISABLED_UNTIL);
-    }
-
-    public static Integer getCardImageCaptureMode() {
-        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_TXN_IMAGE_CAPTURE_MODE);
-    }
-
     public static Integer getWrongAttemptResetHrs() {
         return (mRunMode==RunMode.backend)?
                 WRONG_ATTEMPT_RESET_HRS:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_WRONG_ATTEMPT_RESET_HRS);
     }
-
     public static Integer getTxnsIntableKeepDays() {
         return (mRunMode==RunMode.backend)?
                 CUST_TXNS_KEEP_DAYS:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_TXNS_INTABLE_KEEP_DAYS);
     }
-
     public static Integer getOpsKeepDays() {
         return (mRunMode==RunMode.backend)?
                 OPS_KEEP_DAYS:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_OPS_KEEP_DAYS);
+    }
+
+    public static Integer getCbRedeemLimit() {
+        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CB_REDEEM_LIMIT);
+    }
+    public static Date getServiceDisabledUntil() {
+        return (Date)MyGlobalSettings.mSettings.get(SETTINGS_SERVICE_DISABLED_UNTIL);
+    }
+    public static Integer getCardImageCaptureMode() {
+        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_TXN_IMAGE_CAPTURE_MODE);
+    }
+    public static Integer getMchntRenewalDuration() {
+        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_MCHNT_RENEW_DURATION);
+    }
+    public static Integer getCustRenewalDuration() {
+        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUST_RENEW_DURATION);
+    }
+    public static Integer getMchntTxnHistoryDays() {
+        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_MCHNT_TXN_HISTORY_DAYS);
+    }
+    public static Integer getCustTxnHistoryDays() {
+        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUST_TXN_HISTORY_DAYS);
+    }
+    public static Integer getCustNoRefreshHrs() {
+        return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUSTOMER_NO_REFRESH_HRS);
     }
 
     /*

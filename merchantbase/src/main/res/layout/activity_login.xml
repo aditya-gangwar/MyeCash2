@@ -81,14 +81,13 @@
                 android:layout_height="0dp"
                 android:layout_weight="60" />
 
-            <!--TextView android:id="@+id/link_register"
+            <TextView android:id="@+id/link_help_TnC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/large_space"
+                android:layout_marginBottom="@dimen/medium_space"
                 android:gravity="center"
-                android:textSize="16sp"
-                android:text="@string/Register_label"
-                android:layout_marginTop="@dimen/XL_space"/-->
+                android:textSize="@dimen/text_size_small"
+                android:text="@string/Help_TnC_label"/>
 
         </LinearLayout>
 

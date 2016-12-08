@@ -99,6 +99,7 @@ public class SearchMerchantDialog extends DialogFragment implements DialogInterf
         });
 
         alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return alertDialog;
     }
 

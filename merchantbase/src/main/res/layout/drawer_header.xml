@@ -13,7 +13,7 @@
         android:layout_width="@dimen/toolbar_image_width"
         android:layout_height="@dimen/toolbar_image_width"
         android:padding="@dimen/toolbar_image_padding"
-        android:src="@drawable/logo_red"
+        android:src="@drawable/logo_blue"
         android:scaleType="centerInside"
         android:layout_marginRight="@dimen/small_space"
         android:layout_marginLeft="@dimen/medium_space"

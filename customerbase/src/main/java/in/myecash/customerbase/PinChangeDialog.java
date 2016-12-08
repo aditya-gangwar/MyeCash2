@@ -95,6 +95,7 @@ public class PinChangeDialog extends DialogFragment implements DialogInterface.O
         });
 
         alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return alertDialog;
     }
 

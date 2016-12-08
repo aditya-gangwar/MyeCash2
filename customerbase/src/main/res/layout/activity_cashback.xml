@@ -20,10 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/primary"
-            android:elevation="4dp"
-            app:contentInsetLeft="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            app:theme="@style/ToolbarStyle"
+            app:elevation="4dp"
             app:contentInsetStart="0dp"
-            app:theme="@style/ToolbarStyle">
+            app:contentInsetEnd="0dp"
+            app:contentInsetStartWithNavigation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"

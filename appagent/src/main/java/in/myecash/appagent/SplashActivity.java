@@ -36,23 +36,7 @@ public class SplashActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash);
-
-        // App level initializations - once in main activity
-        Backendless.initApp(this, CommonConstants.APPLICATION_ID, CommonConstants.ANDROID_SECRET_KEY, CommonConstants.VERSION);
-        com.backendless.Backendless.setUrl( CommonConstants.BACKENDLESS_HOST );
-
-        // Map all tables to class here - except 'cashback' and 'transaction'
-        AppCommonUtil.initTableToClassMappings();
-
-        // Check if device is rooted
-        if(RootUtil.isDeviceRooted()) {
-            // Show error notification dialog
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppConstants.msgInsecureDevice, false, true)
-                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            finish();
-        }
 
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(SplashActivity.this);
         if ( resultCode != ErrorCodes.NO_ERROR) {

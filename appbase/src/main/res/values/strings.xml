@@ -1,12 +1,17 @@
 <resources>
     <string name="merchant_app_name">MyeCash Merchant</string>
     <string name="customer_app_name">MyeCash Customer</string>
-    <string name="agent_app_name">MyeCash Agent</string>
+    <string name="agent_app_name">MyeCash Internal</string>
 
     <string name="Forgot_id_passwd_label">Forgot  User ID  or  Password ?</string>
+    <string name="Forgot_id_link">User ID</string>
     <string name="Forgot_passwd_label">Forgot  Password ?</string>
     <string name="Forgot_passwd_link">Password</string>
-    <string name="Forgot_id_link">User ID</string>
+
+    <string name="Help_TnC_label">Help | Terms \u0026 Conditions</string>
+    <string name="Help_link">Help</string>
+    <string name="TnC_link">Terms \u0026 Conditions</string>
+
 
     <!-- Text used in XML layouts -->
     <string name="cust_mobile_change_info">Customer will have <b>Limited</b> access for %s hours after Mobile Number change. Only \'CREDIT\' transactions will be allowed</string>

@@ -7,4 +7,7 @@ repositories {
 dependencies {
     compile 'com.backendless:backendless:3.0.20.1'
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 }
