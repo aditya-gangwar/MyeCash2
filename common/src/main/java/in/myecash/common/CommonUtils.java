@@ -16,13 +16,13 @@ public class CommonUtils {
 
     public static boolean customerPinRequired(Merchants merchant, Transaction txn) {
         if(txn.getCancelTime()==null) {
-            /*int cl_credit_threshold = (merchant.getCl_credit_limit_for_pin() < 0) ? MyGlobalSettings.getAccAddPinLimit() : merchant.getCl_credit_limit_for_pin();
+            int cl_credit_threshold = (merchant.getCl_credit_limit_for_pin() < 0) ? MyGlobalSettings.getAccAddPinLimit() : merchant.getCl_credit_limit_for_pin();
             int cl_debit_threshold = (merchant.getCl_debit_limit_for_pin() < 0) ? MyGlobalSettings.getAccDebitPinLimit() : merchant.getCl_debit_limit_for_pin();
-            int cb_debit_threshold = (merchant.getCb_debit_limit_for_pin() < 0) ? MyGlobalSettings.getCbDebitPinLimit() : merchant.getCb_debit_limit_for_pin();*/
+            int cb_debit_threshold = (merchant.getCb_debit_limit_for_pin() < 0) ? MyGlobalSettings.getCbDebitPinLimit() : merchant.getCb_debit_limit_for_pin();
 
-            int cl_credit_threshold = MyGlobalSettings.getAccAddPinLimit();
+            /*int cl_credit_threshold = MyGlobalSettings.getAccAddPinLimit();
             int cl_debit_threshold = MyGlobalSettings.getAccDebitPinLimit();
-            int cb_debit_threshold = MyGlobalSettings.getCbDebitPinLimit();
+            int cb_debit_threshold = MyGlobalSettings.getCbDebitPinLimit();*/
 
             int higher_debit_threshold = Math.max(cl_debit_threshold, cb_debit_threshold);
 

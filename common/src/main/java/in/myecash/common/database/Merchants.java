@@ -31,9 +31,9 @@ public class Merchants
   private java.util.List<MerchantDevice> trusted_devices;
   private String buss_category;
   private Address address;
-  /*private Integer cl_debit_limit_for_pin;
+  private Integer cl_debit_limit_for_pin;
   private Integer cb_debit_limit_for_pin;
-  private Integer cl_credit_limit_for_pin;*/
+  private Integer cl_credit_limit_for_pin;
   private Boolean first_login_ok;
   private Boolean debugLogs;
   private String dob;
@@ -127,7 +127,7 @@ public class Merchants
     this.first_login_ok = first_login_ok;
   }
 
-  /*public Integer getCl_debit_limit_for_pin() {
+  public Integer getCl_debit_limit_for_pin() {
     return cl_debit_limit_for_pin;
   }
 
@@ -137,7 +137,19 @@ public class Merchants
 
   public Integer getCl_credit_limit_for_pin() {
     return cl_credit_limit_for_pin;
-  }*/
+  }
+
+  public void setCl_debit_limit_for_pin(Integer cl_debit_limit_for_pin) {
+    this.cl_debit_limit_for_pin = cl_debit_limit_for_pin;
+  }
+
+  public void setCb_debit_limit_for_pin(Integer cb_debit_limit_for_pin) {
+    this.cb_debit_limit_for_pin = cb_debit_limit_for_pin;
+  }
+
+  public void setCl_credit_limit_for_pin(Integer cl_credit_limit_for_pin) {
+    this.cl_credit_limit_for_pin = cl_credit_limit_for_pin;
+  }
 
   public String getName()
   {

@@ -26,7 +26,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
  * Created by adgangwa on 28-04-2016.
  */
 public class CustomerCardDialog  extends DialogFragment
-        implements View.OnClickListener {
+        implements View.OnTouchListener {
 
     private static final String TAG = "CustomerCardDialog";
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9003;
@@ -80,7 +80,7 @@ public class CustomerCardDialog  extends DialogFragment
             mInputMobileNum.setText(mobileNum);
             mInputMobileNum.clearFocus();
         }
-        mInputQrCard.setOnClickListener(this);
+        mInputQrCard.setOnTouchListener(this);
 
         Dialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
@@ -172,18 +172,15 @@ public class CustomerCardDialog  extends DialogFragment
     }
 
     @Override
-    public void onClick(View v) {
-        int vId = v.getId();
-        LogMy.d(TAG, "In onClick: " + vId);
-
-        if (vId == R.id.input_qr_card) {// launch barcode activity.
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
             Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
             intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
             intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
 
             startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
-
         }
+        return false;
     }
 
     @Override

@@ -1113,7 +1113,7 @@ public class CashTransactionFragment extends Fragment implements
     private boolean isCardPresentedAndUsable() {
 
         return (mRetainedFragment.mCardPresented &&
-                mRetainedFragment.mCurrCustomer.getCardStatus()==DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED);
+                mRetainedFragment.mCurrCustomer.getCardStatus()==DbConstants.CUSTOMER_CARD_STATUS_ACTIVE);
     }
 
     // UI Resources data members

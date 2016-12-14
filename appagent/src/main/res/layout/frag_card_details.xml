@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesLarge">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_card_membership_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/label_qr_card"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Card ID"
+                android:layout_weight="40"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_card_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="1234 5678 345"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:singleLine="true"
+                android:ellipsize="end"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/LL_Vertical"
+            android:id="@+id/layout_card_details">
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_card_membership_white_24dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Status"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_card_status"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Invalid"
+                    android:textColor="@color/green_positive"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible"
+                android:id="@+id/layout_card_status_date">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_input_white_24dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Changed on"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_card_status_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="22 July 16, 23:00"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible"
+                android:id="@+id/layout_card_status_reason">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_input_white_24dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Reason"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="top"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:id="@+id/input_card_status_reason"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Owner Trail"
+            android:textStyle="bold"
+            android:textColor="@color/accent"
+            android:paddingLeft="0dp"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/label_customer_id"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Controller"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_ccnt_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="3adgang"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:tint="@color/primary"
+                android:visibility="invisible"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/label_agent_id"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Agent"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_agent_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="1adgang"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:tint="@color/primary"
+                android:visibility="invisible"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/label_mchnt_id"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Merchant"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_mchnt_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="199010101"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:tint="@color/primary"
+                android:visibility="invisible"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/label_cust_id"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Customer"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_cust_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="ASD67823"
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/XL_space"/>
+
+        <!--LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:id="@+id/btn_acc_status"
+                android:layout_width="0dp"
+                android:text="Disable"
+                android:layout_weight="47.5"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"/>
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:id="@+id/btn_launch_app"
+                android:layout_width="0dp"
+                android:text="Launch App"
+                android:layout_weight="47.5"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/large_space"/-->
+
+    </LinearLayout>
+</ScrollView>

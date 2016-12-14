@@ -3,6 +3,8 @@ package in.myecash.appagent.helper;
 import android.os.Handler;
 
 import in.myecash.appagent.entities.AgentUser;
+import in.myecash.common.MyCardForAction;
+import in.myecash.common.database.CustomerCards;
 import in.myecash.common.database.Customers;
 import in.myecash.common.database.Merchants;
 import in.myecash.appbase.utilities.BackgroundProcessor;
@@ -10,6 +12,7 @@ import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.RetainedFragment;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by adgangwa on 17-07-2016.
@@ -27,6 +30,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_DISABLE_MERCHANT = 9;
     public static final int REQUEST_SEARCH_CUSTOMER = 10;
     public static final int REQUEST_DISABLE_CUSTOMER = 11;
+    public static final int REQUEST_SEARCH_CARD = 12;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -36,11 +40,16 @@ public class MyRetainedFragment extends RetainedFragment {
     // temporary members
     public Merchants mCurrMerchant;
     public Customers mCurrCustomer;
+    public CustomerCards mCurrMemberCard;
+    // members used for bulk actions on cards
+    //public List<String> mScannedCards;
+    public List<MyCardForAction> mLastCardsForAction;
 
     public void reset() {
         LogMy.d(TAG,"In reset");
         mCurrMerchant = null;
         mCurrCustomer = null;
+        mCurrMemberCard = null;
     }
 
     /*
@@ -74,6 +83,11 @@ public class MyRetainedFragment extends RetainedFragment {
     public void disableCustomer(String ticketId, String reason, String remarks) {
         mBackgroundProcessor.addDisableCustomerReq(ticketId, reason, remarks);
     }
+
+    public void searchMemberCard(String id) {
+        mBackgroundProcessor.addCardSearchReq(id);
+    }
+
 
     @Override
     protected void doOnActivityCreated() {

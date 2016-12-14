@@ -23,6 +23,7 @@ public class TxnSuccessDialog extends DialogFragment
     private static final String RS_SYMBOL = "\u20B9 ";
 
     private static final String ARG_MOBILE_NUM = "mobile_num";
+    private static final String ARG_TXN_ID = "txnId";
     private static final String ARG_CL_BALANCE = "cl_balance";
     private static final String ARG_CB_BALANCE = "cb_balance";
     private static final String ARG_CL_BALANCE_OLD = "cl_balance_old";
@@ -34,11 +35,12 @@ public class TxnSuccessDialog extends DialogFragment
         void onTxnSuccess();
     }
 
-    public static TxnSuccessDialog newInstance(String mobileNo, int clBalance, int cbBalance, int clBalanceOld, int cbBalanceOld) {
+    public static TxnSuccessDialog newInstance(String mobileNo, String txnId, int clBalance, int cbBalance, int clBalanceOld, int cbBalanceOld) {
         Bundle args = new Bundle();
         if(mobileNo != null) {
             args.putString(ARG_MOBILE_NUM, mobileNo);
         }
+        args.putString(ARG_TXN_ID, txnId);
         args.putInt(ARG_CL_BALANCE, clBalance);
         args.putInt(ARG_CB_BALANCE, cbBalance);
         args.putInt(ARG_CL_BALANCE_OLD, clBalanceOld);
@@ -65,6 +67,7 @@ public class TxnSuccessDialog extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String mobileNum = getArguments().getString(ARG_MOBILE_NUM, null);
+        String txnId = getArguments().getString(ARG_TXN_ID, null);
         int clbalance = getArguments().getInt(ARG_CL_BALANCE);
         int cbBalance = getArguments().getInt(ARG_CB_BALANCE);
         int clbalanceOld = getArguments().getInt(ARG_CL_BALANCE_OLD);
@@ -76,6 +79,10 @@ public class TxnSuccessDialog extends DialogFragment
         bindUiResources(v);
         // display values
         //mInputCustomer.setText(mobileNum);
+        if(txnId!=null) {
+            String txt = "ID: " + txnId;
+            mInputTxnId.setText(txt);
+        }
         mInputCashBalance.setText(AppCommonUtil.getAmtStr(clbalance));
         mInputCbBalance.setText(AppCommonUtil.getAmtStr(cbBalance));
 
@@ -113,6 +120,7 @@ public class TxnSuccessDialog extends DialogFragment
     }
 
     //private EditText mInputCustomer;
+    private EditText mInputTxnId;
     private EditText mInputCashBalance;
     private EditText mInputCbBalance;
     private EditText mInputCashBalanceOld;
@@ -121,6 +129,7 @@ public class TxnSuccessDialog extends DialogFragment
     private void bindUiResources(View v) {
         //mInputCustomer = (EditText) v.findViewById(R.id.input_customer_id);
 
+        mInputTxnId = (EditText) v.findViewById(R.id.input_txn_id);
         mInputCashBalance = (EditText) v.findViewById(R.id.input_account_balance);
         mInputCbBalance = (EditText) v.findViewById(R.id.input_cb_balance);
 

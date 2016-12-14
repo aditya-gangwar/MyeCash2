@@ -137,6 +137,32 @@ public final class ValidationHelper{
             return ErrorCodes.EMPTY_VALUE;
         } else if (value.length() != CommonConstants.INTERNAL_USER_ID_LEN) {
             return ErrorCodes.INVALID_LENGTH;
+        } else if (!value.startsWith(CommonConstants.PREFIX_AGENT_ID)) {
+            return ErrorCodes.INVALID_FORMAT;
+        } else {
+            return ErrorCodes.NO_ERROR;
+        }
+    }
+
+    public static int validateCcId(String value) {
+        if (value.isEmpty() ) {
+            return ErrorCodes.EMPTY_VALUE;
+        } else if (value.length() != CommonConstants.INTERNAL_USER_ID_LEN) {
+            return ErrorCodes.INVALID_LENGTH;
+        } else if (!value.startsWith(CommonConstants.PREFIX_CC_ID)) {
+            return ErrorCodes.INVALID_FORMAT;
+        } else {
+            return ErrorCodes.NO_ERROR;
+        }
+    }
+
+    public static int validateCcntId(String value) {
+        if (value.isEmpty() ) {
+            return ErrorCodes.EMPTY_VALUE;
+        } else if (value.length() != CommonConstants.INTERNAL_USER_ID_LEN) {
+            return ErrorCodes.INVALID_LENGTH;
+        } else if (!value.startsWith(CommonConstants.PREFIX_CCNT_ID)) {
+            return ErrorCodes.INVALID_FORMAT;
         } else {
             return ErrorCodes.NO_ERROR;
         }

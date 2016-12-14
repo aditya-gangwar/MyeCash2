@@ -48,6 +48,21 @@ public class MyGlobalSettings
     }
 
     /*
+     * Valid Values for some of column in GlobalSettings table
+     */
+    // 'txn_image_capture_mode' global setting values
+    public static final int TXN_IMAGE_CAPTURE_ALWAYS = 0;
+    // only when 'card is mandatory' based on txn type and amounts
+    public static final int TXN_IMAGE_CAPTURE_CARD_REQUIRED = 1;
+    public static final int TXN_IMAGE_CAPTURE_NEVER = 2;
+
+    // 'value_datatype' column values
+    private static final int DATATYPE_INT = 1;
+    private static final int DATATYPE_BOOLEAN = 2;
+    private static final int DATATYPE_STRING = 3;
+    private static final int DATATYPE_DATE = 4;
+
+    /*
      * Names of settings - should match values of 'name' column in GlobalSettings table
      *
      * Also defined are constant values against the some of the
@@ -147,7 +162,7 @@ public class MyGlobalSettings
         aMap.put(DbConstants.USER_TYPE_CUSTOMER,CUSTOMER_WRONG_ATTEMPT_LIMIT);
         aMap.put(DbConstants.USER_TYPE_AGENT,INTERNAL_USER_WRONG_ATTEMPT_LIMIT);
         aMap.put(DbConstants.USER_TYPE_CC,INTERNAL_USER_WRONG_ATTEMPT_LIMIT);
-        aMap.put(DbConstants.USER_TYPE_CNT,INTERNAL_USER_WRONG_ATTEMPT_LIMIT);
+        aMap.put(DbConstants.USER_TYPE_CCNT,INTERNAL_USER_WRONG_ATTEMPT_LIMIT);
         userTypeToWrongLimit = Collections.unmodifiableMap(aMap);
     }
 
@@ -274,21 +289,6 @@ public class MyGlobalSettings
     public static Integer getCustNoRefreshHrs() {
         return (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUSTOMER_NO_REFRESH_HRS);
     }
-
-    /*
-     * Valid Values for some of column in GlobalSettings table
-     */
-    // 'txn_image_capture_mode' column values
-    public static final int TXN_IMAGE_CAPTURE_ALWAYS = 0;
-    // only when 'card is mandatory' based on txn type and amounts
-    public static final int TXN_IMAGE_CAPTURE_CARD_REQUIRED = 1;
-    public static final int TXN_IMAGE_CAPTURE_NEVER = 2;
-
-    // 'value_datatype' column values
-    private static final int DATATYPE_INT = 1;
-    private static final int DATATYPE_BOOLEAN = 2;
-    private static final int DATATYPE_STRING = 3;
-    private static final int DATATYPE_DATE = 4;
 
     public static void initSync(RunMode runMode) {
         mRunMode = runMode;

@@ -68,7 +68,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
         mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cust.getCardId()));
         mInputCardStatus.setText(DbConstants.cardStatusDescriptions[cust.getMembership_card().getStatus()]);
-        if(cust.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED) {
+        if(cust.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
             mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
         }
 

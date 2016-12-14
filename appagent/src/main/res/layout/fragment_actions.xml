@@ -15,6 +15,7 @@
 
         <EditText
             style="@style/Edittext_only_view_medium"
+            android:id="@+id/label_merchant"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="MERCHANT"
@@ -24,6 +25,7 @@
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_mchnt_btns"
             android:layout_marginTop="@dimen/small_space">
 
             <android.support.v7.widget.AppCompatButton
@@ -44,13 +46,13 @@
 
         <EditText
             style="@style/Edittext_only_view_medium"
+            android:id="@+id/label_customer"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="CUSTOMER"
             android:textStyle="bold"
             android:textColor="@color/accent"
             android:paddingLeft="0dp"
-            android:id="@+id/label_cust_btns"
             android:layout_marginTop="@dimen/XXL_space"/>
 
         <LinearLayout
@@ -76,6 +78,60 @@
 
         <EditText
             style="@style/Edittext_only_view_medium"
+            android:id="@+id/label_cards"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="MEMBER CARDS"
+            android:textStyle="bold"
+            android:textColor="@color/accent"
+            android:paddingLeft="0dp"
+            android:layout_marginTop="@dimen/XXL_space"/>
+
+        <LinearLayout
+            android:id="@+id/layout_cards_btns_1"
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/small_space">
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:id="@+id/btn_cards_0"
+                android:text="EMPTY"
+                android:layout_marginRight="@dimen/large_space"/>
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:id="@+id/btn_cards_1"
+                android:text="EMPTY" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_cards_btns_2"
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/large_space">
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:id="@+id/btn_cards_2"
+                android:text="EMPTY"
+                android:layout_marginRight="@dimen/large_space"/>
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:id="@+id/btn_cards_3"
+                android:text="EMPTY" />
+        </LinearLayout>
+
+        <EditText
+            style="@style/Edittext_only_view_medium"
+            android:id="@+id/label_others"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="OTHERS"
@@ -86,6 +142,7 @@
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_others_btns"
             android:layout_marginTop="@dimen/small_space">
 
             <android.support.v7.widget.AppCompatButton

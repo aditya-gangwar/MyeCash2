@@ -487,13 +487,10 @@ public class CashbackActivity extends AppCompatActivity implements
                 setTbImage(R.drawable.ic_block_white_48dp, R.color.failure);
             }
 
-        } else if(mWorkFragment.mCurrCustomer.getCardStatus() != DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED) {
+        } else if(mWorkFragment.mCurrCustomer.getCardStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
 
             switch(mWorkFragment.mCurrCustomer.getCardStatus()) {
-                case DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED:
-                    // do nothing
-                    break;
-                case DbConstants.CUSTOMER_CARD_STATUS_REMOVED:
+                case DbConstants.CUSTOMER_CARD_STATUS_DISABLED:
                     mTbTitle2.setVisibility(View.VISIBLE);
                     mTbTitle2.setText(DbConstants.cardStatusDescriptions[mWorkFragment.mCurrCustomer.getCardStatus()]);
                     break;
@@ -1428,6 +1425,7 @@ public class CashbackActivity extends AppCompatActivity implements
             // Display success notification
             TxnSuccessDialog dialog = TxnSuccessDialog.newInstance(
                     mWorkFragment.mCurrCustomer.getMobileNum(),
+                    mWorkFragment.mCurrTransaction.getTransaction().getTrans_id(),
                     mWorkFragment.mCurrCashback.getCurrClBalance(),
                     mWorkFragment.mCurrCashback.getCurrCbBalance(),
                     mWorkFragment.mCurrCashback.getOldClBalance(),

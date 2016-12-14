@@ -9,6 +9,7 @@ package in.myecash.appbase.backendAPI;
   import com.backendless.Backendless;
 
   import in.myecash.common.constants.CommonConstants;
+  import in.myecash.common.database.CustomerCards;
   import in.myecash.common.database.Customers;
   import in.myecash.common.database.Merchants;
 
@@ -53,6 +54,12 @@ package in.myecash.appbase.backendAPI;
       {
           Object[] args = new Object[]{custId};
           return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCustomer", args, Customers.class );
+      }
+
+      public CustomerCards getMemberCard(String cardNum)
+      {
+          Object[] args = new Object[]{cardNum};
+          return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMemberCard", args, CustomerCards.class );
       }
 
       public String execCustomerOp(java.lang.String opCode, java.lang.String customerId, java.lang.String cardId, java.lang.String otp, java.lang.String pin, java.lang.String opParam)

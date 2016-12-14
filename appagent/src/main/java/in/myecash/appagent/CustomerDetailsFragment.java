@@ -96,10 +96,11 @@ public class CustomerDetailsFragment extends Fragment
 
         mInputQrCard.setText(CommonUtils.getPartialVisibleStr(customer.getMembership_card().getCard_id()));
         mInputCardStatus.setText(DbConstants.cardStatusDescriptions[customer.getMembership_card().getStatus()]);
-        if(customer.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED) {
+        if(customer.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
             mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
         }
         mCardStatusDate.setText(mSdfDateWithTime.format(customer.getMembership_card().getStatus_update_time()));
+        mCardStatusReason.setText(mSdfDateWithTime.format(customer.getMembership_card().getStatus_reason()));
 
         if( status!=DbConstants.USER_STATUS_ACTIVE && (mAccStatus.getVisibility()==View.VISIBLE) ) {
             mAccStatus.setEnabled(false);
@@ -140,6 +141,7 @@ public class CustomerDetailsFragment extends Fragment
     private EditText mInputQrCard;
     private EditText mInputCardStatus;
     private EditText mCardStatusDate;
+    private EditText mCardStatusReason;
 
     private AppCompatButton mAccStatus;
     private AppCompatButton mLaunchApp;
@@ -162,6 +164,7 @@ public class CustomerDetailsFragment extends Fragment
         mInputQrCard = (EditText) v.findViewById(R.id.input_card_id);
         mInputCardStatus = (EditText) v.findViewById(R.id.input_card_status);
         mCardStatusDate = (EditText) v.findViewById(R.id.input_card_status_date);
+        mCardStatusReason = (EditText) v.findViewById(R.id.input_card_status_reason);
 
         mAccStatus = (AppCompatButton) v.findViewById(R.id.btn_acc_status);
         mLaunchApp = (AppCompatButton) v.findViewById(R.id.btn_launch_app);

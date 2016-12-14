@@ -10,7 +10,7 @@ public class DbConstants {
     public static final int USER_TYPE_CUSTOMER = 1;
     public static final int USER_TYPE_AGENT = 2;
     public static final int USER_TYPE_CC = 3;
-    public static final int USER_TYPE_CNT = 4;
+    public static final int USER_TYPE_CCNT = 4;
     public static final int USER_TYPE_ADMIN = 5;
     // user type code to text description
     public static String userTypeDesc[] = {
@@ -48,17 +48,20 @@ public class DbConstants {
     };
 
     // CustomerCards table - 'status' column values
-    public static final int CUSTOMER_CARD_STATUS_NEW = 0;
-    public static final int CUSTOMER_CARD_STATUS_WITH_MERCHANT = 1;
-    public static final int CUSTOMER_CARD_STATUS_ALLOTTED = 2;
-    //public static final int CUSTOMER_CARD_STATUS_BLOCKED = 3;
-    public static final int CUSTOMER_CARD_STATUS_REMOVED = 3;
+    public static final int CUSTOMER_CARD_STATUS_FOR_PRINT = 0;
+    public static final int CUSTOMER_CARD_STATUS_NEW = 1;
+    public static final int CUSTOMER_CARD_STATUS_WITH_AGENT = 2;
+    public static final int CUSTOMER_CARD_STATUS_WITH_MERCHANT = 3;
+    public static final int CUSTOMER_CARD_STATUS_ACTIVE = 4;
+    public static final int CUSTOMER_CARD_STATUS_DISABLED = 5;
     // Map int status values to corresponding descriptions
     public static String cardStatusDescriptions[] = {
-            "Invalid",
-            "Invalid",
+            "Out for Print",
+            "New Card",
+            "Allotted to Agent",
+            "Allotted to Merchant",
             "Active",
-            "Removed"
+            "Disabled"
     };
 
     // 'opcode' values used in different tables

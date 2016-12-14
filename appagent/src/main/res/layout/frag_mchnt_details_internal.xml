@@ -265,7 +265,7 @@
                     android:text="Reason"
                     android:layout_weight="40"
                     android:gravity="left|bottom"
-                    android:layout_gravity="bottom"
+                    android:layout_gravity="top"
                     android:paddingTop="0dp"/>
                 <EditText
                     style="@style/Edittext_only_view_small"

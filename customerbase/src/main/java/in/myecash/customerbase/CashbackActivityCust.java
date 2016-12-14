@@ -355,13 +355,10 @@ public class CashbackActivityCust extends AppCompatActivity implements
             //String custName = "~ "+mRetainedFragment.mCurrCashback.getCashback().getCustomer().getName();
             mTbTitle2.setText(DbConstants.userStatusDesc[mCustomer.getAdmin_status()]);
 
-        } else if(mCustomer.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED) {
+        } else if(mCustomer.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
 
             switch(mCustomer.getMembership_card().getStatus()) {
-                case DbConstants.CUSTOMER_CARD_STATUS_ALLOTTED:
-                    // do nothing
-                    break;
-                case DbConstants.CUSTOMER_CARD_STATUS_REMOVED:
+                case DbConstants.CUSTOMER_CARD_STATUS_DISABLED:
                     mTbTitle2.setVisibility(View.VISIBLE);
                     mTbTitle2.setText(DbConstants.cardStatusDescriptions[mCustomer.getMembership_card().getStatus()]);
                     break;

@@ -21,7 +21,7 @@ public class CommonConstants {
     public static final String ANDROID_SECRET_KEY = "14765681-0A7C-3F4E-FF29-41A948E33500";
     public static final String VERSION = "v1";
 
-    public static final String BACKENDLESS_HOST_IP = "35.154.76.18";
+    public static final String BACKENDLESS_HOST_IP = "35.154.19.74";
     public static final String BACKENDLESS_HOST = "http://"+BACKENDLESS_HOST_IP+":8080/api";
     public static String BACKEND_FILE_BASE_URL = BACKENDLESS_HOST+"/"+APPLICATION_ID+"/"+VERSION+"/files/";
     public static final String BULK_API_URL  = BACKENDLESS_HOST+"/"+VERSION+"/data/bulk/";
@@ -103,12 +103,25 @@ public class CommonConstants {
     public static final String CSV_NEWLINE = "\n";
 
     /*
+     * Prefixes
+     */
+    public static final String PREFIX_AGENT_ID = "1";
+    public static final String PREFIX_CC_ID = "2";
+    public static final String PREFIX_CCNT_ID = "3";
+    public static final String TRANSACTION_ID_PREFIX = "TX";
+
+    /*
      * Other common constants
      */
-    public static final String TRANSACTION_ID_PREFIX = "TX";
     // number to character mapping
     public static final String numToChar[] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
     // File format for photos
     // Supported Values: "webp", "jpeg", "png"
     public static final String PHOTO_FILE_FORMAT = "webp";
+    // Bulk actions for Member Cards
+    public static final String CARDS_UPLOAD_TO_POOL = "cardsUploadToPool";
+    public static final String CARDS_ALLOT_TO_AGENT = "cardsAllotToAgent";
+    public static final String CARDS_ALLOT_TO_MCHNT = "cardsAllotToMchnt";
+    public static final String CARDS_RETURN_BY_MCHNT = "cardsReturnByMchnt";
+    public static final String CARDS_RETURN_BY_AGENT = "cardsReturnByAgent";
 }

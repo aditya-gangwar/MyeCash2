@@ -14,6 +14,7 @@ import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.BackgroundProcessor;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.customerbase.entities.CustomerUser;
+import in.myecash.merchantbase.backendAPI.MerchantServices;
 import in.myecash.merchantbase.entities.MerchantUser;
 
 import java.io.File;
@@ -108,6 +109,10 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DISABLE_CUSTOMER,msg).sendToTarget();
     }
 
+    public void addCardSearchReq(String id) {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_SEARCH_CARD, id).sendToTarget();
+    }
+
 
     @Override
     protected int handleMsg(Message msg) {
@@ -139,6 +144,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_DISABLE_CUSTOMER:
                 error = disableCustomer((MessageDisableUser) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_SEARCH_CARD:
+                error = searchMemberCard((String) msg.obj);
                 break;
         }
         return error;
@@ -183,13 +191,6 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
     private int searchMerchant(MessageSearchUser data) {
         return MerchantUser.pseudoLogin(data.key);
-        /*
-        try {
-            mRetainedFragment.mCurrMerchant = AgentUser.getInstance().searchMerchant(data.key, data.serachById);
-        } catch (BackendlessException e) {
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;*/
     }
 
     private int disableMerchant(MessageDisableUser data) {
@@ -217,6 +218,19 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Exception in disableCustomer: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    private int searchMemberCard(String id) {
+        try {
+            mRetainedFragment.mCurrMemberCard = null;
+            mRetainedFragment.mCurrMemberCard = CommonServices.getInstance().getMemberCard(id);
+            LogMy.d(TAG,"searchMemberCard success");
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG, "searchMemberCard failed: "+ e.toString());
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;

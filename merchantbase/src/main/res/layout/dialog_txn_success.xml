@@ -17,14 +17,24 @@
 
 
     <EditText
-        style="@style/Edittext_only_view_medium_more_pad"
+        style="@style/Edittext_only_view_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Transaction Success"
+        android:background="@color/iron2"
+        android:paddingTop="@dimen/XL_space"/>
+
+    <EditText
+        style="@style/Edittext_only_view_medium"
+        android:id="@+id/input_txn_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
         android:gravity="center"
-        android:text="Transaction Success"
-        android:background="@color/iron2"
-        android:paddingBottom="@dimen/XXL_space"/>
+        android:text="ID: ASD7865IO09"
+        android:textStyle="italic"
+        android:background="@color/iron2"/>
 
     <View
         style="@style/Divider_horizontal_Large" />

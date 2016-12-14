@@ -38,7 +38,9 @@ public class ActionsActivity extends AppCompatActivity implements
         ActionsFragment.ActionsFragmentIf, PasswdChangeDialog.PasswdChangeDialogIf,
         SearchMerchantDialog.SearchMerchantDialogIf, MerchantDetailsFragment.MerchantDetailsFragmentIf,
         DisableMchntDialog.DisableMchntDialogIf, SearchCustomerDialog.SearchCustomerDialogIf,
-        CustomerDetailsFragment.CustomerDetailsFragmentIf, DisableCustDialog.DisableCustDialogIf
+        CustomerDetailsFragment.CustomerDetailsFragmentIf, DisableCustDialog.DisableCustDialogIf,
+        SearchCardDialog.SearchCardDialogIf, CardDetailsFragment.CardDetailsFragmentIf,
+        CardsActionListFrag.CardsActionListFragIf
 {
 
     private static final String TAG = "ActionsActivity";
@@ -46,12 +48,15 @@ public class ActionsActivity extends AppCompatActivity implements
     private static final String ACTIONS_FRAGMENT = "actionsFragment";
     private static final String MCHNT_DETAILS_FRAGMENT = "mchntDetailsFragment";
     private static final String CUST_DETAILS_FRAGMENT = "custDetailsFragment";
+    private static final String CARD_DETAILS_FRAGMENT = "cardDetailsFragment";
     private static final String SETTINGS_LIST_FRAGMENT = "settingsListFragment";
+    private static final String CARDS_ACTIONS_LIST_FRAGMENT = "cardsActionListFragment";
 
     private static final String DIALOG_BACK_BUTTON = "dialogBackButton";
     private static final String DIALOG_CHANGE_PASSWORD = "dialogChangePassword";
     private static final String DIALOG_SEARCH_MCHNT = "searchMchnt";
     private static final String DIALOG_SEARCH_CUSTOMER = "searchCustomer";
+    private static final String DIALOG_SEARCH_CARD = "searchCard";
 
 
     // this will never be null, as it only gets destroyed with cashback activity itself
@@ -177,6 +182,15 @@ public class ActionsActivity extends AppCompatActivity implements
                 }
                 break;
 
+            case MyRetainedFragment.REQUEST_SEARCH_CARD:
+                AppCommonUtil.cancelProgressDialog(true);
+                if(errorCode==ErrorCodes.NO_ERROR) {
+                    startCardDetailsFragment();
+                } else {
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
+                break;
         }
     }
 
@@ -323,10 +337,33 @@ public class ActionsActivity extends AppCompatActivity implements
                 SearchCustomerDialog custDialog = new SearchCustomerDialog();
                 custDialog.show(getFragmentManager(), DIALOG_SEARCH_CUSTOMER);
                 break;
+            case ActionsFragment.CARDS_SEARCH:
+                SearchCardDialog cardDialog = new SearchCardDialog();
+                cardDialog.show(getFragmentManager(), DIALOG_SEARCH_CARD);
+                break;
+            case ActionsFragment.CARDS_UPLOAD:
+            case ActionsFragment.CARDS_ALLOT_AGENT:
+            case ActionsFragment.CARDS_ALLOT_MCHNT:
+            case ActionsFragment.CARDS_RETURN_MCHNT:
+            case ActionsFragment.CARDS_RETURN_AGENT:
+                mWorkFragment.mLastCardsForAction = null;
+                mWorkFragment.mLastCardsForAction = new ArrayList<>();
+                startCardActionListFrag(action);
+                break;
             case ActionsFragment.OTHER_GLOBAL_SETTINGS:
                 startSettingsListFrag();
                 break;
         }
+    }
+
+    @Override
+    public void execActionForCards(String cards, String action, String allocateTo) {
+
+    }
+
+    @Override
+    public void showCardDetails(String cardNum) {
+        onCardInputData(cardNum);
     }
 
     @Override
@@ -344,6 +381,15 @@ public class ActionsActivity extends AppCompatActivity implements
             AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
             mWorkFragment.mCurrCustomer = null;
             mWorkFragment.searchCustomer(value, searchById);
+        }
+    }
+
+    @Override
+    public void onCardInputData(String id) {
+        if(id!=null && !id.isEmpty()) {
+            AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+            mWorkFragment.mCurrMemberCard = null;
+            mWorkFragment.searchMemberCard(id);
         }
     }
 
@@ -391,6 +437,21 @@ public class ActionsActivity extends AppCompatActivity implements
         }
     }
 
+    private void startCardDetailsFragment() {
+        if (mFragMgr.findFragmentByTag(CARD_DETAILS_FRAGMENT) == null) {
+            LogMy.d(TAG, "Creating new card details fragment");
+            Fragment fragment = new CardDetailsFragment();
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container, fragment, CARD_DETAILS_FRAGMENT);
+            transaction.addToBackStack(CARD_DETAILS_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+    }
+
     private void startSettingsListFrag() {
         if (mFragMgr.findFragmentByTag(SETTINGS_LIST_FRAGMENT) == null) {
             LogMy.d(TAG, "Creating new setiings list fragment");
@@ -400,6 +461,21 @@ public class ActionsActivity extends AppCompatActivity implements
             // Add over the existing fragment
             transaction.replace(R.id.fragment_container, fragment, SETTINGS_LIST_FRAGMENT);
             transaction.addToBackStack(SETTINGS_LIST_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+    }
+
+    private void startCardActionListFrag(String action) {
+        if (mFragMgr.findFragmentByTag(CARDS_ACTIONS_LIST_FRAGMENT) == null) {
+            LogMy.d(TAG, "Creating new card action list fragment");
+            Fragment fragment = CardsActionListFrag.getInstance(action);
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container, fragment, CARDS_ACTIONS_LIST_FRAGMENT);
+            transaction.addToBackStack(CARDS_ACTIONS_LIST_FRAGMENT);
 
             // Commit the transaction
             transaction.commit();

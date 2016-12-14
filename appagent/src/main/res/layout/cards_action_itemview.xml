@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical">
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:paddingBottom="@dimen/XS_space"
+        android:paddingTop="@dimen/XS_space">
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="10"
+            android:id="@+id/item_sno"
+            android:text="01-"
+            android:gravity="left|center"
+            android:layout_gravity="center"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="40"
+            android:id="@+id/input_cardNum"
+            android:text="11679034367"
+            android:gravity="left|center"
+            android:layout_gravity="center"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="40"
+            android:id="@+id/card_status"
+            android:text="---"
+            android:gravity="left|center"
+            android:layout_gravity="center"/>
+
+        <android.support.v7.widget.AppCompatImageButton
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="10"
+            android:id="@+id/card_remove"
+            android:src="@drawable/ic_delete_forever_black_18dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:tint="@color/icon_grey"
+            android:clickable="false"
+            android:padding="0dp"/>
+
+    </LinearLayout>
+
+    <View
+        style="@style/Divider_horizontal_Medium"
+        android:id="@+id/cash_pay_divider_1"/>
+
+</LinearLayout>

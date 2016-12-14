@@ -46,6 +46,9 @@ public class ErrorCodes {
     public static final int NO_SUCH_CARD = 530;
     public static final int WRONG_CARD = 531;
     public static final int CARD_ALREADY_IN_USE = 532;
+    public static final int CARD_DISABLED = 533;
+    public static final int CARD_NOT_REG_WITH_CUST = 534;
+    public static final int CARD_WRONG_OWNER_MCHNT = 535;
 
     // Limit based errors
     public static final int FAILED_ATTEMPT_LIMIT_RCHD = 540;
@@ -113,9 +116,12 @@ public class ErrorCodes {
         aMap.put(WRONG_USER_TYPE,"Wrong user type");
         aMap.put(DEVICE_INSECURE,"Your device is not secure. Please install and run application on other device.");
 
-        aMap.put(NO_SUCH_CARD,"Invalid customer card");
-        aMap.put(WRONG_CARD,"Invalid customer card.");
-        aMap.put(CARD_ALREADY_IN_USE,"Membership card already in use");
+        aMap.put(NO_SUCH_CARD,"Invalid Membership Card");
+        aMap.put(WRONG_CARD,"Invalid Membership card. Please return to company agent for refund.");
+        aMap.put(CARD_ALREADY_IN_USE,"This Membership card is already registered to customer");
+        aMap.put(CARD_DISABLED,"This Membership card is Disabled and cannot be used");
+        aMap.put(CARD_NOT_REG_WITH_CUST,"This Membership card is not registered to any Customer");
+        aMap.put(CARD_WRONG_OWNER_MCHNT,"This Membership card is not allocated to you as Merchant. Please return to company agent.");
 
         aMap.put(FAILED_ATTEMPT_LIMIT_RCHD,"Failed attempt limit reached. Account is Locked for next %s hours.");
         aMap.put(TRUSTED_DEVICE_LIMIT_RCHD,"Trusted device limit reached. To continue, login from any trusted device and delete any from the trusted devices.");

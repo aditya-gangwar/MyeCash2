@@ -10,12 +10,14 @@ public class CustomerCards
   private Integer status;
   private java.util.Date created;
   private java.util.Date updated;
-  private String ownerId;
+  private String ccntId;
+  private String agentId;
+  private String mchntId;
+  private String custId;
   private java.util.Date status_update_time;
   private String status_reason;
   private String objectId;
   private String card_id;
-  private String merchant_id;
   public Integer getStatus()
   {
     return status;
@@ -34,11 +36,6 @@ public class CustomerCards
   public java.util.Date getUpdated()
   {
     return updated;
-  }
-
-  public String getOwnerId()
-  {
-    return ownerId;
   }
 
   public java.util.Date getStatus_update_time()
@@ -76,17 +73,38 @@ public class CustomerCards
     this.card_id = card_id;
   }
 
-  public String getMerchant_id()
-  {
-    return merchant_id;
+  public String getCcntId() {
+    return ccntId;
   }
 
-  public void setMerchant_id( String merchant_id )
-  {
-    this.merchant_id = merchant_id;
+  public void setCcntId(String ccntId) {
+    this.ccntId = ccntId;
   }
 
-                                                    
+  public String getAgentId() {
+    return agentId;
+  }
+
+  public void setAgentId(String agentId) {
+    this.agentId = agentId;
+  }
+
+  public String getMchntId() {
+    return mchntId;
+  }
+
+  public void setMchntId(String mchntId) {
+    this.mchntId = mchntId;
+  }
+
+  public String getCustId() {
+    return custId;
+  }
+
+  public void setCustId(String custId) {
+    this.custId = custId;
+  }
+
   public CustomerCards save()
   {
     return Backendless.Data.of( CustomerCards.class ).save( this );
