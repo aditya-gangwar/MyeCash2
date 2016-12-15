@@ -61,15 +61,15 @@ public class CardDetailsFragment extends Fragment {
     private void initDialogView() {
         CustomerCards card = mCallback.getRetainedFragment().mCurrMemberCard;
 
-        mInputQrCard.setText(CommonUtils.getPartialVisibleStr(card.getCard_id()));
+        mInputQrCard.setText(card.getCard_id());
         mInputCardStatus.setText(DbConstants.cardStatusDescriptions[card.getStatus()]);
         if(card.getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
             mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
         }
         mCardStatusDate.setText(mSdfDateWithTime.format(card.getStatus_update_time()));
-        mCardStatusReason.setText(mSdfDateWithTime.format(card.getStatus_reason()));
+        mCardStatusReason.setText( (card.getStatus_reason()==null)?"":card.getStatus_reason() );
 
-        mCcntId.setText(card.getCcntId());
+        mCcntId.setText( (card.getCcntId()==null)?"":card.getCcntId() );
         mAgentId.setText( (card.getAgentId()==null)?"":card.getAgentId() );
         mMchntId.setText( (card.getMchntId()==null)?"":card.getAgentId() );
         mCustId.setText( (card.getCustId()==null)?"":card.getAgentId() );

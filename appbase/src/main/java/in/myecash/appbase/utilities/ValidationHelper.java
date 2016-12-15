@@ -132,6 +132,16 @@ public final class ValidationHelper{
         }
     }
 
+    public static int validateInternalUserId(String value) {
+        if (value.isEmpty() ) {
+            return ErrorCodes.EMPTY_VALUE;
+        } else if (value.length() != CommonConstants.INTERNAL_USER_ID_LEN) {
+            return ErrorCodes.INVALID_LENGTH;
+        } else {
+            return ErrorCodes.NO_ERROR;
+        }
+    }
+
     public static int validateAgentId(String value) {
         if (value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;

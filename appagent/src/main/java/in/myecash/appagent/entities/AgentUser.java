@@ -74,7 +74,8 @@ public class AgentUser {
             mAgentUser = Backendless.UserService.login(userId, password, false);
             int userType = (Integer)mAgentUser.getProperty("user_type");
             if(  userType != DbConstants.USER_TYPE_AGENT &&
-                    userType != DbConstants.USER_TYPE_CC   ) {
+                    userType != DbConstants.USER_TYPE_CC &&
+                    userType != DbConstants.USER_TYPE_CCNT) {
                 // wrong user type
                 LogMy.e(TAG,"Invalid usertype in agent app: "+userType+", "+userId);
                 logout();

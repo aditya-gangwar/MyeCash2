@@ -18,32 +18,20 @@ import android.widget.Spinner;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
-import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.ErrorCodes;
 
 /**
- * Created by adgangwa on 29-11-2016.
+ * Created by adgangwa on 15-12-2016.
  */
-public class DisableCustDialog extends DialogFragment
+public class CustLimitedDialog extends DialogFragment
         implements DialogInterface.OnClickListener, AdapterView.OnItemSelectedListener {
-    public static final String TAG = "DisableCustDialog";
-    private static final String ARG_ACTION = "argAction";
+    public static final String TAG = "CustLimitedDialog";
 
-    boolean isLtdMode;
     private String reasonStr;
-    private DisableCustDialogIf mListener;
+    private CustLimitedDialogIf mListener;
 
-    public interface DisableCustDialogIf {
-        void disableCustomer(boolean isLtdMode, String ticketId, String reason, String remarks);
-    }
-
-    public static DisableCustDialog getInstance(boolean isLtdMode) {
-        Bundle args = new Bundle();
-        args.putBoolean(ARG_ACTION, isLtdMode);
-
-        DisableCustDialog dialog = new DisableCustDialog();
-        dialog.setArguments(args);
-        return dialog;
+    public interface CustLimitedDialogIf {
+        void disableCustomer(String ticketId, String reason, String remarks);
     }
 
     @Override
@@ -51,23 +39,15 @@ public class DisableCustDialog extends DialogFragment
         super.onActivityCreated(savedInstanceState);
 
         try {
-            mListener = (DisableCustDialogIf) getActivity();
+            mListener = (CustLimitedDialogIf) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
-                    + " must implement DisableCustDialogIf");
-        }
-
-        isLtdMode = getArguments().getBoolean(ARG_ACTION);
-        if(isLtdMode) {
-            mTitle.setText("Customer: Limited Mode");
-            String msg1 = "Customer account will be 'enabled' automatically after "+ MyGlobalSettings.getCustAccLimitModeHrs()+" hours. Only Credit transactions are allowed in 'Limited Mode'.";
-            mInfo1.setText(msg1);
-            mInfo2.setText("Are you sure to put account in LIMITED Mode ?");
+                    + " must implement CustLimitedDialogIf");
         }
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.cust_disable_reasons_array, android.R.layout.simple_spinner_item);
+                R.array.cust_limited_reasons_array, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -80,7 +60,7 @@ public class DisableCustDialog extends DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LogMy.d(TAG, "In onCreateDialog");
 
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_disable_cust, null);
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_cust_limited_mode, null);
         initUiResources(v);
 
         // return new dialog
@@ -99,7 +79,7 @@ public class DisableCustDialog extends DialogFragment
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                AppCommonUtil.setDialogTextSize(DisableCustDialog.this, (AlertDialog) dialog);
+                AppCommonUtil.setDialogTextSize(CustLimitedDialog.this, (AlertDialog) dialog);
 
                 Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 b.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +107,7 @@ public class DisableCustDialog extends DialogFragment
                         }
 
                         if(allOk) {
-                            mListener.disableCustomer(isLtdMode, ticketId, reasonStr, remarks);
+                            mListener.disableCustomer(ticketId, reasonStr, remarks);
                             getDialog().dismiss();
                         }
                     }
@@ -162,24 +142,15 @@ public class DisableCustDialog extends DialogFragment
         super.onCancel(dialog);
     }
 
-    private EditText mTitle;
-    private EditText mInfo1;
-    private EditText mInfo2;
-
     private EditText mTicketNum;
     private Spinner mReason;
     private EditText mRemarks;
 
     private void initUiResources(View v) {
-        mTitle = (EditText) v.findViewById(R.id.label_cash_pay_title);
-        mInfo1 = (EditText) v.findViewById(R.id.label_information_1);
-        mInfo2 = (EditText) v.findViewById(R.id.label_information_2);
-
         mTicketNum = (EditText) v.findViewById(R.id.input_ticketId);
         mReason = (Spinner) v.findViewById(R.id.input_reason);
         mRemarks = (EditText) v.findViewById(R.id.input_remarks);
     }
 
 }
-
 

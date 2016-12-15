@@ -47,9 +47,15 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         public boolean serachById;
     }
     private class MessageDisableUser implements Serializable {
+        public boolean isLtdMode;
         public String ticketId;
         public String reason;
         public String remarks;
+    }
+    private class MessageActionCards implements Serializable {
+        public String cards;
+        public String action;
+        public String allocateTo;
     }
 
     /*
@@ -101,16 +107,29 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         msg.serachById = searchById;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_SEARCH_CUSTOMER,msg).sendToTarget();
     }
-    public void addDisableCustomerReq(String ticketId, String reason, String remarks) {
+    public void addDisableCustomerReq(boolean isLtdMode, String ticketId, String reason, String remarks) {
         MessageDisableUser msg = new MessageDisableUser();
+        msg.isLtdMode = isLtdMode;
         msg.ticketId = ticketId;
         msg.reason = reason;
         msg.remarks = remarks;
-        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DISABLE_CUSTOMER,msg).sendToTarget();
+
+        if(isLtdMode) {
+            mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_LIMIT_CUST_ACC, msg).sendToTarget();
+        } else {
+            mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DISABLE_CUSTOMER, msg).sendToTarget();
+        }
     }
 
     public void addCardSearchReq(String id) {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_SEARCH_CARD, id).sendToTarget();
+    }
+    public void addExecActionCardsReq(String cards, String action, String allocateTo) {
+        MessageActionCards msg = new MessageActionCards();
+        msg.cards = cards;
+        msg.action = action;
+        msg.allocateTo = allocateTo;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_ACTION_CARDS, msg).sendToTarget();
     }
 
 
@@ -142,11 +161,15 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
             case MyRetainedFragment.REQUEST_SEARCH_CUSTOMER:
                 error = searchCustomer((MessageSearchUser) msg.obj);
                 break;
+            case MyRetainedFragment.REQUEST_LIMIT_CUST_ACC:
             case MyRetainedFragment.REQUEST_DISABLE_CUSTOMER:
                 error = disableCustomer((MessageDisableUser) msg.obj);
                 break;
             case MyRetainedFragment.REQUEST_SEARCH_CARD:
                 error = searchMemberCard((String) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_ACTION_CARDS:
+                error = actionForCards((MessageActionCards) msg.obj);
                 break;
         }
         return error;
@@ -212,7 +235,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
     private int disableCustomer(MessageDisableUser data) {
         try {
-            InternalUserServices.getInstance().disableCustomer(mRetainedFragment.mCurrCustomer.getPrivate_id(),
+            InternalUserServices.getInstance().disableCustomer(data.isLtdMode, mRetainedFragment.mCurrCustomer.getPrivate_id(),
                     data.ticketId, data.reason, data.remarks);
             LogMy.d(TAG,"disableCustomer success");
 
@@ -231,6 +254,18 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
         } catch (BackendlessException e) {
             LogMy.e(TAG, "searchMemberCard failed: "+ e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    private int actionForCards(MessageActionCards data) {
+        try {
+            mRetainedFragment.mLastCardsForAction = InternalUserServices.getInstance().execActionForCards(data.cards, data.action, data.allocateTo);
+            LogMy.d(TAG,"actionForCards success");
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Exception in actionForCards: "+e.toString());
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;

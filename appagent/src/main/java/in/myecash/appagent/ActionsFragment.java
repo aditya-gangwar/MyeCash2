@@ -45,7 +45,7 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
     // Possible Member Card actions
     public static final String CARDS_SEARCH = "Search";
     // Bulk actions
-    public static final String CARDS_UPLOAD = "Upload to DB";
+    public static final String CARDS_UPLOAD = "Upload to Pool";
     public static final String CARDS_ALLOT_AGENT = "Allot to Agent";
     public static final String CARDS_ALLOT_MCHNT = "Allot to Merchant";
     public static final String CARDS_RETURN_MCHNT = "Return by Merchant";

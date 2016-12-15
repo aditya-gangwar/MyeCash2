@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:clickable="false"
         android:gravity="left"
-        android:text="CUSTOMER: Disable Account"
+        android:text="CUSTOMER: Account Limited Mode"
         android:textStyle="bold"/>
 
     <View
@@ -31,7 +31,7 @@
             android:id="@+id/label_information_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Make sure to explain Customer on the procedure to Enable the account."
+            android:text="Make sure to explain Customer about details regarding 'Limited Mode'"
             android:textColor="@color/accent2"/>
 
         <Space
@@ -114,10 +114,9 @@
 
         <EditText
             style="@style/Edittext_only_view_small"
-            android:id="@+id/label_information_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Are you sure to DISABLE the account ?" />
+            android:text="Are you sure to put account in LIMITED Mode ?" />
 
         <Space
             android:layout_width="match_parent"

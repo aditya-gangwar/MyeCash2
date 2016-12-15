@@ -61,11 +61,13 @@ public class CustomerDetailsFragment extends Fragment
         bindUiResources(v);
         //setup buttons
         if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_AGENT) {
-            mAccStatus.setVisibility(View.GONE);
+            mAccDisable.setVisibility(View.GONE);
+            mAccLimited.setVisibility(View.GONE);
             mLaunchApp.setVisibility(View.GONE);
 
         } else if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_CC) {
-            mAccStatus.setOnClickListener(this);
+            mAccDisable.setOnClickListener(this);
+            mAccLimited.setOnClickListener(this);
             mLaunchApp.setOnClickListener(this);
         }
 
@@ -102,10 +104,16 @@ public class CustomerDetailsFragment extends Fragment
         mCardStatusDate.setText(mSdfDateWithTime.format(customer.getMembership_card().getStatus_update_time()));
         mCardStatusReason.setText(mSdfDateWithTime.format(customer.getMembership_card().getStatus_reason()));
 
-        if( status!=DbConstants.USER_STATUS_ACTIVE && (mAccStatus.getVisibility()==View.VISIBLE) ) {
-            mAccStatus.setEnabled(false);
-            mAccStatus.setOnClickListener(null);
-            mAccStatus.setAlpha(0.4f);
+        if( status!=DbConstants.USER_STATUS_ACTIVE && (mAccDisable.getVisibility()==View.VISIBLE) ) {
+            mAccDisable.setEnabled(false);
+            mAccDisable.setOnClickListener(null);
+            mAccDisable.setAlpha(0.4f);
+        }
+
+        if( status!=DbConstants.USER_STATUS_ACTIVE && (mAccLimited.getVisibility()==View.VISIBLE) ) {
+            mAccLimited.setEnabled(false);
+            mAccLimited.setOnClickListener(null);
+            mAccLimited.setAlpha(0.4f);
         }
     }
 
@@ -115,13 +123,20 @@ public class CustomerDetailsFragment extends Fragment
             case R.id.btn_acc_status:
                 LogMy.d(TAG,"Clicked change acc status button.");
                 // show disable dialog
-                DisableCustDialog dialog = new DisableCustDialog();
+                DisableCustDialog dialog = DisableCustDialog.getInstance(false);
                 dialog.show(getFragmentManager(), DIALOG_DISABLE_CUST);
                 break;
 
             case R.id.btn_launch_app:
                 LogMy.d(TAG,"Clicked launch merchant app button.");
                 mCallback.launchCustApp();
+                break;
+
+            case R.id.btn_acc_limited:
+                LogMy.d(TAG,"Clicked change acc status button.");
+                // show disable dialog
+                dialog = DisableCustDialog.getInstance(true);
+                dialog.show(getFragmentManager(), DIALOG_DISABLE_CUST);
                 break;
         }
     }
@@ -143,7 +158,8 @@ public class CustomerDetailsFragment extends Fragment
     private EditText mCardStatusDate;
     private EditText mCardStatusReason;
 
-    private AppCompatButton mAccStatus;
+    private AppCompatButton mAccDisable;
+    private AppCompatButton mAccLimited;
     private AppCompatButton mLaunchApp;
 
 
@@ -166,7 +182,8 @@ public class CustomerDetailsFragment extends Fragment
         mCardStatusDate = (EditText) v.findViewById(R.id.input_card_status_date);
         mCardStatusReason = (EditText) v.findViewById(R.id.input_card_status_reason);
 
-        mAccStatus = (AppCompatButton) v.findViewById(R.id.btn_acc_status);
+        mAccDisable = (AppCompatButton) v.findViewById(R.id.btn_acc_status);
+        mAccLimited = (AppCompatButton) v.findViewById(R.id.btn_acc_limited);
         mLaunchApp = (AppCompatButton) v.findViewById(R.id.btn_launch_app);
     }
 

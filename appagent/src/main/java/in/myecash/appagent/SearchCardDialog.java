@@ -91,6 +91,7 @@ public class SearchCardDialog extends DialogFragment
                             }
                         } else {
                             mListener.onCardInputData(mScannedCardNum);
+                            getDialog().dismiss();
                         }
                     }
                 });

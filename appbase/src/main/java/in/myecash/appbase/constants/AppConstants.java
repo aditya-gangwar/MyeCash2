@@ -120,6 +120,7 @@ public class AppConstants {
     public static final String mobileChangeSuccessMsg = "New mobile number registered successfully.";
     public static final String merchantDisableSuccessMsg = "Merchant disabled successfully.";
     public static final String customerDisableSuccessMsg = "Customer disabled successfully.";
+    public static final String customerLimitedSuccessMsg = "Customer account in 'Limited Mode' for next %s hours. Only Credit txns will be allowed.";
 
     public static final String custMobileChangeSuccessMsg = "Mobile Number changed successfully. \n\nPlease login again with new mobile number.";
     public static final String enableAccSuccessMsg = "Account is Active now. Please login to proceed.";

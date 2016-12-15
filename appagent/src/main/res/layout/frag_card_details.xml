@@ -22,7 +22,7 @@
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/label_qr_card"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Card ID"
                 android:layout_weight="40"
@@ -32,7 +32,7 @@
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_card_id"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="1234 5678 345"
                 android:layout_weight="60"
                 android:gravity="left"

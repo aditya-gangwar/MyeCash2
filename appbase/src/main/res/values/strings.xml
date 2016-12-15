@@ -89,6 +89,15 @@
         <item>Other</item>
     </string-array>
 
+    <string-array name="cust_limited_reasons_array">
+        <item>None</item>
+        <item>Lost Mobile</item>
+        <item>Lost Member Card</item>
+        <item>Forgot PIN</item>
+        <item>Suspect Security Issue</item>
+        <item>Other</item>
+    </string-array>
+
     <string-array name="new_card_reason_array">
         <item>Lost</item>
         <item>Stolen</item>

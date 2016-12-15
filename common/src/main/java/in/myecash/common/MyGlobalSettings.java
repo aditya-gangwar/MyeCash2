@@ -113,8 +113,8 @@ public class MyGlobalSettings
     private static final String SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS = "mchnt_removal_expiry_days";
     private static final int MCHNT_REMOVAL_EXPIRY_DAYS = 30;
 
-    private static final String SETTINGS_CUST_HRS_AFTER_MOB_CHANGE = "cust_hrs_after_mob_change";
-    private static final int CUST_HRS_AFTER_MOB_CHANGE = 1;
+    private static final String SETTINGS_CUST_ACC_LIMIT_MODE_HRS = "cust_acc_limit_mode_hrs";
+    private static final int CUST_ACC_LIMIT_MODE_HRS = 1;
 
     private static final String SETTINGS_WRONG_ATTEMPT_RESET_HRS = "wrong_attempt_reset_hrs";
     private static final int WRONG_ATTEMPT_RESET_HRS = 2;
@@ -244,10 +244,10 @@ public class MyGlobalSettings
                 MCHNT_REMOVAL_EXPIRY_DAYS:
                 (Integer)MyGlobalSettings.mSettings.get(SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS);
     }
-    public static Integer getCustHrsAfterMobChange() {
+    public static Integer getCustAccLimitModeHrs() {
         return (mRunMode==RunMode.backend)?
-                CUST_HRS_AFTER_MOB_CHANGE:
-                (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUST_HRS_AFTER_MOB_CHANGE);
+                CUST_ACC_LIMIT_MODE_HRS :
+                (Integer)MyGlobalSettings.mSettings.get(SETTINGS_CUST_ACC_LIMIT_MODE_HRS);
     }
     public static Integer getWrongAttemptResetHrs() {
         return (mRunMode==RunMode.backend)?

@@ -40,7 +40,8 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
     private static final int MAX_CARD_ONE_GO = 10;
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9005;
 
-    private static final int REQ_NOTIFY_ERROR = 1;
+    private static final int REQ_CONFIRM_ACTION = 1;
+    private static final int REQ_NOTIFY_ERROR = 2;
 
     private MyRetainedFragment mRetainedFragment;
     private CardsActionListFragIf mCallback;
@@ -54,7 +55,7 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
     private AppCompatButton mBtnAction;
 
     // Map from Action code -> display title string
-    public static final Map<String, String> cardsActionToStr;
+    /*public static final Map<String, String> cardsActionToStr;
     static {
         Map<String, String> aMap = new HashMap<>(10);
 
@@ -65,8 +66,8 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
         aMap.put(CommonConstants.CARDS_RETURN_BY_AGENT,"Return by Agent");
 
         cardsActionToStr = Collections.unmodifiableMap(aMap);
-    }
-    
+    }*/
+
 
     public interface CardsActionListFragIf {
         MyRetainedFragment getRetainedFragment();
@@ -95,8 +96,8 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
             mRetainedFragment = mCallback.getRetainedFragment();
 
             mAction = getArguments().getString(ARG_ACTION);
-            mTitleView.setText(cardsActionToStr.get(mAction));
-            mBtnAction.setText(cardsActionToStr.get(mAction));
+            mTitleView.setText(mAction);
+            mBtnAction.setText(mAction);
 
             switch (mAction) {
                 case ActionsFragment.CARDS_ALLOT_AGENT:
@@ -165,16 +166,13 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
             if(error!=ErrorCodes.NO_ERROR) {
                 mInputAllottee.setError(AppCommonUtil.getErrorDesc(error));
             } else {
-                StringBuilder sb = new StringBuilder();
-                // Make CSV strings of all cards, for which action is still pending
-                for (MyCardForAction card :
-                        mRetainedFragment.mLastCardsForAction) {
-                    if (card.getActionStatus().equals(MyCardForAction.ACTION_STATUS_PENDING)) {
-                        sb.append(card.getScannedCode()).append(CommonConstants.CSV_DELIMETER);
-                    }
-                }
-                if (sb.length() > 0) {
-                    mCallback.execActionForCards(sb.toString(), mAction, mInputAllottee.getText().toString());
+                if (mRetainedFragment.mLastCardsForAction.size() > 0) {
+                    // ask for confirmation
+                    String title = mRetainedFragment.mLastCardsForAction.size()+" Cards";
+                    String msg = "Are you sure to "+mAction+" ?";
+                    DialogFragmentWrapper dialog = DialogFragmentWrapper.createConfirmationDialog(title, msg, true, false);
+                    dialog.setTargetFragment(this, REQ_CONFIRM_ACTION);
+                    dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
                 } else {
                     AppCommonUtil.toast(getActivity(), "No Pending Cards");
                 }
@@ -185,6 +183,7 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         LogMy.d(TAG,"In onActivityResult"+requestCode+","+resultCode);
+
         if (requestCode == RC_BARCODE_CAPTURE_CARD_DIALOG) {
             if (resultCode == ErrorCodes.NO_ERROR) {
                 String code = data.getStringExtra(BarcodeCaptureActivity.BarcodeObject);
@@ -218,6 +217,18 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
             } else {
                 LogMy.e(TAG,"Failed to read barcode");
             }
+
+        } else if(requestCode == REQ_CONFIRM_ACTION) {
+            LogMy.d(TAG, "Received action confirmation.");
+            StringBuilder sb = new StringBuilder();
+            // Make CSV strings of all cards, for which action is still pending
+            for (MyCardForAction card :
+                    mRetainedFragment.mLastCardsForAction) {
+                if (card.getActionStatus().equals(MyCardForAction.ACTION_STATUS_PENDING)) {
+                    sb.append(card.getScannedCode()).append(CommonConstants.CSV_DELIMETER);
+                }
+            }
+            mCallback.execActionForCards(sb.toString(), mAction, mInputAllottee.getText().toString());
         }
     }
 
@@ -237,7 +248,9 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
                 mRecyclerView.setAdapter(new CardsForActionAdapter(mRetainedFragment.mLastCardsForAction));
             } else {
                 sortList();
-                adapter.refresh(mRetainedFragment.mLastCardsForAction);
+                mRecyclerView.invalidate();
+                adapter.notifyDataSetChanged();
+                //adapter.refresh(mRetainedFragment.mLastCardsForAction);
             }
         } else {
             LogMy.e(TAG,"In updateUI: mLastCardsForAction is null");
@@ -316,12 +329,13 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
 
         public void bindCb(MyCardForAction cb, int position) {
             mCard = cb;
-            mSno.setText(String.format("%02d",position));
+            String sno = String.format("%02d",(position+1))+"-";
+            mSno.setText(sno);
 
             if(mCard.getCardNum()!=null && !mCard.getCardNum().isEmpty()) {
                 mCardId.setText(mCard.getCardNum());
             } else {
-                String txt = "Scanned Card "+position;
+                String txt = "Card "+(position+1);
                 mCardId.setText(txt);
             }
 

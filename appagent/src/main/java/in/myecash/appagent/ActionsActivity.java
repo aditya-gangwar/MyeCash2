@@ -18,6 +18,7 @@ import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.appbase.PasswdChangeDialog;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -60,10 +61,11 @@ public class ActionsActivity extends AppCompatActivity implements
 
 
     // this will never be null, as it only gets destroyed with cashback activity itself
-    ActionsFragment mActionsFragment;
+    private ActionsFragment mActionsFragment;
+    private CardsActionListFrag mCardsActionFragment;
 
-    FragmentManager mFragMgr;
-    MyRetainedFragment mWorkFragment;
+    private FragmentManager mFragMgr;
+    private MyRetainedFragment mWorkFragment;
     //private AgentUser mUser;
 
     boolean mExitAfterLogout;
@@ -182,6 +184,18 @@ public class ActionsActivity extends AppCompatActivity implements
                 }
                 break;
 
+            case MyRetainedFragment.REQUEST_LIMIT_CUST_ACC:
+                AppCommonUtil.cancelProgressDialog(true);
+                if(errorCode==ErrorCodes.NO_ERROR) {
+                    String msg = String.format(AppConstants.customerLimitedSuccessMsg, MyGlobalSettings.getCustAccLimitModeHrs());
+                    DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, msg, false, false)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                } else {
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
+                break;
+
             case MyRetainedFragment.REQUEST_SEARCH_CARD:
                 AppCommonUtil.cancelProgressDialog(true);
                 if(errorCode==ErrorCodes.NO_ERROR) {
@@ -191,6 +205,15 @@ public class ActionsActivity extends AppCompatActivity implements
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
                 break;
+
+            case MyRetainedFragment.REQUEST_ACTION_CARDS:
+                AppCommonUtil.cancelProgressDialog(true);
+                if(errorCode==ErrorCodes.NO_ERROR) {
+                    startCardActionListFrag(null);
+                } else {
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
         }
     }
 
@@ -296,9 +319,9 @@ public class ActionsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void disableCustomer(String ticketId, String reason, String remarks) {
+    public void disableCustomer(boolean isLtdMode, String ticketId, String reason, String remarks) {
         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-        mWorkFragment.disableCustomer(ticketId, reason, remarks);
+        mWorkFragment.disableCustomer(isLtdMode, ticketId, reason, remarks);
     }
 
     @Override
@@ -325,6 +348,7 @@ public class ActionsActivity extends AppCompatActivity implements
 
     @Override
     public void onActionBtnClick(String action) {
+        LogMy.d(TAG,"In onActionBtnClick: "+action);
         switch(action) {
             case ActionsFragment.MERCHANT_REGISTER:
                 startMerchantRegisterActivity();
@@ -358,7 +382,8 @@ public class ActionsActivity extends AppCompatActivity implements
 
     @Override
     public void execActionForCards(String cards, String action, String allocateTo) {
-
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mWorkFragment.execActionForCards(cards, ActionsFragment.cardsActionCodeMap.get(action), allocateTo);
     }
 
     @Override
@@ -468,17 +493,23 @@ public class ActionsActivity extends AppCompatActivity implements
     }
 
     private void startCardActionListFrag(String action) {
-        if (mFragMgr.findFragmentByTag(CARDS_ACTIONS_LIST_FRAGMENT) == null) {
+
+        mCardsActionFragment = (CardsActionListFrag) mFragMgr.findFragmentByTag(CARDS_ACTIONS_LIST_FRAGMENT);
+        if ( mCardsActionFragment == null) {
             LogMy.d(TAG, "Creating new card action list fragment");
-            Fragment fragment = CardsActionListFrag.getInstance(action);
+            mCardsActionFragment = CardsActionListFrag.getInstance(action);
             FragmentTransaction transaction = mFragMgr.beginTransaction();
 
             // Add over the existing fragment
-            transaction.replace(R.id.fragment_container, fragment, CARDS_ACTIONS_LIST_FRAGMENT);
+            transaction.replace(R.id.fragment_container, mCardsActionFragment, CARDS_ACTIONS_LIST_FRAGMENT);
             transaction.addToBackStack(CARDS_ACTIONS_LIST_FRAGMENT);
 
             // Commit the transaction
             transaction.commit();
+
+        } else if(mCardsActionFragment.isVisible()){
+            LogMy.d(TAG,"CardsActionListFrag already available and visible");
+            mCardsActionFragment.updateUI();
         }
     }
 

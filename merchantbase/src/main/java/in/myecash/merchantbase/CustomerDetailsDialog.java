@@ -144,7 +144,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
                 } else if(status==DbConstants.USER_STATUS_LIMITED_CREDIT_ONLY) {
                     mInputStatusDetails.setVisibility(View.VISIBLE);
                     DateUtil time = new DateUtil(cust.getStatusUpdateTime());
-                    time.addMinutes(MyGlobalSettings.getCustHrsAfterMobChange() * 60);
+                    time.addMinutes(MyGlobalSettings.getCustAccLimitModeHrs() * 60);
                     String detail = "Only 'Credit' txns allowed until "+mSdfDateWithTime.format(time.getTime());
                     mInputStatusDetails.setText(detail);
 

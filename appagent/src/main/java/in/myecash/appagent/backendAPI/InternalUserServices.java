@@ -10,7 +10,9 @@ import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 
 
+import in.myecash.common.MyCardForAction;
 import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.database.MerchantOps;
 import in.myecash.common.database.Merchants;
 
 public class InternalUserServices
@@ -55,16 +57,16 @@ public class InternalUserServices
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "disableMerchant", args );
     }
 
-    public void disableCustomer(java.lang.String customerId, java.lang.String ticketNum, java.lang.String reason, java.lang.String remarks)
+    public void disableCustomer(boolean ltdModeCase, java.lang.String customerId, java.lang.String ticketNum, java.lang.String reason, java.lang.String remarks)
     {
-        Object[] args = new Object[]{customerId, ticketNum, reason, remarks};
+        Object[] args = new Object[]{ltdModeCase, customerId, ticketNum, reason, remarks};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "disableCustomer", args );
     }
 
-    public void disableMerchantAsync(java.lang.String merchantId, java.lang.String ticketNum, java.lang.String reason, java.lang.String remarks, AsyncCallback<Object> callback)
+    public java.util.List<MyCardForAction> execActionForCards(java.lang.String codes, java.lang.String action, java.lang.String allotToUserId)
     {
-        Object[] args = new Object[]{merchantId, ticketNum, reason, remarks};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "disableMerchant", args, Object.class, callback);
+        Object[] args = new Object[]{codes, action, allotToUserId};
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "execActionForCards", args, java.util.List.class );
     }
 
 }

@@ -79,6 +79,7 @@ public class DbConstants {
     //public static final String OP_RESET_TRUSTED_DEVICES = "Reset Trusted Devices";
     public static final String OP_ENABLE_ACC = "Enable Account";
     public static final String OP_DISABLE_ACC = "Disable Account";
+    public static final String OP_LIMITED_MODE_ACC = "Limit Account";
     public static final String OP_ACC_CLOSURE = "Account Closure";
     public static final String OP_CANCEL_ACC_CLOSURE = "Cancel Account Closure";
 

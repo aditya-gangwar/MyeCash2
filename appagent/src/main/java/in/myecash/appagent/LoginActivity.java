@@ -164,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements
         boolean valid = true;
         // validate all fields and mark ones with error
         // return false if any invalid
-        int errorCode = ValidationHelper.validateAgentId(mLoginId);
+        int errorCode = ValidationHelper.validateInternalUserId(mLoginId);
         if(errorCode!=ErrorCodes.NO_ERROR) {
             valid = false;
             mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
@@ -224,7 +224,7 @@ public class LoginActivity extends AppCompatActivity implements
                     // read and set values
                     initOperationData();
                     // validate
-                    int errorCode = ValidationHelper.validateAgentId(mLoginId);
+                    int errorCode = ValidationHelper.validateInternalUserId(mLoginId);
                     if (errorCode == ErrorCodes.NO_ERROR) {
                         // Ask for confirmation and the PIN too
                         PasswdResetDialog dialog = new PasswdResetDialog();

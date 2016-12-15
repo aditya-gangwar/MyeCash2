@@ -30,7 +30,9 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_DISABLE_MERCHANT = 9;
     public static final int REQUEST_SEARCH_CUSTOMER = 10;
     public static final int REQUEST_DISABLE_CUSTOMER = 11;
-    public static final int REQUEST_SEARCH_CARD = 12;
+    public static final int REQUEST_LIMIT_CUST_ACC = 12;
+    public static final int REQUEST_SEARCH_CARD = 13;
+    public static final int REQUEST_ACTION_CARDS = 14;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -80,12 +82,15 @@ public class MyRetainedFragment extends RetainedFragment {
     public void searchCustomer(String key, boolean searchById) {
         mBackgroundProcessor.addSearchCustReq(key, searchById);
     }
-    public void disableCustomer(String ticketId, String reason, String remarks) {
-        mBackgroundProcessor.addDisableCustomerReq(ticketId, reason, remarks);
+    public void disableCustomer(boolean isLtdMode, String ticketId, String reason, String remarks) {
+        mBackgroundProcessor.addDisableCustomerReq(isLtdMode, ticketId, reason, remarks);
     }
 
     public void searchMemberCard(String id) {
         mBackgroundProcessor.addCardSearchReq(id);
+    }
+    public void execActionForCards(String cards, String action, String allocateTo) {
+        mBackgroundProcessor.addExecActionCardsReq(cards,action,allocateTo);
     }
 
 
