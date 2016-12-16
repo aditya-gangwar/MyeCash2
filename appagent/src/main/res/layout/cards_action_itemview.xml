@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/LL_Vertical">
+<!--LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical"-->
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         style="@style/LL_Horizontal_wrap"
         android:paddingBottom="@dimen/XS_space"
         android:paddingTop="@dimen/XS_space">
@@ -52,8 +53,8 @@
 
     </LinearLayout>
 
-    <View
+    <!--View
         style="@style/Divider_horizontal_Medium"
         android:id="@+id/cash_pay_divider_1"/>
 
-</LinearLayout>
+</LinearLayout-->

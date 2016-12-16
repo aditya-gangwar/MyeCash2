@@ -1284,6 +1284,7 @@ public class CashbackActivity extends AppCompatActivity implements
         }
     }
 
+    // This fx. gets called in case of successfull customer registration too
     public void onCashbackResponse(int errorCode) {
         LogMy.d(TAG, "In onCashbackResponse: " + errorCode);
 
@@ -1304,16 +1305,19 @@ public class CashbackActivity extends AppCompatActivity implements
 
         // Update data in toolbar as per response
         if(errorCode== ErrorCodes.NO_SUCH_USER) {
+            // Billing fragment must have started by now
+            // show mobile number fragment
+            mFragMgr.popBackStackImmediate(MOBILE_NUM_FRAGMENT, 0);
             askAndRegisterCustomer(false);
+
         } else if(errorCode==ErrorCodes.NO_ERROR) {
             // update customer ids to actual fetched - just to be sure
             updateCustIds();
             updateTbForCustomer();
             if(mCashTxnStartPending) {
                 startCashTransFragment();
-            } else if(mLastMenuItemId==R.id.menu_reg_customer &&
-                    mMobileNumFragment.isVisible()) {
-                // Register from Menu item - start Billing fragment
+            } else if(mMobileNumFragment.isVisible()) {
+                // Register customer cases - start Billing fragment
                 startBillingFragment();
             }
         } else {

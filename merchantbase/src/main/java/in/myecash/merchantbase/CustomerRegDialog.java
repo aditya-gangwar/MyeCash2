@@ -43,6 +43,7 @@ public class CustomerRegDialog extends DialogFragment
     public interface CustomerRegFragmentIf {
         void onCustomerRegOk(String name, String mobileNum, String qrCode, String firstName, String lastName);
         void onCustomerRegReset();
+        //void restartTxn();
     }
 
     public static CustomerRegDialog newInstance(String mobileNo, String cardId, String firstName, String lastName, boolean wrongOtp) {
@@ -322,6 +323,21 @@ public class CustomerRegDialog extends DialogFragment
             }
         }
     }
+
+    /*
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        LogMy.d(TAG,"In onCancel");
+        super.onCancel(dialog);
+        mCallback.restartTxn();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        LogMy.d(TAG,"In onDismiss");
+        super.onDismiss(dialog);
+        mCallback.restartTxn();
+    }*/
 
     private EditText mInputFirstName;
     private EditText mInputLastName;

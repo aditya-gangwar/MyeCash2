@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -167,14 +169,28 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
                 mInputAllottee.setError(AppCommonUtil.getErrorDesc(error));
             } else {
                 if (mRetainedFragment.mLastCardsForAction.size() > 0) {
-                    // ask for confirmation
-                    String title = mRetainedFragment.mLastCardsForAction.size()+" Cards";
-                    String msg = "Are you sure to "+mAction+" ?";
-                    DialogFragmentWrapper dialog = DialogFragmentWrapper.createConfirmationDialog(title, msg, true, false);
-                    dialog.setTargetFragment(this, REQ_CONFIRM_ACTION);
-                    dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
+                    // check if any card in pending state
+                    boolean pendingCard = false;
+                    for (MyCardForAction card :
+                            mRetainedFragment.mLastCardsForAction) {
+                        if (card.getActionStatus().equals(MyCardForAction.ACTION_STATUS_PENDING)) {
+                            pendingCard = true;
+                            break;
+                        }
+                    }
+
+                    if(pendingCard) {
+                        // ask for confirmation
+                        String title = mRetainedFragment.mLastCardsForAction.size() + " Cards";
+                        String msg = "Are you sure to " + mAction + " ?";
+                        DialogFragmentWrapper dialog = DialogFragmentWrapper.createConfirmationDialog(title, msg, true, false);
+                        dialog.setTargetFragment(this, REQ_CONFIRM_ACTION);
+                        dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
+                    } else {
+                        AppCommonUtil.toast(getActivity(), "No Pending Cards Added");
+                    }
                 } else {
-                    AppCommonUtil.toast(getActivity(), "No Pending Cards");
+                    AppCommonUtil.toast(getActivity(), "No Pending Cards Added");
                 }
             }
         }
@@ -189,6 +205,9 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
                 String code = data.getStringExtra(BarcodeCaptureActivity.BarcodeObject);
                 LogMy.d(TAG,"Read customer QR code: "+code);
 
+                //TODO: validate code - for length etc
+                // required in case of totally different, or multiple qr code scan
+
                 if(mRetainedFragment.mLastCardsForAction.size() < MAX_CARD_ONE_GO) {
                     // check for duplicates
                     boolean duplicate = false;
@@ -201,7 +220,9 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
                     }
 
                     if(!duplicate) {
-                        MyCardForAction card = new MyCardForAction(code);
+                        MyCardForAction card = new MyCardForAction();
+                        card.setScannedCode(code);
+                        card.setActionStatus(MyCardForAction.ACTION_STATUS_PENDING);
                         mRetainedFragment.mLastCardsForAction.add(card);
                         updateUI();
                     } else {
@@ -228,6 +249,7 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
                     sb.append(card.getScannedCode()).append(CommonConstants.CSV_DELIMETER);
                 }
             }
+            sb.deleteCharAt(sb.length()-1); //remove last ,
             mCallback.execActionForCards(sb.toString(), mAction, mInputAllottee.getText().toString());
         }
     }
@@ -265,7 +287,7 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
 
     private void sortList() {
         if(mRetainedFragment.mLastCardsForAction!=null) {
-            Collections.sort(mRetainedFragment.mLastCardsForAction, new MyCardForAction.MyCardComparator());
+            Collections.sort(mRetainedFragment.mLastCardsForAction, new MyCardComparator());
         } else {
             LogMy.e(TAG,"In sortList: mLastCardsForAction is null");
         }
@@ -319,7 +341,7 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
                 if(v.getId()==mSno.getId() ||
                         v.getId()==mCardId.getId() ||
                         v.getId()==mStatus.getId()) {
-                    rootView = (View) v.getParent().getParent();
+                    rootView = (View) v.getParent();
                     LogMy.d(TAG,"Clicked first-a level view "+rootView.getId());
                     rootView.performClick();
                 }
@@ -341,7 +363,13 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
 
             mStatus.setText(mCard.getActionStatus());
             if(!mCard.getActionStatus().equals(MyCardForAction.ACTION_STATUS_PENDING)) {
+                mRemove.setAlpha(0.5f);
                 mRemove.setEnabled(false);
+                if(mCard.getActionStatus().equals(MyCardForAction.ACTION_STATUS_OK)) {
+                    mStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
+                } else {
+                    mStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+                }
             }
         }
     }
@@ -398,6 +426,27 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
         @Override
         public int getItemCount() {
             return mCards.size();
+        }
+    }
+
+    /*
+     * comparator functions for sorting
+     */
+    public static class MyCardComparator implements Comparator<MyCardForAction> {
+        @Override
+        public int compare(MyCardForAction lhs, MyCardForAction rhs) {
+            // TODO: Handle null x or y values
+            return compare(lhs.getCardNum(), rhs.getCardNum());
+        }
+        private static int compare(String a, String b) {
+            if(a==null) {
+                return -1;
+            } else if(b==null) {
+                return 1;
+            } else {
+                int res = String.CASE_INSENSITIVE_ORDER.compare(a, b);
+                return (res != 0) ? res : a.compareTo(b);
+            }
         }
     }
 }

@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/LL_Vertical_paddingSidesLarge">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
+    android:layout_below="@id/toolbar_actions"
+    android:paddingLeft="@dimen/screen_side_padding"
+    android:paddingRight="@dimen/screen_side_padding">
 
     <LinearLayout
         style="@style/LL_Horizontal_wrap"
+        android:id="@+id/layout_title"
         android:layout_marginTop="@dimen/medium_space">
 
         <ImageView
@@ -26,11 +32,14 @@
 
     <View
         style="@style/Divider_horizontal_Large"
-        android:layout_marginBottom="@dimen/large_space"/>
+        android:layout_marginBottom="@dimen/large_space"
+        android:layout_below="@id/layout_title"
+        android:id="@+id/underline_title"/>
 
     <LinearLayout
         style="@style/LL_Horizontal_wrap"
         android:id="@+id/layout_allottee"
+        android:layout_below="@id/underline_title"
         android:layout_marginBottom="@dimen/large_space">
 
         <ImageView
@@ -58,9 +67,9 @@
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:id="@+id/cards_recycler_view"
-        android:layout_weight="1">
+        android:layout_below="@id/layout_allottee">
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
@@ -68,26 +77,31 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/large_space"
-        android:layout_marginBottom="@dimen/large_space">
+        android:layout_marginBottom="@dimen/large_space"
+        android:layout_below="@id/cards_recycler_view"
+        android:layout_alignParentBottom="true">
 
         <android.support.v7.widget.AppCompatButton
             style="@style/button_normal_thin"
             android:id="@+id/btn_scan"
             android:layout_width="0dp"
             android:text="Scan"
-            android:layout_weight="47.5"/>
+            android:layout_weight="47.5"
+            android:layout_gravity="bottom"/>
 
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"/>
+            android:layout_weight="5"
+            android:layout_gravity="bottom"/>
 
         <android.support.v7.widget.AppCompatButton
             style="@style/button_normal_thin"
             android:id="@+id/btn_action"
             android:layout_width="0dp"
             android:text="Action"
-            android:layout_weight="47.5"/>
+            android:layout_weight="47.5"
+            android:layout_gravity="bottom"/>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

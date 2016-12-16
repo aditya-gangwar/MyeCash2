@@ -20,201 +20,205 @@
         style="@style/Divider_horizontal_Large"
         android:id="@+id/divider_cash_pay_title"/>
 
-    <LinearLayout
-        style="@style/LL_Vertical_paddingSidesLarge">
-
-        <EditText
-            style="@style/Edittext_only_view_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/label_info_otp"
-            android:text="Enter received OTP and submit the request again."
-            android:textStyle="italic"
-            android:textColor="@color/accent2"
-            android:layout_marginTop="@dimen/large_space"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space"/>
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true" >
 
         <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+            style="@style/LL_Vertical_paddingSidesLarge">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/image_name"
-                android:src="@drawable/ic_perm_identity_white_24dp"
-                android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_medium"
-                android:id="@+id/label_firstName"
+                style="@style/Edittext_only_view_small"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="First Name"
-                android:layout_weight="37"
-                android:gravity="left"/>
-            <EditText
-                style="@style/MyEdittext_Medium"
-                android:id="@+id/input_firstName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:inputType="textCapWords"
-                android:maxLength="@string/customer_name_char_limit"
-                android:layout_weight="63"
-                android:gravity="left"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+                android:id="@+id/label_info_otp"
+                android:text="Enter received OTP and submit the request again."
+                android:textStyle="italic"
+                android:textColor="@color/accent2"
+                android:layout_marginTop="@dimen/large_space"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_perm_identity_white_24dp"
-                android:visibility="invisible"/>
-            <EditText
-                style="@style/Edittext_only_view_medium"
-                android:id="@+id/label_lastName"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="Last Name"
-                android:layout_weight="37"
-                android:gravity="left"/>
-            <EditText
-                style="@style/MyEdittext_Medium"
-                android:id="@+id/input_lastName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:inputType="textCapWords"
-                android:maxLength="@string/customer_name_char_limit"
-                android:layout_weight="63"
-                android:gravity="left"/>
-        </LinearLayout>
-        <EditText
-            style="@style/Edittext_only_view_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/label_info_name"
-            android:gravity="left"
-            android:textStyle="italic"
-            android:textColor="@color/secondary_text"
-            android:text="Please provide correct name. ID proof copy may be requested, to restore access to account, in scenarios like Mobile lost etc. "/>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:layout_marginTop="@dimen/large_space">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/image_name"
+                    android:src="@drawable/ic_perm_identity_white_24dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/label_firstName"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="First Name"
+                    android:layout_weight="37"
+                    android:gravity="left"/>
+                <EditText
+                    style="@style/MyEdittext_Medium"
+                    android:id="@+id/input_firstName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:maxLength="@string/customer_name_char_limit"
+                    android:layout_weight="63"
+                    android:gravity="left"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
 
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/image_mobile"
-                android:src="@drawable/ic_phone_android_white_24dp"
-                android:tint="@color/primary"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_perm_identity_white_24dp"
+                    android:visibility="invisible"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/label_lastName"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Last Name"
+                    android:layout_weight="37"
+                    android:gravity="left"/>
+                <EditText
+                    style="@style/MyEdittext_Medium"
+                    android:id="@+id/input_lastName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:maxLength="@string/customer_name_char_limit"
+                    android:layout_weight="63"
+                    android:gravity="left"/>
+            </LinearLayout>
             <EditText
-                style="@style/Edittext_only_view_medium"
-                android:id="@+id/label_mobile"
+                style="@style/Edittext_only_view_small"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="Mobile"
-                android:layout_weight="37"
-                android:gravity="left"/>
-            <EditText
-                style="@style/MyEdittext_Medium"
-                android:id="@+id/input_customer_mobile"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="10 digit"
-                android:inputType="phone"
-                android:maxLength="@string/mobile_char_limit"
-                android:layout_weight="63"
+                android:id="@+id/label_info_name"
                 android:gravity="left"
-                android:imeOptions="actionDone"/>
-        </LinearLayout>
-        <EditText
-            style="@style/Edittext_only_view_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/label_info_mobile"
-            android:gravity="left"
-            android:textStyle="italic"
-            android:textColor="@color/secondary_text"
-            android:text="OTP will be sent on this number for verification."/>
+                android:textStyle="italic"
+                android:textColor="@color/accent2"
+                android:text="Please provide correct name. ID proof copy may be requested, to restore access to account, in scenarios like Mobile lost etc. "/>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/XL_space"/>
 
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/image_card"
-                android:src="@drawable/ic_card_membership_white_24dp"
-                android:tint="@color/primary"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/image_mobile"
+                    android:src="@drawable/ic_phone_android_white_24dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/label_mobile"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Mobile"
+                    android:layout_weight="37"
+                    android:gravity="left"/>
+                <EditText
+                    style="@style/MyEdittext_Medium"
+                    android:id="@+id/input_customer_mobile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="10 digit"
+                    android:inputType="phone"
+                    android:maxLength="@string/mobile_char_limit"
+                    android:layout_weight="63"
+                    android:gravity="left"
+                    android:imeOptions="actionDone"/>
+            </LinearLayout>
             <EditText
-                style="@style/Edittext_only_view_medium"
+                style="@style/Edittext_only_view_small"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/label_card"
-                android:layout_width="0dp"
-                android:text="Card"
-                android:layout_weight="37"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
-            <!--View
-                style="@style/Divider_vertical_Medium"/-->
-            <EditText
-                style="@style/Edittext_only_click_bg_medium"
-                android:id="@+id/input_qr_card"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="Touch to Scan"
-                android:layout_weight="63"
+                android:id="@+id/label_info_mobile"
                 android:gravity="left"
-                android:singleLine="true"
-                android:ellipsize="end"/>
+                android:textStyle="italic"
+                android:textColor="@color/accent2"
+                android:text="OTP will be sent on this number for verification."/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/XL_space"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/image_card"
+                    android:src="@drawable/ic_card_membership_white_24dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/label_card"
+                    android:layout_width="0dp"
+                    android:text="Card"
+                    android:layout_weight="37"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"/>
+                <!--View
+                    style="@style/Divider_vertical_Medium"/-->
+                <EditText
+                    style="@style/Edittext_only_click_bg_medium"
+                    android:id="@+id/input_qr_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Touch to Scan"
+                    android:layout_weight="63"
+                    android:gravity="left"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/XL_space"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_otp"
+                android:layout_marginBottom="@dimen/XL_space">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/image_otp"
+                    android:src="@drawable/ic_security_white_24dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:id="@+id/label_otp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="OTP"
+                    android:layout_weight="37"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"/>
+                <EditText
+                    style="@style/MyEdittext_Medium"
+                    android:id="@+id/input_otp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter OTP"
+                    android:layout_weight="63"
+                    android:gravity="left"
+                    android:inputType="number"
+                    android:maxLength="@string/otp_char_limit"
+                    android:imeOptions="actionDone"/>
+            </LinearLayout>
+
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:id="@+id/layout_otp"
-            android:layout_marginBottom="@dimen/XL_space">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/image_otp"
-                android:src="@drawable/ic_security_white_24dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_medium"
-                android:id="@+id/label_otp"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="OTP"
-                android:layout_weight="37"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
-            <EditText
-                style="@style/MyEdittext_Medium"
-                android:id="@+id/input_otp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="Enter OTP"
-                android:layout_weight="63"
-                android:gravity="left"
-                android:inputType="number"
-                android:maxLength="@string/otp_char_limit"
-                android:imeOptions="actionDone"/>
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

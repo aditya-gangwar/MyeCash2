@@ -71,8 +71,8 @@ public class CardDetailsFragment extends Fragment {
 
         mCcntId.setText( (card.getCcntId()==null)?"":card.getCcntId() );
         mAgentId.setText( (card.getAgentId()==null)?"":card.getAgentId() );
-        mMchntId.setText( (card.getMchntId()==null)?"":card.getAgentId() );
-        mCustId.setText( (card.getCustId()==null)?"":card.getAgentId() );
+        mMchntId.setText( (card.getMchntId()==null)?"":card.getMchntId() );
+        mCustId.setText( (card.getCustId()==null)?"":card.getCustId() );
         
     }
 

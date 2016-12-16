@@ -9,6 +9,7 @@ import in.myecash.appagent.backendAPI.InternalUserServices;
 import in.myecash.appagent.backendAPI.InternalUserServicesNoLogin;
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appbase.backendAPI.CommonServices;
+import in.myecash.common.MyCardForAction;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.BackgroundProcessor;
@@ -19,6 +20,7 @@ import in.myecash.merchantbase.entities.MerchantUser;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by adgangwa on 17-07-2016.
@@ -261,7 +263,12 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
     private int actionForCards(MessageActionCards data) {
         try {
-            mRetainedFragment.mLastCardsForAction = InternalUserServices.getInstance().execActionForCards(data.cards, data.action, data.allocateTo);
+            List<MyCardForAction> list = InternalUserServices.getInstance().execActionForCards(data.cards, data.action, data.allocateTo);
+
+            mRetainedFragment.mLastCardsForAction.clear();
+            for (MyCardForAction card : list) {
+                mRetainedFragment.mLastCardsForAction.add(card);
+            }
             LogMy.d(TAG,"actionForCards success");
 
         } catch (BackendlessException e) {
