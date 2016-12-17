@@ -125,7 +125,7 @@ public class MobileChangePreference extends DialogPreference
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder)
     {
         super.onPrepareDialogBuilder(builder);
-        builder.setNeutralButton("Reset", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton("Restart", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mCallback.changeMobileNumReset(true);

@@ -551,6 +551,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
         LogMy.d(TAG,"In onPause: ");
         super.onPause();
         AppCommonUtil.cancelProgressDialog(false);
+        AppCommonUtil.cancelToast();
     }
 
     @Override

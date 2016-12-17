@@ -139,6 +139,7 @@ public class CustomerRegDialog extends DialogFragment
         if(cardId!=null && !cardId.isEmpty()) {
             scannedCardId = cardId;
             mInputQrCard.setText(CommonUtils.getPartialVisibleStr(scannedCardId));
+            mInputQrCard.setError("");
             mInputQrCard.setClickable(false);
             mInputQrCard.setEnabled(false);
             mLabelCard.setEnabled(false);
@@ -181,7 +182,7 @@ public class CustomerRegDialog extends DialogFragment
                         dialog.dismiss();
                     }
                 })
-                .setNeutralButton("Reset", new DialogInterface.OnClickListener() {
+                .setNeutralButton("Restart", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mCallback.onCustomerRegReset();
@@ -386,9 +387,16 @@ public class CustomerRegDialog extends DialogFragment
         if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
             scannedCardId = qrCode;
             mInputQrCard.setText(CommonUtils.getPartialVisibleStr(scannedCardId));
+            mInputQrCard.setError("");
         } else {
             AppCommonUtil.toast(getActivity(),"Invalid Member Card");
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AppCommonUtil.cancelToast();
     }
 
     @Override

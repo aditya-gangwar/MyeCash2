@@ -188,11 +188,12 @@ public class CashTransactionFragment extends Fragment implements
                 //mToPayCash = savedInstanceState.getInt("mToPayCash");
                 mReturnCash = savedInstanceState.getInt("mReturnCash");
             }
+            //mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid);
         }
 
         // both of below concerns view - so run again in all cases
-        mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid);
-        setCashBalance();
+        //mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid);
+        //setCashBalance();
     }
 
     private void displayInputBillAmt() {
@@ -331,7 +332,7 @@ public class CashTransactionFragment extends Fragment implements
 
             // try to round off, so as mReturnCash becomes 0
             int rem = mReturnCash;
-            if(rem != 0 && mAddCashload<=0) {
+            if(mAddCashload<=0) {
                 //if(mRedeemCashback >= rem && mRedeemCbStatus != STATUS_MANUAL_SET) {
                 if(mRedeemCashback >= rem) {
                     // redeem cashback itself is enough for round-off
@@ -509,7 +510,7 @@ public class CashTransactionFragment extends Fragment implements
                 mRetainedFragment.mOrderItems.get(0).getQuantity() == 1) {
             return true;
         } else {
-            Toast.makeText(getActivity(), "Use billing screen to edit", Toast.LENGTH_LONG).show();
+            AppCommonUtil.toast(getActivity(), "Use billing screen to edit");
             return false;
         }
     }
@@ -786,6 +787,20 @@ public class CashTransactionFragment extends Fragment implements
                     mDebitClStatus == STATUS_AUTO ||
                     mAwardCbStatus == STATUS_AUTO ||
                     mRedeemCbStatus == STATUS_AUTO) {
+                // If all 0 - no point going ahead
+                // This may happen, if this txn involves only cashback and
+                // that cashback is less than 1 rupee - which will be rounded of to 0
+                if(mAwardCashback<=0 && mAddCashload<=0 && mRedeemCashback <= 0 && mDebitCashload<=0) {
+                    //AppCommonUtil.toast(getActivity(), "No MyeCash data to process !!");
+                    String msg = null;
+                    if(mRetainedFragment.mBillTotal <= 0) {
+                        msg = "All Credit/Debit amounts are 0, for both Cashback and Account";
+                    } else {
+                        msg = "'Award Cashback' is less than 1 Rupee. Other credit/debit amount are 0.";
+                    }
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg,true, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
                 //if (getCashPaidError() == null) {
                 if(mCashPaid>=0) {
                     if(mReturnCash != 0) {
@@ -811,7 +826,7 @@ public class CashTransactionFragment extends Fragment implements
                     AppCommonUtil.toast(getActivity(), "Set Cash Paid");
                 }
             } else {
-                AppCommonUtil.toast(getActivity(), "No MyeCash data to process !");
+                AppCommonUtil.toast(getActivity(), "No MyeCash data to process !!");
             }
 
         }
@@ -1205,9 +1220,17 @@ public class CashTransactionFragment extends Fragment implements
 
     @Override
     public void onResume() {
-        LogMy.d(TAG, "In onResume");
+        //LogMy.d(TAG, "In onResume");
         super.onResume();
         mCallback.setDrawerState(false);
+        mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid);
+        setCashBalance();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AppCommonUtil.cancelToast();
     }
 
     @Override

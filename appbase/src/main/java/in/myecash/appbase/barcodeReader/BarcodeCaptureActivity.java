@@ -237,7 +237,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
         if(mImageFileName!=null &&
                 !mFirstImage ) {
             mFirstImage = true;
-            LogMy.d(TAG, "Storing image from the Frame");
+            //LogMy.d(TAG, "Storing image from the Frame");
             // save the frame to the file system
             ByteBuffer byteBuffer = frame.getGrayscaleImageData();
             int w = frame.getMetadata().getWidth();
@@ -249,7 +249,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
             byte[] jpegArray = baos.toByteArray();
             Bitmap bitmap = BitmapFactory.decodeByteArray(jpegArray, 0, jpegArray.length);
             //Bitmap bmp = AppCommonUtil.addDateTime(BarcodeCaptureActivity.this, bitmap);
-            LogMy.d(TAG, "Got bmp from the Frame: "+bitmap.getByteCount());
+            //LogMy.d(TAG, "Got bmp from the Frame: "+bitmap.getByteCount());
             AppCommonUtil.compressBmpAndStore(BarcodeCaptureActivity.this, bitmap, mImageFileName);
         }
     }
@@ -264,7 +264,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
             setResult(ErrorCodes.GENERAL_ERROR, data);
             finish();
         } else {
-            LogMy.d(TAG, "Barcode in Multitracker = " + barcodeValue);
+            //LogMy.d(TAG, "Barcode in Multitracker = " + barcodeValue);
             Intent intent = new Intent();
             intent.putExtra(BarcodeObject, barcodeValue);
             setResult(ErrorCodes.NO_ERROR, intent);

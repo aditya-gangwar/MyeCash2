@@ -26,7 +26,7 @@
         style="@style/Edittext_only_view_small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login (and password reset) is allowed from 'trusted devices' only"
+        android:text="Login is allowed only from 'trusted devices'"
         android:layout_marginTop="@dimen/medium_space"
         android:singleLine="false"/>
 

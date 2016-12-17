@@ -108,7 +108,7 @@ public class TxnSuccessDialog extends DialogFragment
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        sendResult();
+        //sendResult();
         dialog.dismiss();
     }
 
@@ -117,6 +117,18 @@ public class TxnSuccessDialog extends DialogFragment
         if (mListener != null) {
             mListener.onTxnSuccess();
         }
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        sendResult();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        sendResult();
     }
 
     //private EditText mInputCustomer;

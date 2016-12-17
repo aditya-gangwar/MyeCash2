@@ -26,7 +26,7 @@ public class MyBarcodeDetector extends Detector<Barcode> {
     }
 
     public SparseArray<Barcode> detect(Frame frame) {
-        LogMy.d(TAG, "In detect");
+        //LogMy.d(TAG, "In detect");
         SparseArray<Barcode> faces = mDelegate.detect(frame);
         if (faces.size() > 0) {
             mCallback.onDetection(frame);

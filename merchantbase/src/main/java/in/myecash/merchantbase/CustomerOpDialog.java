@@ -125,7 +125,7 @@ public class CustomerOpDialog extends DialogFragment
                         dialog.dismiss();
                     }
                 })
-                .setNeutralButton("Reset", new DialogInterface.OnClickListener() {
+                .setNeutralButton("Restart", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mCallback.onCustomerOpReset(getTag());
@@ -487,6 +487,7 @@ public class CustomerOpDialog extends DialogFragment
     private void setQrCode(String qrCode) {
         if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
             mInputQrCard.setText(qrCode);
+            mInputQrCard.setError("");
         } else {
             Toast.makeText(getActivity(), "Invalid member QR code: " + qrCode, Toast.LENGTH_LONG).show();
         }

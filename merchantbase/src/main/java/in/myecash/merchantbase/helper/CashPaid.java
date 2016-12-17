@@ -204,14 +204,16 @@ public class CashPaid implements Serializable, View.OnTouchListener {
                 final Activity activity = mActivity;
                 if(event.getAction() == MotionEvent.ACTION_UP) {
 
-                    // remove rupee symbol
-                    if(!mInputAmt.getText().toString().isEmpty()) {
-                        setCustomAmtText( String.valueOf(AppCommonUtil.getValueAmtStr(mInputAmt.getText().toString())) );
-                    }
-
                     // show the keyboard and adjust screen for the same
                     activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
+                    // remove rupee symbol
+                    String uiVal = mInputAmt.getText().toString();
+                    if(!uiVal.isEmpty()) {
+                        //setCustomAmtText( String.valueOf(AppCommonUtil.getValueAmtStr(mInputAmt.getText().toString())) );
+                        setCustomAmtText("");
+                        mInputAmt.setHint(String.valueOf(AppCommonUtil.getValueAmtStr(uiVal)));
+                    }
                     mInputAmt.setCursorVisible(true);
                 }
                 return false;

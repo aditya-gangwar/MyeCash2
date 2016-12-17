@@ -68,6 +68,7 @@ public class AppCommonUtil {
     //private static final SimpleDateFormat mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
 
     // single active progress dialog at any time
+    private static Toast mToast;
     private static ProgressDialog mProgressDialog;
     private static String mProgressDialogMsg;
 
@@ -118,7 +119,14 @@ public class AppCommonUtil {
      8 Show toast on screen
      */
     public static void toast(Context context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        if(mToast!=null)
+            mToast.cancel();
+        mToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+        mToast.show();
+    }
+    public static void cancelToast() {
+        if(mToast!=null)
+            mToast.cancel();
     }
 
     /*

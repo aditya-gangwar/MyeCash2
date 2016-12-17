@@ -172,6 +172,7 @@ public class TxnCancelDialog extends DialogFragment
     private void setQrCode(String qrCode) {
         if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
             mInputQrCard.setText(qrCode);
+            mInputQrCard.setError("");
         } else {
             AppCommonUtil.toast(getActivity(), "Invalid Membership card");
         }

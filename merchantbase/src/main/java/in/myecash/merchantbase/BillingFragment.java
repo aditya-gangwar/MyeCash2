@@ -322,6 +322,12 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         mInputMoreInfo.setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        AppCommonUtil.cancelToast();
+    }
+
     private EditText mInputMoreInfo;
     private EditText mInputItemAmt;
     private AppCompatButton mKey1;

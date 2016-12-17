@@ -92,7 +92,6 @@ public class AgentUser {
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Login failed: "+e.toString());
-            logout();
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;

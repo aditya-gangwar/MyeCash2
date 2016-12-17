@@ -299,6 +299,12 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
         updateUI();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        AppCommonUtil.cancelToast();
+    }
+
     private class CardForActionHolder extends RecyclerView.ViewHolder
             implements View.OnTouchListener, View.OnClickListener {
 

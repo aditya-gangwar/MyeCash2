@@ -132,6 +132,7 @@ public class SearchCardDialog extends DialogFragment
     private void setQrCode(String qrCode) {
         mScannedCardNum = qrCode;
         mInputQrCard.setText("OK");
+        mInputQrCard.setError("");
         mInputId.setEnabled(false);
     }
 
