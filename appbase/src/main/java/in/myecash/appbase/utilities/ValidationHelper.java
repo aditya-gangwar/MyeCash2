@@ -24,7 +24,7 @@ public final class ValidationHelper{
     }*/
 
     public static int validatePin(String value) {
-        if (value.isEmpty()) {
+        if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else if (value.length() != CommonConstants.PIN_LEN) {
             return ErrorCodes.INVALID_LENGTH;
@@ -34,7 +34,7 @@ public final class ValidationHelper{
     }
 
     public static int validateOtp(String value) {
-        if (value.isEmpty()) {
+        if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else if (value.length() != CommonConstants.OTP_LEN) {
             return ErrorCodes.INVALID_LENGTH;
@@ -44,14 +44,16 @@ public final class ValidationHelper{
     }
 
     public static int validateMemberCard(String value) {
-        if (value.length() != CommonConstants.CUSTOMER_CARDID_LEN) {
+        if (value==null || value.isEmpty()) {
+            return ErrorCodes.EMPTY_VALUE;
+        } else if (value.length() != CommonConstants.CUSTOMER_CARDID_LEN) {
             return ErrorCodes.INVALID_LENGTH;
         }
         return ErrorCodes.NO_ERROR;
     }
 
     public static int validateMobileNo(String value) {
-        if (value.isEmpty()) {
+        if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else if(value.length() != CommonConstants.MOBILE_NUM_LENGTH) {
             return ErrorCodes.INVALID_LENGTH;
@@ -63,7 +65,7 @@ public final class ValidationHelper{
     }
 
     public static int validateEmail(String value) {
-        if (value.isEmpty()) {
+        if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
             return ErrorCodes.INVALID_FORMAT;
@@ -73,7 +75,7 @@ public final class ValidationHelper{
     }
 
     public static int validateAddress(String value) {
-        if (value.isEmpty()) {
+        if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else {
             return ErrorCodes.NO_ERROR;
@@ -81,7 +83,7 @@ public final class ValidationHelper{
     }
 
     public static int validateBrandName(String value) {
-        if (value.isEmpty()) {
+        if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else {
             return ErrorCodes.NO_ERROR;
@@ -89,7 +91,7 @@ public final class ValidationHelper{
     }
 
     public static int validateCustName(String value) {
-        if (value.isEmpty()) {
+        if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else {
             return ErrorCodes.NO_ERROR;
@@ -97,7 +99,7 @@ public final class ValidationHelper{
     }
 
     public static int validatePassword(String value) {
-        if (value.isEmpty()) {
+        if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else {
             return ErrorCodes.NO_ERROR;
@@ -105,7 +107,7 @@ public final class ValidationHelper{
     }
 
     public static int validateTicketNum(String value) {
-        if (value.isEmpty()) {
+        if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else {
             return ErrorCodes.NO_ERROR;
@@ -113,7 +115,7 @@ public final class ValidationHelper{
     }
 
     public static int validateMerchantId(String value) {
-        if (value.isEmpty() ) {
+        if (value==null || value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;
         } else if (value.length() != CommonConstants.MERCHANT_ID_LEN) {
             return ErrorCodes.INVALID_LENGTH;
@@ -123,7 +125,7 @@ public final class ValidationHelper{
     }
 
     public static int validateCustInternalId(String value) {
-        if (value.isEmpty() ) {
+        if (value==null || value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;
         } else if (value.length() != CommonConstants.CUSTOMER_INTERNAL_ID_LEN) {
             return ErrorCodes.INVALID_LENGTH;
@@ -133,7 +135,7 @@ public final class ValidationHelper{
     }
 
     public static int validateInternalUserId(String value) {
-        if (value.isEmpty() ) {
+        if (value==null || value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;
         } else if (value.length() != CommonConstants.INTERNAL_USER_ID_LEN) {
             return ErrorCodes.INVALID_LENGTH;
@@ -143,7 +145,7 @@ public final class ValidationHelper{
     }
 
     public static int validateAgentId(String value) {
-        if (value.isEmpty() ) {
+        if (value==null || value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;
         } else if (value.length() != CommonConstants.INTERNAL_USER_ID_LEN) {
             return ErrorCodes.INVALID_LENGTH;
@@ -155,7 +157,7 @@ public final class ValidationHelper{
     }
 
     public static int validateCcId(String value) {
-        if (value.isEmpty() ) {
+        if (value==null || value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;
         } else if (value.length() != CommonConstants.INTERNAL_USER_ID_LEN) {
             return ErrorCodes.INVALID_LENGTH;
@@ -167,7 +169,7 @@ public final class ValidationHelper{
     }
 
     public static int validateCcntId(String value) {
-        if (value.isEmpty() ) {
+        if (value==null || value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;
         } else if (value.length() != CommonConstants.INTERNAL_USER_ID_LEN) {
             return ErrorCodes.INVALID_LENGTH;
@@ -179,7 +181,7 @@ public final class ValidationHelper{
     }
 
     public static int validateCardId(String value) {
-        if (value.isEmpty() ) {
+        if (value==null || value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;
         } else if (value.length() != CommonConstants.CUSTOMER_CARDID_LEN) {
             return ErrorCodes.INVALID_LENGTH;
@@ -189,7 +191,7 @@ public final class ValidationHelper{
     }
 
     public static int validateCbRate(String value) {
-        if (value.isEmpty() ) {
+        if (value==null || value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;
         } else {
             float rate;
@@ -206,7 +208,7 @@ public final class ValidationHelper{
     }
 
     public static int validateDob(String value) {
-        if (value.isEmpty() ) {
+        if (value==null || value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;
         } else if (value.length() != CommonConstants.DOB_LEN) {
             return ErrorCodes.INVALID_LENGTH;

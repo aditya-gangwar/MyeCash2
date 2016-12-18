@@ -68,6 +68,8 @@ public class MyRetainedFragment extends RetainedFragment {
     public String mAccEnablePin;
     public String mAccEnableOtp;
 
+    public boolean mInPauseState;
+
     public void reset() {
         LogMy.d(TAG,"In reset");
         mPinMobileChange = null;

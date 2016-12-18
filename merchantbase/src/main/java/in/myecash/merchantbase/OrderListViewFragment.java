@@ -82,7 +82,7 @@ public class OrderListViewFragment extends ListFragment implements
     }
 
     private void setTotalAmt() {
-        String str = "Charge   "+ AppConstants.SYMBOL_RS + String.valueOf(mRetainedFragment.mBillTotal);
+        String str = "Total      "+ AppConstants.SYMBOL_RS + String.valueOf(mRetainedFragment.mBillTotal);
         mTotalBtn.setText(str);
     }
 
@@ -204,7 +204,6 @@ public class OrderListViewFragment extends ListFragment implements
 
         if (id == R.id.btn_bill_total) {
             mCallback.onTotalBillFromOrderList();
-
         }
     }
 

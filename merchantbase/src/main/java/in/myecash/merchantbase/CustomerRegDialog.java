@@ -139,7 +139,7 @@ public class CustomerRegDialog extends DialogFragment
         if(cardId!=null && !cardId.isEmpty()) {
             scannedCardId = cardId;
             mInputQrCard.setText(CommonUtils.getPartialVisibleStr(scannedCardId));
-            mInputQrCard.setError("");
+            mInputQrCard.setError(null);
             mInputQrCard.setClickable(false);
             mInputQrCard.setEnabled(false);
             mLabelCard.setEnabled(false);
@@ -387,7 +387,7 @@ public class CustomerRegDialog extends DialogFragment
         if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
             scannedCardId = qrCode;
             mInputQrCard.setText(CommonUtils.getPartialVisibleStr(scannedCardId));
-            mInputQrCard.setError("");
+            mInputQrCard.setError(null);
         } else {
             AppCommonUtil.toast(getActivity(),"Invalid Member Card");
         }

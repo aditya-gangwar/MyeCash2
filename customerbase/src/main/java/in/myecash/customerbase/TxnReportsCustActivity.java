@@ -336,7 +336,9 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
         if (count == 0) {
             super.onBackPressed();
         } else {
-            getFragmentManager().popBackStackImmediate();
+            if(!mWorkFragment.mInPauseState) {
+                getFragmentManager().popBackStackImmediate();
+            }
 
             if(mMerchantId==null || mMerchantId.isEmpty()) {
                 // Case when latest txns are directly shown
@@ -390,7 +392,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     protected void onResume() {
         LogMy.d(TAG, "In onResume: ");
         super.onResume();
-
+        mWorkFragment.mInPauseState = false;
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
@@ -400,6 +402,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     protected void onPause() {
         LogMy.d(TAG,"In onPause: ");
         super.onPause();
+        mWorkFragment.mInPauseState = true;
         AppCommonUtil.cancelProgressDialog(false);
     }
 

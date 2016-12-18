@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 public class CustomerDetailsDialog extends DialogFragment  {
     private static final String TAG = "CustomerDetailsDialog";
     private static final String ARG_CB_POSITION = "cbPosition";
+    private static final String ARG_GETTXNS_BTN = "getTxnsBtn";
 
     private CustomerDetailsDialogIf mCallback;
     private SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
@@ -40,10 +41,11 @@ public class CustomerDetailsDialog extends DialogFragment  {
         void getCustTxns(String id);
     }
 
-    public static CustomerDetailsDialog newInstance(int position) {
+    public static CustomerDetailsDialog newInstance(int position, boolean showGetTxnsBtn) {
         LogMy.d(TAG, "Creating new CustomerDetailsDialog instance: "+position);
         Bundle args = new Bundle();
         args.putInt(ARG_CB_POSITION, position);
+        args.putBoolean(ARG_GETTXNS_BTN, showGetTxnsBtn);
 
         CustomerDetailsDialog fragment = new CustomerDetailsDialog();
         fragment.setArguments(args);
@@ -77,7 +79,9 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
         bindUiResources(v);
 
-        Dialog dialog = new AlertDialog.Builder(getActivity())
+        boolean showGetTxns = getArguments().getBoolean(ARG_GETTXNS_BTN, true);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setPositiveButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {
@@ -85,16 +89,19 @@ public class CustomerDetailsDialog extends DialogFragment  {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
-                        })
-                .setNeutralButton("Get Txns", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mCallback.getCustTxns(mInputCustomerId.getText().toString());
-                        dialog.dismiss();
-                    }
-                })
-                .create();
+                        });
 
+        if(showGetTxns) {
+            builder.setNeutralButton("Get Txns", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mCallback.getCustTxns(mInputCustomerId.getText().toString());
+                    dialog.dismiss();
+                }
+            });
+        }
+
+        Dialog dialog = builder.create();
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {

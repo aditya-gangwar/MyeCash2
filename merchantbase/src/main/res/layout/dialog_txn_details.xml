@@ -432,7 +432,8 @@
                 android:layout_height="wrap_content"
                 android:text="AUX789R5"
                 android:layout_weight="60"
-                android:gravity="left"/>
+                android:gravity="left"
+                android:textColor="@color/link_blue"/>
         </LinearLayout>
 
         <LinearLayout

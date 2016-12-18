@@ -83,7 +83,7 @@ public class DbConstants {
     public static final String OP_ACC_CLOSURE = "Account Closure";
     public static final String OP_CANCEL_ACC_CLOSURE = "Cancel Account Closure";
 
-    public static final String OP_NEW_CARD = "New Membership Card";
+    public static final String OP_NEW_CARD = "Change Member Card";
     public static final String OP_RESET_PIN = "Reset PIN";
     public static final String OP_CHANGE_PIN = "Change PIN";
 

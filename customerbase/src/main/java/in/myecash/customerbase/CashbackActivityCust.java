@@ -841,7 +841,9 @@ public class CashbackActivityCust extends AppCompatActivity implements
             DialogFragmentWrapper.createConfirmationDialog(AppConstants.exitGenTitle, AppConstants.exitAppMsg, false, false)
                     .show(mFragMgr, DIALOG_BACK_BUTTON);
         } else {
-            mFragMgr.popBackStackImmediate();
+            if(!mRetainedFragment.mInPauseState) {
+                mFragMgr.popBackStackImmediate();
+            }
             /*if(mMchntListFragment.isVisible()) {
                 LogMy.d(TAG,"Mobile num fragment visible");
                 //getReadyForNewTransaction();
@@ -870,24 +872,6 @@ public class CashbackActivityCust extends AppCompatActivity implements
                 mRetainedFragment.archiveTxns();
             }
         }*/
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggles
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onResume() {
-        LogMy.d(TAG, "In onResume: ");
-        super.onResume();
-        if(AppCommonUtil.getProgressDialogMsg()!=null) {
-            AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
-        }
-        setDrawerState(true);
-        AppCommonUtil.setUserType(DbConstants.USER_TYPE_CUSTOMER);
     }
 
     private void fetchCbData() {
@@ -1005,9 +989,29 @@ public class CashbackActivityCust extends AppCompatActivity implements
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onResume() {
+        LogMy.d(TAG, "In onResume: ");
+        super.onResume();
+        mRetainedFragment.mInPauseState = false;
+        if(AppCommonUtil.getProgressDialogMsg()!=null) {
+            AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
+        }
+        setDrawerState(true);
+        AppCommonUtil.setUserType(DbConstants.USER_TYPE_CUSTOMER);
+    }
+
+    @Override
     protected void onPause() {
         LogMy.d(TAG,"In onPause: ");
         super.onPause();
+        mRetainedFragment.mInPauseState = true;
         AppCommonUtil.cancelProgressDialog(false);
         setDrawerState(false);
     }

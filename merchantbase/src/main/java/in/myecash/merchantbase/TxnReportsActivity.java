@@ -49,7 +49,8 @@ public class TxnReportsActivity extends AppCompatActivity implements
         DatePickerDialog.DatePickerIf, TxnSummaryFragment.TxnSummaryFragmentIf,
         TxnListFragment.TxnListFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         TxnDetailsDialog.TxnDetailsDialogIf, TxnReportsHelper.TxnReportsHelperIf,
-        TxnCancelDialog.TxnCancelDialogIf, TxnPinInputDialog.TxnPinInputDialogIf {
+        TxnCancelDialog.TxnCancelDialogIf, TxnPinInputDialog.TxnPinInputDialogIf,
+        CustomerDetailsDialog.CustomerDetailsDialogIf {
     private static final String TAG = "TxnReportsActivity";
 
     public static final String EXTRA_CUSTOMER_ID = "extraCustId";
@@ -61,6 +62,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
     private static final String TXN_SUMMARY_FRAGMENT = "TxnSummaryFragment";
     private static final String DIALOG_TXN_CANCEL_CONFIRM = "dialogTxnCanConf";
     private static final String DIALOG_PIN_CANCEL_TXN = "dialogPinCanTxn";
+    private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
 
     // All required date formatters
     private SimpleDateFormat mSdfOnlyDateDisplay = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
@@ -345,6 +347,9 @@ public class TxnReportsActivity extends AppCompatActivity implements
                     }
                     break;
 
+                case MyRetainedFragment.REQUEST_GET_CASHBACK:
+                    onCashbackResponse(errorCode);
+                    break;
             }
 
         } catch (Exception e) {
@@ -352,6 +357,35 @@ public class TxnReportsActivity extends AppCompatActivity implements
             LogMy.e(TAG, "Exception is ReportsActivity:onBgProcessResponse: "+operation+": "+errorCode, e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
+    }
+
+    // This fx. gets called in case of successfull customer registration too
+    public void onCashbackResponse(int errorCode) {
+        LogMy.d(TAG, "In onCashbackResponse: " + errorCode);
+
+        AppCommonUtil.cancelProgressDialog(true);
+        // response against search of particular customer details
+        if(errorCode==ErrorCodes.NO_ERROR) {
+            // show customer details dialog
+            CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(-1, false);
+            dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
+        } else {
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
+    }
+
+    @Override
+    public void showCustDetails(String internalId) {
+        int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
+        if ( resultCode != ErrorCodes.NO_ERROR) {
+            // Show error notification dialog
+            DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        } else {
+            AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+            mWorkFragment.fetchCashback(internalId);
         }
     }
 
@@ -364,6 +398,12 @@ public class TxnReportsActivity extends AppCompatActivity implements
 
         String url = CommonUtils.getTxnImgDir(mchntId)+txnImgFileName;
         mWorkFragment.fetchImageFile(url);
+    }
+
+    @Override
+    public void getCustTxns(String id) {
+        // Do nothing - shudn't get called as 'Get Txns' button is not shown
+        // for 'customer details' dialog - when shown from 'Txn details' dialog
     }
 
     @Override
@@ -491,7 +531,9 @@ public class TxnReportsActivity extends AppCompatActivity implements
         if (count == 0) {
             super.onBackPressed();
         } else {
-            getFragmentManager().popBackStackImmediate();
+            if(!mWorkFragment.mInPauseState) {
+                getFragmentManager().popBackStackImmediate();
+            }
 
             if(mFragmentContainer.getVisibility()==View.VISIBLE && count==1) {
                 setToolbarTitle("Transactions");
@@ -540,7 +582,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
     protected void onResume() {
         LogMy.d(TAG, "In onResume: ");
         super.onResume();
-
+        mWorkFragment.mInPauseState = false;
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
@@ -550,6 +592,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
     protected void onPause() {
         LogMy.d(TAG,"In onPause: ");
         super.onPause();
+        mWorkFragment.mInPauseState = true;
         AppCommonUtil.cancelProgressDialog(false);
         AppCommonUtil.cancelToast();
     }

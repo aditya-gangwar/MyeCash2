@@ -75,6 +75,7 @@ public class ErrorCodes {
     public static final int FILE_NOT_FOUND = 666;
     public static final int SERVICE_GLOBAL_DISABLED = 667;
     public static final int REMOTE_SERVICE_NOT_AVAILABLE = 668;
+    public static final int MOBILE_ALREADY_REGISTERED = 669;
 
     // *******************************************************************
     // IT IS MANDATORY THAT ALL ERROR CODES ABOVE ARE ADDED TO BELOW MAP
@@ -142,6 +143,7 @@ public class ErrorCodes {
         aMap.put(FILE_NOT_FOUND,"Requested data not available");
         aMap.put(SERVICE_GLOBAL_DISABLED,"Service under maintenance. Please try after ");
         aMap.put(REMOTE_SERVICE_NOT_AVAILABLE,"MyeCash Server not reachable. Please check Internet connection.");
+        aMap.put(MOBILE_ALREADY_REGISTERED,"Mobile Number is already registered for other user.");
 
         appErrorDesc = Collections.unmodifiableMap(aMap);
     }

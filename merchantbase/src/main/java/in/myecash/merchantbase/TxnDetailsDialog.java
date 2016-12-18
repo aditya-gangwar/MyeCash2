@@ -9,7 +9,9 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +40,7 @@ public class TxnDetailsDialog extends DialogFragment {
 
     public interface TxnDetailsDialogIf {
         MyRetainedFragment getRetainedFragment();
+        void showCustDetails(String internalId);
         void showTxnImg(int currTxnPos);
         void cancelTxn(int txnPos);
     }
@@ -160,7 +163,19 @@ public class TxnDetailsDialog extends DialogFragment {
             mInputTotalBill.setText(AppCommonUtil.getAmtStr(txn.getTotal_billed()));
             mInputCbBill.setText(AppCommonUtil.getAmtStr(txn.getCb_billed()));
 
-            mInputCustomerId.setText(txn.getCust_private_id());
+            //mInputCustomerId.setText(txn.getCust_private_id());
+            mInputCustomerId.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                        mCallback.showCustDetails(txn.getCust_private_id());
+                        getDialog().dismiss();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            mInputCustomerId.setText(Html.fromHtml("<u>"+txn.getCust_private_id()+"</u>"));
             mInputMobileNum.setText(CommonUtils.getPartialVisibleStr(txn.getCustomer_id()));
             mCardUsed.setText(txn.getUsedCardId());
             mPinUsed.setText(txn.getCpin());

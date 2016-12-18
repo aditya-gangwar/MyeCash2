@@ -103,6 +103,10 @@ public class MyRetainedFragment extends RetainedFragment {
     //public List<Transaction> mTxnsFromCsv = new ArrayList<>();
     public int mSummary[] = new int[AppConstants.INDEX_SUMMARY_MAX_VALUE];
     public List<Transaction> mLastFetchTransactions;
+    // An issue is observeed in SDK 19 that when back button is pressed after onPause()
+    // but before onResume(), then it was causing crash.
+    // Like, pressing back immediatly after screen unlock (locked when any fragment except mobile number one was visible)
+    public boolean mInPauseState;
 
     public void reset() {
         LogMy.d(TAG,"In reset");

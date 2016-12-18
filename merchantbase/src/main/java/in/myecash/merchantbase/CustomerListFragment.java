@@ -551,7 +551,7 @@ public class CustomerListFragment extends Fragment {
                     LogMy.d(TAG,"In onClickListener of customer list item");
                     int pos = mCustRecyclerView.getChildAdapterPosition(v);
                     if (pos >= 0 && pos < getItemCount()) {
-                        CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(pos);
+                        CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(pos, true);
                         dialog.show(getFragmentManager(), DIALOG_CUSTOMER_DETAILS);
                     } else {
                         LogMy.e(TAG,"Invalid position in onClickListener of customer list item: "+pos);

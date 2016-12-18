@@ -393,7 +393,7 @@ public class CashbackActivity extends AppCompatActivity implements
                     dialog.show(mFragMgr, DIALOG_MERCHANT_DETAILS);
                 } else {
                     // show customer details dialog
-                    CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(-1);
+                    CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(-1, true);
                     dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
                 }
             }
@@ -755,9 +755,11 @@ public class CashbackActivity extends AppCompatActivity implements
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
         } else {
-            File file = new File(mWorkFragment.mCardImageFilename);
-            if(file.exists()) {
-                deleteFile(mWorkFragment.mCardImageFilename);
+            if(mWorkFragment.mCardImageFilename!=null) {
+                File file = new File(mWorkFragment.mCardImageFilename);
+                if (file.exists()) {
+                    deleteFile(mWorkFragment.mCardImageFilename);
+                }
             }
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -1033,10 +1035,11 @@ public class CashbackActivity extends AppCompatActivity implements
             if(mLastMenuItemId==R.id.menu_dashboard) {
                 // delete old available customer data file
                 // so as next time new file is downloaded, created during this call
-                String filePath = getFilesDir() + "/" + AppCommonUtil.getMerchantCustFileName(mMerchantUser.getMerchantId());
+                String filename = AppCommonUtil.getMerchantCustFileName(mMerchantUser.getMerchantId());
+                String filePath = getFilesDir() + "/" + filename;
                 File file = new File(filePath);
                 if(file.exists()) {
-                    deleteFile(filePath);
+                    deleteFile(filename);
                 }
                 startDBoardSummaryFrag();
 
@@ -1293,7 +1296,7 @@ public class CashbackActivity extends AppCompatActivity implements
             // response against search of particular customer details
             if(errorCode==ErrorCodes.NO_ERROR) {
                 // show customer details dialog
-                CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(-1);
+                CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(-1, true);
                 dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
             } else {
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
@@ -1818,7 +1821,8 @@ public class CashbackActivity extends AppCompatActivity implements
 
     @Override
     public void onTotalBillFromOrderList() {
-        startCashTransFragment();
+        //startCashTransFragment();
+        onBackPressed();
     }
 
     @Override
@@ -1850,7 +1854,9 @@ public class CashbackActivity extends AppCompatActivity implements
             DialogFragmentWrapper.createConfirmationDialog(AppConstants.exitGenTitle, AppConstants.exitAppMsg, false, false)
                     .show(mFragMgr, DIALOG_BACK_BUTTON);
         } else {
-            mFragMgr.popBackStackImmediate();
+            if(!mWorkFragment.mInPauseState) {
+                getFragmentManager().popBackStackImmediate();
+            }
             if(mMobileNumFragment.isVisible()) {
                 LogMy.d(TAG,"Mobile num fragment visible");
                 getReadyForNewTransaction();
@@ -1891,6 +1897,7 @@ public class CashbackActivity extends AppCompatActivity implements
     protected void onResume() {
         LogMy.d(TAG, "In onResume");
         super.onResume();
+        mWorkFragment.mInPauseState = false;
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
@@ -1902,6 +1909,7 @@ public class CashbackActivity extends AppCompatActivity implements
     protected void onPause() {
         LogMy.d(TAG,"In onPause");
         super.onPause();
+        mWorkFragment.mInPauseState = true;
         AppCommonUtil.cancelProgressDialog(false);
         setDrawerState(false);
     }

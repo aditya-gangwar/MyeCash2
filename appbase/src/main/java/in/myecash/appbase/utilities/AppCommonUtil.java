@@ -440,7 +440,7 @@ public class AppCommonUtil {
      */
     public static String getMerchantCustFileName(String merchantId) {
         // File name: customers_<merchant_id>.csv
-        return CommonConstants.MERCHANT_CUST_DATA_FILE_PREFIX+merchantId+CommonConstants.CSV_FILE_EXT;
+        return CommonConstants.MERCHANT_CUST_DATA_FILE_PREFIX + merchantId + CommonConstants.CSV_FILE_EXT;
     }
     public static String getCashbackFileName(String userId) {
         // File name: customers_<user_id>.csv

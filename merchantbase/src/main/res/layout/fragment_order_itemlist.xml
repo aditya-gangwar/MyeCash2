@@ -32,8 +32,8 @@
         <android.support.v7.widget.AppCompatButton
             style="@style/button_normal_border"
             android:id="@+id/btn_bill_total"
-            android:text="Charge      \u20B9 0"
-            android:textColor="@color/accent"/>
+            android:text="Total      \u20B9 0"
+            android:textColor="@color/green_positive"/>
     </LinearLayout>
 
 </RelativeLayout>

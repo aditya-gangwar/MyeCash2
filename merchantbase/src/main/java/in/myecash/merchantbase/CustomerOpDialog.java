@@ -487,7 +487,7 @@ public class CustomerOpDialog extends DialogFragment
     private void setQrCode(String qrCode) {
         if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
             mInputQrCard.setText(qrCode);
-            mInputQrCard.setError("");
+            mInputQrCard.setError(null);
         } else {
             Toast.makeText(getActivity(), "Invalid member QR code: " + qrCode, Toast.LENGTH_LONG).show();
         }
