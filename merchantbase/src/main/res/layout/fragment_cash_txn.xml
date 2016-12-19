@@ -210,7 +210,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_grade_white_18dp"
+                    android:src="@drawable/ic_favorite_white_18dp"
                     android:layout_marginLeft="@dimen/small_space"
                     android:tint="@color/primary"
                     android:layout_gravity="center"/>

@@ -34,11 +34,11 @@
                     android:icon="@drawable/ic_group_black_24dp" />
                 <item
                     android:id="@+id/menu_reports"
-                    android:title="Transactions"
+                    android:title="Transaction History"
                     android:icon="@drawable/ic_swap_horiz_black_24dp" />
                 <item
                     android:id="@+id/menu_operations"
-                    android:title="Operations History"
+                    android:title="Service Request History"
                     android:icon="@drawable/ic_change_history_black_24dp" />
             </group>
         </menu>

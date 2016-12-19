@@ -119,6 +119,10 @@ public class MyGlobalSettings
     private static final String SETTINGS_WRONG_ATTEMPT_RESET_HRS = "wrong_attempt_reset_hrs";
     private static final int WRONG_ATTEMPT_RESET_HRS = 2;
 
+    // Txns older than thsi will be archived to files
+    // This also means that txns older than this :
+    // 1) Cannot be cancelled by Merchant
+    // 2) Cannot be visible on main screen i.e. can be fetched on per Merchant basis only.
     private static final String SETTINGS_TXNS_INTABLE_KEEP_DAYS = "txns_intable_keep_days";
     private static final int CUST_TXNS_KEEP_DAYS = 2;
 

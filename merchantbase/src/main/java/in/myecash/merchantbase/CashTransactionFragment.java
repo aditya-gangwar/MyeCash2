@@ -89,6 +89,7 @@ public class CashTransactionFragment extends Fragment implements
     private int mDebitClStatus;
     private int mAwardCbStatus;
     private int mRedeemCbStatus;
+    private boolean mRedeemCbOnPriority;
 
     // Container Activity must implement this interface
     public interface CashTransactionFragmentIf {
@@ -158,6 +159,7 @@ public class CashTransactionFragment extends Fragment implements
                 setAddClStatus(savedInstanceState.getInt("mAddClStatus"));
                 setRedeemClStatus(savedInstanceState.getInt("mDebitClStatus"));
                 setRedeemCbStatus(savedInstanceState.getInt("mRedeemCbStatus"));
+                mRedeemCbOnPriority = savedInstanceState.getBoolean("mRedeemCbOnPriority");
             }
         } else {
             // these fxs update onscreen view also, so need to be run for backstack scenario too
@@ -283,12 +285,23 @@ public class CashTransactionFragment extends Fragment implements
      */
     private void calcAndSetAmts(boolean forCashPaidChange) {
         LogMy.d(TAG,"Entering calcAndSetAmts: Bill:"+mRetainedFragment.mBillTotal+", cashPaid:"+mCashPaid);
+        LogMy.d(TAG,"Amount status: mDebitClStatus:"+ mDebitClStatus +", mAddClStatus:"+mAddClStatus+", mRedeemCbStatus:"+mRedeemCbStatus);
 
         // calculate add/redeem amounts fresh
-        calculateAmts();
+        // We may have some values set, from earlier calculation
+        // Reset those, and calculate all values again, based on new status
+        mRedeemCashback = mDebitCashload = mAddCashload = 0;
+        // Calculate both debit and add values
+        if(mRedeemCbOnPriority) {
+            calcRedeemCb();
+            calcDebitCl();
+        } else {
+            calcDebitCl();
+            calcRedeemCb();
+        }
+        calcAddCl();
 
-        // For merging - first try to adjust 'mRedeemCashback'
-        // and then 'mDebitCashload'
+        // For merging - first try to adjust 'mRedeemCashback' and then 'mDebitCashload'
 
         // try merging 'add cashload' and 'redeem cashback'
         // do not touch if value is manually set
@@ -308,13 +321,13 @@ public class CashTransactionFragment extends Fragment implements
         // Merge 'redeem cashload' and 'add cashload' values
         // do not touch if value is manually set
         //if(mAddClStatus!=STATUS_MANUAL_SET && mDebitClStatus !=STATUS_MANUAL_SET) {
-            if(mDebitCashload > mAddCashload && mAddCashload > 0) {
-                setDebitCashload(mDebitCashload - mAddCashload);
-                setAddCashload(0);
-            } else if(mAddCashload > mDebitCashload && mDebitCashload > 0) {
-                setAddCashload(mAddCashload - mDebitCashload);
-                setDebitCashload(0);
-            }
+        if(mDebitCashload > mAddCashload && mAddCashload > 0) {
+            setDebitCashload(mDebitCashload - mAddCashload);
+            setAddCashload(0);
+        } else if(mAddCashload > mDebitCashload && mDebitCashload > 0) {
+            setAddCashload(mAddCashload - mDebitCashload);
+            setDebitCashload(0);
+        }
         //}
         LogMy.d(TAG,"After merge cashload: "+mAddCashload+", "+ mDebitCashload);
 
@@ -413,16 +426,10 @@ public class CashTransactionFragment extends Fragment implements
 
     }
 
-    private void calculateAmts() {
-        LogMy.d(TAG,"Amount status: mDebitClStatus:"+ mDebitClStatus +", mAddClStatus:"+mAddClStatus+", mRedeemCbStatus:"+mRedeemCbStatus);
-        // reset values for all
-        //mRedeemCashback = mDebitCashload = mAddCashload = mAwardCashback = mToPayCash = 0;
-
+    private void calcDebitCl() {
         int effectiveToPay = 0;
-
-        // 'Cashload redeem' has priority over 'Cashback redeem'
         if(mDebitClStatus ==STATUS_AUTO || mDebitClStatus ==STATUS_AUTO_CLEARED) {
-            mDebitCashload = 0;
+            //mDebitCashload = 0;
             // mRedeemCashback will always be 0 - but added here just for completeness of formulae
             effectiveToPay = mRetainedFragment.mBillTotal - mRedeemCashback - mDebitCashload;
 
@@ -437,9 +444,12 @@ public class CashTransactionFragment extends Fragment implements
             setDebitCashload(0);
         }
         LogMy.d(TAG,"mDebitCashload: "+ mDebitCashload +", "+effectiveToPay);
+    }
 
+    private void calcRedeemCb() {
+        int effectiveToPay = 0;
         if(mRedeemCbStatus==STATUS_AUTO || mRedeemCbStatus==STATUS_AUTO_CLEARED) {
-            mRedeemCashback = 0;
+            //mRedeemCashback = 0;
             effectiveToPay = mRetainedFragment.mBillTotal - mRedeemCashback - mDebitCashload;
 
             if( mCashPaid > effectiveToPay ) {
@@ -451,10 +461,12 @@ public class CashTransactionFragment extends Fragment implements
             setRedeemCashback(0);
         }
         LogMy.d(TAG,"mRedeemCashback: "+mRedeemCashback+", "+effectiveToPay);
+    }
 
-        // calculate 'add cashload'
+    private void calcAddCl() {
+        int effectiveToPay = 0;
         if(mAddClStatus==STATUS_AUTO || mAddClStatus==STATUS_AUTO_CLEARED) {
-            mAddCashload = 0;
+            //mAddCashload = 0;
             effectiveToPay = mRetainedFragment.mBillTotal - mRedeemCashback - mDebitCashload;
             int addCash = (mCashPaid < effectiveToPay)?0:(mCashPaid - effectiveToPay);
             // check for limit
@@ -466,7 +478,7 @@ public class CashTransactionFragment extends Fragment implements
             }
             setAddCashload(addCash);
 
-        //} else if (mAddClStatus==STATUS_CLEARED || mAddClStatus==STATUS_CASH_PAID_NOT_SET) {
+            //} else if (mAddClStatus==STATUS_CLEARED || mAddClStatus==STATUS_CASH_PAID_NOT_SET) {
         } else if (mAddClStatus==STATUS_CLEARED) {
             setAddCashload(0);
         }
@@ -713,6 +725,7 @@ public class CashTransactionFragment extends Fragment implements
                 switch (mDebitClStatus) {
                     case STATUS_AUTO_CLEARED:
                     case STATUS_CLEARED:
+                        mRedeemCbOnPriority = false;
                         setRedeemClStatus(STATUS_AUTO);
                         /*if (mAddClStatus == STATUS_AUTO || mAddClStatus == STATUS_MANUAL_SET) {
                             //mAddCashload = 0;
@@ -738,6 +751,7 @@ public class CashTransactionFragment extends Fragment implements
                 switch (mRedeemCbStatus) {
                     case STATUS_AUTO_CLEARED:
                     case STATUS_CLEARED:
+                        mRedeemCbOnPriority = true;
                         setRedeemCbStatus(STATUS_AUTO);
                         calcAndSetAmts(false);
                         break;
@@ -1246,6 +1260,7 @@ public class CashTransactionFragment extends Fragment implements
         outState.putInt("mAddClStatus", mAddClStatus);
         outState.putInt("mDebitClStatus", mDebitClStatus);
         outState.putInt("mRedeemCbStatus", mRedeemCbStatus);
+        outState.putBoolean("mRedeemCbOnPriority",mRedeemCbOnPriority);
 
         outState.putInt("mDebitCashload", mDebitCashload);
         outState.putInt("mRedeemCashback", mRedeemCashback);

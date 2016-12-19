@@ -89,7 +89,7 @@
                         android:gravity="right|center_vertical"
                         android:text="\u20B9 987"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@drawable/ic_grade_white_18dp"
+                        android:drawableLeft="@drawable/ic_favorite_white_18dp"
                         android:drawablePadding="@dimen/large_space"/>
                     <EditText
                         style="@style/Edittext_only_view_medium_lessPad"

@@ -222,7 +222,7 @@
                         android:text="\u20B9 234"
                         android:textStyle="bold"
                         android:textColor="@color/white"
-                        android:drawableTop="@drawable/ic_grade_white_24dp"
+                        android:drawableTop="@drawable/ic_favorite_white_24dp"
                         android:drawablePadding="@dimen/medium_space"/>
 
                     <EditText
