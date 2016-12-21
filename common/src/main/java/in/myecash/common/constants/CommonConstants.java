@@ -51,6 +51,7 @@ public class CommonConstants {
     public static final String DATE_FORMAT_ONLY_DATE_BACKEND = "dd-MMM-yyyy";
     // used to specify 'date with no time' in the CSV report generated
     public static final String DATE_FORMAT_ONLY_DATE_CSV = "dd/MM/yyyy";
+    public static final String DATE_FORMAT_DDMM = "ddMM";
     // used in reports etc where both date and time is to be shown
     public static final String DATE_FORMAT_WITH_TIME = "dd/MM/yyyy HH:mm";
     // date format to be used in filename

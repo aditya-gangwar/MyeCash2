@@ -30,6 +30,7 @@ import java.util.Map;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.RootUtil;
 import in.myecash.common.constants.DbConstants;
+import in.myecash.common.constants.GlobalSettingConstants;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.customerbase.helper.MyRetainedFragment;
 import in.myecash.appbase.constants.AppConstants;
@@ -279,13 +280,13 @@ public class LoginCustActivity extends AppCompatActivity implements
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else if(errorCode == ErrorCodes.OP_SCHEDULED) {
                 // Show success notification dialog
-                Integer mins = MyGlobalSettings.getCustPasswdResetMins() + MyGlobalSettings.CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL;
+                Integer mins = MyGlobalSettings.getCustPasswdResetMins() + GlobalSettingConstants.CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL;
                 String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
                 DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, msg, false, false)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY) {
                 // Old request is already pending
-                Integer mins = MyGlobalSettings.getCustPasswdResetMins() + MyGlobalSettings.CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL;
+                Integer mins = MyGlobalSettings.getCustPasswdResetMins() + GlobalSettingConstants.CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL;
                 String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);

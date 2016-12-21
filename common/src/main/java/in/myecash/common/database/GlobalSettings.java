@@ -13,7 +13,7 @@ public class GlobalSettings
   private java.util.Date updated;
   private String name;
   private java.util.Date value_date;
-  private String display_name;
+  //private String display_name;
   private Boolean user_visible;
   private String value_string;
   private java.util.Date created;
@@ -74,7 +74,7 @@ public class GlobalSettings
     this.value_date = value_date;
   }
 
-  public String getDisplay_name()
+  /*public String getDisplay_name()
   {
     return display_name;
   }
@@ -82,7 +82,7 @@ public class GlobalSettings
   public void setDisplay_name( String display_name )
   {
     this.display_name = display_name;
-  }
+  }*/
 
   public Boolean getUser_visible()
   {

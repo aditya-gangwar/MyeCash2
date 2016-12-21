@@ -24,6 +24,7 @@ import android.widget.EditText;
 
 import in.myecash.appbase.SortTxnDialog;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Transaction;
@@ -58,7 +59,7 @@ public class TxnListFragment extends Fragment {
     private static final String CSV_REPORT_HEADER_5 = "%s,,,,,,,Currency,INR,,";
     private static final String CSV_REPORT_HEADER_6 = ",,,,,,,,,,";
     private static final String CSV_REPORT_HEADER_7 = ",,,,,,,,,,";
-    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Customer Id,Bill Amount,Cash Account,Cr / Dr,Cashback Debit,Cashback Award,Cashback Rate, Card Used, PIN used";
+    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Customer Internal Id,Bill Amount,Account Debit,Account Credit,Cashback Redeem,Cashback Award,Cashback Rate,Card Used";
     // 5+10+10+10+10+10+5+5+5+5 = 75
     private static final int CSV_RECORD_MAX_CHARS = 100;
     //TODO: change this to 100 in production
@@ -254,7 +255,13 @@ public class TxnListFragment extends Fragment {
         if(file!=null) {
             // register with download manager, so as can be seen by clicking 'Downloads' icon
             DownloadManager manager = (DownloadManager) getActivity().getSystemService(AppCompatActivity.DOWNLOAD_SERVICE);
-            long fileid = manager.addCompletedDownload("MyeCash statement", "MyeCash transactions statement",
+
+            SimpleDateFormat ddMM = new SimpleDateFormat(CommonConstants.DATE_FORMAT_DDMM, CommonConstants.DATE_LOCALE);
+            String startDate = ddMM.format(mStartTime);
+            String endDate = ddMM.format(mEndTime);
+
+            String fileName = "MyeCash_Statement_"+startDate+"_"+endDate+CommonConstants.CSV_FILE_EXT;
+            long fileid = manager.addCompletedDownload(fileName, "MyeCash Transactions Statement",
                     true, "text/plain", file.getAbsolutePath(), file.length(), true);
         }
     }
@@ -270,8 +277,8 @@ public class TxnListFragment extends Fragment {
             if(emailId!=null && emailId.length()>0) {
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {emailId}); // recipients
             }
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyeCash Statement");
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find attached the requested MyeCash transaction statement.\nThanks.\nRegards,\nMyeCash Team.");
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyeCash Merchant Statement");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Dear Sir - \n\nPlease find attached the requested MyeCash transaction statement.\n\nThanks.\n\nRegards,\nMyeCash Team.");
             emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(csvFile));
 
             // check if there's activity available for the intent
@@ -323,6 +330,12 @@ public class TxnListFragment extends Fragment {
 
             sb.append(CSV_HEADER).append(CommonConstants.CSV_NEWLINE);
 
+            int billTotal = 0;
+            int accDebitTotal = 0;
+            int accCreditTotal = 0;
+            int cbRedeemTotal = 0;
+            int cbAwardTotal = 0;
+
             int cnt = mRetainedFragment.mLastFetchTransactions.size();
             for(int i=0; i<cnt; i++) {
                 if(sb==null) {
@@ -337,10 +350,15 @@ public class TxnListFragment extends Fragment {
                 sb.append(mSdfOnlyDateCSV.format(txn.getCreate_time())).append(CommonConstants.CSV_DELIMETER);
                 sb.append(mSdfOnlyTimeCSV.format(txn.getCreate_time())).append(CommonConstants.CSV_DELIMETER);
                 sb.append(txn.getTrans_id()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(txn.getCustomer_id()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(txn.getTotal_billed()).append(CommonConstants.CSV_DELIMETER);
+                sb.append(txn.getCust_private_id()).append(CommonConstants.CSV_DELIMETER);
+                if(txn.getTotal_billed() > 0) {
+                    sb.append(txn.getTotal_billed()).append(CommonConstants.CSV_DELIMETER);
+                    billTotal = billTotal + txn.getTotal_billed();
+                } else {
+                    sb.append("0").append(CommonConstants.CSV_DELIMETER);
+                }
 
-                if(txn.getCl_credit() > 0) {
+                /*if(txn.getCl_credit() > 0) {
                     sb.append(txn.getCl_credit()).append(CommonConstants.CSV_DELIMETER);
                     sb.append("CR").append(CommonConstants.CSV_DELIMETER);
                 } else if(txn.getCl_debit() > 0) {
@@ -349,16 +367,30 @@ public class TxnListFragment extends Fragment {
                 } else {
                     sb.append("0").append(CommonConstants.CSV_DELIMETER);
                     sb.append(CommonConstants.CSV_DELIMETER);
-                }
+                }*/
 
-                if(txn.getCb_debit() > 0) {
-                    sb.append(txn.getCb_debit()).append(CommonConstants.CSV_DELIMETER);
+                if(txn.getCl_debit() > 0) {
+                    sb.append(txn.getCl_debit()).append(CommonConstants.CSV_DELIMETER);
+                    accDebitTotal = accDebitTotal +txn.getCl_debit();
+                } else {
+                    sb.append("0").append(CommonConstants.CSV_DELIMETER);
+                }
+                if(txn.getCl_credit() > 0) {
+                    sb.append(txn.getCl_credit()).append(CommonConstants.CSV_DELIMETER);
+                    accCreditTotal = accCreditTotal +txn.getCl_credit();
                 } else {
                     sb.append("0").append(CommonConstants.CSV_DELIMETER);
                 }
 
+                if(txn.getCb_debit() > 0) {
+                    sb.append(txn.getCb_debit()).append(CommonConstants.CSV_DELIMETER);
+                    cbRedeemTotal = cbRedeemTotal + txn.getCb_debit();
+                } else {
+                    sb.append("0").append(CommonConstants.CSV_DELIMETER);
+                }
                 if(txn.getCb_credit() > 0) {
                     sb.append(txn.getCb_credit()).append(CommonConstants.CSV_DELIMETER);
+                    cbAwardTotal = cbAwardTotal + txn.getCb_credit();
                 } else {
                     sb.append("0").append(CommonConstants.CSV_DELIMETER);
                 }
@@ -367,9 +399,9 @@ public class TxnListFragment extends Fragment {
                 if(txn.getUsedCardId()==null) {
                     sb.append("").append(CommonConstants.CSV_DELIMETER);
                 } else {
-                    sb.append(txn.getUsedCardId()).append(CommonConstants.CSV_DELIMETER);
+                    sb.append(CommonUtils.getPartialVisibleStr(txn.getUsedCardId())).append(CommonConstants.CSV_DELIMETER);
                 }
-                sb.append(txn.getCpin());
+                //sb.append(txn.getCpin());
                 sb.append(CommonConstants.CSV_NEWLINE);
 
                 // Write every 100 records in one go to the file
@@ -379,6 +411,20 @@ public class TxnListFragment extends Fragment {
                     sb = null;
                 }
             }
+
+            // write totals line
+            if(sb==null) {
+                sb = new StringBuilder(CSV_RECORD_MAX_CHARS);
+            }
+            sb.append("Total").append(CommonConstants.CSV_DELIMETER);
+            sb.append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER);
+            sb.append(billTotal).append(CommonConstants.CSV_DELIMETER);
+            sb.append(accDebitTotal).append(CommonConstants.CSV_DELIMETER);
+            sb.append(accCreditTotal).append(CommonConstants.CSV_DELIMETER);
+            sb.append(cbRedeemTotal).append(CommonConstants.CSV_DELIMETER);
+            sb.append(cbAwardTotal).append(CommonConstants.CSV_DELIMETER);
+            sb.append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER);
+            sb.append(CommonConstants.CSV_NEWLINE);
 
             // write remaining records
             if(sb!=null) {

@@ -41,6 +41,7 @@ import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.MyGlobalSettings;
+import in.myecash.common.constants.GlobalSettingConstants;
 import in.myecash.common.database.Merchants;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -1410,14 +1411,14 @@ public class CashbackActivity extends AppCompatActivity implements
 
     private boolean captureTxnImage(String pin) {
         switch(MyGlobalSettings.getCardImageCaptureMode()) {
-            case MyGlobalSettings.TXN_IMAGE_CAPTURE_ALWAYS:
+            case GlobalSettingConstants.TXN_IMAGE_CAPTURE_ALWAYS:
                 return true;
-            case MyGlobalSettings.TXN_IMAGE_CAPTURE_CARD_REQUIRED:
+            case GlobalSettingConstants.TXN_IMAGE_CAPTURE_CARD_REQUIRED:
                 return ( (mWorkFragment.mCurrTransaction.getTransaction().getCl_debit()>0 &&
                         MyGlobalSettings.getCardReqAccDebit()) ||
                         (mWorkFragment.mCurrTransaction.getTransaction().getCb_debit()>0 &&
                                 MyGlobalSettings.getCardReqCbRedeem()) );
-            case MyGlobalSettings.TXN_IMAGE_CAPTURE_NEVER:
+            case GlobalSettingConstants.TXN_IMAGE_CAPTURE_NEVER:
                 return false;
         }
         return true;

@@ -36,6 +36,7 @@ import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.RootUtil;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.appbase.OtpPinInputDialog;
+import in.myecash.common.constants.GlobalSettingConstants;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
@@ -348,13 +349,13 @@ public class LoginActivity extends AppCompatActivity implements
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else if(errorCode == ErrorCodes.OP_SCHEDULED) {
                 // Show success notification dialog
-                Integer mins = MyGlobalSettings.getMchntPasswdResetMins() + MyGlobalSettings.MERCHANT_PASSWORD_RESET_TIMER_INTERVAL;
+                Integer mins = MyGlobalSettings.getMchntPasswdResetMins() + GlobalSettingConstants.MERCHANT_PASSWORD_RESET_TIMER_INTERVAL;
                 String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
                 DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, msg, false, false)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY) {
                 // Old request is already pending
-                Integer mins = MyGlobalSettings.getMchntPasswdResetMins() + MyGlobalSettings.MERCHANT_PASSWORD_RESET_TIMER_INTERVAL;
+                Integer mins = MyGlobalSettings.getMchntPasswdResetMins() + GlobalSettingConstants.MERCHANT_PASSWORD_RESET_TIMER_INTERVAL;
                 String msg = String.format(AppConstants.pwdGenerateDuplicateRequestMsg, mins);
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, false, false)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);

@@ -49,6 +49,7 @@ public class MyCustomer {
     private String mMobileNum;
     private int mStatus;
     private String mStatusUpdateTime;
+    private Date mStatusUpdateDate;
     private String mCardId;
     private int mCardStatus;
 
@@ -70,7 +71,8 @@ public class MyCustomer {
         mPrivateId = csvFields[CUST_CSV_PRIVATE_ID];
         mMobileNum = csvFields[CUST_CSV_MOBILE_NUM];
         mStatus = Integer.parseInt(csvFields[CUST_CSV_ACC_STATUS]);
-        mStatusUpdateTime = mSdfDateWithTime.format(new Date(Long.parseLong(csvFields[CUST_CSV_STATUS_UPDATE_TIME])));
+        mStatusUpdateDate = new Date(Long.parseLong(csvFields[CUST_CSV_STATUS_UPDATE_TIME]));
+        mStatusUpdateTime = mSdfDateWithTime.format(mStatusUpdateDate);
         mCardId = csvFields[CUST_CSV_CARD_ID];
         mCardStatus = Integer.parseInt(csvFields[CUST_CSV_CARD_STATUS]);
 
@@ -171,6 +173,10 @@ public class MyCustomer {
 
     public String getStatusUpdateTime() {
         return mStatusUpdateTime;
+    }
+
+    public Date getStatusUpdateDate() {
+        return mStatusUpdateDate;
     }
 
     public String getCardId() {

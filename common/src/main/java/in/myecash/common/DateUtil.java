@@ -197,4 +197,8 @@ public class DateUtil {
         }
         return false;
     }
+
+    public int getHourOfDay() {
+        return cal.get(Calendar.HOUR_OF_DAY);
+    }
 }

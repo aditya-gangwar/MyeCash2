@@ -44,6 +44,7 @@ public class AppConstants {
     public static final String loginFailureTitle = "Login Failed";
     public static final String noPermissionTitle = "No Permissions";
     public static final String noDataFailureTitle = "No Data";
+    public static final String serviceNATitle = "Service Not Available";
 
     public static int MOBILE_NUM_PROCESS_MIN_LENGTH = 8;
     public static final String SYMBOL_RS = "\u20B9 ";

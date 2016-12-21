@@ -16,6 +16,7 @@ import java.util.Date;
 import in.myecash.appbase.constants.AppConstants;
 
 import in.myecash.appbase.utilities.AppAlarms;
+import in.myecash.common.DateUtil;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.MyGlobalSettings;
@@ -108,8 +109,22 @@ public class SplashActivity extends AppCompatActivity
         protected void onPostExecute(Integer errorCode) {
             AppCommonUtil.cancelProgressDialog(true);
             if(errorCode==ErrorCodes.NO_ERROR) {
+                // Check for daily downtime
+                int startHour = MyGlobalSettings.getDailyDownStartHour();
+                int endHour = MyGlobalSettings.getDailyDownEndHour();
+                if(endHour > startHour) {
+                    int currHour = (new DateUtil()).getHourOfDay();
+                    if(currHour >= startHour && currHour < endHour) {
+                        // Show error notification dialog
+                        String errorStr = "Service is not available daily between "+startHour+":00 and "+endHour+":00 hours.";
+                        DialogFragmentWrapper.createNotification(AppConstants.serviceNATitle, errorStr, false, true)
+                                .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                        return;
+                    }
+                }
+
                 Date disabledUntil = MyGlobalSettings.getServiceDisabledUntil();
-                if(disabledUntil == null) {
+                if(disabledUntil == null || System.currentTimeMillis() > disabledUntil.getTime()) {
                     startLoginActivity();
                 } else {
                     // Add time at the end of error message

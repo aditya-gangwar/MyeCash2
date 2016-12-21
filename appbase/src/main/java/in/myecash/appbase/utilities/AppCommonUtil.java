@@ -231,7 +231,7 @@ public class AppCommonUtil {
             case ErrorCodes.WRONG_PIN:
             case ErrorCodes.VERIFICATION_FAILED:
             case ErrorCodes.USER_WRONG_ID_PASSWD:
-                int confMaxAttempts = MyGlobalSettings.userTypeToWrongLimit.get(mUserType);
+                int confMaxAttempts = MyGlobalSettings.getWrongAttemptLimit(mUserType);
                 return String.format(ErrorCodes.appErrorDesc.get(errorCode),String.valueOf(confMaxAttempts));
 
             default:

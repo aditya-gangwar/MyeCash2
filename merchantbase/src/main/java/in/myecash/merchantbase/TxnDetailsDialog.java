@@ -177,7 +177,7 @@ public class TxnDetailsDialog extends DialogFragment {
             });
             mInputCustomerId.setText(Html.fromHtml("<u>"+txn.getCust_private_id()+"</u>"));
             mInputMobileNum.setText(CommonUtils.getPartialVisibleStr(txn.getCustomer_id()));
-            mCardUsed.setText(txn.getUsedCardId());
+            mCardUsed.setText(CommonUtils.getPartialVisibleStr(txn.getUsedCardId()));
             mPinUsed.setText(txn.getCpin());
 
             String cbData = AppCommonUtil.getAmtStr(txn.getCb_credit())+" @ "+txn.getCb_percent()+"%";
