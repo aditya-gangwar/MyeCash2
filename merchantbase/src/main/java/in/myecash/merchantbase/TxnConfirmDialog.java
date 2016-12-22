@@ -22,7 +22,7 @@ import in.myecash.appbase.utilities.LogMy;
 public class TxnConfirmDialog extends DialogFragment
         implements DialogInterface.OnClickListener {
 
-    private static final String TAG = "TxnConfirmDialog";
+    private static final String TAG = "MchntApp-TxnConfirmDialog";
     private static final String ARG_TXN = "txn";
     private static final String ARG_CASH_PAID = "cashPaid";
 

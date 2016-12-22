@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -75,8 +76,9 @@ public class CashbackActivityCust extends AppCompatActivity implements
     private static final String DIALOG_PIN_CHANGE = "dialogPinChange";
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
     private static final String CUSTOMER_OPS_LIST_FRAG = "CustomerOpsListFrag";
-
     private static final String DIALOG_NOTIFY_CB_FETCH_ERROR = "dialogCbFetchError";
+    private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
+
 
     MyRetainedFragment mRetainedFragment;
     FragmentManager mFragMgr;
@@ -354,18 +356,22 @@ public class CashbackActivityCust extends AppCompatActivity implements
             mTbTitle2.setVisibility(View.VISIBLE);
             //String custName = "~ "+mRetainedFragment.mCurrCashback.getCashback().getCustomer().getName();
             mTbTitle2.setText(DbConstants.userStatusDesc[mCustomer.getAdmin_status()]);
+            mTbTitle2.setTextColor(ContextCompat.getColor(this, R.color.red_negative));
 
         } else if(mCustomer.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
 
             switch(mCustomer.getMembership_card().getStatus()) {
                 case DbConstants.CUSTOMER_CARD_STATUS_DISABLED:
                     mTbTitle2.setVisibility(View.VISIBLE);
-                    mTbTitle2.setText(DbConstants.cardStatusDescriptions[mCustomer.getMembership_card().getStatus()]);
+                    mTbTitle2.setTextColor(ContextCompat.getColor(this, R.color.red_negative));
+                    String txt = "Member Card: "+DbConstants.cardStatusDesc[mCustomer.getMembership_card().getStatus()];
+                    mTbTitle2.setText(txt);
                     break;
                 default:
+                    // Issue if its neither Active nor Disabled - and still linked to customer
                     //raise alarm
                     Map<String,String> params = new HashMap<>();
-                    params.put("CustomerId",mCustomer.getMobile_num());
+                    params.put("CustomerId",mCustomer.getPrivate_id());
                     params.put("CardId",mCustomer.getMembership_card().getCard_id());
                     params.put("CardStatus",String.valueOf(mCustomer.getMembership_card().getStatus()));
                     AppAlarms.invalidCardState(mCustomer.getPrivate_id(),DbConstants.USER_TYPE_CUSTOMER,"updateTbForCustomer",params);
@@ -397,6 +403,16 @@ public class CashbackActivityCust extends AppCompatActivity implements
 
     @Override
     public void onBgProcessResponse(int errorCode, int operation) {
+        LogMy.d(TAG,"In onBgProcessResponse: "+operation+", "+errorCode);
+
+        // Session timeout case - show dialog and logout - irrespective of invoked operation
+        if(errorCode==ErrorCodes.SESSION_TIMEOUT || errorCode==ErrorCodes.NOT_LOGGED_IN) {
+            AppCommonUtil.cancelProgressDialog(true);
+            DialogFragmentWrapper.createNotification(AppConstants.notLoggedInTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                    .show(mFragMgr, DIALOG_SESSION_TIMEOUT);
+            return;
+        }
+
         switch(operation) {
             case MyRetainedFragment.REQUEST_LOGOUT:
                 onLogoutResponse(errorCode);
@@ -756,10 +772,10 @@ public class CashbackActivityCust extends AppCompatActivity implements
         if (tag.equals(DIALOG_BACK_BUTTON)) {
             mExitAfterLogout = true;
             logoutCustomer();
-        }/* else if(tag.equals(DIALOG_LOGOUT)) {
+        } else if(tag.equals(DIALOG_SESSION_TIMEOUT)) {
             mExitAfterLogout = false;
-            logoutMerchant();
-        }*/
+            logoutCustomer();
+        }
     }
 
     private void startCashbackListFrag() {

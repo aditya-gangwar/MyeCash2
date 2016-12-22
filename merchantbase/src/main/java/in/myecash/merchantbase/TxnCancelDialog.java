@@ -28,7 +28,7 @@ import in.myecash.common.database.Transaction;
 public class TxnCancelDialog extends DialogFragment
         implements View.OnTouchListener {
 
-    private static final String TAG = "TxnCancelDialog";
+    private static final String TAG = "MchntApp-TxnCancelDialog";
     private static final String ARG_TXN = "txn";
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9003;
 

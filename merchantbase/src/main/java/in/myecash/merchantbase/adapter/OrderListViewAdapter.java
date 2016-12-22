@@ -20,7 +20,7 @@ import java.util.List;
  * Created by adgangwa on 04-03-2016.
  */
 public class OrderListViewAdapter extends ArrayAdapter<OrderItem> {
-    private static final String TAG = "OrderListViewAdapter";
+    private static final String TAG = "MchntApp-OrderListViewAdapter";
 
     private Activity mActivity;
     private OrderListViewIf mCallback;

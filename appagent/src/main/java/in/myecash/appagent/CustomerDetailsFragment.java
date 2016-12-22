@@ -19,6 +19,7 @@ import in.myecash.appbase.utilities.LogMy;
 import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
+import in.myecash.common.database.CustomerCards;
 import in.myecash.common.database.Customers;
 
 /**
@@ -64,11 +65,13 @@ public class CustomerDetailsFragment extends Fragment
             mAccDisable.setVisibility(View.GONE);
             mAccLimited.setVisibility(View.GONE);
             mLaunchApp.setVisibility(View.GONE);
+            mCardDisable.setVisibility(View.GONE);
 
         } else if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_CC) {
             mAccDisable.setOnClickListener(this);
             mAccLimited.setOnClickListener(this);
             mLaunchApp.setOnClickListener(this);
+            mCardDisable.setOnClickListener(this);
         }
 
         return v;
@@ -76,6 +79,7 @@ public class CustomerDetailsFragment extends Fragment
 
     private void initDialogView() {
         Customers customer = mCallback.getRetainedFragment().mCurrCustomer;
+        CustomerCards card = customer.getMembership_card();
 
         String name = customer.getFirstName()+" "+customer.getLastName();
         mName.setText(name);
@@ -96,13 +100,13 @@ public class CustomerDetailsFragment extends Fragment
         mInputStatusDate.setText(mSdfDateWithTime.format(customer.getStatus_update_time()));
         mInputReason.setText(customer.getStatus_reason());
 
-        mInputQrCard.setText(CommonUtils.getPartialVisibleStr(customer.getMembership_card().getCard_id()));
-        mInputCardStatus.setText(DbConstants.cardStatusDescriptions[customer.getMembership_card().getStatus()]);
-        if(customer.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
+        mInputQrCard.setText(CommonUtils.getPartialVisibleStr(card.getCard_id()));
+        mInputCardStatus.setText(DbConstants.cardStatusDescInternal[card.getStatus()]);
+        if(card.getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
             mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
         }
-        mCardStatusDate.setText(mSdfDateWithTime.format(customer.getMembership_card().getStatus_update_time()));
-        mCardStatusReason.setText(mSdfDateWithTime.format(customer.getMembership_card().getStatus_reason()));
+        mCardStatusDate.setText(mSdfDateWithTime.format(card.getStatus_update_time()));
+        mCardStatusReason.setText(mSdfDateWithTime.format(card.getStatus_reason()));
 
         if( status!=DbConstants.USER_STATUS_ACTIVE && (mAccDisable.getVisibility()==View.VISIBLE) ) {
             mAccDisable.setEnabled(false);
@@ -114,6 +118,12 @@ public class CustomerDetailsFragment extends Fragment
             mAccLimited.setEnabled(false);
             mAccLimited.setOnClickListener(null);
             mAccLimited.setAlpha(0.4f);
+        }
+
+        if( card.getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE && (mCardDisable.getVisibility()==View.VISIBLE) ) {
+            mCardDisable.setEnabled(false);
+            mCardDisable.setOnClickListener(null);
+            mCardDisable.setAlpha(0.4f);
         }
     }
 
@@ -160,6 +170,7 @@ public class CustomerDetailsFragment extends Fragment
 
     private AppCompatButton mAccDisable;
     private AppCompatButton mAccLimited;
+    private AppCompatButton mCardDisable;
     private AppCompatButton mLaunchApp;
 
 
@@ -184,6 +195,7 @@ public class CustomerDetailsFragment extends Fragment
 
         mAccDisable = (AppCompatButton) v.findViewById(R.id.btn_acc_status);
         mAccLimited = (AppCompatButton) v.findViewById(R.id.btn_acc_limited);
+        mCardDisable = (AppCompatButton) v.findViewById(R.id.btn_disable_card);
         mLaunchApp = (AppCompatButton) v.findViewById(R.id.btn_launch_app);
     }
 

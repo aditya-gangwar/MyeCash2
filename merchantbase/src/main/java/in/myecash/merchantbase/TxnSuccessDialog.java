@@ -19,7 +19,7 @@ import in.myecash.appbase.utilities.LogMy;
 public class TxnSuccessDialog extends DialogFragment
         implements DialogInterface.OnClickListener {
 
-    private static final String TAG = "TxnSuccessDialog";
+    private static final String TAG = "MchntApp-TxnSuccessDialog";
     private static final String RS_SYMBOL = "\u20B9 ";
 
     private static final String ARG_MOBILE_NUM = "mobile_num";
@@ -35,11 +35,8 @@ public class TxnSuccessDialog extends DialogFragment
         void onTxnSuccess();
     }
 
-    public static TxnSuccessDialog newInstance(String mobileNo, String txnId, int clBalance, int cbBalance, int clBalanceOld, int cbBalanceOld) {
+    public static TxnSuccessDialog newInstance(String txnId, int clBalance, int cbBalance, int clBalanceOld, int cbBalanceOld) {
         Bundle args = new Bundle();
-        if(mobileNo != null) {
-            args.putString(ARG_MOBILE_NUM, mobileNo);
-        }
         args.putString(ARG_TXN_ID, txnId);
         args.putInt(ARG_CL_BALANCE, clBalance);
         args.putInt(ARG_CB_BALANCE, cbBalance);
@@ -66,7 +63,7 @@ public class TxnSuccessDialog extends DialogFragment
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String mobileNum = getArguments().getString(ARG_MOBILE_NUM, null);
+        //String mobileNum = getArguments().getString(ARG_MOBILE_NUM, null);
         String txnId = getArguments().getString(ARG_TXN_ID, null);
         int clbalance = getArguments().getInt(ARG_CL_BALANCE);
         int cbBalance = getArguments().getInt(ARG_CB_BALANCE);

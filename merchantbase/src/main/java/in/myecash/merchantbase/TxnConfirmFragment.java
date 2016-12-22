@@ -27,7 +27,7 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
  * Created by adgangwa on 04-11-2016.
  */
 public class TxnConfirmFragment extends Fragment {
-    private static final String TAG = "TxnConfirmFragment";
+    private static final String TAG = "MchntApp-TxnConfirmFragment";
     private static final String ARG_CASH_PAID = "cashPaid";
 
     private Merchants mMerchant;

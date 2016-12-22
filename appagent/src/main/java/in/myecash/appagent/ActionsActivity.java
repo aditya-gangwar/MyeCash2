@@ -41,7 +41,7 @@ public class ActionsActivity extends AppCompatActivity implements
         DisableMchntDialog.DisableMchntDialogIf, SearchCustomerDialog.SearchCustomerDialogIf,
         CustomerDetailsFragment.CustomerDetailsFragmentIf, DisableCustDialog.DisableCustDialogIf,
         SearchCardDialog.SearchCardDialogIf, CardDetailsFragment.CardDetailsFragmentIf,
-        CardsActionListFrag.CardsActionListFragIf
+        CardsActionListFrag.CardsActionListFragIf, DisableCardDialog.DisableCardDialogIf
 {
 
     private static final String TAG = "ActionsActivity";
@@ -214,6 +214,18 @@ public class ActionsActivity extends AppCompatActivity implements
                     DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
+                break;
+
+            case MyRetainedFragment.REQUEST_DISABLE_CUST_CARD:
+                AppCommonUtil.cancelProgressDialog(true);
+                if(errorCode==ErrorCodes.NO_ERROR) {
+                    DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.custCardDisableSuccessMsg, false, false)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                } else {
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
+                break;
         }
     }
 
@@ -322,6 +334,12 @@ public class ActionsActivity extends AppCompatActivity implements
     public void disableCustomer(boolean isLtdMode, String ticketId, String reason, String remarks) {
         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
         mWorkFragment.disableCustomer(isLtdMode, ticketId, reason, remarks);
+    }
+
+    @Override
+    public void disableCard(String ticketId, String reason, String remarks) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mWorkFragment.disableCustCard(ticketId, reason, remarks);
     }
 
     @Override

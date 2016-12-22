@@ -24,7 +24,7 @@ import in.myecash.merchantbase.entities.MerchantUser;
  */
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final String TAG = "SettingsFragment";
+    private static final String TAG = "MchntApp-SettingsFragment";
 
     private static final int REQ_NOTIFICATION = 0;
 

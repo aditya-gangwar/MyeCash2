@@ -43,6 +43,15 @@ public class Merchants
   private boolean invoiceNumAsk;
   private boolean invoiceNumOptional;
   private boolean invoiceNumOnlyNumbers;
+  private Date delLocalFilesReq;
+
+  public Date getDelLocalFilesReq() {
+    return delLocalFilesReq;
+  }
+
+  public void setDelLocalFilesReq(Date delLocalFilesReq) {
+    this.delLocalFilesReq = delLocalFilesReq;
+  }
 
   public boolean isInvoiceNumAsk() {
     return invoiceNumAsk;

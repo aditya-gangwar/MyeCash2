@@ -25,7 +25,7 @@ import java.util.TreeSet;
  * Created by adgangwa on 16-06-2016.
  */
 public class CashPaid implements Serializable, View.OnTouchListener {
-    public static final String TAG = "CashPaid";
+    public static final String TAG = "MchntApp-CashPaid";
 
     // show next 4 values
     private static final int UI_SLOT_COUNT = 4;

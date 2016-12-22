@@ -33,7 +33,7 @@ import io.fabric.sdk.android.Fabric;
  */
 public class SplashActivity extends AppCompatActivity
         implements DialogFragmentWrapper.DialogFragmentWrapperIf {
-    private static final String TAG = "SplashActivity";
+    private static final String TAG = "MchntApp-SplashActivity";
 
     private FetchGlobalSettings mTask;
 

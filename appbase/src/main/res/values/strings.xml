@@ -105,6 +105,12 @@
         <item>Other</item>
     </string-array>
 
+    <string-array name="disable_card_reason_array">
+        <item>Lost Card</item>
+        <item>Damaged Card</item>
+        <item>Other</item>
+    </string-array>
+
     <string-array name="merchant_dashboard_type_array">
         <item>Customers</item>
         <item>Cashback</item>

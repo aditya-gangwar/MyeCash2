@@ -62,12 +62,12 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
         String name = cust.getFirstName()+" "+cust.getLastName();
         mName.setText(name);
-        mInputMobileNum.setText(CommonUtils.getPartialVisibleStr(cust.getMobile_num()));
+        mInputMobileNum.setText(cust.getMobile_num());
         mCreatedOn.setText(mSdfDateOnly.format(cust.getCreated()));
         mExpiringOn.setText(mSdfDateOnly.format(AppCommonUtil.getExpiryDate(cust)));
 
         mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cust.getCardId()));
-        mInputCardStatus.setText(DbConstants.cardStatusDescriptions[cust.getMembership_card().getStatus()]);
+        mInputCardStatus.setText(DbConstants.cardStatusDesc[cust.getMembership_card().getStatus()]);
         if(cust.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
             mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
         }

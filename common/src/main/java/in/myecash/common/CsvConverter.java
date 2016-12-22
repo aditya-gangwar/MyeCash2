@@ -43,7 +43,7 @@ public class CsvConverter {
     private static int TXN_CSV_IDX_CUST_PIN = 14;
     private static int TXN_CSV_IDX_IMG_FILE = 15;
     private static int TXN_CSV_IDX_INV_NUM = 16;
-    private static int TXN_CSV_IDX_COMMENTS = 17;
+    private static int TXN_CSV_IDX_CANCEL_TIME = 17;
     private static int TXN_CSV_TOTAL_FIELDS = 18;
 
     // Total size of above fields = 15*10 + 50;
@@ -54,12 +54,13 @@ public class CsvConverter {
         String[] csvFields = new String[TXN_CSV_TOTAL_FIELDS];
 
         csvFields[TXN_CSV_IDX_ID] = txn.getTrans_id();
-        csvFields[TXN_CSV_IDX_TIME] = mSdfDateWithTime.format(txn.getCreate_time());
+        //csvFields[TXN_CSV_IDX_TIME] = mSdfDateWithTime.format(txn.getCreate_time());
+        csvFields[TXN_CSV_IDX_TIME] = String.valueOf(txn.getCreate_time().getTime()) ;
         csvFields[TXN_CSV_IDX_MERCHANT_ID] = txn.getMerchant_id();
         csvFields[TXN_CSV_IDX_MERCHANT_NAME] = txn.getMerchant_name();
         csvFields[TXN_CSV_IDX_CUSTOMER_ID] = txn.getCustomer_id();
         csvFields[TXN_CSV_IDX_CUSTOMER_PVT_ID] = txn.getCust_private_id();
-        csvFields[TXN_CSV_IDX_USED_CARD_ID] = CommonUtils.getPartialVisibleStr(txn.getUsedCardId());
+        csvFields[TXN_CSV_IDX_USED_CARD_ID] = txn.getUsedCardId();
         csvFields[TXN_CSV_IDX_TOTAL_BILLED] = String.valueOf(txn.getTotal_billed());
         csvFields[TXN_CSV_IDX_CB_BILLED] = String.valueOf(txn.getCb_billed());
         csvFields[TXN_CSV_IDX_ACC_DEBIT] = String.valueOf(txn.getCl_debit());
@@ -71,10 +72,15 @@ public class CsvConverter {
         String imgFilename = txn.getImgFileName();
         csvFields[TXN_CSV_IDX_IMG_FILE] = (imgFilename==null)?"":imgFilename;
         csvFields[TXN_CSV_IDX_INV_NUM] = (txn.getInvoiceNum()==null)?"":txn.getInvoiceNum();
-        csvFields[TXN_CSV_IDX_COMMENTS] = (txn.getCanImgFileName()==null)?"":txn.getCanImgFileName();
+        if(txn.getCancelTime()!=null) {
+            //csvFields[TXN_CSV_IDX_CANCEL_TIME] = mSdfDateWithTime.format(txn.getCancelTime());
+            csvFields[TXN_CSV_IDX_CANCEL_TIME] = String.valueOf(txn.getCancelTime().getTime()) ;
+        } else {
+            csvFields[TXN_CSV_IDX_CANCEL_TIME] = "";
+        }
 
         // join the fields in single CSV string
-        StringBuilder sb = new StringBuilder(TXN_CSV_MAX_SIZE+csvFields[TXN_CSV_IDX_COMMENTS].length());
+        StringBuilder sb = new StringBuilder(TXN_CSV_MAX_SIZE);
         for(int i=0; i<TXN_CSV_TOTAL_FIELDS; i++) {
             sb.append(csvFields[i]).append(TXN_CSV_DELIM);
         }
@@ -86,7 +92,8 @@ public class CsvConverter {
 
         Transaction txn = new Transaction();
         txn.setTrans_id(csvFields[TXN_CSV_IDX_ID]);
-        txn.setCreate_time(mSdfDateWithTime.parse(csvFields[TXN_CSV_IDX_TIME]));
+        //txn.setCreate_time(mSdfDateWithTime.parse(csvFields[TXN_CSV_IDX_TIME]));
+        txn.setCreate_time(new Date(Long.parseLong(csvFields[TXN_CSV_IDX_TIME])));
         txn.setMerchant_id(csvFields[TXN_CSV_IDX_MERCHANT_ID]);
         txn.setMerchant_name(csvFields[TXN_CSV_IDX_MERCHANT_NAME]);
         txn.setCustomer_id(csvFields[TXN_CSV_IDX_CUSTOMER_ID]);
@@ -102,7 +109,12 @@ public class CsvConverter {
         txn.setCpin(csvFields[TXN_CSV_IDX_CUST_PIN]);
         txn.setImgFileName(csvFields[TXN_CSV_IDX_IMG_FILE]);
         txn.setInvoiceNum(csvFields[TXN_CSV_IDX_INV_NUM]);
-        txn.setInvoiceNum(csvFields[TXN_CSV_IDX_COMMENTS]);
+        if(csvFields[TXN_CSV_IDX_CANCEL_TIME].isEmpty()) {
+            txn.setCancelTime(null);
+        } else {
+            //txn.setCancelTime(mSdfDateWithTime.parse(csvFields[TXN_CSV_IDX_CANCEL_TIME]));
+            txn.setCancelTime(new Date(Long.parseLong(csvFields[TXN_CSV_IDX_CANCEL_TIME])));
+        }
         return txn;
     }
 

@@ -21,7 +21,7 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
  */
 public class MobileChangePreference extends DialogPreference
         implements View.OnClickListener {
-    private static final String TAG = "MobileChangePreference";
+    private static final String TAG = "MchntApp-MobileChangePreference";
 
     public interface MobileChangePreferenceIf {
         void changeMobileNumOk(String verifyParam, String newMobile);

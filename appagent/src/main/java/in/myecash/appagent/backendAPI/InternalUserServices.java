@@ -69,4 +69,10 @@ public class InternalUserServices
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "execActionForCards", args, java.util.List.class );
     }
 
+    public void disableCustCard(java.lang.String privateId, java.lang.String cardNum, java.lang.String ticketNum, java.lang.String reason, java.lang.String remarks)
+    {
+        Object[] args = new Object[]{privateId, cardNum, ticketNum, reason, remarks};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "disableCustCard", args );
+    }
+
 }

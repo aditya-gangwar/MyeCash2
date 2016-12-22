@@ -60,7 +60,7 @@ public class TxnListFragment extends Fragment {
     private static final String CSV_REPORT_HEADER_5 = ",,,,,,,Currency,INR,,";
     private static final String CSV_REPORT_HEADER_6 = ",,,,,,,,,,";
     private static final String CSV_REPORT_HEADER_7 = ",,,,,,,,,,";
-    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Merchant Id,Merchant Name,Bill Amount,Account Debit,Account Credit,Cashback Redeem,Cashback Award,Cashback Rate, Card Used, PIN used";
+    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Merchant Id,Merchant Name,Bill Amount,Account Debit,Account Credit,Cashback Redeem,Cashback Award,Cashback Rate,Card Used,PIN used,Cancel Time,Comments";
     // 5+10+10+10+10+10+10+5+5+5+5 = 85
     private static final int CSV_RECORD_MAX_CHARS = 128;
     //TODO: change this to 100 in production
@@ -391,9 +391,19 @@ public class TxnListFragment extends Fragment {
                 sb.append(txn.getTrans_id()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(txn.getMerchant_id()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(txn.getMerchant_name()).append(CommonConstants.CSV_DELIMETER);
+
+                boolean txnCancel = false;
+                if(txn.getCancelTime()!=null) {
+                    txnCancel = true;
+                }
+
                 if(txn.getTotal_billed() > 0) {
-                    sb.append(txn.getTotal_billed()).append(CommonConstants.CSV_DELIMETER);
-                    billTotal = billTotal + txn.getTotal_billed();
+                    if(txnCancel) {
+                        sb.append("<").append(txn.getTotal_billed()).append(">").append(CommonConstants.CSV_DELIMETER);
+                    } else {
+                        sb.append(txn.getTotal_billed()).append(CommonConstants.CSV_DELIMETER);
+                        billTotal = billTotal + txn.getTotal_billed();
+                    }
                 } else {
                     sb.append("0").append(CommonConstants.CSV_DELIMETER);
                 }
@@ -410,11 +420,16 @@ public class TxnListFragment extends Fragment {
                 }*/
 
                 if(txn.getCl_debit() > 0) {
-                    sb.append(txn.getCl_debit()).append(CommonConstants.CSV_DELIMETER);
-                    accDebitTotal = accDebitTotal +txn.getCl_debit();
+                    if(txnCancel) {
+                        sb.append("<").append(txn.getCl_debit()).append(">").append(CommonConstants.CSV_DELIMETER);
+                    } else {
+                        sb.append(txn.getCl_debit()).append(CommonConstants.CSV_DELIMETER);
+                        accDebitTotal = accDebitTotal + txn.getCl_debit();
+                    }
                 } else {
                     sb.append("0").append(CommonConstants.CSV_DELIMETER);
                 }
+
                 if(txn.getCl_credit() > 0) {
                     sb.append(txn.getCl_credit()).append(CommonConstants.CSV_DELIMETER);
                     accCreditTotal = accCreditTotal +txn.getCl_credit();
@@ -423,12 +438,23 @@ public class TxnListFragment extends Fragment {
                 }
 
                 if(txn.getCb_debit() > 0) {
-                    sb.append(txn.getCb_debit()).append(CommonConstants.CSV_DELIMETER);
+                    if(txnCancel) {
+                        sb.append("<").append(txn.getCb_debit()).append(">").append(CommonConstants.CSV_DELIMETER);
+                    } else {
+                        sb.append(txn.getCb_debit()).append(CommonConstants.CSV_DELIMETER);
+                        cbRedeemTotal = cbRedeemTotal + txn.getCb_debit();
+                    }
                 } else {
                     sb.append("0").append(CommonConstants.CSV_DELIMETER);
                 }
+
                 if(txn.getCb_credit() > 0) {
-                    sb.append(txn.getCb_credit()).append(CommonConstants.CSV_DELIMETER);
+                    if(txnCancel) {
+                        sb.append("<").append(txn.getCb_credit()).append(">").append(CommonConstants.CSV_DELIMETER);
+                    } else {
+                        sb.append(txn.getCb_credit()).append(CommonConstants.CSV_DELIMETER);
+                        cbAwardTotal = cbAwardTotal + txn.getCb_credit();
+                    }
                 } else {
                     sb.append("0").append(CommonConstants.CSV_DELIMETER);
                 }
@@ -440,6 +466,19 @@ public class TxnListFragment extends Fragment {
                     sb.append(txn.getUsedCardId()).append(CommonConstants.CSV_DELIMETER);
                 }
                 sb.append(txn.getCpin());
+
+                if(txn.getCancelTime()==null) {
+                    sb.append(CommonConstants.CSV_DELIMETER);
+                } else {
+                    sb.append(mSdfDateWithTime.format(txn.getCancelTime())).append(CommonConstants.CSV_DELIMETER);
+                }
+
+                if(txnCancel) {
+                    sb.append("Txn was cancelled. All amounts in <> were refunded/cancelled.").append(CommonConstants.CSV_DELIMETER);
+                } else {
+                    sb.append(CommonConstants.CSV_DELIMETER);
+                }
+
                 sb.append(CommonConstants.CSV_NEWLINE);
 
                 // Write every 100 records in one go to the file
@@ -607,9 +646,11 @@ public class TxnListFragment extends Fragment {
             }
 
             if(mTxn.getCl_credit() > 0) {
+                mAccountIcon.setVisibility(View.VISIBLE);
                 mAccountAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCl_credit(), true));
                 mAccountAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             } else if(mTxn.getCl_debit() > 0) {
+                mAccountIcon.setVisibility(View.VISIBLE);
                 mAccountAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCl_debit(), false));
                 mAccountAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
             } else {
@@ -618,6 +659,7 @@ public class TxnListFragment extends Fragment {
             }
 
             if(mTxn.getCb_debit() > 0) {
+                mCashbackIcon.setVisibility(View.VISIBLE);
                 mCashbackAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCl_debit(), false));
                 mCashbackAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
             } else {
@@ -635,6 +677,11 @@ public class TxnListFragment extends Fragment {
             // changes if txn was cancelled
             if(mTxn.getCancelTime()==null) {
                 mLayoutCancel.setVisibility(View.GONE);
+                // need to remove strike through - must if last txn was cancelled one
+                mBillAmount.setPaintFlags(mBillAmount.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+                mCashbackAward.setPaintFlags(mCashbackAward.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+                mCashbackAmt.setPaintFlags(mCashbackAmt.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+                mAccountAmt.setPaintFlags(mAccountAmt.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
             } else {
                 mLayoutCancel.setVisibility(View.VISIBLE);
                 mCancelTime.setText(mSdfDateWithTime.format(txn.getCancelTime()));

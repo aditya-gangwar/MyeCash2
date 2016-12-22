@@ -35,7 +35,7 @@ import in.myecash.merchantbase.entities.MyCustomerOps;
  */
 public class CustomerOpDialog extends DialogFragment
         implements View.OnTouchListener  {
-    private static final String TAG = "CustomerOpDialog";
+    private static final String TAG = "MchntApp-CustomerOpDialog";
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9003;
 
     private static final String ARG_OP_CODE = "argOpCode";

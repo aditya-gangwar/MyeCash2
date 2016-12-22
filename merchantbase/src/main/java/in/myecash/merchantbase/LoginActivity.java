@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.helpshift.support.Support;
 
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.MyGlobalSettings;
@@ -48,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements
         MyRetainedFragment.RetainedFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         PasswdResetDialog.PasswdResetDialogIf, OtpPinInputDialog.OtpPinInputDialogIf,
         ForgotIdDialog.ForgotIdDialogIf {
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "MchntApp-LoginActivity";
 
     private static final String RETAINED_FRAGMENT_TAG = "workLogin";
     private static final String DIALOG_PASSWD_RESET = "dialogPaswdReset";
@@ -341,6 +342,7 @@ public class LoginActivity extends AppCompatActivity implements
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 MerchantUser.reset();
             }
+
         } else if(operation== MyRetainedFragment.REQUEST_GENERATE_MERCHANT_PWD) {
             AppCommonUtil.cancelProgressDialog(true);
             if(errorCode == ErrorCodes.NO_ERROR) {
@@ -365,6 +367,7 @@ public class LoginActivity extends AppCompatActivity implements
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
             mProcessingResetPasswd = false;
+
         } else if(operation== MyRetainedFragment.REQUEST_FORGOT_ID) {
             AppCommonUtil.cancelProgressDialog(true);
             if(errorCode == ErrorCodes.NO_ERROR) {
@@ -505,12 +508,44 @@ public class LoginActivity extends AppCompatActivity implements
 
     private void onLoginSuccess() {
         LogMy.d(TAG, "In onLoginSuccess");
-        // Store latest succesfull login userid to preferences
+        // Store latest successful login userid to preferences
         PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
                 .edit()
                 .putString(AppConstants.PREF_LOGIN_ID, mLoginId)
                 .apply();
 
+        if(MerchantUser.getInstance().getMerchant().getDelLocalFilesReq()!=null) {
+            // Find last local files delete time - as stored
+            long lastDelTime = PreferenceManager.getDefaultSharedPreferences(this).
+                    getLong(AppConstants.PREF_ALL_FILES_DEL_TIME, 0);
+
+            long reqEpoch = MerchantUser.getInstance().getMerchant().getDelLocalFilesReq().getTime();
+            if(lastDelTime < reqEpoch) {
+                // Request made time in DB is later than 'last all files delete' time in shared preferences
+                // Delete all files in internal storage
+                String[] files = fileList();
+                for (String fileName :
+                        files) {
+                    if(AppCommonUtil.isAppFile(fileName)) {
+                        if (deleteFile(fileName)) {
+                            LogMy.d(TAG, "Deleted file: " + fileName);
+                        } else {
+                            LogMy.e(TAG, "Failed to delete file: " + fileName);
+                        }
+                    }
+                }
+
+                // Update time in shared preferences
+                PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
+                        .edit()
+                        .putLong(AppConstants.PREF_ALL_FILES_DEL_TIME, System.currentTimeMillis())
+                        .apply();
+            }
+        }
+        startCbFrag();
+    }
+
+    private void startCbFrag() {
         // turn on fullscreen mode, which was set off in OnCreate
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);

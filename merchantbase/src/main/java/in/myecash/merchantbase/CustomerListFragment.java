@@ -51,7 +51,7 @@ import java.util.List;
  * Created by adgangwa on 09-09-2016.
  */
 public class CustomerListFragment extends Fragment {
-    private static final String TAG = "CustomerListFragment";
+    private static final String TAG = "MchntApp-CustomerListFragment";
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
     private static final String DIALOG_SORT_CUST_TYPES = "dialogSortCust";
 

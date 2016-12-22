@@ -20,12 +20,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:src="@drawable/ic_perm_identity_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/label_customer_id"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Internal ID"
                 android:layout_weight="40"
@@ -34,7 +34,7 @@
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_customer_id"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="AUX789R5"
                 android:layout_weight="60"
                 android:gravity="left"/>
@@ -46,12 +46,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_24dp"
+                android:src="@drawable/ic_phone_android_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/label_customer_mobile"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Mobile"
                 android:layout_weight="40"
@@ -60,7 +60,7 @@
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_customer_mobile"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="xxxxx91535"
                 android:layout_weight="60"
                 android:gravity="left"/>
@@ -74,7 +74,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_24dp"
+                android:src="@drawable/ic_phone_android_white_18dp"
                 android:tint="@color/primary"
                 android:visibility="invisible"/>
             <EditText
@@ -102,12 +102,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_24dp"
+                android:src="@drawable/ic_phone_android_white_18dp"
                 android:tint="@color/primary"
                 android:visibility="invisible"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Last Txn here"
                 android:layout_weight="40"
@@ -117,7 +117,7 @@
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_cust_last_activity"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="22 July 16, 23:00"
                 android:layout_weight="60"
                 android:gravity="left"
@@ -130,12 +130,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_24dp"
+                android:src="@drawable/ic_phone_android_white_18dp"
                 android:tint="@color/primary"
                 android:visibility="invisible"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="First Txn here"
                 android:layout_weight="40"
@@ -145,14 +145,14 @@
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_cust_register_on"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="22 July 16, 23:00"
                 android:layout_weight="60"
                 android:gravity="left"
                 android:paddingTop="0dp"/>
         </LinearLayout>
 
-        <LinearLayout
+        <!--LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_cust_created_on"
             android:background="@color/bg_customercare_data">
@@ -160,12 +160,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_24dp"
+                android:src="@drawable/ic_phone_android_white_18dp"
                 android:tint="@color/primary"
                 android:visibility="invisible"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Created on"
                 android:layout_weight="40"
@@ -175,7 +175,7 @@
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_cust_created_on"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="22 July 16"
                 android:layout_weight="60"
                 android:gravity="left"
@@ -190,12 +190,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_24dp"
+                android:src="@drawable/ic_phone_android_white_18dp"
                 android:tint="@color/primary"
                 android:visibility="invisible"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="First Login"
                 android:layout_weight="40"
@@ -205,12 +205,12 @@
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_first_login"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Yes"
                 android:layout_weight="60"
                 android:gravity="left"
                 android:paddingTop="0dp"/>
-        </LinearLayout>
+        </LinearLayout-->
 
         <Space
             android:layout_width="match_parent"
@@ -223,11 +223,11 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_input_white_24dp"
+                android:src="@drawable/ic_input_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Status"
                 android:layout_weight="40"
@@ -239,7 +239,7 @@
                 android:gravity="left"
                 android:id="@+id/input_status"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Active"
                 android:textColor="@color/green_positive"/>
         </LinearLayout>
@@ -255,7 +255,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_input_white_24dp"
+                    android:src="@drawable/ic_input_white_18dp"
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
@@ -264,7 +264,7 @@
                     android:gravity="left"
                     android:id="@+id/input_reason"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="Wrong password attempts limit reached."
                     android:paddingTop="0dp"
                     android:textStyle="italic"/>
@@ -277,12 +277,12 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_input_white_24dp"
+                    android:src="@drawable/ic_input_white_18dp"
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
                     style="@style/Edittext_only_view_small"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="Changed on"
                     android:layout_weight="40"
@@ -295,7 +295,7 @@
                     android:gravity="left"
                     android:id="@+id/input_status_date"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="22 July 16, 23:00"
                     android:paddingTop="0dp"/>
             </LinearLayout>
@@ -306,13 +306,13 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_input_white_24dp"
+                    android:src="@drawable/ic_input_white_18dp"
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
                     style="@style/Edittext_only_view_small"
                     android:id="@+id/input_activation"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="Will be automatically activated within 24 hours"
                     android:layout_weight="100"
@@ -329,12 +329,12 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_input_white_24dp"
+                    android:src="@drawable/ic_input_white_18dp"
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
                     style="@style/Edittext_only_view_small"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="Remarks"
                     android:layout_weight="40"
@@ -347,7 +347,7 @@
                     android:gravity="left"
                     android:id="@+id/input_status_remarks"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text=""
                     android:paddingTop="0dp"/>
             </LinearLayout-->
@@ -363,14 +363,14 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_card_membership_white_24dp"
+                android:src="@drawable/ic_card_membership_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/label_qr_card"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
-                android:text="Card ID"
+                android:text="Card#"
                 android:layout_weight="40"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>
@@ -380,7 +380,7 @@
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_qr_card"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="1234 5678 345"
                 android:layout_weight="60"
                 android:gravity="left"
@@ -398,12 +398,12 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_card_membership_white_24dp"
+                    android:src="@drawable/ic_card_membership_white_18dp"
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
                     style="@style/Edittext_only_view_small"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="Status"
                     android:layout_weight="40"
@@ -416,25 +416,24 @@
                     android:gravity="left"
                     android:id="@+id/input_card_status"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="Invalid"
                     android:paddingTop="0dp"/>
             </LinearLayout>
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:visibility="visible"
-                android:id="@+id/layout_card_status_date"
-                android:background="@color/bg_customercare_data">
+                android:id="@+id/layout_card_status_date">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_input_white_24dp"
+                    android:src="@drawable/ic_input_white_18dp"
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
                     style="@style/Edittext_only_view_small"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="Changed on"
                     android:layout_weight="40"
@@ -447,7 +446,7 @@
                     android:gravity="left"
                     android:id="@+id/input_card_status_date"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="22 July 16, 23:00"
                     android:paddingTop="0dp"/>
             </LinearLayout>
@@ -463,11 +462,11 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_receipt_white_24dp"
+                android:src="@drawable/ic_receipt_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Total Bill"
                 android:layout_weight="40"
@@ -479,7 +478,7 @@
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_total_bill"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="\u20B9 NA"
                 android:layout_weight="60"
                 android:gravity="left"
@@ -493,12 +492,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_receipt_white_24dp"
+                android:src="@drawable/ic_receipt_white_18dp"
                 android:tint="@color/primary"
                 android:visibility="invisible"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Cashback Bill"
                 android:layout_weight="40"
@@ -508,7 +507,7 @@
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_cb_bill"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="\u20B9 NA"
                 android:layout_weight="60"
                 android:gravity="left"
@@ -517,7 +516,7 @@
 
         <EditText
             style="@style/Edittext_only_view_small"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="wrap_content"
             android:text="Cashback"
             android:textStyle="bold"
@@ -530,11 +529,11 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_favorite_white_24dp"
+                android:src="@drawable/ic_favorite_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Balance"
                 android:layout_weight="40"
@@ -544,7 +543,7 @@
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_cb_balance"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:layout_weight="60"
                 android:gravity="left"
@@ -559,12 +558,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_favorite_white_24dp"
+                android:src="@drawable/ic_favorite_white_18dp"
                 android:visibility="invisible"
                 android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Total Award"
                 android:layout_weight="40"
@@ -577,7 +576,7 @@
                 android:gravity="left"
                 android:id="@+id/input_cb_award"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:paddingTop="0dp"/>
         </LinearLayout>
@@ -588,12 +587,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_favorite_white_24dp"
+                android:src="@drawable/ic_favorite_white_18dp"
                 android:visibility="invisible"
                 android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Total Redeem"
                 android:layout_weight="40"
@@ -606,14 +605,14 @@
                 android:gravity="left"
                 android:id="@+id/input_cb_redeem"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:paddingTop="0dp"/>
         </LinearLayout>
 
         <EditText
             style="@style/Edittext_only_view_small"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="wrap_content"
             android:text="Account"
             android:textStyle="bold"
@@ -626,11 +625,11 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                android:src="@drawable/ic_account_balance_wallet_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Balance"
                 android:layout_weight="40"
@@ -640,7 +639,7 @@
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_acc_balance"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:layout_weight="60"
                 android:gravity="left"
@@ -655,12 +654,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                android:src="@drawable/ic_account_balance_wallet_white_18dp"
                 android:visibility="invisible"
                 android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Total Add"
                 android:layout_weight="40"
@@ -673,7 +672,7 @@
                 android:gravity="left"
                 android:id="@+id/input_acc_add"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:paddingTop="0dp"/>
         </LinearLayout>
@@ -684,12 +683,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                android:src="@drawable/ic_account_balance_wallet_white_18dp"
                 android:visibility="invisible"
                 android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Total Debit"
                 android:layout_weight="40"
@@ -702,7 +701,7 @@
                 android:gravity="left"
                 android:id="@+id/input_acc_debit"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:paddingTop="0dp"/>
         </LinearLayout>

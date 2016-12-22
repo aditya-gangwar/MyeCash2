@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat;
  * Created by adgangwa on 21-05-2016.
  */
 public class CustomerDetailsDialog extends DialogFragment  {
-    private static final String TAG = "CustomerDetailsDialog";
+    private static final String TAG = "MchntApp-CustomerDetailsDialog";
     private static final String ARG_CB_POSITION = "cbPosition";
     private static final String ARG_GETTXNS_BTN = "getTxnsBtn";
 
@@ -128,11 +128,13 @@ public class CustomerDetailsDialog extends DialogFragment  {
             mFirstUsedHere.setText(mSdfDateWithTime.format(cb.getCreateTime()));
 
             mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cust.getCardId()));
-            mInputCardStatus.setText(DbConstants.cardStatusDescriptions[cust.getCardStatus()]);
+            mInputCardStatus.setText(DbConstants.cardStatusDesc[cust.getCardStatus()]);
+            mLayoutCardStatusDate.setVisibility(View.GONE);
             if(cust.getCardStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
                 mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+                mLayoutCardStatusDate.setVisibility(View.VISIBLE);
+                mCardStatusDate.setText(cust.getCardStatusUpdateTime());
             }
-
             int status = cust.getStatus();
             mInputStatus.setText(DbConstants.userStatusDesc[status]);
             if(status != DbConstants.USER_STATUS_ACTIVE) {
@@ -173,12 +175,11 @@ public class CustomerDetailsDialog extends DialogFragment  {
             mInputCbTotalAward.setText(AppCommonUtil.getAmtStr(cb.getCbCredit()));
             mInputCbTotalRedeem.setText(AppCommonUtil.getAmtStr(cb.getCbRedeem()));
 
-            if(mCallback.getRetainedFragment().mMerchantUser.isPseudoLoggedIn()) {
+            /*if(mCallback.getRetainedFragment().mMerchantUser.isPseudoLoggedIn()) {
                 // set cust care specific fields too
                 //mName.setText(cust.getName());
                 mCreatedOn.setText(cust.getCustCreateTime());
                 mFirstLogin.setText(cust.isFirstLoginOk().toString());
-                mCardStatusDate.setText(cust.getCardStatusUpdateTime());
                 //mInputAdminRemarks.setText(cust.getRemarks());
             } else {
                 // hide fields for customer care logins only
@@ -186,8 +187,8 @@ public class CustomerDetailsDialog extends DialogFragment  {
                 mLayoutCreated.setVisibility(View.GONE);
                 mLayoutFirstLogin.setVisibility(View.GONE);
                 //mLayoutRemarks.setVisibility(View.GONE);
-                mLayoutCardStatusDate.setVisibility(View.GONE);
-            }
+                //mLayoutCardStatusDate.setVisibility(View.GONE);
+            }*/
 
         } else {
             LogMy.wtf(TAG, "Customer or Cashback object is null !!");
@@ -200,8 +201,8 @@ public class CustomerDetailsDialog extends DialogFragment  {
     // EditText mName;
     private EditText mLastUsedHere;
     private EditText mFirstUsedHere;
-    private EditText mCreatedOn;
-    private EditText mFirstLogin;
+    //private EditText mCreatedOn;
+    //private EditText mFirstLogin;
 
     private EditText mInputQrCard;
     //private View mLayoutCardDetails;
@@ -240,8 +241,8 @@ public class CustomerDetailsDialog extends DialogFragment  {
         //mName = (EditText) v.findViewById(R.id.input_cust_name);;
         mLastUsedHere = (EditText) v.findViewById(R.id.input_cust_last_activity);;
         mFirstUsedHere = (EditText) v.findViewById(R.id.input_cust_register_on);;
-        mCreatedOn = (EditText) v.findViewById(R.id.input_cust_created_on);;
-        mFirstLogin = (EditText) v.findViewById(R.id.input_first_login);;
+        //mCreatedOn = (EditText) v.findViewById(R.id.input_cust_created_on);;
+        //mFirstLogin = (EditText) v.findViewById(R.id.input_first_login);;
 
         mInputQrCard = (EditText) v.findViewById(R.id.input_qr_card);
         //mLayoutCardDetails = v.findViewById(R.id.layout_card_details);
@@ -268,8 +269,8 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
         // layouts for optional fields
         //mLayoutName = v.findViewById(R.id.layout_cust_name);
-        mLayoutCreated = v.findViewById(R.id.layout_cust_created_on);
-        mLayoutFirstLogin = v.findViewById(R.id.layout_first_login);
+        //mLayoutCreated = v.findViewById(R.id.layout_cust_created_on);
+        //mLayoutFirstLogin = v.findViewById(R.id.layout_first_login);
         //mLayoutRemarks = v.findViewById(R.id.layout_status_remarks);
         mLayoutCardStatusDate = v.findViewById(R.id.layout_card_status_date);
 

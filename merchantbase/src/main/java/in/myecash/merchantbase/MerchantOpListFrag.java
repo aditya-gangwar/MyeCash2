@@ -27,7 +27,7 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
  * Created by adgangwa on 18-09-2016.
  */
 public class MerchantOpListFrag extends Fragment {
-    private static final String TAG = "MerchantOpListFrag";
+    private static final String TAG = "MchntApp-MerchantOpListFrag";
 
     private static final int REQ_NOTIFY_ERROR = 1;
 

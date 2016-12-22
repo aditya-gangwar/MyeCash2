@@ -20,7 +20,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
  */
 public class PasswordPreference extends DialogPreference
         implements View.OnClickListener {
-    private static final String TAG = "PasswordPreference";
+    private static final String TAG = "MchntApp-PasswordPreference";
 
     public interface PasswordPreferenceIf {
         void changePassword(String oldPasswd, String newPassword);

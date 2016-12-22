@@ -20,7 +20,7 @@ import in.myecash.merchantbase.helper.CashPaid;
  * Created by adgangwa on 13-03-2016.
  */
 /*public class CashPaidDialog extends DialogFragment implements CashPaid.CashPaidIf {
-    public static final String TAG = "CashPayFragment";
+    public static final String TAG = "MchntApp-CashPayFragment";
 
     public static final String EXTRA_CASH_PAID = "cashPaid";
     private static final String ARG_AMOUNT = "amount";

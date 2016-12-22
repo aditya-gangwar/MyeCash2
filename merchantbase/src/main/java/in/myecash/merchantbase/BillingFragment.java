@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * Created by adgangwa on 03-03-2016.
  */
 public class BillingFragment extends Fragment implements View.OnClickListener {
-    private static final String TAG = "BillingFragment";
+    private static final String TAG = "MchntApp-BillingFragment";
 
     private static final String MULTIPLY_STR = " x ";
 

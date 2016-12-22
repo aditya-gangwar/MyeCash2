@@ -28,7 +28,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
 public class CustomerCardDialog  extends DialogFragment
         implements View.OnTouchListener {
 
-    private static final String TAG = "CustomerCardDialog";
+    private static final String TAG = "MchntApp-CustomerCardDialog";
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9003;
 
     private static final String ARG_MOBILE_NUM = "mobile_num";
@@ -37,6 +37,7 @@ public class CustomerCardDialog  extends DialogFragment
     private static final int REQUEST_REASON = 1;
 
     private CustomerCardDialogIf mCallback;
+    private String scannedCardId;
 
     public interface CustomerCardDialogIf {
         void onCustomerCardOk(String reason, String mobileNum, String qrCode);
@@ -73,6 +74,11 @@ public class CustomerCardDialog  extends DialogFragment
 
         bindUiResources(v);
         initChoiceReasons();
+
+        if(savedInstanceState!=null) {
+            LogMy.d(TAG,"Restoring scannedCardId");
+            scannedCardId = savedInstanceState.getString("scannedCardId");
+        }
 
         if(mobileNum==null || mobileNum.isEmpty()) {
             mInputMobileNum.requestFocus();
@@ -141,7 +147,7 @@ public class CustomerCardDialog  extends DialogFragment
                     if(validate()) {
                         mCallback.onCustomerCardOk(
                                 mInputReason.getText().toString(),
-                                mInputMobileNum.getText().toString(),
+                                scannedCardId,
                                 mInputQrCard.getText().toString());
                         wantToCloseDialog = true;
                     }
@@ -163,7 +169,7 @@ public class CustomerCardDialog  extends DialogFragment
             retValue = false;
         }
 
-        errorCode = ValidationHelper.validateMemberCard(mInputQrCard.getText().toString());
+        errorCode = ValidationHelper.validateMemberCard(scannedCardId);
         if(errorCode != ErrorCodes.NO_ERROR) {
             mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
             retValue = false;
@@ -248,10 +254,23 @@ public class CustomerCardDialog  extends DialogFragment
 
     private void setQrCode(String qrCode) {
         if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
-            mInputQrCard.setText(qrCode);
+            scannedCardId = qrCode;
+            mInputQrCard.setText(scannedCardId);
             mInputQrCard.setError(null);
         } else {
             AppCommonUtil.toast(getActivity(), "Invalid Membership card");
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AppCommonUtil.cancelToast();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("scannedCardId", scannedCardId);
     }
 }

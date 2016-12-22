@@ -51,7 +51,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
         TxnDetailsDialog.TxnDetailsDialogIf, TxnReportsHelper.TxnReportsHelperIf,
         TxnCancelDialog.TxnCancelDialogIf, TxnPinInputDialog.TxnPinInputDialogIf,
         CustomerDetailsDialog.CustomerDetailsDialogIf {
-    private static final String TAG = "TxnReportsActivity";
+    private static final String TAG = "MchntApp-TxnReportsActivity";
 
     public static final String EXTRA_CUSTOMER_ID = "extraCustId";
 

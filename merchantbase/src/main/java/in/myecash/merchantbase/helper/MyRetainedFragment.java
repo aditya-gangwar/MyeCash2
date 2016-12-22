@@ -35,7 +35,7 @@ import java.util.Map;
  * Created by adgangwa on 02-03-2016.
  */
 public class MyRetainedFragment extends RetainedFragment {
-    private static final String TAG = "MyRetainedFragment";
+    private static final String TAG = "MchntApp-MyRetainedFragment";
 
     // Requests that this fragment executes in backend
     public static final int REQUEST_IMAGE_DOWNLOAD = 0;

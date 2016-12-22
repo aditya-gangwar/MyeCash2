@@ -17,7 +17,7 @@ import in.myecash.appbase.utilities.LogMy;
  * Created by adgangwa on 08-06-2016.
  */
 public class TxnSummaryFragment extends Fragment {
-    private static final String TAG = "TxnSummaryFragment";
+    private static final String TAG = "MchntApp-TxnSummaryFragment";
 
     private static final String ARG_SUMMARY = "summary";
 

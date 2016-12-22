@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class TrustedDevicesFragment extends Fragment
         implements View.OnClickListener {
-    private static final String TAG = "TrustedDevicesFragment";
+    private static final String TAG = "MchntApp-TrustedDevicesFragment";
     private static final int REQ_CONFIRM_DEVICE_DELETE = 1;
     private static final int NOTIFY_DELETE_NOT_ALLOWED = 2;
 

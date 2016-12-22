@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * Created by adgangwa on 09-06-2016.
  */
 public class DashboardTxnFragment extends Fragment {
-    private static final String TAG = "DashboardTxnFragment";
+    private static final String TAG = "MchntApp-DashboardTxnFragment";
 
     //private static final String DIALOG_DASHBOARD_TYPE = "DialogDashboardType";
     //private static final int REQUEST_DASHBOARD_TYPE = 1;

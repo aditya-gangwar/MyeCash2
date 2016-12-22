@@ -14,6 +14,7 @@ import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.BackgroundProcessor;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.database.CustomerCards;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.merchantbase.backendAPI.MerchantServices;
 import in.myecash.merchantbase.entities.MerchantUser;
@@ -133,6 +134,15 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         msg.allocateTo = allocateTo;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_ACTION_CARDS, msg).sendToTarget();
     }
+    public void addDisableCustCardReq(String ticketId, String reason, String remarks) {
+        MessageDisableUser msg = new MessageDisableUser();
+        msg.ticketId = ticketId;
+        msg.reason = reason;
+        msg.remarks = remarks;
+
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DISABLE_CUST_CARD, msg).sendToTarget();
+    }
+
 
 
     @Override
@@ -172,6 +182,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_ACTION_CARDS:
                 error = actionForCards((MessageActionCards) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_DISABLE_CUST_CARD:
+                error = disableCustCard((MessageDisableUser) msg.obj);
                 break;
         }
         return error;
@@ -277,6 +290,21 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         }
         return ErrorCodes.NO_ERROR;
     }
+
+    private int disableCustCard(MessageDisableUser data) {
+        try {
+            CustomerCards card = mRetainedFragment.mCurrCustomer.getMembership_card();
+            InternalUserServices.getInstance().disableCustCard(mRetainedFragment.mCurrCustomer.getPrivate_id(),
+                    card.getCard_id(), data.ticketId, data.reason, data.remarks);
+            LogMy.d(TAG,"disableCustCard success");
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Exception in disableCustCard: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
 
 
 }

@@ -33,6 +33,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_LIMIT_CUST_ACC = 12;
     public static final int REQUEST_SEARCH_CARD = 13;
     public static final int REQUEST_ACTION_CARDS = 14;
+    public static final int REQUEST_DISABLE_CUST_CARD = 15;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -91,6 +92,9 @@ public class MyRetainedFragment extends RetainedFragment {
     }
     public void execActionForCards(String cards, String action, String allocateTo) {
         mBackgroundProcessor.addExecActionCardsReq(cards,action,allocateTo);
+    }
+    public void disableCustCard(String ticketId, String reason, String remarks) {
+        mBackgroundProcessor.addDisableCustCardReq(ticketId, reason, remarks);
     }
 
 

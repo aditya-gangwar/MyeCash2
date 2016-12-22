@@ -4,6 +4,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.HeadersManager;
 import com.backendless.exceptions.BackendlessException;
+import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.List;
@@ -17,7 +18,6 @@ import in.myecash.common.database.CustomerOps;
 import in.myecash.common.database.Customers;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
-import in.myecash.common.database.MerchantOps;
 import in.myecash.common.database.Transaction;
 import in.myecash.customerbase.backendAPI.CustomerServices;
 import in.myecash.customerbase.backendAPI.CustomerServicesNoLogin;
@@ -166,6 +166,7 @@ public class CustomerUser {
 
     public List<CustomerOps> fetchCustomerOps() throws BackendlessException {
         LogMy.d(TAG, "In fetchCustomerOps");
+        isLoginValid();
 
         return CustomerServices.getInstance().getCustomerOps(mCustomer.getPrivate_id());
     }
@@ -180,6 +181,7 @@ public class CustomerUser {
         }
 
         try {
+            isLoginValid();
             CommonServices.getInstance().changePassword(mCustomer.getMobile_num(), oldPasswd, newPasswd);
             LogMy.d(TAG,"changePassword success");
         } catch (BackendlessException e) {
@@ -196,6 +198,7 @@ public class CustomerUser {
         }
 
         try {
+            isLoginValid();
             CommonServices.getInstance().execCustomerOp(DbConstants.OP_CHANGE_MOBILE, mCustomer.getMobile_num(),
                     cardNum, otp, pin, newMobile);
             LogMy.d(TAG,"changeMobileNum success");
@@ -214,6 +217,7 @@ public class CustomerUser {
         }
 
         try {
+            isLoginValid();
             if(oldPin==null || newPin==null) {
                 // PIN reset scenario
                 CommonServices.getInstance().execCustomerOp(DbConstants.OP_RESET_PIN, mCustomer.getMobile_num(),
@@ -234,11 +238,13 @@ public class CustomerUser {
 
     public List<Cashback> fetchCashbacks(Long updatedSince) throws BackendlessException {
         LogMy.d(TAG, "In fetchCashback");
+        isLoginValid();
         return CustomerServices.getInstance().getCashbacks(mCustomer.getPrivate_id(), updatedSince);
     }
 
     public List<Transaction> fetchTxns(String whereClause) throws BackendlessException {
         LogMy.d(TAG, "In fetchTxns");
+        isLoginValid();
         return CustomerServices.getInstance().getTransactions(mCustomer.getPrivate_id(), whereClause);
     }
 
@@ -262,6 +268,15 @@ public class CustomerUser {
     /*
      * Private helper methods
      */
+    private void isLoginValid() {
+        // Not working properly - so commenting it out
+        /*String userToken = UserTokenStorageFactory.instance().getStorage().get();
+        if(userToken==null || userToken.isEmpty()) {
+            LogMy.e(TAG,"User token is null. Auto logout scenario");
+            throw new BackendlessException(String.valueOf(ErrorCodes.NOT_LOGGED_IN), "");
+        }*/
+    }
+
     private void loadCustomer(String mobileNum) {
 
         mCustomer = CommonServices.getInstance().getCustomer(mobileNum);

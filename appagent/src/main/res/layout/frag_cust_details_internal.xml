@@ -398,7 +398,7 @@
                 style="@style/button_normal_thin"
                 android:id="@+id/btn_acc_status"
                 android:layout_width="0dp"
-                android:text="Disable"
+                android:text="Disable Acc"
                 android:layout_weight="47.5"/>
 
             <Space
@@ -421,9 +421,9 @@
 
             <android.support.v7.widget.AppCompatButton
                 style="@style/button_normal_thin"
-                android:id="@+id/btn_launch_app"
+                android:id="@+id/btn_disable_card"
                 android:layout_width="0dp"
-                android:text="Launch App"
+                android:text="Disable Card"
                 android:layout_weight="47.5"/>
 
             <Space
@@ -433,11 +433,10 @@
 
             <android.support.v7.widget.AppCompatButton
                 style="@style/button_normal_thin"
-                android:id="@+id/btn_launch_app_1"
+                android:id="@+id/btn_launch_app"
                 android:layout_width="0dp"
                 android:text="Launch App"
-                android:layout_weight="47.5"
-                android:visibility="invisible"/>
+                android:layout_weight="47.5"/>
         </LinearLayout>
 
         <Space

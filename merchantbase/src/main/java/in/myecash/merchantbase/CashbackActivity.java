@@ -75,7 +75,7 @@ public class CashbackActivity extends AppCompatActivity implements
         CustomerListFragment.CustomerListFragmentIf, MerchantOpListFrag.MerchantOpListFragIf,
         TxnConfirmFragment.TxnConfirmFragmentIf {
 
-    private static final String TAG = "CashbackActivity";
+    private static final String TAG = "MchntApp-CashbackActivity";
 
     public static final String INTENT_EXTRA_USER_TOKEN = "extraUserToken";
 
@@ -108,8 +108,9 @@ public class CashbackActivity extends AppCompatActivity implements
     private static final String DIALOG_CUSTOMER_OP_OTP = "dialogCustomerOpOtp";
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
     private static final String DIALOG_MERCHANT_DETAILS = "dialogMerchantDetails";
-
     private static final String DIALOG_CUSTOMER_DATA = "dialogCustomerData";
+
+    private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
 
     MyRetainedFragment mWorkFragment;
     FragmentManager mFragMgr;
@@ -492,14 +493,17 @@ public class CashbackActivity extends AppCompatActivity implements
 
             switch(mWorkFragment.mCurrCustomer.getCardStatus()) {
                 case DbConstants.CUSTOMER_CARD_STATUS_DISABLED:
+                    setTbImage(R.drawable.ic_block_white_48dp, R.color.failure);
+                    String txt = "Member Card: "+DbConstants.cardStatusDesc[mWorkFragment.mCurrCustomer.getCardStatus()];
                     mTbTitle2.setVisibility(View.VISIBLE);
-                    mTbTitle2.setText(DbConstants.cardStatusDescriptions[mWorkFragment.mCurrCustomer.getCardStatus()]);
+                    mTbTitle2.setText(txt);
                     break;
                 default:
+                    // Issue if its neither Active nor Disabled - and still linked to customer
                     //raise alarm
                     Map<String,String> params = new HashMap<>();
-                    params.put("CustomerId",mWorkFragment.mCurrCustomer.getMobileNum());
-                    params.put("CardId",mWorkFragment.mCurrCustomer.getCardId());
+                    params.put("CustomerId",mWorkFragment.mCurrCustomer.getPrivateId());
+                    //params.put("CardId",mWorkFragment.mCurrCustomer.getCardId());
                     params.put("CardStatus",String.valueOf(mWorkFragment.mCurrCustomer.getCardStatus()));
                     AppAlarms.invalidCardState(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"updateTbForCustomer",params);
             }
@@ -925,6 +929,15 @@ public class CashbackActivity extends AppCompatActivity implements
     @Override
     public void onBgProcessResponse(int errorCode, int operation) {
         LogMy.d(TAG,"In onBgProcessResponse: "+operation+", "+errorCode);
+
+        // Session timeout case - show dialog and logout - irrespective of invoked operation
+        if(errorCode==ErrorCodes.SESSION_TIMEOUT || errorCode==ErrorCodes.NOT_LOGGED_IN) {
+            AppCommonUtil.cancelProgressDialog(true);
+            DialogFragmentWrapper.createNotification(AppConstants.notLoggedInTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                    .show(mFragMgr, DIALOG_SESSION_TIMEOUT);
+            return;
+        }
+
         switch(operation) {
             case MyRetainedFragment.REQUEST_FETCH_MERCHANT_OPS:
                 AppCommonUtil.cancelProgressDialog(true);
@@ -1311,7 +1324,8 @@ public class CashbackActivity extends AppCompatActivity implements
         if(errorCode== ErrorCodes.NO_SUCH_USER) {
             // Billing fragment must have started by now
             // show mobile number fragment
-            mFragMgr.popBackStackImmediate(MOBILE_NUM_FRAGMENT, 0);
+            //mFragMgr.popBackStackImmediate(MOBILE_NUM_FRAGMENT, 0);
+            goToMobileNumFrag();
             askAndRegisterCustomer(false);
 
         } else if(errorCode==ErrorCodes.NO_ERROR) {
@@ -1327,6 +1341,7 @@ public class CashbackActivity extends AppCompatActivity implements
         } else {
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            restartTxn();
         }
     }
 
@@ -1432,7 +1447,6 @@ public class CashbackActivity extends AppCompatActivity implements
         if(errorCode == ErrorCodes.NO_ERROR) {
             // Display success notification
             TxnSuccessDialog dialog = TxnSuccessDialog.newInstance(
-                    mWorkFragment.mCurrCustomer.getMobileNum(),
                     mWorkFragment.mCurrTransaction.getTransaction().getTrans_id(),
                     mWorkFragment.mCurrCashback.getCurrClBalance(),
                     mWorkFragment.mCurrCashback.getCurrCbBalance(),
@@ -1501,17 +1515,16 @@ public class CashbackActivity extends AppCompatActivity implements
             if(error != ErrorCodes.NO_ERROR) {
                 onLogoutResponse(error);
             }
-        }/* else if(tag.equals(DIALOG_LOGOUT)) {
+        } else if(tag.equals(DIALOG_SESSION_TIMEOUT)) {
             mExitAfterLogout = false;
             logoutMerchant();
-        }*/
+        }
     }
 
     @Override
     public void restartTxn() {
-        getReadyForNewTransaction();
-        // Pop all fragments uptil mobile number one
-        mFragMgr.popBackStackImmediate(MOBILE_NUM_FRAGMENT, 0);
+        mWorkFragment.reset();
+        goToMobileNumFrag();
     }
 
     @Override
@@ -1519,9 +1532,10 @@ public class CashbackActivity extends AppCompatActivity implements
         restartTxn();
     }
 
-    private void getReadyForNewTransaction() {
-        LogMy.d(TAG, "In getReadyForNewTransaction");
-        mWorkFragment.reset();
+    private void goToMobileNumFrag() {
+        LogMy.d(TAG, "In goToMobileNumFrag");
+        // Pop all fragments uptil mobile number one
+        mFragMgr.popBackStackImmediate(MOBILE_NUM_FRAGMENT, 0);
         updateTbForMerchant();
         setDrawerState(true);
     }
@@ -1652,7 +1666,7 @@ public class CashbackActivity extends AppCompatActivity implements
     private void startBillingFragment() {
         Fragment fragment = mFragMgr.findFragmentByTag(BILLING_FRAGMENT);
         if (fragment == null) {
-            //getReadyForNewTransaction();
+            //goToMobileNumFrag();
             //setDrawerState(false);
             // Create new fragment and transaction
             Fragment billFragment = new BillingFragment();
@@ -1860,7 +1874,7 @@ public class CashbackActivity extends AppCompatActivity implements
             }
             if(mMobileNumFragment.isVisible()) {
                 LogMy.d(TAG,"Mobile num fragment visible");
-                getReadyForNewTransaction();
+                goToMobileNumFrag();
             }
         }
     }
@@ -1880,6 +1894,7 @@ public class CashbackActivity extends AppCompatActivity implements
             DateUtil todayMidnight = new DateUtil();
             todayMidnight.toMidnight();
 
+            // Try archive if not done today
             if(mMerchant.getLast_txn_archive()==null ||
                     mMerchant.getLast_txn_archive().getTime() < todayMidnight.getTime().getTime()) {
                 mWorkFragment.archiveTxns();

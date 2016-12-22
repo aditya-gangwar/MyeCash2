@@ -23,7 +23,7 @@ import in.myecash.appbase.entities.MyCashback;
  * Created by adgangwa on 15-09-2016.
  */
 public class SortCustDialog extends DialogFragment implements DialogInterface.OnClickListener {
-    public static final String TAG = "SortCustDialog";
+    public static final String TAG = "MchntApp-SortCustDialog";
 
     public static final String ARG_SELECTED = "argSelected";
     public static final String EXTRA_SELECTION = "extraSelected";

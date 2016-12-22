@@ -62,7 +62,7 @@ public class CardDetailsFragment extends Fragment {
         CustomerCards card = mCallback.getRetainedFragment().mCurrMemberCard;
 
         mInputQrCard.setText(card.getCard_id());
-        mInputCardStatus.setText(DbConstants.cardStatusDescriptions[card.getStatus()]);
+        mInputCardStatus.setText(DbConstants.cardStatusDescInternal[card.getStatus()]);
         if(card.getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
             mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
         }

@@ -55,7 +55,15 @@ public class DbConstants {
     public static final int CUSTOMER_CARD_STATUS_ACTIVE = 4;
     public static final int CUSTOMER_CARD_STATUS_DISABLED = 5;
     // Map int status values to corresponding descriptions
-    public static String cardStatusDescriptions[] = {
+    public static String cardStatusDesc[] = {
+            "Invalid",
+            "Invalid",
+            "Invalid",
+            "Allotted to Merchant",
+            "Active",
+            "Disabled"
+    };
+    public static String cardStatusDescInternal[] = {
             "Out for Print",
             "New Card",
             "Allotted to Agent",
@@ -84,6 +92,7 @@ public class DbConstants {
     public static final String OP_CANCEL_ACC_CLOSURE = "Cancel Account Closure";
 
     public static final String OP_NEW_CARD = "Change Member Card";
+    public static final String OP_DISABLE_CARD = "Disable Member Card";
     public static final String OP_RESET_PIN = "Reset PIN";
     public static final String OP_CHANGE_PIN = "Change PIN";
 

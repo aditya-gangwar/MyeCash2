@@ -24,7 +24,7 @@ import java.util.Date;
  */
 public class DashboardFragment extends Fragment
         implements View.OnClickListener, View.OnTouchListener {
-    private static final String TAG = "DashboardSummary";
+    private static final String TAG = "MchntApp-DashboardSummary";
 
     public static final int DB_TYPE_CUSTOMER = 1;
     public static final int DB_TYPE_CASHBACK = 2;

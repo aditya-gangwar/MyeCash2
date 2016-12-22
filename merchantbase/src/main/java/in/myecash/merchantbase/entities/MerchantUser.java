@@ -11,6 +11,7 @@ import com.backendless.BackendlessUser;
 import com.backendless.HeadersManager;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.files.BackendlessFile;
+import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.crashlytics.android.Crashlytics;
 import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.appbase.entities.MyTransaction;
@@ -34,7 +35,7 @@ import java.util.List;
 
 public class MerchantUser
 {
-    private static final String TAG = "MerchantUser";
+    private static final String TAG = "MchntApp-MerchantUser";
 
     private static MerchantUser mInstance;
 
@@ -179,7 +180,7 @@ public class MerchantUser
         if(mInstance!=null && !mInstance.mPseudoLoggedIn) {
             try {
                 Backendless.UserService.logout();
-                LogMy.d(TAG, "Logout Success: " + mInstance.mMerchant.getAuto_id());
+                LogMy.d(TAG, "Logout Success");
             } catch (BackendlessException e) {
                 LogMy.e(TAG, "Logout failed: " + e.toString());
                 return AppCommonUtil.getLocalErrorCode(e);
@@ -200,6 +201,7 @@ public class MerchantUser
         }
 
         try {
+            isLoginValid();
             CommonServices.getInstance().changePassword(mMerchant.getAuto_id(), oldPasswd, newPasswd);
             LogMy.d(TAG,"changePassword success");
         } catch (BackendlessException e) {
@@ -216,6 +218,7 @@ public class MerchantUser
         }
 
         try {
+            isLoginValid();
             // set new value = old value - for non changed params
             if(mNewCbRate==null) {
                 mNewCbRate = mMerchant.getCb_rate();
@@ -264,6 +267,7 @@ public class MerchantUser
 
         int returnCode = ErrorCodes.NO_ERROR;
         try {
+            isLoginValid();
             mMerchant = MerchantServices.getInstance().changeMobile(verifyparam, newMobile, otp);
             LogMy.d(TAG,"changeMobileNum success");
 
@@ -288,6 +292,7 @@ public class MerchantUser
         if(mPseudoLoggedIn) {
             throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
         }
+        isLoginValid();
 
         return CommonServices.getInstance().execCustomerOp(custOp.getOp_code(),custOp.getMobile_num(),custOp.getQr_card(),
                 custOp.getOtp(),custOp.getPin(),custOp.getExtra_op_params());
@@ -298,6 +303,7 @@ public class MerchantUser
             // intentionally using 'Backend' error code - as calling fx. will try to convert
             throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
         }
+        isLoginValid();
         return MerchantServices.getInstance().registerCustomer(mobileNum, qrCode, otp, firstName, lastName);
     }
 
@@ -305,11 +311,13 @@ public class MerchantUser
      * Methods for DB fetches
      */
     public MerchantStats fetchStats() throws BackendlessException {
+        isLoginValid();
         return MerchantServices.getInstance().getMerchantStats(mMerchant.getAuto_id());
     }
 
     public Cashback fetchCashback(String custId) throws BackendlessException {
         LogMy.d(TAG, "In fetchCashback");
+        isLoginValid();
 
         return MerchantServices.getInstance().getCashback(
                 mMerchant.getAuto_id(),
@@ -320,6 +328,7 @@ public class MerchantUser
 
     public List<MerchantOps> fetchMerchantOps() throws BackendlessException {
         LogMy.d(TAG, "In fetchMerchantOps");
+        isLoginValid();
 
         return MerchantServices.getInstance().getMerchantOps(
                 mMerchant.getAuto_id());
@@ -333,6 +342,7 @@ public class MerchantUser
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
         try {
+            isLoginValid();
             txn.commit(pin);
 
         } catch( BackendlessException e ) {
@@ -347,6 +357,7 @@ public class MerchantUser
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
         try {
+            isLoginValid();
             Transaction newTxn = MerchantServices.getInstance().cancelTxn(txn.getTransaction().getTrans_id(), cardId, pin);
             LogMy.d(TAG, "Txn cancel success: " + newTxn.getTrans_id());
             txn.setCurrTransaction(newTxn);
@@ -362,17 +373,11 @@ public class MerchantUser
         if(mPseudoLoggedIn) {
             throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
         }
+        isLoginValid();
         // upload file
         BackendlessFile newfile = Backendless.Files.upload(file, remoteDir, true);
         LogMy.d(TAG, "Image uploaded successfully at :" + newfile.getFileURL());
     }
-
-    /*public void uploadImgFile(File file) throws Exception {
-        if(mPseudoLoggedIn) {
-            throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
-        }
-        uploadImageSync(file, CommonUtils.getTxnImgDir(mMerchant.getAuto_id()));
-    }*/
 
     /*
      * Methods for other DB actions
@@ -398,6 +403,7 @@ public class MerchantUser
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
         try {
+            isLoginValid();
             MerchantServices.getInstance().deleteTrustedDevice(mMerchant.getTrusted_devices().get(index).getDevice_id());
             LogMy.d(TAG, "Device delete success: " + mMerchant.getAuto_id());
             mInstance.loadMerchant(mMerchant.getAuto_id());
@@ -437,8 +443,8 @@ public class MerchantUser
     }
 
     /*
-         * Getter fxs
-         */
+     * Getter fxs
+     */
     public String getUserToken() {
         return mUserToken;
     }
@@ -478,12 +484,15 @@ public class MerchantUser
     /*
      * Private helper functions
      */
-    /*private String uploadImageSync(File imgFile, String remoteDir) throws Exception {
-        // upload file
-        BackendlessFile file = Backendless.Files.upload(imgFile, remoteDir, true);
-        LogMy.d(TAG, "Image uploaded successfully at :" + file.getFileURL());
-        return file.getFileURL();
-    }*/
+    private void isLoginValid() {
+        // Not working properly - so commenting it out
+        //String userToken = UserTokenStorageFactory.instance().getStorage().get();
+        /*String userToken = HeadersManager.getInstance().getHeader(HeadersManager.HeadersEnum.USER_TOKEN_KEY);
+        if(userToken==null || userToken.isEmpty()) {
+            LogMy.e(TAG,"User token is null. Auto logout scenario");
+            throw new BackendlessException(String.valueOf(ErrorCodes.NOT_LOGGED_IN), "");
+        }*/
+    }
 
     private void loadMerchant(String idOrMobileNum) {
 

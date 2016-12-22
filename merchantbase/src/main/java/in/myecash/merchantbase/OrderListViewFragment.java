@@ -25,7 +25,7 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
 public class OrderListViewFragment extends ListFragment implements
         View.OnClickListener, OrderListViewAdapter.OrderListViewIf {
 
-    private static final String TAG = "OrderListViewFragment";
+    private static final String TAG = "MchntApp-OrderListViewFragment";
 
     private static final int REQ_CONFIRM_ITEM_DEL = 1;
     private static final int REQ_NEW_UNIT_PRICE = 2;

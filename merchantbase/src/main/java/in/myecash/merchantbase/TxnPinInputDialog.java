@@ -30,7 +30,7 @@ import java.util.Collections;
 public class TxnPinInputDialog extends DialogFragment
         implements View.OnClickListener {
 
-    private static final String TAG = "TxnPinInputDialog";
+    private static final String TAG = "MchntApp-TxnPinInputDialog";
     private static final String ARG_CASH_CREDIT = "cashCredit";
     private static final String ARG_CASH_DEBIT = "cashDebit";
     private static final String ARG_CASHBACK_DEBIT = "cashbackDebit";

@@ -30,6 +30,7 @@ public class ErrorCodes {
     public static final int FATAL_ERROR_ACC_DISABLED = 509;
     public static final int USER_ALREADY_REGISTERED = 510;
     public static final int LIMITED_ACCESS_CREDIT_TXN_ONLY = 511;
+    public static final int SESSION_TIMEOUT = 512;
 
     // Input / Verification data or permissions failure
     public static final int WRONG_INPUT_DATA = 520;
@@ -91,18 +92,19 @@ public class ErrorCodes {
 
         aMap.put(GENERAL_ERROR, "System Error. Please try again.");
 
-        aMap.put(USER_ALREADY_LOGGED_IN, "User is not logged in. Please login first.");
+        aMap.put(USER_ALREADY_LOGGED_IN, "User is already logged in (may be from other device). Please logout first.");
         aMap.put(NO_SUCH_USER,"User is not registered. Please register first and then try again.");
         aMap.put(USER_ACC_DISABLED, "User account is disabled. Please contact customer care.");
         aMap.put(USER_ACC_LOCKED,"User account is temporarily locked.");
         aMap.put(FIRST_LOGIN_PENDING, "New user. Please use forgot password link to generate new password.");
-        aMap.put(NOT_LOGGED_IN,"User not logged in.");
+        aMap.put(NOT_LOGGED_IN,"You are not logged in, or logged in from other device. \nPlease login again to proceed.");
         aMap.put(CUST_NOT_REG_WITH_MCNT,"Customer has done no transaction with the merchant.");
         aMap.put(ACC_UNDER_EXPIRY,"Account under Expiry duration");
         aMap.put(USER_WRONG_ID_PASSWD, "Wrong User id or Password. Account gets Locked after %s incorrect attempts.");
         aMap.put(FATAL_ERROR_ACC_DISABLED,"User account disabled temporarily by system for safety purpose. You will receive notification from customer care in next 24-48 hours.");
         aMap.put(USER_ALREADY_REGISTERED, "User is already registered");
         aMap.put(LIMITED_ACCESS_CREDIT_TXN_ONLY,"Limited Access. Only 'CREDIT' transactions are allowed.");
+        aMap.put(SESSION_TIMEOUT,"Your session has timed out due to inactivity. \nPlease login again to proceed.");
 
         aMap.put(SEND_SMS_FAILED,"Sorry, but we failed to send SMS to you. Request to please try again later.");
         aMap.put(OTP_GENERATE_FAILED,"Failed to generate OTP. Please try again later.");
@@ -172,6 +174,9 @@ public class ErrorCodes {
     public static final String BL_ERROR_EMPTY_ID_PASSWD = "3006";
     public static final String BL_ERROR_ACCOUNT_LOCKED = "3036";
     public static final String BL_ERROR_MULTIPLE_LOGIN_LIMIT = "3044";
+    public static final String BL_ERROR_SESSION_TIMEOUT_URL = "3048";
+    public static final String BL_ERROR_SESSION_TIMEOUT = "3091";
+
 
     // Map from backendless error codes to local error codes
     public static final Map<String, Integer> backendToLocalErrorCode;
@@ -200,6 +205,8 @@ public class ErrorCodes {
         map.put(BL_ERROR_NO_DATA_FOUND_1, NO_DATA_FOUND);
         map.put(BL_ERROR_NO_DATA_FOUND_2, NO_DATA_FOUND);
         map.put(BL_ERROR_NO_DATA_FOUND_3, NO_DATA_FOUND);
+        map.put(BL_ERROR_SESSION_TIMEOUT_URL, SESSION_TIMEOUT);
+        map.put(BL_ERROR_SESSION_TIMEOUT, SESSION_TIMEOUT);
 
         backendToLocalErrorCode = Collections.unmodifiableMap(map);
     }

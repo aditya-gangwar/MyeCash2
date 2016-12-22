@@ -25,7 +25,7 @@ public class Cashback
   private String merchant_id;
   private Integer cb_billed;
   private Customers customer;
-  private Merchants merchant;
+  //private Merchants merchant;
 
   public void setUpdated(Date updated) {
     this.updated = updated;
@@ -45,7 +45,7 @@ public class Cashback
     this.customer = customer;
   }
 
-  public Merchants getMerchant()
+  /*public Merchants getMerchant()
   {
     return merchant;
   }
@@ -53,7 +53,7 @@ public class Cashback
   public void setMerchant( Merchants merchant )
   {
     this.merchant = merchant;
-  }
+  }*/
   public Integer getCb_billed() {
     return cb_billed;
   }

@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
  * Created by adgangwa on 30-07-2016.
  */
 public class MerchantDetailsDialog extends DialogFragment {
-    private static final String TAG = "MerchantDetailsDialog";
+    private static final String TAG = "MchntApp-MerchantDetailsDialog";
 
     private final SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
     private final SimpleDateFormat mSdfOnlyDate = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);

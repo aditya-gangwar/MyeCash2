@@ -29,6 +29,15 @@ public class Customers
   private Boolean debugLogs;
   private Date lastRenewDate;
   private String txn_tables;
+  private Date delLocalFilesReq;
+
+  public Date getDelLocalFilesReq() {
+    return delLocalFilesReq;
+  }
+
+  public void setDelLocalFilesReq(Date delLocalFilesReq) {
+    this.delLocalFilesReq = delLocalFilesReq;
+  }
 
   public String getLastName() {
     return lastName;

@@ -45,6 +45,7 @@ public class AppConstants {
     public static final String noPermissionTitle = "No Permissions";
     public static final String noDataFailureTitle = "No Data";
     public static final String serviceNATitle = "Service Not Available";
+    public static final String notLoggedInTitle = "Not Logged In";
 
     public static int MOBILE_NUM_PROCESS_MIN_LENGTH = 8;
     public static final String SYMBOL_RS = "\u20B9 ";
@@ -64,6 +65,7 @@ public class AppConstants {
     public static final String PREF_LOGIN_ID = "successLoginId";
     public static final String PREF_IMAGE_PATH_PREFIX = "merchantDp";
     public static final String PREF_MCHNT_STATS_PREFIX = "merchantStats";
+    public static final String PREF_ALL_FILES_DEL_TIME = "allFilesDelTime";
 
     // Messages shown on popup dialogues
     public static final String defaultSuccessTitle = "Success";
@@ -122,6 +124,7 @@ public class AppConstants {
     public static final String merchantDisableSuccessMsg = "Merchant disabled successfully.";
     public static final String customerDisableSuccessMsg = "Customer disabled successfully.";
     public static final String customerLimitedSuccessMsg = "Customer account in 'Limited Mode' for next %s hours. Only Credit txns will be allowed.";
+    public static final String custCardDisableSuccessMsg = "Customer Card disabled successfully.";
 
     public static final String custMobileChangeSuccessMsg = "Mobile Number changed successfully. \n\nPlease login again with new mobile number.";
     public static final String enableAccSuccessMsg = "Account is Active now. Please login to proceed.";

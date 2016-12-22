@@ -8,7 +8,7 @@ public class ReportsActivity extends AppCompatActivity implements
         View.OnClickListener, DialogFragmentWrapper.DialogFragmentWrapperIf,
         MyRetainedFragment.RetainedFragmentIf, DatePickerDialog.DatePickerIf,
         TxnSummaryFragment.TxnSummaryFragmentIf {
-    private static final String TAG = "ReportsActivity";
+    private static final String TAG = "MchntApp-ReportsActivity";
 
     private static final String RETAINED_FRAGMENT = "workCashback";
 

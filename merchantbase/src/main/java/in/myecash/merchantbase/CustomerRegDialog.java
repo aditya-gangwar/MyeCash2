@@ -28,7 +28,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
 public class CustomerRegDialog extends DialogFragment
         implements View.OnTouchListener {
 
-    private static final String TAG = "CustomerRegDialog";
+    private static final String TAG = "MchntApp-CustomerRegDialog";
     public static final int RC_BARCODE_CAPTURE_REG_DIALOG = 9002;
 
     private static final String ARG_FIRST_NAME = "firstName";

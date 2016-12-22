@@ -64,7 +64,7 @@ import java.util.Date;
  * Created by adgangwa on 16-02-2016.
  */
 public class AppCommonUtil {
-    private static final String TAG = "AndroidUtil";
+    private static final String TAG = "AppCommonUtil";
     //private static final SimpleDateFormat mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
 
     // single active progress dialog at any time
@@ -456,6 +456,15 @@ public class AppCommonUtil {
 
         return new File(filesDir, name);
     }
+
+    public static boolean isAppFile(String fileName) {
+        return ( fileName.startsWith(CommonConstants.MERCHANT_TXN_FILE_PREFIX) ||
+                fileName.startsWith(CommonConstants.MERCHANT_CUST_DATA_FILE_PREFIX) ||
+                fileName.startsWith(CommonConstants.CASHBACK_DATA_FILE_PREFIX)||
+                fileName.startsWith(CommonConstants.PREFIX_TXN_IMG_FILE_NAME) );
+    }
+
+
 
 
     public static void setDialogTextSize(DialogFragment frag, AlertDialog dialog) {

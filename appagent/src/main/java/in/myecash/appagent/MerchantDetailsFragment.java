@@ -103,6 +103,10 @@ public class MerchantDetailsFragment extends Fragment
 
         mCbRate.setText(merchant.getCb_rate());
         mAddCashStatus.setText(merchant.getCl_add_enable().toString());
+        String txt = "AC Debit: "+merchant.getCl_debit_limit_for_pin()+
+                "; AC Credit: "+merchant.getCl_credit_limit_for_pin()+
+                "; CB Debit: "+merchant.getCb_debit_limit_for_pin();
+        mPinLimits.setText(txt);
 
         if( status!=DbConstants.USER_STATUS_ACTIVE && (mAccStatus.getVisibility()==View.VISIBLE) ) {
             mAccStatus.setEnabled(false);
@@ -151,6 +155,7 @@ public class MerchantDetailsFragment extends Fragment
 
     private EditText mCbRate;
     private EditText mAddCashStatus;
+    private EditText mPinLimits;
 
     private AppCompatButton mAccStatus;
     private AppCompatButton mLaunchApp;
@@ -183,6 +188,7 @@ public class MerchantDetailsFragment extends Fragment
 
         mCbRate = (EditText) v.findViewById(R.id.input_cbrate);
         mAddCashStatus = (EditText) v.findViewById(R.id.input_addcash);
+        mPinLimits = (EditText) v.findViewById(R.id.input_pinLimits);
 
         mAccStatus = (AppCompatButton) v.findViewById(R.id.btn_acc_status);
         mLaunchApp = (AppCompatButton) v.findViewById(R.id.btn_launch_app);

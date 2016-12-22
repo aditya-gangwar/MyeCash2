@@ -22,7 +22,7 @@ import in.myecash.appbase.utilities.LogMy;
  * Created by adgangwa on 28-02-2016.
  */
 public class MobileNumberFragment extends Fragment implements View.OnClickListener {
-    private static final String TAG = "MobileNumberFragment";
+    private static final String TAG = "MchntApp-MobileNumberFragment";
 
     private static final String MOBILE_NUM_EMPTY_CHAR = ".";
 

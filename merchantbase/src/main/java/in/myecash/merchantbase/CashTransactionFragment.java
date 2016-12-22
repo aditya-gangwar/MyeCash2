@@ -37,7 +37,7 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
  */
 public class CashTransactionFragment extends Fragment implements
         View.OnClickListener, CashPaid.CashPaidIf, View.OnTouchListener {
-    private static final String TAG = "CashTransactionFragment";
+    private static final String TAG = "MchntApp-CashTransactionFragment";
 
     private static final int REQUEST_CASH_PAY = 1;
     private static final int REQ_CONFIRM_TRANS_COMMIT = 2;
@@ -647,7 +647,7 @@ public class CashTransactionFragment extends Fragment implements
         trans.setCb_credit(mAwardCashback);
         trans.setCb_debit(mRedeemCashback);
         trans.setCb_percent(mMerchantUser.getMerchant().getCb_rate());
-        trans.setCustomer_id(mRetainedFragment.mCurrCustomer.getMobileNum());
+        trans.setCust_private_id(mRetainedFragment.mCurrCustomer.getPrivateId());
         if(isCardPresentedAndUsable()) {
             trans.setUsedCardId(mRetainedFragment.mCustCardId);
         } else {

@@ -21,7 +21,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
  * Created by adgangwa on 11-07-2016.
  */
 public class ForgotIdDialog extends DialogFragment implements DialogInterface.OnClickListener {
-    public static final String TAG = "ForgotIdDialog";
+    public static final String TAG = "MchntApp-ForgotIdDialog";
 
     private ForgotIdDialogIf mListener;
 

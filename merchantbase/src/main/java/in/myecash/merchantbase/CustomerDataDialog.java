@@ -21,7 +21,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
  * Created by adgangwa on 09-09-2016.
  */
 public class CustomerDataDialog extends DialogFragment implements DialogInterface.OnClickListener {
-    public static final String TAG = "CustomerDataDialog";
+    public static final String TAG = "MchntApp-CustomerDataDialog";
 
     private CustomerDataDialogIf mListener;
 
