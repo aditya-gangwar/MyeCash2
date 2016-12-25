@@ -28,7 +28,7 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
  * Created by adgangwa on 18-09-2016.
  */
 public class CustomerOpListFrag extends Fragment {
-    private static final String TAG = "CustomerOpListFrag";
+    private static final String TAG = "CustApp-CustomerOpListFrag";
 
     private static final int REQ_NOTIFY_ERROR = 1;
 

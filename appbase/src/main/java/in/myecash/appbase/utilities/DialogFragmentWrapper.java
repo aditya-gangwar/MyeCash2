@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Created by adgangwa on 13-02-2016.
  */
 public class DialogFragmentWrapper extends DialogFragment {
-    private static final String TAG = "DialogFragmentWrapper";
+    private static final String TAG = "BaseApp-DialogFragmentWrapper";
 
     private static final String ARG_TITLE = "title";
     private static final String ARG_TYPE = "type";

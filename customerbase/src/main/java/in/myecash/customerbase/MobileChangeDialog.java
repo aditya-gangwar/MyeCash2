@@ -22,7 +22,7 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
  * Created by adgangwa on 07-06-2016.
  */
 public class MobileChangeDialog extends DialogFragment implements DialogInterface.OnClickListener {
-    private static final String TAG = "MobileChangeDialog";
+    private static final String TAG = "CustApp-MobileChangeDialog";
 
     public interface MobileChangeDialogIf {
         void changeMobileNumOk(String newMobile, String cardNum);
@@ -199,7 +199,7 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
         }
 
         if( inputCardNum.isEnabled()) {
-            errorCode = ValidationHelper.validateMemberCard(inputCardNum.getText().toString());
+            errorCode = ValidationHelper.validateCardNum(inputCardNum.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
                 inputCardNum.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;

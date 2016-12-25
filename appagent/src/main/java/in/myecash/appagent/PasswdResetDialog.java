@@ -21,7 +21,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
  * Created by adgangwa on 26-04-2016.
  */
 public class PasswdResetDialog extends DialogFragment implements DialogInterface.OnClickListener {
-public static final String TAG = "PasswdResetDialog";
+public static final String TAG = "AgentApp-PasswdResetDialog";
 
 private PasswdResetDialogIf mListener;
 

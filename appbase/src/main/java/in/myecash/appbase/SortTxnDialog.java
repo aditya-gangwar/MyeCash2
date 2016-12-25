@@ -21,7 +21,7 @@ import in.myecash.appbase.utilities.LogMy;
  * Created by adgangwa on 14-09-2016.
  */
 public class SortTxnDialog extends DialogFragment implements DialogInterface.OnClickListener {
-    public static final String TAG = "SortTxnDialog";
+    public static final String TAG = "BaseApp-SortTxnDialog";
 
     public static final String ARG_SELECTED = "argSelected";
     public static final String EXTRA_SELECTION = "extraSelected";

@@ -27,7 +27,7 @@ import in.myecash.common.database.Customers;
  */
 public class CustomerDetailsFragment extends Fragment
         implements View.OnClickListener {
-    private static final String TAG = "CustomerDetailsFragment";
+    private static final String TAG = "AgentApp-CustomerDetailsFragment";
 
     private static final String DIALOG_DISABLE_CUST = "disableCustomer";
 
@@ -100,7 +100,7 @@ public class CustomerDetailsFragment extends Fragment
         mInputStatusDate.setText(mSdfDateWithTime.format(customer.getStatus_update_time()));
         mInputReason.setText(customer.getStatus_reason());
 
-        mInputQrCard.setText(CommonUtils.getPartialVisibleStr(card.getCard_id()));
+        mInputQrCard.setText(card.getCardNum());
         mInputCardStatus.setText(DbConstants.cardStatusDescInternal[card.getStatus()]);
         if(card.getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
             mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));

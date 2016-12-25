@@ -12,17 +12,6 @@ import in.myecash.common.constants.ErrorCodes;
  */
 public final class ValidationHelper{
 
-    /*
-    public static int validatePin(String value) {
-        if (value.isEmpty()) {
-            return ErrorCodes.EMPTY_VALUE;
-        } else if (value.length() != CommonConstants.PIN_LEN) {
-            return ErrorCodes.WRONG_SECRET_PIN;
-        } else {
-            return ErrorCodes.NO_ERROR;
-        }
-    }*/
-
     public static int validatePin(String value) {
         if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
@@ -43,11 +32,22 @@ public final class ValidationHelper{
         }
     }
 
-    public static int validateMemberCard(String value) {
+    public static int validateCardNum(String value) {
         if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else if (value.length() != CommonConstants.CUSTOMER_CARDID_LEN) {
             return ErrorCodes.INVALID_LENGTH;
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    public static int validateCardId(String value) {
+        if (value==null || value.isEmpty()) {
+            return ErrorCodes.EMPTY_VALUE;
+        } else if (value.length() <= CommonConstants.CUSTOMER_CARDID_LEN) {
+            return ErrorCodes.INVALID_LENGTH;
+        } else if(!value.startsWith(CommonConstants.MEMBER_CARD_ID_PREFIX)) {
+            return ErrorCodes.INVALID_VALUE;
         }
         return ErrorCodes.NO_ERROR;
     }
@@ -175,16 +175,6 @@ public final class ValidationHelper{
             return ErrorCodes.INVALID_LENGTH;
         } else if (!value.startsWith(CommonConstants.PREFIX_CCNT_ID)) {
             return ErrorCodes.INVALID_FORMAT;
-        } else {
-            return ErrorCodes.NO_ERROR;
-        }
-    }
-
-    public static int validateCardId(String value) {
-        if (value==null || value.isEmpty() ) {
-            return ErrorCodes.EMPTY_VALUE;
-        } else if (value.length() != CommonConstants.CUSTOMER_CARDID_LEN) {
-            return ErrorCodes.INVALID_LENGTH;
         } else {
             return ErrorCodes.NO_ERROR;
         }

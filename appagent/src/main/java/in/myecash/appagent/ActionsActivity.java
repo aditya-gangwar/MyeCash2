@@ -44,7 +44,7 @@ public class ActionsActivity extends AppCompatActivity implements
         CardsActionListFrag.CardsActionListFragIf, DisableCardDialog.DisableCardDialogIf
 {
 
-    private static final String TAG = "ActionsActivity";
+    private static final String TAG = "AgentApp-ActionsActivity";
     private static final String RETAINED_FRAGMENT = "retainedFragActions";
     private static final String ACTIONS_FRAGMENT = "actionsFragment";
     private static final String MCHNT_DETAILS_FRAGMENT = "mchntDetailsFragment";
@@ -405,8 +405,8 @@ public class ActionsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void showCardDetails(String cardNum) {
-        onCardInputData(cardNum);
+    public void showCardDetails(String cardId) {
+        onCardInputData(cardId);
     }
 
     @Override

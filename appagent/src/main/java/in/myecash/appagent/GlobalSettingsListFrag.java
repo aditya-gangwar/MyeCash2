@@ -21,7 +21,7 @@ import in.myecash.appbase.utilities.LogMy;
  * Created by adgangwa on 22-09-2016.
  */
 public class GlobalSettingsListFrag extends Fragment {
-    private static final String TAG = "GlobalSettingsListFrag";
+    private static final String TAG = "AgentApp-GlobalSettingsListFrag";
 
     private SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
     private RecyclerView mRecyclerView;

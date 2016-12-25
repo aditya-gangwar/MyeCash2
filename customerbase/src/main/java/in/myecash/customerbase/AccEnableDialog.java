@@ -15,13 +15,12 @@ import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.constants.ErrorCodes;
-import in.myecash.customerbase.helper.MyRetainedFragment;
 
 /**
  * Created by adgangwa on 25-11-2016.
  */
 public class AccEnableDialog extends DialogFragment implements DialogInterface.OnClickListener {
-    private static final String TAG = "AccEnableDialog";
+    private static final String TAG = "CustApp-AccEnableDialog";
 
     private static final String ARG_CARD_NUM = "ArgCardNum";
     private static final String ARG_PIN = "ArgPin";
@@ -241,7 +240,7 @@ public class AccEnableDialog extends DialogFragment implements DialogInterface.O
         boolean cardEntered = false;
         if( !inputCardNum.getText().toString().isEmpty()) {
             cardEntered = true;
-            errorCode = ValidationHelper.validateCardId(inputCardNum.getText().toString());
+            errorCode = ValidationHelper.validateCardNum(inputCardNum.getText().toString());
             if(errorCode != ErrorCodes.NO_ERROR) {
                 inputCardNum.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
-import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -138,7 +138,8 @@ public class CustomerRegDialog extends DialogFragment
         // Set card Id and make non-editable
         if(cardId!=null && !cardId.isEmpty()) {
             scannedCardId = cardId;
-            mInputQrCard.setText(CommonUtils.getPartialVisibleStr(scannedCardId));
+            mInputQrCard.setText("OK");
+            mInputQrCard.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             mInputQrCard.setError(null);
             mInputQrCard.setClickable(false);
             mInputQrCard.setEnabled(false);
@@ -260,7 +261,7 @@ public class CustomerRegDialog extends DialogFragment
         }
 
         if(mInputQrCard.isEnabled()) {
-            errorCode = ValidationHelper.validateMemberCard(scannedCardId);
+            errorCode = ValidationHelper.validateCardId(scannedCardId);
             if (errorCode != ErrorCodes.NO_ERROR) {
                 mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
@@ -384,9 +385,10 @@ public class CustomerRegDialog extends DialogFragment
     }
 
     private void setQrCode(String qrCode) {
-        if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
+        if(ValidationHelper.validateCardId(qrCode) == ErrorCodes.NO_ERROR) {
             scannedCardId = qrCode;
-            mInputQrCard.setText(CommonUtils.getPartialVisibleStr(scannedCardId));
+            mInputQrCard.setText("OK");
+            mInputQrCard.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             mInputQrCard.setError(null);
         } else {
             AppCommonUtil.toast(getActivity(),"Invalid Member Card");

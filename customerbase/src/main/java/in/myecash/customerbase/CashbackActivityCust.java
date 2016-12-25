@@ -61,7 +61,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
         PinResetDialog.PinResetDialogIf, PinChangeDialog.PinChangeDialogIf,
         MerchantDetailsDialog.MerchantDetailsDialogIf {
 
-    private static final String TAG = "CashbackActivity";
+    private static final String TAG = "CustApp-CashbackActivity";
     public static final String INTENT_EXTRA_USER_TOKEN = "extraUserToken";
 
     private static final String RETAINED_FRAGMENT = "retainedFrag";
@@ -372,7 +372,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
                     //raise alarm
                     Map<String,String> params = new HashMap<>();
                     params.put("CustomerId",mCustomer.getPrivate_id());
-                    params.put("CardId",mCustomer.getMembership_card().getCard_id());
+                    params.put("CardNum",mCustomer.getMembership_card().getCardNum());
                     params.put("CardStatus",String.valueOf(mCustomer.getMembership_card().getStatus()));
                     AppAlarms.invalidCardState(mCustomer.getPrivate_id(),DbConstants.USER_TYPE_CUSTOMER,"updateTbForCustomer",params);
             }

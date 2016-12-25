@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -49,9 +50,8 @@ public class CustomerOpDialog extends DialogFragment
     private static final String DIALOG_REASON = "dialogReason";
 
     private CustomerOpDialogIf mCallback;
-    // we may loos this during screen rotation etc
-    // but ignoring it for now
     private String mImgFilename;
+    private String scannedCardId;
 
     public interface CustomerOpDialogIf {
         void onCustomerOpOk(String tag, String mobileNum, String qrCode, String extraParam, String imgFilename);
@@ -104,6 +104,12 @@ public class CustomerOpDialog extends DialogFragment
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_customer_op, null);
 
         bindUiResources(v);
+        if(savedInstanceState!=null) {
+            LogMy.d(TAG,"Restoring");
+            scannedCardId = savedInstanceState.getString("scannedCardId");
+            mImgFilename = savedInstanceState.getString("mImgFilename");
+        }
+
         initDialogView(opCode, isOtpGenerated);
 
         Dialog dialog = new AlertDialog.Builder(getActivity())
@@ -151,14 +157,25 @@ public class CustomerOpDialog extends DialogFragment
         String title = "Customer: "+opCode;
         mTitle.setText(title);
         mInfoEnd.setVisibility(View.GONE);
-        mInfoNewMobile.setVisibility(View.GONE);
+        //mInfoNewMobile.setVisibility(View.GONE);
 
         // Disable OTP if OTP not generated
         if(!isOtpGenerated) {
             mLabelOTP.setEnabled(false);
             mInputOTP.setEnabled(false);
             mImageOtp.setAlpha(0.5f);
-            mInfoOtp.setVisibility(View.GONE);
+            //mInfoOtp.setVisibility(View.GONE);
+            switch (opCode) {
+                case DbConstants.OP_RESET_PIN:
+                case DbConstants.OP_NEW_CARD:
+                    mInfoOtp.setText("OTP will be sent on registered mobile for verification.");
+                    break;
+                case DbConstants.OP_CHANGE_MOBILE:
+                    mInfoOtp.setText("OTP will be sent on New to be registered mobile for verification.");
+                    break;
+                default:
+                    mInfoOtp.setVisibility(View.GONE);
+            }
         }
 
         String mobileNum = getArguments().getString(ARG_MOBILE_NUM, null);
@@ -172,7 +189,10 @@ public class CustomerOpDialog extends DialogFragment
         }
         String cardNum = getArguments().getString(ARG_CARD_NUM, null);
         if(cardNum != null) {
-            mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cardNum));
+            //mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cardNum));
+            scannedCardId = cardNum;
+            mInputQrCard.setText("OK");
+            mInputQrCard.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             if(isOtpGenerated) {
                 mLabelQrCard.setEnabled(false);
                 mInputQrCard.setEnabled(false);
@@ -213,9 +233,9 @@ public class CustomerOpDialog extends DialogFragment
                     mLabelNewMobile.setEnabled(false);
                     mInputNewMobile.setEnabled(false);
                     mImageNewMobile.setAlpha(0.5f);
-                } else {
+                } /*else {
                     mInfoNewMobile.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
         } else {
             mInputNewMobile.setEnabled(false);
@@ -263,7 +283,7 @@ public class CustomerOpDialog extends DialogFragment
                             mCallback.onCustomerOpOk(
                                     getTag(),
                                     mInputMobileNum.getText().toString(),
-                                    mInputQrCard.getText().toString(),
+                                    scannedCardId,
                                     extraParam,
                                     mImgFilename);
                         }
@@ -291,7 +311,7 @@ public class CustomerOpDialog extends DialogFragment
         }
 
         if(mInputQrCard.isEnabled()){
-            errorCode = ValidationHelper.validateMemberCard(mInputQrCard.getText().toString());
+            errorCode = ValidationHelper.validateCardId(scannedCardId);
             if(errorCode != ErrorCodes.NO_ERROR) {
                 mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
@@ -357,7 +377,6 @@ public class CustomerOpDialog extends DialogFragment
                 String qrCode = data.getStringExtra(BarcodeCaptureActivity.BarcodeObject);
                 LogMy.d(TAG,"Read customer QR code: "+qrCode);
                 setQrCode(qrCode);
-                mInputQrCard.setError(null);
             } else {
                 LogMy.e(TAG,"Failed to read barcode");
             }
@@ -396,7 +415,7 @@ public class CustomerOpDialog extends DialogFragment
 
     private EditText mInfoOtp;
     private EditText mInfoEnd;
-    private EditText mInfoNewMobile;
+    //private EditText mInfoNewMobile;
 
     private View mImageOtp;
     private View mImageMobile;
@@ -433,7 +452,7 @@ public class CustomerOpDialog extends DialogFragment
 
         mInfoEnd = (EditText) v.findViewById(R.id.label_info);
         mInfoOtp = (EditText) v.findViewById(R.id.label_info_otp);
-        mInfoNewMobile = (EditText) v.findViewById(R.id.label_info_newMobile);
+        //mInfoNewMobile = (EditText) v.findViewById(R.id.label_info_newMobile);
 
         mImageOtp = v.findViewById(R.id.image_otp);
         mImageMobile = v.findViewById(R.id.image_mobile);
@@ -485,8 +504,10 @@ public class CustomerOpDialog extends DialogFragment
     }
 
     private void setQrCode(String qrCode) {
-        if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
-            mInputQrCard.setText(qrCode);
+        if(ValidationHelper.validateCardId(qrCode) == ErrorCodes.NO_ERROR) {
+            scannedCardId = qrCode;
+            mInputQrCard.setText("OK");
+            mInputQrCard.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             mInputQrCard.setError(null);
         } else {
             Toast.makeText(getActivity(), "Invalid member QR code: " + qrCode, Toast.LENGTH_LONG).show();
@@ -498,5 +519,11 @@ public class CustomerOpDialog extends DialogFragment
         String filename = opCode+"_"+Long.toString(System.currentTimeMillis())+"."+ CommonConstants.PHOTO_FILE_FORMAT;
         return filename.replace(" ","_");
     }
-    
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("scannedCardId", scannedCardId);
+        outState.putString("mImgFilename", mImgFilename);
+    }
 }

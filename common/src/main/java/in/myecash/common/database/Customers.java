@@ -24,12 +24,23 @@ public class Customers
   private String lastName;
   private String private_id;
   private CustomerCards membership_card;
+  // cardId is used at only one place as of now
+  // In getCashback to fetch customer record based on scanned card ID
   private String cardId;
   private Boolean first_login_ok;
   private Boolean debugLogs;
   private Date lastRenewDate;
   private String txn_tables;
   private Date delLocalFilesReq;
+  private String namak;
+
+  public String getNamak() {
+    return namak;
+  }
+
+  public void setNamak(String namak) {
+    this.namak = namak;
+  }
 
   public Date getDelLocalFilesReq() {
     return delLocalFilesReq;
@@ -87,12 +98,12 @@ public class Customers
     this.first_login_ok = first_login_ok;
   }
 
-  public String getCardId() {
-    return cardId;
-  }
-
   public void setCardId(String cardId) {
     this.cardId = cardId;
+  }
+
+  public String getCardId() {
+    return cardId;
   }
 
   public java.util.Date getStatus_update_time()

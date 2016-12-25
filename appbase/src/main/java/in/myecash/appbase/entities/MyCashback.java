@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by adgangwa on 07-05-2016.
  */
 public class MyCashback {
-    private static final String TAG = "MyCashback";
+    private static final String TAG = "BaseApp-MyCashback";
 
     // Cashback sort parameter types
     public static final int CB_CMP_TYPE_UPDATE_TIME = 0;

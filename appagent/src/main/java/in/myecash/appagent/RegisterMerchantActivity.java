@@ -58,7 +58,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-    private static final String TAG = "RegMerchantActivity";
+    private static final String TAG = "AgentApp-RegMerchantActivity";
 
     private static final int REQUEST_LOAD_IMAGE = 0;
 

@@ -110,6 +110,7 @@ public class CommonConstants {
     public static final String PREFIX_CC_ID = "2";
     public static final String PREFIX_CCNT_ID = "3";
     public static final String TRANSACTION_ID_PREFIX = "TX";
+    public static final String MEMBER_CARD_ID_PREFIX = "mmc";
 
     /*
      * Other common constants

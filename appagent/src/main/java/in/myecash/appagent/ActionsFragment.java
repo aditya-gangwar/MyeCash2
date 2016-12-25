@@ -21,7 +21,7 @@ import in.myecash.appbase.utilities.LogMy;
  * Created by adgangwa on 28-02-2016.
  */
 public class ActionsFragment extends Fragment implements View.OnClickListener {
-    private static final String TAG = "ActionsFragment";
+    private static final String TAG = "AgentApp-ActionsFragment";
 
     // Possible Merchant actions
     public static final String MERCHANT_REGISTER = "Register Merchant";

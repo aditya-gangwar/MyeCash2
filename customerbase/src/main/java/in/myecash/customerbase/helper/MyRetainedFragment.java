@@ -21,7 +21,7 @@ import in.myecash.appbase.utilities.RetainedFragment;
  * Created by adgangwa on 17-07-2016.
  */
 public class MyRetainedFragment extends RetainedFragment {
-    private static final String TAG = "MyRetainedFragment";
+    private static final String TAG = "CustApp-MyRetainedFragment";
 
     // Requests that this fragment executes in backend
     public static final int REQUEST_LOGIN = 0;

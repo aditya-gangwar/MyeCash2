@@ -18,6 +18,16 @@ public class CustomerCards
   private String status_reason;
   private String objectId;
   private String card_id;
+  private String cardNum;
+
+  public String getCardNum() {
+    return cardNum;
+  }
+
+  public void setCardNum(String cardNum) {
+    this.cardNum = cardNum;
+  }
+
   public Integer getStatus()
   {
     return status;

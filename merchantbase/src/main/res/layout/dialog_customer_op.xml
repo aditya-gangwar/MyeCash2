@@ -34,7 +34,7 @@
             android:id="@+id/label_info_otp"
             android:text="Please enter received OTP and submit the request again."
             android:textStyle="italic"
-            android:textColor="@color/accent"/>
+            android:textColor="@color/accent2"/>
 
         <Space
             android:layout_width="match_parent"
@@ -140,14 +140,15 @@
                 android:gravity="left"
                 android:imeOptions="actionDone"/>
         </LinearLayout>
-        <EditText
+        <!--EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/label_info_newMobile"
             android:gravity="left"
             android:textStyle="italic"
-            android:text="OTP will be sent on this number for verification."/>
+            android:text="OTP will be sent on this number for verification."
+            android:textColor="@color/accent2"/-->
 
 
         <Space

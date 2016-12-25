@@ -38,7 +38,7 @@ public class TxnReportsHelper {
         void onFinalTxnSetAvailable(List<Transaction> allTxns);
     }
 
-    private static final String TAG = "TxnReportsHelper";
+    private static final String TAG = "BaseApp-TxnReportsHelper";
 
     private Context mContext;
     private TxnReportsHelperIf mCallback;

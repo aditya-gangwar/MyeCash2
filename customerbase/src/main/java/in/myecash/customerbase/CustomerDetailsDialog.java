@@ -24,7 +24,7 @@ import in.myecash.customerbase.entities.CustomerUser;
  * Created by adgangwa on 21-05-2016.
  */
 public class CustomerDetailsDialog extends DialogFragment  {
-    private static final String TAG = "CustomerDetailsDialog";
+    private static final String TAG = "CustApp-CustomerDetailsDialog";
 
     private SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
     private SimpleDateFormat mSdfDateOnly = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
@@ -66,7 +66,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
         mCreatedOn.setText(mSdfDateOnly.format(cust.getCreated()));
         mExpiringOn.setText(mSdfDateOnly.format(AppCommonUtil.getExpiryDate(cust)));
 
-        mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cust.getCardId()));
+        mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cust.getMembership_card().getCardNum()));
         mInputCardStatus.setText(DbConstants.cardStatusDesc[cust.getMembership_card().getStatus()]);
         if(cust.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
             mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));

@@ -49,6 +49,7 @@
                         android:layout_weight="90"
                         android:text="Ganga Stores and Cosmetics"
                         android:paddingBottom="@dimen/edittext_padding_less"
+                        android:paddingTop="@dimen/edittext_padding_less"
                         android:textStyle="bold"
                         android:gravity="left"/>
                     <ImageView
@@ -59,7 +60,7 @@
                         android:src="@drawable/ic_warning_white_18dp"
                         android:tint="@color/red_negative"
                         android:clickable="false"
-                        android:paddingTop="@dimen/edittext_padding"
+                        android:paddingTop="@dimen/edittext_padding_less"
                         android:paddingBottom="@dimen/edittext_padding_less"
                         android:paddingRight="0dp"
                         android:paddingLeft="@dimen/edittext_padding_less"/>
@@ -104,7 +105,7 @@
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end|center_vertical"
-                            android:text="\u20B9 13456"
+                            android:text="\u20B9 0"
                             android:paddingRight="0dp"
                             android:paddingTop="0dp"
                             android:paddingBottom="@dimen/edittext_padding_less"
@@ -152,8 +153,8 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="end"
-                            android:text="\u20B9 56"
+                            android:gravity="end|center_vertical"
+                            android:text="\u20B9 0"
                             android:paddingRight="0dp"
                             android:paddingTop="0dp"
                             android:paddingBottom="@dimen/edittext_padding_less"

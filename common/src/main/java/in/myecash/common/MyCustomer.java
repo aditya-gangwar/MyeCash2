@@ -115,7 +115,7 @@ public class MyCustomer {
         csvFields[CUST_CSV_ACC_STATUS] = String.valueOf(customer.getAdmin_status()) ;
         csvFields[CUST_CSV_STATUS_REASON] = customer.getStatus_reason();
         csvFields[CUST_CSV_STATUS_UPDATE_TIME] = String.valueOf(customer.getStatus_update_time().getTime()) ;
-        csvFields[CUST_CSV_CARD_ID] = CommonUtils.getPartialVisibleStr(card.getCard_id());
+        csvFields[CUST_CSV_CARD_ID] = CommonUtils.getPartialVisibleStr(card.getCardNum());
         csvFields[CUST_CSV_CARD_STATUS] = String.valueOf(card.getStatus()) ;
         csvFields[CUST_CSV_CARD_STATUS_UPDATE_TIME] = String.valueOf(card.getStatus_update_time().getTime()) ;
 

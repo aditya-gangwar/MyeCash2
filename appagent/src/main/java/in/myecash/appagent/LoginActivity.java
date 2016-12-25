@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity implements
         MyRetainedFragment.RetainedFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         PasswdResetDialog.PasswdResetDialogIf {
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "AgentApp-LoginActivity";
 
     private static final String RETAINED_FRAGMENT_TAG = "workLogin";
     private static final String DIALOG_PASSWD_RESET = "dialogPaswdReset";

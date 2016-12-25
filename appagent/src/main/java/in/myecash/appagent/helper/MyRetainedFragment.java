@@ -18,7 +18,7 @@ import java.util.List;
  * Created by adgangwa on 17-07-2016.
  */
 public class MyRetainedFragment extends RetainedFragment {
-    private static final String TAG = "MyRetainedFragment";
+    private static final String TAG = "AgentApp-MyRetainedFragment";
 
     // Requests that this fragment executes in backend
     public static final int REQUEST_REGISTER_MERCHANT = 0;

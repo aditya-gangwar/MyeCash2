@@ -22,7 +22,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
  * Created by adgangwa on 27-09-2016.
  */
 public class PinResetDialog extends DialogFragment implements DialogInterface.OnClickListener {
-    public static final String TAG = "PinResetDialog";
+    public static final String TAG = "CustApp-PinResetDialog";
 
     private PinResetDialogIf mListener;
 
@@ -72,13 +72,13 @@ public class PinResetDialog extends DialogFragment implements DialogInterface.On
                     @Override
                     public void onClick(View view) {
                         AppCommonUtil.hideKeyboard(getDialog());
-                        String value = mInputCardId.getText().toString();
-                        int error = ValidationHelper.validateCardId(value);
+                        String value = mInputCardNum.getText().toString();
+                        int error = ValidationHelper.validateCardNum(value);
                         if(error == ErrorCodes.NO_ERROR) {
                             mListener.onPinResetData(value);
                             getDialog().dismiss();
                         } else {
-                            mInputCardId.setError(AppCommonUtil.getErrorDesc(error));
+                            mInputCardNum.setError(AppCommonUtil.getErrorDesc(error));
                         }
                     }
                 });
@@ -102,11 +102,11 @@ public class PinResetDialog extends DialogFragment implements DialogInterface.On
         super.onCancel(dialog);
     }
 
-    private EditText mInputCardId;
+    private EditText mInputCardNum;
     private EditText mLabelInfo1;
 
     private void initUiResources(View v) {
-        mInputCardId = (EditText) v.findViewById(R.id.input_secret_1);
+        mInputCardNum = (EditText) v.findViewById(R.id.input_secret_1);
         mLabelInfo1 = (EditText) v.findViewById(R.id.label_info_1);
     }
 }

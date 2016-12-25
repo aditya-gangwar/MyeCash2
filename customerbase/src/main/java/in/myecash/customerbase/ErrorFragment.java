@@ -15,7 +15,7 @@ import in.myecash.appbase.utilities.LogMy;
  * Created by adgangwa on 28-09-2016.
  */
 public class ErrorFragment extends Fragment {
-    private static final String TAG = "ErrorFragment";
+    private static final String TAG = "CustApp-ErrorFragment";
 
     private static final String ARG_IS_INFO = "isInfo";
     private static final String ARG_INFO_TXT1 = "info1";

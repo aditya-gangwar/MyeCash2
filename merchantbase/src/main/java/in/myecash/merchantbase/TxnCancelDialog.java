@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -33,10 +34,10 @@ public class TxnCancelDialog extends DialogFragment
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9003;
 
     private TxnCancelDialogIf mCallback;
-    // we may loos this during screen rotation etc
-    // but ignoring it for now
+
     private String mImgFilename;
     private String mTxnId;
+    private String scannedCardId;
 
     public interface TxnCancelDialogIf {
         void onCancelTxnConfirm(String txnId, String cardId, String imgFileName);
@@ -68,6 +69,13 @@ public class TxnCancelDialog extends DialogFragment
                 .inflate(R.layout.dialog_txn_cancel, null);
 
         bindUiResources(v);
+        if(savedInstanceState!=null) {
+            LogMy.d(TAG,"Restoring members");
+            mImgFilename = savedInstanceState.getString("mImgFilename");
+            mTxnId = savedInstanceState.getString("mTxnId");
+            scannedCardId = savedInstanceState.getString("scannedCardId");
+        }
+
         displayTransactionValues();
         mInputQrCard.setOnTouchListener(this);
 
@@ -114,7 +122,7 @@ public class TxnCancelDialog extends DialogFragment
                 public void onClick(View v) {
                     Boolean wantToCloseDialog = false;
 
-                    int errorCode = ValidationHelper.validateMemberCard(mInputQrCard.getText().toString());
+                    int errorCode = ValidationHelper.validateCardNum(scannedCardId);
                     if(errorCode != ErrorCodes.NO_ERROR) {
                         mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
                     }
@@ -122,7 +130,7 @@ public class TxnCancelDialog extends DialogFragment
                     if(errorCode==ErrorCodes.NO_ERROR) {
                         mCallback.onCancelTxnConfirm(
                                 mInputTxnId.getText().toString(),
-                                mInputQrCard.getText().toString(),
+                                scannedCardId,
                                 mImgFilename);
                         wantToCloseDialog = true;
                     }
@@ -170,8 +178,10 @@ public class TxnCancelDialog extends DialogFragment
     }
 
     private void setQrCode(String qrCode) {
-        if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
-            mInputQrCard.setText(qrCode);
+        if(ValidationHelper.validateCardId(qrCode) == ErrorCodes.NO_ERROR) {
+            scannedCardId = qrCode;
+            mInputQrCard.setText("OK");
+            mInputQrCard.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             mInputQrCard.setError(null);
         } else {
             AppCommonUtil.toast(getActivity(), "Invalid Membership card");
@@ -265,6 +275,20 @@ public class TxnCancelDialog extends DialogFragment
         mInputCbAdd = (EditText) v.findViewById(R.id.input_cb_add);
 
         mInputQrCard = (EditText) v.findViewById(R.id.input_qr_card);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AppCommonUtil.cancelToast();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("scannedCardId", scannedCardId);
+        outState.putString("mTxnId", mTxnId);
+        outState.putString("mImgFilename", mImgFilename);
     }
 }
 

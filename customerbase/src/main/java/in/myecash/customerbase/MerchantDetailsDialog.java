@@ -27,7 +27,7 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
  * Created by adgangwa on 21-05-2016.
  */
 public class MerchantDetailsDialog extends DialogFragment  {
-    private static final String TAG = "MerchantDetailsDialog";
+    private static final String TAG = "CustApp-MerchantDetailsDialog";
     private static final String ARG_CB_MCHNTID = "mchntId";
 
     private MerchantDetailsDialogIf mCallback;

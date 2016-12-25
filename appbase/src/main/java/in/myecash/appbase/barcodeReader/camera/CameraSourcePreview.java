@@ -30,7 +30,7 @@ import in.myecash.appbase.utilities.LogMy;
 import java.io.IOException;
 
 public class CameraSourcePreview extends ViewGroup {
-    private static final String TAG = "CameraSourcePreview";
+    private static final String TAG = "BaseApp-CameraSourcePreview";
 
     private Context mContext;
     private SurfaceView mSurfaceView;

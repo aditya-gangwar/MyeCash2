@@ -25,7 +25,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
  */
 public class DisableMchntDialog extends DialogFragment
         implements DialogInterface.OnClickListener, AdapterView.OnItemSelectedListener {
-    public static final String TAG = "DisableMchntDialog";
+    public static final String TAG = "AgentApp-DisableMchntDialog";
 
     public static final String EXTRA_TICKET_ID = "ticketId";
     public static final String EXTRA_REASON = "reason";

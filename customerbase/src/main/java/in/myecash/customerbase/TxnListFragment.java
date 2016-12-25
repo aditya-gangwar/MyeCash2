@@ -47,13 +47,13 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
  * Created by adgangwa on 07-04-2016.
  */
 public class TxnListFragment extends Fragment {
-    private static final String TAG = "TxnListFragment";
+    private static final String TAG = "CustApp-TxnListFragment";
 
     private static final String CSV_REPORT_HEADER_1 = ",,MyeCash Customer Statement,,,,,,,,,,,,,";
     // Merchant Id.,<id>,,,,,,,,,
     private static final String CSV_REPORT_HEADER_2 = "\"=\"\"Customer Id.\"\"\",%s,,,,,,,,,,,,,";
     // Card Num.,<card id>,,,,,,,,,
-    private static final String CSV_REPORT_HEADER_3 = "\"=\"\"Membership Card.\"\"\",%s,,,,,,,,,,,,,";
+    private static final String CSV_REPORT_HEADER_3 = "\"=\"\"Member Card#\"\"\",%s,,,,,,,,,,,,,";
     // ,,,,,,Period,From <start date> to <end date>,,,
     private static final String CSV_REPORT_HEADER_4 = ",,,,,,,Period,From %s to %s,,";
     // ,,,,,,Currency,INR,,,
@@ -361,7 +361,7 @@ public class TxnListFragment extends Fragment {
             Customers user = CustomerUser.getInstance().getCustomer();
             sb.append(CSV_REPORT_HEADER_1).append(CommonConstants.CSV_NEWLINE);
             sb.append(String.format(CSV_REPORT_HEADER_2,user.getMobile_num())).append(CommonConstants.CSV_NEWLINE);
-            sb.append(String.format(CSV_REPORT_HEADER_3,user.getMembership_card().getCard_id())).append(CommonConstants.CSV_NEWLINE);
+            sb.append(String.format(CSV_REPORT_HEADER_3,user.getMembership_card().getCardNum())).append(CommonConstants.CSV_NEWLINE);
             sb.append(String.format(CSV_REPORT_HEADER_4,startDate,endDate)).append(CommonConstants.CSV_NEWLINE);
             sb.append(CSV_REPORT_HEADER_5).append(CommonConstants.CSV_NEWLINE);
             sb.append(CSV_REPORT_HEADER_6).append(CommonConstants.CSV_NEWLINE);

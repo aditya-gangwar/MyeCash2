@@ -41,7 +41,7 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
  * Created by adgangwa on 09-09-2016.
  */
 public class CashbackListFragment extends Fragment {
-    private static final String TAG = "CashbackListFragment";
+    private static final String TAG = "CustApp-CashbackListFragment";
 
     private static final String DIALOG_MERCHANT_DETAILS = "dialogMerchantDetails";
     private static final String DIALOG_SORT_CUST_TYPES = "dialogSortCust";
@@ -227,8 +227,9 @@ public class CashbackListFragment extends Fragment {
 
                     msg = msg+"\n\n"+"* Last Updated: "+mSdfDateWithTime.format(mRetainedFragment.mCbsUpdateTime);
 
-                    DialogFragmentWrapper.createNotification(AppConstants.generalInfoTitle, msg, true, false)
-                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.generalInfoTitle, msg, true, false);
+                    dialog.setTargetFragment(this, REQ_NOTIFY_ERROR);
+                    dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
                 }
             }
 

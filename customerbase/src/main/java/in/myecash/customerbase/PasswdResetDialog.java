@@ -21,7 +21,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
  * Created by adgangwa on 26-04-2016.
  */
 public class PasswdResetDialog extends DialogFragment implements DialogInterface.OnClickListener {
-    public static final String TAG = "PasswdResetDialog";
+    public static final String TAG = "CustApp-PasswdResetDialog";
 
     private PasswdResetDialogIf mListener;
 
@@ -72,7 +72,7 @@ public class PasswdResetDialog extends DialogFragment implements DialogInterface
                     public void onClick(View view) {
                         AppCommonUtil.hideKeyboard(getDialog());
                         String value = mInputName.getText().toString();
-                        int error = ValidationHelper.validateCardId(value);
+                        int error = ValidationHelper.validateCardNum(value);
                         if(error == ErrorCodes.NO_ERROR) {
                             mListener.onPasswdResetData(value);
                             getDialog().dismiss();

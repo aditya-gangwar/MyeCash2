@@ -26,7 +26,7 @@ import in.myecash.common.constants.ErrorCodes;
  */
 public class DisableCustDialog extends DialogFragment
         implements DialogInterface.OnClickListener, AdapterView.OnItemSelectedListener {
-    public static final String TAG = "DisableCustDialog";
+    public static final String TAG = "AgentApp-DisableCustDialog";
     private static final String ARG_ACTION = "argAction";
 
     boolean isLtdMode;

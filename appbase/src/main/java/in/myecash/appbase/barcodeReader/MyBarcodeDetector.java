@@ -11,7 +11,7 @@ import in.myecash.appbase.utilities.LogMy;
  * Created by adgangwa on 02-05-2016.
  */
 public class MyBarcodeDetector extends Detector<Barcode> {
-    private static final String TAG = "MyBarcodeDetector";
+    private static final String TAG = "BaseApp-MyBarcodeDetector";
     private Detector<Barcode> mDelegate;
     private Callback mCallback;
     //private boolean mFirstImageProcessed = false;

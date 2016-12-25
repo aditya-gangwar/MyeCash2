@@ -64,7 +64,7 @@ import java.util.Date;
  * Created by adgangwa on 16-02-2016.
  */
 public class AppCommonUtil {
-    private static final String TAG = "AppCommonUtil";
+    private static final String TAG = "BaseApp-AppCommonUtil";
     //private static final SimpleDateFormat mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
 
     // single active progress dialog at any time

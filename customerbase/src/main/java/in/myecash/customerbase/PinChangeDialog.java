@@ -21,7 +21,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
  * Created by adgangwa on 26-04-2016.
  */
 public class PinChangeDialog extends DialogFragment implements DialogInterface.OnClickListener {
-    public static final String TAG = "PinChangeDialog";
+    public static final String TAG = "CustApp-PinChangeDialog";
 
     private PinChangeDialogIf mListener;
 

@@ -25,7 +25,7 @@ import in.myecash.common.constants.ErrorCodes;
  */
 public class CustLimitedDialog extends DialogFragment
         implements DialogInterface.OnClickListener, AdapterView.OnItemSelectedListener {
-    public static final String TAG = "CustLimitedDialog";
+    public static final String TAG = "AgentApp-CustLimitedDialog";
 
     private String reasonStr;
     private CustLimitedDialogIf mListener;

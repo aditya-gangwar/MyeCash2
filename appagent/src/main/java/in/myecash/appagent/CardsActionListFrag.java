@@ -36,7 +36,7 @@ import in.myecash.common.constants.ErrorCodes;
  * Created by adgangwa on 14-12-2016.
  */
 public class CardsActionListFrag extends Fragment implements View.OnClickListener {
-    private static final String TAG = "CardsActionListFrag";
+    private static final String TAG = "AgentApp-CardsActionListFrag";
 
     private static final String ARG_ACTION = "argAction";
     private static final int MAX_CARD_ONE_GO = 10;
@@ -55,20 +55,6 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
     private EditText mTitleView;
     private AppCompatButton mBtnScan;
     private AppCompatButton mBtnAction;
-
-    // Map from Action code -> display title string
-    /*public static final Map<String, String> cardsActionToStr;
-    static {
-        Map<String, String> aMap = new HashMap<>(10);
-
-        aMap.put(CommonConstants.CARDS_UPLOAD_TO_POOL,"Upload to Pool");
-        aMap.put(CommonConstants.CARDS_ALLOT_TO_AGENT,"Allot to Agent");
-        aMap.put(CommonConstants.CARDS_ALLOT_TO_MCHNT,"Allot to Merchant");
-        aMap.put(CommonConstants.CARDS_RETURN_BY_MCHNT,"Return by Merchant");
-        aMap.put(CommonConstants.CARDS_RETURN_BY_AGENT,"Return by Agent");
-
-        cardsActionToStr = Collections.unmodifiableMap(aMap);
-    }*/
 
 
     public interface CardsActionListFragIf {
@@ -205,9 +191,7 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
                 String code = data.getStringExtra(BarcodeCaptureActivity.BarcodeObject);
                 LogMy.d(TAG,"Read customer QR code: "+code);
 
-                //TODO: validate code - for length etc
                 // required in case of totally different, or multiple qr code scan
-
                 if(mRetainedFragment.mLastCardsForAction.size() < MAX_CARD_ONE_GO) {
                     // check for duplicates
                     boolean duplicate = false;
@@ -394,7 +378,7 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
                     if (pos >= 0 && pos < getItemCount()) {
                         MyCardForAction card = mCards.get(pos);
                         if(card.getCardNum()!=null && !card.getCardNum().isEmpty()) {
-                            mCallback.showCardDetails(card.getCardNum());
+                            mCallback.showCardDetails(card.getScannedCode());
                         } else {
                             AppCommonUtil.toast(getActivity(), "Action not done for this card");
                         }
@@ -441,7 +425,6 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
     public static class MyCardComparator implements Comparator<MyCardForAction> {
         @Override
         public int compare(MyCardForAction lhs, MyCardForAction rhs) {
-            // TODO: Handle null x or y values
             return compare(lhs.getCardNum(), rhs.getCardNum());
         }
         private static int compare(String a, String b) {

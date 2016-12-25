@@ -47,7 +47,7 @@ import java.nio.ByteBuffer;
  */
 public final class BarcodeCaptureActivity extends AppCompatActivity
         implements BarcodeGraphicTracker.Callback, MyBarcodeDetector.Callback  {
-    private static final String TAG = "Barcode-reader";
+    private static final String TAG = "BaseApp-Barcode-reader";
 
     // intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;

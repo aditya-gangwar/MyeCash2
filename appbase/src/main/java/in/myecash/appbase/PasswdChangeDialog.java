@@ -24,7 +24,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
  * Created by adgangwa on 26-04-2016.
  */
 public class PasswdChangeDialog extends DialogFragment implements DialogInterface.OnClickListener {
-    public static final String TAG = "PasswdChangeDialog";
+    public static final String TAG = "BaseApp-PasswdChangeDialog";
 
     private PasswdChangeDialogIf mListener;
 

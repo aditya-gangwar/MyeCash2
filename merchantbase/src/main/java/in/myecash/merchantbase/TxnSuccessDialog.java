@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.CommonUtils;
 
 /**
  * Created by adgangwa on 24-04-2016.
@@ -20,7 +21,6 @@ public class TxnSuccessDialog extends DialogFragment
         implements DialogInterface.OnClickListener {
 
     private static final String TAG = "MchntApp-TxnSuccessDialog";
-    private static final String RS_SYMBOL = "\u20B9 ";
 
     private static final String ARG_MOBILE_NUM = "mobile_num";
     private static final String ARG_TXN_ID = "txnId";
@@ -35,8 +35,9 @@ public class TxnSuccessDialog extends DialogFragment
         void onTxnSuccess();
     }
 
-    public static TxnSuccessDialog newInstance(String txnId, int clBalance, int cbBalance, int clBalanceOld, int cbBalanceOld) {
+    public static TxnSuccessDialog newInstance(String custId, String txnId, int clBalance, int cbBalance, int clBalanceOld, int cbBalanceOld) {
         Bundle args = new Bundle();
+        args.putString(ARG_MOBILE_NUM, custId);
         args.putString(ARG_TXN_ID, txnId);
         args.putInt(ARG_CL_BALANCE, clBalance);
         args.putInt(ARG_CB_BALANCE, cbBalance);
@@ -63,7 +64,7 @@ public class TxnSuccessDialog extends DialogFragment
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //String mobileNum = getArguments().getString(ARG_MOBILE_NUM, null);
+        String mobileNum = getArguments().getString(ARG_MOBILE_NUM, null);
         String txnId = getArguments().getString(ARG_TXN_ID, null);
         int clbalance = getArguments().getInt(ARG_CL_BALANCE);
         int cbBalance = getArguments().getInt(ARG_CB_BALANCE);
@@ -75,9 +76,10 @@ public class TxnSuccessDialog extends DialogFragment
 
         bindUiResources(v);
         // display values
-        //mInputCustomer.setText(mobileNum);
+        String cust = "Customer: "+ CommonUtils.getPartialVisibleStr(mobileNum);
+        mInputCustomer.setText(cust);
         if(txnId!=null) {
-            String txt = "ID: " + txnId;
+            String txt = "Txn ID: " + txnId;
             mInputTxnId.setText(txt);
         }
         mInputCashBalance.setText(AppCommonUtil.getAmtStr(clbalance));
@@ -128,7 +130,7 @@ public class TxnSuccessDialog extends DialogFragment
         sendResult();
     }
 
-    //private EditText mInputCustomer;
+    private EditText mInputCustomer;
     private EditText mInputTxnId;
     private EditText mInputCashBalance;
     private EditText mInputCbBalance;
@@ -136,7 +138,7 @@ public class TxnSuccessDialog extends DialogFragment
     private EditText mInputCbBalanceOld;
 
     private void bindUiResources(View v) {
-        //mInputCustomer = (EditText) v.findViewById(R.id.input_customer_id);
+        mInputCustomer = (EditText) v.findViewById(R.id.input_cust_id);
 
         mInputTxnId = (EditText) v.findViewById(R.id.input_txn_id);
         mInputCashBalance = (EditText) v.findViewById(R.id.input_account_balance);

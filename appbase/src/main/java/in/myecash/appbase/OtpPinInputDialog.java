@@ -28,7 +28,7 @@ import java.util.Collections;
 public class OtpPinInputDialog extends DialogFragment
         implements View.OnClickListener {
 
-    private static final String TAG = "OtpInputDialog";
+    private static final String TAG = "BaseApp-OtpInputDialog";
     private static final String ARG_TITLE = "title";
     private static final String ARG_INFO = "info";
     private static final String ARG_HINT = "hint";

@@ -23,7 +23,7 @@ import java.util.Map;
  * Created by adgangwa on 07-05-2016.
  */
 public class MyTransaction {
-    private static final String TAG = "MyTransaction";
+    private static final String TAG = "BaseApp-MyTransaction";
 
     private Transaction mCurrTransaction;
 

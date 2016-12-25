@@ -34,7 +34,7 @@ import in.myecash.appbase.utilities.LogMy;
  * Created by adgangwa on 17-07-2016.
  */
 public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
-    private final static String TAG = "MyBackgroundProcessor";
+    private final static String TAG = "CustApp-MyBackgroundProcessor";
 
     private MyRetainedFragment mRetainedFragment;
 

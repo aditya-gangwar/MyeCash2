@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
  */
 public class MerchantDetailsFragment extends Fragment
     implements View.OnClickListener {
-    private static final String TAG = "MerchantDetailsFragment";
+    private static final String TAG = "AgentApp-MerchantDetailsFragment";
 
     private static final String DIALOG_DISABLE_MCHNT = "disableMerchant";
 

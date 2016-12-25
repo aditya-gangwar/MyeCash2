@@ -26,7 +26,7 @@ import in.myecash.common.database.Customers;
  * Created by adgangwa on 13-12-2016.
  */
 public class CardDetailsFragment extends Fragment {
-    private static final String TAG = "CardDetailsFragment";
+    private static final String TAG = "AgentApp-CardDetailsFragment";
 
     private final SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
 
@@ -61,7 +61,7 @@ public class CardDetailsFragment extends Fragment {
     private void initDialogView() {
         CustomerCards card = mCallback.getRetainedFragment().mCurrMemberCard;
 
-        mInputQrCard.setText(card.getCard_id());
+        mInputQrCard.setText(card.getCardNum());
         mInputCardStatus.setText(DbConstants.cardStatusDescInternal[card.getStatus()]);
         if(card.getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
             mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));

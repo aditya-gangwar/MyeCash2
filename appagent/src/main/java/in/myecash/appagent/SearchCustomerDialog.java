@@ -21,7 +21,7 @@ import in.myecash.common.constants.ErrorCodes;
  * Created by adgangwa on 29-11-2016.
  */
 public class SearchCustomerDialog extends DialogFragment implements DialogInterface.OnClickListener {
-    public static final String TAG = "SearchCustomerDialog";
+    public static final String TAG = "AgentApp-SearchCustomerDialog";
 
     private SearchCustomerDialogIf mListener;
 

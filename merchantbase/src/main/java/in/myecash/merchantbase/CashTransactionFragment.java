@@ -812,8 +812,9 @@ public class CashTransactionFragment extends Fragment implements
                     } else {
                         msg = "'Award Cashback' is less than 1 Rupee. Other credit/debit amount are 0.";
                     }
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg,true, true)
-                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg,true, true);
+                    dialog.setTargetFragment(this, REQ_NOTIFY_ERROR);
+                    dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
                 //if (getCashPaidError() == null) {
                 if(mCashPaid>=0) {

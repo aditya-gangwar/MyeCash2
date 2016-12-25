@@ -41,10 +41,10 @@
                 android:id="@+id/img_merchant"
                 android:src="@drawable/ic_store_grey_48dp"
                 android:layout_width="@dimen/dp_dialog_image_width"
-                android:layout_height="@dimen/dp_dialog_image_height"
+                android:layout_height="match_parent"
                 android:scaleType="centerInside"
                 android:layout_marginRight="@dimen/medium_space"
-                android:layout_gravity="bottom"/>
+                android:layout_gravity="center"/>
 
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
@@ -55,6 +55,7 @@
                 android:text="TBS"
                 android:layout_toRightOf="@id/img_merchant"
                 android:gravity="left"
+                android:paddingTop="0dp"
                 android:textStyle="bold"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
@@ -63,6 +64,7 @@
                 android:gravity="left"
                 android:id="@+id/input_category_city"
                 android:layout_width="match_parent"
+                android:paddingTop="0dp"
                 android:layout_height="wrap_content"
                 android:text="TBS"/>
 
@@ -76,7 +78,8 @@
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="Cashback @"/>
+                    android:text="Cashback @"
+                    android:paddingTop="0dp"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/input_cb_rate"
@@ -84,6 +87,7 @@
                     android:layout_height="wrap_content"
                     android:text="5 %"
                     android:paddingLeft="0dp"
+                    android:paddingTop="0dp"
                     android:textColor="@color/green_positive"
                     android:textStyle="bold"/>
             </LinearLayout>
@@ -194,7 +198,7 @@
                 android:src="@drawable/ic_favorite_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Balance"
@@ -222,7 +226,7 @@
                 android:visibility="invisible"
                 android:paddingTop="0dp"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Total Add"
@@ -251,7 +255,7 @@
                 android:visibility="invisible"
                 android:paddingTop="0dp"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Total Used"
@@ -288,7 +292,7 @@
                 android:src="@drawable/ic_account_balance_wallet_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Balance"
@@ -296,7 +300,7 @@
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_acc_balance"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -316,7 +320,7 @@
                 android:visibility="invisible"
                 android:paddingTop="0dp"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Total Add"
@@ -325,7 +329,7 @@
                 android:layout_gravity="bottom"
                 android:paddingTop="0dp"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_weight="60"
                 android:gravity="left"
                 android:id="@+id/input_acc_add"
@@ -345,7 +349,7 @@
                 android:visibility="invisible"
                 android:paddingTop="0dp"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Total Used"
@@ -354,7 +358,7 @@
                 android:layout_gravity="bottom"
                 android:paddingTop="0dp"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_weight="60"
                 android:gravity="left"
                 android:id="@+id/input_acc_debit"
@@ -386,14 +390,14 @@
                 android:src="@drawable/ic_perm_identity_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="MyeCash ID"
                 android:layout_weight="40"
                 android:gravity="left"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_merchant_id"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -411,7 +415,7 @@
                 android:src="@drawable/ic_phone_android_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/label_customer_mobile"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
@@ -419,7 +423,7 @@
                 android:layout_weight="40"
                 android:gravity="left"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_mobile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -438,7 +442,7 @@
                 android:src="@drawable/ic_input_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Status"
@@ -446,7 +450,7 @@
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_weight="60"
                 android:gravity="left"
                 android:id="@+id/input_status"
@@ -465,14 +469,14 @@
                 android:src="@drawable/ic_place_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Address"
                 android:layout_weight="40"
                 android:gravity="left|center_vertical"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_weight="60"
                 android:gravity="left|center_vertical"
                 android:id="@+id/input_address"
@@ -494,7 +498,7 @@
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
-                    style="@style/Edittext_only_view_small"
+                    style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:text="Area / City"
@@ -503,7 +507,7 @@
                     android:layout_gravity="bottom"
                     android:paddingTop="0dp"/>
                 <EditText
-                    style="@style/Edittext_only_view_small"
+                    style="@style/Edittext_only_view_small_lessPad"
                     android:layout_weight="60"
                     android:gravity="left"
                     android:id="@+id/input_city"
@@ -523,7 +527,7 @@
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
-                    style="@style/Edittext_only_view_small"
+                    style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:text="State"
@@ -532,7 +536,7 @@
                     android:layout_gravity="bottom"
                     android:paddingTop="0dp"/>
                 <EditText
-                    style="@style/Edittext_only_view_small"
+                    style="@style/Edittext_only_view_small_lessPad"
                     android:layout_weight="60"
                     android:gravity="left"
                     android:id="@+id/input_state"

@@ -7,7 +7,7 @@ import android.os.Bundle;
  * Created by adgangwa on 17-07-2016.
  */
 public abstract class RetainedFragment extends Fragment {
-    private static final String TAG = "RetainedFragment";
+    private static final String TAG = "BaseApp-RetainedFragment";
 
     // Container Activity must implement this interface
     public interface RetainedFragmentIf {

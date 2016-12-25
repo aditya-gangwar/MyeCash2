@@ -26,7 +26,7 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
  * Created by adgangwa on 15-09-2016.
  */
 public class TxnDetailsDialog extends DialogFragment {
-    private static final String TAG = "TxnDetailsDialog";
+    private static final String TAG = "CustApp-TxnDetailsDialog";
     private static final String ARG_POSITION = "argPosition";
 
     private TxnDetailsDialogIf mCallback;

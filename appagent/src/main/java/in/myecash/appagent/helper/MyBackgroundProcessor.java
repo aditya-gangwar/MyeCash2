@@ -27,7 +27,7 @@ import java.util.List;
  * Created by adgangwa on 17-07-2016.
  */
 public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
-    private final static String TAG = "MyBackgroundProcessor";
+    private final static String TAG = "AgentApp-MyBackgroundProcessor";
 
     private MyRetainedFragment mRetainedFragment;
 
@@ -295,7 +295,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         try {
             CustomerCards card = mRetainedFragment.mCurrCustomer.getMembership_card();
             InternalUserServices.getInstance().disableCustCard(mRetainedFragment.mCurrCustomer.getPrivate_id(),
-                    card.getCard_id(), data.ticketId, data.reason, data.remarks);
+                    card.getCardNum(), data.ticketId, data.reason, data.remarks);
             LogMy.d(TAG,"disableCustCard success");
 
         } catch (BackendlessException e) {

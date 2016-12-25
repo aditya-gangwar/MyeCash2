@@ -144,7 +144,7 @@
                     android:id="@+id/tb_curr_cashback"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="\u20B9 9874"
+                    android:text="\u20B9 0"
                     android:textStyle="bold"
                     android:textColor="@color/secondary_text"/>
 
@@ -163,7 +163,7 @@
                     android:id="@+id/tb_curr_cashload"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="\u20B9 9898"
+                    android:text="\u20B9 0"
                     android:textStyle="bold"
                     android:textColor="@color/secondary_text"/>
 

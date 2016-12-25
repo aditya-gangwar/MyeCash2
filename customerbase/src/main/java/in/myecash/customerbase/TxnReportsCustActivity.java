@@ -52,7 +52,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
         DatePickerDialog.DatePickerIf, TxnListFragment.TxnListFragmentIf,
         DialogFragmentWrapper.DialogFragmentWrapperIf, TxnDetailsDialog.TxnDetailsDialogIf,
         TxnReportsHelper.TxnReportsHelperIf {
-    private static final String TAG = "TxnReportsActivity";
+    private static final String TAG = "CustApp-TxnReportsActivity";
 
     public static final String EXTRA_MERCHANT_ID = "extraMchntId";
     public static final String EXTRA_MERCHANT_NAME = "extraMchntName";

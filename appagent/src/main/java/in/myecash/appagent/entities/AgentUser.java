@@ -24,7 +24,7 @@ import java.io.File;
  * Created by adgangwa on 17-07-2016.
  */
 public class AgentUser {
-    private static final String TAG = "AgentUser";
+    private static final String TAG = "AgentApp-AgentUser";
 
     private BackendlessUser mAgentUser;
     public String mLastRegMerchantId;

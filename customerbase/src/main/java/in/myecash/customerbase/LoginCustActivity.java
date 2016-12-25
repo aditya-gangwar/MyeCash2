@@ -45,7 +45,7 @@ public class LoginCustActivity extends AppCompatActivity implements
         MyRetainedFragment.RetainedFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         PasswdResetDialog.PasswdResetDialogIf, AccEnableDialog.AccEnableDialogIf {
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "CustApp-LoginActivity";
 
     // permission request codes need to be < 256
     private static final int RC_HANDLE_STORAGE_PERM = 10;

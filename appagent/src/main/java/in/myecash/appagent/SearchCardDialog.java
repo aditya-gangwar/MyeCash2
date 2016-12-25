@@ -16,7 +16,6 @@ import android.widget.EditText;
 
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.utilities.AppCommonUtil;
-import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.constants.ErrorCodes;
@@ -27,7 +26,7 @@ import in.myecash.common.constants.ErrorCodes;
 public class SearchCardDialog extends DialogFragment
         implements DialogInterface.OnClickListener, View.OnTouchListener {
 
-    public static final String TAG = "SearchCardDialog";
+    public static final String TAG = "AgentApp-SearchCardDialog";
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9004;
 
     private SearchCardDialogIf mListener;
@@ -82,7 +81,7 @@ public class SearchCardDialog extends DialogFragment
                         if(mScannedCardNum==null || mScannedCardNum.isEmpty()) {
                             String cardNum = mInputId.getText().toString();
 
-                            int error = ValidationHelper.validateCardId(cardNum);
+                            int error = ValidationHelper.validateCardNum(cardNum);
                             if (error == ErrorCodes.NO_ERROR) {
                                 mListener.onCardInputData(cardNum);
                                 getDialog().dismiss();

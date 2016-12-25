@@ -26,7 +26,7 @@ import in.myecash.customerbase.backendAPI.CustomerServicesNoLogin;
  * Created by adgangwa on 17-07-2016.
  */
 public class CustomerUser {
-    private static final String TAG = "CustomerUser";
+    private static final String TAG = "CustApp-CustomerUser";
 
     private static CustomerUser mInstance;
 
@@ -225,7 +225,7 @@ public class CustomerUser {
             } else {
                 // PIN change scenario
                 CommonServices.getInstance().execCustomerOp(DbConstants.OP_CHANGE_PIN, mCustomer.getMobile_num(),
-                        mCustomer.getMembership_card().getCard_id(), "", oldPin, newPin);
+                        mCustomer.getMembership_card().getCardNum(), "", oldPin, newPin);
             }
 
         } catch (BackendlessException e) {

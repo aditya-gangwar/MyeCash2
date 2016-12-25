@@ -1447,6 +1447,7 @@ public class CashbackActivity extends AppCompatActivity implements
         if(errorCode == ErrorCodes.NO_ERROR) {
             // Display success notification
             TxnSuccessDialog dialog = TxnSuccessDialog.newInstance(
+                    mWorkFragment.mCurrTransaction.getTransaction().getCustomer_id(),
                     mWorkFragment.mCurrTransaction.getTransaction().getTrans_id(),
                     mWorkFragment.mCurrCashback.getCurrClBalance(),
                     mWorkFragment.mCurrCashback.getCurrCbBalance(),
@@ -1631,7 +1632,7 @@ public class CashbackActivity extends AppCompatActivity implements
             if (resultCode == ErrorCodes.NO_ERROR &&
                     qrCode != null) {
                 LogMy.d(TAG, "Read customer QR code: " + qrCode);
-                if(ValidationHelper.validateMemberCard(qrCode) == ErrorCodes.NO_ERROR) {
+                if(ValidationHelper.validateCardId(qrCode) == ErrorCodes.NO_ERROR) {
                     mWorkFragment.mCustCardId = qrCode;
                     Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, qrCode);
                     mWorkFragment.mCardPresented = true;
