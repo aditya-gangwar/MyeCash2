@@ -55,7 +55,9 @@ import in.myecash.common.database.MerchantOps;
 import in.myecash.common.database.Merchants;
 import in.myecash.common.database.Transaction;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -65,7 +67,8 @@ import java.util.Date;
  */
 public class AppCommonUtil {
     private static final String TAG = "BaseApp-AppCommonUtil";
-    //private static final SimpleDateFormat mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
+
+    private static final int FILE_READ_BLOCK_BYTES = 1024;
 
     // single active progress dialog at any time
     private static Toast mToast;
@@ -463,6 +466,27 @@ public class AppCommonUtil {
                 fileName.startsWith(CommonConstants.CASHBACK_DATA_FILE_PREFIX)||
                 fileName.startsWith(CommonConstants.PREFIX_TXN_IMG_FILE_NAME) );
     }
+
+    public static byte[] fileAsByteArray(Context ctxt, String fileName) throws Exception {
+
+        FileInputStream inputStream = null;
+        try {
+            inputStream = ctxt.openFileInput(fileName);
+
+            byte[] b = new byte[FILE_READ_BLOCK_BYTES];
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            int c;
+            while ((c = inputStream.read(b)) != -1) {
+                os.write(b, 0, c);
+            }
+            return os.toByteArray();
+        } finally {
+            if(inputStream!=null) {
+                inputStream.close();
+            }
+        }
+    }
+
 
 
 

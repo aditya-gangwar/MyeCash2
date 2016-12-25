@@ -3,19 +3,24 @@ package in.myecash.merchantbase;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -35,12 +40,16 @@ import in.myecash.common.MyCustomer;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,8 +67,7 @@ public class CustomerListFragment extends Fragment {
     private static final String CSV_HEADER = "Sl.No.,Internal Id,Mobile No.,Card ID,Status,Account Balance,Account Add,Account Debit,Cashback Balance,Cashback Award,Cashback Redeem,Total Bill,Cashback Bill,Last Txn here,First Txn here";
     // 5+10+10+10+10+5+5+5+5+5+5+5+5+10+10 = 105
     private static final int CSV_RECORD_MAX_CHARS = 128;
-    //TODO: change this to 100 in production
-    private static final int CSV_LINES_BUFFER = 5;
+    private static final int CSV_LINES_BUFFER = 100;
 
     private static final int REQ_NOTIFY_ERROR = 1;
     private static final int REQ_SORT_CUST_TYPES = 2;
@@ -108,7 +116,7 @@ public class CustomerListFragment extends Fragment {
 
             try {
                 // process the file
-                processFile();
+                processCustFile();
             } catch(Exception e) {
                 // if any issue processing the file - delete the same
                 String fileName = AppCommonUtil.getMerchantCustFileName(mRetainedFragment.mMerchantUser.getMerchantId());
@@ -151,19 +159,23 @@ public class CustomerListFragment extends Fragment {
         switch (mSelectedSortType) {
             case MyCashback.CB_CMP_TYPE_UPDATE_TIME:
                 mLabelTxnTime.setText("Last Txn Time");
+                mLabelTxnTime.setTypeface(null, Typeface.NORMAL);
                 break;
             case MyCashback.CB_CMP_TYPE_BILL_AMT:
                 mLabelBill.setText("Total Bill");
+                mLabelBill.setTypeface(null, Typeface.NORMAL);
                 break;
             case MyCashback.CB_CMP_TYPE_ACC_BALANCE:
             case MyCashback.CB_CMP_TYPE_ACC_ADD:
             case MyCashback.CB_CMP_TYPE_ACC_DEBIT:
                 mLabelAcc.setText("Account:  Add - Used = Balance");
+                mLabelAcc.setTypeface(null, Typeface.NORMAL);
                 break;
             case MyCashback.CB_CMP_TYPE_CB_BALANCE:
             case MyCashback.CB_CMP_TYPE_CB_ADD:
             case MyCashback.CB_CMP_TYPE_CB_DEBIT:
                 mLabelCb.setText("Cashback:  Add - Used = Balance");
+                mLabelCb.setTypeface(null, Typeface.NORMAL);
                 break;
         }
 
@@ -173,34 +185,42 @@ public class CustomerListFragment extends Fragment {
             case MyCashback.CB_CMP_TYPE_UPDATE_TIME:
                 text = AppConstants.SYMBOL_DOWN_ARROW + mLabelTxnTime.getText().toString();
                 mLabelTxnTime.setText(text);
+                mLabelTxnTime.setTypeface(null, Typeface.BOLD);
                 break;
             case MyCashback.CB_CMP_TYPE_BILL_AMT:
                 text = AppConstants.SYMBOL_DOWN_ARROW + mLabelBill.getText().toString();
                 mLabelBill.setText(text);
+                mLabelBill.setTypeface(null, Typeface.BOLD);
                 break;
             case MyCashback.CB_CMP_TYPE_ACC_BALANCE:
                 text = "Account:  Add - Used = "+AppConstants.SYMBOL_DOWN_ARROW+"Balance";
                 mLabelAcc.setText(text);
+                mLabelAcc.setTypeface(null, Typeface.BOLD);
                 break;
             case MyCashback.CB_CMP_TYPE_ACC_ADD:
                 text = "Account: "+AppConstants.SYMBOL_DOWN_ARROW+"Add - Used = Balance";
                 mLabelAcc.setText(text);
+                mLabelAcc.setTypeface(null, Typeface.BOLD);
                 break;
             case MyCashback.CB_CMP_TYPE_ACC_DEBIT:
                 text = "Account:  Add - "+AppConstants.SYMBOL_DOWN_ARROW+"Used = Balance";
                 mLabelAcc.setText(text);
+                mLabelAcc.setTypeface(null, Typeface.BOLD);
                 break;
             case MyCashback.CB_CMP_TYPE_CB_BALANCE:
                 text = "Cashback:  Add - Used = "+AppConstants.SYMBOL_DOWN_ARROW+"Balance";
                 mLabelCb.setText(text);
+                mLabelCb.setTypeface(null, Typeface.BOLD);
                 break;
             case MyCashback.CB_CMP_TYPE_CB_ADD:
                 text = "Cashback: "+AppConstants.SYMBOL_DOWN_ARROW+"Add - Used = Balance";
                 mLabelCb.setText(text);
+                mLabelCb.setTypeface(null, Typeface.BOLD);
                 break;
             case MyCashback.CB_CMP_TYPE_CB_DEBIT:
                 text = "Cashback:  Add - "+AppConstants.SYMBOL_DOWN_ARROW+"Used = Balance";
                 mLabelCb.setText(text);
+                mLabelCb.setTypeface(null, Typeface.BOLD);
                 break;
         }
 
@@ -227,39 +247,38 @@ public class CustomerListFragment extends Fragment {
         return view;
     }
 
-    private void processFile() throws Exception {
+    private void processCustFile() throws Exception {
         String fileName = AppCommonUtil.getMerchantCustFileName(mRetainedFragment.mMerchantUser.getMerchantId());
 
-        InputStream inputStream = getActivity().openFileInput(fileName);
-        if ( inputStream != null ) {
-            int lineCnt = 0;
+        byte[] bytes = AppCommonUtil.fileAsByteArray(getActivity(), fileName);
+        //LogMy.d(TAG,"Encoded "+fileName+": "+new String(bytes));
+        byte[] decodedBytes = Base64.decode(bytes, Base64.DEFAULT);
+        //LogMy.d(TAG,"Decoded "+fileName+": "+new String(decodedBytes));
 
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String receiveString = "";
-            while ( (receiveString = bufferedReader.readLine()) != null ) {
-                if(lineCnt==0) {
-                    // first line is header giving file creation time epoch
-                    String[] csvFields = receiveString.split(CommonConstants.CSV_DELIMETER, -1);
-                    mUpdatedTime = mSdfDateWithTime.format(new Date(Long.parseLong(csvFields[0])));
+        InputStream is = new ByteArrayInputStream(decodedBytes);
+        BufferedReader bfReader = new BufferedReader(new InputStreamReader(is));
+
+        int lineCnt = 0;
+        String receiveString = "";
+        while ( (receiveString = bfReader.readLine()) != null ) {
+            //LogMy.d(TAG,"Read line: "+receiveString);
+            if(lineCnt==0) {
+                // first line is header giving file creation time epoch
+                String[] csvFields = receiveString.split(CommonConstants.CSV_DELIMETER, -1);
+                mUpdatedTime = mSdfDateWithTime.format(new Date(Long.parseLong(csvFields[0])));
+            } else {
+                // ignore empty lines
+                if(receiveString.trim().isEmpty()) {
+                    LogMy.d(TAG, "Read empty line");
                 } else {
-                    // ignore empty lines
-                    if(receiveString.trim().isEmpty()) {
-                        LogMy.d(TAG, "Read empty line");
-                    } else {
-                        processCbCsvRecord(receiveString);
-                    }
+                    processCbCsvRecord(receiveString);
                 }
-
-                lineCnt++;
             }
-            inputStream.close();
-            LogMy.d(TAG,"Processed "+lineCnt+" lines from "+fileName);
-        } else {
-            String error = "openFileInput returned null for Cashback CSV file: "+fileName;
-            LogMy.e(TAG, error);
-            throw new FileNotFoundException(error);
+
+            lineCnt++;
         }
+        is.close();
+        LogMy.d(TAG,"Processed "+lineCnt+" lines from "+fileName);
     }
 
     private void processCbCsvRecord(String csvString) {
@@ -390,7 +409,7 @@ public class CustomerListFragment extends Fragment {
 
             // +10 to cover for headers
             StringBuilder sb = new StringBuilder(CSV_RECORD_MAX_CHARS*(CSV_LINES_BUFFER+10));
-            sb.append(CSV_HEADER).append(CommonConstants.CSV_NEWLINE);
+            sb.append(CSV_HEADER).append(CommonConstants.NEWLINE_SEP);
 
             int cnt = mRetainedFragment.mLastFetchCashbacks.size();
             for(int i=0; i<cnt; i++) {
@@ -416,7 +435,7 @@ public class CustomerListFragment extends Fragment {
                 sb.append(cb.getBillAmt()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(mSdfDateWithTime.format(cb.getUpdateTime())).append(CommonConstants.CSV_DELIMETER);
                 sb.append(mSdfDateWithTime.format(cb.getCreateTime()));
-                sb.append(CommonConstants.CSV_NEWLINE);
+                sb.append(CommonConstants.NEWLINE_SEP);
 
                 // Write every 100 records in one go to the file
                 if(i%CSV_LINES_BUFFER == 0) {
@@ -448,7 +467,7 @@ public class CustomerListFragment extends Fragment {
     }
 
     private class CbHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+            implements View.OnTouchListener {
 
         private MyCashback mCb;
 
@@ -487,15 +506,15 @@ public class CustomerListFragment extends Fragment {
             mCbDebit = (EditText) itemView.findViewById(R.id.cust_cb_debit);
             mCbBalance = (EditText) itemView.findViewById(R.id.cust_cb_balance);
 
-            mCustId.setOnClickListener(this);
-            mLastTxnTime.setOnClickListener(this);
-            mBillAmt.setOnClickListener(this);;
-            mAccAdd.setOnClickListener(this);;
-            mAccDebit.setOnClickListener(this);;
-            mAccBalance.setOnClickListener(this);;
-            mCbAdd.setOnClickListener(this);;
-            mCbDebit.setOnClickListener(this);;
-            mCbBalance.setOnClickListener(this);;
+            mCustId.setOnTouchListener(this);
+            mLastTxnTime.setOnTouchListener(this);
+            mBillAmt.setOnTouchListener(this);;
+            mAccAdd.setOnTouchListener(this);;
+            mAccDebit.setOnTouchListener(this);;
+            mAccBalance.setOnTouchListener(this);;
+            mCbAdd.setOnTouchListener(this);;
+            mCbDebit.setOnTouchListener(this);;
+            mCbBalance.setOnTouchListener(this);;
 
             //mLayoutBill.setOnClickListener(this);
             //mLayoutAcc.setOnClickListener(this);
@@ -503,8 +522,9 @@ public class CustomerListFragment extends Fragment {
         }
 
         @Override
-        public void onClick(View v) {
-            LogMy.d(TAG,"In onClick: "+v.getId());
+        public boolean onTouch(View v, MotionEvent event) {
+            if(event.getAction()==MotionEvent.ACTION_UP) {
+                LogMy.d(TAG,"In onTouch: "+v.getId());
 
             // getRootView was not working, so manually finding root view
             // depending upon views on which listener is set
@@ -519,6 +539,8 @@ public class CustomerListFragment extends Fragment {
             }
 
             rootView.performClick();
+            }
+            return true;
         }
 
         public void bindCb(MyCashback cb) {

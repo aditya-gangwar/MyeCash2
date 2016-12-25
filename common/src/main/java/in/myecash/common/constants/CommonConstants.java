@@ -101,7 +101,7 @@ public class CommonConstants {
 
     public static final String CSV_DELIMETER = ",";
     public static final String CSV_FILE_EXT = ".csv";
-    public static final String CSV_NEWLINE = "\n";
+    public static final String NEWLINE_SEP = "\n";
 
     /*
      * Prefixes

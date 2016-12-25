@@ -13,7 +13,10 @@ import android.widget.ImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.appbase.entities.MyCashback;
@@ -21,6 +24,7 @@ import in.myecash.common.MyMerchant;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.common.constants.DbConstants;
+import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.customerbase.helper.MyRetainedFragment;
 
 /**
@@ -61,7 +65,21 @@ public class MerchantDetailsDialog extends DialogFragment  {
 
         String mchntId = getArguments().getString(ARG_CB_MCHNTID, null);
         MyCashback cb = mCallback.getRetainedFragment().mCashbacks.get(mchntId);
-        initDialogView(cb);
+        if(cb==null) {
+            // I shouldn't be here
+            //raise alarm
+            Map<String,String> params = new HashMap<>();
+            params.put("CustomerId", CustomerUser.getInstance().getCustomer().getPrivate_id());
+            params.put("MerchantId",mchntId);
+            AppAlarms.invalidCardState(CustomerUser.getInstance().getCustomer().getPrivate_id(),
+                    DbConstants.USER_TYPE_CUSTOMER,"MerchantDetailsDialog:onActivityCreated",params);
+
+            AppCommonUtil.toast(getActivity(), "Error. Please try again later.");
+            // dismiss dialog
+            getDialog().dismiss();
+        } else {
+            initDialogView(cb);
+        }
     }
 
     @Override

@@ -60,7 +60,7 @@ public class CsvConverter {
         csvFields[TXN_CSV_IDX_MERCHANT_NAME] = txn.getMerchant_name();
         csvFields[TXN_CSV_IDX_CUSTOMER_ID] = txn.getCustomer_id();
         csvFields[TXN_CSV_IDX_CUSTOMER_PVT_ID] = txn.getCust_private_id();
-        csvFields[TXN_CSV_IDX_USED_CARD_ID] = txn.getUsedCardId();
+        csvFields[TXN_CSV_IDX_USED_CARD_ID] = (txn.getUsedCardId()==null)?"":txn.getUsedCardId();
         csvFields[TXN_CSV_IDX_TOTAL_BILLED] = String.valueOf(txn.getTotal_billed());
         csvFields[TXN_CSV_IDX_CB_BILLED] = String.valueOf(txn.getCb_billed());
         csvFields[TXN_CSV_IDX_ACC_DEBIT] = String.valueOf(txn.getCl_debit());
@@ -73,7 +73,6 @@ public class CsvConverter {
         csvFields[TXN_CSV_IDX_IMG_FILE] = (imgFilename==null)?"":imgFilename;
         csvFields[TXN_CSV_IDX_INV_NUM] = (txn.getInvoiceNum()==null)?"":txn.getInvoiceNum();
         if(txn.getCancelTime()!=null) {
-            //csvFields[TXN_CSV_IDX_CANCEL_TIME] = mSdfDateWithTime.format(txn.getCancelTime());
             csvFields[TXN_CSV_IDX_CANCEL_TIME] = String.valueOf(txn.getCancelTime().getTime()) ;
         } else {
             csvFields[TXN_CSV_IDX_CANCEL_TIME] = "";
@@ -92,7 +91,6 @@ public class CsvConverter {
 
         Transaction txn = new Transaction();
         txn.setTrans_id(csvFields[TXN_CSV_IDX_ID]);
-        //txn.setCreate_time(mSdfDateWithTime.parse(csvFields[TXN_CSV_IDX_TIME]));
         txn.setCreate_time(new Date(Long.parseLong(csvFields[TXN_CSV_IDX_TIME])));
         txn.setMerchant_id(csvFields[TXN_CSV_IDX_MERCHANT_ID]);
         txn.setMerchant_name(csvFields[TXN_CSV_IDX_MERCHANT_NAME]);
@@ -112,7 +110,6 @@ public class CsvConverter {
         if(csvFields[TXN_CSV_IDX_CANCEL_TIME].isEmpty()) {
             txn.setCancelTime(null);
         } else {
-            //txn.setCancelTime(mSdfDateWithTime.parse(csvFields[TXN_CSV_IDX_CANCEL_TIME]));
             txn.setCancelTime(new Date(Long.parseLong(csvFields[TXN_CSV_IDX_CANCEL_TIME])));
         }
         return txn;

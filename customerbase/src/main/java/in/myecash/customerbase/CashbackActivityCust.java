@@ -551,18 +551,18 @@ public class CashbackActivityCust extends AppCompatActivity implements
 
             StringBuilder sb = new StringBuilder();
             // current time as first line in file
-            sb.append(System.currentTimeMillis()).append(CommonConstants.CSV_NEWLINE);
+            sb.append(System.currentTimeMillis()).append(CommonConstants.NEWLINE_SEP);
             for (Map.Entry<String, MyCashback> entry : mRetainedFragment.mCashbacks.entrySet()) {
                 MyCashback cb = entry.getValue();
                 String csvStr = CsvConverter.csvStrFromCb(cb.getCurrCashback());
-                sb.append(csvStr).append(CommonConstants.CSV_NEWLINE);
+                sb.append(csvStr).append(CommonConstants.NEWLINE_SEP);
             }
 
             /*int cnt = mRetainedFragment.mCashbacks.size();
             for(int i=0; i<cnt; i++) {
                 MyCashback cb = mRetainedFragment.mCashbacks.get(i);
                 String csvStr = CsvConverter.csvStrFromCb(cb.getCurrCashback());
-                sb.append(csvStr).append(CommonConstants.CSV_NEWLINE);
+                sb.append(csvStr).append(CommonConstants.NEWLINE_SEP);
             }*/
 
             outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
@@ -936,7 +936,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
                         }
                     } else {
                         // ignore empty lines
-                        if(!receiveString.equals(CommonConstants.CSV_NEWLINE)) {
+                        if(!receiveString.equals(CommonConstants.NEWLINE_SEP)) {
                             processCbCsvRecord(receiveString);
                         }
                     }

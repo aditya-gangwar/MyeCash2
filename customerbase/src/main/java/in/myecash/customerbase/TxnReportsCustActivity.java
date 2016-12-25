@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -51,7 +52,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
         View.OnClickListener, MyRetainedFragment.RetainedFragmentIf,
         DatePickerDialog.DatePickerIf, TxnListFragment.TxnListFragmentIf,
         DialogFragmentWrapper.DialogFragmentWrapperIf, TxnDetailsDialog.TxnDetailsDialogIf,
-        TxnReportsHelper.TxnReportsHelperIf {
+        TxnReportsHelper.TxnReportsHelperIf, View.OnTouchListener {
     private static final String TAG = "CustApp-TxnReportsActivity";
 
     public static final String EXTRA_MERCHANT_ID = "extraMchntId";
@@ -61,6 +62,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     private static final String DIALOG_DATE_FROM = "DialogDateFrom";
     private static final String DIALOG_DATE_TO = "DialogDateTo";
     private static final String TXN_LIST_FRAGMENT = "TxnListFragment";
+    private static final String DIALOG_MERCHANT_DETAILS = "dialogMerchantDetails";
 
     // All required date formatters
     private SimpleDateFormat mSdfOnlyDateDisplay = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
@@ -146,11 +148,11 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onClick(View v) {
-        int vId = v.getId();
-        LogMy.d(TAG, "In onClick: " + vId);
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if(motionEvent.getAction()==MotionEvent.ACTION_UP) {
+            int vId = view.getId();
+            LogMy.d(TAG,"In onTouch: "+vId);
 
-        try {
             if (vId == R.id.input_date_from) {
                 // Find the minimum date for DatePicker
                 DateUtil minFrom = new DateUtil(new Date(), TimeZone.getDefault());
@@ -167,7 +169,18 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
                     toDialog.show(getFragmentManager(), DIALOG_DATE_TO);
                 }
 
-            } else if (vId == R.id.btn_get_report) {
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int vId = v.getId();
+        LogMy.d(TAG, "In onClick: " + vId);
+
+        try {
+            if (vId == R.id.btn_get_report) {
                 // clear old data
                 //mWorkFragment.mAllFiles.clear();
                 //mWorkFragment.mMissingFiles.clear();
@@ -178,7 +191,6 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
                 }
                 mHelper.startTxnFetch(mFromDate, mToDate, mMerchantId, CustomerUser.getInstance().getCustomer().getPrivate_id());
 
-            } else {
             }
         } catch(Exception e) {
             LogMy.e(TAG, "Exception is ReportsActivity:onClick: "+vId, e);
@@ -290,6 +302,12 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
+    }
+
+    @Override
+    public void showMchntDetails(String mchntId) {
+        MerchantDetailsDialog dialog = MerchantDetailsDialog.newInstance(mchntId);
+        dialog.show(getFragmentManager(), DIALOG_MERCHANT_DETAILS);
     }
 
     private void startTxnListFragment() {

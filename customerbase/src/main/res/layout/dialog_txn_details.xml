@@ -51,19 +51,19 @@
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Txn ID"
-                android:layout_weight="40"
-                android:gravity="left"/>
+                android:layout_weight="45"
+                android:gravity="left|center_vertical"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_txn_id"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="AUX789R5"
-                android:layout_weight="60"
-                android:gravity="left"/>
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"/>
         </LinearLayout>
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -75,20 +75,20 @@
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Time"
-                android:layout_weight="40"
-                android:gravity="left"
+                android:layout_weight="45"
+                android:gravity="left|center_vertical"
                 />
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_txn_time"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="22 July 16, 23:00"
-                android:layout_weight="60"
-                android:gravity="left"
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"
                 />
         </LinearLayout>
 
@@ -104,20 +104,20 @@
                 android:visibility="invisible"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Linked Invoice#"
-                android:layout_weight="40"
-                android:gravity="left"
+                android:layout_weight="45"
+                android:gravity="left|center_vertical"
                 />
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_invoice_num"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="TBS"
-                android:layout_weight="60"
-                android:gravity="left"
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"
                 />
         </LinearLayout>
 
@@ -131,19 +131,19 @@
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Card Used"
-                android:layout_weight="40"
-                android:gravity="left"/>
+                android:layout_weight="45"
+                android:gravity="left|center_vertical"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_card_used"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="TBS"
-                android:layout_weight="60"
-                android:gravity="left"/>
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"/>
         </LinearLayout>
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -152,23 +152,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_lock_outline_white_18dp"
-                android:tint="@color/primary"
-                />
+                android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="PIN Used"
-                android:layout_weight="40"
-                android:gravity="left"/>
+                android:layout_weight="45"
+                android:gravity="left|center_vertical"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_pin_used"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Yes"
-                android:layout_weight="60"
-                android:gravity="left"/>
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"/>
         </LinearLayout>
 
         <Space
@@ -185,20 +184,20 @@
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
-                android:text="Total Bill"
-                android:layout_weight="40"
+                android:text="Bill Amount"
+                android:layout_weight="45"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_total_bill"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="\u20B9 NA"
-                android:layout_weight="60"
-                android:gravity="left"
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"
                 android:singleLine="true"
                 android:ellipsize="end"/>
         </LinearLayout>
@@ -211,24 +210,25 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_receipt_white_18dp"
                 android:tint="@color/primary"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Bill Cashback"
-                android:layout_weight="40"
-                android:gravity="left"
-                />
+                android:layout_weight="45"
+                android:gravity="left|center_vertical"
+                android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_cb_bill"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="\u20B9 NA"
-                android:layout_weight="60"
-                android:gravity="left"
-                />
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"
+                android:paddingTop="0dp"/>
         </LinearLayout>
 
         <Space
@@ -255,19 +255,19 @@
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Debit"
-                android:layout_weight="40"
+                android:layout_weight="45"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="60"
-                android:gravity="left"
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"
                 android:id="@+id/input_cb_redeem"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"/>
         </LinearLayout>
         <LinearLayout
@@ -279,25 +279,25 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_favorite_white_18dp"
                 android:visibility="invisible"
-                />
+                android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Add"
-                android:layout_weight="40"
+                android:layout_weight="45"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"
-                />
+                android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="60"
-                android:gravity="left"
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"
                 android:id="@+id/input_cb_award"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
-                />
+                android:paddingTop="0dp"/>
         </LinearLayout>
 
         <Space
@@ -324,19 +324,19 @@
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Add"
-                android:layout_weight="40"
+                android:layout_weight="45"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="60"
-                android:gravity="left"
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"
                 android:id="@+id/input_acc_add"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"/>
         </LinearLayout>
         <LinearLayout
@@ -348,25 +348,25 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_account_balance_wallet_white_18dp"
                 android:visibility="invisible"
-                />
+                android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Debit"
-                android:layout_weight="40"
+                android:layout_weight="45"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"
-                />
+                android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="60"
-                android:gravity="left"
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"
                 android:id="@+id/input_acc_debit"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
-                />
+                android:paddingTop="0dp"/>
         </LinearLayout>
 
         <Space
@@ -395,17 +395,17 @@
                 android:id="@+id/label_merchant"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
-                android:text="Merchant"
-                android:layout_weight="40"
-                android:gravity="center_vertical"/>
+                android:text="Name"
+                android:layout_weight="45"
+                android:gravity="left|center_vertical"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_merchant_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="Ganga Stores and Sons Pvt Ltd"
-                android:layout_weight="60"
-                android:gravity="left"/>
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"/>
         </LinearLayout>
 
         <LinearLayout
@@ -416,23 +416,26 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_store_white_18dp"
                 android:tint="@color/primary"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/label_customer_id"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="MyeCash ID"
-                android:layout_weight="40"
-                android:gravity="left"/>
+                android:layout_weight="45"
+                android:gravity="left|center_vertical"
+                android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_merchant_id"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="AUX789R5"
-                android:layout_weight="60"
-                android:gravity="left"/>
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"
+                android:paddingTop="0dp"/>
         </LinearLayout>
 
         <Space

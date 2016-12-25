@@ -2,22 +2,22 @@ package in.myecash.appbase.utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Base64;
 
 import com.backendless.exceptions.BackendlessException;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.common.CommonUtils;
 import in.myecash.common.CsvConverter;
@@ -139,7 +139,7 @@ public class TxnReportsHelper {
     // when all CSV txn files for old days are available locally
     public void onAllTxnFilesAvailable(boolean remoteCsvTxnFileNotFound) throws Exception {
         // process CSV files to extract applicable CSV records
-        processFiles();
+        processTxnFiles();
         // check if records from DB table are to be fetched too
         if( mToDate.getTime() >= mTxnInDbFrom.getTime() ||
                 remoteCsvTxnFileNotFound ) {
@@ -207,47 +207,40 @@ public class TxnReportsHelper {
     }
 
     // process all files in 'mAllFiles' and add applicable CSV records in mWorkFragment.mFilteredCsvRecords
-    private void processFiles() throws Exception {
+    private void processTxnFiles() throws Exception {
         mTxnsFromCsv.clear();
 
-        boolean isCustomerFilter = false;
-        if(mCustomerId != null && mCustomerId.length() > 0 )
-        {
-            isCustomerFilter = true;
-        }
+        boolean isCustomerFilter = (mCustomerId != null && mCustomerId.length() > 0);
 
         for(int i=0; i<mAllFiles.size(); i++) {
             try {
-                InputStream inputStream = mContext.openFileInput(mAllFiles.get(i));
+                byte[] bytes = AppCommonUtil.fileAsByteArray(mContext, mAllFiles.get(i));
+                LogMy.d(TAG,"Encoded "+mAllFiles.get(i)+": "+new String(bytes));
+                byte[] decodedBytes = Base64.decode(bytes, Base64.DEFAULT);
+                LogMy.d(TAG,"Decoded "+mAllFiles.get(i)+": "+new String(decodedBytes));
 
-                if ( inputStream != null ) {
-                    int lineCnt = 0;
+                InputStream is = new ByteArrayInputStream(decodedBytes);
+                BufferedReader bfReader = new BufferedReader(new InputStreamReader(is));
 
-                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                    String receiveString = "";
-                    while ( (receiveString = bufferedReader.readLine()) != null ) {
-                        lineCnt++;
-                        switch(lineCnt) {
-                            case 1:
-                                // this is header - do nothing
-                                break;
-                            default:
-                                if(!receiveString.equals(CommonConstants.CSV_NEWLINE)) {
-                                    processTxnCsvRecord(receiveString, isCustomerFilter);
-                                }
-                                break;
+                int lineCnt = 0;
+                String receiveString = "";
+                while ( (receiveString = bfReader.readLine()) != null ) {
+                    LogMy.d(TAG,"Read line: "+receiveString);
+                    // Line 0 is header - ignore the same
+                    if(lineCnt!=0) {
+                        // ignore empty lines
+                        if(receiveString.trim().isEmpty() || receiveString.equals(CommonConstants.NEWLINE_SEP)) {
+                            LogMy.d(TAG, "Read empty line");
+                        } else {
+                            processTxnCsvRecord(receiveString, isCustomerFilter);
                         }
                     }
-                    inputStream.close();
-                    LogMy.d(TAG,mAllFiles.get(i)+": "+lineCnt);
-                } else {
-                    String error = "openFileInput returned null for txn CSV file: "+mAllFiles.get(i);
-                    LogMy.e(TAG, error);
-                    throw new FileNotFoundException(error);
+                    lineCnt++;
                 }
-            }
-            catch (FileNotFoundException fnf) {
+                is.close();
+                LogMy.d(TAG,"Processed "+lineCnt+" lines from "+mAllFiles.get(i));
+
+            } catch (FileNotFoundException fnf) {
                 // ignore it - if the file already in 'missing list'
                 boolean fileAlreadyMissing = false;
                 String missingFile = mAllFiles.get(i);
@@ -263,6 +256,12 @@ public class TxnReportsHelper {
                     LogMy.e(TAG,"Txn CSV file not found locally: "+missingFile);
                     throw fnf;
                 }
+            } catch (Exception e) {
+                // Any other exception can be due to corrupted file
+                // delete this file and throw exception - failure in 1 file means complete failure
+                LogMy.e(TAG,"Exception while reading txn csv file: "+mAllFiles.get(i),e);
+                mContext.deleteFile(mAllFiles.get(i));
+                throw e;
             }
         }
     }

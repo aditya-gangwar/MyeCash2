@@ -127,7 +127,7 @@ public class TxnDetailsDialog extends DialogFragment {
                     @Override
                     public void onClick(View v) {
                         if(txn.getImgFileName()==null || txn.getImgFileName().isEmpty()) {
-                            AppCommonUtil.toast(getActivity(), "Card image not required for this txn");
+                            AppCommonUtil.toast(getActivity(), "Card image was not required for this txn");
                         } else {
                             // start file download
                             // pass index of current shown txn - so as this dialog can be started again to show the same txn
@@ -153,17 +153,18 @@ public class TxnDetailsDialog extends DialogFragment {
                 mLayoutInvNum.setVisibility(View.VISIBLE);
                 mInvoiceNum.setText(txn.getInvoiceNum());
             }
-            /*if(txn.getComments()==null || txn.getComments().isEmpty()) {
-                mLayoutComments.setVisibility(View.GONE);
+
+            if(mCallback.getRetainedFragment().mMerchantUser.isPseudoLoggedIn()) {
+                // For CC user - show full card#
+                mCardUsed.setText(txn.getUsedCardId());
             } else {
-                mLayoutComments.setVisibility(View.VISIBLE);
-                mComments.setText(txn.getComments());
-            }*/
+                mCardUsed.setText(CommonUtils.getPartialVisibleStr(txn.getUsedCardId()));
+            }
+            mPinUsed.setText(txn.getCpin());
 
             mInputTotalBill.setText(AppCommonUtil.getAmtStr(txn.getTotal_billed()));
             mInputCbBill.setText(AppCommonUtil.getAmtStr(txn.getCb_billed()));
 
-            //mInputCustomerId.setText(txn.getCust_private_id());
             mInputCustomerId.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -177,8 +178,6 @@ public class TxnDetailsDialog extends DialogFragment {
             });
             mInputCustomerId.setText(Html.fromHtml("<u>"+txn.getCust_private_id()+"</u>"));
             mInputMobileNum.setText(CommonUtils.getPartialVisibleStr(txn.getCustomer_id()));
-            mCardUsed.setText(CommonUtils.getPartialVisibleStr(txn.getUsedCardId()));
-            mPinUsed.setText(txn.getCpin());
 
             String cbData = AppCommonUtil.getAmtStr(txn.getCb_credit())+" @ "+txn.getCb_percent()+"%";
             mInputCbAward.setText(cbData);
@@ -265,8 +264,6 @@ public class TxnDetailsDialog extends DialogFragment {
 
     private View mLayoutInvNum;
     private EditText mInvoiceNum;
-    //private View mLayoutComments;
-    //private EditText mComments;
 
     private EditText mInputTotalBill;
     private EditText mInputCbBill;
@@ -294,8 +291,6 @@ public class TxnDetailsDialog extends DialogFragment {
 
         mLayoutInvNum = v.findViewById(R.id.layout_invoice_num);
         mInvoiceNum = (EditText) v.findViewById(R.id.input_invoice_num);
-        //mLayoutComments = v.findViewById(R.id.layout_comments);
-        //mComments = (EditText) v.findViewById(R.id.input_comments);
 
         mInputTotalBill = (EditText) v.findViewById(R.id.input_total_bill);
         mInputCbBill = (EditText) v.findViewById(R.id.input_cb_bill);

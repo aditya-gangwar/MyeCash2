@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -166,15 +168,18 @@ public class TxnListFragment extends Fragment {
         switch (mSelectedSortType) {
             case SortTxnDialog.TXN_SORT_DATE_TIME:
                 mHeaderTime.setText("Date Time");
+                mHeaderTime.setTypeface(null, Typeface.NORMAL);
                 break;
             case SortTxnDialog.TXN_SORT_CB_AWARD:
             case SortTxnDialog.TXN_SORT_bILL_AMT:
                 mHeaderBill.setText("Total Bill  |  Cashback @ x%");
+                mHeaderBill.setTypeface(null, Typeface.NORMAL);
                 break;
             case SortTxnDialog.TXN_SORT_CB_REDEEM:
             case SortTxnDialog.TXN_SORT_ACC_ADD:
             case SortTxnDialog.TXN_SORT_ACC_DEBIT:
                 mHeaderAmts.setText("Account |  Cashback Redeem");
+                mHeaderAmts.setTypeface(null, Typeface.NORMAL);
                 break;
         }
 
@@ -184,23 +189,28 @@ public class TxnListFragment extends Fragment {
             case SortTxnDialog.TXN_SORT_DATE_TIME:
                 text = AppConstants.SYMBOL_DOWN_ARROW + "Date Time";
                 mHeaderTime.setText(text);
+                mHeaderTime.setTypeface(null, Typeface.BOLD);
                 break;
             case SortTxnDialog.TXN_SORT_bILL_AMT:
                 text = AppConstants.SYMBOL_DOWN_ARROW + "Total Bill  |  Cashback @ x%";
                 mHeaderBill.setText(text);
+                mHeaderBill.setTypeface(null, Typeface.BOLD);
                 break;
             case SortTxnDialog.TXN_SORT_CB_AWARD:
                 text = "Total Bill  | "+AppConstants.SYMBOL_DOWN_ARROW+"Cashback @ x%";
                 mHeaderBill.setText(text);
+                mHeaderBill.setTypeface(null, Typeface.BOLD);
                 break;
             case SortTxnDialog.TXN_SORT_CB_REDEEM:
                 text = "Account  | "+AppConstants.SYMBOL_DOWN_ARROW+"Cashback Redeem";
                 mHeaderAmts.setText(text);
+                mHeaderAmts.setTypeface(null, Typeface.BOLD);
                 break;
             case SortTxnDialog.TXN_SORT_ACC_ADD:
             case SortTxnDialog.TXN_SORT_ACC_DEBIT:
                 text = AppConstants.SYMBOL_DOWN_ARROW+"Account  |  Cashback Redeem";
                 mHeaderAmts.setText(text);
+                mHeaderAmts.setTypeface(null, Typeface.BOLD);
                 break;
         }
 
@@ -263,6 +273,7 @@ public class TxnListFragment extends Fragment {
             String fileName = "MyeCash_Statement_"+startDate+"_"+endDate+CommonConstants.CSV_FILE_EXT;
             long fileid = manager.addCompletedDownload(fileName, "MyeCash Transactions Statement",
                     true, "text/plain", file.getAbsolutePath(), file.length(), true);
+            AppCommonUtil.toast(getActivity(),"Download Complete");
         }
     }
 
@@ -291,7 +302,7 @@ public class TxnListFragment extends Fragment {
                 startActivity(emailIntent);
             } else {
                 DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle,
-                        "No Email App available to send the email. Please install any and try again.", true, true);
+                        "No Email App like Gmail is installed on this mobile to send the email. \nPlease install any and try again. You can also download the file.", true, true);
                 notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
                 notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
@@ -317,18 +328,18 @@ public class TxnListFragment extends Fragment {
 
             // append all headers
             MerchantUser user = MerchantUser.getInstance();
-            sb.append(CSV_REPORT_HEADER_1).append(CommonConstants.CSV_NEWLINE);
-            sb.append(String.format(CSV_REPORT_HEADER_2,user.getMerchantName())).append(CommonConstants.CSV_NEWLINE);
+            sb.append(CSV_REPORT_HEADER_1).append(CommonConstants.NEWLINE_SEP);
+            sb.append(String.format(CSV_REPORT_HEADER_2,user.getMerchantName())).append(CommonConstants.NEWLINE_SEP);
             sb.append(String.format(CSV_REPORT_HEADER_3,user.getMerchant().getAddress().getLine_1(),user.getMerchantId()))
-                    .append(CommonConstants.CSV_NEWLINE);
+                    .append(CommonConstants.NEWLINE_SEP);
             sb.append(String.format(CSV_REPORT_HEADER_4,user.getMerchant().getAddress().getCity(),startDate,endDate))
-                    .append(CommonConstants.CSV_NEWLINE);
+                    .append(CommonConstants.NEWLINE_SEP);
             sb.append(String.format(CSV_REPORT_HEADER_5,user.getMerchant().getAddress().getState()))
-                    .append(CommonConstants.CSV_NEWLINE);
-            sb.append(CSV_REPORT_HEADER_6).append(CommonConstants.CSV_NEWLINE);
-            sb.append(CSV_REPORT_HEADER_7).append(CommonConstants.CSV_NEWLINE);
+                    .append(CommonConstants.NEWLINE_SEP);
+            sb.append(CSV_REPORT_HEADER_6).append(CommonConstants.NEWLINE_SEP);
+            sb.append(CSV_REPORT_HEADER_7).append(CommonConstants.NEWLINE_SEP);
 
-            sb.append(CSV_HEADER).append(CommonConstants.CSV_NEWLINE);
+            sb.append(CSV_HEADER).append(CommonConstants.NEWLINE_SEP);
 
             int billTotal = 0;
             int accDebitTotal = 0;
@@ -445,7 +456,7 @@ public class TxnListFragment extends Fragment {
                     sb.append(CommonConstants.CSV_DELIMETER);
                 }
                 //sb.append(txn.getCpin());
-                sb.append(CommonConstants.CSV_NEWLINE);
+                sb.append(CommonConstants.NEWLINE_SEP);
 
                 // Write every 100 records in one go to the file
                 if(i%CSV_LINES_BUFFER == 0) {
@@ -467,7 +478,7 @@ public class TxnListFragment extends Fragment {
             sb.append(cbRedeemTotal).append(CommonConstants.CSV_DELIMETER);
             sb.append(cbAwardTotal).append(CommonConstants.CSV_DELIMETER);
             sb.append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER);
-            sb.append(CommonConstants.CSV_NEWLINE);
+            sb.append(CommonConstants.NEWLINE_SEP);
 
             // write remaining records
             if(sb!=null) {
@@ -532,7 +543,7 @@ public class TxnListFragment extends Fragment {
     }
 
     private class TxnHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+            implements View.OnTouchListener {
 
         private Transaction mTxn;
 
@@ -571,29 +582,32 @@ public class TxnListFragment extends Fragment {
             mLayoutCancel = itemView.findViewById(R.id.layout_cancelled);
             mCancelTime = (EditText) itemView.findViewById(R.id.input_cancel_time);
 
-            mCustId.setOnClickListener(this);
-            mDatetime.setOnClickListener(this);
-            mBillAmount.setOnClickListener(this);
-            mAccountAmt.setOnClickListener(this);
-            mCashbackAmt.setOnClickListener(this);
-            mCashbackAward.setOnClickListener(this);
-            mCancelTime.setOnClickListener(this);
+            mCustId.setOnTouchListener(this);
+            mDatetime.setOnTouchListener(this);
+            mBillAmount.setOnTouchListener(this);
+            mAccountAmt.setOnTouchListener(this);
+            mCashbackAmt.setOnTouchListener(this);
+            mCashbackAward.setOnTouchListener(this);
+            mCancelTime.setOnTouchListener(this);
         }
 
         @Override
-        public void onClick(View v) {
-            LogMy.d(TAG,"In onClick: "+v.getId());
+        public boolean onTouch(View v, MotionEvent event) {
+            if(event.getAction()==MotionEvent.ACTION_UP) {
+                LogMy.d(TAG,"In onTouch: "+v.getId());
 
-            // getRootView was not working, so manually finding root view
-            View rootView = null;
-            if(v.getId()==mCustId.getId() || v.getId()==mDatetime.getId()) {
-                rootView = (View) v.getParent().getParent();
-                LogMy.d(TAG,"Clicked first level view "+rootView.getId());
-            } else {
-                rootView = (View) v.getParent().getParent().getParent();
-                LogMy.d(TAG,"Clicked second level view "+rootView.getId());
+                // getRootView was not working, so manually finding root view
+                View rootView = null;
+                if(v.getId()==mCustId.getId() || v.getId()==mDatetime.getId()) {
+                    rootView = (View) v.getParent().getParent();
+                    LogMy.d(TAG,"Clicked first level view "+rootView.getId());
+                } else {
+                    rootView = (View) v.getParent().getParent().getParent();
+                    LogMy.d(TAG,"Clicked second level view "+rootView.getId());
+                }
+                rootView.performClick();
             }
-            rootView.performClick();
+            return true;
         }
 
         public void bindTxn(Transaction txn) {
@@ -601,7 +615,6 @@ public class TxnListFragment extends Fragment {
 
             mDatetime.setText(mSdfDateWithTime.format(mTxn.getCreate_time()));
             mCustId.setText(mTxn.getCust_private_id());
-            //mTxnId.setText(mTxn.getTrans_id());
 
             if(mTxn.getTotal_billed() > 0) {
                 mBillAmount.setText(AppCommonUtil.getSignedAmtStr(mTxn.getTotal_billed(), true));
@@ -670,11 +683,6 @@ public class TxnListFragment extends Fragment {
                     mAccountAmt.setPaintFlags(mAccountAmt.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 }
             }
-
-            /*
-            if(mTxn.getCpin().equals(DbConstants.TXN_CUSTOMER_PIN_NOT_USED)) {
-                mSecureIcon.setVisibility(View.GONE);
-            }*/
         }
     }
 
@@ -717,66 +725,3 @@ public class TxnListFragment extends Fragment {
         }
     }
 }
-
-
-    /*
-    private boolean checkPermission() {
-        // check for external storage permission
-        int rc = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        return (rc == PackageManager.PERMISSION_GRANTED);
-    }
-
-    public void requestStoragePermission() {
-        String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            ActivityCompat.requestPermissions(getActivity(), permissions, REQ_STORAGE_PERMISSION);
-            return;
-        }
-
-        // show permission rationale
-        DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalInfoTitle,
-                getString(R.string.permission_write_storage_rationale), true, false);
-        notDialog.setTargetFragment(this, REQ_STORAGE_PERMISSION);
-        notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode != RC_HANDLE_WRITE_STORAGE) {
-            LogMy.w(TAG, "Got unexpected permission result: " + requestCode);
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            return;
-        }
-
-        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // permission granted - complete invoked action
-            switch (mActiveMenuItemId) {
-                case R.id.action_download:
-                    downloadReport();
-                    break;
-
-                case R.id.action_email:
-                    emailReport();
-                    break;
-            }
-        } else {
-            LogMy.i(TAG, "Permission not granted: results len = " + grantResults.length +
-                    " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
-
-            DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.noPermissionTitle,
-                    "Cannot download/email reports as write storage permission not provided.",
-                    true, true);
-            notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
-            notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("mActiveMenuItemId", mActiveMenuItemId);
-    }
-    */

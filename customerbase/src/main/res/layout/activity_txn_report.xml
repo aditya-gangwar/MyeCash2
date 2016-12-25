@@ -113,8 +113,8 @@
                 <EditText
                     style="@style/Edittext_only_click_medium"
                     android:id="@+id/input_date_from"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:hint="From"
                     android:gravity="left"
                     android:drawableLeft="@drawable/ic_date_24dp_777"
@@ -136,8 +136,8 @@
                 <EditText
                     style="@style/Edittext_only_click_medium"
                     android:id="@+id/input_date_to"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
                     android:hint="To"
                     android:drawableLeft="@drawable/ic_date_24dp_777"
                     android:gravity="left"

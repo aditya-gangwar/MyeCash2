@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -223,15 +225,18 @@ public class TxnListFragment extends Fragment {
         switch (mSelectedSortType) {
             case SortTxnDialog.TXN_SORT_DATE_TIME:
                 mHeaderTime.setText("Date Time");
+                mHeaderTime.setTypeface(null, Typeface.NORMAL);
                 break;
             case SortTxnDialog.TXN_SORT_CB_AWARD:
             case SortTxnDialog.TXN_SORT_bILL_AMT:
                 mHeaderBill.setText("Total Bill  |  Cashback @ x%");
+                mHeaderBill.setTypeface(null, Typeface.NORMAL);
                 break;
             case SortTxnDialog.TXN_SORT_CB_REDEEM:
             case SortTxnDialog.TXN_SORT_ACC_ADD:
             case SortTxnDialog.TXN_SORT_ACC_DEBIT:
                 mHeaderAmts.setText("Account |  Cashback Redeem");
+                mHeaderAmts.setTypeface(null, Typeface.NORMAL);
                 break;
         }
 
@@ -241,23 +246,28 @@ public class TxnListFragment extends Fragment {
             case SortTxnDialog.TXN_SORT_DATE_TIME:
                 text = AppConstants.SYMBOL_DOWN_ARROW + "Date Time";
                 mHeaderTime.setText(text);
+                mHeaderTime.setTypeface(null, Typeface.BOLD);
                 break;
             case SortTxnDialog.TXN_SORT_bILL_AMT:
                 text = AppConstants.SYMBOL_DOWN_ARROW + "Total Bill  |  Cashback @ x%";
                 mHeaderBill.setText(text);
+                mHeaderBill.setTypeface(null, Typeface.BOLD);
                 break;
             case SortTxnDialog.TXN_SORT_CB_AWARD:
                 text = "Total Bill  | "+AppConstants.SYMBOL_DOWN_ARROW+"Cashback @ x%";
                 mHeaderBill.setText(text);
+                mHeaderBill.setTypeface(null, Typeface.BOLD);
                 break;
             case SortTxnDialog.TXN_SORT_CB_REDEEM:
                 text = "Account  | "+AppConstants.SYMBOL_DOWN_ARROW+"Cashback Redeem";
                 mHeaderAmts.setText(text);
+                mHeaderAmts.setTypeface(null, Typeface.BOLD);
                 break;
             case SortTxnDialog.TXN_SORT_ACC_ADD:
             case SortTxnDialog.TXN_SORT_ACC_DEBIT:
                 text = AppConstants.SYMBOL_DOWN_ARROW+"Account  |  Cashback Redeem";
                 mHeaderAmts.setText(text);
+                mHeaderAmts.setTypeface(null, Typeface.BOLD);
                 break;
         }
 
@@ -305,6 +315,7 @@ public class TxnListFragment extends Fragment {
             String fileName = "MyeCash_Statement_"+startDate+"_"+endDate+CommonConstants.CSV_FILE_EXT;
             long fileid = manager.addCompletedDownload(fileName, "MyeCash transactions statement",
                     true, "text/plain", file.getAbsolutePath(), file.length(), true);
+            AppCommonUtil.toast(getActivity(),"Download Complete");
         }
     }
 
@@ -333,7 +344,7 @@ public class TxnListFragment extends Fragment {
                 startActivity(emailIntent);
             } else {
                 DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle,
-                        "No Email App available to send the email. Please install any and try again.", true, true);
+                        "No Email App like Gmail is installed on this mobile to send the email. \nPlease install any and try again. You can also download the file.", true, true);
                 notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
                 notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
@@ -359,15 +370,15 @@ public class TxnListFragment extends Fragment {
 
             // append all headers
             Customers user = CustomerUser.getInstance().getCustomer();
-            sb.append(CSV_REPORT_HEADER_1).append(CommonConstants.CSV_NEWLINE);
-            sb.append(String.format(CSV_REPORT_HEADER_2,user.getMobile_num())).append(CommonConstants.CSV_NEWLINE);
-            sb.append(String.format(CSV_REPORT_HEADER_3,user.getMembership_card().getCardNum())).append(CommonConstants.CSV_NEWLINE);
-            sb.append(String.format(CSV_REPORT_HEADER_4,startDate,endDate)).append(CommonConstants.CSV_NEWLINE);
-            sb.append(CSV_REPORT_HEADER_5).append(CommonConstants.CSV_NEWLINE);
-            sb.append(CSV_REPORT_HEADER_6).append(CommonConstants.CSV_NEWLINE);
-            sb.append(CSV_REPORT_HEADER_7).append(CommonConstants.CSV_NEWLINE);
+            sb.append(CSV_REPORT_HEADER_1).append(CommonConstants.NEWLINE_SEP);
+            sb.append(String.format(CSV_REPORT_HEADER_2,user.getMobile_num())).append(CommonConstants.NEWLINE_SEP);
+            sb.append(String.format(CSV_REPORT_HEADER_3,user.getMembership_card().getCardNum())).append(CommonConstants.NEWLINE_SEP);
+            sb.append(String.format(CSV_REPORT_HEADER_4,startDate,endDate)).append(CommonConstants.NEWLINE_SEP);
+            sb.append(CSV_REPORT_HEADER_5).append(CommonConstants.NEWLINE_SEP);
+            sb.append(CSV_REPORT_HEADER_6).append(CommonConstants.NEWLINE_SEP);
+            sb.append(CSV_REPORT_HEADER_7).append(CommonConstants.NEWLINE_SEP);
 
-            sb.append(CSV_HEADER).append(CommonConstants.CSV_NEWLINE);
+            sb.append(CSV_HEADER).append(CommonConstants.NEWLINE_SEP);
 
             int billTotal = 0;
             int accDebitTotal = 0;
@@ -479,7 +490,7 @@ public class TxnListFragment extends Fragment {
                     sb.append(CommonConstants.CSV_DELIMETER);
                 }
 
-                sb.append(CommonConstants.CSV_NEWLINE);
+                sb.append(CommonConstants.NEWLINE_SEP);
 
                 // Write every 100 records in one go to the file
                 if(i%CSV_LINES_BUFFER == 0) {
@@ -501,7 +512,7 @@ public class TxnListFragment extends Fragment {
             sb.append(cbRedeemTotal).append(CommonConstants.CSV_DELIMETER);
             sb.append(cbAwardTotal).append(CommonConstants.CSV_DELIMETER);
             sb.append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER);
-            sb.append(CommonConstants.CSV_NEWLINE);
+            sb.append(CommonConstants.NEWLINE_SEP);
 
             // write remaining records
             if(sb!=null) {
@@ -561,7 +572,7 @@ public class TxnListFragment extends Fragment {
     }
 
     private class TxnHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+            implements View.OnTouchListener {
 
         private Transaction mTxn;
 
@@ -601,29 +612,32 @@ public class TxnListFragment extends Fragment {
             mLayoutCancel = itemView.findViewById(R.id.layout_cancelled);
             mCancelTime = (EditText) itemView.findViewById(R.id.input_cancel_time);
 
-            mMchntName.setOnClickListener(this);
-            mDatetime.setOnClickListener(this);
-            mBillAmount.setOnClickListener(this);
-            mAccountAmt.setOnClickListener(this);
-            mCashbackAmt.setOnClickListener(this);
-            mCashbackAward.setOnClickListener(this);
-            mCancelTime.setOnClickListener(this);
+            mMchntName.setOnTouchListener(this);
+            mDatetime.setOnTouchListener(this);
+            mBillAmount.setOnTouchListener(this);
+            mAccountAmt.setOnTouchListener(this);
+            mCashbackAmt.setOnTouchListener(this);
+            mCashbackAward.setOnTouchListener(this);
+            mCancelTime.setOnTouchListener(this);
         }
 
         @Override
-        public void onClick(View v) {
-            LogMy.d(TAG,"In onClick: "+v.getId());
+        public boolean onTouch(View v, MotionEvent event) {
+            if(event.getAction()==MotionEvent.ACTION_UP) {
+                LogMy.d(TAG,"In onTouch: "+v.getId());
 
-            // getRootView was not working, so manually finding root view
-            View rootView = null;
-            if(v.getId()==mMchntName.getId() || v.getId()==mDatetime.getId()) {
-                rootView = (View) v.getParent().getParent();
-                LogMy.d(TAG,"Clicked first level view "+rootView.getId());
-            } else {
-                rootView = (View) v.getParent().getParent().getParent();
-                LogMy.d(TAG,"Clicked second level view "+rootView.getId());
+                // getRootView was not working, so manually finding root view
+                View rootView = null;
+                if(v.getId()==mMchntName.getId() || v.getId()==mDatetime.getId()) {
+                    rootView = (View) v.getParent().getParent();
+                    LogMy.d(TAG,"Clicked first level view "+rootView.getId());
+                } else {
+                    rootView = (View) v.getParent().getParent().getParent();
+                    LogMy.d(TAG,"Clicked second level view "+rootView.getId());
+                }
+                rootView.performClick();
             }
-            rootView.performClick();
+            return true;
         }
 
         public void bindTxn(Transaction txn, boolean forSingleMchnt) {

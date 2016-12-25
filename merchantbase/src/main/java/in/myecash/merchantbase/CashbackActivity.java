@@ -938,107 +938,114 @@ public class CashbackActivity extends AppCompatActivity implements
             return;
         }
 
-        switch(operation) {
-            case MyRetainedFragment.REQUEST_FETCH_MERCHANT_OPS:
-                AppCommonUtil.cancelProgressDialog(true);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    startMerchantOpsFrag();
-                } else if(errorCode==ErrorCodes.NO_DATA_FOUND){
-                    String error = String.format(getString(R.string.ops_no_data_info), MyGlobalSettings.getOpsKeepDays().toString());
-                    DialogFragmentWrapper.createNotification(AppConstants.noDataFailureTitle, error, false, false)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
-            case MyRetainedFragment.REQUEST_ARCHIVE_TXNS:
-                // do nothing
-                break;
-            case MyRetainedFragment.REQUEST_IMAGE_DOWNLOAD:
-                onMerchantDpDownload(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_GET_CASHBACK:
-                onCashbackResponse(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_REGISTER_CUSTOMER:
-                onCustRegResponse(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_COMMIT_TRANS:
-                onCommitTransResponse(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_UPDATE_MERCHANT_SETTINGS:
-                onSettingsUpdateResponse(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_LOGOUT_MERCHANT:
-                onLogoutResponse(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_ADD_CUSTOMER_OP:
-                onCustomerOpResult(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_CHANGE_PASSWD:
-                passwordChangeResponse(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_DELETE_TRUSTED_DEVICE:
-                AppCommonUtil.cancelProgressDialog(true);
-                if(errorCode == ErrorCodes.NO_ERROR) {
-                    // detach and attach trusted device fragment - to refresh its view
-                    Fragment currentFragment = getFragmentManager().findFragmentByTag(TRUSTED_DEVICES_FRAGMENT);
-                    if(currentFragment != null &&
-                            currentFragment.isVisible()) {
-                        // remove 'trusted device' fragment
-                        getFragmentManager().popBackStackImmediate();
-                        // start the same again
-                        startTrustedDevicesFragment();
+        try {
+            switch(operation) {
+                case MyRetainedFragment.REQUEST_FETCH_MERCHANT_OPS:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        startMerchantOpsFrag();
+                    } else if(errorCode==ErrorCodes.NO_DATA_FOUND){
+                        String error = String.format(getString(R.string.ops_no_data_info), MyGlobalSettings.getOpsKeepDays().toString());
+                        DialogFragmentWrapper.createNotification(AppConstants.noDataFailureTitle, error, false, false)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     } else {
-                        LogMy.e(TAG, "Trusted device fragment not found.");
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
-                } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
-            //case RetainedFragment.REQUEST_ADD_MERCHANT_OP:
-            case MyRetainedFragment.REQUEST_CHANGE_MOBILE:
-                onChangeMobileResponse(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_MERCHANT_STATS:
-                if(errorCode == ErrorCodes.NO_ERROR) {
-                    // store the fetched stats in shared preference in CSV format
-                    setStoredMchntStats(MyMerchantStats.toCsvString(mWorkFragment.mMerchantStats));
-                }
-                onMerchantStatsResult(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_CUST_DATA_FILE_DOWNLOAD:
-                AppCommonUtil.cancelProgressDialog(true);
-                // start customer list fragment
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    startCustomerListFrag();
-                } else {
-                    // remove local stored stats - so as file is created again next time
-                    setStoredMchntStats(null);
-                    //raise alarm
-                    Map<String,String> params = new HashMap<>();
-                    params.put("opCode",String.valueOf(MyRetainedFragment.REQUEST_CUST_DATA_FILE_DOWNLOAD));
-                    params.put("erroCode",String.valueOf(errorCode));
-                    AppAlarms.fileDownloadFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onBgProcessResponse",params);
-                    // show error
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
-            case MyRetainedFragment.REQUEST_UPLOAD_IMG:
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    LogMy.d(TAG,"Uploaded image file successfully");
-                } else {
-                    LogMy.e(TAG,"Failed to upload image file");
-                    //raise alarm
-                    Map<String,String> params = new HashMap<>();
-                    params.put("opCode",String.valueOf(MyRetainedFragment.REQUEST_UPLOAD_IMG));
-                    params.put("erroCode",String.valueOf(errorCode));
-                    AppAlarms.fileUploadFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onBgProcessResponse",params);
-                }
-                break;
+                    break;
+                case MyRetainedFragment.REQUEST_ARCHIVE_TXNS:
+                    // do nothing
+                    break;
+                case MyRetainedFragment.REQUEST_IMAGE_DOWNLOAD:
+                    onMerchantDpDownload(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_GET_CASHBACK:
+                    onCashbackResponse(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_REGISTER_CUSTOMER:
+                    onCustRegResponse(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_COMMIT_TRANS:
+                    onCommitTransResponse(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_UPDATE_MERCHANT_SETTINGS:
+                    onSettingsUpdateResponse(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_LOGOUT_MERCHANT:
+                    onLogoutResponse(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_ADD_CUSTOMER_OP:
+                    onCustomerOpResult(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_CHANGE_PASSWD:
+                    passwordChangeResponse(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_DELETE_TRUSTED_DEVICE:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode == ErrorCodes.NO_ERROR) {
+                        // detach and attach trusted device fragment - to refresh its view
+                        Fragment currentFragment = getFragmentManager().findFragmentByTag(TRUSTED_DEVICES_FRAGMENT);
+                        if(currentFragment != null &&
+                                currentFragment.isVisible()) {
+                            // remove 'trusted device' fragment
+                            getFragmentManager().popBackStackImmediate();
+                            // start the same again
+                            startTrustedDevicesFragment();
+                        } else {
+                            LogMy.e(TAG, "Trusted device fragment not found.");
+                        }
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+                //case RetainedFragment.REQUEST_ADD_MERCHANT_OP:
+                case MyRetainedFragment.REQUEST_CHANGE_MOBILE:
+                    onChangeMobileResponse(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_MERCHANT_STATS:
+                    if(errorCode == ErrorCodes.NO_ERROR) {
+                        // store the fetched stats in shared preference in CSV format
+                        setStoredMchntStats(MyMerchantStats.toCsvString(mWorkFragment.mMerchantStats));
+                    }
+                    onMerchantStatsResult(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_CUST_DATA_FILE_DOWNLOAD:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    // start customer list fragment
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        startCustomerListFrag();
+                    } else {
+                        // remove local stored stats - so as file is created again next time
+                        setStoredMchntStats(null);
+                        //raise alarm
+                        Map<String,String> params = new HashMap<>();
+                        params.put("opCode",String.valueOf(MyRetainedFragment.REQUEST_CUST_DATA_FILE_DOWNLOAD));
+                        params.put("erroCode",String.valueOf(errorCode));
+                        AppAlarms.fileDownloadFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onBgProcessResponse",params);
+                        // show error
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+                case MyRetainedFragment.REQUEST_UPLOAD_IMG:
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        LogMy.d(TAG,"Uploaded image file successfully");
+                    } else {
+                        LogMy.e(TAG,"Failed to upload image file");
+                        //raise alarm
+                        Map<String,String> params = new HashMap<>();
+                        params.put("opCode",String.valueOf(MyRetainedFragment.REQUEST_UPLOAD_IMG));
+                        params.put("erroCode",String.valueOf(errorCode));
+                        AppAlarms.fileUploadFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onBgProcessResponse",params);
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
+            LogMy.e(TAG, "Exception in CashbackActivity:onBgProcessResponse: "+operation+": "+errorCode, e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 

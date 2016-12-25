@@ -8,7 +8,9 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,6 +36,7 @@ public class TxnDetailsDialog extends DialogFragment {
 
     public interface TxnDetailsDialogIf {
         MyRetainedFragment getRetainedFragment();
+        void showMchntDetails(String mchntId);
         //void showTxnImg(int currTxnPos);
     }
 
@@ -105,7 +108,7 @@ public class TxnDetailsDialog extends DialogFragment {
                 mInvoiceNum.setText(txn.getInvoiceNum());
             }
 
-            mCardUsed.setText(CommonUtils.getPartialVisibleStr(txn.getUsedCardId()));
+            mCardUsed.setText(txn.getUsedCardId());
             mPinUsed.setText(txn.getCpin());
 
             mInputTotalBill.setText(AppCommonUtil.getAmtStr(txn.getTotal_billed()));
@@ -119,7 +122,19 @@ public class TxnDetailsDialog extends DialogFragment {
             mInputAccDebit.setText(AppCommonUtil.getAmtStr(txn.getCl_debit()));
 
             mInputMerchant.setText(txn.getMerchant_name());
-            mInputMchntId.setText(txn.getMerchant_id());
+            //mInputMchntId.setText(txn.getMerchant_id());
+            mInputMerchant.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                        mCallback.showMchntDetails(txn.getMerchant_id());
+                        getDialog().dismiss();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            mInputMerchant.setText(Html.fromHtml("<u>"+txn.getMerchant_id()+"</u>"));
 
             // Changes if cancelled txn
             if(txn.getCancelTime()!=null) {

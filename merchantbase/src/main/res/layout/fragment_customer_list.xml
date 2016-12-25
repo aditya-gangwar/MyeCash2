@@ -10,51 +10,47 @@
         android:background="@color/bg_light_grey">
 
         <EditText
-            style="@style/Edittext_only_view_small"
+            style="@style/Edittext_only_view_small_lessPad"
             android:layout_width="wrap_content"
             android:id="@+id/list_header_id"
             android:layout_height="wrap_content"
-            android:text="Internal ID"
-            android:paddingBottom="@dimen/edittext_padding_less"/>
+            android:text="Internal ID"/>
 
         <EditText
-            style="@style/Edittext_only_view_small"
+            style="@style/Edittext_only_view_small_lessPad"
             android:layout_width="wrap_content"
             android:id="@+id/list_header_acc"
             android:layout_below="@id/list_header_id"
             android:layout_height="wrap_content"
             android:text="Account:  Add - Used = Balance"
-            android:paddingTop="0dp"
-            android:paddingBottom="@dimen/edittext_padding_less"/>
+            android:paddingTop="0dp"/>
 
         <EditText
-            style="@style/Edittext_only_view_small"
+            style="@style/Edittext_only_view_small_lessPad"
             android:layout_width="wrap_content"
             android:id="@+id/list_header_cb"
             android:layout_below="@id/list_header_acc"
             android:layout_height="wrap_content"
             android:text="Cashback:  Add - Used = Balance"
-            android:paddingTop="0dp"
-            android:paddingBottom="@dimen/edittext_padding_less"/>
+            android:paddingTop="0dp"/>
 
         <EditText
-            style="@style/Edittext_only_view_small"
+            style="@style/Edittext_only_view_small_lessPad"
             android:id="@+id/list_header_txnTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Last Txn Time"
-            android:paddingBottom="@dimen/edittext_padding_less"/>
+            android:text="▼Last Txn Time"
+            android:textStyle="bold"/>
 
         <EditText
-            style="@style/Edittext_only_view_small"
+            style="@style/Edittext_only_view_small_lessPad"
             android:id="@+id/list_header_bill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/list_header_txnTime"
             android:layout_alignParentRight="true"
             android:text="Total Bill"
-            android:paddingBottom="@dimen/edittext_padding_less"
             android:paddingTop="0dp"/>
 
         <View
@@ -81,25 +77,23 @@
         android:layout_marginTop="@dimen/medium_space">
 
         <EditText
-            style="@style/Edittext_only_view_small"
+            style="@style/Edittext_only_view_small_lessPad"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="* Updated: "
-            android:textStyle="italic"
-            android:paddingBottom="@dimen/edittext_padding_less"/>
+            android:textStyle="italic"/>
         <EditText
-            style="@style/Edittext_only_view_small"
+            style="@style/Edittext_only_view_small_lessPad"
             android:id="@+id/input_updated_time"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="01:54 PM"
             android:textStyle="italic"
-            android:textColor="@color/accent"
-            android:paddingLeft="0dp"
-            android:paddingBottom="@dimen/edittext_padding_less"/>
+            android:textColor="@color/accent2"
+            android:paddingLeft="0dp"/>
     </LinearLayout>
     <EditText
-        style="@style/Edittext_only_view_small"
+        style="@style/Edittext_only_view_small_lessPad"
         android:id="@+id/updated_time_details"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"

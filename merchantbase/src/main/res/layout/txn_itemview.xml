@@ -8,28 +8,24 @@
         android:layout_height="wrap_content">
 
         <EditText
-            style="@style/Edittext_only_click_small"
+            style="@style/Edittext_only_click_small_lessPad"
             android:id="@+id/txn_time"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="08 Apr,16  20:15"
-            android:paddingBottom="@dimen/edittext_padding_less"
-            android:paddingLeft="@dimen/edittext_padding_less"
             android:textStyle="bold"
             android:textColor="@color/accent"
             android:longClickable="false"
             android:textIsSelectable="false"/>
 
         <EditText
-            style="@style/Edittext_only_click_small"
+            style="@style/Edittext_only_click_small_lessPad"
             android:id="@+id/txn_customer_id"
             android:layout_below="@id/txn_time"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="AUX678GF"
-            android:paddingTop="0dp"
-            android:paddingBottom="@dimen/edittext_padding_less"
-            android:paddingLeft="@dimen/edittext_padding_less"/>
+            android:paddingTop="0dp"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
@@ -38,35 +34,26 @@
             android:layout_alignParentRight="true">
 
             <EditText
-                style="@style/Edittext_only_click_small"
+                style="@style/Edittext_only_click_small_lessPad"
                 android:id="@+id/txn_bill"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="\u20B9 99,999"
-                android:paddingBottom="@dimen/edittext_padding_less"
                 android:paddingRight="0dp"/>
 
             <EditText
-                style="@style/Edittext_only_click_small"
+                style="@style/Edittext_only_click_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/txn_bill_divider"
-                android:text="|"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="@dimen/edittext_padding_less"
-                android:paddingLeft="@dimen/edittext_padding_less"/>
+                android:text="|"/>
 
             <EditText
-                style="@style/Edittext_only_click_small"
+                style="@style/Edittext_only_click_small_lessPad"
                 android:id="@+id/txn_cashback_award"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txn_amts_layout"
-                android:layout_alignParentRight="true"
                 android:text="\u20B9 23  @ 4%"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="@dimen/edittext_padding_less"
-                android:paddingLeft="@dimen/edittext_padding_less"
                 android:textStyle="italic"/>
 
         </LinearLayout>
@@ -80,47 +67,43 @@
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/txn_account_icon"
                 android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_click_small"
+                style="@style/Edittext_only_click_small_lessPad"
                 android:id="@+id/txn_account_amt"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:text="+ \u20B9 3456"
                 android:paddingTop="0dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingLeft="@dimen/edittext_padding_less"
                 android:paddingRight="0dp"/>
             <EditText
-                style="@style/Edittext_only_click_small"
-                android:layout_height="wrap_content"
+                style="@style/Edittext_only_click_small_lessPad"
+                android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:id="@+id/txn_amts_divider"
                 android:text="|"
-                android:paddingTop="0dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="@dimen/edittext_padding_less"
-                android:paddingLeft="@dimen/edittext_padding_less"/>
+                android:paddingTop="0dp"/>
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/txn_cashback_icon"
                 android:src="@drawable/ic_favorite_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_click_small"
-                android:id="@+id/txn_cashback_amt"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="- \u20B9 3456"
                 android:paddingTop="0dp"
                 android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="@dimen/edittext_padding_less"
-                android:paddingLeft="@dimen/edittext_padding_less"/>
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_click_small_lessPad"
+                android:id="@+id/txn_cashback_amt"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:paddingTop="0dp"
+                android:text="- \u20B9 3456"/>
 
         </LinearLayout>
 
@@ -131,43 +114,24 @@
             android:layout_width="wrap_content">
 
             <EditText
-                style="@style/Edittext_only_click_small"
+                style="@style/Edittext_only_click_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="CANCELLED AT "
-                android:paddingBottom="@dimen/edittext_padding_less"
                 android:paddingRight="0dp"
                 android:paddingTop="0dp"
-                android:textColor="@color/red_negative"
-                android:paddingLeft="@dimen/edittext_padding_less"/>
+                android:textColor="@color/red_negative"/>
 
             <EditText
-                style="@style/Edittext_only_click_small"
+                style="@style/Edittext_only_click_small_lessPad"
                 android:id="@+id/input_cancel_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="22 JULY 2016 22:34"
                 android:paddingTop="0dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="@dimen/edittext_padding_less"
-                android:paddingLeft="@dimen/edittext_padding_less"
                 android:textColor="@color/red_negative"/>
 
         </LinearLayout>
-
-        <!--EditText
-            style="@style/Edittext_only_click_small"
-            android:id="@+id/txn_cashback_award"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txn_amts_layout"
-            android:layout_alignParentRight="true"
-            android:text="\u20B9 23  @ 4%"
-            android:paddingTop="0dp"
-            android:paddingBottom="@dimen/edittext_padding_less"
-            android:paddingRight="@dimen/edittext_padding_less"
-            android:paddingLeft="@dimen/edittext_padding_less"
-            android:textStyle="italic"/-->
 
     </RelativeLayout>
 
