@@ -182,7 +182,6 @@ public class TxnListFragment extends Fragment {
                 mFilterDuration.setText(durationFilter);
             }
 
-
             int sortType = SortTxnDialog.TXN_SORT_DATE_TIME;
             if(savedInstanceState!=null) {
                 sortType = savedInstanceState.getInt("mSelectedSortType");
@@ -192,6 +191,11 @@ public class TxnListFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement TxnListFragmentIf");
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
         }
 
         setHasOptionsMenu(true);
@@ -288,15 +292,21 @@ public class TxnListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //mActiveMenuItemId = item.getItemId();
-        int i = item.getItemId();
-        if (i == R.id.action_download) {
-            downloadReport();
-        } else if (i == R.id.action_email) {
-            emailReport();
-        } else if (i == R.id.action_sort) {
-            SortTxnDialog dialog = SortTxnDialog.newInstance(mSelectedSortType);
-            dialog.setTargetFragment(this, REQ_SORT_TXN_TYPES);
-            dialog.show(getFragmentManager(), DIALOG_SORT_TXN_TYPES);
+        try {
+            int i = item.getItemId();
+            if (i == R.id.action_download) {
+                downloadReport();
+            } else if (i == R.id.action_email) {
+                emailReport();
+            } else if (i == R.id.action_sort) {
+                SortTxnDialog dialog = SortTxnDialog.newInstance(mSelectedSortType);
+                dialog.setTargetFragment(this, REQ_SORT_TXN_TYPES);
+                dialog.show(getFragmentManager(), DIALOG_SORT_TXN_TYPES);
+            }
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
 
         return super.onOptionsItemSelected(item);
@@ -562,7 +572,14 @@ public class TxnListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateUI();
+        try {
+            updateUI();
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
+        }
     }
 
     @Override

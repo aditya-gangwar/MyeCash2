@@ -62,6 +62,7 @@ public class MerchantOpListFrag extends Fragment {
             DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true);
             notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
             notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
         }
     }
 
@@ -89,8 +90,15 @@ public class MerchantOpListFrag extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mCallback.setDrawerState(false);
-        updateUI();
+        try {
+            mCallback.setDrawerState(false);
+            updateUI();
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
+        }
     }
 
     private class ItemHolder extends RecyclerView.ViewHolder {

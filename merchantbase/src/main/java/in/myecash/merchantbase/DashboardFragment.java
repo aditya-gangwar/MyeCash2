@@ -64,10 +64,6 @@ public class DashboardFragment extends Fragment
         // Setting values here and not in onCreateView - as mMerchantStats is not available in it
         updateData();
 
-        /*
-        if(savedInstanceState!=null) {
-            mActiveRequestId = savedInstanceState.getInt("mActiveRequestId");
-        }*/
     }
 
     @Override
@@ -164,102 +160,6 @@ public class DashboardFragment extends Fragment
         String txt = "Data is updated only once every "+ MyGlobalSettings.getMchntDashBNoRefreshHrs()+" hours.";
         mUpdatedDetail.setText(txt);
     }
-
-    /*
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("mActiveRequestId", mActiveRequestId);
-    }
-
-    private void downloadReport() {
-        File file = createCsvReport();
-        if(file!=null) {
-            // register with download manager, so as can be seen by clicking 'Downloads' icon
-            DownloadManager manager = (DownloadManager) getActivity().getSystemService(AppCompatActivity.DOWNLOAD_SERVICE);
-            long fileid = manager.addCompletedDownload("MyeCash statement", "MyeCash transactions statement",
-                    true, "text/plain", file.getAbsolutePath(), file.length(), true);
-        }
-    }
-
-    private void emailReport() {
-        File csvFile = createCsvReport();
-        if(csvFile != null) {
-            // create intent for email
-            Intent emailIntent = new Intent(Intent.ACTION_SEND);
-            // The intent does not have a URI, so declare the "text/plain" MIME type
-            emailIntent.setType("text/csv");
-            String emailId = MerchantUser.getInstance().getMerchant().getEmail();
-            if(emailId!=null && emailId.length()>0) {
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {emailId}); // recipients
-            }
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyeCash Statement");
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find attached the requested MyeCash transaction statement.\nThanks.\nRegards,\nMyeCash Team.");
-            emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(csvFile));
-
-            // check if there's activity available for the intent
-            PackageManager packageManager = getActivity().getPackageManager();
-            List activities = packageManager.queryIntentActivities(emailIntent,
-                    PackageManager.MATCH_DEFAULT_ONLY);
-            boolean isIntentSafe = activities.size() > 0;
-
-            if(isIntentSafe) {
-                startActivity(emailIntent);
-            } else {
-                DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle,
-                        "No Email App available to send the email. Please install any and try again.", true, true);
-                notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
-                notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            }
-        }
-    }
-
-    private boolean checkPermission() {
-        // check for external storage permission
-        int rc = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        return (rc == PackageManager.PERMISSION_GRANTED);
-    }
-
-    public void requestStoragePermission() {
-        String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            ActivityCompat.requestPermissions(getActivity(), permissions, REQ_STORAGE_PERMISSION);
-            return;
-        }
-
-        // show permission rationale
-        DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalInfoTitle,
-                getString(R.string.permission_write_storage_rationale), true, false);
-        notDialog.setTargetFragment(this, REQ_STORAGE_PERMISSION);
-        notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode != RC_HANDLE_WRITE_STORAGE) {
-            LogMy.w(TAG, "Got unexpected permission result: " + requestCode);
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            return;
-        }
-
-        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // permission granted - download the file
-            mCallback.downloadFile(AppCommonUtil.getMerchantCustFilePath(MerchantUser.getInstance().getMerchantId()));
-        } else {
-            LogMy.i(TAG, "Permission not granted: results len = " + grantResults.length +
-                    " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
-
-            DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.noPermissionTitle,
-                    "Cannot download/email reports as write storage permission not provided.",
-                    false, true);
-            notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
-            notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-        }
-    }
-    */
 
     View layoutCustCnt;
     View layoutBillAmt;

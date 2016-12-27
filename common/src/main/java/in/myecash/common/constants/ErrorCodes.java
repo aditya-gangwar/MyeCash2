@@ -90,7 +90,7 @@ public class ErrorCodes {
         aMap.put(OP_SCHEDULED,"");
         aMap.put(OTP_GENERATED,"OTP sent on mobile number. Do the operation again with OTP value.");
 
-        aMap.put(GENERAL_ERROR, "System Error. Please try again.");
+        aMap.put(GENERAL_ERROR, "System Error. Please try again later. \n Please contact customer care if issue persists.");
 
         aMap.put(USER_ALREADY_LOGGED_IN, "User is already logged in (may be from other device). Please logout first.");
         aMap.put(NO_SUCH_USER,"User is not registered. Please register first and then try again.");
@@ -138,7 +138,7 @@ public class ErrorCodes {
         aMap.put(NO_DATA_FOUND,"No data found");
 
         aMap.put(DUPLICATE_ENTRY,"Duplicate entry. Data already exists.");
-        aMap.put(DEVICE_ALREADY_REGISTERED,"Device already registered for other merchant. One device can register to only one merchant account.");
+        aMap.put(DEVICE_ALREADY_REGISTERED,"Device already added to other Merchant. \nOne device can be added to only one merchant account.");
         aMap.put(MERCHANT_ID_RANGE_ERROR,"Issue with Merchant ID Range.");
         aMap.put(NO_INTERNET_CONNECTION,"Please check Internet connectivity and try again.");
         aMap.put(FILE_UPLOAD_FAILED,"Failed to upload the file. Please try again later.");

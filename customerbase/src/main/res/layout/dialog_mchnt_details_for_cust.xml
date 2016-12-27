@@ -24,13 +24,13 @@
                 android:tint="@color/red_negative"
                 android:paddingTop="@dimen/edittext_padding"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_expiry_notice"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:text="This Merchant is under Expiry notice. Please use all your balance with it, before 22 July 2016."
                 android:textColor="@color/red_negative"
-                android:gravity="left"/>
+                android:gravity="left|center"/>
         </LinearLayout>
 
         <RelativeLayout
@@ -54,14 +54,14 @@
                 android:inputType="textCapSentences"
                 android:text="TBS"
                 android:layout_toRightOf="@id/img_merchant"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:paddingTop="0dp"
                 android:textStyle="bold"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:layout_below="@+id/input_brand_name"
                 android:layout_toRightOf="@id/img_merchant"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:id="@+id/input_category_city"
                 android:layout_width="match_parent"
                 android:paddingTop="0dp"
@@ -107,20 +107,20 @@
                 android:src="@drawable/ic_favorite_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Cashback Rate"
                 android:layout_weight="40"
-                android:gravity="left"/>
+                android:gravity="left|center"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_cb_rate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="5 %"
                 android:layout_weight="60"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:textColor="@color/green_positive"
                 android:textStyle="bold"/>
         </LinearLayout-->
@@ -134,20 +134,20 @@
                 android:src="@drawable/ic_access_time_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Last Txn"
                 android:layout_weight="40"
-                android:gravity="left"/>
+                android:gravity="left|center"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_last_txn_time"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="22 July 16, 23:00"
                 android:layout_weight="60"
-                android:gravity="left"/>
+                android:gravity="left|center"/>
         </LinearLayout>
 
         <LinearLayout
@@ -159,21 +159,21 @@
                 android:src="@drawable/ic_receipt_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
-                style="@style/Edittext_only_view_small"
-                android:layout_height="wrap_content"
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Total Bill"
                 android:layout_weight="40"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_total_bill"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="\u20B9 NA"
                 android:layout_weight="60"
-                android:gravity="left" />
+                android:gravity="left|center" />
         </LinearLayout>
 
         <Space
@@ -199,20 +199,19 @@
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Balance"
                 android:layout_weight="40"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
+                android:gravity="left|center"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_cb_balance"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:layout_weight="60"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:textColor="@color/green_positive"/>
         </LinearLayout>
         <LinearLayout
@@ -227,7 +226,7 @@
                 android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Total Add"
                 android:layout_weight="40"
@@ -235,12 +234,12 @@
                 android:layout_gravity="bottom"
                 android:paddingTop="0dp"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_weight="60"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:id="@+id/input_cb_award"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:paddingTop="0dp"/>
         </LinearLayout>
@@ -256,7 +255,7 @@
                 android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Total Used"
                 android:layout_weight="40"
@@ -264,12 +263,12 @@
                 android:layout_gravity="bottom"
                 android:paddingTop="0dp"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_weight="60"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:id="@+id/input_cb_redeem"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:paddingTop="0dp"/>
         </LinearLayout>
@@ -293,7 +292,7 @@
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Balance"
                 android:layout_weight="40"
@@ -303,10 +302,10 @@
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_acc_balance"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:layout_weight="60"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:textColor="@color/green_positive"/>
         </LinearLayout>
         <LinearLayout
@@ -321,7 +320,7 @@
                 android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Total Add"
                 android:layout_weight="40"
@@ -331,10 +330,10 @@
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:layout_weight="60"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:id="@+id/input_acc_add"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:paddingTop="0dp"/>
         </LinearLayout>
@@ -350,7 +349,7 @@
                 android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Total Used"
                 android:layout_weight="40"
@@ -360,10 +359,10 @@
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:layout_weight="60"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:id="@+id/input_acc_debit"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:paddingTop="0dp"/>
         </LinearLayout>
@@ -391,19 +390,19 @@
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="MyeCash ID"
                 android:layout_weight="40"
-                android:gravity="left"/>
+                android:gravity="left|center"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_merchant_id"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="TBS"
                 android:layout_weight="60"
-                android:gravity="left"/>
+                android:gravity="left|center"/>
         </LinearLayout>
 
         <LinearLayout
@@ -417,19 +416,19 @@
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/label_customer_mobile"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
-                android:text="Mobile"
+                android:text="Contact Phone"
                 android:layout_weight="40"
-                android:gravity="left"/>
+                android:gravity="left|center"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_mobile"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="xxxxx91535"
+                android:layout_height="match_parent"
+                android:text="TBS"
                 android:layout_weight="60"
-                android:gravity="left"/>
+                android:gravity="left|center"/>
         </LinearLayout>
 
         <LinearLayout
@@ -443,7 +442,7 @@
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Status"
                 android:layout_weight="40"
@@ -452,10 +451,10 @@
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:layout_weight="60"
-                android:gravity="left"
+                android:gravity="left|center"
                 android:id="@+id/input_status"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Active"
                 android:textColor="@color/green_positive"/>
         </LinearLayout>
@@ -499,7 +498,7 @@
                     android:paddingTop="0dp"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="Area / City"
                     android:layout_weight="40"
@@ -509,10 +508,10 @@
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_weight="60"
-                    android:gravity="left"
+                    android:gravity="left|center"
                     android:id="@+id/input_city"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="TBS"
                     android:paddingTop="0dp"/>
             </LinearLayout>
@@ -528,7 +527,7 @@
                     android:paddingTop="0dp"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="State"
                     android:layout_weight="40"
@@ -538,10 +537,10 @@
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_weight="60"
-                    android:gravity="left"
+                    android:gravity="left|center"
                     android:id="@+id/input_state"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="TBS"
                     android:paddingTop="0dp"/>
             </LinearLayout>

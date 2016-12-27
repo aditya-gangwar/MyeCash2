@@ -91,7 +91,14 @@ public class CustomerOpListFrag extends Fragment {
     public void onResume() {
         super.onResume();
         //mCallback.setDrawerState(false);
-        updateUI();
+        try {
+            updateUI();
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
+        }
     }
 
     private class ItemHolder extends RecyclerView.ViewHolder {

@@ -1,7 +1,5 @@
 package in.myecash.common;
 
-import com.backendless.exceptions.BackendlessException;
-
 import java.util.Date;
 
 import in.myecash.common.database.Merchants;
@@ -14,7 +12,7 @@ public class MyMerchant {
 
     private static final int MCHNT_CSV_NAME = 0;
     private static final int MCHNT_CSV_ID = 1;
-    private static final int MCHNT_CSV_MOBILE = 2;
+    private static final int MCHNT_CSV_CONTACT_PHONE = 2;
     private static final int MCHNT_CSV_CB_RATE = 3;
     private static final int MCHNT_CSV_BUSS_CATEGORY = 4;
     private static final int MCHNT_CSV_ADDR_LINE1 = 5;
@@ -33,7 +31,7 @@ public class MyMerchant {
     // Merchant properties
     private String mName;
     private String mId;
-    private String mMobileNum;
+    private String mContactPhone;
     private String mCbRate;
     private String mBusinessCategory;
     // address data
@@ -52,7 +50,7 @@ public class MyMerchant {
 
         mName = csvFields[MCHNT_CSV_NAME];
         mId = csvFields[MCHNT_CSV_ID];
-        mMobileNum = csvFields[MCHNT_CSV_MOBILE];
+        mContactPhone = csvFields[MCHNT_CSV_CONTACT_PHONE];
         mCbRate = csvFields[MCHNT_CSV_CB_RATE];
         mBusinessCategory = csvFields[MCHNT_CSV_BUSS_CATEGORY];
         mAddressLine1 = csvFields[MCHNT_CSV_ADDR_LINE1];
@@ -71,7 +69,7 @@ public class MyMerchant {
         String[] csvFields = new String[MCHNT_CSV_FIELD_CNT];
         csvFields[MCHNT_CSV_NAME] = merchant.getName();
         csvFields[MCHNT_CSV_ID] = merchant.getAuto_id();
-        csvFields[MCHNT_CSV_MOBILE] = merchant.getMobile_num();
+        csvFields[MCHNT_CSV_CONTACT_PHONE] = merchant.getContactPhone();
         csvFields[MCHNT_CSV_CB_RATE] = merchant.getCb_rate();
         csvFields[MCHNT_CSV_BUSS_CATEGORY] = merchant.getBuss_category();
         csvFields[MCHNT_CSV_ADDR_LINE1] = merchant.getAddress().getLine_1();
@@ -106,8 +104,8 @@ public class MyMerchant {
         return mId;
     }
 
-    public String getMobileNum() {
-        return mMobileNum;
+    public String getContactPhone() {
+        return mContactPhone;
     }
 
     public String getCbRate() {

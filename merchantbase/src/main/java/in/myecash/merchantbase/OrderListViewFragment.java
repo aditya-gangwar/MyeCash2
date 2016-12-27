@@ -13,8 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.merchantbase.adapter.OrderListViewAdapter;
 import in.myecash.merchantbase.entities.OrderItem;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
@@ -66,19 +68,25 @@ public class OrderListViewFragment extends ListFragment implements
 
         try {
             mCallback = (OrderListViewFragmentIf) getActivity();
+            mRetainedFragment = mCallback.getRetainedFragment();
+            mAdapter = new OrderListViewAdapter(getActivity(), mRetainedFragment.mOrderItems, this);
+            setListAdapter(mAdapter);
+            setTotalAmt();
+
+            if(savedInstanceState!=null) {
+                mChangePosition = savedInstanceState.getInt("mChangePosition");
+            }
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement OrderListViewFragmentIf");
+        } catch(Exception e) {
+            LogMy.e(TAG, "Exception is OrderListViewFragmentIf", e);
+            // unexpected exception - show error
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
         }
 
-        mRetainedFragment = mCallback.getRetainedFragment();
-        mAdapter = new OrderListViewAdapter(getActivity(), mRetainedFragment.mOrderItems, this);
-        setListAdapter(mAdapter);
-        setTotalAmt();
-
-        if(savedInstanceState!=null) {
-            mChangePosition = savedInstanceState.getInt("mChangePosition");
-        }
     }
 
     private void setTotalAmt() {
@@ -151,41 +159,47 @@ public class OrderListViewFragment extends ListFragment implements
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if(requestCode == REQ_CONFIRM_ITEM_DEL) {
-            LogMy.d(TAG, "Received delete item confirmation.");
-            // delete item in the list
-            OrderItem item = mRetainedFragment.mOrderItems.remove(mChangePosition);
-            // update total bill amount
-            mRetainedFragment.mBillTotal = mRetainedFragment.mBillTotal - item.getPrice();
-            if (item.isCashbackExcluded()) {
-                mRetainedFragment.mCbExcludedTotal = mRetainedFragment.mCbExcludedTotal - item.getPrice();
+        try {
+            if (requestCode == REQ_CONFIRM_ITEM_DEL) {
+                LogMy.d(TAG, "Received delete item confirmation.");
+                // delete item in the list
+                OrderItem item = mRetainedFragment.mOrderItems.remove(mChangePosition);
+                // update total bill amount
+                mRetainedFragment.mBillTotal = mRetainedFragment.mBillTotal - item.getPrice();
+                if (item.isCashbackExcluded()) {
+                    mRetainedFragment.mCbExcludedTotal = mRetainedFragment.mCbExcludedTotal - item.getPrice();
+                }
+
+            } else if (requestCode == REQ_NEW_UNIT_PRICE) {
+                LogMy.d(TAG, "Received new unit price.");
+                String newUnitPrice = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
+
+                OrderItem item = mRetainedFragment.mOrderItems.get(mChangePosition);
+                if (!item.getUnitPriceStr().equals(newUnitPrice)) {
+                    int oldPrice = item.getPrice();
+                    item.setUnitPriceStr(newUnitPrice);
+                    updateBillTotal(oldPrice, item);
+                }
+
+            } else if (requestCode == REQ_NEW_QTY) {
+                LogMy.d(TAG, "Received new quantity.");
+                String newQty = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
+
+                OrderItem item = mRetainedFragment.mOrderItems.get(mChangePosition);
+                if (!item.getQuantityStr().equals(newQty)) {
+                    int oldPrice = item.getPrice();
+                    item.setQuantityStr(newQty);
+                    updateBillTotal(oldPrice, item);
+                }
             }
 
-        } else if(requestCode == REQ_NEW_UNIT_PRICE) {
-            LogMy.d(TAG, "Received new unit price.");
-            String newUnitPrice = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
-
-            OrderItem item = mRetainedFragment.mOrderItems.get(mChangePosition);
-            if (!item.getUnitPriceStr().equals(newUnitPrice)) {
-                int oldPrice = item.getPrice();
-                item.setUnitPriceStr(newUnitPrice);
-                updateBillTotal(oldPrice, item);
-            }
-
-        } else if(requestCode == REQ_NEW_QTY) {
-            LogMy.d(TAG, "Received new quantity.");
-            String newQty = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
-
-            OrderItem item = mRetainedFragment.mOrderItems.get(mChangePosition);
-            if (!item.getQuantityStr().equals(newQty)) {
-                int oldPrice = item.getPrice();
-                item.setQuantityStr(newQty);
-                updateBillTotal(oldPrice, item);
-            }
+            mAdapter.notifyDataSetChanged();
+            setTotalAmt();
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in OrderListViewFragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
-
-        mAdapter.notifyDataSetChanged();
-        setTotalAmt();
     }
 
     // Update Bill total for change in Item price
@@ -200,10 +214,15 @@ public class OrderListViewFragment extends ListFragment implements
 
     @Override
     public void onClick(View v) {
-        int id = v.getId();
-
-        if (id == R.id.btn_bill_total) {
-            mCallback.onTotalBillFromOrderList();
+        try {
+            int id = v.getId();
+            if (id == R.id.btn_bill_total) {
+                mCallback.onTotalBillFromOrderList();
+            }
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 

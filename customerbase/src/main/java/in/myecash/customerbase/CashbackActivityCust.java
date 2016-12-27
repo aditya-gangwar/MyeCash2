@@ -148,21 +148,28 @@ public class CashbackActivityCust extends AppCompatActivity implements
     @Override
     public void onBgThreadCreated() {
         // read file, if 'cashback store' is empty
-        boolean fetchData = false;
-        if(mRetainedFragment.mCashbacks == null) {
-            if(!processCbDataFile(false)) {
+        try {
+            boolean fetchData = false;
+            if (mRetainedFragment.mCashbacks == null) {
+                if (!processCbDataFile(false)) {
+                    fetchData = true;
+                }
+            } else if (custStatsRefreshReq(mRetainedFragment.mCbsUpdateTime.getTime())) {
+                // data in memory, but has expired
                 fetchData = true;
+                mGetCbSince = mRetainedFragment.mCbsUpdateTime.getTime();
             }
-        } else if( custStatsRefreshReq(mRetainedFragment.mCbsUpdateTime.getTime()) ) {
-            // data in memory, but has expired
-            fetchData = true;
-            mGetCbSince = mRetainedFragment.mCbsUpdateTime.getTime();
-        }
-        if(fetchData) {
-            // fetch data from DB
-            fetchCbData();
-        } else {
-            startCashbackListFrag();
+            if (fetchData) {
+                // fetch data from DB
+                fetchCbData();
+            } else {
+                startCashbackListFrag();
+            }
+        } catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
+            LogMy.e(TAG, "Exception in CashbackActivityCust:onBgThreadCreated", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 
@@ -413,35 +420,42 @@ public class CashbackActivityCust extends AppCompatActivity implements
             return;
         }
 
-        switch(operation) {
-            case MyRetainedFragment.REQUEST_LOGOUT:
-                onLogoutResponse(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_CHANGE_PASSWD:
-                passwordChangeResponse(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_CHANGE_MOBILE:
-                onChangeMobileResponse(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_FETCH_CB:
-                onFetchCbResponse(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_CHANGE_PIN:
-                onPinChangeResponse(errorCode);
-                break;
-            case MyRetainedFragment.REQUEST_FETCH_CUSTOMER_OPS:
-                AppCommonUtil.cancelProgressDialog(true);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    startCustomerOpsFrag();
-                } else if(errorCode==ErrorCodes.NO_DATA_FOUND){
-                    String error = String.format(getString(R.string.ops_no_data_info), MyGlobalSettings.getOpsKeepDays().toString());
-                    DialogFragmentWrapper.createNotification(AppConstants.noDataFailureTitle, error, false, false)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
+        try {
+            switch (operation) {
+                case MyRetainedFragment.REQUEST_LOGOUT:
+                    onLogoutResponse(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_CHANGE_PASSWD:
+                    passwordChangeResponse(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_CHANGE_MOBILE:
+                    onChangeMobileResponse(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_FETCH_CB:
+                    onFetchCbResponse(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_CHANGE_PIN:
+                    onPinChangeResponse(errorCode);
+                    break;
+                case MyRetainedFragment.REQUEST_FETCH_CUSTOMER_OPS:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if (errorCode == ErrorCodes.NO_ERROR) {
+                        startCustomerOpsFrag();
+                    } else if (errorCode == ErrorCodes.NO_DATA_FOUND) {
+                        String error = String.format(getString(R.string.ops_no_data_info), MyGlobalSettings.getOpsKeepDays().toString());
+                        DialogFragmentWrapper.createNotification(AppConstants.noDataFailureTitle, error, false, false)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
+            LogMy.e(TAG, "Exception in CashbackActivityCust", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 
@@ -847,23 +861,30 @@ public class CashbackActivityCust extends AppCompatActivity implements
     public void onBackPressed() {
         LogMy.d(TAG,"In onBackPressed: "+mFragMgr.getBackStackEntryCount());
 
-        if (this.mDrawer.isDrawerOpen(GravityCompat.START)) {
-            this.mDrawer.closeDrawer(GravityCompat.START);
-            return;
-        }
-
-        if ( (mMchntListFragment!=null && mMchntListFragment.isVisible()) ||
-                mFragMgr.getBackStackEntryCount()==0 ) {
-            DialogFragmentWrapper.createConfirmationDialog(AppConstants.exitGenTitle, AppConstants.exitAppMsg, false, false)
-                    .show(mFragMgr, DIALOG_BACK_BUTTON);
-        } else {
-            if(!mRetainedFragment.mInPauseState) {
-                mFragMgr.popBackStackImmediate();
+        try {
+            if (this.mDrawer.isDrawerOpen(GravityCompat.START)) {
+                this.mDrawer.closeDrawer(GravityCompat.START);
+                return;
             }
+
+            if ((mMchntListFragment != null && mMchntListFragment.isVisible()) ||
+                    mFragMgr.getBackStackEntryCount() == 0) {
+                DialogFragmentWrapper.createConfirmationDialog(AppConstants.exitGenTitle, AppConstants.exitAppMsg, false, false)
+                        .show(mFragMgr, DIALOG_BACK_BUTTON);
+            } else {
+                if (!mRetainedFragment.mInPauseState) {
+                    mFragMgr.popBackStackImmediate();
+                }
             /*if(mMchntListFragment.isVisible()) {
                 LogMy.d(TAG,"Mobile num fragment visible");
                 //getReadyForNewTransaction();
             }*/
+            }
+        } catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
+            LogMy.e(TAG, "Exception in CashbackActivityCust", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 

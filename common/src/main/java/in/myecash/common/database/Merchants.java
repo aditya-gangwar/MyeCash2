@@ -44,6 +44,24 @@ public class Merchants
   private boolean invoiceNumOptional;
   private boolean invoiceNumOnlyNumbers;
   private Date delLocalFilesReq;
+  private String contactPhone;
+  private String contactName;
+
+  public String getContactName() {
+    return contactName;
+  }
+
+  public void setContactName(String contactName) {
+    this.contactName = contactName;
+  }
+
+  public String getContactPhone() {
+    return contactPhone;
+  }
+
+  public void setContactPhone(String contactPhone) {
+    this.contactPhone = contactPhone;
+  }
 
   public Date getDelLocalFilesReq() {
     return delLocalFilesReq;
@@ -108,17 +126,6 @@ public class Merchants
   public void setDob(String dob) {
     this.dob = dob;
   }
-
-  /*
-  private java.util.Date lastLogin;
-
-  public java.util.Date getLastLogin() {
-    return lastLogin;
-  }
-
-  public void setLastLogin(java.util.Date lastLogin) {
-    this.lastLogin = lastLogin;
-  }*/
 
   public Boolean getDebugLogs() {
     return debugLogs;

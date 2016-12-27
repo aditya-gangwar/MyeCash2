@@ -133,8 +133,13 @@ public class TxnListFragment extends Fragment {
             sortTxnList(sortType);
 
         } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().toString()
-                    + " must implement TxnListFragmentIf");
+            throw new ClassCastException(getActivity().toString() + " must implement TxnListFragmentIf");
+
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
         }
 
         setHasOptionsMenu(true);
@@ -245,18 +250,22 @@ public class TxnListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //mActiveMenuItemId = item.getItemId();
-        int i = item.getItemId();
-        if (i == R.id.action_download) {
-            downloadReport();
-        } else if (i == R.id.action_email) {
-            emailReport();
-        } else if (i == R.id.action_sort) {
-            SortTxnDialog dialog = SortTxnDialog.newInstance(mSelectedSortType);
-            dialog.setTargetFragment(this, REQ_SORT_TXN_TYPES);
-            dialog.show(getFragmentManager(), DIALOG_SORT_TXN_TYPES);
+        try {
+            int i = item.getItemId();
+            if (i == R.id.action_download) {
+                downloadReport();
+            } else if (i == R.id.action_email) {
+                emailReport();
+            } else if (i == R.id.action_sort) {
+                SortTxnDialog dialog = SortTxnDialog.newInstance(mSelectedSortType);
+                dialog.setTargetFragment(this, REQ_SORT_TXN_TYPES);
+                dialog.show(getFragmentManager(), DIALOG_SORT_TXN_TYPES);
+            }
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -522,10 +531,16 @@ public class TxnListFragment extends Fragment {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if(requestCode== REQ_SORT_TXN_TYPES) {
-            int sortType = data.getIntExtra(SortTxnDialog.EXTRA_SELECTION, SortTxnDialog.TXN_SORT_DATE_TIME);
-            sortTxnList(sortType);
-            updateUI();
+        try {
+            if (requestCode == REQ_SORT_TXN_TYPES) {
+                int sortType = data.getIntExtra(SortTxnDialog.EXTRA_SELECTION, SortTxnDialog.TXN_SORT_DATE_TIME);
+                sortTxnList(sortType);
+                updateUI();
+            }
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 
@@ -593,19 +608,25 @@ public class TxnListFragment extends Fragment {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if(event.getAction()==MotionEvent.ACTION_UP) {
-                LogMy.d(TAG,"In onTouch: "+v.getId());
+            try {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    LogMy.d(TAG, "In onTouch: " + v.getId());
 
-                // getRootView was not working, so manually finding root view
-                View rootView = null;
-                if(v.getId()==mCustId.getId() || v.getId()==mDatetime.getId()) {
-                    rootView = (View) v.getParent().getParent();
-                    LogMy.d(TAG,"Clicked first level view "+rootView.getId());
-                } else {
-                    rootView = (View) v.getParent().getParent().getParent();
-                    LogMy.d(TAG,"Clicked second level view "+rootView.getId());
+                    // getRootView was not working, so manually finding root view
+                    View rootView = null;
+                    if (v.getId() == mCustId.getId() || v.getId() == mDatetime.getId()) {
+                        rootView = (View) v.getParent().getParent();
+                        LogMy.d(TAG, "Clicked first level view " + rootView.getId());
+                    } else {
+                        rootView = (View) v.getParent().getParent().getParent();
+                        LogMy.d(TAG, "Clicked second level view " + rootView.getId());
+                    }
+                    rootView.performClick();
                 }
-                rootView.performClick();
+            } catch (Exception e) {
+                LogMy.e(TAG, "Exception in Fragment: ", e);
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
             return true;
         }

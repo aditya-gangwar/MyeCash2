@@ -191,7 +191,7 @@ public class DialogFragmentWrapper extends DialogFragment {
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if (frag_call) {
+                    if (frag_call && getTargetFragment()!=null) {
                         getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
                     } else if (mListener != null) {
                         mListener.onDialogResult(getTag(), Activity.RESULT_OK, null);

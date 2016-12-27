@@ -134,24 +134,31 @@ public class TxnReportsActivity extends AppCompatActivity implements
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if(event.getAction()==MotionEvent.ACTION_UP) {
-            int vId = v.getId();
-            LogMy.d(TAG,"In onTouch: "+vId);
+            try {
+                int vId = v.getId();
+                LogMy.d(TAG, "In onTouch: " + vId);
 
-            if (vId == R.id.input_date_from) {
-                // Find the minimum date for DatePicker
-                DateUtil minFrom = new DateUtil(new Date(), TimeZone.getDefault());
-                minFrom.removeDays(MyGlobalSettings.getMchntTxnHistoryDays());
+                if (vId == R.id.input_date_from) {
+                    // Find the minimum date for DatePicker
+                    DateUtil minFrom = new DateUtil(new Date(), TimeZone.getDefault());
+                    minFrom.removeDays(MyGlobalSettings.getMchntTxnHistoryDays());
 
-                DialogFragment fromDialog = DatePickerDialog.newInstance(mFromDate, minFrom.getTime(), mNow);
-                fromDialog.show(getFragmentManager(), DIALOG_DATE_FROM);
+                    DialogFragment fromDialog = DatePickerDialog.newInstance(mFromDate, minFrom.getTime(), mNow);
+                    fromDialog.show(getFragmentManager(), DIALOG_DATE_FROM);
 
-            } else if (vId == R.id.input_date_to) {
-                if (mFromDate == null) {
-                    AppCommonUtil.toast(this, "Set From Date");
-                } else {
-                    DialogFragment toDialog = DatePickerDialog.newInstance(mToDate, mFromDate, mNow);
-                    toDialog.show(getFragmentManager(), DIALOG_DATE_TO);
+                } else if (vId == R.id.input_date_to) {
+                    if (mFromDate == null) {
+                        AppCommonUtil.toast(this, "Set From Date");
+                    } else {
+                        DialogFragment toDialog = DatePickerDialog.newInstance(mToDate, mFromDate, mNow);
+                        toDialog.show(getFragmentManager(), DIALOG_DATE_TO);
+                    }
                 }
+            } catch (Exception e) {
+                AppCommonUtil.cancelProgressDialog(true);
+                LogMy.e(TAG, "Exception in TxnReportsActivity:onTouch", e);
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                        .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         }
         return true;
@@ -537,6 +544,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
         int count = getFragmentManager().getBackStackEntryCount();
         LogMy.d(TAG, "In onBackPressed: " + count);
 
+        try {
         if (count == 0) {
             super.onBackPressed();
         } else {
@@ -550,7 +558,12 @@ public class TxnReportsActivity extends AppCompatActivity implements
                 mFragmentContainer.setVisibility(View.GONE);
             }
         }
-
+        } catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
+            LogMy.e(TAG, "Exception in TxnReportsActivity:onBackPressed", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
     }
 
     /**

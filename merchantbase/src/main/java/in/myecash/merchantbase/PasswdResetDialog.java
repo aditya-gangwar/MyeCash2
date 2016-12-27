@@ -112,7 +112,7 @@ public interface PasswdResetDialogIf {
             return false;
         }
 
-        /*error = ValidationHelper.validateBrandName(mInputStoreName.getText().toString());
+        /*error = ValidationHelper.validateName(mInputStoreName.getText().toString());
         if(error != ErrorCodes.NO_ERROR) {
             mInputStoreName.setError(AppCommonUtil.getErrorDesc(error));
             return false;

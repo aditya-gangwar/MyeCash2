@@ -284,7 +284,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
             sb.append("Display image; ");
         }
 
-        errorCode = ValidationHelper.validateBrandName(mBrandNameTextRes.getText().toString());
+        errorCode = ValidationHelper.validateName(mBrandNameTextRes.getText().toString());
         if( errorCode != ErrorCodes.NO_ERROR ) {
             valid = false;
             mBrandNameTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
@@ -299,18 +299,39 @@ public class RegisterMerchantActivity extends AppCompatActivity
             mCategoryTextRes.setError(null);
         }
 
-        errorCode = ValidationHelper.validateMobileNo(mMobileNoTextRes.getText().toString());
+        String mobile = mMobileNoTextRes.getText().toString();
+        errorCode = ValidationHelper.validateMobileNo(mobile);
         if( errorCode != ErrorCodes.NO_ERROR ) {
             valid = false;
             mMobileNoTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
             sb.append("Mobile number; ");
+        } else if(!mMobileNoConfirm.getText().toString().equals(mobile)) {
+            valid = false;
+            mMobileNoTextRes.setError("Doesn't match");
+            sb.append("Confirm Mobile number; ");
         }
 
-        errorCode = ValidationHelper.validateEmail(mEmailTextRes.getText().toString());
+        errorCode = ValidationHelper.validateName(mContactNameRes.getText().toString());
         if( errorCode != ErrorCodes.NO_ERROR ) {
             valid = false;
-            mEmailTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
-            sb.append("Email; ");
+            mContactNameRes.setError(AppCommonUtil.getErrorDesc(errorCode));
+            sb.append("Contact name; ");
+        }
+
+        errorCode = ValidationHelper.validateMobileNo(mContactNumRes.getText().toString());
+        if( errorCode != ErrorCodes.NO_ERROR ) {
+            valid = false;
+            mContactNumRes.setError(AppCommonUtil.getErrorDesc(errorCode));
+            sb.append("Contact number; ");
+        }
+
+        if(mEmailTextRes.getText()!=null) {
+            errorCode = ValidationHelper.validateEmail(mEmailTextRes.getText().toString());
+            if (errorCode != ErrorCodes.NO_ERROR) {
+                valid = false;
+                mEmailTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
+                sb.append("Email; ");
+            }
         }
 
         errorCode = ValidationHelper.validateDob(mDoBTextRes.getText().toString());
@@ -333,6 +354,13 @@ public class RegisterMerchantActivity extends AppCompatActivity
             valid = false;
             mAddressTextRes1.setError(AppCommonUtil.getErrorDesc(errorCode));
             sb.append("Address; ");
+        }
+
+        errorCode = ValidationHelper.validatePincode(mPincodeRes.getText().toString());
+        if( errorCode != ErrorCodes.NO_ERROR ) {
+            valid = false;
+            mPincodeRes.setError(AppCommonUtil.getErrorDesc(errorCode));
+            sb.append("Pincode; ");
         }
 
         /*
@@ -458,26 +486,33 @@ public class RegisterMerchantActivity extends AppCompatActivity
     private EditText    mBrandNameTextRes;
     private EditText    mCategoryTextRes;
     private EditText    mMobileNoTextRes;
+    private EditText    mMobileNoConfirm;
+
+    private EditText    mContactNameRes;
+    private EditText    mContactNumRes;
     private EditText    mEmailTextRes;
     private EditText    mDoBTextRes;
     private EditText    mCityTextRes;
     private EditText    mStateTextRes;
     private EditText    mAddressTextRes1;
-    //private CheckBox    mTermsCheckBox;
+    private EditText    mPincodeRes;
     private Button      mRegisterButton;
-    //private TextView    mLoginLink;
-    //private TextView    mTermsLink;
 
     private void bindUiResources() {
         mImageUploadBtn     = (ImageView) findViewById(R.id.btn_upload_image);
         mBrandNameTextRes   = (EditText) findViewById(R.id.input_merchant_name);
         mCategoryTextRes    = (EditText) findViewById(R.id.edittext_category);
         mMobileNoTextRes    = (EditText) findViewById(R.id.input_merchant_mobile);
+        mMobileNoConfirm    = (EditText) findViewById(R.id.input_mobile_confirm);
+
+        mContactNameRes       = (EditText) findViewById(R.id.input_contact_name);
+        mContactNumRes       = (EditText) findViewById(R.id.input_contact_num);
         mEmailTextRes       = (EditText) findViewById(R.id.input_merchant_email);
         mDoBTextRes       = (EditText) findViewById(R.id.input_merchant_dob);
         mCityTextRes        = (EditText) findViewById(R.id.edittext_city);
         mStateTextRes       = (EditText) findViewById(R.id.edittext_state);
         mAddressTextRes1     = (EditText) findViewById(R.id.input_address_1);
+        mPincodeRes     = (EditText) findViewById(R.id.input_pincode);
         //mTermsCheckBox      = (CheckBox) findViewById(R.id.checkBox_terms);
         mRegisterButton     = (Button) findViewById(R.id.btn_register);
         //mLoginLink          = (TextView) findViewById(R.id.link_login);
@@ -487,9 +522,12 @@ public class RegisterMerchantActivity extends AppCompatActivity
     private void getUiResourceValues() {
         mWorkFragment.mCurrMerchant.setName(mBrandNameTextRes.getText().toString());
         mWorkFragment.mCurrMerchant.setMobile_num(mMobileNoTextRes.getText().toString());
+        mWorkFragment.mCurrMerchant.setContactName(mContactNameRes.getText().toString());
+        mWorkFragment.mCurrMerchant.setContactPhone(mContactNumRes.getText().toString());
         mWorkFragment.mCurrMerchant.setEmail(mEmailTextRes.getText().toString());
         mWorkFragment.mCurrMerchant.setDob(mDoBTextRes.getText().toString());
         mAddress.setLine_1(mAddressTextRes1.getText().toString());
+        mAddress.setPincode(mPincodeRes.getText().toString());
         //mTermsAgreed = mTermsCheckBox.isChecked();
     }
 
@@ -648,52 +686,3 @@ public class RegisterMerchantActivity extends AppCompatActivity
         // do nothing
     }
 }
-
-
-    /*
-    private void makeTermsAndConditionsLink()
-    {
-        SpannableString termsPrompt = new SpannableString( getString( R.string.agree_terms_label ) );
-
-        ClickableSpan clickableSpan = new ClickableSpan()
-        {
-            @Override
-            public void onClick( View widget )
-            {
-            // Start terms and conditions activity
-            Intent tcIntent = new Intent(RegisterMerchantActivity.this, TermsConditionsActivity.class );
-            startActivity(tcIntent);
-            }
-        };
-
-        String linkText = getString(R.string.agree_terms_link);
-        int linkStartIndex = termsPrompt.toString().indexOf( linkText );
-        int linkEndIndex = linkStartIndex + linkText.length();
-        termsPrompt.setSpan(clickableSpan, linkStartIndex, linkEndIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        mTermsLink.setText(termsPrompt);
-        mTermsLink.setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-    private void makeLoginLink()
-    {
-        SpannableString loginPrompt = new SpannableString( getString( R.string.login_label ) );
-
-        ClickableSpan clickableSpan = new ClickableSpan()
-        {
-            @Override
-            public void onClick( View widget )
-            {
-                RegisterMerchantActivity.this.finish();
-            }
-        };
-
-        String linkText = getString(R.string.login_link);
-        int linkStartIndex = loginPrompt.toString().indexOf(linkText);
-        int linkEndIndex = linkStartIndex + linkText.length();
-        loginPrompt.setSpan(clickableSpan, linkStartIndex, linkEndIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        mLoginLink.setText(loginPrompt);
-        mLoginLink.setMovementMethod(LinkMovementMethod.getInstance());
-    }*/
-

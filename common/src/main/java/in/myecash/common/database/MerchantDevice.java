@@ -11,13 +11,22 @@ public class MerchantDevice
   private String manufacturer;
   private String os_version;
   private String model;
-  private java.util.Date last_login;
   private java.util.Date created;
   private String ownerId;
   private String objectId;
   private java.util.Date updated;
   private String os_type;
   private String merchant_id;
+  private String namak;
+
+  public String getNamak() {
+    return namak;
+  }
+
+  public void setNamak(String namak) {
+    this.namak = namak;
+  }
+
   public String getDevice_id()
   {
     return device_id;
@@ -56,16 +65,6 @@ public class MerchantDevice
   public void setModel( String model )
   {
     this.model = model;
-  }
-
-  public java.util.Date getLast_login()
-  {
-    return last_login;
-  }
-
-  public void setLast_login( java.util.Date last_login )
-  {
-    this.last_login = last_login;
   }
 
   public java.util.Date getCreated()

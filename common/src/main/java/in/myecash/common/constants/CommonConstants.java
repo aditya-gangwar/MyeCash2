@@ -78,6 +78,7 @@ public class CommonConstants {
     public static final int TRANSACTION_ID_LEN = 13;
     public static final int PIN_LEN = 5;
     public static final int OTP_LEN = 5;
+    public static final int PINCODE_LEN = 6;
 
     public static final int MAX_DEVICES_PER_MERCHANT = 3;
     public static final int dbQueryMaxPageSize = 100;

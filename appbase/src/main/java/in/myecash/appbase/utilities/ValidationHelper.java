@@ -57,6 +57,8 @@ public final class ValidationHelper{
             return ErrorCodes.EMPTY_VALUE;
         } else if(value.length() != CommonConstants.MOBILE_NUM_LENGTH) {
             return ErrorCodes.INVALID_LENGTH;
+        } else if(value.startsWith("0")) {
+            return ErrorCodes.INVALID_FORMAT;
         } else if (!Patterns.PHONE.matcher(value).matches()) {
             return ErrorCodes.INVALID_FORMAT;
         } else {
@@ -82,7 +84,17 @@ public final class ValidationHelper{
         }
     }
 
-    public static int validateBrandName(String value) {
+    public static int validatePincode(String value) {
+        if (value==null || value.isEmpty()) {
+            return ErrorCodes.EMPTY_VALUE;
+        } else if (value.length() != CommonConstants.PINCODE_LEN) {
+            return ErrorCodes.INVALID_LENGTH;
+        } else {
+            return ErrorCodes.NO_ERROR;
+        }
+    }
+
+    public static int validateName(String value) {
         if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else {

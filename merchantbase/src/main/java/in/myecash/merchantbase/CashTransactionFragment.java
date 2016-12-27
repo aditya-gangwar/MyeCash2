@@ -137,60 +137,67 @@ public class CashTransactionFragment extends Fragment implements
          * mCashPaidHelper will be null - for both 'fragment create' and 'fragment re-create' scenarios
          * but not for 'backstack' scenarios
          */
-        boolean isBackstackCase = false;
-        if(mCashPaidHelper != null) {
-            isBackstackCase = true;
-        }
-
-        if(!isBackstackCase) {
-            // either of fragment 'create' or 'recreate' scenarios
-            if(savedInstanceState==null) {
-                // fragment create case
-                initAmtUiStates();
-            } else {
-                // fragment re-create case
-                LogMy.d(TAG,"Fragment re-create case");
-                // restore status from stored values
-                mClBalance = savedInstanceState.getInt("mClBalance");
-                mCbBalance = savedInstanceState.getInt("mCbBalance");
-                mMinCashToPay = savedInstanceState.getInt("mMinCashToPay");
-
-                setAwardCbStatus(savedInstanceState.getInt("mAwardCbStatus"));
-                setAddClStatus(savedInstanceState.getInt("mAddClStatus"));
-                setRedeemClStatus(savedInstanceState.getInt("mDebitClStatus"));
-                setRedeemCbStatus(savedInstanceState.getInt("mRedeemCbStatus"));
-                mRedeemCbOnPriority = savedInstanceState.getBoolean("mRedeemCbOnPriority");
+        try {
+            boolean isBackstackCase = false;
+            if (mCashPaidHelper != null) {
+                isBackstackCase = true;
             }
-        } else {
-            // these fxs update onscreen view also, so need to be run for backstack scenario too
-            setAwardCbStatus(mAwardCbStatus);
-            setAddClStatus(mAddClStatus);
-            setRedeemClStatus(mDebitClStatus);
-            setRedeemCbStatus(mRedeemCbStatus);
-        }
 
-        // Init view - only to be done after states are set above
-        initAmtUiVisibility();
-        // both of below to be done twice - 1) at init here 2) if bill amount is changed
-        displayInputBillAmt();
-        calcAndSetAddCb();
+            if (!isBackstackCase) {
+                // either of fragment 'create' or 'recreate' scenarios
+                if (savedInstanceState == null) {
+                    // fragment create case
+                    initAmtUiStates();
+                } else {
+                    // fragment re-create case
+                    LogMy.d(TAG, "Fragment re-create case");
+                    // restore status from stored values
+                    mClBalance = savedInstanceState.getInt("mClBalance");
+                    mCbBalance = savedInstanceState.getInt("mCbBalance");
+                    mMinCashToPay = savedInstanceState.getInt("mMinCashToPay");
 
-        if(!isBackstackCase) {
-            if (savedInstanceState == null) {
-                calcAndSetAmts(false);
-
+                    setAwardCbStatus(savedInstanceState.getInt("mAwardCbStatus"));
+                    setAddClStatus(savedInstanceState.getInt("mAddClStatus"));
+                    setRedeemClStatus(savedInstanceState.getInt("mDebitClStatus"));
+                    setRedeemCbStatus(savedInstanceState.getInt("mRedeemCbStatus"));
+                    mRedeemCbOnPriority = savedInstanceState.getBoolean("mRedeemCbOnPriority");
+                }
             } else {
-                // restore earlier calculated values
-                setDebitCashload(savedInstanceState.getInt("mDebitCashload"));
-                setRedeemCashback(savedInstanceState.getInt("mRedeemCashback"));
-                setAddCashload(savedInstanceState.getInt("mAddCashload"));
-                setAddCashback(savedInstanceState.getInt("mAwardCashback"));
-                setCashPaid(savedInstanceState.getInt("mCashPaid"));
-
-                //mToPayCash = savedInstanceState.getInt("mToPayCash");
-                mReturnCash = savedInstanceState.getInt("mReturnCash");
+                // these fxs update onscreen view also, so need to be run for backstack scenario too
+                setAwardCbStatus(mAwardCbStatus);
+                setAddClStatus(mAddClStatus);
+                setRedeemClStatus(mDebitClStatus);
+                setRedeemCbStatus(mRedeemCbStatus);
             }
-            //mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid);
+
+            // Init view - only to be done after states are set above
+            initAmtUiVisibility();
+            // both of below to be done twice - 1) at init here 2) if bill amount is changed
+            displayInputBillAmt();
+            calcAndSetAddCb();
+
+            if (!isBackstackCase) {
+                if (savedInstanceState == null) {
+                    calcAndSetAmts(false);
+
+                } else {
+                    // restore earlier calculated values
+                    setDebitCashload(savedInstanceState.getInt("mDebitCashload"));
+                    setRedeemCashback(savedInstanceState.getInt("mRedeemCashback"));
+                    setAddCashload(savedInstanceState.getInt("mAddCashload"));
+                    setAddCashback(savedInstanceState.getInt("mAwardCashback"));
+                    setCashPaid(savedInstanceState.getInt("mCashPaid"));
+
+                    //mToPayCash = savedInstanceState.getInt("mToPayCash");
+                    mReturnCash = savedInstanceState.getInt("mReturnCash");
+                }
+                //mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid);
+            }
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in CustomerTransactionFragment:onActivityCreated", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
         }
 
         // both of below concerns view - so run again in all cases
@@ -533,7 +540,8 @@ public class CashTransactionFragment extends Fragment implements
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        switch(requestCode) {
+        try {
+            switch (requestCode) {
             /*case REQUEST_CASH_PAY:
                 setCashPaid((int) data.getSerializableExtra(CashPaidDialog.EXTRA_CASH_PAID));
                 calcAndSetAmts();
@@ -544,22 +552,22 @@ public class CashTransactionFragment extends Fragment implements
                 mCallback.onTransactionSubmit();
                 break;*/
 
-            case REQ_NEW_BILL_AMT:
-                LogMy.d(TAG, "Received new bill amount.");
-                String newBillAmt = (String)data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
-                mRetainedFragment.mBillTotal = Integer.parseInt(newBillAmt);
-                displayInputBillAmt();
-                // update order item amount
-                OrderItem item = mRetainedFragment.mOrderItems.get(0);
-                item.setUnitPriceStr(newBillAmt);
+                case REQ_NEW_BILL_AMT:
+                    LogMy.d(TAG, "Received new bill amount.");
+                    String newBillAmt = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
+                    mRetainedFragment.mBillTotal = Integer.parseInt(newBillAmt);
+                    displayInputBillAmt();
+                    // update order item amount
+                    OrderItem item = mRetainedFragment.mOrderItems.get(0);
+                    item.setUnitPriceStr(newBillAmt);
 
-                if (item.isCashbackExcluded()) {
-                    mRetainedFragment.mCbExcludedTotal = Integer.parseInt(newBillAmt);
-                }
-                // re-calculate all amounts
-                calcAndSetAmts(false);
-                calcAndSetAddCb();
-                break;
+                    if (item.isCashbackExcluded()) {
+                        mRetainedFragment.mCbExcludedTotal = Integer.parseInt(newBillAmt);
+                    }
+                    // re-calculate all amounts
+                    calcAndSetAmts(false);
+                    calcAndSetAddCb();
+                    break;
 
             /*case REQ_NEW_ADD_CL:
                 String newValue = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
@@ -582,10 +590,15 @@ public class CashTransactionFragment extends Fragment implements
                 calcAndSetAmts();
                 break;*/
 
-            case REQ_NOTIFY_ERROR:
-                mCallback.restartTxn();
-                break;
+                case REQ_NOTIFY_ERROR:
+                    mCallback.restartTxn();
+                    break;
 
+            }
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 
@@ -659,18 +672,19 @@ public class CashTransactionFragment extends Fragment implements
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        if(event.getAction() == MotionEvent.ACTION_UP) {
-            LogMy.d(TAG,"In onTouch: "+v.getId());
+        try {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                LogMy.d(TAG, "In onTouch: " + v.getId());
 
-            int i = v.getId();
-            if (i == R.id.input_trans_bill_amt) {
-                // open 'bill amount' for editing
-                if (billAmtEditAllowed()) {
-                    startNumInputDialog(REQ_NEW_BILL_AMT, "Bill Amount:", mInputBillAmt, 0);
+                int i = v.getId();
+                if (i == R.id.input_trans_bill_amt) {
+                    // open 'bill amount' for editing
+                    if (billAmtEditAllowed()) {
+                        startNumInputDialog(REQ_NEW_BILL_AMT, "Bill Amount:", mInputBillAmt, 0);
+                    }
+
                 }
-
-            }
-            // manually change the values
+                // manually change the values
 
         /*else if (i == R.id.input_trans_add_cl) {
             int effectiveToPay = mRetainedFragment.mBillTotal - mRedeemCashback - mDebitCashload;
@@ -687,104 +701,109 @@ public class CashTransactionFragment extends Fragment implements
 
         } */
 
-            else if (i == R.id.radio_add_cl || i == R.id.layout_add_cl || i==R.id.label_trans_add_cl) {
+                else if (i == R.id.radio_add_cl || i == R.id.layout_add_cl || i == R.id.label_trans_add_cl) {
 
-                switch (mAddClStatus) {
-                    case STATUS_AUTO_CLEARED:
-                    case STATUS_CLEARED:
-                        // clear 'debit cl' - as you cant have both together
-                        // calcAndSetAmts() will merge the values
-                        //if (mDebitClStatus == STATUS_AUTO || mDebitClStatus == STATUS_MANUAL_SET) {
+                    switch (mAddClStatus) {
+                        case STATUS_AUTO_CLEARED:
+                        case STATUS_CLEARED:
+                            // clear 'debit cl' - as you cant have both together
+                            // calcAndSetAmts() will merge the values
+                            //if (mDebitClStatus == STATUS_AUTO || mDebitClStatus == STATUS_MANUAL_SET) {
                         /*if (mDebitClStatus == STATUS_AUTO) {
                             setRedeemClStatus(STATUS_CLEARED);
                         }*/
-                        if(mCashPaid<=0) {
-                            AppCommonUtil.toast(getActivity(), "Cash Paid value not set");
-                        } else {
-                            setAddClStatus(STATUS_AUTO);
+                            if (mCashPaid <= 0) {
+                                AppCommonUtil.toast(getActivity(), "Cash Paid value not set");
+                            } else {
+                                setAddClStatus(STATUS_AUTO);
+                                calcAndSetAmts(false);
+                            }
+                            break;
+                        //case STATUS_MANUAL_SET:
+                        case STATUS_AUTO:
+                            setAddClStatus(STATUS_CLEARED);
                             calcAndSetAmts(false);
-                        }
-                        break;
-                    //case STATUS_MANUAL_SET:
-                    case STATUS_AUTO:
-                        setAddClStatus(STATUS_CLEARED);
-                        calcAndSetAmts(false);
-                        break;
+                            break;
                     /*case STATUS_CASH_PAID_NOT_SET:
                         AppCommonUtil.toast(getActivity(), "Cash Paid value not set");
                         break;*/
-                    case STATUS_DISABLED:
-                        AppCommonUtil.toast(getActivity(), "Disabled in settings");
-                        break;
-                }
+                        case STATUS_DISABLED:
+                            AppCommonUtil.toast(getActivity(), "Disabled in settings");
+                            break;
+                    }
 
-            } else if (i == R.id.radio_redeem_cl || i == R.id.layout_redeem_cl || i==R.id.label_trans_redeem_cl) {
-                //case R.id.label_trans_redeem_cl:
-                //case R.id.input_trans_redeem_cl:
+                } else if (i == R.id.radio_redeem_cl || i == R.id.layout_redeem_cl || i == R.id.label_trans_redeem_cl) {
+                    //case R.id.label_trans_redeem_cl:
+                    //case R.id.input_trans_redeem_cl:
 
-                switch (mDebitClStatus) {
-                    case STATUS_AUTO_CLEARED:
-                    case STATUS_CLEARED:
-                        mRedeemCbOnPriority = false;
-                        setRedeemClStatus(STATUS_AUTO);
+                    switch (mDebitClStatus) {
+                        case STATUS_AUTO_CLEARED:
+                        case STATUS_CLEARED:
+                            mRedeemCbOnPriority = false;
+                            setRedeemClStatus(STATUS_AUTO);
                         /*if (mAddClStatus == STATUS_AUTO || mAddClStatus == STATUS_MANUAL_SET) {
                             //mAddCashload = 0;
                             setAddClStatus(STATUS_CLEARED);
                         }*/
-                        calcAndSetAmts(false);
-                        break;
-                    //case STATUS_MANUAL_SET:
-                    case STATUS_AUTO:
-                        setRedeemClStatus(STATUS_CLEARED);
-                        calcAndSetAmts(false);
-                        break;
-                    case STATUS_NO_BALANCE:
-                        AppCommonUtil.toast(getActivity(), AppConstants.toastNoBalance);
-                        break;
-                    case STATUS_QR_CARD_NOT_USED:
-                        AppCommonUtil.toast(getActivity(), "Valid Member card not used");
-                        break;
-                }
+                            calcAndSetAmts(false);
+                            break;
+                        //case STATUS_MANUAL_SET:
+                        case STATUS_AUTO:
+                            setRedeemClStatus(STATUS_CLEARED);
+                            calcAndSetAmts(false);
+                            break;
+                        case STATUS_NO_BALANCE:
+                            AppCommonUtil.toast(getActivity(), AppConstants.toastNoBalance);
+                            break;
+                        case STATUS_QR_CARD_NOT_USED:
+                            AppCommonUtil.toast(getActivity(), "Valid Member card not used");
+                            break;
+                    }
 
-            } else if (i == R.id.checkbox_redeem_cb || i == R.id.layout_redeem_cb || i==R.id.label_trans_redeem_cb) {
+                } else if (i == R.id.checkbox_redeem_cb || i == R.id.layout_redeem_cb || i == R.id.label_trans_redeem_cb) {
 
-                switch (mRedeemCbStatus) {
-                    case STATUS_AUTO_CLEARED:
-                    case STATUS_CLEARED:
-                        mRedeemCbOnPriority = true;
-                        setRedeemCbStatus(STATUS_AUTO);
-                        calcAndSetAmts(false);
-                        break;
-                    //case STATUS_MANUAL_SET:
-                    case STATUS_AUTO:
-                        setRedeemCbStatus(STATUS_CLEARED);
-                        calcAndSetAmts(false);
-                        break;
-                    case STATUS_NO_BALANCE:
-                        AppCommonUtil.toast(getActivity(), AppConstants.toastNoBalance);
-                        break;
-                    case STATUS_QR_CARD_NOT_USED:
-                        AppCommonUtil.toast(getActivity(), "Valid Member card not used");
-                        break;
-                    case STATUS_BALANCE_BELOW_LIMIT:
-                        AppCommonUtil.toast(getActivity(), "Cashback balance below redeem limit of " +
-                                AppCommonUtil.getAmtStr(MyGlobalSettings.getCbRedeemLimit()));
-                        break;
-                }
+                    switch (mRedeemCbStatus) {
+                        case STATUS_AUTO_CLEARED:
+                        case STATUS_CLEARED:
+                            mRedeemCbOnPriority = true;
+                            setRedeemCbStatus(STATUS_AUTO);
+                            calcAndSetAmts(false);
+                            break;
+                        //case STATUS_MANUAL_SET:
+                        case STATUS_AUTO:
+                            setRedeemCbStatus(STATUS_CLEARED);
+                            calcAndSetAmts(false);
+                            break;
+                        case STATUS_NO_BALANCE:
+                            AppCommonUtil.toast(getActivity(), AppConstants.toastNoBalance);
+                            break;
+                        case STATUS_QR_CARD_NOT_USED:
+                            AppCommonUtil.toast(getActivity(), "Valid Member card not used");
+                            break;
+                        case STATUS_BALANCE_BELOW_LIMIT:
+                            AppCommonUtil.toast(getActivity(), "Cashback balance below redeem limit of " +
+                                    AppCommonUtil.getAmtStr(MyGlobalSettings.getCbRedeemLimit()));
+                            break;
+                    }
 
-            } else if (i == R.id.checkbox_add_cb || i == R.id.layout_add_cb || i==R.id.label_trans_add_cb) {
+                } else if (i == R.id.checkbox_add_cb || i == R.id.layout_add_cb || i == R.id.label_trans_add_cb) {
 
-                if (mAwardCbStatus == STATUS_DISABLED) {
-                    AppCommonUtil.toast(getActivity(), "Set Cashback rate(%) in settings");
-                } else if (mAwardCbStatus == STATUS_AUTO) {
-                    AppCommonUtil.toast(getActivity(), "Use settings to disable");
-                }
+                    if (mAwardCbStatus == STATUS_DISABLED) {
+                        AppCommonUtil.toast(getActivity(), "Set Cashback rate(%) in settings");
+                    } else if (mAwardCbStatus == STATUS_AUTO) {
+                        AppCommonUtil.toast(getActivity(), "Use settings to disable");
+                    }
 
-            } /*else if (i == R.id.label_cash_paid || i == R.id.input_cash_paid) {
+                } /*else if (i == R.id.label_cash_paid || i == R.id.input_cash_paid) {
                 LogMy.d(TAG, "Clicked cash paid");
                 //AppCommonUtil.hideKeyboard(getActivity());
                 showCashPaidDialog();
             }*/
+            }
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in CashTxnFragment:onTouch", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
 
         return true;
@@ -795,39 +814,40 @@ public class CashTransactionFragment extends Fragment implements
         LogMy.d(TAG, "In onClick: " + v.getId());
 
         int i = v.getId();
-        if (i == R.id.btn_collect_cash) {
-            LogMy.d(TAG, "Clicked Process txn button");
-            if (mAddClStatus == STATUS_AUTO ||
-                    mDebitClStatus == STATUS_AUTO ||
-                    mAwardCbStatus == STATUS_AUTO ||
-                    mRedeemCbStatus == STATUS_AUTO) {
-                // If all 0 - no point going ahead
-                // This may happen, if this txn involves only cashback and
-                // that cashback is less than 1 rupee - which will be rounded of to 0
-                if(mAwardCashback<=0 && mAddCashload<=0 && mRedeemCashback <= 0 && mDebitCashload<=0) {
-                    //AppCommonUtil.toast(getActivity(), "No MyeCash data to process !!");
-                    String msg = null;
-                    if(mRetainedFragment.mBillTotal <= 0) {
-                        msg = "All Credit/Debit amounts are 0, for both Cashback and Account";
-                    } else {
-                        msg = "'Award Cashback' is less than 1 Rupee. Other credit/debit amount are 0.";
+        try {
+            if (i == R.id.btn_collect_cash) {
+                LogMy.d(TAG, "Clicked Process txn button");
+                if (mAddClStatus == STATUS_AUTO ||
+                        mDebitClStatus == STATUS_AUTO ||
+                        mAwardCbStatus == STATUS_AUTO ||
+                        mRedeemCbStatus == STATUS_AUTO) {
+                    // If all 0 - no point going ahead
+                    // This may happen, if this txn involves only cashback and
+                    // that cashback is less than 1 rupee - which will be rounded of to 0
+                    if (mAwardCashback <= 0 && mAddCashload <= 0 && mRedeemCashback <= 0 && mDebitCashload <= 0) {
+                        //AppCommonUtil.toast(getActivity(), "No MyeCash data to process !!");
+                        String msg = null;
+                        if (mRetainedFragment.mBillTotal <= 0) {
+                            msg = "All Credit/Debit amounts are 0, for both Cashback and Account";
+                        } else {
+                            msg = "'Award Cashback' is less than 1 Rupee. Other credit/debit amount are 0.";
+                        }
+                        DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, true, true);
+                        dialog.setTargetFragment(this, REQ_NOTIFY_ERROR);
+                        dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
-                    DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg,true, true);
-                    dialog.setTargetFragment(this, REQ_NOTIFY_ERROR);
-                    dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                //if (getCashPaidError() == null) {
-                if(mCashPaid>=0) {
-                    if(mReturnCash != 0) {
-                        AppCommonUtil.toast(getActivity(), "Balance not 0 yet");
-                    } else {
-                        setTransactionValues();
-                        mCallback.onTransactionSubmit(mCashPaid);
-                        // Show confirmation dialog
+                    //if (getCashPaidError() == null) {
+                    if (mCashPaid >= 0) {
+                        if (mReturnCash != 0) {
+                            AppCommonUtil.toast(getActivity(), "Balance not 0 yet");
+                        } else {
+                            setTransactionValues();
+                            mCallback.onTransactionSubmit(mCashPaid);
+                            // Show confirmation dialog
                         /*TxnConfirmDialog dialog = TxnConfirmDialog.newInstance(mRetainedFragment.mCurrTransaction.getTransaction(), mCashPaid);
                         dialog.setTargetFragment(CashTransactionFragment.this, REQ_CONFIRM_TRANS_COMMIT);
                         dialog.show(getFragmentManager(), DIALOG_CONFIRM_TXN);*/
-                    }
+                        }
                     /*if(getAddClError()==null) {
                         setTransactionValues();
                         // Show confirmation dialog
@@ -837,13 +857,17 @@ public class CashTransactionFragment extends Fragment implements
                     } else {
                         AppCommonUtil.toast(getActivity(), getAddClError());
                     }*/
+                    } else {
+                        AppCommonUtil.toast(getActivity(), "Set Cash Paid");
+                    }
                 } else {
-                    AppCommonUtil.toast(getActivity(), "Set Cash Paid");
+                    AppCommonUtil.toast(getActivity(), "No MyeCash data to process !!");
                 }
-            } else {
-                AppCommonUtil.toast(getActivity(), "No MyeCash data to process !!");
             }
-
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in CashTxnFragment:onClick", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
 
     }

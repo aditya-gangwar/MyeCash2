@@ -5,6 +5,12 @@ package in.myecash.appbase.constants;
  */
 public class AppConstants {
 
+    public static final String PHONE_COUNTRY_CODE = "+91 ";
+    public static int MOBILE_NUM_PROCESS_MIN_LENGTH = 8;
+    public static final String SYMBOL_RS = "\u20B9 ";
+    public static final String SYMBOL_RS_0 = "\u20B9 0";
+    public static final String SYMBOL_DOWN_ARROW = "\u25BC";
+
     // Crashlytics custom keys
     public static final String CLTS_INPUT_CUST_MOBILE = "inputCustMobile";
     public static final String CLTS_INPUT_CUST_CARD = "inputCustCard";
@@ -46,11 +52,6 @@ public class AppConstants {
     public static final String noDataFailureTitle = "No Data";
     public static final String serviceNATitle = "Service Not Available";
     public static final String notLoggedInTitle = "Not Logged In";
-
-    public static int MOBILE_NUM_PROCESS_MIN_LENGTH = 8;
-    public static final String SYMBOL_RS = "\u20B9 ";
-    public static final String SYMBOL_RS_0 = "\u20B9 0";
-    public static final String SYMBOL_DOWN_ARROW = "\u25BC";
 
     // Txn summary constants
     public static int INDEX_TXN_COUNT = 0;

@@ -137,6 +137,7 @@ public class AgentUser {
 
     public int registerMerchant(Merchants merchant, File imgFile) {
         // register merchant
+        LogMy.d(TAG, "In registerMerchant");
         try {
             String url = uploadImageSync(imgFile, CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR);
             if(url != null) {
@@ -159,20 +160,22 @@ public class AgentUser {
     }
 
     /*
-         * Private helper methods
-         */
+     * Private helper methods
+     */
     private String uploadImageSync(File imgFile, String remoteDir) {
         // upload file
         try {
             //LogMy.d(TAG,"In uploadImageSync: "+mUserToken+","+HeadersManager.getInstance().getHeader(HeadersManager.HeadersEnum.USER_TOKEN_KEY));
             //HeadersManager.getInstance().addHeader( HeadersManager.HeadersEnum.USER_TOKEN_KEY, mUserToken );
 
-            for( String key : HeadersManager.getInstance().getHeaders().keySet() )
-                LogMy.d(TAG,"In uploadImageSync: "+key+","+HeadersManager.getInstance().getHeaders().get( key ));
+            for( String key : HeadersManager.getInstance().getHeaders().keySet() ) {
+                LogMy.d(TAG, "In uploadImageSync: " + key + "," + HeadersManager.getInstance().getHeaders().get(key));
+            }
 
             BackendlessFile file = Backendless.Files.upload(imgFile, remoteDir, true);
             LogMy.d(TAG, "Image uploaded successfully at :" + file.getFileURL());
             return file.getFileURL();
+
         } catch(Exception e) {
             LogMy.e(TAG, "Image file upload failed: " + e.toString());
         }

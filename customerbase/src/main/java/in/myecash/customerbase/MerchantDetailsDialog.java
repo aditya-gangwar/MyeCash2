@@ -16,8 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppAlarms;
-import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.common.MyMerchant;
@@ -154,7 +154,8 @@ public class MerchantDetailsDialog extends DialogFragment  {
             mInputCbTotalRedeem.setText(AppCommonUtil.getAmtStr(cb.getCbRedeem()));
 
             mInputMchntId.setText(merchant.getId());
-            mInputMobileNum.setText(merchant.getMobileNum());
+            String phone = AppConstants.PHONE_COUNTRY_CODE+merchant.getContactPhone();
+            mInputContactPhone.setText(phone);
             mInputStatus.setText(DbConstants.userStatusDesc[merchant.getStatus()]);
             mAddressLine1.setText(merchant.getAddressLine1());
             mAddressCity.setText(merchant.getCity());
@@ -183,7 +184,7 @@ public class MerchantDetailsDialog extends DialogFragment  {
     private EditText mInputCbTotalRedeem;
 
     private EditText mInputMchntId;
-    private EditText mInputMobileNum;
+    private EditText mInputContactPhone;
     private EditText mInputStatus;
     private EditText mAddressLine1;
     private EditText mAddressCity;
@@ -212,7 +213,7 @@ public class MerchantDetailsDialog extends DialogFragment  {
         mInputAccTotalDebit = (EditText) v.findViewById(R.id.input_acc_debit);
 
         mInputMchntId = (EditText) v.findViewById(R.id.input_merchant_id);
-        mInputMobileNum = (EditText) v.findViewById(R.id.input_mobile);
+        mInputContactPhone = (EditText) v.findViewById(R.id.input_mobile);
         mInputStatus = (EditText) v.findViewById(R.id.input_status);
         mAddressLine1 = (EditText) v.findViewById(R.id.input_address);
         mAddressCity = (EditText) v.findViewById(R.id.input_city);

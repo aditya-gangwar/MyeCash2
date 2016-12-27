@@ -139,12 +139,14 @@ public class CustomerListFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement CustomerListFragmentIf");
+
         } catch(Exception e) {
             LogMy.e(TAG, "Exception is CustomerListFragment:onActivityCreated", e);
             // unexpected exception - show error
             DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true);
             notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
             notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
         }
 
         setHasOptionsMenu(true);
@@ -297,13 +299,19 @@ public class CustomerListFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         LogMy.d(TAG, "In onActivityResult :" + requestCode + ", " + resultCode);
-        if(resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        if(requestCode==REQ_SORT_CUST_TYPES) {
-            int sortType = data.getIntExtra(SortCustDialog.EXTRA_SELECTION, MyCashback.CB_CMP_TYPE_UPDATE_TIME);
-            sortCustList(sortType);
-            updateUI();
+        try {
+            if (resultCode != Activity.RESULT_OK) {
+                return;
+            }
+            if (requestCode == REQ_SORT_CUST_TYPES) {
+                int sortType = data.getIntExtra(SortCustDialog.EXTRA_SELECTION, MyCashback.CB_CMP_TYPE_UPDATE_TIME);
+                sortCustList(sortType);
+                updateUI();
+            }
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in CustomerListFragment:onActivityResult", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 

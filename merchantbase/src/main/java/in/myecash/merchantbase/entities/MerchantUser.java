@@ -11,11 +11,9 @@ import com.backendless.BackendlessUser;
 import com.backendless.HeadersManager;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.files.BackendlessFile;
-import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.crashlytics.android.Crashlytics;
 import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.appbase.entities.MyTransaction;
-import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -50,6 +48,7 @@ public class MerchantUser
     private String mNewCbRate;
     private int mNewIsAddClEnabled;
     private String mNewEmail;
+    private String mNewContactPhone;
     private Boolean mNewInvNumAsk;
     private Boolean mNewInvNumOptional;
     private Boolean mNewInvNumOnlyNumbers;
@@ -230,6 +229,9 @@ public class MerchantUser
             if(mNewEmail==null) {
                 mNewEmail = mMerchant.getEmail();
             }
+            if(mNewContactPhone==null) {
+                mNewContactPhone = mMerchant.getContactPhone();
+            }
             if(mNewInvNumAsk==null) {
                 mNewInvNumAsk = mMerchant.isInvoiceNumAsk();
             }
@@ -240,7 +242,7 @@ public class MerchantUser
                 mNewInvNumOnlyNumbers = mMerchant.isInvoiceNumOnlyNumbers();
             }
 
-            mMerchant = MerchantServices.getInstance().updateSettings(mNewCbRate, newAddClEnabled, mNewEmail,
+            mMerchant = MerchantServices.getInstance().updateSettings(mNewCbRate, newAddClEnabled, mNewEmail, mNewContactPhone,
                     mNewInvNumAsk, mNewInvNumOptional, mNewInvNumOnlyNumbers);
             LogMy.d(TAG,"updateSettings success");
 
@@ -420,6 +422,10 @@ public class MerchantUser
      */
     public void setNewEmail(String newEmail) {
         mNewEmail = newEmail;
+    }
+
+    public void setNewContactPhome(String newPhone) {
+        mNewContactPhone = newPhone;
     }
 
     public void setNewIsAddClEnabled(boolean newIsAddClEnabled) {

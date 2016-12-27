@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.MyGlobalSettings;
@@ -87,6 +88,8 @@ public class MerchantDetailsDialog extends DialogFragment {
         mStoreName.setText(merchant.getName());
         mStoreCategory.setText(merchant.getBuss_category());
         mMerchantId.setText(merchant.getAuto_id());
+        mInputContactName.setText(merchant.getContactName());
+        mInputMobileNum.setText(merchant.getMobile_num());
         mRegisteredOn.setText(mSdfOnlyDate.format(merchant.getCreated()));
         mExpiringOn.setText(mSdfOnlyDate.format(AppCommonUtil.getExpiryDate(merchant)));
 
@@ -115,8 +118,9 @@ public class MerchantDetailsDialog extends DialogFragment {
             mLayoutStatusDetails.setVisibility(View.GONE);
         }
 
-        mInputMobileNum.setText(merchant.getMobile_num());
         mInputEmail.setText(merchant.getEmail());
+        String phone = AppConstants.PHONE_COUNTRY_CODE+merchant.getContactPhone();
+        mInputContactNum.setText(phone);
 
         mAddress.setText(merchant.getAddress().getLine_1());
         mCity.setText(merchant.getAddress().getCity());
@@ -124,6 +128,8 @@ public class MerchantDetailsDialog extends DialogFragment {
     }
 
     private ImageView mDisplayImage;
+    private EditText mInputMobileNum;
+    private EditText mInputContactName;
     private EditText mStoreName;
     private EditText mStoreCategory;
 
@@ -138,12 +144,13 @@ public class MerchantDetailsDialog extends DialogFragment {
     private View mLayoutActivation;
     private EditText mInputActivation;
 
-    private EditText mInputMobileNum;
+    private EditText mInputContactNum;
     private EditText mInputEmail;
 
     private EditText mAddress;
     private EditText mCity;
     private EditText mState;
+    private EditText mPincode;
 
 
     private void bindUiResources(View v) {
@@ -153,6 +160,8 @@ public class MerchantDetailsDialog extends DialogFragment {
         mStoreCategory = (EditText) v.findViewById(R.id.input_store_category);
 
         mMerchantId = (EditText) v.findViewById(R.id.input_merchant_id);
+        mInputContactName = (EditText) v.findViewById(R.id.input_contact_name);
+        mInputMobileNum = (EditText) v.findViewById(R.id.input_merchant_mobile);
         mRegisteredOn = (EditText) v.findViewById(R.id.input_registered_on);
         mExpiringOn = (EditText) v.findViewById(R.id.input_expiring_on);
 
@@ -163,12 +172,13 @@ public class MerchantDetailsDialog extends DialogFragment {
         mLayoutActivation = v.findViewById(R.id.layout_activation);
         mInputActivation = (EditText) v.findViewById(R.id.input_activation);
 
-        mInputMobileNum = (EditText) v.findViewById(R.id.input_merchant_mobile);
+        mInputContactNum = (EditText) v.findViewById(R.id.input_contact_phone);
         mInputEmail = (EditText) v.findViewById(R.id.input_merchant_email);
 
         mAddress = (EditText) v.findViewById(R.id.input_address);
         mCity = (EditText) v.findViewById(R.id.input_city);
         mState = (EditText) v.findViewById(R.id.input_state);
+        mPincode = (EditText) v.findViewById(R.id.input_pincode);
     }
 }
 

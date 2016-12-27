@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.database.Merchants;
@@ -75,6 +76,7 @@ public class MerchantDetailsFragment extends Fragment
         mMerchantId.setText(merchant.getAuto_id());
         mStoreName.setText(merchant.getName());
         mStoreCategory.setText(merchant.getBuss_category());
+        mInputMobileNum.setText(merchant.getMobile_num());
         mRegisteredOn.setText(mSdfDateWithTime.format(merchant.getCreated()));
         mFirstLogin.setText(merchant.getFirst_login_ok().toString());
         if(merchant.getFirst_login_ok()) {
@@ -90,16 +92,16 @@ public class MerchantDetailsFragment extends Fragment
         mInputStatusDate.setText(mSdfDateWithTime.format(merchant.getStatus_update_time()));
 
         mInputReason.setText(merchant.getStatus_reason());
-        /*if(merchant.getAdmin_remarks()!=null) {
-            mInputRemarks.setText(merchant.getAdmin_remarks());
-        }*/
 
-        mInputMobileNum.setText(merchant.getMobile_num());
+        mContactName.setText(merchant.getContactName());
+        String phone = AppConstants.PHONE_COUNTRY_CODE+merchant.getContactPhone();
+        mContactPhone.setText(phone);
         mInputEmail.setText(merchant.getEmail());
 
         mAddress.setText(merchant.getAddress().getLine_1());
         mCity.setText(merchant.getAddress().getCity());
         mState.setText(merchant.getAddress().getState());
+        mPincode.setText(merchant.getAddress().getPincode());
 
         mCbRate.setText(merchant.getCb_rate());
         mAddCashStatus.setText(merchant.getCl_add_enable().toString());
@@ -137,6 +139,7 @@ public class MerchantDetailsFragment extends Fragment
     private EditText mMerchantId;
     private EditText mStoreName;
     private EditText mStoreCategory;
+    private EditText mInputMobileNum;
     private EditText mRegisteredOn;
     private EditText mFirstLogin;
     private EditText mDoB;
@@ -146,12 +149,14 @@ public class MerchantDetailsFragment extends Fragment
     private EditText mInputReason;
     //private EditText mInputRemarks;
 
-    private EditText mInputMobileNum;
+    private EditText mContactName;
+    private EditText mContactPhone;
     private EditText mInputEmail;
 
     private EditText mAddress;
     private EditText mCity;
     private EditText mState;
+    private EditText mPincode;
 
     private EditText mCbRate;
     private EditText mAddCashStatus;
@@ -170,6 +175,7 @@ public class MerchantDetailsFragment extends Fragment
         mMerchantId = (EditText) v.findViewById(R.id.input_merchant_id);
         mStoreName = (EditText) v.findViewById(R.id.input_store_name);
         mStoreCategory = (EditText) v.findViewById(R.id.input_store_category);
+        mInputMobileNum = (EditText) v.findViewById(R.id.input_merchant_mobile);
         mRegisteredOn = (EditText) v.findViewById(R.id.input_registered_on);
         mFirstLogin = (EditText) v.findViewById(R.id.input_first_login);
         mDoB = (EditText) v.findViewById(R.id.input_dob);
@@ -177,14 +183,15 @@ public class MerchantDetailsFragment extends Fragment
         mInputStatus = (EditText) v.findViewById(R.id.input_status);
         mInputReason = (EditText) v.findViewById(R.id.input_status_reason);
         mInputStatusDate = (EditText) v.findViewById(R.id.input_status_date);
-        //mInputRemarks = (EditText) v.findViewById(R.id.input_status_remarks);
 
-        mInputMobileNum = (EditText) v.findViewById(R.id.input_merchant_mobile);
+        mContactName = (EditText) v.findViewById(R.id.input_contact_num);
+        mContactPhone = (EditText) v.findViewById(R.id.input_contact_phone);
         mInputEmail = (EditText) v.findViewById(R.id.input_merchant_email);
 
         mAddress = (EditText) v.findViewById(R.id.input_address);
         mCity = (EditText) v.findViewById(R.id.input_city);
         mState = (EditText) v.findViewById(R.id.input_state);
+        mPincode = (EditText) v.findViewById(R.id.input_pincode);
 
         mCbRate = (EditText) v.findViewById(R.id.input_cbrate);
         mAddCashStatus = (EditText) v.findViewById(R.id.input_addcash);
@@ -192,12 +199,6 @@ public class MerchantDetailsFragment extends Fragment
 
         mAccStatus = (AppCompatButton) v.findViewById(R.id.btn_acc_status);
         mLaunchApp = (AppCompatButton) v.findViewById(R.id.btn_launch_app);
-
-        /*
-        mRadioGroup = (RadioGroup) v.findViewById(R.id.radioGroupActions);
-        mStatusChange = (RadioButton) v.findViewById(R.id.radioButtonStatus);
-        mGetTxns = (RadioButton) v.findViewById(R.id.radioButtonTxns);
-        mGetCustomers = (RadioButton) v.findViewById(R.id.radioButtonCb);*/
     }
 
 }

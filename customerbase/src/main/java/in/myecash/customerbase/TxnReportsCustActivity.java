@@ -149,27 +149,34 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if(motionEvent.getAction()==MotionEvent.ACTION_UP) {
-            int vId = view.getId();
-            LogMy.d(TAG,"In onTouch: "+vId);
+        try {
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                int vId = view.getId();
+                LogMy.d(TAG, "In onTouch: " + vId);
 
-            if (vId == R.id.input_date_from) {
-                // Find the minimum date for DatePicker
-                DateUtil minFrom = new DateUtil(new Date(), TimeZone.getDefault());
-                minFrom.removeDays(MyGlobalSettings.getCustTxnHistoryDays());
+                if (vId == R.id.input_date_from) {
+                    // Find the minimum date for DatePicker
+                    DateUtil minFrom = new DateUtil(new Date(), TimeZone.getDefault());
+                    minFrom.removeDays(MyGlobalSettings.getCustTxnHistoryDays());
 
-                DialogFragment fromDialog = DatePickerDialog.newInstance(mFromDate, minFrom.getTime(), mNow);
-                fromDialog.show(getFragmentManager(), DIALOG_DATE_FROM);
+                    DialogFragment fromDialog = DatePickerDialog.newInstance(mFromDate, minFrom.getTime(), mNow);
+                    fromDialog.show(getFragmentManager(), DIALOG_DATE_FROM);
 
-            } else if (vId == R.id.input_date_to) {
-                if (mFromDate == null) {
-                    AppCommonUtil.toast(this, "Set From Date");
-                } else {
-                    DialogFragment toDialog = DatePickerDialog.newInstance(mToDate, mFromDate, mNow);
-                    toDialog.show(getFragmentManager(), DIALOG_DATE_TO);
+                } else if (vId == R.id.input_date_to) {
+                    if (mFromDate == null) {
+                        AppCommonUtil.toast(this, "Set From Date");
+                    } else {
+                        DialogFragment toDialog = DatePickerDialog.newInstance(mToDate, mFromDate, mNow);
+                        toDialog.show(getFragmentManager(), DIALOG_DATE_TO);
+                    }
+
                 }
-
             }
+        } catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
+            LogMy.e(TAG, "Exception in TxnReportsCustActivity", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
         return true;
     }
@@ -350,24 +357,29 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     public void onBackPressed() {
         int count = getFragmentManager().getBackStackEntryCount();
         LogMy.d(TAG, "In onBackPressed: " + count);
-
-        if (count == 0) {
-            super.onBackPressed();
-        } else {
-            if(!mWorkFragment.mInPauseState) {
-                getFragmentManager().popBackStackImmediate();
-            }
-
-            if(mMerchantId==null || mMerchantId.isEmpty()) {
-                // Case when latest txns are directly shown
-                // i.e. the main layout to enter from, to dates - was not shown
+        try {
+            if (count == 0) {
                 super.onBackPressed();
+            } else {
+                if (!mWorkFragment.mInPauseState) {
+                    getFragmentManager().popBackStackImmediate();
+                }
 
-            } else if(mFragmentContainer.getVisibility()==View.VISIBLE && count==1) {
-                getSupportActionBar().setTitle("Transactions");
-                mMainLayout.setVisibility(View.VISIBLE);
-                mFragmentContainer.setVisibility(View.GONE);
+                if (mMerchantId == null || mMerchantId.isEmpty()) {
+                    // Case when latest txns are directly shown
+                    // i.e. the main layout to enter from, to dates - was not shown
+                    super.onBackPressed();
+
+                } else if (mFragmentContainer.getVisibility() == View.VISIBLE && count == 1) {
+                    getSupportActionBar().setTitle("Transactions");
+                    mMainLayout.setVisibility(View.VISIBLE);
+                    mFragmentContainer.setVisibility(View.GONE);
+                }
             }
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in TxnReportsCustActivity", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
 
     }

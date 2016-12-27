@@ -16,8 +16,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Merchants;
 import in.myecash.common.database.Transaction;
 import in.myecash.merchantbase.entities.MerchantUser;
@@ -52,25 +55,32 @@ public class TxnConfirmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_txn_confirm, container, false);
 
-        bindUiResources(v);
+        try {
+            bindUiResources(v);
 
-        mBtnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // check if invoice num is mandatory
-                if( mMerchant.isInvoiceNumAsk() &&
-                        !mMerchant.isInvoiceNumOptional() &&
-                        mInputInvoiceNum.getText().toString().isEmpty()) {
-                    mInputInvoiceNum.setError("Enter Linked Invoice Number");
-                } else {
-                    AppCommonUtil.hideKeyboard(getActivity());
-                    Transaction curTxn = mCallback.getRetainedFragment().mCurrTransaction.getTransaction();
-                    curTxn.setInvoiceNum(mInputInvoiceNum.getText().toString());
-                    //curTxn.setComments(mInputComments.getText().toString());
-                    mCallback.onTransactionConfirm();
+            mBtnConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // check if invoice num is mandatory
+                    if (mMerchant.isInvoiceNumAsk() &&
+                            !mMerchant.isInvoiceNumOptional() &&
+                            mInputInvoiceNum.getText().toString().isEmpty()) {
+                        mInputInvoiceNum.setError("Enter Linked Invoice Number");
+                    } else {
+                        AppCommonUtil.hideKeyboard(getActivity());
+                        Transaction curTxn = mCallback.getRetainedFragment().mCurrTransaction.getTransaction();
+                        curTxn.setInvoiceNum(mInputInvoiceNum.getText().toString());
+                        //curTxn.setComments(mInputComments.getText().toString());
+                        mCallback.onTransactionConfirm();
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
+        }
 
         return v;
     }
@@ -86,8 +96,15 @@ public class TxnConfirmFragment extends Fragment {
                     + " must implement TxnConfirmFragmentIf");
         }
 
-        mMerchant = MerchantUser.getInstance().getMerchant();
-        displayTransactionValues();
+        try {
+            mMerchant = MerchantUser.getInstance().getMerchant();
+            displayTransactionValues();
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
+        }
     }
 
     private void displayTransactionValues() {

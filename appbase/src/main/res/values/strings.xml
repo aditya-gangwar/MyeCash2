@@ -118,13 +118,15 @@
         <item>Bill Amount</item>
     </string-array>
 
-    <string name="category_hint">Business category</string>
+    <string name="category_hint">* Business category</string>
     <string name="city_hint">City/District</string>
     <string name="state_hint">State</string>
 
-    <string name="address_section_label">Address</string>
+    <string name="address_section_label">* Address</string>
 
     <string name="brand_char_limit">32</string>
+    <string name="full_name_char_limit">30</string>
+    <string name="pincode_char_limit">6</string>
     <string name="customer_name_char_limit">15</string>
     <string name="email_char_limit">150</string>
     <string name="dob_char_limit">8</string>

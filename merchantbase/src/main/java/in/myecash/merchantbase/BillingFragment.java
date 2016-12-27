@@ -1,6 +1,8 @@
 package in.myecash.merchantbase;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -14,7 +16,9 @@ import android.widget.EditText;
 
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.merchantbase.entities.OrderItem;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
@@ -106,25 +110,18 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setItemCnt() {
-        //if(mRetainedFragment.mOrderItems.size() > 0) {
-            String str = "Items : "+String.valueOf(mRetainedFragment.mOrderItems.size());
-            mLabelItemCnt.setText(str);
-        //}
+        String str = "Items : "+String.valueOf(mRetainedFragment.mOrderItems.size());
+        mLabelItemCnt.setText(str);
     }
 
     private void setTotalAmt() {
-        //if(!mCalcMode) {
-            String str = "Bill    " + AppConstants.SYMBOL_RS + String.valueOf(mRetainedFragment.mBillTotal);
-            mBtnTotal.setText(str);
-        //}
+        String str = "Bill    " + AppConstants.SYMBOL_RS + String.valueOf(mRetainedFragment.mBillTotal);
+        mBtnTotal.setText(str);
     }
 
     public void disableFurtherProcess() {
         mInputMoreInfo.setVisibility(View.VISIBLE);
         mInputMoreInfo.setText("* Calculator Only");
-        //mBtnTotal.setText("* Calculator Only");
-        //mBtnTotal.setTextColor(ContextCompat.getColor(getActivity(), R.color.secondary_text));
-        //mBtnTotal.setEnabled(false);
         mCalcMode = true;
     }
 
@@ -139,15 +136,6 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
             String effectiveStr = actualStr.replace(AppConstants.SYMBOL_RS, "");
             LogMy.d(TAG, "In onClick, actualStr: " + actualStr + ", effectiveStr: " + effectiveStr);
 
-        /*if (resId == R.id.label_item_cnt) {
-            if (mRetainedFragment.mOrderItems.size() > 0) {
-                //handlePlus(effectiveStr);
-                mCallback.onViewOrderList();
-            } else {
-                AppCommonUtil.toast(getActivity(), "No Items added");
-            }
-
-        } else */
             if (resId == R.id.btn_bill_total) {
                 if (mCalcMode) {
                     AppCommonUtil.toast(getActivity(), "No Input Customer");
@@ -155,11 +143,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
                 }
                 // do processing for +, just in case user forgets to press it in end
                 handlePlus(effectiveStr);
-                //if(mRetainedFragment.mBillTotal <= 0) {
-                //    AndroidUtil.toast(getActivity(), "Bill amount is 0");
-                //} else {
                 mCallback.onTotalBill();
-                //}
 
             } else if (resId == R.id.input_kb_plus) {
                 handlePlus(effectiveStr);
@@ -197,6 +181,10 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
             }
         } catch (NumberFormatException e) {
             AppCommonUtil.toast(getActivity(), "Invalid Number");
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in BillingFragment:onClick", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 

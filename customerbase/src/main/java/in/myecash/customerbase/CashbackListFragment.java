@@ -78,7 +78,6 @@ public class CashbackListFragment extends Fragment {
             mRetainedFragment = mCallback.getRetainedFragment();
 
             mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
-            //mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
 
             // As the data is in Map - which cant be sorted
             // so create a local list from Map in retained fragment
@@ -93,14 +92,8 @@ public class CashbackListFragment extends Fragment {
 
             // update time
             mUpdated.setText(mSdfDateWithTime.format(mRetainedFragment.mCbsUpdateTime));
-            /*String txt = null;
-            if(MyGlobalSettings.getCustNoRefreshHrs()==24) {
-                // 24 is treated as special case as 'once in a day'
-                txt = "Data is updated once a day";
-            } else {
-                txt = "Data is updated only once every " + MyGlobalSettings.getMchntDashBNoRefreshHrs() + " hours.";
-            }
-            mUpdatedDetail.setText(txt);*/
+
+            setHasOptionsMenu(true);
 
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
@@ -111,9 +104,8 @@ public class CashbackListFragment extends Fragment {
             DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true);
             notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
             notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
         }
-
-        setHasOptionsMenu(true);
     }
 
     private void sortList(int sortType) {
@@ -183,10 +175,16 @@ public class CashbackListFragment extends Fragment {
         if(resultCode != Activity.RESULT_OK) {
             return;
         }
-        if(requestCode==REQ_SORT_CUST_TYPES) {
-            int sortType = data.getIntExtra(SortMchntDialog.EXTRA_SELECTION, MyCashback.CB_CMP_TYPE_UPDATE_TIME);
-            sortList(sortType);
-            updateUI();
+        try {
+            if (requestCode == REQ_SORT_CUST_TYPES) {
+                int sortType = data.getIntExtra(SortMchntDialog.EXTRA_SELECTION, MyCashback.CB_CMP_TYPE_UPDATE_TIME);
+                sortList(sortType);
+                updateUI();
+            }
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 
@@ -194,7 +192,14 @@ public class CashbackListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         //mCallback.setDrawerState(false);
-        updateUI();
+        try {
+            updateUI();
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
+        }
     }
 
     @Override
@@ -299,34 +304,40 @@ public class CashbackListFragment extends Fragment {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if(event.getAction()==MotionEvent.ACTION_UP) {
-                LogMy.d(TAG,"In onTouch: "+v.getId());
+            try {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    LogMy.d(TAG, "In onTouch: " + v.getId());
 
-                // getRootView was not working, so manually finding root view
-                // depending upon views on which listener is set
-                View rootView = null;
-                if(v.getId()==mCardView.getId()) {
-                    rootView = (View) v.getParent();
-                    LogMy.d(TAG,"Clicked first level view "+rootView.getId());
+                    // getRootView was not working, so manually finding root view
+                    // depending upon views on which listener is set
+                    View rootView = null;
+                    if (v.getId() == mCardView.getId()) {
+                        rootView = (View) v.getParent();
+                        LogMy.d(TAG, "Clicked first level view " + rootView.getId());
 
-                } else if(v.getId()==mLayoutMchntItem.getId()) {
-                    rootView = (View) v.getParent().getParent();
-                    LogMy.d(TAG,"Clicked first-a level view "+rootView.getId());
+                    } else if (v.getId() == mLayoutMchntItem.getId()) {
+                        rootView = (View) v.getParent().getParent();
+                        LogMy.d(TAG, "Clicked first-a level view " + rootView.getId());
 
-                } else if(v.getId()==mMerchantDp.getId()) {
-                    rootView = (View) v.getParent().getParent().getParent();
-                    LogMy.d(TAG,"Clicked 2nd level view "+rootView.getId());
+                    } else if (v.getId() == mMerchantDp.getId()) {
+                        rootView = (View) v.getParent().getParent().getParent();
+                        LogMy.d(TAG, "Clicked 2nd level view " + rootView.getId());
 
-                } else if(v.getId()==mCategoryNdCity.getId() || v.getId()==mLastTxnTime.getId()) {
-                    rootView = (View) v.getParent().getParent().getParent().getParent().getParent();
-                    LogMy.d(TAG,"Clicked 3rd level view "+rootView.getId());
+                    } else if (v.getId() == mCategoryNdCity.getId() || v.getId() == mLastTxnTime.getId()) {
+                        rootView = (View) v.getParent().getParent().getParent().getParent().getParent();
+                        LogMy.d(TAG, "Clicked 3rd level view " + rootView.getId());
 
-                } else {
-                    rootView = (View) v.getParent().getParent().getParent().getParent().getParent().getParent();
-                    LogMy.d(TAG,"Clicked 4th level view "+rootView.getId());
+                    } else {
+                        rootView = (View) v.getParent().getParent().getParent().getParent().getParent().getParent();
+                        LogMy.d(TAG, "Clicked 4th level view " + rootView.getId());
+                    }
+
+                    rootView.performClick();
                 }
-
-                rootView.performClick();
+            } catch (Exception e) {
+                LogMy.e(TAG, "Exception in Fragment: ", e);
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
             return true;
         }

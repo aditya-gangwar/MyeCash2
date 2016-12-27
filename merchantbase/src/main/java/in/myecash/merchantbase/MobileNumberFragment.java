@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.LogMy;
@@ -64,42 +65,48 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        // process the keys
-        String curStr = mInputCustMobile.getText().toString();
-        // remove dots
-        curStr = curStr.replace(MOBILE_NUM_EMPTY_CHAR,"");
-        String newStr="";
+        try {
+            // process the keys
+            String curStr = mInputCustMobile.getText().toString();
+            // remove dots
+            curStr = curStr.replace(MOBILE_NUM_EMPTY_CHAR, "");
+            String newStr = "";
 
-        if(v.getId() == R.id.input_kb_bs) {
-            if(curStr.length()>0) {
+            if (v.getId() == R.id.input_kb_bs) {
+                if (curStr.length() > 0) {
+                    //mInputCustMobile.setText("");
+                    //mInputCustMobile.append(curStr,0,(curStr.length()-1));
+                    newStr = curStr.substring(0, (curStr.length() - 1));
+                }
+            } else if (v.getId() == R.id.input_kb_clear) {
                 //mInputCustMobile.setText("");
-                //mInputCustMobile.append(curStr,0,(curStr.length()-1));
-                newStr = curStr.substring(0,(curStr.length()-1));
+                newStr = "";
+            } else {
+                Button key = (Button) v;
+                // ignore 0 as first entered digit
+                if (!(v.getId() == R.id.input_kb_0 && curStr.isEmpty())) {
+                    //mInputCustMobile.append(key.getText());
+                    newStr = curStr + key.getText();
+                }
             }
-        } else if(v.getId() == R.id.input_kb_clear) {
-            //mInputCustMobile.setText("");
-            newStr="";
-        } else {
-            Button key = (Button)v;
-            // ignore 0 as first entered digit
-            if( !(v.getId()== R.id.input_kb_0 && curStr.isEmpty())) {
-                //mInputCustMobile.append(key.getText());
-                newStr = curStr+key.getText();
-            }
-        }
 
-        // Add dots for remaining length
-        //String strWithoutDots = mInputCustMobile.getText().toString();
-        if(newStr.length() > 0) {
-            mStrDots.delete(0, mStrDots.length());
-            for(int i=newStr.length(); i<CommonConstants.MOBILE_NUM_LENGTH; i++) {
-                mStrDots.append(MOBILE_NUM_EMPTY_CHAR);
+            // Add dots for remaining length
+            //String strWithoutDots = mInputCustMobile.getText().toString();
+            if (newStr.length() > 0) {
+                mStrDots.delete(0, mStrDots.length());
+                for (int i = newStr.length(); i < CommonConstants.MOBILE_NUM_LENGTH; i++) {
+                    mStrDots.append(MOBILE_NUM_EMPTY_CHAR);
+                }
+                String finalStr = newStr + mStrDots.toString();
+                //String finalStr = newStr;
+                mInputCustMobile.setText(finalStr);
+            } else {
+                mInputCustMobile.setText(newStr);
             }
-            String finalStr = newStr+mStrDots.toString();
-            //String finalStr = newStr;
-            mInputCustMobile.setText(finalStr);
-        } else {
-            mInputCustMobile.setText(newStr);
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in MobileNumberFragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 

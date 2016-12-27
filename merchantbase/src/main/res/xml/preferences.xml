@@ -14,12 +14,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="CASH ACCOUNT">
+        android:title="ACCOUNT">
 
         <SwitchPreference
-            android:title="Add Cash Enabled"
+            android:title="Cash Account Add"
             android:key="settings_cl_add_enabled"
-            android:summary="Enable add cash to customer account.">
+            android:summary="Enable/Disable 'add cash' to customer account.">
         </SwitchPreference>
     </PreferenceCategory>
 
@@ -27,29 +27,29 @@
         android:title="PROFILE">
 
         <in.myecash.merchantbase.PasswordPreference
-            android:title="Change Password"
+            android:title="Account Password"
             android:key="settings_change_password"
             android:summary="Change your account password."/>
 
         <in.myecash.merchantbase.MobileChangePreference
-            android:title="Change Mobile"
+            android:title="Registered Mobile"
             android:key="settings_change_mobile"
-            android:summary="Change your mobile number"/>
-
-        <!--EditTextPreference
-            android:title="Mobile Number"
-            android:key="settings_mobile_num"
-            android:summary="Change as contact mobile number.\nValidation PIN will be sent on new number."
-            android:inputType="number"
-            android:digits="0123456789"
-            android:maxLength="@string/mobile_char_limit">
-        </EditTextPreference-->
+            android:summary="Change your registered mobile number"/>
 
         <EditTextPreference
             android:title="Email"
             android:key="settings_email_id"
-            android:summary="Change as contact email id."
+            android:summary="Change your contact email id."
             android:maxLength="@string/email_char_limit">
+        </EditTextPreference>
+
+        <EditTextPreference
+            android:title="Contact Number"
+            android:key="settings_contact_num"
+            android:summary="Change contact phone number."
+            android:inputType="number"
+            android:digits="0123456789"
+            android:maxLength="@string/mobile_char_limit">
         </EditTextPreference>
 
     </PreferenceCategory>

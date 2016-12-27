@@ -16,6 +16,9 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.DialogFragmentWrapper;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.MerchantStats;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
@@ -70,16 +73,15 @@ public class DashboardTxnFragment extends Fragment {
 
         // Setting values here and not in onCreateView - as mMerchantStats is not available in it
         // first time show data for mDashboardSelectedIndx = 0
-        int type = getArguments().getInt(ARG_DBOARD_TYPE);
-        updateData(type);
-        // update time
-        /*
-        SimpleDateFormat sdf = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_TIME_12, CommonConstants.DATE_LOCALE);
-        Date updateTime = mMerchantStats.getUpdated();
-        if(updateTime==null) {
-            updateTime = mMerchantStats.getCreated();
+        try {
+            int type = getArguments().getInt(ARG_DBOARD_TYPE);
+            updateData(type);
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
         }
-        mUpdated.setText(sdf.format(updateTime));*/
     }
 
     @Override
@@ -99,38 +101,6 @@ public class DashboardTxnFragment extends Fragment {
         //initChoiceChartType();
         return v;
     }
-
-    /*
-    private void initChoiceChartType() {
-        final String[] dashboardTypeArray = getResources().getStringArray(R.array.merchant_dashboard_type_array);
-        mDashboardType.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AndroidUtil.hideKeyboard(getActivity());
-                DialogFragmentWrapper dialog = DialogFragmentWrapper.createSingleChoiceDialog("Dashboard Type", dashboardTypeArray, -1, true);
-                dialog.setTargetFragment(DashboardFragment.this, REQUEST_DASHBOARD_TYPE);
-                dialog.show(getFragmentManager(), DIALOG_DASHBOARD_TYPE);
-            }
-        });
-        // initially set
-        mDashboardType.setText(dashboardTypeArray[DASHBOARD_TYPE_INIT_INDEX]);
-    }
-
-   @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LogMy.d(TAG, "In onActivityResult" + requestCode + "," + resultCode);
-        if (requestCode == REQUEST_DASHBOARD_TYPE) {
-            if (resultCode == ErrorCodes.NO_ERROR) {
-                int index = data.getIntExtra(DialogFragmentWrapper.EXTRA_SELECTION_INDEX, -1);
-                if(index != -1) {
-                    String[] array = getResources().getStringArray(R.array.merchant_dashboard_type_array);
-                    mDashboardType.setText(array[index]);
-                    // Show new chart
-                    updateData(index);
-                }
-            }
-        }
-    }*/
 
     private void updateData(int index) {
         switch(index) {
