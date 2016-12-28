@@ -666,6 +666,7 @@ public class CashTransactionFragment extends Fragment implements
         } else {
             trans.setUsedCardId("");
         }
+
         mRetainedFragment.mCurrTransaction = new MyTransaction(trans);
     }
 

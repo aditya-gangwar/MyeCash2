@@ -345,7 +345,11 @@ public class MerchantUser
         }
         try {
             isLoginValid();
-            txn.commit(pin);
+            txn.getTransaction().setCpin(pin);
+            /*Transaction newTxn = MerchantServices.getInstance().commitTxn(txn.getTransaction());
+            LogMy.d(TAG, "Txn commit success: " + newTxn.getTrans_id());
+            txn.setCurrTransaction(newTxn);*/
+            txn.commit();
 
         } catch( BackendlessException e ) {
             LogMy.e(TAG, "Commit cash transaction failed: " + e.toString());

@@ -8,10 +8,10 @@ public class DbConstants {
     // Users table - 'user_type' column values
     public static final int USER_TYPE_MERCHANT = 0;
     public static final int USER_TYPE_CUSTOMER = 1;
-    public static final int USER_TYPE_AGENT = 2;
-    public static final int USER_TYPE_CC = 3;
-    public static final int USER_TYPE_CCNT = 4;
-    public static final int USER_TYPE_ADMIN = 5;
+    public static final int USER_TYPE_AGENT = 22;
+    public static final int USER_TYPE_CC = 33;
+    public static final int USER_TYPE_CCNT = 44;
+    public static final int USER_TYPE_ADMIN = 99;
     // user type code to text description
     public static String userTypeDesc[] = {
             "Merchant",

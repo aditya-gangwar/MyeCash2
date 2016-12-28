@@ -37,7 +37,7 @@ public class MyBusinessCategories
         BackendlessDataQuery dataQuery = new BackendlessDataQuery();
         QueryOptions queryOptions = new QueryOptions("category_name");
         dataQuery.setQueryOptions(queryOptions);
-        dataQuery.setPageSize(CommonConstants.dbQueryMaxPageSize);
+        dataQuery.setPageSize(CommonConstants.DB_QUERY_PAGE_SIZE);
 
         Backendless.Data.of( BusinessCategories.class ).find( dataQuery, new AsyncCallback<BackendlessCollection<BusinessCategories>>()
         {

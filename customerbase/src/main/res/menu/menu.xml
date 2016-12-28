@@ -40,7 +40,7 @@
                 <item
                     android:id="@+id/menu_change_mobile"
                     android:title="Change Mobile"
-                    android:icon="@drawable/ic_contact_phone_black_24dp" />
+                    android:icon="@drawable/ic_phone_android_black_24dp" />
                 <item
                     android:id="@+id/menu_change_passwd"
                     android:title="Change Password"
@@ -51,13 +51,21 @@
                     android:icon="@drawable/ic_lock_outline_black_24dp" />
                 <item
                     android:id="@+id/menu_forgot_pin"
-                    android:title="Forgot PIN"
+                    android:title="Reset PIN"
                     android:icon="@drawable/ic_lock_black_24dp"/>
             </group>
         </menu>
     </item>
 
-    <item
+    <group android:checkableBehavior="single"
+        android:id="@+id/grp2">
+        <item
+            android:id="@+id/menu_faq"
+            android:title="Help and FAQs"
+            android:icon="@drawable/ic_help_outline_black_24dp" />
+    </group>
+
+    <!--item
         android:id="@+id/current_subheader2"
         android:title="Help">
         <menu>
@@ -77,7 +85,7 @@
                     android:icon="@drawable/ic_perm_phone_msg_black_24dp" />
             </group>
         </menu>
-    </item>
+    </item-->
 
 
 

@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -100,6 +101,10 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
             mFragMgr.beginTransaction().add(mWorkFragment, RETAINED_FRAGMENT).commit();
         }
 
+        // get passed merchant details
+        mMerchantId = getIntent().getStringExtra(EXTRA_MERCHANT_ID);
+        mMerchantName = getIntent().getStringExtra(EXTRA_MERCHANT_NAME);
+
         // Init date members
         mNow = new Date();
         // end of today
@@ -123,10 +128,6 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
         } else {
             mDetailedTxnPos = -1;
         }
-
-        // get passed merchant details
-        mMerchantId = getIntent().getStringExtra(EXTRA_MERCHANT_ID);
-        mMerchantName = getIntent().getStringExtra(EXTRA_MERCHANT_NAME);
     }
 
     @Override
@@ -311,11 +312,25 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
+    /*@Override
     public void showMchntDetails(String mchntId) {
         MerchantDetailsDialog dialog = MerchantDetailsDialog.newInstance(mchntId);
         dialog.show(getFragmentManager(), DIALOG_MERCHANT_DETAILS);
     }
+
+    @Override
+    public void getMchntTxns(String id, String name) {
+        finish();
+        // start itself again
+        Intent intent = new Intent( this, TxnReportsCustActivity.class );
+        if(id!=null) {
+            intent.putExtra(TxnReportsCustActivity.EXTRA_MERCHANT_ID, id);
+        }
+        if(name!=null) {
+            intent.putExtra(TxnReportsCustActivity.EXTRA_MERCHANT_NAME, name);
+        }
+        startActivity(intent);
+    }*/
 
     private void startTxnListFragment() {
         Fragment fragment = mFragMgr.findFragmentByTag(TXN_LIST_FRAGMENT);

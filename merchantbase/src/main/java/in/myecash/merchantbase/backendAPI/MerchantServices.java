@@ -102,5 +102,9 @@ import in.myecash.common.database.Transaction;
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "cancelTxn", args, Transaction.class);
     }
 
-
+    /*public Transaction commitTxn(Transaction txn)
+    {
+        Object[] args = new Object[]{txn};
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "commitTxn", args, Transaction.class );
+    }*/
 }

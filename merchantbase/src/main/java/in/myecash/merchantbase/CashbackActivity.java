@@ -1409,7 +1409,9 @@ public class CashbackActivity extends AppCompatActivity implements
     private void goToMobileNumFrag() {
         LogMy.d(TAG, "In goToMobileNumFrag");
         // Pop all fragments uptil mobile number one
-        mFragMgr.popBackStackImmediate(MOBILE_NUM_FRAGMENT, 0);
+        if (!mMobileNumFragment.isVisible()) {
+            mFragMgr.popBackStackImmediate(MOBILE_NUM_FRAGMENT, 0);
+        }
         updateTbForMerchant();
         setDrawerState(true);
     }
@@ -1757,7 +1759,8 @@ public class CashbackActivity extends AppCompatActivity implements
                 }
                 if (mMobileNumFragment.isVisible()) {
                     LogMy.d(TAG, "Mobile num fragment visible");
-                    goToMobileNumFrag();
+                    //goToMobileNumFrag();
+                    restartTxn();
                 }
             }
         }

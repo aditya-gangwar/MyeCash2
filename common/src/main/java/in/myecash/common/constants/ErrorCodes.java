@@ -55,6 +55,8 @@ public class ErrorCodes {
     public static final int FAILED_ATTEMPT_LIMIT_RCHD = 540;
     public static final int TRUSTED_DEVICE_LIMIT_RCHD = 541;
     public static final int CASH_ACCOUNT_LIMIT_RCHD = 542;
+    public static final int ACCOUNT_NOT_ENUF_BALANCE = 543;
+    public static final int CB_NOT_ENUF_BALANCE = 544;
 
     // Format related errors
     public static final int EMPTY_VALUE = 550;
@@ -129,6 +131,8 @@ public class ErrorCodes {
         aMap.put(FAILED_ATTEMPT_LIMIT_RCHD,"Failed attempt limit reached. Account is Locked for next %s hours.");
         aMap.put(TRUSTED_DEVICE_LIMIT_RCHD,"Trusted device limit reached. To continue, login from any trusted device and delete any from the trusted devices.");
         aMap.put(CASH_ACCOUNT_LIMIT_RCHD,"Cash Account balance more than INR %s. Change 'Cash Paid'.");
+        aMap.put(ACCOUNT_NOT_ENUF_BALANCE,"Not enough Cash Account balance available");
+        aMap.put(CB_NOT_ENUF_BALANCE,"Not enough Cashback balance available");
 
 
         aMap.put(EMPTY_VALUE,"Empty input value");

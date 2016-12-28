@@ -113,8 +113,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/balance_toolbar"
-            android:paddingLeft="@dimen/screen_side_padding"
-            android:paddingRight="@dimen/screen_side_padding"
             android:orientation="vertical"
             android:layout_below="@id/toolbar">
 
@@ -127,7 +125,7 @@
                     style="@style/Edittext_only_view_medium"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="Balance"
+                    android:text="Total Balance"
                     android:textStyle="bold"
                     android:textColor="@color/secondary_text"
                     android:layout_weight="1"
@@ -149,7 +147,7 @@
                     android:textColor="@color/secondary_text"/>
 
                 <Space
-                    android:layout_width="@dimen/XL_space"
+                    android:layout_width="@dimen/large_space"
                     android:layout_height="match_parent" />
 
                 <ImageView

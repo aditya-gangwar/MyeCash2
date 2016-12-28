@@ -51,7 +51,7 @@ public class MyTransaction {
             BackendlessDataQuery dataQuery = new BackendlessDataQuery();
             QueryOptions queryOptions = new QueryOptions("created");
             dataQuery.setQueryOptions(queryOptions);
-            dataQuery.setPageSize(CommonConstants.dbQueryMaxPageSize);
+            dataQuery.setPageSize(CommonConstants.DB_QUERY_PAGE_SIZE);
             dataQuery.setWhereClause(whereClause);
 
             LogMy.d(TAG, "Before remote call");
@@ -94,10 +94,8 @@ public class MyTransaction {
         return map.values();
     }
 
-    public void commit(String pin) {
+    public void commit() {
         LogMy.d(TAG, "In commit");
-
-        mCurrTransaction.setCpin(pin);
         mCurrTransaction = Backendless.Persistence.save( mCurrTransaction );
     }
 

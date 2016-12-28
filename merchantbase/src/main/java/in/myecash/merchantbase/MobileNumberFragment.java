@@ -165,6 +165,7 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
     public void onResume() {
         LogMy.d(TAG, "In onResume");
         super.onResume();
+        mInputCustMobile.setError(null);
         mInputCustMobile.setText("");
     }
 

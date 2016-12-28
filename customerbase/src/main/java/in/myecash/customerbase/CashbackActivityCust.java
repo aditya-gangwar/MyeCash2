@@ -59,7 +59,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
         PasswdChangeDialog.PasswdChangeDialogIf, MobileChangeDialog.MobileChangeDialogIf,
         OtpPinInputDialog.OtpPinInputDialogIf, CashbackListFragment.CashbackListFragmentIf,
         PinResetDialog.PinResetDialogIf, PinChangeDialog.PinChangeDialogIf,
-        MerchantDetailsDialog.MerchantDetailsDialogIf {
+        MerchantDetailsDialog.MerchantDetailsDialogIf, CustomerOpListFrag.CustomerOpListFragIf {
 
     private static final String TAG = "CustApp-CashbackActivity";
     public static final String INTENT_EXTRA_USER_TOKEN = "extraUserToken";
@@ -322,9 +322,6 @@ public class CashbackActivityCust extends AppCompatActivity implements
             dialog.show(getFragmentManager(), DIALOG_CHANGE_PASSWORD);
 
         } else if (i == R.id.menu_faq) {
-        } else if (i == R.id.menu_terms) {
-        } else if (i == R.id.menu_contact_us) {
-        } else {
         }
 
         // Highlight the selected item has been done by NavigationView

@@ -196,68 +196,73 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     @Override
     protected int handleMsg(Message msg) {
         int error = ErrorCodes.NO_ERROR;
-        switch(msg.what) {
-            case MyRetainedFragment.REQUEST_GET_CASHBACK:
-                error = getCashback((String) msg.obj);
-                break;
-            case MyRetainedFragment.REQUEST_LOGIN:
-                error = loginMerchant((MessageLogin) msg.obj);
-                break;
-            case MyRetainedFragment.REQUEST_REGISTER_CUSTOMER:
-                error = registerCustomer((MessageCustRegister) msg.obj);
-                break;
-            case MyRetainedFragment.REQUEST_COMMIT_TRANS:
-                //commitCashTrans((Transaction) msg.obj);
-                error = commitCashTrans((String) msg.obj);
-                break;
-            case MyRetainedFragment.REQUEST_UPDATE_MERCHANT_SETTINGS:
-                error = updateMerchantSettings();
-                break;
-            case MyRetainedFragment.REQUEST_LOGOUT_MERCHANT:
-                error = logoutMerchant();
-                break;
-            case MyRetainedFragment.REQUEST_FETCH_TXNS:
-                error = fetchTransactions((String) msg.obj);
-                break;
-            case MyRetainedFragment.REQUEST_FETCH_TXN_FILES:
-                error = fetchTxnFiles((Context) msg.obj);
-                break;
-            case MyRetainedFragment.REQUEST_GENERATE_MERCHANT_PWD:
-                error = generatePassword((MessageResetPassword) msg.obj);
-                break;
-            case MyRetainedFragment.REQUEST_ADD_CUSTOMER_OP:
-                error = executeCustOp();
-                break;
-            case MyRetainedFragment.REQUEST_CHANGE_PASSWD:
-                error = changePassword((MessageChangePassword) msg.obj);
-                break;
-            case MyRetainedFragment.REQUEST_UPLOAD_IMG:
-                error = uploadImgFile((MessageImgUpload) msg.obj);
-                break;
-            case MyRetainedFragment.REQUEST_DELETE_TRUSTED_DEVICE:
-                error = deleteDevice((Integer) msg.obj);
-                break;
-            case MyRetainedFragment.REQUEST_CHANGE_MOBILE:
-                error = changeMobileNum();
-                break;
-            case MyRetainedFragment.REQUEST_MERCHANT_STATS:
-                error = fetchMerchantStats();
-                break;
-            case MyRetainedFragment.REQUEST_FORGOT_ID:
-                error = forgotId((MessageForgotId) msg.obj);
-                break;
-            case MyRetainedFragment.REQUEST_ARCHIVE_TXNS:
-                error = archiveTxns();
-                break;
-            case MyRetainedFragment.REQUEST_CUST_DATA_FILE_DOWNLOAD:
-                error = downloadFile((MessageFileDownload) msg.obj);
-                break;
-            case MyRetainedFragment.REQUEST_FETCH_MERCHANT_OPS:
-                error = fetchMerchantOps();
-                break;
-            case MyRetainedFragment.REQUEST_CANCEL_TXN:
-                error = cancelTxn((MessageCancelTxn) msg.obj);
-                break;
+        try {
+            switch (msg.what) {
+                case MyRetainedFragment.REQUEST_GET_CASHBACK:
+                    error = getCashback((String) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_LOGIN:
+                    error = loginMerchant((MessageLogin) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_REGISTER_CUSTOMER:
+                    error = registerCustomer((MessageCustRegister) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_COMMIT_TRANS:
+                    //commitCashTrans((Transaction) msg.obj);
+                    error = commitCashTrans((String) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_UPDATE_MERCHANT_SETTINGS:
+                    error = updateMerchantSettings();
+                    break;
+                case MyRetainedFragment.REQUEST_LOGOUT_MERCHANT:
+                    error = logoutMerchant();
+                    break;
+                case MyRetainedFragment.REQUEST_FETCH_TXNS:
+                    error = fetchTransactions((String) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_FETCH_TXN_FILES:
+                    error = fetchTxnFiles((Context) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_GENERATE_MERCHANT_PWD:
+                    error = generatePassword((MessageResetPassword) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_ADD_CUSTOMER_OP:
+                    error = executeCustOp();
+                    break;
+                case MyRetainedFragment.REQUEST_CHANGE_PASSWD:
+                    error = changePassword((MessageChangePassword) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_UPLOAD_IMG:
+                    error = uploadImgFile((MessageImgUpload) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_DELETE_TRUSTED_DEVICE:
+                    error = deleteDevice((Integer) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_CHANGE_MOBILE:
+                    error = changeMobileNum();
+                    break;
+                case MyRetainedFragment.REQUEST_MERCHANT_STATS:
+                    error = fetchMerchantStats();
+                    break;
+                case MyRetainedFragment.REQUEST_FORGOT_ID:
+                    error = forgotId((MessageForgotId) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_ARCHIVE_TXNS:
+                    error = archiveTxns();
+                    break;
+                case MyRetainedFragment.REQUEST_CUST_DATA_FILE_DOWNLOAD:
+                    error = downloadFile((MessageFileDownload) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_FETCH_MERCHANT_OPS:
+                    error = fetchMerchantOps();
+                    break;
+                case MyRetainedFragment.REQUEST_CANCEL_TXN:
+                    error = cancelTxn((MessageCancelTxn) msg.obj);
+                    break;
+            }
+        } catch (Exception e) {
+            LogMy.e(TAG,"Unhandled exception in BG thread", e);
+            error = ErrorCodes.GENERAL_ERROR;
         }
         return error;
     }

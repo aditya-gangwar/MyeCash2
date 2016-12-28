@@ -36,7 +36,7 @@ public class TxnDetailsDialog extends DialogFragment {
 
     public interface TxnDetailsDialogIf {
         MyRetainedFragment getRetainedFragment();
-        void showMchntDetails(String mchntId);
+        //void showMchntDetails(String mchntId);
         //void showTxnImg(int currTxnPos);
     }
 
@@ -122,8 +122,8 @@ public class TxnDetailsDialog extends DialogFragment {
             mInputAccDebit.setText(AppCommonUtil.getAmtStr(txn.getCl_debit()));
 
             mInputMerchant.setText(txn.getMerchant_name());
-            //mInputMchntId.setText(txn.getMerchant_id());
-            mInputMerchant.setOnTouchListener(new View.OnTouchListener() {
+            mInputMchntId.setText(txn.getMerchant_id());
+            /*mInputMchntId.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
@@ -134,7 +134,7 @@ public class TxnDetailsDialog extends DialogFragment {
                     return false;
                 }
             });
-            mInputMerchant.setText(Html.fromHtml("<u>"+txn.getMerchant_id()+"</u>"));
+            mInputMchntId.setText(Html.fromHtml("<u>"+txn.getMerchant_id()+"</u>"));*/
 
             // Changes if cancelled txn
             if(txn.getCancelTime()!=null) {

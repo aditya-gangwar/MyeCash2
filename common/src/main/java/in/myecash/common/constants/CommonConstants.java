@@ -81,7 +81,7 @@ public class CommonConstants {
     public static final int PINCODE_LEN = 6;
 
     public static final int MAX_DEVICES_PER_MERCHANT = 3;
-    public static final int dbQueryMaxPageSize = 100;
+    public static final int DB_QUERY_PAGE_SIZE = 100;
 
     /*
      * Backend path constants

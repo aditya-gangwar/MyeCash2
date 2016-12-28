@@ -37,7 +37,7 @@ public class MyCities
         BackendlessDataQuery dataQuery = new BackendlessDataQuery();
         QueryOptions queryOptions = new QueryOptions("city");
         dataQuery.setQueryOptions(queryOptions);
-        dataQuery.setPageSize(CommonConstants.dbQueryMaxPageSize);
+        dataQuery.setPageSize(CommonConstants.DB_QUERY_PAGE_SIZE);
 
         Backendless.Data.of( Cities.class ).find(dataQuery, new AsyncCallback<BackendlessCollection<Cities>>() {
             @Override

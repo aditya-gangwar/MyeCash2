@@ -10,118 +10,59 @@ import java.util.Date;
 
 public class Transaction implements Serializable
 {
-  private Integer cb_credit;
-  private Integer cl_credit;
-  private java.util.Date create_time;
-  private Integer cb_billed;
-  private Integer cl_debit;
   private String cust_private_id;
-  private Boolean archived;
-  private String ownerId;
-  private String customer_id;
-  private String objectId;
-  private java.util.Date updated;
-  private String cpin;
-  private String cb_percent;
-  private String trans_id;
-  private String merchant_id;
-  private java.util.Date created;
-  private Integer total_billed;
-  private Integer cb_debit;
-  private Cashback cashback;
-  private String merchant_name;
-  private String usedCardId;
-  private String imgFileName;
-  private java.util.Date cancelTime;
-  private String invoiceNum;
   private String canImgFileName;
-
-  public String getInvoiceNum() {
-    return invoiceNum;
+  private String usedCardId;
+  private Integer cl_debit;
+  private Integer total_billed;
+  private Integer cl_credit;
+  private String trans_id;
+  private Integer cb_billed;
+  private String objectId;
+  private java.util.Date create_time;
+  private String cpin;
+  private String merchant_id;
+  private Boolean archived;
+  private String imgFileName;
+  private java.util.Date created;
+  private String merchant_name;
+  private String ownerId;
+  private Integer cb_debit;
+  private String customer_id;
+  private String cb_percent;
+  private String invoiceNum;
+  private java.util.Date cancelTime;
+  private Integer cb_credit;
+  private java.util.Date updated;
+  private Cashback cashback;
+  public String getCust_private_id()
+  {
+    return cust_private_id;
   }
 
-  public void setInvoiceNum(String invoiceNum) {
-    this.invoiceNum = invoiceNum;
+  public void setCust_private_id( String cust_private_id )
+  {
+    this.cust_private_id = cust_private_id;
   }
 
-  public String getCanImgFileName() {
+  public String getCanImgFileName()
+  {
     return canImgFileName;
   }
 
-  public void setCanImgFileName(String canImgFileName) {
+  public void setCanImgFileName( String canImgFileName )
+  {
     this.canImgFileName = canImgFileName;
   }
 
-  public Date getCancelTime() {
-    return cancelTime;
-  }
-
-  public void setCancelTime(Date cancelTime) {
-    this.cancelTime = cancelTime;
-  }
-
-  public String getImgFileName() {
-    return imgFileName;
-  }
-
-  public void setImgFileName(String imgFileName) {
-    this.imgFileName = imgFileName;
-  }
-
-  public String getUsedCardId() {
+  public String getUsedCardId()
+  {
     return usedCardId;
   }
 
-  public void setUsedCardId(String usedCardId) {
+  public void setUsedCardId( String usedCardId )
+  {
     this.usedCardId = usedCardId;
-  }
-
-  public String getMerchant_name() {
-    return merchant_name;
-  }
-
-  public void setMerchant_name(String merchant_name) {
-    this.merchant_name = merchant_name;
-  }
-
-  public Integer getCb_credit()
-  {
-    return cb_credit;
-  }
-
-  public void setCb_credit( Integer cb_credit )
-  {
-    this.cb_credit = cb_credit;
-  }
-
-  public Integer getCl_credit()
-  {
-    return cl_credit;
-  }
-
-  public void setCl_credit( Integer cl_credit )
-  {
-    this.cl_credit = cl_credit;
-  }
-
-  public java.util.Date getCreate_time()
-  {
-    return create_time;
-  }
-
-  public void setCreate_time( java.util.Date create_time )
-  {
-    this.create_time = create_time;
-  }
-
-  public Integer getCb_billed()
-  {
-    return cb_billed;
-  }
-
-  public void setCb_billed( Integer cb_billed )
-  {
-    this.cb_billed = cb_billed;
   }
 
   public Integer getCl_debit()
@@ -134,69 +75,24 @@ public class Transaction implements Serializable
     this.cl_debit = cl_debit;
   }
 
-  public String getCust_private_id()
+  public Integer getTotal_billed()
   {
-    return cust_private_id;
+    return total_billed;
   }
 
-  public void setCust_private_id( String cust_private_id )
+  public void setTotal_billed( Integer total_billed )
   {
-    this.cust_private_id = cust_private_id;
+    this.total_billed = total_billed;
   }
 
-  public Boolean getArchived()
+  public Integer getCl_credit()
   {
-    return archived;
+    return cl_credit;
   }
 
-  public void setArchived( Boolean archived )
+  public void setCl_credit( Integer cl_credit )
   {
-    this.archived = archived;
-  }
-
-  public String getOwnerId()
-  {
-    return ownerId;
-  }
-
-  public String getCustomer_id()
-  {
-    return customer_id;
-  }
-
-  public void setCustomer_id( String customer_id )
-  {
-    this.customer_id = customer_id;
-  }
-
-  public String getObjectId()
-  {
-    return objectId;
-  }
-
-  public java.util.Date getUpdated()
-  {
-    return updated;
-  }
-
-  public String getCpin()
-  {
-    return cpin;
-  }
-
-  public void setCpin( String cpin )
-  {
-    this.cpin = cpin;
-  }
-
-  public String getCb_percent()
-  {
-    return cb_percent;
-  }
-
-  public void setCb_percent( String cb_percent )
-  {
-    this.cb_percent = cb_percent;
+    this.cl_credit = cl_credit;
   }
 
   public String getTrans_id()
@@ -209,6 +105,41 @@ public class Transaction implements Serializable
     this.trans_id = trans_id;
   }
 
+  public Integer getCb_billed()
+  {
+    return cb_billed;
+  }
+
+  public void setCb_billed( Integer cb_billed )
+  {
+    this.cb_billed = cb_billed;
+  }
+
+  public String getObjectId()
+  {
+    return objectId;
+  }
+
+  public java.util.Date getCreate_time()
+  {
+    return create_time;
+  }
+
+  public void setCreate_time( java.util.Date create_time )
+  {
+    this.create_time = create_time;
+  }
+
+  public String getCpin()
+  {
+    return cpin;
+  }
+
+  public void setCpin( String cpin )
+  {
+    this.cpin = cpin;
+  }
+
   public String getMerchant_id()
   {
     return merchant_id;
@@ -219,19 +150,44 @@ public class Transaction implements Serializable
     this.merchant_id = merchant_id;
   }
 
+  public Boolean getArchived()
+  {
+    return archived;
+  }
+
+  public void setArchived( Boolean archived )
+  {
+    this.archived = archived;
+  }
+
+  public String getImgFileName()
+  {
+    return imgFileName;
+  }
+
+  public void setImgFileName( String imgFileName )
+  {
+    this.imgFileName = imgFileName;
+  }
+
   public java.util.Date getCreated()
   {
     return created;
   }
 
-  public Integer getTotal_billed()
+  public String getMerchant_name()
   {
-    return total_billed;
+    return merchant_name;
   }
 
-  public void setTotal_billed( Integer total_billed )
+  public void setMerchant_name( String merchant_name )
   {
-    this.total_billed = total_billed;
+    this.merchant_name = merchant_name;
+  }
+
+  public String getOwnerId()
+  {
+    return ownerId;
   }
 
   public Integer getCb_debit()
@@ -244,6 +200,60 @@ public class Transaction implements Serializable
     this.cb_debit = cb_debit;
   }
 
+  public String getCustomer_id()
+  {
+    return customer_id;
+  }
+
+  public void setCustomer_id( String customer_id )
+  {
+    this.customer_id = customer_id;
+  }
+
+  public String getCb_percent()
+  {
+    return cb_percent;
+  }
+
+  public void setCb_percent( String cb_percent )
+  {
+    this.cb_percent = cb_percent;
+  }
+
+  public String getInvoiceNum()
+  {
+    return invoiceNum;
+  }
+
+  public void setInvoiceNum( String invoiceNum )
+  {
+    this.invoiceNum = invoiceNum;
+  }
+
+  public java.util.Date getCancelTime()
+  {
+    return cancelTime;
+  }
+
+  public void setCancelTime( java.util.Date cancelTime )
+  {
+    this.cancelTime = cancelTime;
+  }
+
+  public Integer getCb_credit()
+  {
+    return cb_credit;
+  }
+
+  public void setCb_credit( Integer cb_credit )
+  {
+    this.cb_credit = cb_credit;
+  }
+
+  public java.util.Date getUpdated()
+  {
+    return updated;
+  }
 
   public Cashback getCashback()
   {
@@ -254,7 +264,8 @@ public class Transaction implements Serializable
   {
     this.cashback = cashback;
   }
-                                                    
+
+
   public Transaction save()
   {
     return Backendless.Data.of( Transaction.class ).save( this );

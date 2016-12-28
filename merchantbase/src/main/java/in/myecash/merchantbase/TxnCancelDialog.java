@@ -122,7 +122,7 @@ public class TxnCancelDialog extends DialogFragment
                 public void onClick(View v) {
                     Boolean wantToCloseDialog = false;
 
-                    int errorCode = ValidationHelper.validateCardNum(scannedCardId);
+                    int errorCode = ValidationHelper.validateCardId(scannedCardId);
                     if(errorCode != ErrorCodes.NO_ERROR) {
                         mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
                     }

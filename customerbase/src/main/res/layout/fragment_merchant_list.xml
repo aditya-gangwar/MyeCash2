@@ -20,7 +20,7 @@
     <LinearLayout
         style="@style/LL_Horizontal_wrap"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/medium_space">
+        android:layout_marginTop="@dimen/small_space">
 
         <EditText
             style="@style/Edittext_only_view_small"
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:paddingTop="0dp"
-        android:text="Select 'Transactions' from Menu for more recent data. "
+        android:text="Select 'Transactions' from Menu for recent data. "
         android:textStyle="italic"
         android:gravity="left"/>
 
