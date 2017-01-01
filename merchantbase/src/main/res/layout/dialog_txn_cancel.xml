@@ -32,14 +32,14 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_swap_horiz_white_24dp"
+                android:src="@drawable/ic_swap_horiz_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Txn ID"
-                android:layout_weight="35"
+                android:layout_weight="30"
                 android:gravity="left"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
@@ -56,14 +56,14 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_perm_identity_white_24dp"
+                android:src="@drawable/ic_perm_identity_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Customer"
-                android:layout_weight="35"
+                android:layout_weight="30"
                 android:gravity="left"/>
             <!--View
                 style="@style/Divider_vertical_Medium"/-->
@@ -89,7 +89,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_favorite_white_24dp"
+                    android:src="@drawable/ic_favorite_white_18dp"
                     android:tint="@color/primary"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
@@ -109,16 +109,16 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_favorite_white_24dp"
+                    android:src="@drawable/ic_favorite_white_18dp"
                     android:tint="@color/primary"
                     android:visibility="invisible"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="Debit"
-                    android:layout_weight="35"
-                    android:gravity="left|bottom"
+                    android:layout_weight="30"
+                    android:gravity="left|top"
                     android:layout_gravity="bottom"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
@@ -130,11 +130,11 @@
                     android:text="+ \u20B9 455"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
-                    android:layout_weight="35"
+                    android:layout_weight="40"
                     android:gravity="left"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Refund"
+                    android:text="Will be Refunded"
                     android:textColor="@color/green_positive"/>
             </LinearLayout>
 
@@ -146,7 +146,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_favorite_white_24dp"
+                    android:src="@drawable/ic_favorite_white_18dp"
                     android:tint="@color/primary"
                     android:visibility="invisible"/>
                 <EditText
@@ -154,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:text="Add"
-                    android:layout_weight="35"
+                    android:layout_weight="30"
                     android:gravity="left|bottom"
                     android:layout_gravity="bottom"/>
                 <EditText
@@ -167,7 +167,7 @@
                     android:text="+ \u20B9 455"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
-                    android:layout_weight="35"
+                    android:layout_weight="40"
                     android:gravity="left"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                    android:src="@drawable/ic_account_balance_wallet_white_18dp"
                     android:tint="@color/primary"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
@@ -209,7 +209,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                    android:src="@drawable/ic_account_balance_wallet_white_18dp"
                     android:tint="@color/primary"
                     android:visibility="invisible"/>
                 <EditText
@@ -217,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:text="Debit"
-                    android:layout_weight="35"
+                    android:layout_weight="30"
                     android:gravity="left|bottom"
                     android:layout_gravity="bottom"/>
                 <EditText
@@ -230,11 +230,11 @@
                     android:text="+ \u20B9 455"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
-                    android:layout_weight="35"
+                    android:layout_weight="40"
                     android:gravity="left"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Refund"
+                    android:text="Will be Refunded"
                     android:textColor="@color/green_positive"/>
             </LinearLayout>
 
@@ -246,7 +246,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_favorite_white_24dp"
+                    android:src="@drawable/ic_favorite_white_18dp"
                     android:tint="@color/primary"
                     android:visibility="invisible"/>
                 <EditText
@@ -254,7 +254,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:text="Add"
-                    android:layout_weight="35"
+                    android:layout_weight="30"
                     android:gravity="left|bottom"
                     android:layout_gravity="bottom"/>
                 <EditText
@@ -267,11 +267,11 @@
                     android:text="+ \u20B9 455"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
-                    android:layout_weight="35"
+                    android:layout_weight="40"
                     android:gravity="left"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Cancel"
+                    android:text="Will be Cancelled"
                     android:textColor="@color/green_positive"/>
             </LinearLayout>
 
@@ -307,7 +307,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/image_card"
-                android:src="@drawable/ic_card_membership_white_24dp"
+                android:src="@drawable/ic_card_membership_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_medium"
@@ -315,7 +315,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Card"
-                android:layout_weight="35"
+                android:layout_weight="30"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>
             <!--View

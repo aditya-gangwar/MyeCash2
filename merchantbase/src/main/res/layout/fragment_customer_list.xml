@@ -22,7 +22,7 @@
             android:id="@+id/list_header_acc"
             android:layout_below="@id/list_header_id"
             android:layout_height="wrap_content"
-            android:text="Account:  Add - Used = Balance"
+            android:text="Account:  Add - Debit = Balance"
             android:paddingTop="0dp"/>
 
         <EditText
@@ -31,7 +31,7 @@
             android:id="@+id/list_header_cb"
             android:layout_below="@id/list_header_acc"
             android:layout_height="wrap_content"
-            android:text="Cashback:  Add - Used = Balance"
+            android:text="Cashback:  Add - Debit = Balance"
             android:paddingTop="0dp"/>
 
         <EditText

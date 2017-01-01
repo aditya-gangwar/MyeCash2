@@ -41,10 +41,10 @@
     <dimen name="button_padding_large">8dp</dimen>
     <dimen name="button_padding_med">4dp</dimen-->
 
-    <dimen name="keyboard_button_height_dialog_less">64dp</dimen>
-    <dimen name="keyboard_button_width_dialog_less">72dp</dimen>
-    <!-- <no. of keys> * <key button width> i.e. 3 * 72 = 252 -->
-    <dimen name="keyboard_full_width_dialog_less">216dp</dimen>
+    <dimen name="keyboard_button_height_dialog_less">72dp</dimen>
+    <dimen name="keyboard_button_width_dialog_less">84dp</dimen>
+    <!-- <no. of keys> * <key button width> i.e. 3 * 84 = 252 -->
+    <dimen name="keyboard_full_width_dialog_less">252dp</dimen>
 
     <dimen name="keyboard_button_height_dialog">96dp</dimen>
     <dimen name="keyboard_button_width_dialog">108dp</dimen>

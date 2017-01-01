@@ -386,7 +386,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
-            android:text="Cashback"
+            android:text="Cashback (CB)"
             android:textStyle="bold"
             android:textColor="@color/accent"
             android:paddingLeft="0dp"/>
@@ -432,7 +432,7 @@
                 style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
-                android:text="Total Award"
+                android:text="Total Add"
                 android:layout_weight="45"
                 android:gravity="left|center_vertical"
                 android:paddingTop="0dp"/>
@@ -460,7 +460,7 @@
                 style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
-                android:text="Total Redeem"
+                android:text="Total Debit"
                 android:layout_weight="45"
                 android:gravity="left|center_vertical"
                 android:paddingTop="0dp"/>
@@ -479,7 +479,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
-            android:text="Account"
+            android:text="Account (AC)"
             android:textStyle="bold"
             android:textColor="@color/accent"
             android:paddingLeft="0dp"/>

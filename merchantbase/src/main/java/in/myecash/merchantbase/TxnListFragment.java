@@ -61,7 +61,7 @@ public class TxnListFragment extends Fragment {
     private static final String CSV_REPORT_HEADER_5 = "%s,,,,,,,Currency,INR,,";
     private static final String CSV_REPORT_HEADER_6 = ",,,,,,,,,,";
     private static final String CSV_REPORT_HEADER_7 = ",,,,,,,,,,";
-    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Customer Internal Id,Bill Amount,Account Debit,Account Credit,Cashback Redeem,Cashback Award,Cashback Rate,Linked Invoice,Cancel Time,Comments";
+    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Customer Internal Id,Bill Amount,Account Debit,Account Add,Cashback Debit,Cashback Add,Cashback Rate,Linked Invoice,Cancel Time,Comments";
     // 5+10+10+10+10+10+5+5+5+5 = 75
     private static final int CSV_RECORD_MAX_CHARS = 100;
     //TODO: change this to 100 in production
@@ -549,6 +549,7 @@ public class TxnListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateUI();
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     @Override
@@ -608,6 +609,9 @@ public class TxnListFragment extends Fragment {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            if(!mCallback.getRetainedFragment().getResumeOk())
+                return true;
+
             try {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     LogMy.d(TAG, "In onTouch: " + v.getId());
@@ -716,6 +720,9 @@ public class TxnListFragment extends Fragment {
             mListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(!mCallback.getRetainedFragment().getResumeOk())
+                        return;
+
                     LogMy.d(TAG,"In onClickListener of txn list item");
                     int pos = mTxnRecyclerView.getChildAdapterPosition(v);
                     if (pos >= 0 && pos < getItemCount()) {

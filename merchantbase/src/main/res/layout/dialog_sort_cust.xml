@@ -42,7 +42,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/small_space"/>
+                android:layout_height="@dimen/medium_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap">
@@ -56,7 +56,7 @@
                     style="@style/Edittext_only_view_small"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="Cashback"
+                    android:text="Cashback (CB)"
                     android:textStyle="bold"
                     android:textColor="@color/accent"/>
             </LinearLayout>
@@ -64,21 +64,21 @@
             <RadioButton
                 style="@style/radio_button_medium"
                 android:id="@+id/balanceCb"
-                android:text="Cashback Balance" />
+                android:text="CB Balance" />
 
             <RadioButton
                 style="@style/radio_button_medium"
                 android:id="@+id/awardCb"
-                android:text="Total Cashback Add" />
+                android:text="CB Add" />
 
             <RadioButton
                 style="@style/radio_button_medium"
                 android:id="@+id/redeemCb"
-                android:text="Total Cashback Debit" />
+                android:text="CB Debit" />
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/small_space"/>
+                android:layout_height="@dimen/medium_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap">
@@ -92,7 +92,7 @@
                     style="@style/Edittext_only_view_small"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="Account"
+                    android:text="Account (AC)"
                     android:textStyle="bold"
                     android:textColor="@color/accent"/>
             </LinearLayout>
@@ -100,17 +100,17 @@
             <RadioButton
                 style="@style/radio_button_medium"
                 android:id="@+id/balanceAcc"
-                android:text="Account Balance" />
+                android:text="AC Balance" />
 
             <RadioButton
                 style="@style/radio_button_medium"
                 android:id="@+id/addAcc"
-                android:text="Total Account Add" />
+                android:text="AC Add" />
 
             <RadioButton
                 style="@style/radio_button_medium"
                 android:id="@+id/debitAcc"
-                android:text="Total Account Debit" />
+                android:text="AC Debit" />
 
         </RadioGroup>
 

@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:id="@+id/custlist_header_id"
             android:layout_height="wrap_content"
-            android:text="Operations History"
+            android:text="Service Request History"
             android:textStyle="bold"/>
 
         <View

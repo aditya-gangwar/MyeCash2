@@ -243,6 +243,9 @@ public class CashbackActivity extends AppCompatActivity implements
 
     public void selectDrawerItem(MenuItem item) {
 
+        if(!mWorkFragment.getResumeOk())
+            return;
+
         mLastMenuItemId = item.getItemId();
         int i = item.getItemId();
 
@@ -1733,6 +1736,9 @@ public class CashbackActivity extends AppCompatActivity implements
     public void onBackPressed() {
         LogMy.d(TAG,"In onBackPressed: "+mFragMgr.getBackStackEntryCount());
 
+        if(!mWorkFragment.getResumeOk())
+            return;
+
         try {
             if (this.mDrawer.isDrawerOpen(GravityCompat.START)) {
                 this.mDrawer.closeDrawer(GravityCompat.START);
@@ -1754,9 +1760,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 DialogFragmentWrapper.createConfirmationDialog(AppConstants.exitGenTitle, AppConstants.exitAppMsg, false, false)
                         .show(mFragMgr, DIALOG_BACK_BUTTON);
             } else {
-                if (!mWorkFragment.mInPauseState) {
-                    getFragmentManager().popBackStackImmediate();
-                }
+                getFragmentManager().popBackStackImmediate();
                 if (mMobileNumFragment.isVisible()) {
                     LogMy.d(TAG, "Mobile num fragment visible");
                     //goToMobileNumFrag();
@@ -1814,7 +1818,11 @@ public class CashbackActivity extends AppCompatActivity implements
     protected void onResume() {
         LogMy.d(TAG, "In onResume");
         super.onResume();
-        mWorkFragment.mInPauseState = false;
+        if(getFragmentManager().getBackStackEntryCount()==0) {
+            // no fragment in backstack - so flag wont get set by any fragment - so set it here
+            // though this shud never happen - as CashbackActivity always have a fragment
+            mWorkFragment.setResumeOk(true);
+        }
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
@@ -1826,7 +1834,8 @@ public class CashbackActivity extends AppCompatActivity implements
     protected void onPause() {
         LogMy.d(TAG,"In onPause");
         super.onPause();
-        mWorkFragment.mInPauseState = true;
+        // no need to do this in each fragment - as activity onPause will always get called
+        mWorkFragment.setResumeOk(false);
         AppCommonUtil.cancelProgressDialog(false);
         setDrawerState(false);
     }

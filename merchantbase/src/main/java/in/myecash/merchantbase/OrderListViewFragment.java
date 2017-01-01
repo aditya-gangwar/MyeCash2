@@ -46,9 +46,9 @@ public class OrderListViewFragment extends ListFragment implements
 
     // Container Activity must implement this interface
     public interface OrderListViewFragmentIf {
-        public MyRetainedFragment getRetainedFragment();
-        public void onTotalBillFromOrderList();
-        public void setDrawerState(boolean isEnabled);
+        MyRetainedFragment getRetainedFragment();
+        void onTotalBillFromOrderList();
+        void setDrawerState(boolean isEnabled);
     }
 
     @Override
@@ -99,6 +99,7 @@ public class OrderListViewFragment extends ListFragment implements
         LogMy.d(TAG, "In onResume");
         super.onResume();
         mCallback.setDrawerState(false);
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     @Override
@@ -214,6 +215,9 @@ public class OrderListViewFragment extends ListFragment implements
 
     @Override
     public void onClick(View v) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return;
+
         try {
             int id = v.getId();
             if (id == R.id.btn_bill_total) {
@@ -245,65 +249,3 @@ public class OrderListViewFragment extends ListFragment implements
         outState.putInt("mChangePosition", mChangePosition);
     }
 }
-
-    /*
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        LogMy.d(TAG,"In onListItemClick");
-        //super.onListItemClick(l, v, position, id);
-        OrderItem item = (OrderItem) l.getItemAtPosition(position);
-
-        EditText totalPriceView = (EditText) l.findViewById(R.id.input_item_price);
-
-        switch(v.getId()) {
-            case R.id.input_quantity:
-                LogMy.d(TAG, "Clicked Quantity");
-                String newQty = ((EditText) v).getText().toString();
-                if (!item.mQuantity.equals(newQty)) {
-                    item.mQuantity = newQty;
-                    int newPrice = Integer.parseInt(newQty) * Integer.parseInt(item.mUnitPrice);
-                    processPriceChange(newPrice, item, totalPriceView);
-                }
-                break;
-            case R.id.input_unit_price:
-                String newUnitPrice = ((EditText) v).getText().toString();
-                if (!item.mUnitPrice.equals(newUnitPrice)) {
-                    item.mUnitPrice = newUnitPrice;
-                    int newPrice = Integer.parseInt(newUnitPrice) * Integer.parseInt(item.mQuantity);
-                    processPriceChange(newPrice, item, totalPriceView);
-                }
-                break;
-            case R.id.input_item_price:
-                if(item.mCashbackExcluded) {
-                    removeItemAmtExclusion(item, totalPriceView);
-                } else {
-                    setItemAmtExclusion(item, totalPriceView);
-                }
-                break;
-        }
-
-    }
-
-    private void processPriceChange(int newPrice, OrderItem item, EditText totalPriceView) {
-        LogMy.d(TAG,"In processPriceChange");
-        int oldPrice = Integer.parseInt(item.mPrice);
-        item.mPrice = String.valueOf(newPrice);
-
-        mRetainedFragment.mBillTotal = mRetainedFragment.mBillTotal - oldPrice + newPrice;
-        if (item.mCashbackExcluded) {
-            mRetainedFragment.mCbExcludedTotal = mRetainedFragment.mCbExcludedTotal - oldPrice + newPrice;
-        }
-
-        totalPriceView.setText(item.mPrice);
-        mLabelTotalBtn.setText(String.valueOf(mRetainedFragment.mBillTotal));
-    }
-
-    private void setItemAmtExclusion(OrderItem item, EditText totalPriceView) {
-        item.mCashbackExcluded = true;
-        mOldColor = totalPriceView.getCurrentTextColor();
-        totalPriceView.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary_darker));
-    }
-    private void removeItemAmtExclusion(OrderItem item, EditText totalPriceView) {
-        item.mCashbackExcluded = false;
-        totalPriceView.setTextColor(mOldColor);
-    }*/

@@ -133,6 +133,10 @@ public class TxnReportsActivity extends AppCompatActivity implements
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if(!mWorkFragment.getResumeOk()) {
+            return true;
+        }
+
         if(event.getAction()==MotionEvent.ACTION_UP) {
             try {
                 int vId = v.getId();
@@ -166,6 +170,10 @@ public class TxnReportsActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
+        if(!mWorkFragment.getResumeOk()) {
+            return;
+        }
+
         int vId = v.getId();
         LogMy.d(TAG, "In onClick: " + vId);
 
@@ -544,20 +552,21 @@ public class TxnReportsActivity extends AppCompatActivity implements
         int count = getFragmentManager().getBackStackEntryCount();
         LogMy.d(TAG, "In onBackPressed: " + count);
 
-        try {
-        if (count == 0) {
-            super.onBackPressed();
-        } else {
-            if(!mWorkFragment.mInPauseState) {
-                getFragmentManager().popBackStackImmediate();
-            }
+        if(!mWorkFragment.getResumeOk())
+            return;
 
-            if(mFragmentContainer.getVisibility()==View.VISIBLE && count==1) {
-                setToolbarTitle("Transactions");
-                mMainLayout.setVisibility(View.VISIBLE);
-                mFragmentContainer.setVisibility(View.GONE);
+        try {
+            if (count == 0) {
+                super.onBackPressed();
+            } else {
+                getFragmentManager().popBackStackImmediate();
+
+                if(mFragmentContainer.getVisibility()==View.VISIBLE && count==1) {
+                    setToolbarTitle("Transactions");
+                    mMainLayout.setVisibility(View.VISIBLE);
+                    mFragmentContainer.setVisibility(View.GONE);
+                }
             }
-        }
         } catch (Exception e) {
             AppCommonUtil.cancelProgressDialog(true);
             LogMy.e(TAG, "Exception in TxnReportsActivity:onBackPressed", e);
@@ -604,9 +613,13 @@ public class TxnReportsActivity extends AppCompatActivity implements
     protected void onResume() {
         LogMy.d(TAG, "In onResume: ");
         super.onResume();
-        mWorkFragment.mInPauseState = false;
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
+        }
+        if(getFragmentManager().getBackStackEntryCount()==0) {
+            // no fragment in backstack - so flag wont get set by any fragment - so set it here
+            // though this shud never happen - as CashbackActivity always have a fragment
+            mWorkFragment.setResumeOk(true);
         }
     }
 
@@ -614,7 +627,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
     protected void onPause() {
         LogMy.d(TAG,"In onPause: ");
         super.onPause();
-        mWorkFragment.mInPauseState = true;
+        mWorkFragment.setResumeOk(false);
         AppCommonUtil.cancelProgressDialog(false);
         AppCommonUtil.cancelToast();
     }

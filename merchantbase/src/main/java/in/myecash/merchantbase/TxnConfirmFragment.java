@@ -61,6 +61,9 @@ public class TxnConfirmFragment extends Fragment {
             mBtnConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(!mCallback.getRetainedFragment().getResumeOk())
+                        return;
+
                     // check if invoice num is mandatory
                     if (mMerchant.isInvoiceNumAsk() &&
                             !mMerchant.isInvoiceNumOptional() &&
@@ -303,6 +306,7 @@ public class TxnConfirmFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mCallback.setDrawerState(false);
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
 }

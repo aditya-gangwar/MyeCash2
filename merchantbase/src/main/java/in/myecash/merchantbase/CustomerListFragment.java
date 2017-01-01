@@ -3,7 +3,6 @@ package in.myecash.merchantbase;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -11,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,15 +39,11 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -320,6 +314,7 @@ public class CustomerListFragment extends Fragment {
         super.onResume();
         mCallback.setDrawerState(false);
         updateUI();
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     @Override
@@ -335,26 +330,28 @@ public class CustomerListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        try {
-            int i = item.getItemId();
-            if (i == R.id.action_download) {
-                downloadReport();
+        if(mCallback.getRetainedFragment().getResumeOk()) {
+            try {
+                int i = item.getItemId();
+                if (i == R.id.action_download) {
+                    downloadReport();
 
-            } else if (i == R.id.action_email) {
-                emailReport();
+                } else if (i == R.id.action_email) {
+                    emailReport();
 
-            } else if (i == R.id.action_sort) {
-                SortCustDialog dialog = SortCustDialog.newInstance(mSelectedSortType);
-                dialog.setTargetFragment(this, REQ_SORT_CUST_TYPES);
-                dialog.show(getFragmentManager(), DIALOG_SORT_CUST_TYPES);
+                } else if (i == R.id.action_sort) {
+                    SortCustDialog dialog = SortCustDialog.newInstance(mSelectedSortType);
+                    dialog.setTargetFragment(this, REQ_SORT_CUST_TYPES);
+                    dialog.show(getFragmentManager(), DIALOG_SORT_CUST_TYPES);
+                }
+
+            } catch (Exception e) {
+                LogMy.e(TAG, "Exception is CustomerListFragment:onOptionsItemSelected", e);
+                // unexpected exception - show error
+                DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true);
+                notDialog.setTargetFragment(this, REQ_NOTIFY_ERROR);
+                notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
-
-        } catch(Exception e) {
-            LogMy.e(TAG, "Exception is CustomerListFragment:onOptionsItemSelected", e);
-            // unexpected exception - show error
-            DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true);
-            notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
-            notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
 
         return super.onOptionsItemSelected(item);
@@ -441,7 +438,7 @@ public class CustomerListFragment extends Fragment {
                 sb.append(cb.getCbCredit()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cb.getCbRedeem()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cb.getBillAmt()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(mSdfDateWithTime.format(cb.getUpdateTime())).append(CommonConstants.CSV_DELIMETER);
+                sb.append(mSdfDateWithTime.format(cb.getLastTxnTime())).append(CommonConstants.CSV_DELIMETER);
                 sb.append(mSdfDateWithTime.format(cb.getCreateTime()));
                 sb.append(CommonConstants.NEWLINE_SEP);
 
@@ -531,6 +528,9 @@ public class CustomerListFragment extends Fragment {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            if(!mCallback.getRetainedFragment().getResumeOk())
+                return false;
+
             if(event.getAction()==MotionEvent.ACTION_UP) {
                 LogMy.d(TAG,"In onTouch: "+v.getId());
 
@@ -556,7 +556,7 @@ public class CustomerListFragment extends Fragment {
             MyCustomer customer = mCb.getCustomer();
 
             mCustId.setText(customer.getPrivateId());
-            mLastTxnTime.setText(mSdfDateWithTime.format(cb.getUpdateTime()));
+            mLastTxnTime.setText(mSdfDateWithTime.format(cb.getLastTxnTime()));
             mBillAmt.setText(AppCommonUtil.getAmtStr(cb.getBillAmt()));
 
             mAccAdd.setText(AppCommonUtil.getAmtStr(cb.getClCredit()));

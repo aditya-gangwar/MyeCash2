@@ -120,8 +120,8 @@ public class CustomerDetailsDialog extends DialogFragment  {
         if(cust != null) {
             mInputCustomerId.setText(cust.getPrivateId());
             mInputMobileNum.setText(CommonUtils.getPartialVisibleStr(cust.getMobileNum()));
-            if(cb.getUpdateTime()!=null) {
-                mLastUsedHere.setText(mSdfDateWithTime.format(cb.getUpdateTime()));
+            if(cb.getLastTxnTime()!=null) {
+                mLastUsedHere.setText(mSdfDateWithTime.format(cb.getLastTxnTime()));
             } else {
                 mLastUsedHere.setText("-");
             }

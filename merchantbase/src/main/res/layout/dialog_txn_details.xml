@@ -239,7 +239,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Cashback"
+            android:text="Cashback (CB)"
             android:textStyle="bold"
             android:textColor="@color/accent"
             android:paddingLeft="0dp"/>
@@ -307,7 +307,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Account"
+            android:text="Account (AC)"
             android:textStyle="bold"
             android:textColor="@color/accent"
             android:paddingLeft="0dp"/>
@@ -321,33 +321,6 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_account_balance_wallet_white_18dp"
                 android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="Add"
-                android:layout_weight="45"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="55"
-                android:gravity="left|center_vertical"
-                android:id="@+id/input_acc_add"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="+ \u20B9 NA"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_18dp"
-                android:visibility="invisible"
-                />
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="match_parent"
@@ -366,6 +339,34 @@
                 android:layout_height="match_parent"
                 android:text="+ \u20B9 NA"
                 android:paddingTop="0dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                android:visibility="invisible"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:text="Add"
+                android:layout_weight="45"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_weight="55"
+                android:gravity="left|center_vertical"
+                android:id="@+id/input_acc_add"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="+ \u20B9 NA"/>
         </LinearLayout>
 
         <Space

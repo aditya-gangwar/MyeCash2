@@ -26,6 +26,24 @@ public class Cashback
   private Integer cb_billed;
   private Customers customer;
   //private Merchants merchant;
+  private Date lastTxnTime;
+  private String lastTxnId;
+
+  public Date getLastTxnTime() {
+    return lastTxnTime;
+  }
+
+  public void setLastTxnTime(Date lastTxnTime) {
+    this.lastTxnTime = lastTxnTime;
+  }
+
+  public String getLastTxnId() {
+    return lastTxnId;
+  }
+
+  public void setLastTxnId(String lastTxnId) {
+    this.lastTxnId = lastTxnId;
+  }
 
   public void setUpdated(Date updated) {
     this.updated = updated;

@@ -103,7 +103,7 @@
                     android:id="@+id/table_row_1_col_1"
                     android:gravity="left"
                     android:layout_height="wrap_content"
-                    android:text="Only Account Balance"
+                    android:text="Only AC Balance"
                     android:layout_weight="50"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
@@ -130,7 +130,7 @@
                     android:gravity="left"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:text="Only Cashback" />
+                    android:text="Only CB Balance" />
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/table_row_2_col_2"
@@ -156,7 +156,7 @@
                     android:gravity="left"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:text="Account + Cashback" />
+                    android:text="Both AC + CB" />
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/table_row_3_col_2"
@@ -219,7 +219,7 @@
                     android:gravity="left"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:text="\u20B9 99,99,999" />
+                    android:text="\u20B9 0" />
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/table_row_total_col_3"

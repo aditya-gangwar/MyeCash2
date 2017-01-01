@@ -126,7 +126,7 @@
                 <EditText
                     style="@style/Edittext_only_view_medium"
                     android:layout_width="wrap_content"
-                    android:text="Redeem Cashback"
+                    android:text="Debit Cashback"
                     android:layout_weight="1"
                     android:gravity="left"/>
                 <EditText
@@ -282,7 +282,7 @@
                 <EditText
                     style="@style/Edittext_only_view_small"
                     android:layout_width="wrap_content"
-                    android:text="Award Cashback:"
+                    android:text="Add Cashback:"
                     android:textStyle="italic"
                     android:gravity="left"/>
                 <EditText

@@ -360,7 +360,7 @@ public class CashbackListFragment extends Fragment {
             }
             String txt = merchant.getBusinessCategory()+", "+merchant.getCity();
             mCategoryNdCity.setText(txt);
-            String str = "Last: "+mSdfDateWithTime.format(cb.getUpdateTime());
+            String str = "Last: "+mSdfDateWithTime.format(cb.getLastTxnTime());
             mLastTxnTime.setText(str);
             mAccBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrClBalance()));
             mCbBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrCbBalance()));

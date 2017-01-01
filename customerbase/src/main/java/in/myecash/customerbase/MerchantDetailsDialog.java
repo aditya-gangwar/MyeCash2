@@ -137,7 +137,7 @@ public class MerchantDetailsDialog extends DialogFragment  {
             mCategoryNdCity.setText(txt);
             String text = merchant.getCbRate()+" %";
             mCbRate.setText(text);
-            Date time = cb.getUpdateTime();
+            Date time = cb.getLastTxnTime();
             if(time==null) {
                 time = cb.getCreateTime();
             }

@@ -89,6 +89,7 @@ public class DashboardTxnFragment extends Fragment {
         LogMy.d(TAG, "In onResume");
         super.onResume();
         mCallback.setDrawerState(false);
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     @Override

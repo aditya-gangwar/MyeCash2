@@ -106,7 +106,7 @@ public class MyRetainedFragment extends RetainedFragment {
     // An issue is observeed in SDK 19 that when back button is pressed after onPause()
     // but before onResume(), then it was causing crash.
     // Like, pressing back immediatly after screen unlock (locked when any fragment except mobile number one was visible)
-    public boolean mInPauseState;
+    private Boolean resumeOk;
 
     public void reset() {
         LogMy.d(TAG,"In reset");
@@ -138,6 +138,15 @@ public class MyRetainedFragment extends RetainedFragment {
 
         Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, "");
         Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, "");
+    }
+
+    public Boolean getResumeOk() {
+        return resumeOk;
+    }
+
+    public void setResumeOk(Boolean resumeOk) {
+        LogMy.d(TAG,"Resume Ok: "+resumeOk);
+        this.resumeOk = resumeOk;
     }
 
     public void fetchMerchantsOps() {

@@ -33,10 +33,10 @@ public class OtpPinInputDialog extends DialogFragment
     private static final String ARG_INFO = "info";
     private static final String ARG_HINT = "hint";
 
-    private static final Integer[] keys = {0,1,2,3,4,5,6,7,8,9};
+    //private static final Integer[] keys = {0,1,2,3,4,5,6,7,8,9};
 
     private OtpPinInputDialogIf mCallback;
-    //private Boolean isPinCase;
+    private String mPin;
 
     public interface OtpPinInputDialogIf {
         //public RetainedFragment getRetainedFragment();
@@ -72,6 +72,12 @@ public class OtpPinInputDialog extends DialogFragment
                 .inflate(R.layout.dialog_otp_pin_input, null);
 
         bindUiResources(v);
+        if(savedInstanceState!=null) {
+            LogMy.d(TAG,"Restoring");
+            mPin = savedInstanceState.getString("mPin");
+        } else {
+            mPin = "";
+        }
 
         // set values
         String title = getArguments().getString(ARG_TITLE);
@@ -84,7 +90,7 @@ public class OtpPinInputDialog extends DialogFragment
 
         initKeyboard();
 
-        Dialog dialog =  new AlertDialog.Builder(getActivity(), R.style.WrapEverythingDialog)
+        /*Dialog dialog =  new AlertDialog.Builder(getActivity(), R.style.WrapEverythingDialog)
                 .setView(v)
                 .setPositiveButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {
@@ -109,12 +115,21 @@ public class OtpPinInputDialog extends DialogFragment
             public void onShow(DialogInterface dialog) {
                 AppCommonUtil.setDialogTextSize(OtpPinInputDialog.this, (AlertDialog) dialog);
             }
-        });
+        });*/
 
+        Dialog dialog =  new AlertDialog.Builder(getActivity(), R.style.WrapEverythingDialog).setView(v).create();
+        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                AppCommonUtil.setDialogTextSize(OtpPinInputDialog.this, (AlertDialog) dialog);
+            }
+        });
         return dialog;
     }
 
-    @Override
+    /*@Override
     public void onStart()
     {
         super.onStart();    //super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after this point
@@ -150,7 +165,7 @@ public class OtpPinInputDialog extends DialogFragment
                 }
             });
         }
-    }
+    }*/
 
     /*
     @Override
@@ -178,15 +193,37 @@ public class OtpPinInputDialog extends DialogFragment
             if (curStr.length() > 0) {
                 mInputPinOtp.setText("");
                 mInputPinOtp.append(curStr, 0, (curStr.length() - 1));
+                mPin = mPin.substring(0,(mPin.length()-1));
             }
 
-        } else if (vId == R.id.input_kb_clear) {
-            mInputPinOtp.setText("");
+        } else if (vId == R.id.input_kb_ok) {
+            //mInputPinOtp.setText("");
+            LogMy.d(TAG, "Clicked Ok");
+            Boolean wantToCloseDialog = true;
+            //String pinOrOtp = mInputPinOtp.getText().toString();
+
+            int errorCode = ValidationHelper.validatePin(mPin);
+            if(errorCode == ErrorCodes.NO_ERROR) {
+                mCallback.onPinOtp(mPin, getTag());
+            } else {
+                // if PIN validation failed - then it may be Otp case
+                errorCode = ValidationHelper.validateOtp(mPin);
+                if(errorCode == ErrorCodes.NO_ERROR) {
+                    mCallback.onPinOtp(mPin, getTag());
+                } else {
+                    mInputPinOtp.setError(AppCommonUtil.getErrorDesc(errorCode));
+                    wantToCloseDialog = false;
+                }
+            }
+
+            if (wantToCloseDialog)
+                getDialog().dismiss();
 
         } else if (vId == R.id.input_kb_0 || vId == R.id.input_kb_1 || vId == R.id.input_kb_2 || vId == R.id.input_kb_3 || vId == R.id.input_kb_4 || vId == R.id.input_kb_5 || vId == R.id.input_kb_6 || vId == R.id.input_kb_7 || vId == R.id.input_kb_8 || vId == R.id.input_kb_9) {
             AppCompatButton key = (AppCompatButton) v;
-            mInputPinOtp.append(key.getText());
-
+            //mInputPinOtp.append(key.getText());
+            mPin = mPin+key.getText();
+            mInputPinOtp.append("*");
         }
     }
 
@@ -195,7 +232,7 @@ public class OtpPinInputDialog extends DialogFragment
     private EditText mInputPinOtp;
 
     private AppCompatButton mKeys[];
-    private AppCompatButton mKeyClear;
+    private AppCompatButton mKeyOk;
     private AppCompatImageButton mKeyBspace;
 
     private void bindUiResources(View v) {
@@ -215,21 +252,28 @@ public class OtpPinInputDialog extends DialogFragment
         mKeys[8] = (AppCompatButton) v.findViewById(R.id.input_kb_8);
         mKeys[9] = (AppCompatButton) v.findViewById(R.id.input_kb_9);
         mKeyBspace = (AppCompatImageButton) v.findViewById(R.id.input_kb_bs);
-        mKeyClear = (AppCompatButton) v.findViewById(R.id.input_kb_clear);
+        mKeyOk = (AppCompatButton) v.findViewById(R.id.input_kb_ok);
     }
 
     private void initKeyboard() {
 
         // set text randomly for the keys
-        Collections.shuffle(Arrays.asList(keys));
+        //Collections.shuffle(Arrays.asList(keys));
 
         for(int i=0; i<10; i++) {
             mKeys[i].setOnClickListener(this);
-            mKeys[i].setText(String.valueOf(keys[i]));
+            //mKeys[i].setText(String.valueOf(keys[i]));
         }
 
         mKeyBspace.setOnClickListener(this);
-        mKeyClear.setOnClickListener(this);
+        mKeyOk.setOnClickListener(this);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("mPin", mPin);
+    }
+
 }
 

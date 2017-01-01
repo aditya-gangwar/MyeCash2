@@ -27,7 +27,8 @@ import java.util.ArrayList;
 /**
  * Created by adgangwa on 03-03-2016.
  */
-public class BillingFragment extends Fragment implements View.OnClickListener {
+public class BillingFragment extends Fragment implements
+        View.OnClickListener, View.OnTouchListener {
     private static final String TAG = "MchntApp-BillingFragment";
 
     private static final String MULTIPLY_STR = " x ";
@@ -107,6 +108,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         setTotalAmt();
         setItemCnt();
         mCallback.setDrawerState(false);
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     private void setItemCnt() {
@@ -127,6 +129,9 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return;
+
         int resId = v.getId();
         LogMy.d(TAG, "In onClick, resId: " + resId);
 
@@ -263,39 +268,39 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
 
     private void initButtons() {
         mBtnTotal.setOnClickListener(this);
-        mLabelItemCnt.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if (mRetainedFragment.mOrderItems.size() > 0) {
-                        //handlePlus(effectiveStr);
-                        mCallback.onViewOrderList();
-                    } else {
-                        AppCommonUtil.toast(getActivity(), "No Items added");
-                    }
-                }
-                return true;
-            }
-        });
+        mLabelItemCnt.setOnTouchListener(this);
     }
 
     private void initInputItemAmt() {
+        mInputItemAmt.setOnTouchListener(this);
+    }
 
-        mInputItemAmt.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(!mCalcMode) {
-                        if (mTempCbExcluded) {
-                            removeItemAmtExclusion();
-                        } else {
-                            setItemAmtExclusion();
-                        }
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return true;
+
+        if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+            if(view.getId()==mInputItemAmt.getId()) {
+                if(!mCalcMode) {
+                    if (mTempCbExcluded) {
+                        removeItemAmtExclusion();
+                    } else {
+                        setItemAmtExclusion();
                     }
                 }
-                return true;
+            } else if(view.getId()==mLabelItemCnt.getId()) {
+                if (mRetainedFragment.mOrderItems.size() > 0) {
+                    //handlePlus(effectiveStr);
+                    mCallback.onViewOrderList();
+                } else {
+                    AppCommonUtil.toast(getActivity(), "No Items added");
+                }
+            } else {
+                return false;
             }
-        });
+        }
+        return true;
     }
 
     private void setItemAmtExclusion() {

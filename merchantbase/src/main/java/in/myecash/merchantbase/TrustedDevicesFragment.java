@@ -60,6 +60,7 @@ public class TrustedDevicesFragment extends Fragment
         LogMy.d(TAG, "In onResume");
         super.onResume();
         mCallback.setDrawerState(false);
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     @Override
@@ -125,6 +126,9 @@ public class TrustedDevicesFragment extends Fragment
 
     @Override
     public void onClick(View v) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return;
+
         int id = v.getId();
 
         try {

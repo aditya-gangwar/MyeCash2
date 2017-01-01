@@ -672,6 +672,8 @@ public class CashTransactionFragment extends Fragment implements
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return true;
 
         try {
             if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -795,11 +797,9 @@ public class CashTransactionFragment extends Fragment implements
                         AppCommonUtil.toast(getActivity(), "Use settings to disable");
                     }
 
-                } /*else if (i == R.id.label_cash_paid || i == R.id.input_cash_paid) {
-                LogMy.d(TAG, "Clicked cash paid");
-                //AppCommonUtil.hideKeyboard(getActivity());
-                showCashPaidDialog();
-            }*/
+                } else {
+                    return false;
+                }
             }
         } catch (Exception e) {
             LogMy.e(TAG, "Exception in CashTxnFragment:onTouch", e);
@@ -813,6 +813,8 @@ public class CashTransactionFragment extends Fragment implements
     @Override
     public void onClick(View v) {
         LogMy.d(TAG, "In onClick: " + v.getId());
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return;
 
         int i = v.getId();
         try {
@@ -1131,7 +1133,6 @@ public class CashTransactionFragment extends Fragment implements
             notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
 
-        // TODO: review - for now showing always on main screen
         mLayoutCashPaid.setVisibility(View.VISIBLE);
         mSpaceCashPaid.setVisibility(View.VISIBLE);
 
@@ -1265,6 +1266,7 @@ public class CashTransactionFragment extends Fragment implements
         mCallback.setDrawerState(false);
         mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid);
         setCashBalance();
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     @Override

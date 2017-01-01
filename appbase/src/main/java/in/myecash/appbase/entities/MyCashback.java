@@ -2,13 +2,10 @@ package in.myecash.appbase.entities;
 
 import android.graphics.Bitmap;
 
-import com.backendless.exceptions.BackendlessException;
-
 import in.myecash.common.CsvConverter;
 import in.myecash.common.MyCustomer;
 import in.myecash.common.MyMerchant;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Cashback;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.LogMy;
@@ -146,11 +143,11 @@ public class MyCashback {
     public int getCbBillAmt() {
         return mCurrCashback==null?-1:mCurrCashback.getCb_billed();
     }
-    public Date getUpdateTime() {
+    public Date getLastTxnTime() {
         // updateTime will be null if no txn done after registration - use createTime in that case
         return mCurrCashback==null ?
                 null :
-                (mCurrCashback.getUpdated()==null ? getCreateTime():mCurrCashback.getUpdated());
+                (mCurrCashback.getLastTxnTime()==null ? getCreateTime():mCurrCashback.getLastTxnTime());
     }
     public Date getCreateTime() {
         return mCurrCashback==null?null:mCurrCashback.getCreated();
@@ -181,7 +178,7 @@ public class MyCashback {
             // TODO: Handle null x or y values
             switch (mCompareType) {
                 case CB_CMP_TYPE_UPDATE_TIME:
-                    return compare(lhs.getUpdateTime().getTime(), rhs.getUpdateTime().getTime());
+                    return compare(lhs.getLastTxnTime().getTime(), rhs.getLastTxnTime().getTime());
                 case CB_CMP_TYPE_BILL_AMT:
                     return compare(lhs.getBillAmt(), rhs.getBillAmt());
                 case CB_CMP_TYPE_ACC_BALANCE:

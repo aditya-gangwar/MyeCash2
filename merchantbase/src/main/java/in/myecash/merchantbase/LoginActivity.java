@@ -580,6 +580,7 @@ public class LoginActivity extends AppCompatActivity implements
         LogMy.d(TAG,"In onPause: ");
         super.onPause();
         AppCommonUtil.cancelProgressDialog(false);
+        mWorkFragment.setResumeOk(false);
     }
 
     @Override
@@ -590,6 +591,7 @@ public class LoginActivity extends AppCompatActivity implements
         }
         AppCommonUtil.setUserType(DbConstants.USER_TYPE_MERCHANT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        mWorkFragment.setResumeOk(true);
     }
 
     @Override

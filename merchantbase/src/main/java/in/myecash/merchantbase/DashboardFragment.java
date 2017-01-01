@@ -41,9 +41,9 @@ public class DashboardFragment extends Fragment
     //private int mActiveRequestId;
 
     public interface DashboardSummaryFragmentIf {
-        public MyRetainedFragment getRetainedFragment();
-        public void setDrawerState(boolean isEnabled);
-        public void showDashboardDetails(int which);
+        MyRetainedFragment getRetainedFragment();
+        void setDrawerState(boolean isEnabled);
+        void showDashboardDetails(int which);
     }
     private DashboardSummaryFragmentIf mCallback;
 
@@ -71,6 +71,7 @@ public class DashboardFragment extends Fragment
         LogMy.d(TAG, "In onResume");
         super.onResume();
         mCallback.setDrawerState(false);
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     @Override
@@ -107,12 +108,18 @@ public class DashboardFragment extends Fragment
 
     @Override
     public void onClick(View v) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return;
+
         LogMy.d(TAG,"In onClick: "+v.getId());
         showDetailedView(v);
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return true;
+
         if(event.getAction() == MotionEvent.ACTION_UP) {
             LogMy.d(TAG,"In onTouch: "+v.getId());
             showDetailedView(v);

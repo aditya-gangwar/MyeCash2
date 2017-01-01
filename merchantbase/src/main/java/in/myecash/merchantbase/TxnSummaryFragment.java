@@ -14,6 +14,7 @@ import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.common.constants.ErrorCodes;
+import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 /**
  * Created by adgangwa on 08-06-2016.
@@ -24,6 +25,7 @@ public class TxnSummaryFragment extends Fragment {
     private static final String ARG_SUMMARY = "summary";
 
     public interface TxnSummaryFragmentIf {
+        MyRetainedFragment getRetainedFragment();
         void setToolbarTitle(String title);
         void showTxnDetails();
     }
@@ -74,6 +76,9 @@ public class TxnSummaryFragment extends Fragment {
             detailsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(!mCallback.getRetainedFragment().getResumeOk())
+                        return;
+
                     mCallback.showTxnDetails();
                 }
             });
@@ -100,5 +105,14 @@ public class TxnSummaryFragment extends Fragment {
 
         detailsButton = (AppCompatButton) view.findViewById(R.id.details_btn);
     }
+
+    @Override
+    public void onResume() {
+        LogMy.d(TAG, "In onResume");
+        super.onResume();
+        mCallback.getRetainedFragment().setResumeOk(true);
+    }
+
+
 }
 

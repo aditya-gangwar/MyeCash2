@@ -53,18 +53,6 @@
                 android:paddingLeft="0dp"/>
         </LinearLayout>
 
-        <!--EditText
-            style="@style/Edittext_only_view_small"
-            android:id="@+id/txn_id"
-            android:layout_below="@id/txn_customer_id"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:paddingTop="0dp"
-            android:paddingBottom="@dimen/edittext_padding_less"
-            android:paddingLeft="@dimen/edittext_padding_less"
-            android:text="A67GHTR54"
-            android:textStyle="italic"/-->
-
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_alignParentRight="true"

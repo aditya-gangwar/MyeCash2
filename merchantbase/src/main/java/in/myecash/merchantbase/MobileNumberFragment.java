@@ -18,6 +18,7 @@ import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 /**
  * Created by adgangwa on 28-02-2016.
@@ -32,7 +33,8 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
 
     // Container Activity must implement this interface
     public interface MobileFragmentIf {
-        public void onMobileNumInput(String mobileNum);
+        void onMobileNumInput(String mobileNum);
+        MyRetainedFragment getRetainedFragment();
     }
 
     @Override
@@ -65,6 +67,8 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return;
         try {
             // process the keys
             String curStr = mInputCustMobile.getText().toString();
@@ -129,6 +133,9 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
         mBtnProcess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!mCallback.getRetainedFragment().getResumeOk())
+                    return;
+
                 String mobileNum = mInputCustMobile.getText().toString();
                 // remove dots
                 mobileNum = mobileNum.replace(MOBILE_NUM_EMPTY_CHAR,"");
@@ -147,6 +154,9 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
         mInputCustMobile.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                if(!mCallback.getRetainedFragment().getResumeOk())
+                    return false;
+
                 if(event.getAction() == MotionEvent.ACTION_UP) {
                     LogMy.d(TAG, "Clicked skip");
                     mCallback.onMobileNumInput(null);
@@ -156,10 +166,6 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
         });
     }
 
-    /*
-    public void reset() {
-        mInputCustMobile.setText("");
-    }*/
 
     @Override
     public void onResume() {
@@ -167,6 +173,7 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
         super.onResume();
         mInputCustMobile.setError(null);
         mInputCustMobile.setText("");
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     private EditText mInputCustMobile;

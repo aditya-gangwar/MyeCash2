@@ -22,7 +22,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                android:src="@drawable/ic_account_balance_wallet_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
@@ -50,7 +50,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_favorite_white_24dp"
+                android:src="@drawable/ic_favorite_white_18dp"
                 android:tint="@color/primary"/>
             <EditText
                 style="@style/Edittext_only_view_small"
@@ -82,12 +82,12 @@
         android:layout_height="@dimen/medium_space"/>
 
     <EditText
-        style="@style/Edittext_only_view_small"
+        style="@style/Edittext_only_view_medium"
         android:id="@+id/label_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="italic"
-        android:text="Check transaction amounts above are correct."
+        android:text="Verify above amounts!"
         android:textColor="@color/accent2"/>
 
     <Space
@@ -100,7 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLength="@string/pin_char_limit"
-        android:inputType="numberPassword"
+        android:inputType="text"
         android:gravity="center"
         android:hint="Enter PIN"/>
 
@@ -195,8 +195,11 @@
 
         <android.support.v7.widget.AppCompatButton
             style="@style/button_keyboard_dialog_small"
-            android:id="@+id/input_kb_clear"
-            android:text="c"/>
+            android:id="@+id/input_kb_ok"
+            android:text="ok"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/green_positive"
+            android:textStyle="bold"/>
         <View
             style="@style/Divider_vertical_Medium"/>
         <android.support.v7.widget.AppCompatButton
@@ -214,8 +217,7 @@
 
     </LinearLayout>
 
-    <View
-        style="@style/Divider_horizontal_Medium"
-        android:layout_marginBottom="@dimen/small_space"/>
+    <!--View
+        style="@style/Divider_horizontal_Medium"/-->
 
 </LinearLayout>

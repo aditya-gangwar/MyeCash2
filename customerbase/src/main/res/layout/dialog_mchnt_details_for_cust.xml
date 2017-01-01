@@ -184,7 +184,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Cashback"
+            android:text="Cashback (CB)"
             android:textStyle="bold"
             android:textColor="@color/accent"
             android:paddingLeft="0dp"/>
@@ -277,7 +277,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Account"
+            android:text="Account (AC)"
             android:textStyle="bold"
             android:textColor="@color/accent"
             android:paddingLeft="0dp"/>

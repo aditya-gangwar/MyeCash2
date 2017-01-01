@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:textStyle="italic"
         android:layout_gravity="center"
-        android:text="Do not let anyone else know your secret PIN" />
+        android:text="Always keep PIN Secret !" />
 
     <Space
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLength="@string/otp_char_limit"
-            android:inputType="numberPassword"
+            android:inputType="text"
             android:gravity="center" />
     </LinearLayout>
 
@@ -138,8 +138,11 @@
 
         <android.support.v7.widget.AppCompatButton
             style="@style/button_keyboard_dialog_small"
-            android:id="@+id/input_kb_clear"
-            android:text="c"/>
+            android:id="@+id/input_kb_ok"
+            android:text="ok"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/green_positive"
+            android:textStyle="bold"/>
         <View
             style="@style/Divider_vertical_Medium"/>
         <android.support.v7.widget.AppCompatButton
@@ -157,7 +160,7 @@
 
     </LinearLayout>
 
-    <View
-        style="@style/Divider_horizontal_Medium"/>
+    <!--View
+        style="@style/Divider_horizontal_Medium"/-->
 
 </LinearLayout>

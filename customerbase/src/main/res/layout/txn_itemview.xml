@@ -71,13 +71,16 @@
                 android:longClickable="false"
                 android:textIsSelectable="false"
                 android:gravity="left"
-                android:textStyle="italic"/>
+                android:textStyle="italic"
+                android:ellipsize="end"
+                android:singleLine="true"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/txn_amts_layout"
                 android:layout_width="0dp"
                 android:layout_weight="40"
+                android:layout_marginLeft="@dimen/medium_space"
                 android:gravity="right">
 
                 <ImageView

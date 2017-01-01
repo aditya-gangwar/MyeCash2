@@ -21,9 +21,6 @@ import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 /**
  * Created by adgangwa on 30-04-2016.
  */
@@ -36,9 +33,10 @@ public class TxnPinInputDialog extends DialogFragment
     private static final String ARG_CASHBACK_DEBIT = "cashbackDebit";
     private static final String ARG_CANCEL_TXNID = "cancelTxnId";
 
-    private static Integer[] keys = {0,1,2,3,4,5,6,7,8,9};
+    //private static Integer[] keys = {0,1,2,3,4,5,6,7,8,9};
 
     private TxnPinInputDialogIf mCallback;
+    private String mPin;
 
     public interface TxnPinInputDialogIf {
         void onTxnPin(String pin, String tag);
@@ -77,6 +75,12 @@ public class TxnPinInputDialog extends DialogFragment
                 .inflate(R.layout.dialog_txn_pin_input, null);
 
         bindUiResources(v);
+        if(savedInstanceState!=null) {
+            LogMy.d(TAG,"Restoring");
+            mPin = savedInstanceState.getString("mPin");
+        } else {
+            mPin = "";
+        }
 
         // set values
         String cancelTxnId = getArguments().getString(ARG_CANCEL_TXNID);
@@ -110,7 +114,7 @@ public class TxnPinInputDialog extends DialogFragment
 
         initKeyboard();
 
-        Dialog dialog =  new AlertDialog.Builder(getActivity(), R.style.WrapEverythingDialog)
+        /*Dialog dialog =  new AlertDialog.Builder(getActivity(), R.style.WrapEverythingDialog)
                 .setView(v)
                 .setPositiveButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {
@@ -135,12 +139,21 @@ public class TxnPinInputDialog extends DialogFragment
             public void onShow(DialogInterface dialog) {
                 AppCommonUtil.setDialogTextSize(TxnPinInputDialog.this, (AlertDialog) dialog);
             }
-        });
+        });*/
 
+        Dialog dialog =  new AlertDialog.Builder(getActivity(), R.style.WrapEverythingDialog).setView(v).create();
+        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                AppCommonUtil.setDialogTextSize(TxnPinInputDialog.this, (AlertDialog) dialog);
+            }
+        });
         return dialog;
     }
 
-    @Override
+    /*@Override
     public void onStart()
     {
         super.onStart();    //super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after this point
@@ -170,28 +183,47 @@ public class TxnPinInputDialog extends DialogFragment
                 }
             });
         }
-    }
+    }*/
 
     @Override
     public void onClick(View v) {
         int vId = v.getId();
-        LogMy.d(TAG,"In onClick: "+vId);
 
         String curStr = mInputSecretPin.getText().toString();
 
         if (vId == R.id.input_kb_bs) {
+            LogMy.d(TAG,"Clicked BS");
             if (curStr.length() > 0) {
                 mInputSecretPin.setText("");
                 mInputSecretPin.append(curStr, 0, (curStr.length() - 1));
+                mPin = mPin.substring(0,(mPin.length()-1));
             }
 
-        } else if (vId == R.id.input_kb_clear) {
-            mInputSecretPin.setText("");
+        } else if (vId == R.id.input_kb_ok) {
+            LogMy.d(TAG,"Clicked OK");
+            //mInputSecretPin.setText("");
+            Boolean wantToCloseDialog = true;
+
+            LogMy.d(TAG, "Clicked Ok");
+            //String pin = mInputSecretPin.getText().toString();
+
+            int errorCode = ValidationHelper.validatePin(mPin);
+            if (errorCode == ErrorCodes.NO_ERROR) {
+                mCallback.onTxnPin(mPin, getTag());
+            } else {
+                mInputSecretPin.setError(AppCommonUtil.getErrorDesc(errorCode));
+                wantToCloseDialog = false;
+            }
+
+            if (wantToCloseDialog)
+                getDialog().dismiss();
 
         } else if (vId == R.id.input_kb_0 || vId == R.id.input_kb_1 || vId == R.id.input_kb_2 || vId == R.id.input_kb_3 || vId == R.id.input_kb_4 || vId == R.id.input_kb_5 || vId == R.id.input_kb_6 || vId == R.id.input_kb_7 || vId == R.id.input_kb_8 || vId == R.id.input_kb_9) {
+            LogMy.d(TAG,"Clicked Num key");
             AppCompatButton key = (AppCompatButton) v;
-            mInputSecretPin.append(key.getText());
-
+            mPin = mPin+key.getText();
+            //mInputSecretPin.append(key.getText());
+            mInputSecretPin.append("*");
         }
     }
 
@@ -204,7 +236,7 @@ public class TxnPinInputDialog extends DialogFragment
     private EditText mInputSecretPin;
 
     private AppCompatButton mKeys[];
-    private AppCompatButton mKeyClear;
+    private AppCompatButton mKeyOk;
     private AppCompatImageButton mKeyBspace;
 
     private void bindUiResources(View v) {
@@ -229,20 +261,27 @@ public class TxnPinInputDialog extends DialogFragment
         mKeys[8] = (AppCompatButton) v.findViewById(R.id.input_kb_8);
         mKeys[9] = (AppCompatButton) v.findViewById(R.id.input_kb_9);
         mKeyBspace = (AppCompatImageButton) v.findViewById(R.id.input_kb_bs);
-        mKeyClear = (AppCompatButton) v.findViewById(R.id.input_kb_clear);
+        mKeyOk = (AppCompatButton) v.findViewById(R.id.input_kb_ok);
     }
 
     private void initKeyboard() {
         // set text randomly for the keys
-        Collections.shuffle(Arrays.asList(keys));
+        //Collections.shuffle(Arrays.asList(keys));
 
         for(int i=0; i<10; i++) {
             mKeys[i].setOnClickListener(this);
-            mKeys[i].setText(String.valueOf(keys[i]));
+            //mKeys[i].setText(String.valueOf(keys[i]));
         }
 
         mKeyBspace.setOnClickListener(this);
-        mKeyClear.setOnClickListener(this);
+        mKeyOk.setOnClickListener(this);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("mPin", mPin);
+    }
+
 }
 

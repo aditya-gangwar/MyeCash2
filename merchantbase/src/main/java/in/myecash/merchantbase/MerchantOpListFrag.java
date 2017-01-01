@@ -93,8 +93,11 @@ public class MerchantOpListFrag extends Fragment {
         try {
             mCallback.setDrawerState(false);
             updateUI();
+            mCallback.getRetainedFragment().setResumeOk(true);
+
         } catch (Exception e) {
             LogMy.e(TAG, "Exception in Fragment: ", e);
+            mCallback.getRetainedFragment().setResumeOk(true);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             getActivity().onBackPressed();
