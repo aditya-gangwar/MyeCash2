@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity implements
     private static final String DIALOG_PASSWD_RESET = "dialogPaswdReset";
     private static final String DIALOG_PIN_LOGIN_NEW_DEVICE = "dialogPinNewDevice";
     private static final String DIALOG_FORGOT_ID = "dialogForgotId";
+    private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
 
     // permission request codes need to be < 256
     private static final int RC_HANDLE_STORAGE_PERM = 10;
@@ -314,71 +315,85 @@ public class LoginActivity extends AppCompatActivity implements
     public void onBgProcessResponse(int errorCode, int operation) {
         LogMy.d(TAG, "In onBgProcessResponse");
 
-        if(operation== MyRetainedFragment.REQUEST_LOGIN)
-        {
+        // Session timeout case - show dialog and logout - irrespective of invoked operation
+        if(errorCode==ErrorCodes.SESSION_TIMEOUT || errorCode==ErrorCodes.NOT_LOGGED_IN) {
             AppCommonUtil.cancelProgressDialog(true);
-            if(errorCode == ErrorCodes.NO_ERROR) {
-                onLoginSuccess();
+            DialogFragmentWrapper.createNotification(AppConstants.notLoggedInTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                    .show(getFragmentManager(), DIALOG_SESSION_TIMEOUT);
+            return;
+        }
 
-            } else if(errorCode == ErrorCodes.OTP_GENERATED) {
-                mLoginButton.setEnabled(true);
-                // Not trusted device - ask user for OTP
-                OtpPinInputDialog dialog = OtpPinInputDialog.newInstance(
-                        AppConstants.titleAddTrustedDeviceOtp,
-                        AppConstants.msgAddTrustedDeviceOtp,
-                        AppConstants.hintEnterOtp);
-                dialog.show(getFragmentManager(), DIALOG_PIN_LOGIN_NEW_DEVICE);
+        try {
+            if (operation == MyRetainedFragment.REQUEST_LOGIN) {
+                AppCommonUtil.cancelProgressDialog(true);
+                if (errorCode == ErrorCodes.NO_ERROR) {
+                    onLoginSuccess();
 
-            } /*else if(errorCode == ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD) {
+                } else if (errorCode == ErrorCodes.OTP_GENERATED) {
+                    mLoginButton.setEnabled(true);
+                    // Not trusted device - ask user for OTP
+                    OtpPinInputDialog dialog = OtpPinInputDialog.newInstance(
+                            AppConstants.titleAddTrustedDeviceOtp,
+                            AppConstants.msgAddTrustedDeviceOtp,
+                            AppConstants.hintEnterOtp);
+                    dialog.show(getFragmentManager(), DIALOG_PIN_LOGIN_NEW_DEVICE);
+
+                } /*else if(errorCode == ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD) {
                 mLoginButton.setEnabled(true);
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 MerchantUser.reset();
 
-            }*/else {
-                mLoginButton.setEnabled(true);
-                // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.loginFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                MerchantUser.reset();
-            }
+            }*/ else {
+                    mLoginButton.setEnabled(true);
+                    // Show error notification dialog
+                    DialogFragmentWrapper.createNotification(AppConstants.loginFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    MerchantUser.reset();
+                }
 
-        } else if(operation== MyRetainedFragment.REQUEST_GENERATE_MERCHANT_PWD) {
-            AppCommonUtil.cancelProgressDialog(true);
-            if(errorCode == ErrorCodes.NO_ERROR) {
-                // Show success notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, AppConstants.genericPwdGenerateSuccessMsg, false, false)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            } else if(errorCode == ErrorCodes.OP_SCHEDULED) {
-                // Show success notification dialog
-                Integer mins = MyGlobalSettings.getMchntPasswdResetMins() + GlobalSettingConstants.MERCHANT_PASSWORD_RESET_TIMER_INTERVAL;
-                String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
-                DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, msg, false, false)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY) {
-                // Old request is already pending
-                Integer mins = MyGlobalSettings.getMchntPasswdResetMins() + GlobalSettingConstants.MERCHANT_PASSWORD_RESET_TIMER_INTERVAL;
-                String msg = String.format(AppConstants.pwdGenerateDuplicateRequestMsg, mins);
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, false, false)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            } else {
-                // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            }
-            mProcessingResetPasswd = false;
+            } else if (operation == MyRetainedFragment.REQUEST_GENERATE_MERCHANT_PWD) {
+                AppCommonUtil.cancelProgressDialog(true);
+                if (errorCode == ErrorCodes.NO_ERROR) {
+                    // Show success notification dialog
+                    DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, AppConstants.genericPwdGenerateSuccessMsg, false, false)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                } else if (errorCode == ErrorCodes.OP_SCHEDULED) {
+                    // Show success notification dialog
+                    Integer mins = MyGlobalSettings.getMchntPasswdResetMins() + GlobalSettingConstants.MERCHANT_PASSWORD_RESET_TIMER_INTERVAL;
+                    String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
+                    DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, msg, false, false)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                } else if (errorCode == ErrorCodes.DUPLICATE_ENTRY) {
+                    // Old request is already pending
+                    Integer mins = MyGlobalSettings.getMchntPasswdResetMins() + GlobalSettingConstants.MERCHANT_PASSWORD_RESET_TIMER_INTERVAL;
+                    String msg = String.format(AppConstants.pwdGenerateDuplicateRequestMsg, mins);
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, false, false)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                } else {
+                    // Show error notification dialog
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
+                mProcessingResetPasswd = false;
 
-        } else if(operation== MyRetainedFragment.REQUEST_FORGOT_ID) {
-            AppCommonUtil.cancelProgressDialog(true);
-            if(errorCode == ErrorCodes.NO_ERROR) {
-                // Show success notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.forgotIdSuccessMsg, false, false)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            } else {
-                // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            } else if (operation == MyRetainedFragment.REQUEST_FORGOT_ID) {
+                AppCommonUtil.cancelProgressDialog(true);
+                if (errorCode == ErrorCodes.NO_ERROR) {
+                    // Show success notification dialog
+                    DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.forgotIdSuccessMsg, false, false)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                } else {
+                    // Show error notification dialog
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
             }
+        } catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
+            LogMy.e(TAG, "Exception in LoginActivity:onBgProcessResponse: "+operation+": "+errorCode, e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 

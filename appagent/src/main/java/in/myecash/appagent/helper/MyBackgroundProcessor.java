@@ -59,6 +59,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         public String cards;
         public String action;
         public String allocateTo;
+        public boolean getCardNumsOnly;
     }
 
     /*
@@ -127,11 +128,12 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     public void addCardSearchReq(String id) {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_SEARCH_CARD, id).sendToTarget();
     }
-    public void addExecActionCardsReq(String cards, String action, String allocateTo) {
+    public void addExecActionCardsReq(String cards, String action, String allocateTo, boolean getCardNumsOnly) {
         MessageActionCards msg = new MessageActionCards();
         msg.cards = cards;
         msg.action = action;
         msg.allocateTo = allocateTo;
+        msg.getCardNumsOnly = getCardNumsOnly;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_ACTION_CARDS, msg).sendToTarget();
     }
     public void addDisableCustCardReq(String ticketId, String reason, String remarks) {
@@ -276,11 +278,23 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
     private int actionForCards(MessageActionCards data) {
         try {
-            List<MyCardForAction> list = InternalUserServices.getInstance().execActionForCards(data.cards, data.action, data.allocateTo);
+            List<MyCardForAction> list = InternalUserServices.getInstance().execActionForCards(data.cards, data.action, data.allocateTo, data.getCardNumsOnly);
 
-            mRetainedFragment.mLastCardsForAction.clear();
+            /*mRetainedFragment.mLastCardsForAction.clear();
             for (MyCardForAction card : list) {
                 mRetainedFragment.mLastCardsForAction.add(card);
+            }*/
+            // as we want to maintain the order in which the card was scanned
+            // so search by scannedCode in existing list - and update all fields filled by backend
+            for (MyCardForAction card : list) {
+                for (MyCardForAction oldCard : mRetainedFragment.mLastCardsForAction) {
+                    if(oldCard.getScannedCode().equals(card.getScannedCode())) {
+                        oldCard.setCardNum(card.getCardNum());
+                        if(!data.getCardNumsOnly) {
+                            oldCard.setActionStatus(card.getActionStatus());
+                        }
+                    }
+                }
             }
             LogMy.d(TAG,"actionForCards success");
 

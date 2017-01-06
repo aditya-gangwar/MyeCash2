@@ -67,7 +67,7 @@ public class AgentUser {
     public int login(String userId, String password, String instanceId) {
         LogMy.d(TAG, "In login");
         try {
-            LogMy.d(TAG, "Calling setDeviceForLogin: "+userId);
+            LogMy.d(TAG, "Calling setDeviceForLogin: "+userId+","+instanceId);
             InternalUserServicesNoLogin.getInstance().setDeviceForInternalUserLogin(userId, instanceId);
             LogMy.d(TAG,"setDeviceForLogin success");
 

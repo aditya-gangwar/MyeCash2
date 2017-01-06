@@ -22,6 +22,15 @@ public class MyCardForAction implements Serializable {
     private String cardNum;
     //public String mCheckStatus;
     private String actionStatus;
+    private int position;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     /*public MyCardForAction(String scannedCode) {
         mScannedCode = scannedCode;

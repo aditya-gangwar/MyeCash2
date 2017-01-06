@@ -53,6 +53,7 @@ public class LoginCustActivity extends AppCompatActivity implements
     private static final String RETAINED_FRAGMENT_TAG = "workLogin";
     private static final String DIALOG_PASSWD_RESET = "dialogPaswdReset";
     private static final String DIALOG_ENABLE_ACC = "dialogEnableAcc";
+    private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
 
     MyRetainedFragment      mWorkFragment;
 
@@ -63,8 +64,34 @@ public class LoginCustActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Check to see if we have retained the worker fragment.
+        FragmentManager fm = getFragmentManager();
+        mWorkFragment = (MyRetainedFragment) fm.findFragmentByTag(RETAINED_FRAGMENT_TAG);
+        // If not retained (or first time running), we need to create it.
+        if (mWorkFragment == null) {
+            LogMy.d(TAG, "Creating retained fragment");
+            mWorkFragment = new MyRetainedFragment();
+            fm.beginTransaction().add(mWorkFragment, RETAINED_FRAGMENT_TAG).commit();
+        }
+
+        // if valid login - no need to further load activity
+        try {
+            if (CustomerUser.isValidLogin()) {
+                int status = CustomerUser.tryAutoLogin();
+                if (status == ErrorCodes.NO_ERROR) {
+                    LogMy.d(TAG, "Auto login success");
+                    onLoginSuccess();
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            // ignore any exception
+            LogMy.d(TAG,"Exception while checking for valid login: "+e.getMessage());
+        }
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-        // setting off fullscreen mode as 'screen pan on keyboard' doesnt work fine with fullscreen
+        // setting off fullscreen mode as 'screen pan on keyboard' doesn't work fine with fullscreen
         // http://stackoverflow.com/questions/7417123/android-how-to-adjust-layout-in-full-screen-mode-when-softkeyboard-is-visible
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -76,16 +103,6 @@ public class LoginCustActivity extends AppCompatActivity implements
         // local activity initializations
         bindUiResources();
         makeForgotPasswordLink();
-
-        // Check to see if we have retained the worker fragment.
-        FragmentManager fm = getFragmentManager();
-        mWorkFragment = (MyRetainedFragment) fm.findFragmentByTag(RETAINED_FRAGMENT_TAG);
-        // If not retained (or first time running), we need to create it.
-        if (mWorkFragment == null) {
-            LogMy.d(TAG, "Creating retained fragment");
-            mWorkFragment = new MyRetainedFragment();
-            fm.beginTransaction().add(mWorkFragment, RETAINED_FRAGMENT_TAG).commit();
-        }
 
         // Fill old login id
         String oldId = PreferenceManager.getDefaultSharedPreferences(this).getString(AppConstants.PREF_LOGIN_ID, null);
@@ -243,78 +260,92 @@ public class LoginCustActivity extends AppCompatActivity implements
     public void onBgProcessResponse(int errorCode, int operation) {
         LogMy.d(TAG, "In onBgProcessResponse");
 
-        if(operation==MyRetainedFragment.REQUEST_LOGIN)
-        {
+        // Session timeout case - show dialog and logout - irrespective of invoked operation
+        if(errorCode==ErrorCodes.SESSION_TIMEOUT || errorCode==ErrorCodes.NOT_LOGGED_IN) {
             AppCommonUtil.cancelProgressDialog(true);
-            if(errorCode == ErrorCodes.NO_ERROR) {
-                onLoginSuccess();
+            DialogFragmentWrapper.createNotification(AppConstants.notLoggedInTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                    .show(getFragmentManager(), DIALOG_SESSION_TIMEOUT);
+            return;
+        }
 
-            } else if(errorCode == ErrorCodes.USER_ACC_DISABLED) {
-                mLoginButton.setEnabled(true);
-                // reset Enable account parameters
-                mWorkFragment.mAccEnableCardNum = null;
-                mWorkFragment.mAccEnablePin = null;
-                mWorkFragment.mAccEnableOtp = null;
-                // Show Enable account dialog
-                AccEnableDialog dialog = AccEnableDialog.newInstance(null, null);
-                dialog.show(getFragmentManager(), DIALOG_ENABLE_ACC);
+        try {
+            if (operation == MyRetainedFragment.REQUEST_LOGIN) {
+                AppCommonUtil.cancelProgressDialog(true);
+                if (errorCode == ErrorCodes.NO_ERROR) {
+                    onLoginSuccess();
 
-            }/*else if(errorCode == ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD) {
+                } else if (errorCode == ErrorCodes.USER_ACC_DISABLED) {
+                    mLoginButton.setEnabled(true);
+                    // reset Enable account parameters
+                    mWorkFragment.mAccEnableCardNum = null;
+                    mWorkFragment.mAccEnablePin = null;
+                    mWorkFragment.mAccEnableOtp = null;
+                    // Show Enable account dialog
+                    AccEnableDialog dialog = AccEnableDialog.newInstance(null, null);
+                    dialog.show(getFragmentManager(), DIALOG_ENABLE_ACC);
+
+                }/*else if(errorCode == ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD) {
                 mLoginButton.setEnabled(true);
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 CustomerUser.reset();
 
-            } */else {
-                mLoginButton.setEnabled(true);
-                // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.loginFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            }
+            } */ else {
+                    mLoginButton.setEnabled(true);
+                    // Show error notification dialog
+                    DialogFragmentWrapper.createNotification(AppConstants.loginFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
 
-        } else if(operation== MyRetainedFragment.REQUEST_GENERATE_PWD) {
+            } else if (operation == MyRetainedFragment.REQUEST_GENERATE_PWD) {
+                AppCommonUtil.cancelProgressDialog(true);
+                if (errorCode == ErrorCodes.NO_ERROR) {
+                    // Show success notification dialog
+                    DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, AppConstants.genericPwdGenerateSuccessMsg, false, false)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                } else if (errorCode == ErrorCodes.OP_SCHEDULED) {
+                    // Show success notification dialog
+                    Integer mins = MyGlobalSettings.getCustPasswdResetMins() + GlobalSettingConstants.CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL;
+                    String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
+                    DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, msg, false, false)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                } else if (errorCode == ErrorCodes.DUPLICATE_ENTRY) {
+                    // Old request is already pending
+                    Integer mins = MyGlobalSettings.getCustPasswdResetMins() + GlobalSettingConstants.CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL;
+                    String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, false, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                } else {
+                    // Show error notification dialog
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
+                mProcessingResetPasswd = false;
+
+            } else if (operation == MyRetainedFragment.REQUEST_ENABLE_ACC) {
+                AppCommonUtil.cancelProgressDialog(true);
+                if (errorCode == ErrorCodes.NO_ERROR) {
+                    // Show success notification dialog
+                    DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.enableAccSuccessMsg, false, false)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+
+                } else if (errorCode == ErrorCodes.OTP_GENERATED) {
+                    // OTP sent successfully to registered mobile, ask for the same
+                    // show the 'enable account dialog' again
+                    AccEnableDialog dialog = AccEnableDialog.newInstance(mWorkFragment.mAccEnableCardNum, mWorkFragment.mAccEnablePin);
+                    dialog.show(getFragmentManager(), DIALOG_ENABLE_ACC);
+
+                } else {
+                    // Show error notification dialog
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
+            }
+        } catch (Exception e) {
             AppCommonUtil.cancelProgressDialog(true);
-            if(errorCode == ErrorCodes.NO_ERROR) {
-                // Show success notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, AppConstants.genericPwdGenerateSuccessMsg, false, false)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            } else if(errorCode == ErrorCodes.OP_SCHEDULED) {
-                // Show success notification dialog
-                Integer mins = MyGlobalSettings.getCustPasswdResetMins() + GlobalSettingConstants.CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL;
-                String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
-                DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, msg, false, false)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY) {
-                // Old request is already pending
-                Integer mins = MyGlobalSettings.getCustPasswdResetMins() + GlobalSettingConstants.CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL;
-                String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, false, true)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            } else {
-                // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            }
-            mProcessingResetPasswd = false;
-
-        } else if(operation== MyRetainedFragment.REQUEST_ENABLE_ACC) {
-            AppCommonUtil.cancelProgressDialog(true);
-            if(errorCode == ErrorCodes.NO_ERROR) {
-                // Show success notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.enableAccSuccessMsg, false, false)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-
-            } else if(errorCode==ErrorCodes.OTP_GENERATED) {
-                // OTP sent successfully to registered mobile, ask for the same
-                // show the 'enable account dialog' again
-                AccEnableDialog dialog = AccEnableDialog.newInstance(mWorkFragment.mAccEnableCardNum, mWorkFragment.mAccEnablePin);
-                dialog.show(getFragmentManager(), DIALOG_ENABLE_ACC);
-
-            } else {
-                // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            }
+            LogMy.e(TAG, "Exception in LoginCustActivity:onBgProcessResponse: "+operation+": "+errorCode, e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 

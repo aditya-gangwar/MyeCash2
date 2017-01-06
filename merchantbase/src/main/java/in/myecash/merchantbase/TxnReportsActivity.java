@@ -133,12 +133,12 @@ public class TxnReportsActivity extends AppCompatActivity implements
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if(!mWorkFragment.getResumeOk()) {
-            return true;
-        }
-
         if(event.getAction()==MotionEvent.ACTION_UP) {
             try {
+                if(!mWorkFragment.getResumeOk()) {
+                    return true;
+                }
+
                 int vId = v.getId();
                 LogMy.d(TAG, "In onTouch: " + vId);
 

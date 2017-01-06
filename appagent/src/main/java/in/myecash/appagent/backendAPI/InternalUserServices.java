@@ -63,9 +63,9 @@ public class InternalUserServices
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "disableCustomer", args );
     }
 
-    public java.util.List<MyCardForAction> execActionForCards(java.lang.String codes, java.lang.String action, java.lang.String allotToUserId)
+    public java.util.List<MyCardForAction> execActionForCards(java.lang.String codes, java.lang.String action, java.lang.String allotToUserId, boolean getCardNumsOnly)
     {
-        Object[] args = new Object[]{codes, action, allotToUserId};
+        Object[] args = new Object[]{codes, action, allotToUserId, getCardNumsOnly};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "execActionForCards", args, java.util.List.class );
     }
 

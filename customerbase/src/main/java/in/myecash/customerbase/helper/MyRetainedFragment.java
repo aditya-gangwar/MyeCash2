@@ -68,7 +68,10 @@ public class MyRetainedFragment extends RetainedFragment {
     public String mAccEnablePin;
     public String mAccEnableOtp;
 
-    public boolean mInPauseState;
+    // An issue is observeed in SDK 19 that when back button is pressed after onPause()
+    // but before onResume(), then it was causing crash.
+    // Like, pressing back immediatly after screen unlock (locked when any fragment except mobile number one was visible)
+    private Boolean resumeOk;
 
     public void reset() {
         LogMy.d(TAG,"In reset");
@@ -77,6 +80,16 @@ public class MyRetainedFragment extends RetainedFragment {
         mOtpMobileChange = null;
         mLastFetchCashbacks = null;
     }
+
+    public Boolean getResumeOk() {
+        return resumeOk;
+    }
+
+    public void setResumeOk(Boolean resumeOk) {
+        LogMy.d(TAG,"Resume Ok: "+resumeOk);
+        this.resumeOk = resumeOk;
+    }
+
 
     /*
      * Methods to add request for processing by background thread

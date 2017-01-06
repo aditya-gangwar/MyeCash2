@@ -291,6 +291,8 @@ public class TxnListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return true;
         //mActiveMenuItemId = item.getItemId();
         try {
             int i = item.getItemId();
@@ -580,6 +582,7 @@ public class TxnListFragment extends Fragment {
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             getActivity().onBackPressed();
         }
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     @Override
@@ -641,6 +644,9 @@ public class TxnListFragment extends Fragment {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if(event.getAction()==MotionEvent.ACTION_UP) {
+                if(!mCallback.getRetainedFragment().getResumeOk())
+                    return true;
+
                 LogMy.d(TAG,"In onTouch: "+v.getId());
 
                 // getRootView was not working, so manually finding root view

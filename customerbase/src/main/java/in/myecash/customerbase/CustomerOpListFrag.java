@@ -99,6 +99,7 @@ public class CustomerOpListFrag extends Fragment {
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             getActivity().onBackPressed();
         }
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     private class ItemHolder extends RecyclerView.ViewHolder {

@@ -61,6 +61,11 @@
             android:theme="@style/Helpshift.Theme.Activity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="in.myecash.merchantbase.HelpActivity"
+            android:theme="@style/Helpshift.Theme.Activity"
+            android:screenOrientation="portrait" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="ff31ec54d8344eb7441145b5161d18520f44eb48" />

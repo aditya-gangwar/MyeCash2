@@ -6,20 +6,20 @@ package in.myecash.common.constants;
 public class DbConstants {
 
     // Users table - 'user_type' column values
-    public static final int USER_TYPE_MERCHANT = 0;
-    public static final int USER_TYPE_CUSTOMER = 1;
-    public static final int USER_TYPE_AGENT = 22;
-    public static final int USER_TYPE_CC = 33;
-    public static final int USER_TYPE_CCNT = 44;
-    public static final int USER_TYPE_ADMIN = 99;
+    public static final int USER_TYPE_MERCHANT = 1;
+    public static final int USER_TYPE_CUSTOMER = 2;
+    public static final int USER_TYPE_AGENT = 3;
+    public static final int USER_TYPE_CC = 4;
+    public static final int USER_TYPE_CCNT = 5;
+    public static final int USER_TYPE_ADMIN = 0;
     // user type code to text description
     public static String userTypeDesc[] = {
+            "Admin",
             "Merchant",
             "Customer",
             "Agent",
             "CustomerCare",
-            "Controller",
-            "Admin"
+            "Controller"
     };
 
     // 'admin_status' column values - user tables

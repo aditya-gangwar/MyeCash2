@@ -62,7 +62,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="65"
                 android:gravity="center"
-                android:text="Ganga and Sons Stores, Noida"
                 android:textColor="@color/accent2"/>
         </LinearLayout>
 

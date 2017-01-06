@@ -17,9 +17,7 @@ import android.widget.EditText;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.MyCardForAction;
@@ -60,7 +58,7 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
     public interface CardsActionListFragIf {
         MyRetainedFragment getRetainedFragment();
         //void checkCardsForAction(String action);
-        void execActionForCards(String cards, String action, String allocateTo);
+        void execActionForCards(String cards, String action, String allocateTo, boolean getCardNumsOnly);
         void showCardDetails(String cardNum);
     }
 
@@ -85,7 +83,7 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
 
             mAction = getArguments().getString(ARG_ACTION);
             mTitleView.setText(mAction);
-            mBtnAction.setText(mAction);
+            initBtns();
 
             switch (mAction) {
                 case ActionsFragment.CARDS_ALLOT_AGENT:
@@ -122,9 +120,6 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
         mTitleView = (EditText) view.findViewById(R.id.title_action);
         mBtnScan = (AppCompatButton) view.findViewById(R.id.btn_scan);
         mBtnAction = (AppCompatButton) view.findViewById(R.id.btn_action);
-
-        mBtnScan.setOnClickListener(this);
-        mBtnAction.setOnClickListener(this);
 
         return view;
     }
@@ -166,12 +161,17 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
                     }
 
                     if(pendingCard) {
-                        // ask for confirmation
-                        String title = mRetainedFragment.mLastCardsForAction.size() + " Cards";
-                        String msg = "Are you sure to " + mAction + " ?";
-                        DialogFragmentWrapper dialog = DialogFragmentWrapper.createConfirmationDialog(title, msg, true, false);
-                        dialog.setTargetFragment(this, REQ_CONFIRM_ACTION);
-                        dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
+                        // dont ask for confirmation - if only getting card numbers
+                        if(!mRetainedFragment.cardNumFetched) {
+                            makeActionCall();
+                        } else {
+                            // ask for confirmation
+                            String title = mRetainedFragment.mLastCardsForAction.size() + " Cards";
+                            String msg = "Are you sure to " + mAction + " ?";
+                            DialogFragmentWrapper dialog = DialogFragmentWrapper.createConfirmationDialog(title, msg, true, false);
+                            dialog.setTargetFragment(this, REQ_CONFIRM_ACTION);
+                            dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
+                        }
                     } else {
                         AppCommonUtil.toast(getActivity(), "No Pending Cards Added");
                     }
@@ -192,7 +192,8 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
                 LogMy.d(TAG,"Read customer QR code: "+code);
 
                 // required in case of totally different, or multiple qr code scan
-                if(mRetainedFragment.mLastCardsForAction.size() < MAX_CARD_ONE_GO) {
+                int curSize = mRetainedFragment.mLastCardsForAction.size();
+                if(curSize < MAX_CARD_ONE_GO) {
                     // check for duplicates
                     boolean duplicate = false;
                     for (MyCardForAction card :
@@ -205,6 +206,7 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
 
                     if(!duplicate) {
                         MyCardForAction card = new MyCardForAction();
+                        card.setPosition(curSize+1);
                         card.setScannedCode(code);
                         card.setActionStatus(MyCardForAction.ACTION_STATUS_PENDING);
                         mRetainedFragment.mLastCardsForAction.add(card);
@@ -225,17 +227,21 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
 
         } else if(requestCode == REQ_CONFIRM_ACTION) {
             LogMy.d(TAG, "Received action confirmation.");
-            StringBuilder sb = new StringBuilder();
-            // Make CSV strings of all cards, for which action is still pending
-            for (MyCardForAction card :
-                    mRetainedFragment.mLastCardsForAction) {
-                if (card.getActionStatus().equals(MyCardForAction.ACTION_STATUS_PENDING)) {
-                    sb.append(card.getScannedCode()).append(CommonConstants.CSV_DELIMETER);
-                }
-            }
-            sb.deleteCharAt(sb.length()-1); //remove last ,
-            mCallback.execActionForCards(sb.toString(), mAction, mInputAllottee.getText().toString());
+            makeActionCall();
         }
+    }
+
+    private void makeActionCall() {
+        StringBuilder sb = new StringBuilder();
+        // Make CSV strings of all cards, for which action is still pending
+        for (MyCardForAction card :
+                mRetainedFragment.mLastCardsForAction) {
+            if (card.getActionStatus().equals(MyCardForAction.ACTION_STATUS_PENDING)) {
+                sb.append(card.getScannedCode()).append(CommonConstants.CSV_DELIMETER);
+            }
+        }
+        sb.deleteCharAt(sb.length()-1); //remove last delimeter
+        mCallback.execActionForCards(sb.toString(), mAction, mInputAllottee.getText().toString(), !mRetainedFragment.cardNumFetched);
     }
 
     private void startCodeScan() {
@@ -248,6 +254,7 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
 
     public void updateUI() {
         if(mRetainedFragment.mLastCardsForAction!=null) {
+            initBtns();
             CardsForActionAdapter adapter = (CardsForActionAdapter) mRecyclerView.getAdapter();
             if(adapter==null) {
                 LogMy.d(TAG, "Adapter not set yet");
@@ -261,6 +268,22 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
         } else {
             LogMy.e(TAG,"In updateUI: mLastCardsForAction is null");
         }
+    }
+
+    private void initBtns() {
+        if(mRetainedFragment.cardNumFetched) {
+            mBtnScan.setEnabled(false);
+            mBtnScan.setOnClickListener(null);
+            mBtnScan.setAlpha(0.5f);
+            mBtnAction.setText(mAction);
+
+        } else {
+            mBtnScan.setEnabled(true);
+            mBtnScan.setOnClickListener(this);
+            mBtnScan.setAlpha(1.0f);
+            mBtnAction.setText("Get Card#");
+        }
+        mBtnAction.setOnClickListener(this);
     }
 
     private void removeCard(MyCardForAction card) {
@@ -341,13 +364,15 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
 
         public void bindCb(MyCardForAction cb, int position) {
             mCard = cb;
-            String sno = String.format("%02d",(position+1))+"-";
-            mSno.setText(sno);
+            //String sno = String.format("%02d",(position+1))+"-";
+            String sno = String.format("%02d",mCard.getPosition());
+            String txt = sno+"-";
+            mSno.setText(txt);
 
             if(mCard.getCardNum()!=null && !mCard.getCardNum().isEmpty()) {
                 mCardId.setText(mCard.getCardNum());
             } else {
-                String txt = "Card "+(position+1);
+                txt = "Card "+sno;
                 mCardId.setText(txt);
             }
 
@@ -425,7 +450,13 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
     public static class MyCardComparator implements Comparator<MyCardForAction> {
         @Override
         public int compare(MyCardForAction lhs, MyCardForAction rhs) {
-            return compare(lhs.getCardNum(), rhs.getCardNum());
+            //return compare(lhs.getCardNum(), rhs.getCardNum());
+            return compare(lhs.getPosition(), rhs.getPosition());
+        }
+        private static int compare(int a, int b) {
+            return a < b ? -1
+                    : a > b ? 1
+                    : 0;
         }
         private static int compare(String a, String b) {
             if(a==null) {

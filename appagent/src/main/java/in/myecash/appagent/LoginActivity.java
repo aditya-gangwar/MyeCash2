@@ -1,9 +1,15 @@
 package in.myecash.appagent;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -43,6 +49,11 @@ public class LoginActivity extends AppCompatActivity implements
     private static final String DIALOG_PASSWD_RESET = "dialogPaswdReset";
 
     public static final String PREF_INSTANCE_ID = "agentInstanceId";
+
+    // permission request codes need to be < 256
+    private static final int RC_HANDLE_STORAGE_PERM = 10;
+    private static final int RC_HANDLE_CAMERA_PERM = 12;
+
 
     MyRetainedFragment      mWorkFragment;
     private String          mPassword;
@@ -120,11 +131,110 @@ public class LoginActivity extends AppCompatActivity implements
                     DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                             .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else {
-                    initOperationData();
-                    loginAgent();
+                    if(checkPermissions()) {
+                        initOperationData();
+                        loginAgent();
+                    }
                 }
             }
         });
+    }
+
+    private boolean checkPermissions() {
+        // check external storage permission
+        int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(rc != PackageManager.PERMISSION_GRANTED) {
+            requestStoragePermission();
+            return false;
+        }
+
+        // check camera permission
+        rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        if(rc != PackageManager.PERMISSION_GRANTED) {
+            requestCameraPermission();
+            return false;
+        }
+
+        return true;
+    }
+
+    public void requestStoragePermission() {
+        final String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_STORAGE_PERM);
+            return;
+        }
+
+        final Activity thisActivity = this;
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCompat.requestPermissions(thisActivity, permissions, RC_HANDLE_STORAGE_PERM);
+            }
+        };
+
+        Snackbar.make(mIdTextRes, in.myecash.merchantbase.R.string.permission_write_storage_rationale,
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(in.myecash.merchantbase.R.string.ok, listener)
+                .show();
+    }
+
+    public void requestCameraPermission() {
+        final String[] permissions = new String[]{Manifest.permission.CAMERA};
+
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+            ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_CAMERA_PERM);
+            return;
+        }
+
+        final Activity thisActivity = this;
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCompat.requestPermissions(thisActivity, permissions, RC_HANDLE_CAMERA_PERM);
+            }
+        };
+
+        Snackbar.make(mIdTextRes, in.myecash.merchantbase.R.string.permission_camera_rationale,
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(in.myecash.merchantbase.R.string.ok, listener)
+                .show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode != RC_HANDLE_STORAGE_PERM &&
+                requestCode != RC_HANDLE_CAMERA_PERM) {
+            LogMy.d(TAG, "Got unexpected permission result: " + requestCode);
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            return;
+        }
+
+        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            LogMy.d(TAG, "Permission granted: "+requestCode);
+            // we have permission, re-trigger the login button
+            mLoginButton.performClick();
+            return;
+        }
+
+        LogMy.e(TAG, "Permission not granted: results len = " + grantResults.length +
+                " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
+
+        String msg = null;
+        switch (requestCode) {
+            case RC_HANDLE_STORAGE_PERM:
+                msg = getString(in.myecash.merchantbase.R.string.no_write_storage_permission);
+                break;
+            case RC_HANDLE_CAMERA_PERM:
+                msg = getString(in.myecash.merchantbase.R.string.no_camera_permission);
+                break;
+        }
+        DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.noPermissionTitle,
+                msg, false, true);
+        notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
     }
 
     private void initOperationData() {

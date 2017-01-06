@@ -209,6 +209,9 @@ public class ActionsActivity extends AppCompatActivity implements
             case MyRetainedFragment.REQUEST_ACTION_CARDS:
                 AppCommonUtil.cancelProgressDialog(true);
                 if(errorCode==ErrorCodes.NO_ERROR) {
+                    if(!mWorkFragment.cardNumFetched) {
+                        mWorkFragment.cardNumFetched = true;
+                    }
                     startCardActionListFrag(null);
                 } else {
                     DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
@@ -231,6 +234,7 @@ public class ActionsActivity extends AppCompatActivity implements
 
     @Override
     public void onDialogResult(String tag, int indexOrResultCode, ArrayList<Integer> selectedItemsIndexList) {
+        LogMy.d(TAG,"In onDialogResult: "+tag);
         if (tag.equals(DIALOG_BACK_BUTTON)) {
             mExitAfterLogout = true;
             // delete all app memory data
@@ -388,8 +392,10 @@ public class ActionsActivity extends AppCompatActivity implements
             case ActionsFragment.CARDS_ALLOT_MCHNT:
             case ActionsFragment.CARDS_RETURN_MCHNT:
             case ActionsFragment.CARDS_RETURN_AGENT:
+                // initialize relevant data members first
                 mWorkFragment.mLastCardsForAction = null;
                 mWorkFragment.mLastCardsForAction = new ArrayList<>();
+                mWorkFragment.cardNumFetched = false;
                 startCardActionListFrag(action);
                 break;
             case ActionsFragment.OTHER_GLOBAL_SETTINGS:
@@ -399,9 +405,9 @@ public class ActionsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void execActionForCards(String cards, String action, String allocateTo) {
+    public void execActionForCards(String cards, String action, String allocateTo, boolean getCardNumsOnly) {
         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-        mWorkFragment.execActionForCards(cards, ActionsFragment.cardsActionCodeMap.get(action), allocateTo);
+        mWorkFragment.execActionForCards(cards, ActionsFragment.cardsActionCodeMap.get(action), allocateTo, getCardNumsOnly);
     }
 
     @Override

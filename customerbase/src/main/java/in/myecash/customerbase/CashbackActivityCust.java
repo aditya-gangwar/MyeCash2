@@ -170,6 +170,10 @@ public class CashbackActivityCust extends AppCompatActivity implements
             LogMy.e(TAG, "Exception in CashbackActivityCust:onBgThreadCreated", e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            if(mRetainedFragment.mCashbacks == null) {
+                // No data to show
+                startErrorFrag(false, null, null);
+            }
         }
     }
 
@@ -251,6 +255,9 @@ public class CashbackActivityCust extends AppCompatActivity implements
 
     public void selectDrawerItem(MenuItem item) {
 
+        if(!mRetainedFragment.getResumeOk())
+            return;
+
         mLastMenuItemId = item.getItemId();
         int i = item.getItemId();
 
@@ -262,49 +269,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
         } else if(i == R.id.menu_operations) {
             AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
             mRetainedFragment.fetchCustomerOps();
-        }/*else if (i == R.id.menu_sort_mchnts) {
-            // sort current shown merchants list
-            if(mMchntListFragment != null && mMchntListFragment.isVisible()) {
-                mMchntListFragment.sortMerchantList();
-            } else {
-                // I shudnt be here
-                LogMy.e(TAG,"Merchant List Fragment not available or visible");
-                // Raise alarm
-                Map<String,String> params = new HashMap<>();
-                params.put("Backstack Count", String.valueOf(mFragMgr.getBackStackEntryCount()));
-                params.put("Customer ID",mCustomer.getPrivate_id());
-                AppAlarms.wtf(mCustomer.getPrivate_id(), DbConstants.USER_TYPE_CUSTOMER,
-                        "CashbackActivity:selectDrawerItem",params);
-            }
-
-        } else if (i == R.id.menu_refresh_mchnts) {
-            if(custStatsRefreshReq(mRetainedFragment.mCbsUpdateTime.getTime())) {
-                // Fetch from scratch
-                // While we could have implemented fetching only latest data here
-                // However intentionally fetching from scratch - to avoid scenario wherein due to
-                // some un-foreseen bug - wrong CB data is getting displayed always from local file
-                mGetCbSince = 0;
-                mRetainedFragment.mCashbacks = null;
-                mRetainedFragment.mCbsUpdateTime = null;
-                deleteCbFile();
-                fetchCbData();
-
-            } else {
-                String msg = null;
-                if(MyGlobalSettings.getCustNoRefreshHrs()==24) {
-                    // 24 is treated as special case as 'once in a day'
-                    msg = "Refresh is allowed once a day.";
-                } else {
-                    msg = "Refresh allowed once every "+String.valueOf(MyGlobalSettings.getCustNoRefreshHrs())+" hours";
-                }
-
-                msg = msg+"\n\n"+"* Last Updated: "+mSdfDateWithTime.format(mRetainedFragment.mCbsUpdateTime);
-
-                DialogFragmentWrapper.createNotification(AppConstants.generalInfoTitle, msg, false, false)
-                        .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            }
-
-        } */else if (i == R.id.menu_change_mobile) {
+        } else if (i == R.id.menu_change_mobile) {
             // show mobile change dialog
             MobileChangeDialog dialog = new MobileChangeDialog();
             dialog.show(mFragMgr, DIALOG_CHANGE_MOBILE);
@@ -533,7 +498,6 @@ public class CashbackActivityCust extends AppCompatActivity implements
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DIALOG_NOTIFY_CB_FETCH_ERROR);
 
-            // TODO: see if below required to be done - after 'ok' button is clicked from dialog
             // but you will need to capture 'back button press' in dialog too
             if(mRetainedFragment.mCashbacks == null) {
                 // No data available locally, also error fetching data from DB
@@ -858,6 +822,9 @@ public class CashbackActivityCust extends AppCompatActivity implements
     public void onBackPressed() {
         LogMy.d(TAG,"In onBackPressed: "+mFragMgr.getBackStackEntryCount());
 
+        if(!mRetainedFragment.getResumeOk())
+            return;
+
         try {
             if (this.mDrawer.isDrawerOpen(GravityCompat.START)) {
                 this.mDrawer.closeDrawer(GravityCompat.START);
@@ -869,13 +836,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
                 DialogFragmentWrapper.createConfirmationDialog(AppConstants.exitGenTitle, AppConstants.exitAppMsg, false, false)
                         .show(mFragMgr, DIALOG_BACK_BUTTON);
             } else {
-                if (!mRetainedFragment.mInPauseState) {
-                    mFragMgr.popBackStackImmediate();
-                }
-            /*if(mMchntListFragment.isVisible()) {
-                LogMy.d(TAG,"Mobile num fragment visible");
-                //getReadyForNewTransaction();
-            }*/
+                mFragMgr.popBackStackImmediate();
             }
         } catch (Exception e) {
             AppCommonUtil.cancelProgressDialog(true);
@@ -893,19 +854,6 @@ public class CashbackActivityCust extends AppCompatActivity implements
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
-
-        /*
-        if(savedInstanceState==null) {
-            // activity is re-created and not just re-started
-            // Archive txns (all but today's) once a day
-            DateUtil todayMidnight = new DateUtil();
-            todayMidnight.toMidnight();
-
-            if(mCustomer.getLast_txn_archive()==null ||
-                    mCustomer.getLast_txn_archive().getTime() < todayMidnight.getTime().getTime()) {
-                mRetainedFragment.archiveTxns();
-            }
-        }*/
     }
 
     private void fetchCbData() {
@@ -1033,7 +981,11 @@ public class CashbackActivityCust extends AppCompatActivity implements
     protected void onResume() {
         LogMy.d(TAG, "In onResume: ");
         super.onResume();
-        mRetainedFragment.mInPauseState = false;
+        if(getFragmentManager().getBackStackEntryCount()==0) {
+            // no fragment in backstack - so flag wont get set by any fragment - so set it here
+            // though this shud never happen - as CashbackActivity always have a fragment
+            mRetainedFragment.setResumeOk(true);
+        }
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
@@ -1045,7 +997,8 @@ public class CashbackActivityCust extends AppCompatActivity implements
     protected void onPause() {
         LogMy.d(TAG,"In onPause: ");
         super.onPause();
-        mRetainedFragment.mInPauseState = true;
+        // no need to do this in each fragment - as activity onPause will always get called
+        mRetainedFragment.setResumeOk(false);
         AppCommonUtil.cancelProgressDialog(false);
         setDrawerState(false);
     }

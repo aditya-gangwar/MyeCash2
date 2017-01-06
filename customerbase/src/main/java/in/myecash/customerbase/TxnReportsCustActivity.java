@@ -62,6 +62,8 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     private static final String RETAINED_FRAGMENT = "retainedFragReports";
     private static final String DIALOG_DATE_FROM = "DialogDateFrom";
     private static final String DIALOG_DATE_TO = "DialogDateTo";
+    private static final String DIALOG_ERROR_NOTIFY = "DialogErrorNotify";
+
     private static final String TXN_LIST_FRAGMENT = "TxnListFragment";
     private static final String DIALOG_MERCHANT_DETAILS = "dialogMerchantDetails";
 
@@ -80,13 +82,12 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     private TxnReportsHelper mHelper;
     private Date mFromDate;
     private Date mToDate;
-    private int mDetailedTxnPos;
+    //private int mDetailedTxnPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_txn_report);
-
         // gets handlers to screen resources
         bindUiResources();
 
@@ -105,29 +106,30 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
         mMerchantId = getIntent().getStringExtra(EXTRA_MERCHANT_ID);
         mMerchantName = getIntent().getStringExtra(EXTRA_MERCHANT_NAME);
 
-        // Init date members
-        mNow = new Date();
-        // end of today
-        DateUtil now = new DateUtil(mNow, TimeZone.getDefault());
-        mTodayEoD = now.toEndOfDay().getTime();
-        LogMy.d( TAG, "mNow: "+String.valueOf(mNow.getTime()) +", mTodayEoD: "+ String.valueOf(mTodayEoD.getTime()) );
-
-        // create helper instance
+        // create/restore helper instance
         if(savedInstanceState==null) {
             mHelper = new TxnReportsHelper(this);
         } else {
             mHelper = mWorkFragment.mTxnReportHelper;
         }
-
+        // init toolbar
         initToolbar();
-        initDateInputs(savedInstanceState);
 
+        // Init date members
+        // end of today
+        mNow = new Date();
+        DateUtil now = new DateUtil(mNow, TimeZone.getDefault());
+        mTodayEoD = now.toEndOfDay().getTime();
+        LogMy.d( TAG, "mNow: "+String.valueOf(mNow.getTime()) +", mTodayEoD: "+ String.valueOf(mTodayEoD.getTime()) );
+
+        initDateInputs(savedInstanceState);
         mBtnGetReport.setOnClickListener(this);
-        if(savedInstanceState!=null) {
+
+        /*if(savedInstanceState!=null) {
             mDetailedTxnPos = savedInstanceState.getInt("mDetailedTxnPos");
         } else {
             mDetailedTxnPos = -1;
-        }
+        }*/
     }
 
     @Override
@@ -151,6 +153,9 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         try {
+            if(!mWorkFragment.getResumeOk()) {
+                return true;
+            }
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 int vId = view.getId();
                 LogMy.d(TAG, "In onTouch: " + vId);
@@ -177,7 +182,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
             AppCommonUtil.cancelProgressDialog(true);
             LogMy.e(TAG, "Exception in TxnReportsCustActivity", e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
-                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    .show(mFragMgr, DIALOG_ERROR_NOTIFY);
         }
         return true;
     }
@@ -186,24 +191,26 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     public void onClick(View v) {
         int vId = v.getId();
         LogMy.d(TAG, "In onClick: " + vId);
+        if (vId == R.id.btn_get_report) {
+            startTxnFetch();
+        }
+    }
 
+    private void startTxnFetch() {
         try {
-            if (vId == R.id.btn_get_report) {
-                // clear old data
-                //mWorkFragment.mAllFiles.clear();
-                //mWorkFragment.mMissingFiles.clear();
-                //mWorkFragment.mTxnsFromCsv.clear();
-                if (mWorkFragment.mLastFetchTransactions != null) {
-                    mWorkFragment.mLastFetchTransactions.clear();
-                    mWorkFragment.mLastFetchTransactions = null;
-                }
-                mHelper.startTxnFetch(mFromDate, mToDate, mMerchantId, CustomerUser.getInstance().getCustomer().getPrivate_id());
-
+            // clear old data
+            //mWorkFragment.mAllFiles.clear();
+            //mWorkFragment.mMissingFiles.clear();
+            //mWorkFragment.mTxnsFromCsv.clear();
+            if (mWorkFragment.mLastFetchTransactions != null) {
+                mWorkFragment.mLastFetchTransactions.clear();
+                mWorkFragment.mLastFetchTransactions = null;
             }
+            mHelper.startTxnFetch(mFromDate, mToDate, mMerchantId, CustomerUser.getInstance().getCustomer().getPrivate_id());
         } catch(Exception e) {
-            LogMy.e(TAG, "Exception is ReportsActivity:onClick: "+vId, e);
+            LogMy.e(TAG, "Exception is startTxnFetch", e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
-                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    .show(mFragMgr, DIALOG_ERROR_NOTIFY);
             //mWorkFragment.mTxnsFromCsv.clear();
         }
     }
@@ -269,7 +276,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
 
         if(allTxns==null || allTxns.isEmpty()) {
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.NO_DATA_FOUND), false, true)
-                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    .show(mFragMgr, DIALOG_ERROR_NOTIFY);
         } else {
             startTxnListFragment();
         }
@@ -287,7 +294,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
                         mHelper.onDbTxnsAvailable(mWorkFragment.mLastFetchTransactions);
                     } else {
                         DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                                .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                                .show(getFragmentManager(), DIALOG_ERROR_NOTIFY);
                     }
                     break;
 
@@ -300,7 +307,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
                         mHelper.onAllTxnFilesAvailable(true);
                     } else {
                         DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                                .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                                .show(getFragmentManager(), DIALOG_ERROR_NOTIFY);
                     }
                     break;
             }
@@ -308,7 +315,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
         } catch (Exception e) {
             LogMy.e(TAG, "Exception is ReportsActivity:onBgProcessResponse: "+operation+": "+errorCode, e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
-                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    .show(mFragMgr, DIALOG_ERROR_NOTIFY);
         }
     }
 
@@ -365,20 +372,25 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
 
     @Override
     public void onDialogResult(String tag, int indexOrResultCode, ArrayList<Integer> selectedItemsIndexList) {
-        // do nothing
+        if(tag.equals(DIALOG_ERROR_NOTIFY)) {
+            if(mMerchantId==null || mMerchantId.isEmpty()) {
+                onBackPressed();
+            }
+        }
     }
 
     @Override
     public void onBackPressed() {
+        if(!mWorkFragment.getResumeOk())
+            return;
+
         int count = getFragmentManager().getBackStackEntryCount();
         LogMy.d(TAG, "In onBackPressed: " + count);
         try {
             if (count == 0) {
                 super.onBackPressed();
             } else {
-                if (!mWorkFragment.mInPauseState) {
-                    getFragmentManager().popBackStackImmediate();
-                }
+                getFragmentManager().popBackStackImmediate();
 
                 if (mMerchantId == null || mMerchantId.isEmpty()) {
                     // Case when latest txns are directly shown
@@ -394,7 +406,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
         } catch (Exception e) {
             LogMy.e(TAG, "Exception in TxnReportsCustActivity", e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
-                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    .show(mFragMgr, DIALOG_ERROR_NOTIFY);
         }
 
     }
@@ -437,9 +449,13 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     protected void onResume() {
         LogMy.d(TAG, "In onResume: ");
         super.onResume();
-        mWorkFragment.mInPauseState = false;
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
+        }
+        if(getFragmentManager().getBackStackEntryCount()==0) {
+            // no fragment in backstack - so flag wont get set by any fragment - so set it here
+            // though this shud never happen - as CashbackActivity always have a fragment
+            mWorkFragment.setResumeOk(true);
         }
     }
 
@@ -447,7 +463,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     protected void onPause() {
         LogMy.d(TAG,"In onPause: ");
         super.onPause();
-        mWorkFragment.mInPauseState = true;
+        mWorkFragment.setResumeOk(false);
         AppCommonUtil.cancelProgressDialog(false);
     }
 
@@ -457,7 +473,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
 
         outState.putSerializable("mFromDate", mFromDate);
         outState.putSerializable("mToDate", mToDate);
-        outState.putInt("mDetailedTxnPos", mDetailedTxnPos);
+        //outState.putInt("mDetailedTxnPos", mDetailedTxnPos);
         mWorkFragment.mTxnReportHelper = mHelper;
     }
 

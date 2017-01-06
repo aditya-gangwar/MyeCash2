@@ -45,8 +45,8 @@ public class MyRetainedFragment extends RetainedFragment {
     public Customers mCurrCustomer;
     public CustomerCards mCurrMemberCard;
     // members used for bulk actions on cards
-    //public List<String> mScannedCards;
     public List<MyCardForAction> mLastCardsForAction;
+    public boolean cardNumFetched;
 
     public void reset() {
         LogMy.d(TAG,"In reset");
@@ -90,8 +90,8 @@ public class MyRetainedFragment extends RetainedFragment {
     public void searchMemberCard(String id) {
         mBackgroundProcessor.addCardSearchReq(id);
     }
-    public void execActionForCards(String cards, String action, String allocateTo) {
-        mBackgroundProcessor.addExecActionCardsReq(cards,action,allocateTo);
+    public void execActionForCards(String cards, String action, String allocateTo, boolean getCardNumsOnly) {
+        mBackgroundProcessor.addExecActionCardsReq(cards,action,allocateTo,getCardNumsOnly);
     }
     public void disableCustCard(String ticketId, String reason, String remarks) {
         mBackgroundProcessor.addDisableCustCardReq(ticketId, reason, remarks);

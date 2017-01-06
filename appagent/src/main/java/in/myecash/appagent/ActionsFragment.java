@@ -85,7 +85,7 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
 
     // Container Activity must implement this interface
     public interface ActionsFragmentIf {
-        public void onActionBtnClick(String action);
+        void onActionBtnClick(String action);
     }
 
     @Override

@@ -23,11 +23,11 @@
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true" >
+        android:layout_height="match_parent">
 
         <LinearLayout
-            style="@style/LL_Vertical_paddingSidesLarge">
+            style="@style/LL_Vertical_paddingSidesLarge"
+            android:layout_height="wrap_content">
 
             <EditText
                 style="@style/Edittext_only_view_small"

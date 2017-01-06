@@ -200,6 +200,7 @@ public class CashbackListFragment extends Fragment {
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             getActivity().onBackPressed();
         }
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     @Override
@@ -215,6 +216,9 @@ public class CashbackListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return true;
+
         try {
             int i = item.getItemId();
             if (i == R.id.action_sort) {
@@ -239,7 +243,7 @@ public class CashbackListFragment extends Fragment {
             }
 
         } catch(Exception e) {
-            LogMy.e(TAG, "Exception is MerchantListFragment:onOptionsItemSelected", e);
+            LogMy.e(TAG, "Exception is CashbackListFragment:onOptionsItemSelected", e);
             // unexpected exception - show error
             DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true);
             notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
@@ -306,6 +310,9 @@ public class CashbackListFragment extends Fragment {
         public boolean onTouch(View v, MotionEvent event) {
             try {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if(!mCallback.getRetainedFragment().getResumeOk())
+                        return true;
+
                     LogMy.d(TAG, "In onTouch: " + v.getId());
 
                     // getRootView was not working, so manually finding root view

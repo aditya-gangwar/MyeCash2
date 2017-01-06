@@ -4,6 +4,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.HeadersManager;
 import com.backendless.exceptions.BackendlessException;
+import com.backendless.persistence.local.UserIdStorageFactory;
 import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.crashlytics.android.Crashlytics;
 
@@ -85,30 +86,44 @@ public class CustomerUser {
      * CustomerUser singleton instance is created on successfull login
      * and destroyed on logout / explicit reset.
      */
+    public static boolean isValidLogin() {
+        return Backendless.UserService.isValidLogin();
+    }
+
+    public static int tryAutoLogin() {
+        LogMy.d(TAG, "In tryAutoLogin");
+        try {
+            BackendlessUser user = null;
+            String currentUserObjectId = UserIdStorageFactory.instance().getStorage().get();
+            if(currentUserObjectId!=null && !currentUserObjectId.isEmpty()) {
+                user = Backendless.Data.of( BackendlessUser.class ).findById( currentUserObjectId );
+                if(user==null) {
+                    return ErrorCodes.GENERAL_ERROR;
+                }
+            }
+            int retStatus = loadOnLogin(user);
+            if( retStatus!= ErrorCodes.NO_ERROR) {
+                logout();
+                return retStatus;
+            }
+        } catch (BackendlessException e) {
+            LogMy.d(TAG,"Auto Login failed: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
     public static int login(String userId, String password) {
         LogMy.d(TAG, "In login");
         try {
-            BackendlessUser user = Backendless.UserService.login(userId, password, false);
+
+            BackendlessUser user = Backendless.UserService.login(userId, password, true);
             LogMy.d(TAG, "Customer Login Success: " + userId);
-            int userType = (Integer)user.getProperty("user_type");
-            if( userType != DbConstants.USER_TYPE_CUSTOMER) {
-                // wrong user type
-                LogMy.e(TAG,"Invalid usertype in customer app: "+userType+", "+userId);
-                logout();
-                return ErrorCodes.USER_WRONG_ID_PASSWD;
-            }
 
-            // create instance of CustomerUser class
-            createInstance();
-            // load all child objects
-            mInstance.loadCustomer(userId);
-            LogMy.d(TAG, "Customer Load Success: " + mInstance.mCustomer.getMobile_num());
-
-            // Store user token
-            mInstance.mUserToken = HeadersManager.getInstance().getHeader(HeadersManager.HeadersEnum.USER_TOKEN_KEY);
-            if(mInstance.mUserToken == null || mInstance.mUserToken.isEmpty()) {
+            int retStatus = loadOnLogin(user);
+            if( retStatus!= ErrorCodes.NO_ERROR) {
                 logout();
-                return ErrorCodes.GENERAL_ERROR;
+                return retStatus;
             }
 
         } catch (BackendlessException e) {
@@ -268,6 +283,37 @@ public class CustomerUser {
     /*
      * Private helper methods
      */
+    private static int loadOnLogin(BackendlessUser user) {
+        LogMy.d(TAG, "In loadOnLogin");
+        try {
+            String userId = (String) user.getProperty("user_id");
+            int userType = (Integer)user.getProperty("user_type");
+            if( userType != DbConstants.USER_TYPE_CUSTOMER) {
+                // wrong user type
+                LogMy.e(TAG,"Invalid usertype in customer app: "+userType+", "+userId);
+                return ErrorCodes.USER_WRONG_ID_PASSWD;
+            }
+
+            // create instance of CustomerUser class
+            createInstance();
+            // load all child objects
+            mInstance.loadCustomer(userId);
+            LogMy.d(TAG, "Customer Load Success: " + mInstance.mCustomer.getMobile_num());
+
+            // Store user token
+            mInstance.mUserToken = HeadersManager.getInstance().getHeader(HeadersManager.HeadersEnum.USER_TOKEN_KEY);
+            if(mInstance.mUserToken == null || mInstance.mUserToken.isEmpty()) {
+                logout();
+                return ErrorCodes.GENERAL_ERROR;
+            }
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"loadOnLogin failed: "+e.toString());
+            throw e;
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
     private void isLoginValid() {
         // Not working properly - so commenting it out
         /*String userToken = UserTokenStorageFactory.instance().getStorage().get();
