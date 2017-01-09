@@ -68,6 +68,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     /*
      * Add request methods
      */
+    public void addAutoLoginReq() {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_AUTO_LOGIN, null).sendToTarget();
+    }
     public void addLoginRequest(String userId, String password) {
         MessageLogin msg = new MessageLogin();
         msg.userId = userId;
@@ -163,8 +166,16 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
             case MyRetainedFragment.REQUEST_FETCH_CUSTOMER_OPS:
                 error = fetchCustomerOps();
                 break;
+            case MyRetainedFragment.REQUEST_AUTO_LOGIN:
+                error = tryAutoLogin();
+                break;
         }
         return error;
+    }
+
+    private int tryAutoLogin() {
+        LogMy.d(TAG, "In tryAutoLogin");
+        return CustomerUser.tryAutoLogin();
     }
 
     private int loginCustomer(MessageLogin msg) {

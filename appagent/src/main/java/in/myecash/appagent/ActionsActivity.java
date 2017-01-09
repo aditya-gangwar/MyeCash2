@@ -18,6 +18,7 @@ import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.appbase.PasswdChangeDialog;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.DateUtil;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -238,13 +239,18 @@ public class ActionsActivity extends AppCompatActivity implements
         if (tag.equals(DIALOG_BACK_BUTTON)) {
             mExitAfterLogout = true;
             // delete all app memory data
-            if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
+            /*if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
                 if(!((ActivityManager)getSystemService(ACTIVITY_SERVICE))
                         .clearApplicationUserData()) {
                     LogMy.w(TAG,"Failed to clear application user data");
                 }
             } else {
                 LogMy.e(TAG,"Not clearing cache data - as API level is below 19.");
+            }*/
+            // delete all internal files every 10 days
+            DateUtil now = new DateUtil();
+            if(now.getDayOfMonth()%10==0) {
+                AppCommonUtil.delAllInternalFiles(this);
             }
             logoutAgent();
         }

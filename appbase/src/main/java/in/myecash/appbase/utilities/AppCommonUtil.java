@@ -17,6 +17,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
@@ -49,6 +50,7 @@ import in.myecash.common.database.BusinessCategories;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.Cities;
 import in.myecash.common.database.CustomerCards;
+import in.myecash.common.database.CustomerOps;
 import in.myecash.common.database.Customers;
 import in.myecash.common.database.MerchantDevice;
 import in.myecash.common.database.MerchantOps;
@@ -97,10 +99,12 @@ public class AppCommonUtil {
         mProgressDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                float small = context.getResources().getDimension(R.dimen.text_size_small);
-                TextView textView = (TextView) mProgressDialog.findViewById(android.R.id.message);
-                if(textView!=null)
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, small);
+                if(mProgressDialog!=null) {
+                    float small = context.getResources().getDimension(R.dimen.text_size_small);
+                    TextView textView = (TextView) mProgressDialog.findViewById(android.R.id.message);
+                    if (textView != null)
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, small);
+                }
             }
         });
         mProgressDialog.show();
@@ -187,7 +191,7 @@ public class AppCommonUtil {
         try {
             errorCode = Integer.parseInt(expCode);
         } catch(Exception et) {
-            if(e.getMessage().contains(CommonConstants.BACKENDLESS_HOST_IP)) {
+            if(e.getMessage()!=null && e.getMessage().contains(CommonConstants.BACKENDLESS_HOST_IP)) {
                 LogMy.d(TAG,"Exiting getLocalErrorCode: "+ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE);
                 return ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE;
             }
@@ -391,6 +395,12 @@ public class AppCommonUtil {
         }
         return deviceId;*/
     }
+    /*public static String getMacAddress(Context context) {
+        WifiManager wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+        String m_szWLANMAC = wm.getConnectionInfo().getMacAddress();
+        return m_szWLANMAC;
+        //return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+    }*/
     public static String getIMEI(Context context) {
         final TelephonyManager mTelephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String imei = mTelephony.getDeviceId();
@@ -451,13 +461,27 @@ public class AppCommonUtil {
     }
 
     public static File createLocalImageFile(Context context, String name) {
-        File filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        //File filesDir = context.getFilesDir();
+        //File filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File filesDir = context.getFilesDir();
         if (filesDir == null) {
             return null;
         }
 
         return new File(filesDir, name);
+    }
+
+    public static void delAllInternalFiles(Activity ctxt) {
+        String[] files = ctxt.fileList();
+        for (String fileName :
+                files) {
+            if(AppCommonUtil.isAppFile(fileName)) {
+                if (ctxt.deleteFile(fileName)) {
+                    LogMy.d(TAG, "Deleted file: " + fileName);
+                } else {
+                    LogMy.e(TAG, "Failed to delete file: " + fileName);
+                }
+            }
+        }
     }
 
     public static boolean isAppFile(String fileName) {
@@ -537,6 +561,7 @@ public class AppCommonUtil {
         Backendless.Data.mapTableToClass("Merchants", Merchants.class);
         Backendless.Data.mapTableToClass("Counters", Counters.class);
         Backendless.Data.mapTableToClass("MerchantOps", MerchantOps.class);
+        Backendless.Data.mapTableToClass("CustomerOps", CustomerOps.class);
         Backendless.Data.mapTableToClass("MerchantDevice", MerchantDevice.class);
         Backendless.Data.mapTableToClass("BusinessCategories", BusinessCategories.class);
         Backendless.Data.mapTableToClass("Address", Address.class);

@@ -67,6 +67,7 @@
     <string name="permission_phone_state_rationale">Access to phone state is needed for security</string>
     <string name="no_phone_state_permission">This application cannot run because it does not have the Phone State permission.  The application will now exit.</string>
 
+    <string name="permission_storage_rationale">Access required to store and read app files like display image, statements etc..</string>
     <string name="permission_write_storage_rationale">Access to the storage is required to download/email statement and customer data files.</string>
     <string name="no_write_storage_permission">External Storage permission is mandatory. Cannot proceed with login.</string>
     <string name="permission_camera_rationale">Access to the camera is required for scannbing membership cards.</string>

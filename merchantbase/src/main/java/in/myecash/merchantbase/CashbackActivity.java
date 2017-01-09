@@ -73,7 +73,7 @@ public class CashbackActivity extends AppCompatActivity implements
         DashboardTxnFragment.DashboardFragmentIf, DashboardFragment.DashboardSummaryFragmentIf,
         CustomerDetailsDialog.CustomerDetailsDialogIf, CustomerDataDialog.CustomerDataDialogIf,
         CustomerListFragment.CustomerListFragmentIf, MerchantOpListFrag.MerchantOpListFragIf,
-        TxnConfirmFragment.TxnConfirmFragmentIf {
+        TxnConfirmFragment.TxnConfirmFragmentIf, SettingsFragment.SettingsFragmentIf {
 
     private static final String TAG = "MchntApp-CashbackActivity";
 

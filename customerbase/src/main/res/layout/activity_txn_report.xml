@@ -30,7 +30,8 @@
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesXL"
         android:id="@+id/layout_report_main"
-        android:layout_below="@+id/toolbar_report">
+        android:layout_below="@+id/toolbar_report"
+        android:background="@color/bg_light_grey">
 
         <Space
             android:layout_width="match_parent"
@@ -61,7 +62,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="65"
-                android:gravity="center"
+                android:gravity="left"
+                android:layout_marginLeft="@dimen/medium_space"
                 android:textColor="@color/accent2"/>
         </LinearLayout>
 

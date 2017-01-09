@@ -3,7 +3,9 @@ package in.myecash.customerbase.entities;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.HeadersManager;
+import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessException;
+import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.local.UserIdStorageFactory;
 import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.crashlytics.android.Crashlytics;
@@ -86,24 +88,30 @@ public class CustomerUser {
      * CustomerUser singleton instance is created on successfull login
      * and destroyed on logout / explicit reset.
      */
-    public static boolean isValidLogin() {
-        return Backendless.UserService.isValidLogin();
-    }
+    /*public static void isValidLogin(AsyncCallback<Boolean> responder) {
+        //return Backendless.UserService.isValidLogin();
+        Backendless.UserService.isValidLogin( responder );
+    }*/
 
     public static int tryAutoLogin() {
         LogMy.d(TAG, "In tryAutoLogin");
         try {
+            if(!Backendless.UserService.isValidLogin()) {
+                return ErrorCodes.NOT_LOGGED_IN;
+            }
             BackendlessUser user = null;
             String currentUserObjectId = UserIdStorageFactory.instance().getStorage().get();
+            LogMy.d(TAG, "currentUserObjectId: "+currentUserObjectId);
+
             if(currentUserObjectId!=null && !currentUserObjectId.isEmpty()) {
                 user = Backendless.Data.of( BackendlessUser.class ).findById( currentUserObjectId );
                 if(user==null) {
                     return ErrorCodes.GENERAL_ERROR;
                 }
+                Backendless.UserService.setCurrentUser(user);
             }
             int retStatus = loadOnLogin(user);
             if( retStatus!= ErrorCodes.NO_ERROR) {
-                logout();
                 return retStatus;
             }
         } catch (BackendlessException e) {

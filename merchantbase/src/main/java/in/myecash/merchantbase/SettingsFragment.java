@@ -19,6 +19,7 @@ import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.merchantbase.entities.MerchantUser;
+import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 /**
  * Created by adgangwa on 30-03-2016.
@@ -47,15 +48,23 @@ public class SettingsFragment extends PreferenceFragment
     private boolean mSettingsChanged;
 
     // Container Activity must implement this interface
-    /*
     public interface SettingsFragmentIf {
-        public void onSettingsChange();
-    }*/
+        MyRetainedFragment getRetainedFragment();
+        void setDrawerState(boolean isEnabled);
+    }
+    private SettingsFragmentIf mCallback;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         LogMy.d(TAG, "In onActivityCreated");
+
+        try {
+            mCallback = (SettingsFragmentIf) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement SettingsFragmentIf");
+        }
 
         //TODO: use '?android:attr/windowBackground' instead of white
         getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
@@ -308,8 +317,11 @@ public class SettingsFragment extends PreferenceFragment
 
     @Override
     public void onResume() {
+        LogMy.d(TAG, "In onResume");
         super.onResume();
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        mCallback.setDrawerState(false);
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     @Override

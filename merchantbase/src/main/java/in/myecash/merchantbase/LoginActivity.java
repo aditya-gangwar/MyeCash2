@@ -538,17 +538,7 @@ public class LoginActivity extends AppCompatActivity implements
             if(lastDelTime < reqEpoch) {
                 // Request made time in DB is later than 'last all files delete' time in shared preferences
                 // Delete all files in internal storage
-                String[] files = fileList();
-                for (String fileName :
-                        files) {
-                    if(AppCommonUtil.isAppFile(fileName)) {
-                        if (deleteFile(fileName)) {
-                            LogMy.d(TAG, "Deleted file: " + fileName);
-                        } else {
-                            LogMy.e(TAG, "Failed to delete file: " + fileName);
-                        }
-                    }
-                }
+                AppCommonUtil.delAllInternalFiles(this);
 
                 // Update time in shared preferences
                 PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)

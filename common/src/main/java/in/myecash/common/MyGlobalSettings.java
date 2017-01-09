@@ -14,9 +14,7 @@ import in.myecash.common.database.GlobalSettings;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -82,8 +80,8 @@ public class MyGlobalSettings
     public static Integer getMchntDashBNoRefreshHrs() {
         return (Integer) getValue(GlobalSettingConstants.SETTINGS_STATS_NO_REFRESH_HRS);
     }
-    public static Integer getCustNoRefreshHrs() {
-        return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUSTOMER_NO_REFRESH_HRS);
+    public static Integer getCustNoRefreshMins() {
+        return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUSTOMER_NO_REFRESH_MINS);
     }
     public static Integer getCashAccLimit() {
         return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUSTOMER_CASH_LIMIT);

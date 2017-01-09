@@ -51,7 +51,8 @@ public class LoginActivity extends AppCompatActivity implements
     public static final String PREF_INSTANCE_ID = "agentInstanceId";
 
     // permission request codes need to be < 256
-    private static final int RC_HANDLE_STORAGE_PERM = 10;
+    private static final int RC_HANDLE_WRITE_STORAGE_PERM = 10;
+    private static final int RC_HANDLE_READ_STORAGE_PERM = 11;
     private static final int RC_HANDLE_CAMERA_PERM = 12;
 
 
@@ -144,7 +145,13 @@ public class LoginActivity extends AppCompatActivity implements
         // check external storage permission
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if(rc != PackageManager.PERMISSION_GRANTED) {
-            requestStoragePermission();
+            requestWriteStoragePermission();
+            return false;
+        }
+
+        rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if(rc != PackageManager.PERMISSION_GRANTED) {
+            requestReadStoragePermission();
             return false;
         }
 
@@ -158,11 +165,11 @@ public class LoginActivity extends AppCompatActivity implements
         return true;
     }
 
-    public void requestStoragePermission() {
+    public void requestWriteStoragePermission() {
         final String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_STORAGE_PERM);
+            ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_WRITE_STORAGE_PERM);
             return;
         }
 
@@ -170,13 +177,35 @@ public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ActivityCompat.requestPermissions(thisActivity, permissions, RC_HANDLE_STORAGE_PERM);
+                ActivityCompat.requestPermissions(thisActivity, permissions, RC_HANDLE_WRITE_STORAGE_PERM);
             }
         };
 
-        Snackbar.make(mIdTextRes, in.myecash.merchantbase.R.string.permission_write_storage_rationale,
+        Snackbar.make(mIdTextRes, R.string.permission_storage_rationale,
                 Snackbar.LENGTH_INDEFINITE)
-                .setAction(in.myecash.merchantbase.R.string.ok, listener)
+                .setAction(R.string.ok, listener)
+                .show();
+    }
+
+    public void requestReadStoragePermission() {
+        final String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            ActivityCompat.requestPermissions(this, permissions, RC_HANDLE_READ_STORAGE_PERM);
+            return;
+        }
+
+        final Activity thisActivity = this;
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCompat.requestPermissions(thisActivity, permissions, RC_HANDLE_READ_STORAGE_PERM);
+            }
+        };
+
+        Snackbar.make(mIdTextRes, R.string.permission_storage_rationale,
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.ok, listener)
                 .show();
     }
 
@@ -196,9 +225,9 @@ public class LoginActivity extends AppCompatActivity implements
             }
         };
 
-        Snackbar.make(mIdTextRes, in.myecash.merchantbase.R.string.permission_camera_rationale,
+        Snackbar.make(mIdTextRes, R.string.permission_camera_rationale,
                 Snackbar.LENGTH_INDEFINITE)
-                .setAction(in.myecash.merchantbase.R.string.ok, listener)
+                .setAction(R.string.ok, listener)
                 .show();
     }
 
@@ -206,8 +235,9 @@ public class LoginActivity extends AppCompatActivity implements
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if (requestCode != RC_HANDLE_STORAGE_PERM &&
-                requestCode != RC_HANDLE_CAMERA_PERM) {
+        if (requestCode != RC_HANDLE_WRITE_STORAGE_PERM &&
+                requestCode != RC_HANDLE_CAMERA_PERM &&
+                requestCode != RC_HANDLE_READ_STORAGE_PERM) {
             LogMy.d(TAG, "Got unexpected permission result: " + requestCode);
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             return;
@@ -225,11 +255,14 @@ public class LoginActivity extends AppCompatActivity implements
 
         String msg = null;
         switch (requestCode) {
-            case RC_HANDLE_STORAGE_PERM:
-                msg = getString(in.myecash.merchantbase.R.string.no_write_storage_permission);
+            case RC_HANDLE_WRITE_STORAGE_PERM:
+                msg = getString(R.string.no_write_storage_permission);
+                break;
+            case RC_HANDLE_READ_STORAGE_PERM:
+                msg = getString(R.string.no_write_storage_permission);
                 break;
             case RC_HANDLE_CAMERA_PERM:
-                msg = getString(in.myecash.merchantbase.R.string.no_camera_permission);
+                msg = getString(R.string.no_camera_permission);
                 break;
         }
         DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.noPermissionTitle,

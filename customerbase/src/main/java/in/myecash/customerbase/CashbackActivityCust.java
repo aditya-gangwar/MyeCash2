@@ -148,6 +148,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
     @Override
     public void onBgThreadCreated() {
         // read file, if 'cashback store' is empty
+        LogMy.d(TAG,"In onBgThreadCreated");
         try {
             boolean fetchData = false;
             if (mRetainedFragment.mCashbacks == null) {
@@ -155,6 +156,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
                     fetchData = true;
                 }
             } else if (custStatsRefreshReq(mRetainedFragment.mCbsUpdateTime.getTime())) {
+                LogMy.d(TAG,"Data available, but expired");
                 // data in memory, but has expired
                 fetchData = true;
                 mGetCbSince = mRetainedFragment.mCbsUpdateTime.getTime();
@@ -746,7 +748,9 @@ public class CashbackActivityCust extends AppCompatActivity implements
 
         if (tag.equals(DIALOG_BACK_BUTTON)) {
             mExitAfterLogout = true;
-            logoutCustomer();
+            // not logging out
+            //logoutCustomer();
+            finish();
         } else if(tag.equals(DIALOG_SESSION_TIMEOUT)) {
             mExitAfterLogout = false;
             logoutCustomer();
@@ -890,7 +894,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
                         long fileCreateTime = Long.parseLong(csvFields[0]);
                         if(custStatsRefreshReq(fileCreateTime) &&
                                 !ignoreTime ) {
-                            LogMy.d(TAG,"Cb file available data older than configured time");
+                            LogMy.d(TAG,"Cb file available data older than configured time: "+fileCreateTime);
                             // file is older than configured no refresh duration
                             mGetCbSince = fileCreateTime;
                             // don't read file further, will be done after updated records are fetched from DB
@@ -951,7 +955,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
 
     private boolean custStatsRefreshReq(long lastUpdate) {
 
-        if(MyGlobalSettings.getCustNoRefreshHrs()==24) {
+        if(MyGlobalSettings.getCustNoRefreshMins()==(24*60)) {
             // 24 is treated as special case as 'once in a day'
             DateUtil todayMidnight = (new DateUtil()).toMidnight();
             if(lastUpdate < todayMidnight.getTime().getTime()) {
@@ -961,7 +965,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
         } else {
             // Check if updated in last 'cust no refresh hours'
             long timeDiff = (new Date()).getTime() - lastUpdate;
-            long noRefreshDuration = 60*60*1000*MyGlobalSettings.getCustNoRefreshHrs();
+            long noRefreshDuration = MyGlobalSettings.getCustNoRefreshMins()*CommonConstants.MILLISECS_IN_MINUTE;
             if( timeDiff > noRefreshDuration ) {
                 return true;
             }

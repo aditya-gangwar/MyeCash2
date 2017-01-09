@@ -49,6 +49,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 
@@ -218,11 +219,59 @@ public class RegisterMerchantActivity extends AppCompatActivity
         }
     }
 
+    private Intent prepareImageUpload() {
+        Intent pickImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickImageIntent.setType("image/*");
+        pickImageIntent.putExtra("crop", "true");
+
+        Float imgWidth = getResources().getDimension(R.dimen.register_image_width);
+        Float imgHeight = getResources().getDimension(R.dimen.register_image_height);
+
+        int cropWidth = 2*imgWidth.intValue();
+        int cropHeight = 2*imgHeight.intValue();
+
+        // Crop size as twice to that of display size
+        pickImageIntent.putExtra("outputX", cropWidth);
+        pickImageIntent.putExtra("outputY", cropHeight);
+        pickImageIntent.putExtra("aspectX", 1);
+        pickImageIntent.putExtra("aspectY", 1);
+        pickImageIntent.putExtra("scale", true);
+        //pickImageIntent.putExtra("outputFormat", CommonConstants.PHOTO_FILE_FORMAT);
+        //pickImageIntent.putExtra("outputFormat", Bitmap.CompressFormat.WEBP.toString());
+        //pickImageIntent.putExtra("outputFormat", AppCommonUtil.getImgCompressFormat().toString());
+
+        /*String tmpDpFilename = "IMG_" + System.currentTimeMillis() + "." + CommonConstants.PHOTO_FILE_FORMAT;
+        mPhotoFile = AppCommonUtil.createLocalImageFile(this, tmpDpFilename);
+        PackageManager packageManager = this.getPackageManager();
+
+        boolean canTakePhoto = (mPhotoFile != null) && pickImageIntent.resolveActivity(packageManager) != null;
+        mImageUploadBtn.setEnabled(canTakePhoto);
+        if (canTakePhoto) {
+            Uri uri = Uri.fromFile(mPhotoFile);
+            LogMy.d(TAG,"URI: "+uri);
+            pickImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        }*/
+
+        return pickImageIntent;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_LOAD_IMAGE) {
             if (resultCode == RESULT_OK) {
-                updateDisplayImage(mPhotoFile);
+                try {
+                    final InputStream ist = getContentResolver().openInputStream(data.getData());
+                    final Bitmap bitmap = BitmapFactory.decodeStream(ist);
+                    mImageUploadBtn.setImageBitmap(bitmap);
+                    mImageUploaded = true;
+                    String tmpDpFilename = "IMG_" + System.currentTimeMillis() + "." + CommonConstants.PHOTO_FILE_FORMAT;
+                    AppCommonUtil.compressBmpAndStore(this, bitmap, tmpDpFilename);
+                    mPhotoFile = getFileStreamPath(tmpDpFilename);
+
+                } catch (Exception e) {
+                    LogMy.d(TAG, "Failed to update display image: " + e.toString());
+                }
+                //updateDisplayImage(mPhotoFile);
             } else {
                 LogMy.d(TAG, "Image crop return failure, Result code : "+resultCode);
             }
@@ -438,42 +487,6 @@ public class RegisterMerchantActivity extends AppCompatActivity
                 }
             }
         });
-    }
-
-    private Intent prepareImageUpload() {
-        Intent pickImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickImageIntent.setType("image/*");
-        pickImageIntent.putExtra("crop", "true");
-
-        Float imgWidth = getResources().getDimension(R.dimen.register_image_width);
-        Float imgHeight = getResources().getDimension(R.dimen.register_image_height);
-
-        int cropWidth = 2*imgWidth.intValue();
-        int cropHeight = 2*imgHeight.intValue();
-
-        // Crop size as twice to that of display size
-        pickImageIntent.putExtra("outputX", cropWidth);
-        pickImageIntent.putExtra("outputY", cropHeight);
-        pickImageIntent.putExtra("aspectX", 1);
-        pickImageIntent.putExtra("aspectY", 1);
-        pickImageIntent.putExtra("scale", true);
-        //pickImageIntent.putExtra("outputFormat", CommonConstants.PHOTO_FILE_FORMAT);
-        //pickImageIntent.putExtra("outputFormat", Bitmap.CompressFormat.WEBP.toString());
-        pickImageIntent.putExtra("outputFormat", AppCommonUtil.getImgCompressFormat().toString());
-
-        String tmpDpFilename = "IMG_" + System.currentTimeMillis() + "." + CommonConstants.PHOTO_FILE_FORMAT;
-        mPhotoFile = AppCommonUtil.createLocalImageFile(this, tmpDpFilename);
-        PackageManager packageManager = this.getPackageManager();
-
-        boolean canTakePhoto = (mPhotoFile != null) && pickImageIntent.resolveActivity(packageManager) != null;
-        mImageUploadBtn.setEnabled(canTakePhoto);
-        if (canTakePhoto) {
-            Uri uri = Uri.fromFile(mPhotoFile);
-            LogMy.d(TAG,"URI: "+uri);
-            pickImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        }
-
-        return pickImageIntent;
     }
 
     @Override

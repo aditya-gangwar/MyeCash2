@@ -35,6 +35,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_FETCH_TXN_FILES = 8;
     public static final int REQUEST_ENABLE_ACC = 9;
     public static final int REQUEST_FETCH_CUSTOMER_OPS = 10;
+    public static final int REQUEST_AUTO_LOGIN = 11;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -94,6 +95,9 @@ public class MyRetainedFragment extends RetainedFragment {
     /*
      * Methods to add request for processing by background thread
      */
+    public void tryAutoLogin() {
+        mBackgroundProcessor.addAutoLoginReq();
+    }
     public void loginCustomer(String loginId, String password) {
         mBackgroundProcessor.addLoginRequest(loginId, password);
     }

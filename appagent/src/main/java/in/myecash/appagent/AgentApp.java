@@ -25,6 +25,13 @@ public class AgentApp extends Application {
         super.onCreate();
         // Required initialization logic here!
 
+        // App level initializations - once in main activity
+        Backendless.initApp(this, CommonConstants.APPLICATION_ID, CommonConstants.ANDROID_SECRET_KEY, CommonConstants.VERSION);
+        com.backendless.Backendless.setUrl( CommonConstants.BACKENDLESS_HOST );
+
+        // Map all tables to class here - except 'cashback' and 'transaction'
+        AppCommonUtil.initTableToClassMappings();
+
         // Init crashlytics
         Fabric.with(this, new Crashlytics());
 
@@ -44,12 +51,6 @@ public class AgentApp extends Application {
             LogMy.e("MerchantApp", "Helpshift: Invalid install credentials : ", e);
         }
 
-        // App level initializations - once in main activity
-        Backendless.initApp(this, CommonConstants.APPLICATION_ID, CommonConstants.ANDROID_SECRET_KEY, CommonConstants.VERSION);
-        com.backendless.Backendless.setUrl( CommonConstants.BACKENDLESS_HOST );
-
-        // Map all tables to class here - except 'cashback' and 'transaction'
-        AppCommonUtil.initTableToClassMappings();
     }
 }
 

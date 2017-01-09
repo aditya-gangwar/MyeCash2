@@ -91,7 +91,7 @@ public class CashbackListFragment extends Fragment {
             sortList(sortType);
 
             // update time
-            mUpdated.setText(mSdfDateWithTime.format(mRetainedFragment.mCbsUpdateTime));
+            //mUpdated.setText(mSdfDateWithTime.format(mRetainedFragment.mCbsUpdateTime));
 
             setHasOptionsMenu(true);
 
@@ -147,6 +147,9 @@ public class CashbackListFragment extends Fragment {
             } else {
                 adapter.refresh(mMyCbs);
             }
+            // update time
+            mUpdated.setText(mSdfDateWithTime.format(mRetainedFragment.mCbsUpdateTime));
+
             /*mRecyclerView.removeAllViews();
             mRecyclerView.setAdapter(new CbAdapter(mMyCbs));
             mRecyclerView.invalidate();
@@ -227,11 +230,11 @@ public class CashbackListFragment extends Fragment {
             } else if(i == R.id.action_refresh) {
                 if(!mCallback.refreshMchntList()) {
                     String msg = null;
-                    if(MyGlobalSettings.getCustNoRefreshHrs()==24) {
+                    if(MyGlobalSettings.getCustNoRefreshMins()==(24*60)) {
                         // 24 is treated as special case as 'once in a day'
                         msg = "Refresh is allowed once a day.";
                     } else {
-                        msg = "Refresh allowed once every "+String.valueOf(MyGlobalSettings.getCustNoRefreshHrs())+" hours";
+                        msg = "Refresh allowed once every "+String.valueOf(MyGlobalSettings.getCustNoRefreshMins())+" minutes";
                     }
 
                     msg = msg+"\n\n"+"* Last Updated: "+mSdfDateWithTime.format(mRetainedFragment.mCbsUpdateTime);

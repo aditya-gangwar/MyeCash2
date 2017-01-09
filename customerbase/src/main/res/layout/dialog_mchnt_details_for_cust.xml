@@ -41,10 +41,10 @@
                 android:id="@+id/img_merchant"
                 android:src="@drawable/ic_store_grey_48dp"
                 android:layout_width="@dimen/dp_dialog_image_width"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/dp_dialog_image_width"
                 android:scaleType="centerInside"
                 android:layout_marginRight="@dimen/medium_space"
-                android:layout_gravity="center"/>
+                android:layout_gravity="top"/>
 
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"

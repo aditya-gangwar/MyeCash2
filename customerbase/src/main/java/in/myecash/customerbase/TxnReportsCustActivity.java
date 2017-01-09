@@ -143,6 +143,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
             mFromDate = new Date();
             mFromDate.setTime(mHelper.getTxnInDbFrom().getTime());
             mToDate = mTodayEoD;
+            mInputMerchant.setText("ALL");
             // simulate click to generate report
             mBtnGetReport.performClick();
         } else {
@@ -228,8 +229,8 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
         mInputDateFrom.setText(mSdfOnlyDateDisplay.format(mFromDate));
         mInputDateTo.setText(mSdfOnlyDateDisplay.format(mToDate));
 
-        mInputDateFrom.setOnClickListener(this);
-        mInputDateTo.setOnClickListener(this);
+        mInputDateFrom.setOnTouchListener(this);
+        mInputDateTo.setOnTouchListener(this);
     }
 
     private void initToolbar() {

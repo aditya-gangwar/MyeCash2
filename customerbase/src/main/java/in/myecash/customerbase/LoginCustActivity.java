@@ -23,6 +23,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,8 +78,37 @@ public class LoginCustActivity extends AppCompatActivity implements
             fm.beginTransaction().add(mWorkFragment, RETAINED_FRAGMENT_TAG).commit();
         }
 
+        /*AsyncCallback<Boolean> isValidLoginCallback = new AsyncCallback<Boolean>()
+        {
+            @Override
+            public void handleResponse( Boolean response )
+            {
+                LogMy.d(TAG, "isValidLogin response: "+response);
+                if(response) {
+                    int status = CustomerUser.tryAutoLogin();
+                    if (status == ErrorCodes.NO_ERROR) {
+                        LogMy.d(TAG, "Auto login success");
+                        onLoginSuccess();
+                        return;
+                    }
+                }
+                // auto login not success
+                LogMy.d(TAG, "Auto login not ok");
+                processManualLogin();
+            }
+
+            @Override
+            public void handleFault( BackendlessFault fault )
+            {
+                LogMy.d(TAG, "In handleFault");
+                processManualLogin();
+            }
+
+        };
+        CustomerUser.isValidLogin(isValidLoginCallback);*/
+
         // if valid login - no need to further load activity
-        try {
+        /*try {
             if (CustomerUser.isValidLogin()) {
                 int status = CustomerUser.tryAutoLogin();
                 if (status == ErrorCodes.NO_ERROR) {
@@ -88,8 +120,21 @@ public class LoginCustActivity extends AppCompatActivity implements
         } catch (Exception e) {
             // ignore any exception
             LogMy.d(TAG,"Exception while checking for valid login: "+e.getMessage());
-        }
+        }*/
+    }
 
+    @Override
+    public void onBgThreadCreated() {
+        if(checkPermissions()) {
+            // If permissions not available - proceed with normal login
+            AppCommonUtil.showProgressDialog(this, AppConstants.progressLogin);
+            mWorkFragment.tryAutoLogin();
+        } else {
+            processManualLogin();
+        }
+    }
+
+    private void processManualLogin() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         // setting off fullscreen mode as 'screen pan on keyboard' doesn't work fine with fullscreen
         // http://stackoverflow.com/questions/7417123/android-how-to-adjust-layout-in-full-screen-mode-when-softkeyboard-is-visible
@@ -135,6 +180,8 @@ public class LoginCustActivity extends AppCompatActivity implements
                     if(checkPermissions()) {
                         initOperationData();
                         loginCustomer();
+                    } else {
+                        requestStoragePermission();
                     }
                 }
             }
@@ -145,7 +192,7 @@ public class LoginCustActivity extends AppCompatActivity implements
         // check external storage permission
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if(rc != PackageManager.PERMISSION_GRANTED) {
-            requestStoragePermission();
+            //requestStoragePermission();
             return false;
         }
         return true;
@@ -258,18 +305,28 @@ public class LoginCustActivity extends AppCompatActivity implements
 
     @Override
     public void onBgProcessResponse(int errorCode, int operation) {
-        LogMy.d(TAG, "In onBgProcessResponse");
+        LogMy.d(TAG, "In onBgProcessResponse: "+operation+", "+errorCode);
 
         // Session timeout case - show dialog and logout - irrespective of invoked operation
-        if(errorCode==ErrorCodes.SESSION_TIMEOUT || errorCode==ErrorCodes.NOT_LOGGED_IN) {
+        /*if(errorCode==ErrorCodes.SESSION_TIMEOUT &&
+                operation != MyRetainedFragment.REQUEST_AUTO_LOGIN ) {
             AppCommonUtil.cancelProgressDialog(true);
             DialogFragmentWrapper.createNotification(AppConstants.notLoggedInTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(getFragmentManager(), DIALOG_SESSION_TIMEOUT);
             return;
-        }
+        }*/
 
         try {
-            if (operation == MyRetainedFragment.REQUEST_LOGIN) {
+
+            if (operation == MyRetainedFragment.REQUEST_AUTO_LOGIN) {
+                AppCommonUtil.cancelProgressDialog(true);
+                if (errorCode == ErrorCodes.NO_ERROR) {
+                    onLoginSuccess();
+                } else {
+                    processManualLogin();
+                }
+
+            } else if (operation == MyRetainedFragment.REQUEST_LOGIN) {
                 AppCommonUtil.cancelProgressDialog(true);
                 if (errorCode == ErrorCodes.NO_ERROR) {
                     onLoginSuccess();
@@ -284,13 +341,7 @@ public class LoginCustActivity extends AppCompatActivity implements
                     AccEnableDialog dialog = AccEnableDialog.newInstance(null, null);
                     dialog.show(getFragmentManager(), DIALOG_ENABLE_ACC);
 
-                }/*else if(errorCode == ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD) {
-                mLoginButton.setEnabled(true);
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                CustomerUser.reset();
-
-            } */ else {
+                } else {
                     mLoginButton.setEnabled(true);
                     // Show error notification dialog
                     DialogFragmentWrapper.createNotification(AppConstants.loginFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
@@ -505,10 +556,5 @@ public class LoginCustActivity extends AppCompatActivity implements
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         AppCommonUtil.setUserType(DbConstants.USER_TYPE_CUSTOMER);
-    }
-
-    @Override
-    public void onBgThreadCreated() {
-        // nothing to do
     }
 }

@@ -201,4 +201,7 @@ public class DateUtil {
     public int getHourOfDay() {
         return cal.get(Calendar.HOUR_OF_DAY);
     }
+    public int getDayOfMonth() {
+        return cal.get(Calendar.DAY_OF_MONTH);
+    }
 }
