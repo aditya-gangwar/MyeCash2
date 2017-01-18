@@ -3,6 +3,10 @@ package in.myecash.appbase.utilities;
 import android.app.Fragment;
 import android.os.Bundle;
 
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Created by adgangwa on 17-07-2016.
  */
@@ -18,31 +22,116 @@ public abstract class RetainedFragment extends Fragment {
     // Activity callback
     protected RetainedFragmentIf mCallback;
 
+    // An issue is observeed in SDK 19 that when back button is pressed after onPause()
+    // but before onResume(), then it was causing crash.
+    // Like, pressing back immediatly after screen unlock (locked when any fragment except mobile number one was visible)
+    protected Boolean resumeOk;
     protected boolean mReady = false;
     protected boolean mQuiting = false;
+    //private final Object lock = new Object();
+    final Lock lock = new ReentrantLock();
+    final Condition nowReady = lock.newCondition();
+
+
     // Single background worker thread hosted in this retained fragment
     //protected BackgroundProcessor<String> mBackgroundProcessor;
 
+    public Boolean getResumeOk() {
+        return resumeOk;
+    }
+
+    public void setResumeOk(Boolean resumeOk) {
+        /*synchronized (lock) {
+            LogMy.d(TAG,"Resume Ok: "+resumeOk);
+            this.resumeOk = resumeOk;
+            lock.notifyAll();
+        }*/
+        lock.lock();
+        try {
+            this.resumeOk = resumeOk;
+            LogMy.d(TAG,"Resume Ok: "+resumeOk+", "+nowReady.toString());
+            nowReady.signal();
+        } finally {
+            lock.unlock();
+        }
+
+    }
+
     final BackgroundProcessor.BackgroundProcessorListener mListener = new BackgroundProcessor.BackgroundProcessorListener() {
+
+        @Override
+        public boolean isQuitting() {
+            //synchronized (this) {
+                return mQuiting;
+            //}
+        }
+
+        @Override
+        public boolean isUiReady() {
+            lock.lock();
+            try {
+                while (!mReady || !getResumeOk()) {
+                    LogMy.d(TAG,"Calling activity not available: waiting: "+mReady+", "+getResumeOk());
+
+                    if (mQuiting) {
+                        return false;
+                    }
+
+                    try {
+                        LogMy.d(TAG,"Before wait: "+nowReady.toString());
+                        nowReady.await();
+                        LogMy.d(TAG,"After wait");
+                    } catch (InterruptedException e) {
+                        LogMy.d(TAG,"Exception while waiting: "+e.getMessage());
+                    }
+                }
+                return true;
+            } finally {
+                lock.unlock();
+            }
+            /*synchronized (lock) {
+                while (!mReady || !getResumeOk()) {
+                    LogMy.d(TAG,"Calling activity not available: waiting: "+mReady+", "+getResumeOk());
+
+                    if (mQuiting) {
+                        return false;
+                    }
+
+                    try {
+                        LogMy.d(TAG,"Before wait");
+                        lock.wait();
+                        LogMy.d(TAG,"After wait");
+                    } catch (InterruptedException e) {
+                        LogMy.d(TAG,"Exception while waiting: "+e.getMessage());
+                    }
+                }
+                return true;
+            }*/
+        }
+
         @Override
         public void onResult(int errorCode, int operation) {
 
             // Update our shared state with the UI.
-            synchronized (this) {
+            //synchronized (this) {
                 // Our thread will not process response, if the UI is not ready
-                while (!mReady) {
+                /*while (!mReady || !getResumeOk()) {
+                    LogMy.d(TAG,"Calling activity not available: waiting: "+mReady+", "+getResumeOk());
+
                     if (mQuiting) {
                         return;
                     }
                     try {
+                        LogMy.d(TAG,"Before wait");
                         wait();
+                        LogMy.d(TAG,"After wait");
                     } catch (InterruptedException e) {
                     }
-                }
+                }*/
 
                 LogMy.d(TAG,"In onResult: "+operation);
                 mCallback.onBgProcessResponse(errorCode, operation);
-            }
+            //}
         }
     };
 
@@ -89,10 +178,18 @@ public abstract class RetainedFragment extends Fragment {
         mCallback.onBgThreadCreated();
 
         // We are ready for any waiting thread response to go.
-        synchronized (mListener) {
+        /*synchronized (lock) {
             mReady = true;
-            mListener.notify();
+            lock.notifyAll();
+        }*/
+        lock.lock();
+        try {
+            mReady = true;
+            nowReady.signal();
+        } finally {
+            lock.unlock();
         }
+
 
     }
 
@@ -105,11 +202,20 @@ public abstract class RetainedFragment extends Fragment {
      */
     @Override
     public void onDestroy() {
-        synchronized (mListener) {
+        /*synchronized (lock) {
             mReady = false;
             mQuiting = true;
-            mListener.notify();
+            lock.notifyAll();
+        }*/
+        lock.lock();
+        try {
+            mReady = false;
+            mQuiting = true;
+            nowReady.signal();
+        } finally {
+            lock.unlock();
         }
+
 
         // Make the thread go away.
         getBackgroundProcessor().quit();
@@ -132,13 +238,36 @@ public abstract class RetainedFragment extends Fragment {
         // This fragment is being detached from its activity.  We need
         // to make sure its thread is not going to touch any activity
         // state after returning from this function.
-        synchronized (mListener) {
+        /*synchronized (lock) {
             mCallback = null;
             mReady = false;
-            mListener.notify();
+            lock.notifyAll();
+        }*/
+        lock.lock();
+        try {
+            mReady = false;
+            mCallback = null;
+            nowReady.signal();
+        } finally {
+            lock.unlock();
         }
+
 
         super.onDetach();
     }
+
+    @Override
+    public void onPause() {
+        LogMy.d(TAG,"In onPause: ");
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        LogMy.d(TAG,"In onResume: ");
+        super.onResume();
+    }
+
+
 }
 

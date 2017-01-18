@@ -84,12 +84,6 @@ public class TrustedDevicesFragment extends Fragment
                 String model = (devices.get(i).getModel() == null) ? String.valueOf(i + 1) : devices.get(i).getModel();
                 String deviceName = comp + " " + model;
                 device_names[i].setText(deviceName);
-
-            /*
-            if(devices.get(i).getLast_login() != null) {
-                device_login_times[i].setText(sdf.format(devices.get(i).getLast_login()));
-            }*/
-
                 device_deletes[i].setClickable(true);
                 device_deletes[i].setOnClickListener(this);
             }
@@ -146,15 +140,13 @@ public class TrustedDevicesFragment extends Fragment
 
             }
             // delete of device from which it is logged in is not allowed
-            if (devices.get(index).getDevice_id().equals(AppCommonUtil.getDeviceId(getActivity()))) {
+            /*if (devices.get(index).getDevice_id().equals(AppCommonUtil.getDeviceId(getActivity()))) {
                 DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.deviceDeleteTitle,
                         "Cannot remove device from which you are logged in.", true, true);
                 dialog.setTargetFragment(this, NOTIFY_DELETE_NOT_ALLOWED);
                 dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
-            } else if (devices.size() == 1) {
-                // Logically, I shouldn't be here - still checking to avoid last device delete scenario
-                // can't delete last trusted device
+            } else */if (devices.size() == 1) {
                 DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.deviceDeleteTitle,
                         "Cannot remove last trusted device.", true, true);
                 dialog.setTargetFragment(this, NOTIFY_DELETE_NOT_ALLOWED);
@@ -174,7 +166,6 @@ public class TrustedDevicesFragment extends Fragment
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
-
     }
 
     @Override

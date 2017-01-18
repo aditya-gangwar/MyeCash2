@@ -95,10 +95,10 @@
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
-                    android:text="Account"
+                    android:text="Account (AC)"
                     android:gravity="left|center_vertical"
-                    android:textStyle="bold"
-                    android:textColor="@color/accent"/>
+                    android:textStyle="normal"
+                    android:textColor="@color/subheading"/>
             </LinearLayout>
 
             <LinearLayout
@@ -195,10 +195,10 @@
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
-                    android:text="Cashback"
+                    android:text="Cashback (CB)"
                     android:gravity="left|center_vertical"
-                    android:textStyle="bold"
-                    android:textColor="@color/accent"/>
+                    android:textStyle="normal"
+                    android:textColor="@color/subheading"/>
             </LinearLayout>
 
             <LinearLayout

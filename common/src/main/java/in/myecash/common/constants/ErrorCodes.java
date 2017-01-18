@@ -36,12 +36,17 @@ public class ErrorCodes {
     public static final int WRONG_INPUT_DATA = 520;
     public static final int WRONG_OTP = 521;
     public static final int WRONG_PIN = 522;
-    public static final int VERIFICATION_FAILED = 523;
+    //public static final int VERIFICATION_FAILED = 523;
+    public static final int VERIFICATION_FAILED_PASSWD = 5231;
+    public static final int VERIFICATION_FAILED_CARDID = 5232;
+    public static final int VERIFICATION_FAILED_DOB = 5233;
+    public static final int VERIFICATION_FAILED_MOBILE = 5234;
     public static final int OPERATION_NOT_ALLOWED = 524;
     public static final int NOT_TRUSTED_DEVICE = 525;
     public static final int TEMP_PASSWD_EXPIRED = 526;
     public static final int WRONG_USER_TYPE = 527;
     public static final int DEVICE_INSECURE = 528;
+    public static final int LOGGED_IN_DEVICE_DELETE = 529;
 
     // Membership card errors
     public static final int NO_SUCH_CARD = 530;
@@ -114,12 +119,16 @@ public class ErrorCodes {
         aMap.put(WRONG_INPUT_DATA,"Invalid input data");
         aMap.put(WRONG_OTP,"Wrong OTP value.");
         aMap.put(WRONG_PIN,"Wrong PIN. Account gets Locked after %s incorrect attempts.");
-        aMap.put(VERIFICATION_FAILED,"Verification failed. Account gets Locked after %s incorrect attempts.");
+        aMap.put(VERIFICATION_FAILED_CARDID,"Wrong Card Number. Account gets Locked after %s incorrect attempts.");
+        aMap.put(VERIFICATION_FAILED_DOB,"Wrong Date of Birth. Account gets Locked after %s incorrect attempts.");
+        aMap.put(VERIFICATION_FAILED_MOBILE,"Wrong Mobile Number. Account gets Locked after %s incorrect attempts.");
+        aMap.put(VERIFICATION_FAILED_PASSWD,"Wrong password. Account gets Locked after %s incorrect attempts.");
         aMap.put(OPERATION_NOT_ALLOWED,"You do not have permissions for this operation");
         aMap.put(NOT_TRUSTED_DEVICE,"This device is not in trusted device list");
         aMap.put(TEMP_PASSWD_EXPIRED,"Temporary password expired. Please generate new password using 'Forget Password' link on login screen.");
         aMap.put(WRONG_USER_TYPE,"Wrong user type");
         aMap.put(DEVICE_INSECURE,"Your device is not secure. Please install and run application on other device.");
+        aMap.put(LOGGED_IN_DEVICE_DELETE,"You cannot delete device from which you are logged in.");
 
         aMap.put(NO_SUCH_CARD,"Invalid Membership Card");
         aMap.put(WRONG_CARD,"Invalid Membership card. Please return to company agent for refund.");

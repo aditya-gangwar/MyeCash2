@@ -225,8 +225,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="To add device, try login from the same and provide OTP sent to registered number"
-        android:layout_marginBottom="@dimen/medium_space"
         android:layout_marginTop="@dimen/XL_space"
+        android:singleLine="false"/>
+
+    <EditText
+        style="@style/Edittext_only_view_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="If any device is missing from list, please exit and login again."
+        android:textColor="@color/accent2"
+        android:layout_marginTop="@dimen/medium_space"
         android:singleLine="false"/>
 
 

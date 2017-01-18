@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements
     private static final String DIALOG_PASSWD_RESET = "dialogPaswdReset";
     private static final String DIALOG_PIN_LOGIN_NEW_DEVICE = "dialogPinNewDevice";
     private static final String DIALOG_FORGOT_ID = "dialogForgotId";
-    private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
+    //private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
 
     // permission request codes need to be < 256
     private static final int RC_HANDLE_STORAGE_PERM = 10;
@@ -316,12 +316,12 @@ public class LoginActivity extends AppCompatActivity implements
         LogMy.d(TAG, "In onBgProcessResponse");
 
         // Session timeout case - show dialog and logout - irrespective of invoked operation
-        if(errorCode==ErrorCodes.SESSION_TIMEOUT || errorCode==ErrorCodes.NOT_LOGGED_IN) {
+        /*if(errorCode==ErrorCodes.SESSION_TIMEOUT || errorCode==ErrorCodes.NOT_LOGGED_IN) {
             AppCommonUtil.cancelProgressDialog(true);
             DialogFragmentWrapper.createNotification(AppConstants.notLoggedInTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(getFragmentManager(), DIALOG_SESSION_TIMEOUT);
             return;
-        }
+        }*/
 
         try {
             if (operation == MyRetainedFragment.REQUEST_LOGIN) {
@@ -368,7 +368,7 @@ public class LoginActivity extends AppCompatActivity implements
                     // Old request is already pending
                     Integer mins = MyGlobalSettings.getMchntPasswdResetMins() + GlobalSettingConstants.MERCHANT_PASSWORD_RESET_TIMER_INTERVAL;
                     String msg = String.format(AppConstants.pwdGenerateDuplicateRequestMsg, mins);
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, false, false)
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, false, true)
                             .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else {
                     // Show error notification dialog
@@ -597,6 +597,14 @@ public class LoginActivity extends AppCompatActivity implements
         AppCommonUtil.setUserType(DbConstants.USER_TYPE_MERCHANT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         mWorkFragment.setResumeOk(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!mWorkFragment.getResumeOk()) {
+            return;
+        }
+        super.onBackPressed();
     }
 
     @Override

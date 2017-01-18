@@ -85,7 +85,8 @@
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Are you sure to reset your password ?" />
+            android:text="Are you sure to reset your password ?"
+            android:textColor="@color/accent2"/>
 
         <Space
             android:layout_width="match_parent"

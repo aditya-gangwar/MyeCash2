@@ -387,8 +387,8 @@
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
             android:text="Cashback (CB)"
-            android:textStyle="bold"
-            android:textColor="@color/accent"
+            android:textStyle="normal"
+            android:textColor="@color/subheading"
             android:paddingLeft="0dp"/>
 
         <LinearLayout
@@ -480,8 +480,8 @@
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
             android:text="Account (AC)"
-            android:textStyle="bold"
-            android:textColor="@color/accent"
+            android:textStyle="normal"
+            android:textColor="@color/subheading"
             android:paddingLeft="0dp"/>
 
         <LinearLayout

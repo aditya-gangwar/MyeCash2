@@ -306,7 +306,7 @@
                 android:layout_width="wrap_content"
                 android:text="08 Apr,16  20:15"
                 android:textStyle="italic"
-                android:textColor="@color/accent"/>
+                android:textColor="@color/subheading"/>
         </LinearLayout>
         <EditText
             style="@style/Edittext_only_view_small"

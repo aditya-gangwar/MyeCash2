@@ -128,7 +128,8 @@ public class SplashActivity extends AppCompatActivity
                             .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
             } else {
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                String errorDesc = AppCommonUtil.getErrorDesc(errorCode) + "\n Please check Internet connection also.";
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errorDesc, false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         }

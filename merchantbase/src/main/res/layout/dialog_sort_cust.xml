@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:text="Cashback (CB)"
                     android:textStyle="bold"
-                    android:textColor="@color/accent"/>
+                    android:textColor="@color/subheading"/>
             </LinearLayout>
 
             <RadioButton
@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:text="Account (AC)"
                     android:textStyle="bold"
-                    android:textColor="@color/accent"/>
+                    android:textColor="@color/subheading"/>
             </LinearLayout>
 
             <RadioButton

@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:text="08 Apr,16  20:15"
             android:textStyle="bold"
-            android:textColor="@color/accent"
+            android:textColor="@color/subheading"
             android:longClickable="false"
             android:textIsSelectable="false"/>
 

@@ -67,8 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="NEW Balance"
-            android:textStyle="bold"
-            android:textColor="@color/accent"
+            android:textStyle="normal"
+            android:textColor="@color/subheading"
             android:paddingLeft="0dp"/>
 
         <LinearLayout
@@ -131,8 +131,8 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="OLD Balance"
-            android:textStyle="bold"
-            android:textColor="@color/accent"
+            android:textStyle="normal"
+            android:textColor="@color/subheading"
             android:paddingLeft="0dp"/>
 
         <LinearLayout

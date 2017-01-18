@@ -23,10 +23,6 @@
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesLarge">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"/>
-
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
@@ -34,14 +30,12 @@
             android:id="@+id/label_info_otp"
             android:text="Please enter received OTP and submit the request again."
             android:textStyle="italic"
-            android:textColor="@color/accent2"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space"/>
+            android:textColor="@color/accent2"
+            android:layout_marginTop="@dimen/medium_space"/>
 
         <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/large_space">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -69,12 +63,9 @@
                 android:gravity="left"/>
         </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"/>
-
         <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/medium_space">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -103,16 +94,11 @@
                 android:gravity="left"/>
         </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"
-            android:id="@+id/space_new_mobile"
-            android:visibility="visible"/>
-
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_new_mobile"
-            android:visibility="visible">
+            android:visibility="visible"
+            android:layout_marginTop="@dimen/medium_space">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -150,17 +136,11 @@
             android:text="OTP will be sent on this number for verification."
             android:textColor="@color/accent2"/-->
 
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"
-            android:id="@+id/space_reason"
-            android:visibility="visible"/>
-
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_reason"
-            android:visibility="visible">
+            android:visibility="visible"
+            android:layout_marginTop="@dimen/medium_space">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -189,16 +169,11 @@
                 android:drawableTint="?android:textColorPrimary"/>
         </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"
-            android:id="@+id/space_otp"
-            android:visibility="visible"/>
-
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_otp"
-            android:visibility="visible">
+            android:visibility="visible"
+            android:layout_marginTop="@dimen/medium_space">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -228,21 +203,14 @@
                 android:imeOptions="actionDone"/>
         </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space"/>
-
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/label_info"
             android:text="@string/cust_mobile_change_info"
-            android:textColor="@color/accent2"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space"/>
+            android:textColor="@color/accent2"
+            android:layout_marginTop="@dimen/large_space"/>
 
     </LinearLayout>
 </LinearLayout>

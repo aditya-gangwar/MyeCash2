@@ -403,14 +403,14 @@ public class MerchantUser
         return ErrorCodes.NO_ERROR;
     }
 
-    public int deleteTrustedDevice(int index) {
+    public int deleteTrustedDevice(int index, String curDeviceId) {
         LogMy.d(TAG, "In deleteTrustedDevice: " + index);
         if(mPseudoLoggedIn) {
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
         try {
             isLoginValid();
-            MerchantServices.getInstance().deleteTrustedDevice(mMerchant.getTrusted_devices().get(index).getDevice_id());
+            MerchantServices.getInstance().deleteTrustedDevice(mMerchant.getTrusted_devices().get(index).getDevice_id(),curDeviceId);
             LogMy.d(TAG, "Device delete success: " + mMerchant.getAuto_id());
             mInstance.loadMerchant(mMerchant.getAuto_id());
 

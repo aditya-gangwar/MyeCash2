@@ -8,7 +8,7 @@ import android.os.Message;
  * Created by adgangwa on 17-07-2016.
  */
 public abstract class BackgroundProcessor<T> extends HandlerThread {
-    private final static String TAG = "BackgroundProcessor";
+    private final static String TAG = "BaseApp-BackgroundProcessor";
 
     protected Handler mRequestHandler;
     protected Handler mResponseHandler;
@@ -16,6 +16,8 @@ public abstract class BackgroundProcessor<T> extends HandlerThread {
 
     public interface BackgroundProcessorListener {
         void onResult(int errorCode, int operationCode);
+        boolean isUiReady();
+        boolean isQuitting();
     }
     public void setOnResultListener(BackgroundProcessorListener listener) {
         mListener = listener;
@@ -34,11 +36,28 @@ public abstract class BackgroundProcessor<T> extends HandlerThread {
                 // return result to calling UI thread
                 final int currOperation = msg.what;
                 final int errorCode = handleMsg(msg);
-                mResponseHandler.post(new Runnable() {
-                    public void run() {
-                        mListener.onResult(errorCode, currOperation);
+                /*if(mListener.isQuitting()) {
+                    LogMy.d(TAG,"Fragment is quitting: "+currOperation+", "+errorCode);
+                    return;
+                }*/
+
+                /*while (!mListener.isUiReady()) {
+                    try {
+                        LogMy.d(TAG,"Before wait");
+                        wait();
+                        LogMy.d(TAG,"After wait");
+                    } catch (InterruptedException e) {
                     }
-                });
+                }*/
+
+                if(mListener.isUiReady()) {
+                    LogMy.d(TAG,"UI is ready");
+                    mResponseHandler.post(new Runnable() {
+                        public void run() {
+                            mListener.onResult(errorCode, currOperation);
+                        }
+                    });
+                }
             }
         };
     }

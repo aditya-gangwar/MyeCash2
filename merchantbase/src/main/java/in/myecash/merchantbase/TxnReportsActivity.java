@@ -85,6 +85,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LogMy.d(TAG, "In onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_txn_report);
 
@@ -634,6 +635,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        LogMy.d(TAG, "In onSaveInstanceState");
         super.onSaveInstanceState(outState);
 
         outState.putSerializable("mFromDate", mFromDate);

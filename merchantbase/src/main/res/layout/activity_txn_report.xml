@@ -48,7 +48,7 @@
                 android:layout_weight="50"
                 android:text="From"
                 android:gravity="left"
-                android:textColor="@color/accent"/>
+                android:textColor="@color/subheading"/>
             <EditText
                 style="@style/Edittext_only_click_medium"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                 android:layout_weight="50"
                 android:text="To"
                 android:gravity="left"
-                android:textColor="@color/accent"/>
+                android:textColor="@color/subheading"/>
         </LinearLayout>
 
         <LinearLayout

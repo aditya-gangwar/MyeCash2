@@ -557,4 +557,12 @@ public class LoginCustActivity extends AppCompatActivity implements
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         AppCommonUtil.setUserType(DbConstants.USER_TYPE_CUSTOMER);
     }
+
+    @Override
+    public void onBackPressed() {
+        if(!mWorkFragment.getResumeOk()) {
+            return;
+        }
+        super.onBackPressed();
+    }
 }

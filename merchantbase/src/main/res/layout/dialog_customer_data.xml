@@ -54,7 +54,8 @@
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Leave above empty to generate data for all customers." />
+            android:text="Leave above Empty to get list of all your Customers."
+            android:textColor="@color/accent2"/>
 
         <Space
             android:layout_width="match_parent"

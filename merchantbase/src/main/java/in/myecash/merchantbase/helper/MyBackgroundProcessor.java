@@ -58,6 +58,10 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         public String otp;
         public String qrCode;
     }
+    private class MessageDelDevice implements Serializable {
+        public String curDeviceId;
+        public int index;
+    }
     private class MessageChangePassword implements Serializable {
         public String oldPasswd;
         public String newPasswd;
@@ -95,8 +99,11 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_MERCHANT_STATS,null).sendToTarget();
     }
 
-    public void addDeleteDeviceRequest(Integer index) {
-        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DELETE_TRUSTED_DEVICE, index).sendToTarget();
+    public void addDeleteDeviceRequest(Integer index, String curDeviceId) {
+        MessageDelDevice msg = new MessageDelDevice();
+        msg.curDeviceId = curDeviceId;
+        msg.index = index;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DELETE_TRUSTED_DEVICE, msg).sendToTarget();
     }
 
     public void addChangeMobileRequest() {
@@ -236,7 +243,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
                     error = uploadImgFile((MessageImgUpload) msg.obj);
                     break;
                 case MyRetainedFragment.REQUEST_DELETE_TRUSTED_DEVICE:
-                    error = deleteDevice((Integer) msg.obj);
+                    error = deleteDevice((MessageDelDevice) msg.obj);
                     break;
                 case MyRetainedFragment.REQUEST_CHANGE_MOBILE:
                     error = changeMobileNum();
@@ -309,8 +316,8 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
                 mRetainedFragment.mNewMobileNum, mRetainedFragment.mOtpMobileChange);
     }
 
-    private int deleteDevice(Integer index) {
-        return MerchantUser.getInstance().deleteTrustedDevice(index);
+    private int deleteDevice(MessageDelDevice msg) {
+        return MerchantUser.getInstance().deleteTrustedDevice(msg.index, msg.curDeviceId);
     }
 
     private int uploadImgFile(MessageImgUpload msg) {

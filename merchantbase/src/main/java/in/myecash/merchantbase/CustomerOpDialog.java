@@ -163,7 +163,8 @@ public class CustomerOpDialog extends DialogFragment
         if(!isOtpGenerated) {
             mLabelOTP.setEnabled(false);
             mInputOTP.setEnabled(false);
-            mImageOtp.setAlpha(0.5f);
+            mLayoutOTP.setVisibility(View.GONE);
+            //mImageOtp.setAlpha(0.5f);
             //mInfoOtp.setVisibility(View.GONE);
             switch (opCode) {
                 case DbConstants.OP_RESET_PIN:
@@ -176,6 +177,8 @@ public class CustomerOpDialog extends DialogFragment
                 default:
                     mInfoOtp.setVisibility(View.GONE);
             }
+        } else {
+            mLayoutOTP.setVisibility(View.VISIBLE);
         }
 
         String mobileNum = getArguments().getString(ARG_MOBILE_NUM, null);
@@ -217,7 +220,7 @@ public class CustomerOpDialog extends DialogFragment
             }
         } else {
             mInputReason.setEnabled(false);
-            mSpaceReason.setVisibility(View.GONE);
+            //mSpaceReason.setVisibility(View.GONE);
             mLayoutReason.setVisibility(View.GONE);
         }
 
@@ -239,7 +242,7 @@ public class CustomerOpDialog extends DialogFragment
             }
         } else {
             mInputNewMobile.setEnabled(false);
-            mSpaceNewMobile.setVisibility(View.GONE);
+            //mSpaceNewMobile.setVisibility(View.GONE);
             mLayoutNewMobile.setVisibility(View.GONE);
         }
 
@@ -395,20 +398,20 @@ public class CustomerOpDialog extends DialogFragment
     private EditText mLabelQrCard;
     private EditText mInputQrCard;
 
-    private Space mSpaceNewMobile;
+    //private Space mSpaceNewMobile;
     private LinearLayout mLayoutNewMobile;
     private EditText mLabelNewMobile;
     private EditText mInputNewMobile;
 
     //private Space mSpaceOtp;
-    // private LinearLayout mLayoutOTP;
+    private LinearLayout mLayoutOTP;
     private EditText mLabelOTP;
     private EditText mInputOTP;
     /*
     private Space mSpaceName;
     private LinearLayout mLayoutName;
     private EditText mInputName;*/
-    private Space mSpaceReason;
+    //private Space mSpaceReason;
     private LinearLayout mLayoutReason;
     private EditText mLabelReason;
     private EditText mInputReason;
@@ -432,11 +435,11 @@ public class CustomerOpDialog extends DialogFragment
         mInputQrCard = (EditText) v.findViewById(R.id.input_qr_card);
 
         //mSpaceOtp = (Space) v.findViewById(R.id.space_otp);
-        //mLayoutOTP = (LinearLayout) v.findViewById(R.id.layout_otp);
+        mLayoutOTP = (LinearLayout) v.findViewById(R.id.layout_otp);
         mLabelOTP = (EditText) v.findViewById(R.id.label_cust_otp);
         mInputOTP = (EditText) v.findViewById(R.id.input_cust_otp);
 
-        mSpaceNewMobile = (Space) v.findViewById(R.id.space_new_mobile);
+        //mSpaceNewMobile = (Space) v.findViewById(R.id.space_new_mobile);
         mLayoutNewMobile = (LinearLayout) v.findViewById(R.id.layout_new_mobile);
         mLabelNewMobile = (EditText) v.findViewById(R.id.label_new_mobile);
         mInputNewMobile = (EditText) v.findViewById(R.id.input_new_mobile);
@@ -445,7 +448,7 @@ public class CustomerOpDialog extends DialogFragment
         mLayoutName = (LinearLayout) v.findViewById(R.id.layout_customer_name);
         mInputName = (EditText) v.findViewById(R.id.input_customer_name);*/
 
-        mSpaceReason = (Space) v.findViewById(R.id.space_reason);
+        //mSpaceReason = (Space) v.findViewById(R.id.space_reason);
         mLayoutReason = (LinearLayout) v.findViewById(R.id.layout_reason);
         mLabelReason = (EditText) v.findViewById(R.id.label_reason);
         mInputReason = (EditText) v.findViewById(R.id.input_reason);

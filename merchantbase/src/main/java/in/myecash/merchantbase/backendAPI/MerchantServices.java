@@ -54,9 +54,9 @@ import in.myecash.common.database.Transaction;
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "updateSettings", args, Merchants.class );
     }
 
-    public void deleteTrustedDevice(java.lang.String deviceId)
+    public void deleteTrustedDevice(java.lang.String deviceId, java.lang.String curDeviceId)
     {
-        Object[] args = new Object[]{deviceId};
+        Object[] args = new Object[]{deviceId, curDeviceId};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "deleteTrustedDevice", args);
     }
 

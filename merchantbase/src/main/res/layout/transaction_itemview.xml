@@ -16,7 +16,7 @@
             android:paddingBottom="@dimen/edittext_padding_less"
             android:paddingLeft="@dimen/edittext_padding_less"
             android:textStyle="bold"
-            android:textColor="@color/primary"/>
+            android:textColor="@color/subheading"/>
         <EditText
             style="@style/Edittext_only_view_small"
             android:id="@+id/txn_customer_id"

@@ -69,7 +69,7 @@
             <SwitchPreference
                 android:title="Linked Invoice# Optional"
                 android:key="settings_invoice_optional"
-                android:summary="Is Linked Invoice Number for Txn Optional?"
+                android:summary="If disabled, transaction without Invoice Number is not allowed."
                 android:dependency="settings_linked_invoice">
             </SwitchPreference>
 

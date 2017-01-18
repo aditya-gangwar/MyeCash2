@@ -865,7 +865,7 @@ public class CashbackActivity extends AppCompatActivity implements
     @Override
     public void deleteDevice() {
         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-        mWorkFragment.deleteDevice();
+        mWorkFragment.deleteDevice(AppCommonUtil.getDeviceId(this));
     }
 
     @Override
@@ -1043,6 +1043,10 @@ public class CashbackActivity extends AppCompatActivity implements
                         AppConstants.msgChangeMobileOtpGenerated, false, false)
                         .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
+        } else if (errorCode == ErrorCodes.DUPLICATE_ENTRY) {
+            // Old request is already pending
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppConstants.mobileChangeDuplicateMsg, false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             // reset in case of any error
             changeMobileNumReset(false);

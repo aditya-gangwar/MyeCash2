@@ -16,7 +16,7 @@
             android:paddingBottom="@dimen/edittext_padding_less"
             android:paddingRight="0dp"
             android:textStyle="bold"
-            android:textColor="@color/accent"
+            android:textColor="@color/subheading"
             android:paddingLeft="0dp"/>
 
         <EditText
