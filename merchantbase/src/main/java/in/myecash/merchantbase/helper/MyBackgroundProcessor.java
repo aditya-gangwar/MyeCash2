@@ -301,8 +301,12 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         mRetainedFragment.mMerchantStats = null;
         try {
             MerchantStats stats = MerchantUser.getInstance().fetchStats();
-            LogMy.d(TAG,"getMerchantStats success");
             mRetainedFragment.mMerchantStats = stats;
+
+            long updateTime = (mRetainedFragment.mMerchantStats.getUpdated()==null) ?
+                    mRetainedFragment.mMerchantStats.getCreated().getTime() :
+                    mRetainedFragment.mMerchantStats.getUpdated().getTime();
+            LogMy.d(TAG,"getMerchantStats success: "+updateTime);
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Exception in fetchMerchantStats: "+e.toString());

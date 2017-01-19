@@ -1,6 +1,7 @@
 package in.myecash.common;
 
 import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.database.MerchantStats;
 import in.myecash.common.database.Merchants;
 import in.myecash.common.database.Transaction;
 
@@ -73,5 +74,21 @@ public class CommonUtils {
                 merchantId.substring(0,3) + CommonConstants.FILE_PATH_SEPERATOR +
                 merchantId.substring(0,5) + CommonConstants.FILE_PATH_SEPERATOR +
                 merchantId;
+    }
+
+    public static boolean mchntStatsRefreshReq(MerchantStats stats) {
+        boolean retValue = true;
+        long now = (new Date()).getTime();
+        long updateTime = (stats.getUpdated()==null) ?
+                stats.getCreated().getTime() :
+                stats.getUpdated().getTime();
+
+        long timeDiff = now - updateTime;
+        long noRefreshDuration = MyGlobalSettings.getMchntDashBNoRefreshHrs()*CommonConstants.MILLISECS_IN_HOUR;
+
+        if( timeDiff <= noRefreshDuration ) {
+            retValue = false;
+        }
+        return retValue;
     }
 }

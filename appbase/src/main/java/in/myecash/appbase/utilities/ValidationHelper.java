@@ -55,10 +55,10 @@ public final class ValidationHelper{
     public static int validateMobileNo(String value) {
         if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
-        } else if(value.length() != CommonConstants.MOBILE_NUM_LENGTH) {
-            return ErrorCodes.INVALID_LENGTH;
         } else if(value.startsWith("0")) {
             return ErrorCodes.INVALID_FORMAT;
+        } else if(value.length() != CommonConstants.MOBILE_NUM_LENGTH) {
+            return ErrorCodes.INVALID_LENGTH;
         } else if (!Patterns.PHONE.matcher(value).matches()) {
             return ErrorCodes.INVALID_FORMAT;
         } else {

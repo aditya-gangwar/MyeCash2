@@ -46,7 +46,7 @@
         <EditTextPreference
             android:title="Contact Number"
             android:key="settings_contact_num"
-            android:summary="Change contact phone number."
+            android:summary="Change Contact Phone. Do not add 0 to number."
             android:inputType="number"
             android:digits="0123456789"
             android:maxLength="@string/mobile_char_limit">

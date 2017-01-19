@@ -254,7 +254,7 @@ public class CashbackActivity extends AppCompatActivity implements
             if (i == R.id.menu_dashboard) {
                 // do not fetch from backend - if last fetch was within configured duration
                 // this to lessen load on server due to this function
-                if (refreshMerchantStats()) {
+                if (refreshStatsReq()) {
                     // fetch merchant stats from backend
                     // this builds fresh 'all customer details' file too
                     AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
@@ -319,7 +319,7 @@ public class CashbackActivity extends AppCompatActivity implements
         }
     }
 
-    private boolean refreshMerchantStats() {
+    private boolean refreshStatsReq() {
         if(mWorkFragment.mMerchantStats==null) {
             // check if available locally
             String storedStats = getStoredMchntStats();
@@ -329,20 +329,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 return true;
             }
         }
-
-        // check if available stats to be refreshed
-        Date now = new Date();
-        Date updateTime = mWorkFragment.mMerchantStats.getUpdated();
-        if(updateTime==null) {
-            updateTime = mWorkFragment.mMerchantStats.getCreated();
-        }
-
-        long timeDiff = now.getTime() - updateTime.getTime();
-        long noRefreshDuration = 60*60*1000*MyGlobalSettings.getMchntDashBNoRefreshHrs();
-        if( timeDiff > noRefreshDuration ) {
-            return true;
-        }
-        return false;
+        return CommonUtils.mchntStatsRefreshReq(mWorkFragment.mMerchantStats);
     }
 
     private String getStoredMchntStats() {
@@ -561,7 +548,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
     @Override
     public void generateAllCustData() {
-        if(refreshMerchantStats()) {
+        if(refreshStatsReq()) {
             AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
             // set this to null, to indicate that the customer data file is to be downloaded and processed again
             //mWorkFragment.mLastFetchCashbacks = null;
