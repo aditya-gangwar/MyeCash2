@@ -28,7 +28,7 @@
                 android:id="@+id/label_information_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Search Customer by Internal ID" />
+                android:text="Search Customer by Customer ID" />
         </LinearLayout>
 
         <Space
@@ -40,7 +40,7 @@
             style="@style/MyEdittext_Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Internal ID"
+            android:hint="Customer ID"
             android:maxLength="@string/customer_internal_id_char_limit"
             android:gravity="center"
             android:inputType="textCapCharacters"

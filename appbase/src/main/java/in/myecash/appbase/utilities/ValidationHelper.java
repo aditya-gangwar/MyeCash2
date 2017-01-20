@@ -56,7 +56,7 @@ public final class ValidationHelper{
         if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
         } else if(value.startsWith("0")) {
-            return ErrorCodes.INVALID_FORMAT;
+            return ErrorCodes.INVALID_FORMAT_ZERO;
         } else if(value.length() != CommonConstants.MOBILE_NUM_LENGTH) {
             return ErrorCodes.INVALID_LENGTH;
         } else if (!Patterns.PHONE.matcher(value).matches()) {
@@ -97,6 +97,8 @@ public final class ValidationHelper{
     public static int validateName(String value) {
         if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
+        } else if(value.contains(CommonConstants.CSV_DELIMETER)) {
+            return ErrorCodes.INVALID_FORMAT_COMMA;
         } else {
             return ErrorCodes.NO_ERROR;
         }

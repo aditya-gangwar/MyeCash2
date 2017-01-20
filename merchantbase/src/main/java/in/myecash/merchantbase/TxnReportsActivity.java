@@ -119,6 +119,8 @@ public class TxnReportsActivity extends AppCompatActivity implements
 
         initToolbar();
         initDateInputs(savedInstanceState);
+        String txt = String.format(getString(R.string.mchnt_txn_history_info), MyGlobalSettings.getMchntTxnHistoryDays().toString() );
+        mLabelInfo.setText(txt);
 
         mBtnGetReport.setOnClickListener(this);
         if(savedInstanceState!=null) {
@@ -592,6 +594,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
         }
     }
 
+    private EditText mLabelInfo;
     private EditText mInputDateFrom;
     private EditText mInputDateTo;
     private EditText mInputCustId;
@@ -601,6 +604,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
     private FrameLayout mFragmentContainer;
 
     private void bindUiResources() {
+        mLabelInfo = (EditText) findViewById(R.id.label_info);
         mInputDateFrom = (EditText) findViewById(R.id.input_date_from);
         mInputDateTo = (EditText) findViewById(R.id.input_date_to);
         mInputCustId = (EditText) findViewById(R.id.input_customer_id);

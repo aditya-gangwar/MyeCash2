@@ -27,7 +27,7 @@
                 android:id="@+id/label_customer_id"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
-                android:text="Internal ID"
+                android:text="Customer ID"
                 android:layout_weight="45"
                 android:gravity="left|center_vertical"/>
             <EditText

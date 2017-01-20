@@ -58,7 +58,7 @@ public class CustomerListFragment extends Fragment {
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
     private static final String DIALOG_SORT_CUST_TYPES = "dialogSortCust";
 
-    private static final String CSV_HEADER = "Sl.No.,Internal Id,Mobile No.,Card ID,Status,Account Balance,Account Add,Account Debit,Cashback Balance,Cashback Award,Cashback Redeem,Total Bill,Cashback Bill,Last Txn here,First Txn here";
+    private static final String CSV_HEADER = "Sl.No.,Customer ID,Mobile No.,Card ID,Status,Account Balance,Account Add,Account Debit,Cashback Balance,Cashback Award,Cashback Redeem,Total Bill,Cashback Bill,Last Txn here,First Txn here";
     // 5+10+10+10+10+5+5+5+5+5+5+5+5+10+10 = 105
     private static final int CSV_RECORD_MAX_CHARS = 128;
     private static final int CSV_LINES_BUFFER = 100;

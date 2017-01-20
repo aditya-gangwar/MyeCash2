@@ -513,7 +513,7 @@ public class CustomerOpDialog extends DialogFragment
             mInputQrCard.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             mInputQrCard.setError(null);
         } else {
-            Toast.makeText(getActivity(), "Invalid member QR code: " + qrCode, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Invalid Member Card", Toast.LENGTH_LONG).show();
         }
     }
 

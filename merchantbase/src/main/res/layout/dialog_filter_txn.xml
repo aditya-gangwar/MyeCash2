@@ -26,7 +26,7 @@
             android:id="@+id/input_customer_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Internal ID or Mobile"
+            android:hint="Customer ID or Mobile"
             android:layout_weight="60"
             android:gravity="left"/>
     </LinearLayout>

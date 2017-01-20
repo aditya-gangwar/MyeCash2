@@ -72,7 +72,7 @@
                 style="@style/Edittext_only_view_medium"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="Internal ID"
+                android:text="Customer ID"
                 android:layout_weight="35"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>

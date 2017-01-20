@@ -607,7 +607,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
 
         // ask for customer PIN
         String txnDetail = String.format(AppConstants.msgChangeCustMobilePin,newMobile);
-        OtpPinInputDialog dialog = OtpPinInputDialog.newInstance(AppConstants.titleChangeCustMobilePin, txnDetail, "Enter PIN");
+        OtpPinInputDialog dialog = OtpPinInputDialog.newInstance(AppConstants.titleChangeCustMobilePin, txnDetail, "Enter PIN", CommonConstants.PIN_LEN);
         dialog.show(mFragMgr, DIALOG_CHANGE_MOBILE_PIN);
     }
 

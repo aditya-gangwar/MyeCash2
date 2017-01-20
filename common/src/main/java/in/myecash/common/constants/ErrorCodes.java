@@ -66,6 +66,8 @@ public class ErrorCodes {
     // Format related errors
     public static final int EMPTY_VALUE = 550;
     public static final int INVALID_FORMAT = 551;
+    public static final int INVALID_FORMAT_COMMA = 5511;
+    public static final int INVALID_FORMAT_ZERO = 5512;
     public static final int INVALID_LENGTH = 552;
     public static final int INVALID_VALUE = 553;
     public static final int NO_DATA_FOUND = 554;
@@ -146,6 +148,8 @@ public class ErrorCodes {
 
         aMap.put(EMPTY_VALUE,"Empty input value");
         aMap.put(INVALID_FORMAT,"Invalid format");
+        aMap.put(INVALID_FORMAT_COMMA,"Comma(,) is not allowed.");
+        aMap.put(INVALID_FORMAT_ZERO,"Wrong format. 0 is not allowed.");
         aMap.put(INVALID_LENGTH,"Invalid length");
         aMap.put(INVALID_VALUE,"Wrong input values");
         aMap.put(NO_DATA_FOUND,"No data found");

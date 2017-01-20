@@ -335,7 +335,8 @@ public class LoginActivity extends AppCompatActivity implements
                     OtpPinInputDialog dialog = OtpPinInputDialog.newInstance(
                             AppConstants.titleAddTrustedDeviceOtp,
                             AppConstants.msgAddTrustedDeviceOtp,
-                            AppConstants.hintEnterOtp);
+                            AppConstants.hintEnterOtp,
+                            CommonConstants.OTP_LEN);
                     dialog.show(getFragmentManager(), DIALOG_PIN_LOGIN_NEW_DEVICE);
 
                 } /*else if(errorCode == ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD) {

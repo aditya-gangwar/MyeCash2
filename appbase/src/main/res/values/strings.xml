@@ -18,6 +18,7 @@
     <string name="cust_pin_reset_info">New PIN will be sent after %s minutes to the registered mobile number</string>
     <string name="mchnt_remove_notice_to_cust">This Merchant is under Removal notice. Please use all your balance with it, before %s.</string>
     <string name="mchnt_reset_passwd_info">New password will be sent on your registered Mobile number after %s minutes.\n\nYou will not be able to login using old password till then.</string>
+    <string name="mchnt_txn_history_info">View Transactions done in last %s days.</string>
 
     <!-- Text used in from code only -->
     <string name="ops_no_data_info">No Operations done in last %s days.</string>

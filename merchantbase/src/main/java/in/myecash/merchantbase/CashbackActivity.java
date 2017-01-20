@@ -606,7 +606,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
         if(askPin) {
             // ask for customer PIN
-            OtpPinInputDialog dialog = OtpPinInputDialog.newInstance(txnTitle, txnDetail, "Enter PIN");
+            OtpPinInputDialog dialog = OtpPinInputDialog.newInstance(txnTitle, txnDetail, "Enter PIN", CommonConstants.PIN_LEN);
             dialog.show(mFragMgr, DIALOG_PIN_CUSTOMER_OP);
         } else {
             // dispatch customer op for execution

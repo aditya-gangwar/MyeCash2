@@ -38,6 +38,13 @@
             android:id="@+id/space_report_dates"
             android:layout_weight="15"/>
 
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/label_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Transaction done in last 90 days" />
+
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
 
@@ -116,7 +123,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter Customer 'Mobile number' or 'Internal ID' (Optional)" />
+            android:text="Enter Customer 'Mobile number' or 'Customer ID' (Optional)" />
 
         <Space
             android:layout_width="match_parent"

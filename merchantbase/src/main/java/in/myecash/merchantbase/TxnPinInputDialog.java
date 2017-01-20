@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -105,7 +106,7 @@ public class TxnPinInputDialog extends DialogFragment
             }
 
             if (cashbackDebit > 0) {
-                mInputCashbackAmount.setText(AppCommonUtil.getSignedAmtStr(cashCredit, false));
+                mInputCashbackAmount.setText(AppCommonUtil.getSignedAmtStr(cashbackDebit, false));
                 mInputCashAmount.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
             } else {
                 mLayoutCashbackAmount.setVisibility(View.GONE);
@@ -142,6 +143,7 @@ public class TxnPinInputDialog extends DialogFragment
         });*/
 
         Dialog dialog =  new AlertDialog.Builder(getActivity(), R.style.WrapEverythingDialog).setView(v).create();
+        dialog.setTitle("Enter PIN");
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -203,8 +205,6 @@ public class TxnPinInputDialog extends DialogFragment
             LogMy.d(TAG,"Clicked OK");
             //mInputSecretPin.setText("");
             Boolean wantToCloseDialog = true;
-
-            LogMy.d(TAG, "Clicked Ok");
             //String pin = mInputSecretPin.getText().toString();
 
             int errorCode = ValidationHelper.validatePin(mPin);
@@ -221,9 +221,13 @@ public class TxnPinInputDialog extends DialogFragment
         } else if (vId == R.id.input_kb_0 || vId == R.id.input_kb_1 || vId == R.id.input_kb_2 || vId == R.id.input_kb_3 || vId == R.id.input_kb_4 || vId == R.id.input_kb_5 || vId == R.id.input_kb_6 || vId == R.id.input_kb_7 || vId == R.id.input_kb_8 || vId == R.id.input_kb_9) {
             LogMy.d(TAG,"Clicked Num key");
             AppCompatButton key = (AppCompatButton) v;
-            mPin = mPin+key.getText();
-            //mInputSecretPin.append(key.getText());
-            mInputSecretPin.append("*");
+            if(mPin.length() >= CommonConstants.PIN_LEN) {
+                AppCommonUtil.toast(getActivity(), CommonConstants.PIN_LEN+" digit PIN allowed");
+            } else {
+                mPin = mPin + key.getText();
+                //mInputSecretPin.append(key.getText());
+                mInputSecretPin.append("*");
+            }
         }
     }
 

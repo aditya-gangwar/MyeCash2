@@ -217,6 +217,8 @@ public class CashTransactionFragment extends Fragment implements
     private void setRedeemCashback(int value) {
         this.mRedeemCashback = value;
         mInputRedeemCb.setText(AppCommonUtil.getSignedAmtStr(mRedeemCashback, false));
+        // recalculate cashback
+        calcAndSetAddCb();
     }
 
     private void setAddCashload(int value) {
@@ -508,7 +510,7 @@ public class CashTransactionFragment extends Fragment implements
     private void calcAndSetAddCb() {
         // calculate add cashback
         if(STATUS_DISABLED != mAwardCbStatus) {
-            int cbEligibleAmt = mRetainedFragment.mBillTotal - mRetainedFragment.mCbExcludedTotal;
+            int cbEligibleAmt = mRetainedFragment.mBillTotal - mRetainedFragment.mCbExcludedTotal - mRedeemCashback;
             float cbRate = Float.parseFloat(mMerchantUser.getMerchant().getCb_rate());
             setAddCashback((int)(cbEligibleAmt * cbRate) / 100);
             LogMy.d(TAG, "mAwardCashback: " + mAwardCashback);

@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -32,22 +33,25 @@ public class OtpPinInputDialog extends DialogFragment
     private static final String ARG_TITLE = "title";
     private static final String ARG_INFO = "info";
     private static final String ARG_HINT = "hint";
+    private static final String ARG_LEN = "length";
 
     //private static final Integer[] keys = {0,1,2,3,4,5,6,7,8,9};
 
     private OtpPinInputDialogIf mCallback;
     private String mPin;
+    private int mAllowedLen;
 
     public interface OtpPinInputDialogIf {
         //public RetainedFragment getRetainedFragment();
         void onPinOtp(String pinOrOtp, String tag);
     }
 
-    public static OtpPinInputDialog newInstance(String title, String info, String hint) {
+    public static OtpPinInputDialog newInstance(String title, String info, String hint, int allowedLen) {
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);
         args.putString(ARG_INFO, info);
         args.putString(ARG_HINT, hint);
+        args.putInt(ARG_LEN, allowedLen);
 
         OtpPinInputDialog fragment = new OtpPinInputDialog();
         fragment.setArguments(args);
@@ -83,6 +87,8 @@ public class OtpPinInputDialog extends DialogFragment
         String title = getArguments().getString(ARG_TITLE);
         String info = getArguments().getString(ARG_INFO);
         String hint = getArguments().getString(ARG_HINT);
+        mAllowedLen = getArguments().getInt(ARG_LEN);
+
 
         mLabelTitle.setText(title);
         mLabelInfo.setText(info);
@@ -221,9 +227,12 @@ public class OtpPinInputDialog extends DialogFragment
 
         } else if (vId == R.id.input_kb_0 || vId == R.id.input_kb_1 || vId == R.id.input_kb_2 || vId == R.id.input_kb_3 || vId == R.id.input_kb_4 || vId == R.id.input_kb_5 || vId == R.id.input_kb_6 || vId == R.id.input_kb_7 || vId == R.id.input_kb_8 || vId == R.id.input_kb_9) {
             AppCompatButton key = (AppCompatButton) v;
-            //mInputPinOtp.append(key.getText());
-            mPin = mPin+key.getText();
-            mInputPinOtp.append("*");
+            if(mPin.length() >= mAllowedLen) {
+                AppCommonUtil.toast(getActivity(), mAllowedLen+" digit PIN allowed");
+            } else {
+                mPin = mPin + key.getText();
+                mInputPinOtp.append("*");
+            }
         }
     }
 

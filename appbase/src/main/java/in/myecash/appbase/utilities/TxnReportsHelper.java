@@ -84,6 +84,9 @@ public class TxnReportsHelper {
         mMerchantId = merchantId;
         mCustomerId = customerId;
 
+        // reset all
+        mTxnsFromCsv.clear();
+
         if(mFromDate.getTime() < mTxnInDbFrom.getTime()) {
             // archived txns from CSV files are required
             if(mMerchantId==null || mMerchantId.isEmpty()) {
