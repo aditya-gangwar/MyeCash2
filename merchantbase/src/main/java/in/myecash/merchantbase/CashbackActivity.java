@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -123,6 +124,7 @@ public class CashbackActivity extends AppCompatActivity implements
     NavigationView mNavigationView;
 
     private AppCompatImageView mTbImage;
+    private AppCompatImageView mTbCalculator;
     private EditText mTbTitle;
     private EditText mTbTitle2;
     private LinearLayout mTbLayoutSubhead1;
@@ -363,17 +365,40 @@ public class CashbackActivity extends AppCompatActivity implements
         mTbImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mTbImageIsMerchant) {
-                    // show merchants details dialog
-                    MerchantDetailsDialog dialog = new MerchantDetailsDialog();
-                    dialog.show(mFragMgr, DIALOG_MERCHANT_DETAILS);
-                } else {
-                    // show customer details dialog
-                    CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(-1, true);
-                    dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
-                }
+                showUserDetails();
             }
         });
+
+        mTbTitle.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    showUserDetails();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        mTbCalculator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogMy.d(TAG,"In onClick calc image");
+                onMobileNumInput(null);
+            }
+        });
+
+        /*mTbCalculator.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    LogMy.d(TAG,"In onTouch calc image");
+                    onMobileNumInput(null);
+                    return true;
+                }
+                return false;
+            }
+        });*/
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -402,6 +427,18 @@ public class CashbackActivity extends AppCompatActivity implements
                     CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR+
                     mMerchantUser.getMerchant().getDisplayImage();
             mWorkFragment.fetchImageFile(url);
+        }
+    }
+
+    private void showUserDetails() {
+        if(mTbImageIsMerchant) {
+            // show merchants details dialog
+            MerchantDetailsDialog dialog = new MerchantDetailsDialog();
+            dialog.show(mFragMgr, DIALOG_MERCHANT_DETAILS);
+        } else {
+            // show customer details dialog
+            CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(-1, true);
+            dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
         }
     }
 
@@ -435,6 +472,7 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     private void updateTbForCustomer() {
+        mTbCalculator.setVisibility(View.GONE);
         mTbLayoutSubhead1.setVisibility(View.VISIBLE);
 
         // no error case: all cashback values available
@@ -479,6 +517,9 @@ public class CashbackActivity extends AppCompatActivity implements
 
     public void updateTbForMerchant() {
         LogMy.d(TAG,"In updateTbForMerchant");
+        mTbCalculator.setVisibility(View.VISIBLE);
+        mTbLayoutSubhead1.setVisibility(View.GONE);
+
         if(mMerchantUser.getDisplayImage()!=null) {
             setTbImage(mMerchantUser.getDisplayImage());
             //mTbLayoutImage.setBackground(null);
@@ -501,13 +542,13 @@ public class CashbackActivity extends AppCompatActivity implements
             params.put("Current Status",String.valueOf(mMerchant.getAdmin_status()));
             AppAlarms.invalidMerchantState(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"updateTbForMerchant",params);
         }
-        mTbLayoutSubhead1.setVisibility(View.GONE);
     }
 
     private void initTbViews() {
         //mTbLayoutImage = (RelativeLayout) mToolbar.findViewById(R.id.layout_tb_img) ;
         //mTbHomeIcon = (ImageView) mToolbar.findViewById(R.id.tb_home_icon) ;
         mTbImage = (AppCompatImageView) mToolbar.findViewById(R.id.tb_image) ;
+        mTbCalculator = (AppCompatImageView) mToolbar.findViewById(R.id.tb_calculator) ;
         mTbTitle = (EditText) mToolbar.findViewById(R.id.tb_title) ;
         mTbTitle2 = (EditText) mToolbar.findViewById(R.id.tb_title_2) ;
         mTbLayoutSubhead1 = (LinearLayout) mToolbar.findViewById(R.id.tb_layout_subhead1) ;
@@ -1544,6 +1585,8 @@ public class CashbackActivity extends AppCompatActivity implements
     private void startBillingFragment() {
         Fragment fragment = mFragMgr.findFragmentByTag(BILLING_FRAGMENT);
         if (fragment == null) {
+            mTbCalculator.setVisibility(View.GONE);
+
             //goToMobileNumFrag();
             //setDrawerState(false);
             // Create new fragment and transaction

@@ -45,9 +45,10 @@
             android:layout_height="0dp"
             android:layout_weight="7.5"
             android:layout_width="match_parent"
-            android:gravity="left"
-            android:text="* Cashback Excluded"
-            android:textColor="@color/accent2"/>
+            android:text="* Cashback Excluded*"
+            android:textColor="@color/accent2"
+            android:textStyle="bold"
+            android:background="@color/bg_light_pink"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_weighted"
@@ -183,7 +184,7 @@
                 <android.support.v7.widget.AppCompatButton
                     style="@style/button_keyboard"
                     android:id="@+id/input_kb_plus"
-                    android:text="+" />
+                    android:text="+/=" />
 
             </LinearLayout>
 

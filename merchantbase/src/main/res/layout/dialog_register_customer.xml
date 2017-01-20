@@ -188,8 +188,7 @@
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:id="@+id/layout_otp"
-                android:layout_marginBottom="@dimen/XL_space">
+                android:id="@+id/layout_otp">
 
                 <ImageView
                     android:layout_width="wrap_content"

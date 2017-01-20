@@ -123,7 +123,7 @@ public class BillingFragment extends Fragment implements
 
     public void disableFurtherProcess() {
         mInputMoreInfo.setVisibility(View.VISIBLE);
-        mInputMoreInfo.setText("* Calculator Only");
+        mInputMoreInfo.setText("* Calculator Mode *");
         mCalcMode = true;
     }
 
@@ -307,11 +307,14 @@ public class BillingFragment extends Fragment implements
         mTempCbExcluded = true;
         mOldColor = mInputItemAmt.getCurrentTextColor();
         mInputItemAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.cb_exclusion));
+
         mInputMoreInfo.setVisibility(View.VISIBLE);
+        mInputMoreInfo.setText("* Cashback Excluded *");
     }
     private void removeItemAmtExclusion() {
         mTempCbExcluded = false;
         mInputItemAmt.setTextColor(mOldColor);
+
         mInputMoreInfo.setVisibility(View.INVISIBLE);
     }
 

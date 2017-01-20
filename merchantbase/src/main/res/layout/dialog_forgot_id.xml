@@ -44,9 +44,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Your user id will be sent on the registered mobile number." />
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
 
     </LinearLayout>
 </LinearLayout>

@@ -445,9 +445,5 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/large_space"/>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"/>
-
     </LinearLayout>
 </ScrollView>

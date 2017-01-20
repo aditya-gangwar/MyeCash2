@@ -160,10 +160,6 @@
                 android:gravity="center"
                 android:imeOptions="actionDone"/>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/medium_space"/>
-
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

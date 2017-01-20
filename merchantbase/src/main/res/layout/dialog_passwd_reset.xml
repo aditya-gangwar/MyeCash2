@@ -88,9 +88,5 @@
             android:text="Are you sure to reset your password ?"
             android:textColor="@color/accent2"/>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
-
     </LinearLayout>
 </LinearLayout>

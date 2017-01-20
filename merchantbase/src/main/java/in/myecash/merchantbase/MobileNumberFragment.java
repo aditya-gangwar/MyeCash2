@@ -151,7 +151,18 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
             }
         });
 
-        mInputCustMobile.setOnTouchListener(new View.OnTouchListener() {
+        mBtnProcess.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(!mCallback.getRetainedFragment().getResumeOk())
+                    return false;
+                LogMy.d(TAG, "Clicked skip");
+                mCallback.onMobileNumInput(null);
+                return true;
+            }
+        });
+
+        /*mInputCustMobile.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(!mCallback.getRetainedFragment().getResumeOk())
@@ -163,7 +174,7 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
                 }
                 return true;
             }
-        });
+        });*/
     }
 
 

@@ -66,9 +66,5 @@
             android:id="@+id/btn_cust_data"
             android:text="Get Data"/>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
-
     </LinearLayout>
 </LinearLayout>

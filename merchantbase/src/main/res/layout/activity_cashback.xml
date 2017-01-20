@@ -73,12 +73,22 @@
                 </LinearLayout>
 
                 <!-- the description view -->
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/tb_calculator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_keyboard_white"
+                    android:padding="8dp"
+                    android:layout_marginRight="@dimen/small_space"/>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tb_layout_subhead1"
                     android:orientation="vertical"
-                    android:layout_marginRight="@dimen/medium_space">
+                    android:layout_marginRight="@dimen/medium_space"
+                    android:visibility="visible">
 
                     <EditText
                         style="@style/Edittext_only_view_medium_lessPad"
