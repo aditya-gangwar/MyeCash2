@@ -117,13 +117,19 @@ public class BillingFragment extends Fragment implements
     }
 
     private void setTotalAmt() {
-        String str = "Bill    " + AppConstants.SYMBOL_RS + String.valueOf(mRetainedFragment.mBillTotal);
+        String str = null;
+        if(mCalcMode) {
+            str = "Total    " + AppConstants.SYMBOL_RS + String.valueOf(mRetainedFragment.mBillTotal);
+        } else {
+            str = "Bill    " + AppConstants.SYMBOL_RS + String.valueOf(mRetainedFragment.mBillTotal);
+        }
         mBtnTotal.setText(str);
     }
 
     public void disableFurtherProcess() {
         mInputMoreInfo.setVisibility(View.VISIBLE);
         mInputMoreInfo.setText("* Calculator Mode *");
+        mBtnTotal.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.bg_filters));
         mCalcMode = true;
     }
 
@@ -143,7 +149,7 @@ public class BillingFragment extends Fragment implements
 
             if (resId == R.id.btn_bill_total) {
                 if (mCalcMode) {
-                    AppCommonUtil.toast(getActivity(), "No Input Customer");
+                    AppCommonUtil.toast(getActivity(), "In Calculator Mode");
                     return;
                 }
                 // do processing for +, just in case user forgets to press it in end

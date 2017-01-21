@@ -125,6 +125,7 @@ public class MerchantDetailsDialog extends DialogFragment {
         mAddress.setText(merchant.getAddress().getLine_1());
         mCity.setText(merchant.getAddress().getCity());
         mState.setText(merchant.getAddress().getState());
+        mPincode.setText(merchant.getAddress().getPincode());
     }
 
     private ImageView mDisplayImage;

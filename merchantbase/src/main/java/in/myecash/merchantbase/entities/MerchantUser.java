@@ -5,6 +5,7 @@ package in.myecash.merchantbase.entities;
  */
 
 import android.graphics.Bitmap;
+import android.os.SystemClock;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
@@ -135,8 +136,12 @@ public class MerchantUser
 
             // create instance of MerchantUser class
             createInstance();
+            mInstance.mMerchant = (Merchants) user.getProperty("merchant");
+            mInstance.initWithMchntObject();
+
             // load all child objects
-            mInstance.loadMerchant(userId);
+            // some time, explicit fetch in loadMerchant() was not working
+            //mInstance.loadMerchant(userId);
 
             // Store user token
             mInstance.mUserToken = HeadersManager.getInstance().getHeader(HeadersManager.HeadersEnum.USER_TOKEN_KEY);
@@ -505,9 +510,11 @@ public class MerchantUser
     }
 
     private void loadMerchant(String idOrMobileNum) {
-
         mMerchant = CommonServices.getInstance().getMerchant(idOrMobileNum);
+        initWithMchntObject();
+    }
 
+    private void initWithMchntObject() {
         // map cashback and transaction table
         Backendless.Data.mapTableToClass(mMerchant.getCashback_table(), Cashback.class);
         Backendless.Data.mapTableToClass(mMerchant.getTxn_table(), Transaction.class);
@@ -517,71 +524,3 @@ public class MerchantUser
     }
 
 }
-
-    /*
-    private void loadMerchant() throws BackendlessException {
-        LogMy.d(TAG, "In loadMerchant");
-        ArrayList<String> relationProps = new ArrayList<>();
-        relationProps.add("merchant");
-        relationProps.add("merchant.trusted_devices");
-        relationProps.add("merchant.address");
-        relationProps.add("merchant.address.city");
-        relationProps.add("merchant.buss_category");
-        Backendless.Data.of( BackendlessUser.class ).loadRelations(mBackendlessUser, relationProps);
-        mMerchant = (Merchants)mBackendlessUser.getProperty("merchant");
-        LogMy.d(TAG,"Merchant loaded successfully");
-
-        // map cashback and transaction table
-        Backendless.Data.mapTableToClass(mMerchant.getCashback_table(), Cashback.class);
-        Backendless.Data.mapTableToClass(mMerchant.getTxn_table(), Transaction.class);
-
-        // Set user id for crashlytics
-        Crashlytics.setUserIdentifier(mMerchant.getAuto_id());
-        */
-        /*
-        try {
-            Backendless.Data.of( BackendlessUser.class ).loadRelations(mBackendlessUser, relationProps);
-            mMerchant = (Merchants)mBackendlessUser.getProperty("merchant");
-        } catch (BackendlessException e) {
-            LogMy.e(TAG,"loadMerchant failed: "+e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;*//*
-    }*/
-/*
-    public int deleteTrustedDevice(int index) {
-        LogMy.d(TAG, "In deleteTrustedDevice: " + index);
-        if(mPseudoLoggedIn) {
-            return ErrorCodes.OPERATION_NOT_ALLOWED;
-        }
-        // One step deletion - as suggested in backendless docs was not working
-        // so doing as below
-        try {
-            Backendless.Persistence.of( MerchantDevice.class ).remove(mMerchant.getTrusted_devices().get(index));
-            LogMy.d(TAG, "Device delete success: " + mMerchant.getAuto_id());
-            int status = loadTrustedDevices();
-            if(status != ErrorCodes.NO_ERROR) {
-                // remove manually
-                LogMy.w(TAG,"Trusted device upload failed, updating manually");
-                mMerchant.getTrusted_devices().remove(index);
-            }
-            return ErrorCodes.NO_ERROR;
-        } catch(BackendlessException e) {
-            LogMy.e(TAG, "Device delete failed: " + e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-    }*/
-    /*
-    private int loadTrustedDevices() throws BackendlessException {
-        ArrayList<String> relationProps = new ArrayList<>();
-        relationProps.add("trusted_devices");
-        try {
-            Backendless.Data.of( Merchants.class ).loadRelations(mMerchant, relationProps);
-            mBackendlessUser.setProperty("merchant", mMerchant);
-        } catch (BackendlessException e) {
-            LogMy.e(TAG,"loadTrustedDevices failed: "+e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;
-    }*/
-

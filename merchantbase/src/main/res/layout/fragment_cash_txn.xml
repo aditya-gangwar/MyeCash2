@@ -45,7 +45,7 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="10"/>
+            android:layout_weight="12.5"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
@@ -74,7 +74,7 @@
                 android:text="+ \u20B9 235"
                 android:gravity="right|center_vertical"
                 android:layout_weight="30"
-                android:textColor="@color/green_positive"/>
+                android:textColor="@color/link_blue"/>
         </LinearLayout>
 
         <Space
@@ -347,7 +347,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_cash_paid"
-            android:layout_weight="27.5"
+            android:layout_weight="25"
             android:visibility="visible"/>
 
         <include layout="@layout/cash_paid"/>

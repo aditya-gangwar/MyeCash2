@@ -304,8 +304,11 @@ public class CustomerUser {
 
             // create instance of CustomerUser class
             createInstance();
+            mInstance.mCustomer = (Customers) user.getProperty("customer");
+            mInstance.initWithCustObject();
+
             // load all child objects
-            mInstance.loadCustomer(userId);
+            //mInstance.loadCustomer(userId);
             LogMy.d(TAG, "Customer Load Success: " + mInstance.mCustomer.getMobile_num());
 
             // Store user token
@@ -332,18 +335,18 @@ public class CustomerUser {
     }
 
     private void loadCustomer(String mobileNum) {
-
         mCustomer = CommonServices.getInstance().getCustomer(mobileNum);
+        initWithCustObject();
+    }
 
+    private void initWithCustObject() {
         // map cashback and transaction table
         Backendless.Data.mapTableToClass(mCustomer.getCashback_table(), Cashback.class);
         String[] csvFields = mCustomer.getTxn_tables().split(CommonConstants.CSV_DELIMETER, -1);
         for (String str : csvFields) {
             Backendless.Data.mapTableToClass(str, Transaction.class);
         }
-
         // Set user id for crashlytics
         Crashlytics.setUserIdentifier(mCustomer.getPrivate_id());
     }
-
 }

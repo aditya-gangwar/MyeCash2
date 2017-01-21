@@ -124,7 +124,7 @@ public class CashbackActivity extends AppCompatActivity implements
     NavigationView mNavigationView;
 
     private AppCompatImageView mTbImage;
-    private AppCompatImageView mTbCalculator;
+    //private AppCompatImageView mTbCalculator;
     private EditText mTbTitle;
     private EditText mTbTitle2;
     private LinearLayout mTbLayoutSubhead1;
@@ -380,13 +380,13 @@ public class CashbackActivity extends AppCompatActivity implements
             }
         });
 
-        mTbCalculator.setOnClickListener(new View.OnClickListener() {
+        /*mTbCalculator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LogMy.d(TAG,"In onClick calc image");
                 onMobileNumInput(null);
             }
-        });
+        });*/
 
         /*mTbCalculator.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -472,7 +472,7 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     private void updateTbForCustomer() {
-        mTbCalculator.setVisibility(View.GONE);
+        //mTbCalculator.setVisibility(View.GONE);
         mTbLayoutSubhead1.setVisibility(View.VISIBLE);
 
         // no error case: all cashback values available
@@ -517,7 +517,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
     public void updateTbForMerchant() {
         LogMy.d(TAG,"In updateTbForMerchant");
-        mTbCalculator.setVisibility(View.VISIBLE);
+        //mTbCalculator.setVisibility(View.VISIBLE);
         mTbLayoutSubhead1.setVisibility(View.GONE);
 
         if(mMerchantUser.getDisplayImage()!=null) {
@@ -548,7 +548,7 @@ public class CashbackActivity extends AppCompatActivity implements
         //mTbLayoutImage = (RelativeLayout) mToolbar.findViewById(R.id.layout_tb_img) ;
         //mTbHomeIcon = (ImageView) mToolbar.findViewById(R.id.tb_home_icon) ;
         mTbImage = (AppCompatImageView) mToolbar.findViewById(R.id.tb_image) ;
-        mTbCalculator = (AppCompatImageView) mToolbar.findViewById(R.id.tb_calculator) ;
+        //mTbCalculator = (AppCompatImageView) mToolbar.findViewById(R.id.tb_calculator) ;
         mTbTitle = (EditText) mToolbar.findViewById(R.id.tb_title) ;
         mTbTitle2 = (EditText) mToolbar.findViewById(R.id.tb_title_2) ;
         mTbLayoutSubhead1 = (LinearLayout) mToolbar.findViewById(R.id.tb_layout_subhead1) ;
@@ -796,6 +796,8 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     private SettingsFragment startSettingsFragment() {
+        //mTbCalculator.setVisibility(View.GONE);
+
         // Store DB settings to app preferences
         if( restoreSettings() ) {
             //setDrawerState(false);
@@ -1567,6 +1569,8 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     private void startTxnConfirmFrag(int cashPaid) {
+        //mTbCalculator.setVisibility(View.GONE);
+
         if (mFragMgr.findFragmentByTag(TXN_CONFIRM_FRAGMENT) == null) {
             //setDrawerState(false);
 
@@ -1583,9 +1587,11 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     private void startBillingFragment() {
+        //mTbCalculator.setVisibility(View.GONE);
+
         Fragment fragment = mFragMgr.findFragmentByTag(BILLING_FRAGMENT);
         if (fragment == null) {
-            mTbCalculator.setVisibility(View.GONE);
+            //mTbCalculator.setVisibility(View.GONE);
 
             //goToMobileNumFrag();
             //setDrawerState(false);
@@ -1604,6 +1610,8 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     private void startOrderListFragment() {
+        //mTbCalculator.setVisibility(View.GONE);
+
         Fragment fragment = mFragMgr.findFragmentByTag(ORDER_LIST_FRAGMENT);
         if (fragment == null) {
             //setDrawerState(false);
@@ -1621,6 +1629,8 @@ public class CashbackActivity extends AppCompatActivity implements
     }
 
     private void startCashTransFragment() {
+        //mTbCalculator.setVisibility(View.GONE);
+
         if(mWorkFragment.mCurrCashback==null || mWorkFragment.mCurrCashback.getCurrCbBalance()==-1) {
             // means cashback object is null and not fetched yet from backend
             // we need to wait till it get fetched or error happens

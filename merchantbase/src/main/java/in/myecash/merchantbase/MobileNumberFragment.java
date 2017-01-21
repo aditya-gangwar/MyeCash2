@@ -6,12 +6,16 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.appbase.SortTxnDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
@@ -44,6 +48,7 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
 
         try {
             mCallback = (MobileFragmentIf) getActivity();
+            setHasOptionsMenu(true);
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement MobileFragmentIf");
@@ -175,6 +180,26 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
                 return true;
             }
         });*/
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.mobile_frag_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        try {
+            int i = item.getItemId();
+            if (i == R.id.action_calc) {
+                mCallback.onMobileNumInput(null);
+            }
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in Fragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

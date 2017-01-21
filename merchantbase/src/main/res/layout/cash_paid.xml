@@ -16,7 +16,26 @@
             android:layout_weight="50"
             android:background="@color/primary"/>
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cash_logo_18dp"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_gravity="center"/>
+
         <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="wrap_content"
+            android:id="@+id/label_cash_back"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:text="CASH PAID"
+            android:textStyle="bold"
+            android:padding="@dimen/edittext_padding_less"
+            android:textColor="@color/secondary_text"
+            android:layout_marginRight="@dimen/small_space"/>
+
+        <!--EditText
             style="@style/Edittext_only_view_small"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -28,7 +47,7 @@
             android:drawablePadding="@dimen/medium_space"
             android:textColor="@color/secondary_text"
             android:layout_marginLeft="@dimen/small_space"
-            android:layout_marginRight="@dimen/small_space"/>
+            android:layout_marginRight="@dimen/small_space"/-->
 
         <View
             style="@style/Divider_horizontal_Medium"

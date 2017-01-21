@@ -29,7 +29,7 @@ public class CashPaid implements Serializable, View.OnTouchListener {
 
     // show next 4 values
     private static final int UI_SLOT_COUNT = 4;
-    private static int[] currency = {5, 10, 50, 100, 500, 1000};
+    private static int[] currency = {10, 50, 100, 500, 1000, 2000};
 
     private static final Integer TAG_BTN_AS_CLEAR = 100;
     private static final Integer TAG_BTN_AS_DONE = 200;

@@ -36,14 +36,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_report_dates"
-            android:layout_weight="15"/>
+            android:layout_weight="12.5"/>
 
         <EditText
             style="@style/Edittext_only_view_small"
             android:id="@+id/label_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View Transaction done in last 90 days" />
+            android:text="@string/mchnt_txn_history_info" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7.5"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -67,7 +72,8 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+            style="@style/LL_Horizontal_wrap"
+            android:background="@color/bg_light_grey">
 
             <android.support.v7.widget.CardView
                 android:layout_gravity="center"
@@ -176,7 +182,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_end"
-            android:layout_weight="60"/>
+            android:layout_weight="50"/>
 
     </LinearLayout>
 
