@@ -6,6 +6,11 @@
     android:orientation="vertical"
     android:background="?android:attr/windowBackground">
 
+    <EditText
+        style="@style/Dialog_title"
+        android:id="@+id/label_title"
+        android:text="FORGOT  ID"/>
+
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesLarge">
 

@@ -72,8 +72,7 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:background="@color/bg_light_grey">
+            style="@style/LL_Horizontal_wrap">
 
             <android.support.v7.widget.CardView
                 android:layout_gravity="center"

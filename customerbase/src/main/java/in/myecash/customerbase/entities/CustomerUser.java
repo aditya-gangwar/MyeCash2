@@ -10,6 +10,7 @@ import com.backendless.persistence.local.UserIdStorageFactory;
 import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.crashlytics.android.Crashlytics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import in.myecash.appbase.backendAPI.CommonServices;
@@ -104,7 +105,7 @@ public class CustomerUser {
             LogMy.d(TAG, "currentUserObjectId: "+currentUserObjectId);
 
             if(currentUserObjectId!=null && !currentUserObjectId.isEmpty()) {
-                user = Backendless.Data.of( BackendlessUser.class ).findById( currentUserObjectId );
+                user = getCustUserById(currentUserObjectId);
                 if(user==null) {
                     return ErrorCodes.GENERAL_ERROR;
                 }
@@ -291,6 +292,13 @@ public class CustomerUser {
     /*
      * Private helper methods
      */
+    private static BackendlessUser getCustUserById(String objectId) {
+        ArrayList<String> relationProps = new ArrayList<>();
+        relationProps.add("customer");
+        relationProps.add("customer.membership_card");
+        return Backendless.Data.of( BackendlessUser.class ).findById( objectId, relationProps );
+    }
+
     private static int loadOnLogin(BackendlessUser user) {
         LogMy.d(TAG, "In loadOnLogin");
         try {
@@ -341,10 +349,16 @@ public class CustomerUser {
 
     private void initWithCustObject() {
         // map cashback and transaction table
-        Backendless.Data.mapTableToClass(mCustomer.getCashback_table(), Cashback.class);
+        //Backendless.Data.mapTableToClass(mCustomer.getCashback_table(), Cashback.class);
+
         String[] csvFields = mCustomer.getTxn_tables().split(CommonConstants.CSV_DELIMETER, -1);
         for (String str : csvFields) {
             Backendless.Data.mapTableToClass(str, Transaction.class);
+        }
+
+        csvFields = mCustomer.getCashback_table().split(CommonConstants.CSV_DELIMETER, -1);
+        for (String str : csvFields) {
+            Backendless.Data.mapTableToClass(str, Cashback.class);
         }
         // Set user id for crashlytics
         Crashlytics.setUserIdentifier(mCustomer.getPrivate_id());

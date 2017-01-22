@@ -2,6 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/LL_Vertical_paddingSidesLarge">
 
+    <EditText
+        style="@style/Dialog_title"
+        android:id="@+id/label_title"
+        android:text="SORT  TXN"/>
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/medium_space"/>

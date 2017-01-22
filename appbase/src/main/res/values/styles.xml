@@ -296,6 +296,12 @@
         <item name="android:paddingTop">@dimen/edittext_padding_less</item>
     </style>
 
+    <style name="Dialog_title" parent="Edittext_only_view_small">
+        <item name="android:textColor">@color/toolbar_text_primary</item>
+        <item name="android:background">@color/primary</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="Edittext_only_view_small" parent="Edittext_only_click_small">
         <item name="android:clickable">false</item>
         <item name="android:focusable">false</item>

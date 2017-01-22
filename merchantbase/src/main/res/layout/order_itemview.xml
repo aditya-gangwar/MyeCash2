@@ -4,7 +4,6 @@
 
     <LinearLayout
         style="@style/LL_Horizontal_wrap"
-        android:paddingBottom="@dimen/small_space"
         android:paddingTop="@dimen/small_space">
 
         <EditText
@@ -72,6 +71,16 @@
             android:tint="@color/icon_grey"/>
 
     </LinearLayout>
+
+    <EditText
+        style="@style/Edittext_only_view_small_lessPad"
+        android:id="@+id/label_cb_exclusion"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="No Cashback Item"
+        android:paddingTop="0dp"
+        android:textColor="@color/cb_exclusion"
+        android:visibility="gone"/>
 
     <View
         style="@style/Divider_horizontal_Large"

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical"
+    android:layout_height="wrap_content">
+
+    <EditText
+        style="@style/Dialog_title"
+        android:id="@+id/label_title"
+        android:text="MERCHANT  DETAILS"/>
+
+    <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -186,7 +196,7 @@
             android:layout_width="wrap_content"
             android:text="Cashback (CB)"
             android:textStyle="bold"
-            android:textColor="@color/accent"
+            android:textColor="@color/subheading"
             android:paddingLeft="0dp"/>
 
         <LinearLayout
@@ -279,7 +289,7 @@
             android:layout_width="wrap_content"
             android:text="Account (AC)"
             android:textStyle="bold"
-            android:textColor="@color/accent"
+            android:textColor="@color/subheading"
             android:paddingLeft="0dp"/>
 
         <LinearLayout
@@ -377,7 +387,7 @@
             android:layout_width="wrap_content"
             android:text="More Details"
             android:textStyle="bold"
-            android:textColor="@color/accent"
+            android:textColor="@color/subheading"
             android:paddingLeft="0dp"/>
 
         <LinearLayout
@@ -548,3 +558,4 @@
 
     </LinearLayout>
 </ScrollView>
+</LinearLayout>

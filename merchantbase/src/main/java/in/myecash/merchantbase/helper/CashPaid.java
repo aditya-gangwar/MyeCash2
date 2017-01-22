@@ -90,9 +90,11 @@ public class CashPaid implements Serializable, View.OnTouchListener {
         return mInputAmt.getError()==null ? null : mInputAmt.getError().toString();
     }*/
 
-    public void refreshValues(int minCashToPay, int oldValue) {
+    public void refreshValues(int minCashToPay, int oldValue, int billAmt) {
         LogMy.d(TAG,"In refreshValues: "+minCashToPay+" ,"+oldValue);
         mMinCashToPay = minCashToPay;
+        mBillAmt = billAmt;
+
         buildValueSet();
         setValuesInUi();
 

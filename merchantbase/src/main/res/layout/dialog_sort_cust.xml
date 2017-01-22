@@ -6,17 +6,13 @@
     android:orientation="vertical">
 
     <EditText
-        style="@style/Edittext_only_view_small_more_pad"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:gravity="left"
-        android:text="Sort Customers by:"/>
+        style="@style/Dialog_title"
+        android:id="@+id/label_title"
+        android:text="SORT  CUSTOMERS"/>
 
-    <View
+    <!--View
         style="@style/Divider_horizontal_Large"
-        android:id="@+id/divider_cash_pay_title"/>
+        android:id="@+id/divider_cash_pay_title"/-->
 
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesLarge">

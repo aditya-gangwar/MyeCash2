@@ -7,18 +7,13 @@
     android:background="?android:attr/windowBackground">
 
     <EditText
-        style="@style/Edittext_only_view_small_more_pad"
+        style="@style/Dialog_title"
         android:id="@+id/label_cust_op_title"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:gravity="left"
-        android:text="Customer: OPERATION"/>
+        android:text="Customer: OPERATION" />
 
-    <View
+    <!--View
         style="@style/Divider_horizontal_Large"
-        android:id="@+id/divider_cash_pay_title"/>
+        android:id="@+id/divider_cash_pay_title"/-->
 
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesLarge">

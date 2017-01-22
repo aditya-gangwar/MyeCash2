@@ -103,7 +103,7 @@ public class BillingFragment extends Fragment implements
     public void onResume() {
         LogMy.d(TAG, "In onResume");
         super.onResume();
-        // important when returning from 'order list fragment' or 'cash tranasction fragment' and
+        // important when returning from 'order list fragment' or 'cash transaction fragment' and
         // bill amount is updated by these
         setTotalAmt();
         setItemCnt();
@@ -160,7 +160,7 @@ public class BillingFragment extends Fragment implements
                 handlePlus(effectiveStr);
 
             } else if (resId == R.id.input_kb_X) {// not allowed as first character, also only single multiply is allowed
-                if (!(effectiveStr.isEmpty() || effectiveStr.contains(MULTIPLY_STR))) {
+                if (!(effectiveStr.isEmpty() || effectiveStr.contains(MULTIPLY_STR) || actualStr.equals(AppConstants.SYMBOL_RS_0))) {
                     mInputItemAmt.append(MULTIPLY_STR);
                 }
 
@@ -315,7 +315,7 @@ public class BillingFragment extends Fragment implements
         mInputItemAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.cb_exclusion));
 
         mInputMoreInfo.setVisibility(View.VISIBLE);
-        mInputMoreInfo.setText("* Cashback Excluded *");
+        mInputMoreInfo.setText("* No Cashback Item *");
     }
     private void removeItemAmtExclusion() {
         mTempCbExcluded = false;

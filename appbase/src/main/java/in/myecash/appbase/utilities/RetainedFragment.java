@@ -25,7 +25,7 @@ public abstract class RetainedFragment extends Fragment {
     // An issue is observeed in SDK 19 that when back button is pressed after onPause()
     // but before onResume(), then it was causing crash.
     // Like, pressing back immediatly after screen unlock (locked when any fragment except mobile number one was visible)
-    protected Boolean resumeOk;
+    protected Boolean resumeOk = false;
     protected boolean mReady = false;
     protected boolean mQuiting = false;
     //private final Object lock = new Object();
@@ -174,8 +174,6 @@ public abstract class RetainedFragment extends Fragment {
         }
 
         doOnActivityCreated();
-        // background thread will be initiated fully by now
-        mCallback.onBgThreadCreated();
 
         // We are ready for any waiting thread response to go.
         /*synchronized (lock) {
@@ -190,7 +188,8 @@ public abstract class RetainedFragment extends Fragment {
             lock.unlock();
         }
 
-
+        // background thread will be initiated fully by now
+        mCallback.onBgThreadCreated();
     }
 
     protected abstract void doOnActivityCreated();

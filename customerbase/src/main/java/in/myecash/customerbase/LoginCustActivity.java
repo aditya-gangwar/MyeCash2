@@ -71,6 +71,7 @@ public class LoginCustActivity extends AppCompatActivity implements
         // Check to see if we have retained the worker fragment.
         FragmentManager fm = getFragmentManager();
         mWorkFragment = (MyRetainedFragment) fm.findFragmentByTag(RETAINED_FRAGMENT_TAG);
+
         // If not retained (or first time running), we need to create it.
         if (mWorkFragment == null) {
             LogMy.d(TAG, "Creating retained fragment");
@@ -148,6 +149,7 @@ public class LoginCustActivity extends AppCompatActivity implements
         // local activity initializations
         bindUiResources();
         makeForgotPasswordLink();
+        makeHelpTnCLink();
 
         // Fill old login id
         String oldId = PreferenceManager.getDefaultSharedPreferences(this).getString(AppConstants.PREF_LOGIN_ID, null);
@@ -440,6 +442,52 @@ public class LoginCustActivity extends AppCompatActivity implements
         promptView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
+    private void makeHelpTnCLink()
+    {
+        SpannableString helpTnCPrompt = new SpannableString( getString( R.string.Help_TnC_label ) );
+
+        ClickableSpan clickableSpanHelp = new ClickableSpan()
+        {
+            @Override
+            public void onClick( View widget )
+            {
+                // read and set values
+                initOperationData();
+                // validate
+                int errorCode = ValidationHelper.validateMerchantId(mLoginId);
+                if(errorCode==ErrorCodes.NO_ERROR) {
+                    // TODO: show 'HELP Page'
+                } else {
+                    mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
+                }
+            }
+        };
+
+        String linkHelp = getString( R.string.Help_link );
+        int linkStartIndex = helpTnCPrompt.toString().indexOf( linkHelp );
+        int linkEndIndex = linkStartIndex + linkHelp.length();
+        helpTnCPrompt.setSpan(clickableSpanHelp, linkStartIndex, linkEndIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // Cliackable span for 'Help'
+        ClickableSpan clickableSpanTnC = new ClickableSpan()
+        {
+            @Override
+            public void onClick( View widget )
+            {
+                // TODO: redirect to T&C section for Customers on the website
+            }
+        };
+
+        String linkTnC = getString( R.string.TnC_link );
+        int linkStartIndexId = helpTnCPrompt.toString().indexOf( linkTnC );
+        int linkEndIndexId = linkStartIndexId + linkTnC.length();
+        helpTnCPrompt.setSpan(clickableSpanTnC, linkStartIndexId, linkEndIndexId, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        TextView promptView = (TextView) findViewById( R.id.link_help_TnC );
+        promptView.setText(helpTnCPrompt);
+        promptView.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
     @Override
     public void onPasswdResetData(String secret1) {
         if(secret1!=null) {
@@ -546,6 +594,7 @@ public class LoginCustActivity extends AppCompatActivity implements
         LogMy.d(TAG,"In onPause: ");
         super.onPause();
         AppCommonUtil.cancelProgressDialog(false);
+        mWorkFragment.setResumeOk(false);
     }
 
     @Override
@@ -556,6 +605,7 @@ public class LoginCustActivity extends AppCompatActivity implements
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         AppCommonUtil.setUserType(DbConstants.USER_TYPE_CUSTOMER);
+        mWorkFragment.setResumeOk(true);
     }
 
     @Override

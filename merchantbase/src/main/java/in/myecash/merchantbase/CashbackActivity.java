@@ -785,6 +785,7 @@ public class CashbackActivity extends AppCompatActivity implements
 
     @Override
     public void getCustTxns(String id) {
+        restartTxn();
         startReportsActivity(id);
     }
 

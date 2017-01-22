@@ -30,14 +30,25 @@
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesXL"
         android:id="@+id/layout_report_main"
-        android:layout_below="@+id/toolbar_report"
-        android:background="@color/bg_light_grey">
+        android:layout_below="@+id/toolbar_report">
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/space_report_dates"
-            android:layout_weight="10"/>
+            android:layout_weight="12.5"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/label_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mchnt_txn_history_info" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7.5"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -90,7 +101,7 @@
                 android:layout_weight="50"
                 android:text="From"
                 android:gravity="left"
-                android:textColor="@color/accent"/>
+                android:textColor="@color/subheading"/>
             <EditText
                 style="@style/Edittext_only_click_medium"
                 android:layout_height="wrap_content"
@@ -98,7 +109,7 @@
                 android:layout_weight="50"
                 android:text="To"
                 android:gravity="left"
-                android:textColor="@color/accent"/>
+                android:textColor="@color/subheading"/>
         </LinearLayout>
 
         <LinearLayout

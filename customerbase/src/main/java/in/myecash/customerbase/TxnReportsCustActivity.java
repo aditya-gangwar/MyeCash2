@@ -114,6 +114,8 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
         }
         // init toolbar
         initToolbar();
+        String txt = String.format(getString(R.string.mchnt_txn_history_info), MyGlobalSettings.getMchntTxnHistoryDays().toString() );
+        mLabelInfo.setText(txt);
 
         // Init date members
         // end of today
@@ -428,6 +430,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
         }
     }
 
+    private EditText mLabelInfo;
     private EditText mInputDateFrom;
     private EditText mInputDateTo;
     private EditText mInputMerchant;
@@ -437,6 +440,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     private FrameLayout mFragmentContainer;
 
     private void bindUiResources() {
+        mLabelInfo = (EditText) findViewById(R.id.label_info);
         mInputDateFrom = (EditText) findViewById(R.id.input_date_from);
         mInputDateTo = (EditText) findViewById(R.id.input_date_to);
         mInputMerchant = (EditText) findViewById(R.id.input_merchant);

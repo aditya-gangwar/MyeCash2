@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -56,6 +57,7 @@ public class OrderListViewAdapter extends ArrayAdapter<OrderItem> {
             viewHolder.qty = (EditText) convertView.findViewById(R.id.input_quantity);
             viewHolder.unitPrice = (EditText) convertView.findViewById(R.id.input_unit_price);
             viewHolder.totalPrice = (EditText) convertView.findViewById(R.id.input_item_price);
+            viewHolder.cbExclusion = (EditText) convertView.findViewById(R.id.label_cb_exclusion);
             viewHolder.deleteAction = (AppCompatImageButton) convertView.findViewById(R.id.img_delete);
             convertView.setTag(viewHolder);
         } else {
@@ -73,35 +75,50 @@ public class OrderListViewAdapter extends ArrayAdapter<OrderItem> {
 
         // Add listeners
         // it is important to create new listener here, as they involve using 'item' and 'viewholder'
-        viewHolder.deleteAction.setOnClickListener(new View.OnClickListener() {
+        viewHolder.deleteAction.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                LogMy.d(TAG, "In onClick for delete");
-                mCallback.deleteItem(position);
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    mCallback.deleteItem(position);
+                    return true;
+                }
+                return false;
             }
         });
-        viewHolder.unitPrice.setOnClickListener(new View.OnClickListener() {
+        viewHolder.unitPrice.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                LogMy.d(TAG, "In onClick for unit price");
-                //mCallback.onEditUnitPrice(item, viewHolder);
-                mCallback.onEditUnitPrice(position);
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    LogMy.d(TAG, "In onClick for unit price");
+                    //mCallback.onEditUnitPrice(item, viewHolder);
+                    mCallback.onEditUnitPrice(position);
+                    return true;
+                }
+                return false;
             }
         });
-        viewHolder.qty.setOnClickListener(new View.OnClickListener() {
+        viewHolder.qty.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                LogMy.d(TAG, "In onClick for quantity");
-                //mCallback.onEditQuantity(item, viewHolder);
-                mCallback.onEditQuantity(position);
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    LogMy.d(TAG, "In onClick for quantity");
+                    //mCallback.onEditQuantity(item, viewHolder);
+                    mCallback.onEditQuantity(position);
+                    return true;
+                }
+                return false;
             }
         });
-        viewHolder.totalPrice.setOnClickListener(new View.OnClickListener() {
+        viewHolder.totalPrice.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                LogMy.d(TAG, "In onClick for totalPrice");
-                //mCallback.onToggleExclusion(item, viewHolder);
-                mCallback.onToggleExclusion(position);
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    LogMy.d(TAG, "In onClick for totalPrice");
+                    //mCallback.onToggleExclusion(item, viewHolder);
+                    mCallback.onToggleExclusion(position);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -113,6 +130,7 @@ public class OrderListViewAdapter extends ArrayAdapter<OrderItem> {
         private EditText qty;
         private EditText unitPrice;
         private EditText totalPrice;
+        private EditText cbExclusion;
         private AppCompatImageButton deleteAction;
 
         private int oldColor;
@@ -140,6 +158,7 @@ public class OrderListViewAdapter extends ArrayAdapter<OrderItem> {
             // set text color to highlight exclusion
             oldColor = totalPrice.getCurrentTextColor();
             totalPrice.setTextColor(ContextCompat.getColor(mActivity, R.color.cb_exclusion));
+            cbExclusion.setVisibility(View.VISIBLE);
         }
         /*
         public void toggleItemExclusion(OrderItem item) {

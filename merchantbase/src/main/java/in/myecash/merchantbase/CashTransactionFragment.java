@@ -97,6 +97,7 @@ public class CashTransactionFragment extends Fragment implements
         void onTransactionSubmit(int cashPaid);
         void setDrawerState(boolean isEnabled);
         void restartTxn();
+        void onViewOrderList();
     }
 
     @Override
@@ -241,19 +242,19 @@ public class CashTransactionFragment extends Fragment implements
     private void setCashBalance() {
         LogMy.d(TAG,"In setCashBalance: "+mReturnCash);
         if(mReturnCash > 0) {
-            String str = "Return     "+ AppCommonUtil.getSignedAmtStr(mReturnCash, false);
+            String str = "Balance     "+ AppCommonUtil.getSignedAmtStr(mReturnCash, false);
             mInputToPayCash.setText(str);
             mInputToPayCash.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
             mDividerInputToPayCash.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
 
         } else if(mReturnCash == 0) {
-            String str = "Collect      "+AppConstants.SYMBOL_RS+" 0";
+            String str = "Balance      "+AppConstants.SYMBOL_RS+" 0";
             mInputToPayCash.setText(str);
             mInputToPayCash.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             mDividerInputToPayCash.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
 
         } else {
-            String str = "Collect      "+ AppCommonUtil.getSignedAmtStr(Math.abs(mReturnCash), true);
+            String str = "Balance      "+ AppCommonUtil.getSignedAmtStr(Math.abs(mReturnCash), true);
             mInputToPayCash.setText(str);
             mInputToPayCash.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             mDividerInputToPayCash.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
@@ -419,7 +420,7 @@ public class CashTransactionFragment extends Fragment implements
             // 'payment' is visible on main screen itself
             //mCashPaidHelper.refreshValues(mToPayCash);
             calcMinCashToPay();
-            mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid);
+            mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid, mRetainedFragment.mBillTotal);
         }
 
         // Mark if previously set 'cash paid' value not enough, due to recalculations of amount
@@ -531,7 +532,8 @@ public class CashTransactionFragment extends Fragment implements
                 mRetainedFragment.mOrderItems.get(0).getQuantity() == 1) {
             return true;
         } else {
-            AppCommonUtil.toast(getActivity(), "Use billing screen to edit");
+            //AppCommonUtil.toast(getActivity(), "Use billing screen to edit");
+            mCallback.onViewOrderList();
             return false;
         }
     }
@@ -1266,8 +1268,14 @@ public class CashTransactionFragment extends Fragment implements
         //LogMy.d(TAG, "In onResume");
         super.onResume();
         mCallback.setDrawerState(false);
-        mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid);
-        setCashBalance();
+
+        displayInputBillAmt();
+        // re-calculate all amounts
+        calcAndSetAmts(false);
+        calcAndSetAddCb();
+
+        //mCashPaidHelper.refreshValues(mMinCashToPay, mCashPaid, mRetainedFragment.mBillTotal);
+        //setCashBalance();
         mCallback.getRetainedFragment().setResumeOk(true);
     }
 

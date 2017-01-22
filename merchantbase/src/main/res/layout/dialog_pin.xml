@@ -3,10 +3,15 @@
     style="@style/LL_Vertical"
     android:background="?android:attr/windowBackground">
 
+    <EditText
+        style="@style/Dialog_title"
+        android:id="@+id/label_title"
+        android:text="ENTER  PIN" />
+
     <LinearLayout
         style="@style/LL_Vertical"
         android:layout_height="wrap_content"
-        android:background="@color/bg_light_pink"
+        android:background="@color/bg_customercare_data"
         android:id="@+id/layout_amounts"
         android:padding="@dimen/medium_space">
 
@@ -78,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="italic"
-        android:text="Verify above amounts !! Enter PIN."
+        android:text="Verify above amounts !!"
         android:textColor="@color/accent2"/>
 
     <Space
