@@ -10,10 +10,17 @@ import com.backendless.persistence.local.UserIdStorageFactory;
 import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.crashlytics.android.Crashlytics;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import in.myecash.appbase.backendAPI.CommonServices;
+import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.AppAlarms;
+import in.myecash.appbase.utilities.DialogFragmentWrapper;
+import in.myecash.common.DateUtil;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -326,11 +333,47 @@ public class CustomerUser {
                 return ErrorCodes.GENERAL_ERROR;
             }
 
+            return loadGlobalSettings();
+
         } catch (BackendlessException e) {
             LogMy.e(TAG,"loadOnLogin failed: "+e.toString());
             throw e;
         }
-        return ErrorCodes.NO_ERROR;
+        //return ErrorCodes.NO_ERROR;
+    }
+
+    private static int loadGlobalSettings() {
+        try {
+            MyGlobalSettings.initSync(MyGlobalSettings.RunMode.appCustomer);
+            return checkServiceTime();
+
+        } catch (Exception e) {
+            LogMy.e(TAG,"Failed to fetch global settings: "+e.toString());
+            AppAlarms.handleException(e);
+            if(e instanceof BackendlessException) {
+                return AppCommonUtil.getLocalErrorCode((BackendlessException) e);
+            }
+            return ErrorCodes.GENERAL_ERROR;
+        }
+    }
+
+    private static int checkServiceTime() {
+        // Check for daily downtime
+        int startHour = MyGlobalSettings.getDailyDownStartHour();
+        int endHour = MyGlobalSettings.getDailyDownEndHour();
+        if(endHour > startHour) {
+            int currHour = (new DateUtil()).getHourOfDay();
+            if(currHour >= startHour && currHour < endHour) {
+                return ErrorCodes.UNDER_DAILY_DOWNTIME;
+            }
+        }
+        // Check maintenance window time
+        Date disabledUntil = MyGlobalSettings.getServiceDisabledUntil();
+        if(disabledUntil == null || System.currentTimeMillis() > disabledUntil.getTime()) {
+            return ErrorCodes.NO_ERROR;
+        } else {
+            return ErrorCodes.SERVICE_GLOBAL_DISABLED;
+        }
     }
 
     private void isLoginValid() {

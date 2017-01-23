@@ -251,7 +251,6 @@ public abstract class RetainedFragment extends Fragment {
             lock.unlock();
         }
 
-
         super.onDetach();
     }
 

@@ -26,12 +26,15 @@ import android.widget.TextView;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.RootUtil;
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.GlobalSettingConstants;
 import in.myecash.customerbase.entities.CustomerUser;
@@ -323,6 +326,7 @@ public class LoginCustActivity extends AppCompatActivity implements
             if (operation == MyRetainedFragment.REQUEST_AUTO_LOGIN) {
                 AppCommonUtil.cancelProgressDialog(true);
                 if (errorCode == ErrorCodes.NO_ERROR) {
+                    mLoginId = CustomerUser.getInstance().getCustomer().getMobile_num();
                     onLoginSuccess();
                 } else {
                     processManualLogin();
@@ -342,6 +346,27 @@ public class LoginCustActivity extends AppCompatActivity implements
                     // Show Enable account dialog
                     AccEnableDialog dialog = AccEnableDialog.newInstance(null, null);
                     dialog.show(getFragmentManager(), DIALOG_ENABLE_ACC);
+
+                } else if (errorCode == ErrorCodes.SERVICE_GLOBAL_DISABLED) {
+                    mLoginButton.setEnabled(true);
+                    // Add time at the end of error message
+                    Date disabledUntil = MyGlobalSettings.getServiceDisabledUntil();
+                    SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
+                    String errorStr = AppCommonUtil.getErrorDesc(ErrorCodes.SERVICE_GLOBAL_DISABLED)
+                            + mSdfDateWithTime.format(disabledUntil);
+                    // Show error notification dialog
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errorStr, false, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+
+                } else if (errorCode == ErrorCodes.UNDER_DAILY_DOWNTIME) {
+                    mLoginButton.setEnabled(true);
+                    // Show error notification dialog
+                    String errorStr = String.format(AppCommonUtil.getErrorDesc(ErrorCodes.UNDER_DAILY_DOWNTIME),
+                            MyGlobalSettings.getDailyDownStartHour(),
+                            MyGlobalSettings.getDailyDownEndHour());
+
+                    DialogFragmentWrapper.createNotification(AppConstants.serviceNATitle, errorStr, false, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
                 } else {
                     mLoginButton.setEnabled(true);
@@ -523,6 +548,11 @@ public class LoginCustActivity extends AppCompatActivity implements
                 .putString(AppConstants.PREF_LOGIN_ID, mLoginId)
                 .apply();
 
+        delLocalFiles();
+        startCbFrag();
+    }
+
+    private void delLocalFiles() {
         if(CustomerUser.getInstance().getCustomer().getDelLocalFilesReq()!=null) {
             // Find last local files delete time - as stored
             long lastDelTime = PreferenceManager.getDefaultSharedPreferences(this).
@@ -551,7 +581,6 @@ public class LoginCustActivity extends AppCompatActivity implements
                         .apply();
             }
         }
-        startCbFrag();
     }
 
     private void startCbFrag() {

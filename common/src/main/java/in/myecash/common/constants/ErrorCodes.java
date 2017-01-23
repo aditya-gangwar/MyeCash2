@@ -86,6 +86,7 @@ public class ErrorCodes {
     public static final int SERVICE_GLOBAL_DISABLED = 667;
     public static final int REMOTE_SERVICE_NOT_AVAILABLE = 668;
     public static final int MOBILE_ALREADY_REGISTERED = 669;
+    public static final int UNDER_DAILY_DOWNTIME = 670;
 
     // *******************************************************************
     // IT IS MANDATORY THAT ALL ERROR CODES ABOVE ARE ADDED TO BELOW MAP
@@ -163,6 +164,7 @@ public class ErrorCodes {
         aMap.put(SERVICE_GLOBAL_DISABLED,"Service under maintenance. Please try after ");
         aMap.put(REMOTE_SERVICE_NOT_AVAILABLE,"MyeCash Server not reachable. Please check Internet connection.");
         aMap.put(MOBILE_ALREADY_REGISTERED,"Mobile Number is already registered for other user.");
+        aMap.put(UNDER_DAILY_DOWNTIME,"Service not available daily between %d:00 and %d:00 hours.");
 
         appErrorDesc = Collections.unmodifiableMap(aMap);
     }

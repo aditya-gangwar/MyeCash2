@@ -33,7 +33,7 @@ public class SplashActivity extends AppCompatActivity
         implements DialogFragmentWrapper.DialogFragmentWrapperIf {
     private static final String TAG = "SplashActivity";
 
-    private FetchGlobalSettings mTask;
+    //private FetchGlobalSettings mTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,9 @@ public class SplashActivity extends AppCompatActivity
         // Map all tables to class here - except 'cashback' and 'transaction'
         AppCommonUtil.initTableToClassMappings();
 
-        if(savedInstanceState==null) {
+        startLoginActivity();
+
+        /*if(savedInstanceState==null) {
             int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(SplashActivity.this);
             if ( resultCode != ErrorCodes.NO_ERROR) {
                 // Show error notification dialog
@@ -61,17 +63,7 @@ public class SplashActivity extends AppCompatActivity
                 mTask = new FetchGlobalSettings();
                 mTask.execute();
             }
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        if(mTask!=null) {
-            mTask.cancel(true);
-            mTask = null;
-            LogMy.d(TAG, "Background thread destroyed");
-        }
-        super.onDestroy();
+        }*/
     }
 
     private void startLoginActivity() {
@@ -81,6 +73,16 @@ public class SplashActivity extends AppCompatActivity
         finish();
     }
 
+    /*@Override
+    public void onDestroy() {
+        if(mTask!=null) {
+            mTask.cancel(true);
+            mTask = null;
+            LogMy.d(TAG, "Background thread destroyed");
+        }
+        super.onDestroy();
+    }*/
+
     @Override
     public void onDialogResult(String tag, int indexOrResultCode, ArrayList<Integer> selectedItemsIndexList) {
         if(tag.equals(DialogFragmentWrapper.DIALOG_NOTIFICATION)) {
@@ -88,7 +90,7 @@ public class SplashActivity extends AppCompatActivity
         }
     }
 
-    private class FetchGlobalSettings extends AsyncTask<Void,Void,Integer> {
+    /*private class FetchGlobalSettings extends AsyncTask<Void,Void,Integer> {
         @Override
         protected Integer doInBackground(Void... params) {
             //return MyGlobalSettings.initSync();
@@ -140,5 +142,5 @@ public class SplashActivity extends AppCompatActivity
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         }
-    }
+    }*/
 }
