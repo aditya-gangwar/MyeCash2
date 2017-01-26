@@ -141,23 +141,32 @@ public class MyGlobalSettings
 
     private static Object getValue(String gSettingKey) {
         if(mRunMode==RunMode.backend) {
-            String value = GlobalSettingConstants.valuesGlobalSettings.get(gSettingKey);
-            Integer valueType = GlobalSettingConstants.valueTypesGlobalSettings.get(gSettingKey);
-            switch (valueType) {
-                case GlobalSettingConstants.DATATYPE_INT:
-                    return Integer.parseInt(value);
-                case GlobalSettingConstants.DATATYPE_BOOLEAN:
-                    return Boolean.parseBoolean(value);
-                case GlobalSettingConstants.DATATYPE_STRING:
-                    return value;
-                case GlobalSettingConstants.DATATYPE_DATE:
-                    long epochTime = Long.parseLong(value);
-                    return new Date(epochTime);
-                default:
-                    return mSettings.get(gSettingKey);
-            }
+            return getConstantValue(gSettingKey);
         } else {
-            return mSettings.get(gSettingKey);
+            if(mSettings==null) {
+                // for some reason global settings not available - handle gracefully - return local configured value
+                return getConstantValue(gSettingKey);
+            } else {
+                return mSettings.get(gSettingKey);
+            }
+        }
+    }
+
+    private static Object getConstantValue(String gSettingKey) {
+        String value = GlobalSettingConstants.valuesGlobalSettings.get(gSettingKey);
+        Integer valueType = GlobalSettingConstants.valueTypesGlobalSettings.get(gSettingKey);
+        switch (valueType) {
+            case GlobalSettingConstants.DATATYPE_INT:
+                return Integer.parseInt(value);
+            case GlobalSettingConstants.DATATYPE_BOOLEAN:
+                return Boolean.parseBoolean(value);
+            case GlobalSettingConstants.DATATYPE_STRING:
+                return value;
+            case GlobalSettingConstants.DATATYPE_DATE:
+                long epochTime = Long.parseLong(value);
+                return new Date(epochTime);
+            default:
+                return mSettings.get(gSettingKey);
         }
     }
 

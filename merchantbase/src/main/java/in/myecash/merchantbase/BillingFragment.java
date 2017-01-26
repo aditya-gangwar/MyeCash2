@@ -18,6 +18,7 @@ import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.merchantbase.entities.OrderItem;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
@@ -152,6 +153,13 @@ public class BillingFragment extends Fragment implements
                     AppCommonUtil.toast(getActivity(), "In Calculator Mode");
                     return;
                 }
+
+                if(mRetainedFragment.mCurrCustomer!=null &&
+                        mRetainedFragment.mCurrCustomer.getStatus() != DbConstants.USER_STATUS_ACTIVE) {
+                    AppCommonUtil.toast(getActivity(), "Customer Not Active");
+                    return;
+                }
+
                 // do processing for +, just in case user forgets to press it in end
                 handlePlus(effectiveStr);
                 mCallback.onTotalBill();

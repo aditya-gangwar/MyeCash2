@@ -143,7 +143,7 @@ public class TxnPinInputDialog extends DialogFragment
         });*/
 
         Dialog dialog =  new AlertDialog.Builder(getActivity(), R.style.WrapEverythingDialog).setView(v).create();
-        dialog.setTitle("Enter PIN");
+        //dialog.setTitle("Enter PIN");
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {

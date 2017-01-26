@@ -32,7 +32,7 @@ public class CommonConstants {
      * So, the errorCode is passed in 'errorMsg' field of the Backendless exception.
      * This prefix is added to the message to signal the same.
      */
-    public static final String PREFIX_ERROR_CODE_AS_MSG = "ZZ/";
+    public static final String PREFIX_ERROR_CODE_AS_MSG = "ZZ";
 
     /*
      * To use int as boolean
@@ -102,6 +102,7 @@ public class CommonConstants {
     public static final String PREFIX_TXN_CANCEL_IMG_FILE_NAME = "txnCancel_";
 
     public static final String CSV_DELIMETER = ",";
+    public static final String SPECIAL_DELIMETER = ";";
     public static final String CSV_FILE_EXT = ".csv";
     public static final String NEWLINE_SEP = "\n";
 

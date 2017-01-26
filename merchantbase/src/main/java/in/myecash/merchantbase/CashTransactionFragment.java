@@ -595,7 +595,8 @@ public class CashTransactionFragment extends Fragment implements
                 break;*/
 
                 case REQ_NOTIFY_ERROR:
-                    mCallback.restartTxn();
+                    //mCallback.restartTxn();
+                    // do nothing
                     break;
 
             }

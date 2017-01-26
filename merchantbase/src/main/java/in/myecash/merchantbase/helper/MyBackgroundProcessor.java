@@ -444,16 +444,19 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
 
     private int fetchTransactions(String query) {
         mRetainedFragment.mLastFetchTransactions = null;
-        int errorCode = ErrorCodes.NO_ERROR;
 
-        mRetainedFragment.mLastFetchTransactions = MyTransaction.fetch(query, MerchantUser.getInstance().getMerchant().getTxn_table());
+        try {
+            mRetainedFragment.mLastFetchTransactions = MyTransaction.fetch(query, MerchantUser.getInstance().getMerchant().getTxn_table());
+            if (mRetainedFragment.mLastFetchTransactions == null || mRetainedFragment.mLastFetchTransactions.size() == 0) {
+                return ErrorCodes.NO_DATA_FOUND;
+            }
+            return ErrorCodes.NO_ERROR;
 
-        if(mRetainedFragment.mLastFetchTransactions == null) {
-            errorCode = ErrorCodes.GENERAL_ERROR;
-        } else if(mRetainedFragment.mLastFetchTransactions.size()==0) {
-            errorCode = ErrorCodes.NO_DATA_FOUND;
+        } catch (BackendlessException e) {
+            mRetainedFragment.mLastFetchTransactions = null;
+            LogMy.e(TAG, "Exception in fetchTransactions: "+ e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
         }
-        return errorCode;
     }
 
     private int cancelTxn(MessageCancelTxn msg) {

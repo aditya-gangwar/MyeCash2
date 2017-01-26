@@ -17,7 +17,7 @@
     <string name="cust_mobile_change_info">Customer will have <b>Limited</b> access for %s hours after Mobile Number change.\nOnly \'CREDIT\' transactions will be allowed.</string>
     <string name="cust_pin_reset_info">New PIN will be sent after %s minutes to the registered mobile number</string>
     <string name="mchnt_remove_notice_to_cust">This Merchant is under Removal notice. Please use all your balance with it, before %s.</string>
-    <string name="mchnt_reset_passwd_info">New password will be sent on your registered Mobile number after %s minutes.\n\nYou will not be able to login using old password till then.</string>
+    <string name="reset_passwd_info">New password will be sent on your registered Mobile number after %s minutes.\n\nYou will not be able to login using old password till then.</string>
     <string name="mchnt_txn_history_info">View Transactions done in last %s days.</string>
 
     <!-- Text used in from code only -->

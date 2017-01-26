@@ -9,6 +9,12 @@ import java.util.Map;
  */
 public class ErrorCodes {
 
+    /*
+     * Use Error Codes always of 3 digits only i.e. from 100 - 999.
+     */
+    public static final int ERROR_DIGITS = 3;
+    public static final int ERROR_MAX_CNT = 999;
+
     // Non error responses
     public static final int NO_ERROR = 100;
     public static final int OP_SCHEDULED = 102;
@@ -32,22 +38,6 @@ public class ErrorCodes {
     public static final int LIMITED_ACCESS_CREDIT_TXN_ONLY = 511;
     public static final int SESSION_TIMEOUT = 512;
 
-    // Input / Verification data or permissions failure
-    public static final int WRONG_INPUT_DATA = 520;
-    public static final int WRONG_OTP = 521;
-    public static final int WRONG_PIN = 522;
-    //public static final int VERIFICATION_FAILED = 523;
-    public static final int VERIFICATION_FAILED_PASSWD = 5231;
-    public static final int VERIFICATION_FAILED_CARDID = 5232;
-    public static final int VERIFICATION_FAILED_DOB = 5233;
-    public static final int VERIFICATION_FAILED_MOBILE = 5234;
-    public static final int OPERATION_NOT_ALLOWED = 524;
-    public static final int NOT_TRUSTED_DEVICE = 525;
-    public static final int TEMP_PASSWD_EXPIRED = 526;
-    public static final int WRONG_USER_TYPE = 527;
-    public static final int DEVICE_INSECURE = 528;
-    public static final int LOGGED_IN_DEVICE_DELETE = 529;
-
     // Membership card errors
     public static final int NO_SUCH_CARD = 530;
     public static final int WRONG_CARD = 531;
@@ -66,15 +56,30 @@ public class ErrorCodes {
     // Format related errors
     public static final int EMPTY_VALUE = 550;
     public static final int INVALID_FORMAT = 551;
-    public static final int INVALID_FORMAT_COMMA = 5511;
-    public static final int INVALID_FORMAT_ZERO = 5512;
-    public static final int INVALID_LENGTH = 552;
-    public static final int INVALID_VALUE = 553;
-    public static final int NO_DATA_FOUND = 554;
+    public static final int INVALID_FORMAT_COMMA = 552;
+    public static final int INVALID_FORMAT_ZERO = 553;
+    public static final int INVALID_LENGTH = 554;
+    public static final int INVALID_VALUE = 555;
+    public static final int NO_DATA_FOUND = 556;
 
     // Any of sub backend operations failed
     public static final int SEND_SMS_FAILED = 560;
     public static final int OTP_GENERATE_FAILED = 562;
+
+    // Input / Verification data or permissions failure
+    public static final int WRONG_INPUT_DATA = 580;
+    public static final int WRONG_OTP = 581;
+    public static final int WRONG_PIN = 582;
+    public static final int VERIFICATION_FAILED_PASSWD = 583;
+    public static final int VERIFICATION_FAILED_CARDID = 584;
+    public static final int VERIFICATION_FAILED_DOB = 585;
+    public static final int VERIFICATION_FAILED_MOBILE = 586;
+    public static final int OPERATION_NOT_ALLOWED = 587;
+    public static final int NOT_TRUSTED_DEVICE = 588;
+    public static final int TEMP_PASSWD_EXPIRED = 589;
+    public static final int WRONG_USER_TYPE = 590;
+    public static final int DEVICE_INSECURE = 591;
+    public static final int LOGGED_IN_DEVICE_DELETE = 592;
 
     // Misc errors
     public static final int DUPLICATE_ENTRY = 661;
@@ -110,7 +115,7 @@ public class ErrorCodes {
         aMap.put(NOT_LOGGED_IN,"You are not logged in, or logged in from other device. \nPlease login again to proceed.");
         aMap.put(CUST_NOT_REG_WITH_MCNT,"Customer has done no transaction with the merchant.");
         aMap.put(ACC_UNDER_EXPIRY,"Account under Expiry duration");
-        aMap.put(USER_WRONG_ID_PASSWD, "Wrong User id or Password. Account gets Locked after %s incorrect attempts.");
+        aMap.put(USER_WRONG_ID_PASSWD, "Wrong User id or Password. \nAccount gets Locked after %s incorrect attempts.");
         aMap.put(FATAL_ERROR_ACC_DISABLED,"User account disabled temporarily by system for safety purpose. You will receive notification from customer care in next 24-48 hours.");
         aMap.put(USER_ALREADY_REGISTERED, "User is already registered");
         aMap.put(LIMITED_ACCESS_CREDIT_TXN_ONLY,"Limited Access. Only 'CREDIT' transactions are allowed.");

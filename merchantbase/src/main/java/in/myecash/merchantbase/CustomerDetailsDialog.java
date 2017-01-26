@@ -154,7 +154,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
                     mInputStatusDetails.setVisibility(View.VISIBLE);
                     DateUtil time = new DateUtil(cust.getStatusUpdateDate());
                     time.addMinutes(MyGlobalSettings.getCustAccLimitModeHrs() * 60);
-                    String detail = "Only 'Credit' txns allowed until "+mSdfDateWithTime.format(time.getTime());
+                    String detail = "Will be Active again at "+mSdfDateWithTime.format(time.getTime());
                     mInputStatusDetails.setText(detail);
 
                 } else {

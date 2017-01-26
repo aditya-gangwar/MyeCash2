@@ -58,7 +58,6 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,6 +80,7 @@ public class CashbackActivity extends AppCompatActivity implements
     public static final String INTENT_EXTRA_USER_TOKEN = "extraUserToken";
 
     private static final int RC_BARCODE_CAPTURE = 9001;
+    private static final int RC_TXN_REPORT = 9005;
 
     private static final String RETAINED_FRAGMENT = "workCashback";
     private static final String MOBILE_NUM_FRAGMENT = "MobileNumFragment";
@@ -271,7 +271,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 dialog.show(mFragMgr, DIALOG_CUSTOMER_DATA);
 
             } else if (i == R.id.menu_reports) {
-                startReportsActivity(null);
+                startTxnReportsActivity(null);
 
             } else if(i == R.id.menu_operations) {
                 AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
@@ -786,14 +786,14 @@ public class CashbackActivity extends AppCompatActivity implements
     @Override
     public void getCustTxns(String id) {
         restartTxn();
-        startReportsActivity(id);
+        startTxnReportsActivity(id);
     }
 
-    private void startReportsActivity(String custId) {
+    private void startTxnReportsActivity(String custId) {
         // start reports activity
         Intent intent = new Intent( this, TxnReportsActivity.class );
         intent.putExtra(TxnReportsActivity.EXTRA_CUSTOMER_ID, custId);
-        startActivity(intent);
+        startActivityForResult(intent, RC_TXN_REPORT);
     }
 
     private SettingsFragment startSettingsFragment() {
@@ -1558,6 +1558,11 @@ public class CashbackActivity extends AppCompatActivity implements
                     }
                 } else {
                     LogMy.d(TAG, "Failed to read barcode");
+                }
+            } else if(requestCode == RC_TXN_REPORT) {
+                if(resultCode == ErrorCodes.SESSION_TIMEOUT) {
+                    DialogFragmentWrapper.createNotification(AppConstants.notLoggedInTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
+                            .show(mFragMgr, DIALOG_SESSION_TIMEOUT);
                 }
             }
         }

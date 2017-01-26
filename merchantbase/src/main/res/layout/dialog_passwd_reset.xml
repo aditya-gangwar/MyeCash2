@@ -89,7 +89,7 @@
                 android:id="@+id/labelInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/mchnt_reset_passwd_info"/>
+                android:text="@string/reset_passwd_info"/>
         </LinearLayout>
 
         <Space

@@ -289,6 +289,13 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     public void onBgProcessResponse(int errorCode, int operation) {
         AppCommonUtil.cancelProgressDialog(true);
 
+        // Session timeout case - show dialog and logout - irrespective of invoked operation
+        if(errorCode==ErrorCodes.SESSION_TIMEOUT || errorCode==ErrorCodes.NOT_LOGGED_IN) {
+            setResult(ErrorCodes.SESSION_TIMEOUT, null);
+            finish();
+            return;
+        }
+
         try {
             switch(operation) {
                 case MyRetainedFragment.REQUEST_FETCH_TXNS:

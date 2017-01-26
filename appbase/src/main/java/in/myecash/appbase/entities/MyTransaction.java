@@ -45,41 +45,30 @@ public class MyTransaction {
         List<Transaction> transactions = null;
 
         // fetch cashback object from DB
-        try {
-            Backendless.Data.mapTableToClass(tableName, Transaction.class);
+        Backendless.Data.mapTableToClass(tableName, Transaction.class);
 
-            BackendlessDataQuery dataQuery = new BackendlessDataQuery();
-            QueryOptions queryOptions = new QueryOptions("created");
-            dataQuery.setQueryOptions(queryOptions);
-            dataQuery.setPageSize(CommonConstants.DB_QUERY_PAGE_SIZE);
-            dataQuery.setWhereClause(whereClause);
+        BackendlessDataQuery dataQuery = new BackendlessDataQuery();
+        QueryOptions queryOptions = new QueryOptions("created");
+        dataQuery.setQueryOptions(queryOptions);
+        dataQuery.setPageSize(CommonConstants.DB_QUERY_PAGE_SIZE);
+        dataQuery.setWhereClause(whereClause);
 
-            LogMy.d(TAG, "Before remote call");
-            BackendlessCollection<Transaction> collection = Backendless.Data.of(Transaction.class).find(dataQuery);
+        LogMy.d(TAG, "Before remote call");
+        BackendlessCollection<Transaction> collection = Backendless.Data.of(Transaction.class).find(dataQuery);
 
-            int size = collection.getTotalObjects();
-            LogMy.d(TAG, "Got transactions from DB: " + size+", "+collection.getData().size()+", Address:"+System.identityHashCode(collection));
-            /*
-            if (size == 0) {
-                errorCode = ErrorCodes.NO_DATA_FOUND;
-            } else {*/
-            transactions = collection.getData();
-                LogMy.d(TAG,"mLastFetchTransactions size: "+transactions.size());
+        int size = collection.getTotalObjects();
+        LogMy.d(TAG, "Got transactions from DB: " + size+", "+collection.getData().size());
+        transactions = collection.getData();
+        LogMy.d(TAG,"mLastFetchTransactions size: "+transactions.size());
 
-                while(collection.getCurrentPage().size() > 0) {
-                    collection = collection.nextPage();
-                    LogMy.d(TAG,"nextPage size: "+collection.getData().size()+", "+collection.getTotalObjects()+", Address:"+System.identityHashCode(collection));
-                    transactions.addAll(collection.getData());
+        while(collection.getCurrentPage().size() > 0) {
+            collection = collection.nextPage();
+            LogMy.d(TAG,"nextPage size: "+collection.getData().size()+", "+collection.getTotalObjects()+", Address:"+System.identityHashCode(collection));
+            transactions.addAll(collection.getData());
 
-                    LogMy.d(TAG, "mLastFetchTransactions size: " + transactions.size());
-                }
-                LogMy.d(TAG, "mLastFetchTransactions final size: " + transactions.size());
-//            }
-        } catch (BackendlessException e) {
-            LogMy.e(TAG,"Failed to fetch transactions: "+e.toString());
-            return null;
+            LogMy.d(TAG, "mLastFetchTransactions size: " + transactions.size());
         }
-
+        LogMy.d(TAG, "mLastFetchTransactions final size: " + transactions.size());
         return transactions;
     }
 

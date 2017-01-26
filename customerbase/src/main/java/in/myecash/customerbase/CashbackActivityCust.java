@@ -20,9 +20,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.crashlytics.android.Crashlytics;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -35,7 +39,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.myecash.appbase.OtpPinInputDialog;
+import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.entities.MyCashback;
+import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.CsvConverter;
 import in.myecash.customerbase.entities.CustomerStats;
@@ -63,6 +69,8 @@ public class CashbackActivityCust extends AppCompatActivity implements
 
     private static final String TAG = "CustApp-CashbackActivity";
     public static final String INTENT_EXTRA_USER_TOKEN = "extraUserToken";
+
+    private static final int RC_TXN_REPORT = 9005;
 
     private static final String RETAINED_FRAGMENT = "retainedFrag";
     private static final String CASHBACK_LIST_FRAGMENT = "CashbackListFrag";
@@ -248,6 +256,19 @@ public class CashbackActivityCust extends AppCompatActivity implements
                 // show customer details dialog
                 CustomerDetailsDialog dialog = new CustomerDetailsDialog();
                 dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
+            }
+        });
+
+        mTbTitle.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    // show customer details dialog
+                    CustomerDetailsDialog dialog = new CustomerDetailsDialog();
+                    dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -580,7 +601,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
 
         } else {
             // reset in case of any error
-            changeMobileParamsReset();
+            //changeMobileParamsReset();
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
@@ -616,6 +637,14 @@ public class CashbackActivityCust extends AppCompatActivity implements
         LogMy.d(TAG, "In changeMobileNumOtp: " + otp);
         mRetainedFragment.mOtpMobileChange = otp;
         changeMobileNum();
+    }
+
+    @Override
+    public void changeMobileNumReset() {
+        // reset and restart dialog
+        changeMobileParamsReset();
+        MobileChangeDialog dialog = new MobileChangeDialog();
+        dialog.show(mFragMgr, DIALOG_CHANGE_MOBILE);
     }
 
     private void changeMobileNum() {
@@ -740,8 +769,28 @@ public class CashbackActivityCust extends AppCompatActivity implements
         if(name!=null) {
             intent.putExtra(TxnReportsCustActivity.EXTRA_MERCHANT_NAME, name);
         }
-        startActivity(intent);
+        startActivityForResult(intent, RC_TXN_REPORT);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try {
+            if(requestCode == RC_TXN_REPORT) {
+                if(resultCode == ErrorCodes.SESSION_TIMEOUT) {
+                    DialogFragmentWrapper.createNotification(AppConstants.notLoggedInTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
+                            .show(mFragMgr, DIALOG_SESSION_TIMEOUT);
+                }
+            }
+        }
+        catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
+            LogMy.e(TAG, "Exception in CashbackActivity:onActivityResult: "+requestCode+", "+resultCode, e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
+    }
+
+
 
     public void onDialogResult(String tag, int indexOrResultCode, ArrayList<Integer> selectedItemsIndexList) {
         LogMy.d(TAG, "In onDialogResult: " + tag);

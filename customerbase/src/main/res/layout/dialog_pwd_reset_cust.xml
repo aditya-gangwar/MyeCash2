@@ -29,7 +29,7 @@
             android:id="@+id/label_secret_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter your Card Number below" />
+            android:text="Enter your Member Card Number below" />
         </LinearLayout>
 
         <Space
@@ -66,14 +66,15 @@
                 style="@style/Edittext_only_view_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New password will be sent on your current registered mobile number." />
+                android:text="@string/reset_passwd_info" />
         </LinearLayout>
 
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Are you sure to reset your password ?" />
+            android:text="Are you sure to reset your password ?"
+            android:textColor="@color/accent2"/>
 
         <Space
             android:layout_width="match_parent"

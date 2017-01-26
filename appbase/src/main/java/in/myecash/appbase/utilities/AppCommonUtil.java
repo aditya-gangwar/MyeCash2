@@ -178,20 +178,25 @@ public class AppCommonUtil {
      */
     public static int getLocalErrorCode(BackendlessException e) {
         LogMy.d(TAG,"Entering getLocalErrorCode: "+e.getCode());
+
         String expCode;
+        String expMsg;
+
         if( e.getCode().equals("0") && e.getMessage().startsWith(CommonConstants.PREFIX_ERROR_CODE_AS_MSG) ) {
             LogMy.d(TAG,"Custom error code case: Orig: "+e.getCode()+","+e.getMessage());
-            String[] csvFields = e.getMessage().split("/", -1);
+            String[] csvFields = e.getMessage().split(CommonConstants.SPECIAL_DELIMETER, -1);
             expCode = csvFields[1];
+            expMsg = csvFields[2];
         } else {
             expCode = e.getCode();
+            expMsg = e.getMessage();
         }
 
         int errorCode;
         try {
             errorCode = Integer.parseInt(expCode);
         } catch(Exception et) {
-            if(e.getMessage()!=null && e.getMessage().contains(CommonConstants.BACKENDLESS_HOST_IP)) {
+            if(expMsg!=null && expMsg.contains(CommonConstants.BACKENDLESS_HOST_IP)) {
                 LogMy.d(TAG,"Exiting getLocalErrorCode: "+ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE);
                 return ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE;
             }
@@ -201,8 +206,8 @@ public class AppCommonUtil {
 
         // Check if its defined error code
         // converting code to msg to check for it
-        String errMsg = AppCommonUtil.getErrorDesc(errorCode);
-        if(errMsg==null) {
+        //String errMsg = AppCommonUtil.getErrorDesc(errorCode);
+        if(!isLocalDefError(errorCode)) {
             // may be this is backendless error code
             Integer status = ErrorCodes.backendToLocalErrorCode.get(expCode);
             if(status == null) {
@@ -221,12 +226,32 @@ public class AppCommonUtil {
             }
         } else {
             // its locally defined error
-            LogMy.d(TAG,"Exiting getLocalErrorCode: "+errorCode);
-            return errorCode;
+
+            // for some Special cases - some more info (integer) is sent by backend as exception msg
+            // Extract and append that info in error code
+            int newErrorCode = transformErrorCode(errorCode, expMsg);
+
+            LogMy.d(TAG,"Exiting getLocalErrorCode: "+newErrorCode+", "+errorCode);
+            return newErrorCode;
         }
     }
+
+    private static boolean isLocalDefError(int errorCode) {
+        return (ErrorCodes.appErrorDesc.get(errorCode)!=null);
+    }
+
     public static String getErrorDesc(int errorCode) {
-        LogMy.d(TAG,"In getErrorDesc: "+mUserType);
+        LogMy.d(TAG,"In getErrorDesc: "+mUserType+", "+errorCode);
+
+        String moreInfo = null;
+        if(errorCode  > ErrorCodes.ERROR_MAX_CNT) {
+            // some extra info is appended as end digits - only first 3 digits represent error code
+            String code = String.valueOf(errorCode);
+            moreInfo = code.substring(ErrorCodes.ERROR_DIGITS);
+            errorCode = Integer.parseInt(code.substring(0,ErrorCodes.ERROR_DIGITS));
+            LogMy.d(TAG,"Error code with extra info: "+errorCode+", "+moreInfo);
+        }
+
         // handle all error messages requiring substitution seperatly
         switch(errorCode) {
             case ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD:
@@ -241,11 +266,42 @@ public class AppCommonUtil {
             case ErrorCodes.VERIFICATION_FAILED_DOB:
             case ErrorCodes.VERIFICATION_FAILED_MOBILE:
             case ErrorCodes.USER_WRONG_ID_PASSWD:
-                int confMaxAttempts = MyGlobalSettings.getWrongAttemptLimit(mUserType);
-                return String.format(ErrorCodes.appErrorDesc.get(errorCode),String.valueOf(confMaxAttempts));
+                int attempts;
+                if(moreInfo==null) {
+                    attempts = MyGlobalSettings.getWrongAttemptLimit(mUserType);
+                } else {
+                    attempts = Integer.parseInt(moreInfo);
+                }
+                //int confMaxAttempts = MyGlobalSettings.getWrongAttemptLimit(mUserType);
+                //int availableAttempts = Integer.parseInt();
+                return String.format(ErrorCodes.appErrorDesc.get(errorCode),String.valueOf(attempts));
 
             default:
                 return ErrorCodes.appErrorDesc.get(errorCode);
+        }
+    }
+
+    private static int transformErrorCode(int errorCode, String errMsg) {
+        LogMy.d(TAG,"In transformErrorCode: "+mUserType+", "+errorCode+", "+errMsg);
+        // handle all error messages requiring substitution seperatly
+        switch(errorCode) {
+            case ErrorCodes.WRONG_PIN:
+            case ErrorCodes.VERIFICATION_FAILED_CARDID:
+            case ErrorCodes.VERIFICATION_FAILED_PASSWD:
+            case ErrorCodes.VERIFICATION_FAILED_DOB:
+            case ErrorCodes.VERIFICATION_FAILED_MOBILE:
+            case ErrorCodes.USER_WRONG_ID_PASSWD:
+                try {
+                    int info = Integer.parseInt(errMsg); //just to check if msg is valid integer
+                    String newCode = String.valueOf(errorCode).concat(errMsg);
+                    return Integer.parseInt(newCode);
+                } catch(Exception e) {
+                    // ignore
+                    return errorCode;
+                }
+
+            default:
+                return errorCode;
         }
     }
 
@@ -514,7 +570,36 @@ public class AppCommonUtil {
         }
     }
 
+    public static int loadGlobalSettings(MyGlobalSettings.RunMode runMode) {
+        try {
+            MyGlobalSettings.initSync(runMode);
+            return checkServiceTime();
 
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Failed to fetch global settings: "+e.toString());
+            AppAlarms.handleException(e);
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+    }
+
+    private static int checkServiceTime() {
+        // Check for daily downtime
+        int startHour = MyGlobalSettings.getDailyDownStartHour();
+        int endHour = MyGlobalSettings.getDailyDownEndHour();
+        if(endHour > startHour) {
+            int currHour = (new DateUtil()).getHourOfDay();
+            if(currHour >= startHour && currHour < endHour) {
+                return ErrorCodes.UNDER_DAILY_DOWNTIME;
+            }
+        }
+        // Check maintenance window time
+        Date disabledUntil = MyGlobalSettings.getServiceDisabledUntil();
+        if(disabledUntil == null || System.currentTimeMillis() > disabledUntil.getTime()) {
+            return ErrorCodes.NO_ERROR;
+        } else {
+            return ErrorCodes.SERVICE_GLOBAL_DISABLED;
+        }
+    }
 
 
 

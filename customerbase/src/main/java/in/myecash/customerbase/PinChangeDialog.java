@@ -83,11 +83,14 @@ public class PinChangeDialog extends DialogFragment implements DialogInterface.O
                         }
 
                         String newPassword2 = inputNewPasswd2.getText().toString();
-                        if(newPassword.equals(newPassword2)) {
+                        if(!newPassword.equals(newPassword2)) {
+                            inputNewPasswd2.setError("Does not match with new PIN value.");
+                            errorCode = ErrorCodes.GENERAL_ERROR;
+                        }
+
+                        if(errorCode==ErrorCodes.NO_ERROR) {
                             mListener.onPinChangeData(currPasswd,newPassword);
                             getDialog().dismiss();
-                        } else {
-                            inputNewPasswd2.setError("Does not match with new PIN value.");
                         }
                     }
                 });

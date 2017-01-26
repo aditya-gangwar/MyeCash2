@@ -117,11 +117,11 @@ public class SettingsFragment extends PreferenceFragment
         } else if (key.equals(KEY_ADD_CL_ENABLED)) {
             //boolean isAddClEnabled = sharedPreferences.getBoolean(KEY_ADD_CL_ENABLED, mMerchantUser.getMerchant().getCl_add_enable());
             boolean isAddClEnabled = (boolean)o;
-            if (isAddClEnabled != mMerchantUser.getMerchant().getCl_add_enable()) {
+            //if (isAddClEnabled != mMerchantUser.getMerchant().getCl_add_enable()) {
                 mMerchantUser.setNewIsAddClEnabled(isAddClEnabled);
                 mSettingsChanged = true;
                 setAddCashSummary(isAddClEnabled, false);
-            }
+            //}
         } else if (key.equals(KEY_EMAIL)) {
             //newValue = sharedPreferences.getString(KEY_EMAIL, null);
             newValue = (String)o;
@@ -142,22 +142,22 @@ public class SettingsFragment extends PreferenceFragment
             }
         } else if (key.equals(KEY_LINKED_INV)) {
             boolean askLinkedInvNum = (boolean)o;
-            if (askLinkedInvNum != mMerchantUser.getMerchant().isInvoiceNumAsk()) {
+            //if (askLinkedInvNum != mMerchantUser.getMerchant().isInvoiceNumAsk()) {
                 mMerchantUser.setNewInvNumAsk(askLinkedInvNum);
                 mSettingsChanged = true;
-            }
+            //}
         } else if (key.equals(KEY_LINKED_INV_OPTIONAL)) {
             boolean linkedInvOptional = (boolean)o;
-            if (linkedInvOptional != mMerchantUser.getMerchant().isInvoiceNumOptional()) {
+            //if (linkedInvOptional != mMerchantUser.getMerchant().isInvoiceNumOptional()) {
                 mMerchantUser.setNewInvNumOptional(linkedInvOptional);
                 mSettingsChanged = true;
-            }
+            //}
         } else if (key.equals(KEY_LINKED_INV_ONLY_NMBRS)) {
             boolean linkedInvOnlyNmbrs = (boolean)o;
-            if (linkedInvOnlyNmbrs != mMerchantUser.getMerchant().isInvoiceNumOnlyNumbers()) {
+            //if (linkedInvOnlyNmbrs != mMerchantUser.getMerchant().isInvoiceNumOnlyNumbers()) {
                 mMerchantUser.setNewInvNumOnlyNumbers(linkedInvOnlyNmbrs);
                 mSettingsChanged = true;
-            }
+            //}
         }
 
         if (errorCode != ErrorCodes.NO_ERROR &&

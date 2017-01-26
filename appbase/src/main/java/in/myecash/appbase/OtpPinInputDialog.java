@@ -90,8 +90,9 @@ public class OtpPinInputDialog extends DialogFragment
         mAllowedLen = getArguments().getInt(ARG_LEN);
 
 
-        mLabelTitle.setText(title);
-        mLabelInfo.setText(info);
+        mLabelTitle.setText(hint);
+        mLabelInfo1.setText(title);
+        mLabelInfo2.setText(info);
         mInputPinOtp.setHint(hint);
 
         initKeyboard();
@@ -237,7 +238,8 @@ public class OtpPinInputDialog extends DialogFragment
     }
 
     private EditText mLabelTitle;
-    private EditText mLabelInfo;
+    private EditText mLabelInfo1;
+    private EditText mLabelInfo2;
     private EditText mInputPinOtp;
 
     private AppCompatButton mKeys[];
@@ -246,7 +248,8 @@ public class OtpPinInputDialog extends DialogFragment
 
     private void bindUiResources(View v) {
         mLabelTitle = (EditText) v.findViewById(R.id.label_title);
-        mLabelInfo = (EditText) v.findViewById(R.id.label_info);
+        mLabelInfo1 = (EditText) v.findViewById(R.id.label_info1);
+        mLabelInfo2 = (EditText) v.findViewById(R.id.label_info2);
         mInputPinOtp = (EditText) v.findViewById(R.id.input_pin_otp);
 
         mKeys = new AppCompatButton[10];

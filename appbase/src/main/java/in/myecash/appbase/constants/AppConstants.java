@@ -30,7 +30,7 @@ public class AppConstants {
     public static final String titleNewCardPin = "New MyeCash Card";
     public static final String msgNewCardPin = "Approve Card Change. Enter PIN.";
     public static final String titleChangeCustMobilePin = "Change Mobile";
-    public static final String msgChangeCustMobilePin = "Approve Mobile Number change to %s.\nEnter PIN.";
+    public static final String msgChangeCustMobilePin = "Approve Mobile Number change to %s.";
 
     // Msgs shown on toasts
     public static final String toastInProgress = "Operation already in progress. Please wait.";

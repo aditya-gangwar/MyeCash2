@@ -132,7 +132,6 @@ public class CustomerUser {
     public static int login(String userId, String password) {
         LogMy.d(TAG, "In login");
         try {
-
             BackendlessUser user = Backendless.UserService.login(userId, password, true);
             LogMy.d(TAG, "Customer Login Success: " + userId);
 
@@ -308,72 +307,32 @@ public class CustomerUser {
 
     private static int loadOnLogin(BackendlessUser user) {
         LogMy.d(TAG, "In loadOnLogin");
-        try {
+        int userType = (Integer)user.getProperty("user_type");
+        if( userType != DbConstants.USER_TYPE_CUSTOMER) {
             String userId = (String) user.getProperty("user_id");
-            int userType = (Integer)user.getProperty("user_type");
-            if( userType != DbConstants.USER_TYPE_CUSTOMER) {
-                // wrong user type
-                LogMy.e(TAG,"Invalid usertype in customer app: "+userType+", "+userId);
-                return ErrorCodes.USER_WRONG_ID_PASSWD;
-            }
-
-            // create instance of CustomerUser class
-            createInstance();
-            mInstance.mCustomer = (Customers) user.getProperty("customer");
-            mInstance.initWithCustObject();
-
-            // load all child objects
-            //mInstance.loadCustomer(userId);
-            LogMy.d(TAG, "Customer Load Success: " + mInstance.mCustomer.getMobile_num());
-
-            // Store user token
-            mInstance.mUserToken = HeadersManager.getInstance().getHeader(HeadersManager.HeadersEnum.USER_TOKEN_KEY);
-            if(mInstance.mUserToken == null || mInstance.mUserToken.isEmpty()) {
-                logout();
-                return ErrorCodes.GENERAL_ERROR;
-            }
-
-            return loadGlobalSettings();
-
-        } catch (BackendlessException e) {
-            LogMy.e(TAG,"loadOnLogin failed: "+e.toString());
-            throw e;
+            // wrong user type
+            LogMy.e(TAG,"Invalid usertype in customer app: "+userType+", "+userId);
+            return ErrorCodes.USER_WRONG_ID_PASSWD;
         }
-        //return ErrorCodes.NO_ERROR;
-    }
 
-    private static int loadGlobalSettings() {
-        try {
-            MyGlobalSettings.initSync(MyGlobalSettings.RunMode.appCustomer);
-            return checkServiceTime();
+        // create instance of CustomerUser class
+        createInstance();
+        mInstance.mCustomer = (Customers) user.getProperty("customer");
+        mInstance.initWithCustObject();
 
-        } catch (Exception e) {
-            LogMy.e(TAG,"Failed to fetch global settings: "+e.toString());
-            AppAlarms.handleException(e);
-            if(e instanceof BackendlessException) {
-                return AppCommonUtil.getLocalErrorCode((BackendlessException) e);
-            }
+        // load all child objects
+        //mInstance.loadCustomer(userId);
+        LogMy.d(TAG, "Customer Load Success: " + mInstance.mCustomer.getMobile_num());
+
+        // Store user token
+        mInstance.mUserToken = HeadersManager.getInstance().getHeader(HeadersManager.HeadersEnum.USER_TOKEN_KEY);
+        if(mInstance.mUserToken == null || mInstance.mUserToken.isEmpty()) {
+            logout();
             return ErrorCodes.GENERAL_ERROR;
         }
-    }
 
-    private static int checkServiceTime() {
-        // Check for daily downtime
-        int startHour = MyGlobalSettings.getDailyDownStartHour();
-        int endHour = MyGlobalSettings.getDailyDownEndHour();
-        if(endHour > startHour) {
-            int currHour = (new DateUtil()).getHourOfDay();
-            if(currHour >= startHour && currHour < endHour) {
-                return ErrorCodes.UNDER_DAILY_DOWNTIME;
-            }
-        }
-        // Check maintenance window time
-        Date disabledUntil = MyGlobalSettings.getServiceDisabledUntil();
-        if(disabledUntil == null || System.currentTimeMillis() > disabledUntil.getTime()) {
-            return ErrorCodes.NO_ERROR;
-        } else {
-            return ErrorCodes.SERVICE_GLOBAL_DISABLED;
-        }
+        return AppCommonUtil.loadGlobalSettings(MyGlobalSettings.RunMode.appCustomer);
+        //return ErrorCodes.NO_ERROR;
     }
 
     private void isLoginValid() {

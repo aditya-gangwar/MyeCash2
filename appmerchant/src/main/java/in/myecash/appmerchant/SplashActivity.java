@@ -84,7 +84,7 @@ public class SplashActivity extends AppCompatActivity
         @Override
         protected Integer doInBackground(Void... params) {
             //return MyGlobalSettings.initSync();
-            try {
+            /*try {
                 MyGlobalSettings.initSync(MyGlobalSettings.RunMode.appMerchant);
             } catch (Exception e) {
                 LogMy.e(TAG,"Failed to fetch global settings: "+e.toString());
@@ -94,13 +94,42 @@ public class SplashActivity extends AppCompatActivity
                 }
                 return ErrorCodes.GENERAL_ERROR;
             }
-            return ErrorCodes.NO_ERROR;
+            return ErrorCodes.NO_ERROR;*/
+            return AppCommonUtil.loadGlobalSettings(MyGlobalSettings.RunMode.appMerchant);
         }
 
         @Override
         protected void onPostExecute(Integer errorCode) {
             AppCommonUtil.cancelProgressDialog(true);
+
             if(errorCode==ErrorCodes.NO_ERROR) {
+                startLoginActivity();
+            } else if (errorCode == ErrorCodes.SERVICE_GLOBAL_DISABLED) {
+                // Add time at the end of error message
+                Date disabledUntil = MyGlobalSettings.getServiceDisabledUntil();
+                SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
+                String errorStr = AppCommonUtil.getErrorDesc(ErrorCodes.SERVICE_GLOBAL_DISABLED)
+                        + mSdfDateWithTime.format(disabledUntil);
+                // Show error notification dialog
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errorStr, false, true)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+
+            } else if (errorCode == ErrorCodes.UNDER_DAILY_DOWNTIME) {
+                // Show error notification dialog
+                String errorStr = String.format(AppCommonUtil.getErrorDesc(ErrorCodes.UNDER_DAILY_DOWNTIME),
+                        MyGlobalSettings.getDailyDownStartHour(),
+                        MyGlobalSettings.getDailyDownEndHour());
+
+                DialogFragmentWrapper.createNotification(AppConstants.serviceNATitle, errorStr, false, true)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+
+            } else {
+                String errorDesc = AppCommonUtil.getErrorDesc(errorCode) + "\n Please check Internet connection also.";
+                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errorDesc, false, true)
+                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            }
+
+            /*if(errorCode==ErrorCodes.NO_ERROR) {
                 // Check for daily downtime
                 int startHour = MyGlobalSettings.getDailyDownStartHour();
                 int endHour = MyGlobalSettings.getDailyDownEndHour();
@@ -131,7 +160,7 @@ public class SplashActivity extends AppCompatActivity
                 String errorDesc = AppCommonUtil.getErrorDesc(errorCode) + "\n Please check Internet connection also.";
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errorDesc, false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            }
+            }*/
         }
     }
 }

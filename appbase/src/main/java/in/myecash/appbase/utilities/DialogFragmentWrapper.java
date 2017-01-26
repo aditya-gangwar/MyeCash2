@@ -243,4 +243,22 @@ public class DialogFragmentWrapper extends DialogFragment {
 
         return dialog;
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        LogMy.d(TAG,"In onCancel");
+        final boolean frag_call = getArguments().getBoolean(ARG_FRAG_CALL);
+        if (frag_call && getTargetFragment()!=null) {
+            getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
+        } else if (mListener != null) {
+            mListener.onDialogResult(getTag(), Activity.RESULT_OK, null);
+        }
+        super.onCancel(dialog);
+    }
+
+    /*@Override
+    public void onDismiss(DialogInterface dialog) {
+        LogMy.d(TAG,"In onDismiss");
+        super.onDismiss(dialog);
+    }*/
 }

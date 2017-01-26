@@ -70,7 +70,7 @@ public class PasswdChangeDialog extends DialogFragment implements DialogInterfac
             public void onShow(DialogInterface dialog) {
 
                 final Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
+                b.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         AppCommonUtil.hideKeyboard(getDialog());
@@ -88,11 +88,14 @@ public class PasswdChangeDialog extends DialogFragment implements DialogInterfac
                         }
 
                         String newPassword2 = inputNewPasswd2.getText().toString();
-                        if(newPassword.equals(newPassword2)) {
-                            mListener.onPasswdChangeData(currPasswd,newPassword);
-                            getDialog().dismiss();
-                        } else {
+                        if(!newPassword.equals(newPassword2)) {
                             inputNewPasswd2.setError("Does not match with new password above.");
+                            errorCode = ErrorCodes.GENERAL_ERROR;
+                        }
+
+                        if(errorCode==ErrorCodes.NO_ERROR) {
+                            mListener.onPasswdChangeData(currPasswd, newPassword);
+                            getDialog().dismiss();
                         }
                     }
                 });

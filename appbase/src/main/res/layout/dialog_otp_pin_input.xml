@@ -5,13 +5,18 @@
     android:layout_width="@dimen/keyboard_full_width_dialog_less"
     android:background="?android:attr/windowBackground">
 
+    <EditText
+        style="@style/Dialog_title"
+        android:id="@+id/label_title"
+        android:text="ENTER  PIN" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/medium_space"/>
 
     <EditText
         style="@style/Edittext_only_view_medium"
-        android:id="@+id/label_title"
+        android:id="@+id/label_info1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -20,13 +25,12 @@
 
     <EditText
         style="@style/Edittext_only_view_small"
-        android:id="@+id/label_info"
+        android:id="@+id/label_info2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="italic"
         android:layout_gravity="center"
-        android:text="Always keep PIN Secret !"
-        android:textColor="@color/subheading"/>
+        android:text="Always keep PIN Secret !"/>
 
     <Space
         android:layout_width="match_parent"

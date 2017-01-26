@@ -49,7 +49,7 @@ public abstract class RetainedFragment extends Fragment {
         lock.lock();
         try {
             this.resumeOk = resumeOk;
-            LogMy.d(TAG,"Resume Ok: "+resumeOk+", "+nowReady.toString());
+            LogMy.d(TAG,"Resume Ok: "+resumeOk);
             nowReady.signal();
         } finally {
             lock.unlock();

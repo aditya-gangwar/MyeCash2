@@ -27,7 +27,7 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
     public interface MobileChangeDialogIf {
         void changeMobileNumOk(String newMobile, String cardNum);
         void changeMobileNumOtp(String otp);
-        //void changeMobileNumReset(boolean showMobilePref);
+        void changeMobileNumReset();
         //MerchantOps getMobileChangeMerchantOp();
         MyRetainedFragment getRetainedFragment();
     }
@@ -90,6 +90,13 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         AppCommonUtil.hideKeyboard(getDialog());
+                        dialog.dismiss();
+                    }
+                })
+                .setNeutralButton("Restart", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mCallback.changeMobileNumReset();
                         dialog.dismiss();
                     }
                 })

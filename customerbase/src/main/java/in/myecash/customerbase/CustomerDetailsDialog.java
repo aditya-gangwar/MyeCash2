@@ -13,6 +13,7 @@ import android.widget.EditText;
 import java.text.SimpleDateFormat;
 
 import in.myecash.common.CommonUtils;
+import in.myecash.common.DateUtil;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.MyGlobalSettings;
@@ -82,8 +83,22 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
             if(status==DbConstants.USER_STATUS_LOCKED) {
                 mInputStatusDetails.setVisibility(View.VISIBLE);
-                String detail = "Will be unlocked automatically after "+MyGlobalSettings.getAccBlockHrs(DbConstants.USER_TYPE_CUSTOMER)+" hours.";
+                //String detail = "Will be unlocked automatically after "+MyGlobalSettings.getAccBlockHrs(DbConstants.USER_TYPE_CUSTOMER)+" hours.";
+                //mInputStatusDetails.setText(detail);
+                DateUtil time = new DateUtil(cust.getStatus_update_time());
+                time.addMinutes(MyGlobalSettings.getAccBlockHrs(DbConstants.USER_TYPE_CUSTOMER) * 60);
+                String detail = "Will be Unlocked at "+mSdfDateWithTime.format(time.getTime());
                 mInputStatusDetails.setText(detail);
+
+            } else if(status==DbConstants.USER_STATUS_LIMITED_CREDIT_ONLY) {
+                mInputStatusDetails.setVisibility(View.VISIBLE);
+                //String detail = "Will be Active automatically after "+MyGlobalSettings.getCustAccLimitModeHrs()+" hours.";
+                //mInputStatusDetails.setText(detail);
+                DateUtil time = new DateUtil(cust.getStatus_update_time());
+                time.addMinutes(MyGlobalSettings.getCustAccLimitModeHrs() * 60);
+                String detail = "Will be Active again at "+mSdfDateWithTime.format(time.getTime());
+                mInputStatusDetails.setText(detail);
+
             } else {
                 mInputStatusDetails.setVisibility(View.GONE);
             }
