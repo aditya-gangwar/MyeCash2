@@ -60,7 +60,7 @@ public class DisableCustDialog extends DialogFragment
         isLtdMode = getArguments().getBoolean(ARG_ACTION);
         if(isLtdMode) {
             mTitle.setText("Customer: Limited Mode");
-            String msg1 = "Customer account will be 'enabled' automatically after "+ MyGlobalSettings.getCustAccLimitModeHrs()+" hours. Only Credit transactions are allowed in 'Limited Mode'.";
+            String msg1 = "Customer account will be 'enabled' automatically after "+ MyGlobalSettings.getCustAccLimitModeMins()+" minutes. Only Credit transactions are allowed in 'Limited Mode'.";
             mInfo1.setText(msg1);
             mInfo2.setText("Are you sure to put account in LIMITED Mode ?");
         }

@@ -188,7 +188,7 @@ public class ActionsActivity extends AppCompatActivity implements
             case MyRetainedFragment.REQUEST_LIMIT_CUST_ACC:
                 AppCommonUtil.cancelProgressDialog(true);
                 if(errorCode==ErrorCodes.NO_ERROR) {
-                    String msg = String.format(AppConstants.customerLimitedSuccessMsg, MyGlobalSettings.getCustAccLimitModeHrs());
+                    String msg = String.format(AppConstants.customerLimitedSuccessMsg, MyGlobalSettings.getCustAccLimitModeMins());
                     DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, msg, false, false)
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else {

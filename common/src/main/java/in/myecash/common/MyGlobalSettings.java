@@ -55,11 +55,11 @@ public class MyGlobalSettings
     public static Integer getCustPasswdResetMins() {
         return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUSTOMER_PASSWD_RESET_MINS);
     }
-    public static Integer getAccBlockHrs(Integer userType) {
+    public static Integer getAccBlockMins(Integer userType) {
         if(userType==DbConstants.USER_TYPE_CUSTOMER) {
-            return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUSTOMER_ACCOUNT_BLOCK_HRS);
+            return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUSTOMER_ACCOUNT_BLOCK_MINS);
         } else {
-            return (Integer) getValue(GlobalSettingConstants.SETTINGS_MERCHANT_ACCOUNT_BLOCK_HRS);
+            return (Integer) getValue(GlobalSettingConstants.SETTINGS_MERCHANT_ACCOUNT_BLOCK_MINS);
         }
     }
     public static Boolean getCardReqCbRedeem() {
@@ -77,8 +77,8 @@ public class MyGlobalSettings
     public static Integer getCbDebitPinLimit() {
         return (Integer) getValue(GlobalSettingConstants.SETTINGS_CB_DEBIT_LIMIT_FOR_PIN);
     }
-    public static Integer getMchntDashBNoRefreshHrs() {
-        return (Integer) getValue(GlobalSettingConstants.SETTINGS_STATS_NO_REFRESH_HRS);
+    public static Integer getMchntDashBNoRefreshMins() {
+        return (Integer) getValue(GlobalSettingConstants.SETTINGS_STATS_NO_REFRESH_MINS);
     }
     public static Integer getCustNoRefreshMins() {
         return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUSTOMER_NO_REFRESH_MINS);
@@ -89,11 +89,11 @@ public class MyGlobalSettings
     public static Integer getMchntExpiryDays() {
         return (Integer) getValue(GlobalSettingConstants.SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS);
     }
-    public static Integer getCustAccLimitModeHrs() {
-        return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUST_ACC_LIMIT_MODE_HRS);
+    public static Integer getCustAccLimitModeMins() {
+        return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUST_ACC_LIMIT_MODE_MINS);
     }
-    public static Integer getWrongAttemptResetHrs() {
-        return (Integer) getValue(GlobalSettingConstants.SETTINGS_WRONG_ATTEMPT_RESET_HRS);
+    public static Integer getWrongAttemptResetMins() {
+        return (Integer) getValue(GlobalSettingConstants.SETTINGS_WRONG_ATTEMPT_RESET_MINS);
     }
     public static Integer getTxnsIntableKeepDays() {
         return (Integer) getValue(GlobalSettingConstants.SETTINGS_TXNS_INTABLE_KEEP_DAYS);

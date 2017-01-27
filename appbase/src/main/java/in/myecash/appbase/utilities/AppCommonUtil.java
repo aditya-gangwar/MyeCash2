@@ -255,7 +255,7 @@ public class AppCommonUtil {
         // handle all error messages requiring substitution seperatly
         switch(errorCode) {
             case ErrorCodes.FAILED_ATTEMPT_LIMIT_RCHD:
-                return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getAccBlockHrs(mUserType)));
+                return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getAccBlockMins(mUserType)));
 
             case ErrorCodes.CASH_ACCOUNT_LIMIT_RCHD:
                 return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getCashAccLimit()));

@@ -42,7 +42,7 @@ public class MobileChangeDialog extends DialogFragment implements DialogInterfac
             mCallback = (MobileChangeDialogIf) getActivity();
 
             // set values and views
-            mInfoEnd.setText(String.format(getString(R.string.cust_mobile_change_info), MyGlobalSettings.getCustAccLimitModeHrs().toString()));
+            mInfoEnd.setText(String.format(getString(R.string.cust_mobile_change_info), MyGlobalSettings.getCustAccLimitModeMins().toString()));
 
             String newMobile = mCallback.getRetainedFragment().mNewMobileNum;
             if(newMobile==null) {

@@ -84,7 +84,7 @@ public class CommonUtils {
                 stats.getUpdated().getTime();
 
         long timeDiff = now - updateTime;
-        long noRefreshDuration = MyGlobalSettings.getMchntDashBNoRefreshHrs()*CommonConstants.MILLISECS_IN_HOUR;
+        long noRefreshDuration = MyGlobalSettings.getMchntDashBNoRefreshMins()*CommonConstants.MILLISECS_IN_MINUTE;
 
         if( timeDiff <= noRefreshDuration ) {
             retValue = false;

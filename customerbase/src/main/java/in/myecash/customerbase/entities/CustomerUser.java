@@ -133,6 +133,7 @@ public class CustomerUser {
         LogMy.d(TAG, "In login");
         try {
             BackendlessUser user = Backendless.UserService.login(userId, password, true);
+            //BackendlessUser user = Backendless.UserService.login(userId, password, false);
             LogMy.d(TAG, "Customer Login Success: " + userId);
 
             int retStatus = loadOnLogin(user);
@@ -176,6 +177,8 @@ public class CustomerUser {
                 LogMy.e(TAG, "Logout failed: " + e.toString());
                 return AppCommonUtil.getLocalErrorCode(e);
             }
+        } else {
+            LogMy.d(TAG,"No need to logout");
         }
         // reset all
         reset();

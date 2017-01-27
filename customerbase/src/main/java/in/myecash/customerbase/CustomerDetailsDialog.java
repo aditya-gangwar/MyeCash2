@@ -86,7 +86,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
                 //String detail = "Will be unlocked automatically after "+MyGlobalSettings.getAccBlockHrs(DbConstants.USER_TYPE_CUSTOMER)+" hours.";
                 //mInputStatusDetails.setText(detail);
                 DateUtil time = new DateUtil(cust.getStatus_update_time());
-                time.addMinutes(MyGlobalSettings.getAccBlockHrs(DbConstants.USER_TYPE_CUSTOMER) * 60);
+                time.addMinutes(MyGlobalSettings.getAccBlockMins(DbConstants.USER_TYPE_CUSTOMER));
                 String detail = "Will be Unlocked at "+mSdfDateWithTime.format(time.getTime());
                 mInputStatusDetails.setText(detail);
 
@@ -95,7 +95,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
                 //String detail = "Will be Active automatically after "+MyGlobalSettings.getCustAccLimitModeHrs()+" hours.";
                 //mInputStatusDetails.setText(detail);
                 DateUtil time = new DateUtil(cust.getStatus_update_time());
-                time.addMinutes(MyGlobalSettings.getCustAccLimitModeHrs() * 60);
+                time.addMinutes(MyGlobalSettings.getCustAccLimitModeMins());
                 String detail = "Will be Active again at "+mSdfDateWithTime.format(time.getTime());
                 mInputStatusDetails.setText(detail);
 

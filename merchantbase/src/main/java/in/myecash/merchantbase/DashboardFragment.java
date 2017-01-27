@@ -164,7 +164,7 @@ public class DashboardFragment extends Fragment
         }
 
         mUpdated.setText(sdf.format(updateTime));
-        String txt = "Data is updated only once every "+ MyGlobalSettings.getMchntDashBNoRefreshHrs()+" hours.";
+        String txt = "Data is updated only once every "+ MyGlobalSettings.getMchntDashBNoRefreshMins()+" minutes.";
         mUpdatedDetail.setText(txt);
     }
 

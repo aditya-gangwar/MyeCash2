@@ -146,14 +146,14 @@ public class CustomerDetailsDialog extends DialogFragment  {
                 if(status==DbConstants.USER_STATUS_LOCKED) {
                     mInputStatusDetails.setVisibility(View.VISIBLE);
                     DateUtil time = new DateUtil(cust.getStatusUpdateDate());
-                    time.addMinutes(MyGlobalSettings.getAccBlockHrs(DbConstants.USER_TYPE_CUSTOMER) * 60);
+                    time.addMinutes(MyGlobalSettings.getAccBlockMins(DbConstants.USER_TYPE_CUSTOMER));
                     String detail = "Will be Unlocked at "+mSdfDateWithTime.format(time.getTime());
                     mInputStatusDetails.setText(detail);
 
                 } else if(status==DbConstants.USER_STATUS_LIMITED_CREDIT_ONLY) {
                     mInputStatusDetails.setVisibility(View.VISIBLE);
                     DateUtil time = new DateUtil(cust.getStatusUpdateDate());
-                    time.addMinutes(MyGlobalSettings.getCustAccLimitModeHrs() * 60);
+                    time.addMinutes(MyGlobalSettings.getCustAccLimitModeMins());
                     String detail = "Will be Active again at "+mSdfDateWithTime.format(time.getTime());
                     mInputStatusDetails.setText(detail);
 

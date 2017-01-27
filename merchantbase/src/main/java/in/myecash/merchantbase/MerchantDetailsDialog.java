@@ -108,7 +108,7 @@ public class MerchantDetailsDialog extends DialogFragment {
 
             } else if(status==DbConstants.USER_STATUS_LOCKED) {
                 mLayoutActivation.setVisibility(View.VISIBLE);
-                String detail = "Will be auto unlocked after "+MyGlobalSettings.getAccBlockHrs(DbConstants.USER_TYPE_MERCHANT)+" hours from given time.";
+                String detail = "Will be auto unlocked after "+MyGlobalSettings.getAccBlockMins(DbConstants.USER_TYPE_MERCHANT)+" minutes from given time.";
                 mInputActivation.setText(detail);
 
             } else {

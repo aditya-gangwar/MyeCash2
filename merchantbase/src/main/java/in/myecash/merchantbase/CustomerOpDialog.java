@@ -226,7 +226,7 @@ public class CustomerOpDialog extends DialogFragment
 
         if(opCode.equals(DbConstants.OP_CHANGE_MOBILE)) {
             mInfoEnd.setVisibility(View.VISIBLE);
-            mInfoEnd.setText(String.format(getString(R.string.cust_mobile_change_info), MyGlobalSettings.getCustAccLimitModeHrs().toString()));
+            mInfoEnd.setText(String.format(getString(R.string.cust_mobile_change_info), MyGlobalSettings.getCustAccLimitModeMins().toString()));
 
             mLabelMobileNum.setText("Old Mobile");
             String newMobile = getArguments().getString(ARG_EXTRA_PARAMS, null);

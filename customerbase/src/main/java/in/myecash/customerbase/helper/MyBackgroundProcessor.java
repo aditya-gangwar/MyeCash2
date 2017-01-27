@@ -1,8 +1,6 @@
 package in.myecash.customerbase.helper;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -18,9 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.myecash.appbase.entities.MyCashback;
-import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.FileFetchr;
-import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.Transaction;
@@ -137,7 +133,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 error = loginCustomer((MessageLogin) msg.obj);
                 break;
             case MyRetainedFragment.REQUEST_LOGOUT:
-                error = logoutAgent();
+                error = logout();
                 break;
             case MyRetainedFragment.REQUEST_GENERATE_PWD:
                 error = generatePassword((MessageLogin) msg.obj);
@@ -183,7 +179,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         return CustomerUser.login(msg.userId, msg.password);
     }
 
-    private int logoutAgent() {
+    private int logout() {
         return CustomerUser.logout();
     }
 

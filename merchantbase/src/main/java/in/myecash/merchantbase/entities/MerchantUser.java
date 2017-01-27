@@ -150,7 +150,7 @@ public class MerchantUser
                 return ErrorCodes.GENERAL_ERROR;
             }
 
-            LogMy.d(TAG, "Login Success: " + mInstance.mMerchant.getAuto_id());
+            LogMy.d(TAG, "Login Success: " + mInstance.mMerchant.getAuto_id()+", "+mInstance.mUserToken);
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Login failed: "+e.toString());

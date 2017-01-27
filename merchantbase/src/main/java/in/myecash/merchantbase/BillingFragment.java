@@ -155,7 +155,8 @@ public class BillingFragment extends Fragment implements
                 }
 
                 if(mRetainedFragment.mCurrCustomer!=null &&
-                        mRetainedFragment.mCurrCustomer.getStatus() != DbConstants.USER_STATUS_ACTIVE) {
+                        mRetainedFragment.mCurrCustomer.getStatus() != DbConstants.USER_STATUS_ACTIVE &&
+                        mRetainedFragment.mCurrCustomer.getStatus() != DbConstants.USER_STATUS_LIMITED_CREDIT_ONLY ) {
                     AppCommonUtil.toast(getActivity(), "Customer Not Active");
                     return;
                 }

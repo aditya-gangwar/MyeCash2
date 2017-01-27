@@ -127,7 +127,7 @@ public class CustomerListFragment extends Fragment {
 
             // update time
             mUpdated.setText(mUpdatedTime);
-            String txt = "Data is updated only once every "+ MyGlobalSettings.getMchntDashBNoRefreshHrs()+" hours.";
+            String txt = "Data is updated only once every "+ MyGlobalSettings.getMchntDashBNoRefreshMins()+" minutes.";
             mUpdatedDetail.setText(txt);
 
         } catch (ClassCastException e) {

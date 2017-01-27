@@ -76,11 +76,14 @@ public class PasswordPreference extends DialogPreference
         }
 
         String newPassword2 = inputNewPasswd2.getText().toString();
-        if(newPassword.equals(newPassword2)) {
+        if(!newPassword.equals(newPassword2)) {
+            inputNewPasswd2.setError("Does not match with new password above.");
+            errorCode = ErrorCodes.GENERAL_ERROR;
+        }
+
+        if(errorCode==ErrorCodes.NO_ERROR) {
             mCallback.changePassword(currPasswd,newPassword);
             getDialog().dismiss();
-        } else {
-            inputNewPasswd2.setError("Does not match with new password above.");
         }
     }
 }

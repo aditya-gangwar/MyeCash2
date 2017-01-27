@@ -15,19 +15,19 @@ public class GlobalSettingConstants {
      */
     public static final String SETTINGS_MERCHANT_PASSWD_RESET_MINS = "Mchnt_Password_Reset_Mins";
     public static final String SETTINGS_CUSTOMER_PASSWD_RESET_MINS = "Cust_Password_Reset_Mins";
-    public static final String SETTINGS_MERCHANT_ACCOUNT_BLOCK_HRS = "Mchnt_Acc_Locked_Hours";
-    public static final String SETTINGS_CUSTOMER_ACCOUNT_BLOCK_HRS = "Cust_Acc_Locked_Hours";
+    public static final String SETTINGS_MERCHANT_ACCOUNT_BLOCK_MINS = "Mchnt_Acc_Locked_Mins";
+    public static final String SETTINGS_CUSTOMER_ACCOUNT_BLOCK_MINS = "Cust_Acc_Locked_Mins";
     public static final String SETTINGS_CB_REDEEM_CARD_REQ = "CB_Redeem_Card_Required";
     public static final String SETTINGS_ACC_DB_CARD_REQ = "AC_Debit_Card_Required";
     public static final String SETTINGS_CL_CREDIT_LIMIT_FOR_PIN = "AC_Credit_Limit_For_PIN";
     public static final String SETTINGS_CL_DEBIT_LIMIT_FOR_PIN = "AC_Debit_Limit_For_PIN";
     public static final String SETTINGS_CB_DEBIT_LIMIT_FOR_PIN = "CB_Debit_Limit_For_PIN";
-    public static final String SETTINGS_STATS_NO_REFRESH_HRS = "Mchnt_Stats_Refresh_Hours";
+    public static final String SETTINGS_STATS_NO_REFRESH_MINS = "Mchnt_Stats_Refresh_Mins";
     public static final String SETTINGS_CUSTOMER_NO_REFRESH_MINS = "Cust_Data_Refresh_Mins";
     public static final String SETTINGS_CUSTOMER_CASH_LIMIT = "AC_Max_Cash_Limit";
     public static final String SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS = "Mchnt_Removal_Expiry_Days";
-    public static final String SETTINGS_CUST_ACC_LIMIT_MODE_HRS = "Cust_Limited_Mode_Hours";
-    public static final String SETTINGS_WRONG_ATTEMPT_RESET_HRS = "Wrong_Verify_Reset_Hours";
+    public static final String SETTINGS_CUST_ACC_LIMIT_MODE_MINS = "Cust_Limited_Mode_Mins";
+    public static final String SETTINGS_WRONG_ATTEMPT_RESET_MINS = "Wrong_Verify_Reset_Mins";
     // Txns older than this will be archived to files
     // This also means that txns older than this :
     // 1) Cannot be cancelled by Merchant
@@ -59,7 +59,7 @@ public class GlobalSettingConstants {
     // TODO: Keep the 'backend passwd reset timer' duration (below defined) 1/6th of 'password reset mins' values
     // So, if Cool_off_mins is 60, then timer should run every 10 mins
     public static final int MERCHANT_PASSWORD_RESET_TIMER_INTERVAL = 5;
-    public static final int CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL = 10;
+    public static final int CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL = 30;
 
     /*
      * Map to Values
@@ -73,10 +73,14 @@ public class GlobalSettingConstants {
     public static final Map<String, String> valuesGlobalSettings;
     static {
         Map<String, String> aMap = new HashMap<>(TOTAL_SETTINGS_CNT);
-        aMap.put(SETTINGS_MERCHANT_PASSWD_RESET_MINS,"15");
-        aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS,"15");
-        aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_HRS,"1");
-        aMap.put(SETTINGS_CUSTOMER_ACCOUNT_BLOCK_HRS,"1");
+        aMap.put(SETTINGS_MERCHANT_PASSWD_RESET_MINS,"10");
+        aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS,"1");
+        aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_MINS,"10");
+        aMap.put(SETTINGS_CUSTOMER_ACCOUNT_BLOCK_MINS,"10");
+        aMap.put(SETTINGS_CUST_ACC_LIMIT_MODE_MINS,"10");
+        aMap.put(SETTINGS_STATS_NO_REFRESH_MINS,"10");
+        aMap.put(SETTINGS_CUSTOMER_NO_REFRESH_MINS,"10");
+        aMap.put(SETTINGS_WRONG_ATTEMPT_RESET_MINS,"120");
 
         aMap.put(SETTINGS_CB_REDEEM_CARD_REQ,"true");
         aMap.put(SETTINGS_ACC_DB_CARD_REQ,"true");
@@ -86,10 +90,7 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_CB_REDEEM_LIMIT,"200");
         aMap.put(SETTINGS_CUSTOMER_CASH_LIMIT,"500");
 
-        aMap.put(SETTINGS_STATS_NO_REFRESH_HRS,"1");
         aMap.put(SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS,"30");
-        aMap.put(SETTINGS_CUST_ACC_LIMIT_MODE_HRS,"1");
-        aMap.put(SETTINGS_WRONG_ATTEMPT_RESET_HRS,"2");
         aMap.put(SETTINGS_TXNS_INTABLE_KEEP_DAYS,"2");
         aMap.put(SETTINGS_OPS_KEEP_DAYS,"90");
         aMap.put(SETTINGS_OTP_VALID_MINS,"10");
@@ -99,7 +100,6 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_CUST_RENEW_DURATION,"12");
         aMap.put(SETTINGS_MCHNT_TXN_HISTORY_DAYS,"90");
         aMap.put(SETTINGS_CUST_TXN_HISTORY_DAYS,"90");
-        aMap.put(SETTINGS_CUSTOMER_NO_REFRESH_MINS,"5");
         aMap.put(SETTINGS_SERVICE_DISABLED_UNTIL,null);
         aMap.put(SETTINGS_TXN_IMAGE_CAPTURE_MODE,String.valueOf(TXN_IMAGE_CAPTURE_CARD_REQUIRED));
         aMap.put(SETTINGS_DAILY_DOWNTIME_START_HOUR,"1");
@@ -115,19 +115,19 @@ public class GlobalSettingConstants {
         Map<String, String> aMap = new HashMap<>(TOTAL_SETTINGS_CNT);
         aMap.put(SETTINGS_MERCHANT_PASSWD_RESET_MINS, "Merchant: Minutes after which new password is sent on reset.");
         aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS, "Customer: Minutes after which new password is sent on reset.");
-        aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_HRS, "Merchant: Hours for which account is kept Locked. Enabled automatically after this.");
-        aMap.put(SETTINGS_CUSTOMER_ACCOUNT_BLOCK_HRS, "Merchant: Hours for which account is kept Locked. Enabled automatically after this.");
+        aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_MINS, "Merchant: Hours for which account is kept Locked. Enabled automatically after this.");
+        aMap.put(SETTINGS_CUSTOMER_ACCOUNT_BLOCK_MINS, "Merchant: Hours for which account is kept Locked. Enabled automatically after this.");
         aMap.put(SETTINGS_CB_REDEEM_CARD_REQ, "If Customer Card Mandatory to be scanned, for Cashback redeem ?");
         aMap.put(SETTINGS_ACC_DB_CARD_REQ, "If Customer Card Mandatory to be scanned, for Account debit ?");
         aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN, "Account Credit: Amount over which Customer PIN is asked during txn.");
         aMap.put(SETTINGS_CL_DEBIT_LIMIT_FOR_PIN, "Account Debit: Amount over which Customer PIN is asked during txn.");
         aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN, "Cashback Redeem: Amount over which Customer PIN is asked during txn.");
-        aMap.put(SETTINGS_STATS_NO_REFRESH_HRS, null);
+        aMap.put(SETTINGS_STATS_NO_REFRESH_MINS, null);
         aMap.put(SETTINGS_CUSTOMER_NO_REFRESH_MINS, null);
         aMap.put(SETTINGS_CUSTOMER_CASH_LIMIT, "Customer: Maximum amount that can be kept in any account of single merchant.");
         aMap.put(SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS, null);
-        aMap.put(SETTINGS_CUST_ACC_LIMIT_MODE_HRS, "Customer: Hours for which account is kept in Limited Mode. Enabled automatically after this.");
-        aMap.put(SETTINGS_WRONG_ATTEMPT_RESET_HRS, null);
+        aMap.put(SETTINGS_CUST_ACC_LIMIT_MODE_MINS, "Customer: Hours for which account is kept in Limited Mode. Enabled automatically after this.");
+        aMap.put(SETTINGS_WRONG_ATTEMPT_RESET_MINS, null);
         aMap.put(SETTINGS_TXNS_INTABLE_KEEP_DAYS, "Transactions can be cancelled within this many days.");
         aMap.put(SETTINGS_OPS_KEEP_DAYS, "Service Requests for any account older than these many days are Purged.");
         aMap.put(SETTINGS_OTP_VALID_MINS, "Time for which any sent OTP is valid.");
@@ -159,18 +159,18 @@ public class GlobalSettingConstants {
         Map<String, Integer> aMap = new HashMap<>(TOTAL_SETTINGS_CNT);
         aMap.put(SETTINGS_MERCHANT_PASSWD_RESET_MINS, DATATYPE_INT);
         aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS, DATATYPE_INT);
-        aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_HRS, DATATYPE_INT);
-        aMap.put(SETTINGS_CUSTOMER_ACCOUNT_BLOCK_HRS, DATATYPE_INT);
+        aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_MINS, DATATYPE_INT);
+        aMap.put(SETTINGS_CUSTOMER_ACCOUNT_BLOCK_MINS, DATATYPE_INT);
         aMap.put(SETTINGS_CB_REDEEM_CARD_REQ, DATATYPE_BOOLEAN);
         aMap.put(SETTINGS_ACC_DB_CARD_REQ, DATATYPE_BOOLEAN);
         aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN, DATATYPE_INT);
         aMap.put(SETTINGS_CL_DEBIT_LIMIT_FOR_PIN, DATATYPE_INT);
         aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN, DATATYPE_INT);
-        aMap.put(SETTINGS_STATS_NO_REFRESH_HRS, DATATYPE_INT);
+        aMap.put(SETTINGS_STATS_NO_REFRESH_MINS, DATATYPE_INT);
         aMap.put(SETTINGS_CUSTOMER_CASH_LIMIT, DATATYPE_INT);
         aMap.put(SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS, DATATYPE_INT);
-        aMap.put(SETTINGS_CUST_ACC_LIMIT_MODE_HRS, DATATYPE_INT);
-        aMap.put(SETTINGS_WRONG_ATTEMPT_RESET_HRS, DATATYPE_INT);
+        aMap.put(SETTINGS_CUST_ACC_LIMIT_MODE_MINS, DATATYPE_INT);
+        aMap.put(SETTINGS_WRONG_ATTEMPT_RESET_MINS, DATATYPE_INT);
         aMap.put(SETTINGS_TXNS_INTABLE_KEEP_DAYS, DATATYPE_INT);
         aMap.put(SETTINGS_OPS_KEEP_DAYS, DATATYPE_INT);
         aMap.put(SETTINGS_OTP_VALID_MINS, DATATYPE_INT);
