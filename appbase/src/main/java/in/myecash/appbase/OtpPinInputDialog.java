@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -125,7 +126,9 @@ public class OtpPinInputDialog extends DialogFragment
         });*/
 
         Dialog dialog =  new AlertDialog.Builder(getActivity(), R.style.WrapEverythingDialog).setView(v).create();
-        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        if(AppConstants.IS_PROD_BUILD) {
+            dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        }
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override

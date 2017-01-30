@@ -1,6 +1,7 @@
 package in.myecash.appmerchant;
 
 import android.app.Application;
+import android.os.StrictMode;
 
 import com.backendless.Backendless;
 import com.crashlytics.android.Crashlytics;
@@ -50,6 +51,12 @@ public class MerchantApp extends Application {
 
         // Map all tables to class here - except 'cashback' and 'transaction'
         AppCommonUtil.initTableToClassMappings();
+
+        // This is to avoid android.os.FileUriExposedException exception
+        // while trying to pass CSV file path to Email app intent (txn list email)
+        // Refer: http://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
     }
 }

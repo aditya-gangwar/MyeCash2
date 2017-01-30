@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar_report"
         android:id="@+id/mcntOpList_header"
-        android:background="@color/bg_light_grey">
+        android:background="@color/bg_listWithCard_header">
 
         <EditText
             style="@style/Edittext_only_view_small"
@@ -18,7 +18,8 @@
             android:id="@+id/custlist_header_id"
             android:layout_height="wrap_content"
             android:text="Service Request History"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
 
         <View
             style="@style/Divider_horizontal_Large"
@@ -31,7 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mchntOp_recycler_view"
-        android:layout_below="@id/mcntOpList_header">
+        android:layout_below="@id/mcntOpList_header"
+        android:background="@color/bg_light_grey">
     </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

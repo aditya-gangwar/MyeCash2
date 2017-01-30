@@ -5,6 +5,8 @@ package in.myecash.appbase.constants;
  */
 public class AppConstants {
 
+    public static final boolean IS_PROD_BUILD = false;
+
     public static final String PHONE_COUNTRY_CODE = "+91 ";
     public static int MOBILE_NUM_PROCESS_MIN_LENGTH = 8;
     public static final String SYMBOL_RS = "\u20B9 ";
@@ -45,13 +47,13 @@ public class AppConstants {
 
 
     public static final String generalFailureTitle = "Error";
-    public static final String regFailureTitle = "Registration Failed";
-    public static final String noInternetTitle = "No Internet Connection";
-    public static final String loginFailureTitle = "Login Failed";
-    public static final String noPermissionTitle = "No Permissions";
-    public static final String noDataFailureTitle = "No Data";
-    public static final String serviceNATitle = "Service Not Available";
-    public static final String notLoggedInTitle = "Not Logged In";
+    public static final String regFailureTitle = "Error: Registration Failed";
+    public static final String noInternetTitle = "Error: No Internet Connection";
+    public static final String loginFailureTitle = "Error: Login Failed";
+    public static final String noPermissionTitle = "Error: No Permissions";
+    public static final String noDataFailureTitle = "Error: No Data";
+    public static final String serviceNATitle = "Error: Service Not Available";
+    public static final String notLoggedInTitle = "Error: Not Logged In";
 
     // Txn summary constants
     public static int INDEX_TXN_COUNT = 0;
@@ -67,6 +69,9 @@ public class AppConstants {
     public static final String PREF_IMAGE_PATH_PREFIX = "merchantDp";
     public static final String PREF_MCHNT_STATS_PREFIX = "merchantStats";
     public static final String PREF_ALL_FILES_DEL_TIME = "allFilesDelTime";
+    public static final String PREF_DAILY_DWNTIME_START_HOUR = "dwnTimeStartHour";
+    public static final String PREF_DAILY_DWNTIME_END_HOUR = "dwnTimeEndHour";
+    public static final String PREF_SERVICE_NA_URL = "serviceNAUrl";
 
     // Messages shown on popup dialogues
     public static final String defaultSuccessTitle = "Success";

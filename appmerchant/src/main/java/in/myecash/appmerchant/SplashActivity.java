@@ -1,8 +1,10 @@
 package in.myecash.appmerchant;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.backendless.Backendless;
@@ -43,15 +45,22 @@ public class SplashActivity extends AppCompatActivity
         setContentView(R.layout.activity_splash);
 
         if(savedInstanceState==null) {
-            int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(SplashActivity.this);
-            if ( resultCode != ErrorCodes.NO_ERROR) {
-                // Show error notification dialog
-                DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
+            String naErrorStr = AppCommonUtil.isDownAsPerLocalData(SplashActivity.this);
+            if(naErrorStr!=null) {
+                DialogFragmentWrapper.createNotification(AppConstants.serviceNATitle, naErrorStr, false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+
             } else {
-                AppCommonUtil.showProgressDialog(this, "Loading ...");
-                mTask = new FetchGlobalSettings();
-                mTask.execute();
+                int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(SplashActivity.this);
+                if (resultCode != ErrorCodes.NO_ERROR) {
+                    // Show error notification dialog
+                    DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                } else {
+                    AppCommonUtil.showProgressDialog(this, "Loading ...");
+                    mTask = new FetchGlobalSettings();
+                    mTask.execute();
+                }
             }
         }
     }
@@ -83,18 +92,6 @@ public class SplashActivity extends AppCompatActivity
     private class FetchGlobalSettings extends AsyncTask<Void,Void,Integer> {
         @Override
         protected Integer doInBackground(Void... params) {
-            //return MyGlobalSettings.initSync();
-            /*try {
-                MyGlobalSettings.initSync(MyGlobalSettings.RunMode.appMerchant);
-            } catch (Exception e) {
-                LogMy.e(TAG,"Failed to fetch global settings: "+e.toString());
-                AppAlarms.handleException(e);
-                if(e instanceof BackendlessException) {
-                    return AppCommonUtil.getLocalErrorCode((BackendlessException) e);
-                }
-                return ErrorCodes.GENERAL_ERROR;
-            }
-            return ErrorCodes.NO_ERROR;*/
             return AppCommonUtil.loadGlobalSettings(MyGlobalSettings.RunMode.appMerchant);
         }
 
@@ -103,7 +100,9 @@ public class SplashActivity extends AppCompatActivity
             AppCommonUtil.cancelProgressDialog(true);
 
             if(errorCode==ErrorCodes.NO_ERROR) {
+                AppCommonUtil.storeGSLocally(SplashActivity.this);
                 startLoginActivity();
+
             } else if (errorCode == ErrorCodes.SERVICE_GLOBAL_DISABLED) {
                 // Add time at the end of error message
                 Date disabledUntil = MyGlobalSettings.getServiceDisabledUntil();
@@ -123,44 +122,17 @@ public class SplashActivity extends AppCompatActivity
                 DialogFragmentWrapper.createNotification(AppConstants.serviceNATitle, errorStr, false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
+            } else if (errorCode == ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE) {
+                // Redirect to webpage
+                String url = PreferenceManager.getDefaultSharedPreferences(SplashActivity.this)
+                        .getString(AppConstants.PREF_SERVICE_NA_URL, getString(R.string.serviceNaDefaultUrl));
+                Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
+                startActivity(viewIntent);
             } else {
-                String errorDesc = AppCommonUtil.getErrorDesc(errorCode) + "\n Please check Internet connection also.";
+                String errorDesc = AppCommonUtil.getErrorDesc(errorCode);
                 DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errorDesc, false, true)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
-
-            /*if(errorCode==ErrorCodes.NO_ERROR) {
-                // Check for daily downtime
-                int startHour = MyGlobalSettings.getDailyDownStartHour();
-                int endHour = MyGlobalSettings.getDailyDownEndHour();
-                if(endHour > startHour) {
-                    int currHour = (new DateUtil()).getHourOfDay();
-                    if(currHour >= startHour && currHour < endHour) {
-                        // Show error notification dialog
-                        String errorStr = "Service is not available daily between "+startHour+":00 and "+endHour+":00 hours.";
-                        DialogFragmentWrapper.createNotification(AppConstants.serviceNATitle, errorStr, false, true)
-                                .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                        return;
-                    }
-                }
-
-                Date disabledUntil = MyGlobalSettings.getServiceDisabledUntil();
-                if(disabledUntil == null || System.currentTimeMillis() > disabledUntil.getTime()) {
-                    startLoginActivity();
-                } else {
-                    // Add time at the end of error message
-                    SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
-                    String errorStr = AppCommonUtil.getErrorDesc(ErrorCodes.SERVICE_GLOBAL_DISABLED)
-                            + mSdfDateWithTime.format(disabledUntil);
-                    // Show error notification dialog
-                    DialogFragmentWrapper.createNotification(AppConstants.serviceNATitle, errorStr, false, true)
-                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-            } else {
-                String errorDesc = AppCommonUtil.getErrorDesc(errorCode) + "\n Please check Internet connection also.";
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errorDesc, false, true)
-                        .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            }*/
         }
     }
 }

@@ -138,6 +138,9 @@ public class MyGlobalSettings
     public static Integer getDailyDownEndHour() {
         return (Integer) getValue(GlobalSettingConstants.SETTINGS_DAILY_DOWNTIME_END_HOUR);
     }
+    public static String getServiceNAUrl() {
+        return (String) getValue(GlobalSettingConstants.SETTINGS_SERVICE_NA_URL);
+    }
 
     private static Object getValue(String gSettingKey) {
         if(mRunMode==RunMode.backend) {

@@ -98,7 +98,6 @@ public class SortMchntDialog extends DialogFragment implements DialogInterface.O
                     }
                 })
                 .create();
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override

@@ -204,7 +204,7 @@
             style="@style/Divider_horizontal_Large"
             android:id="@+id/balance_divider"
             android:layout_below="@id/balance_toolbar"
-            android:background="@color/primary"/>
+            android:background="@color/primary_text"/>
 
         <!-- The main content view where fragments are loaded -->
         <FrameLayout

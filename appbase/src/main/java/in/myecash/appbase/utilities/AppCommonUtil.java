@@ -20,6 +20,7 @@ import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -196,7 +197,7 @@ public class AppCommonUtil {
         try {
             errorCode = Integer.parseInt(expCode);
         } catch(Exception et) {
-            if(expMsg!=null && expMsg.contains(CommonConstants.BACKENDLESS_HOST_IP)) {
+            if( expMsg!=null && (expMsg.contains(CommonConstants.BACKENDLESS_HOST_IP)||expMsg.contains("Connection refused")) ) {
                 LogMy.d(TAG,"Exiting getLocalErrorCode: "+ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE);
                 return ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE;
             }
@@ -599,6 +600,39 @@ public class AppCommonUtil {
         } else {
             return ErrorCodes.SERVICE_GLOBAL_DISABLED;
         }
+    }
+
+    public static String isDownAsPerLocalData(Context ctxt) {
+        // check daily downtime as stored locally
+        int startHour = PreferenceManager.getDefaultSharedPreferences(ctxt)
+                .getInt(AppConstants.PREF_DAILY_DWNTIME_START_HOUR, 0);
+        int endHour = PreferenceManager.getDefaultSharedPreferences(ctxt)
+                .getInt(AppConstants.PREF_DAILY_DWNTIME_END_HOUR, 0);
+        if(endHour > startHour) {
+            int currHour = (new DateUtil()).getHourOfDay();
+            if(currHour >= startHour && currHour < endHour) {
+                return String.format(AppCommonUtil.getErrorDesc(ErrorCodes.UNDER_DAILY_DOWNTIME),
+                        startHour,
+                        endHour);
+            }
+        }
+        return null;
+    }
+
+    public static void storeGSLocally(Context ctxt) {
+        // update Global Settings which need to be stored locally
+        PreferenceManager.getDefaultSharedPreferences(ctxt)
+                .edit()
+                .putInt(AppConstants.PREF_DAILY_DWNTIME_START_HOUR, MyGlobalSettings.getDailyDownStartHour())
+                .apply();
+        PreferenceManager.getDefaultSharedPreferences(ctxt)
+                .edit()
+                .putInt(AppConstants.PREF_DAILY_DWNTIME_END_HOUR, MyGlobalSettings.getDailyDownEndHour())
+                .apply();
+        PreferenceManager.getDefaultSharedPreferences(ctxt)
+                .edit()
+                .putString(AppConstants.PREF_SERVICE_NA_URL, MyGlobalSettings.getServiceNAUrl())
+                .apply();
     }
 
 

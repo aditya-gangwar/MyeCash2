@@ -10,10 +10,8 @@
         android:text="MERCHANT  DETAILS"/>
 
     <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fillViewport="false">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesLarge"

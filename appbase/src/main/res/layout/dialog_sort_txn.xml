@@ -64,12 +64,12 @@
             <RadioButton
                 style="@style/radio_button_medium"
                 android:id="@+id/awardCb"
-                android:text="Award Cashback" />
+                android:text="Add Cashback" />
 
             <RadioButton
                 style="@style/radio_button_medium"
                 android:id="@+id/redeemCb"
-                android:text="Redeem Cashback" />
+                android:text="Debit Cashback" />
 
             <Space
                 android:layout_width="match_parent"

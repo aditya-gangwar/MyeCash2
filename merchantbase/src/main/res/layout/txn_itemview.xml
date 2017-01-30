@@ -5,7 +5,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/small_space"
+        android:paddingBottom="@dimen/small_space">
 
         <EditText
             style="@style/Edittext_only_click_small_lessPad"

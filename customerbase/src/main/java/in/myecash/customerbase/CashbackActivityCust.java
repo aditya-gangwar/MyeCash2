@@ -798,8 +798,8 @@ public class CashbackActivityCust extends AppCompatActivity implements
         if (tag.equals(DIALOG_BACK_BUTTON)) {
             mExitAfterLogout = true;
             // not logging out
-            //logoutCustomer();
-            finish();
+            logoutCustomer();
+            //finish();
         } else if(tag.equals(DIALOG_SESSION_TIMEOUT)) {
             mExitAfterLogout = false;
             logoutCustomer();

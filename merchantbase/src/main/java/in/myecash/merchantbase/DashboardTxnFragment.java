@@ -148,10 +148,12 @@ public class DashboardTxnFragment extends Fragment {
             entries.add(new Entry(mMerchantStats.getCust_cnt_cb_and_cash(), index));
             index++;
         }
-        if(mMerchantStats.getCust_cnt_no_balance() > 0) {
-            labels.add("0 Balance");
+        // there will rarely be any Customer with no txns but still registered with Merchant
+        // so not showing them for now
+        /*if(mMerchantStats.getCust_cnt_no_balance() > 0) {
+            labels.add("No Transactions");
             entries.add(new Entry(mMerchantStats.getCust_cnt_no_balance(), index));
-        }
+        }*/
 
         PieDataSet dataset = new PieDataSet(entries, "Customers");
         dataset.setColors(ColorTemplate.MATERIAL_COLORS);
@@ -213,11 +215,11 @@ public class DashboardTxnFragment extends Fragment {
         }*/
 
 //        if(mMerchantStats.getCust_cnt_no_balance() > 0) {
-            row_4_values[0].setText("0 Balance");
+            /*row_4_values[0].setText("No Transactions");
             row_4_values[1].setText(String.valueOf(mMerchantStats.getCust_cnt_no_balance()));
             percent = (mMerchantStats.getCust_cnt_no_balance()*100.0f)/total_cust_cnt;
             percentStr = df.format(percent)+" %";
-            row_4_values[2].setText(percentStr);
+            row_4_values[2].setText(percentStr);*/
 /*
             rows_table[3].setVisibility(View.VISIBLE);
         } else {
@@ -258,7 +260,7 @@ public class DashboardTxnFragment extends Fragment {
         int balance = mMerchantStats.getCb_credit()- mMerchantStats.getCb_debit();
         //DecimalFormat df = new DecimalFormat("##.##");
 
-        row_1_values[0].setText("Redeemed");
+        row_1_values[0].setText("Debited");
         String amount = AppConstants.SYMBOL_RS +String.valueOf(mMerchantStats.getCb_debit());
         row_1_values[1].setText(amount);
         Float percent = (mMerchantStats.getCb_debit()*100.0f)/mMerchantStats.getCb_credit();
@@ -388,7 +390,7 @@ public class DashboardTxnFragment extends Fragment {
         row_1_values[2].setText(percentStr);
         rows_table[0].setVisibility(View.VISIBLE);
 
-        row_2_values[0].setText("With Cashback");
+        row_2_values[0].setText("From Cashback");
         amount = AppConstants.SYMBOL_RS +String.valueOf(mMerchantStats.getCb_debit());
         row_2_values[1].setText(amount);
         percent = (mMerchantStats.getCb_debit()*100.0f)/mMerchantStats.getBill_amt_total();
@@ -415,12 +417,13 @@ public class DashboardTxnFragment extends Fragment {
     PieChart mPieChart;
     //EditText mUpdated;
 
-    TableRow rows_table[] = new TableRow[4];
+    TableRow rows_table[] = new TableRow[3];
+    //TableRow rows_table[] = new TableRow[4];
     EditText row_title_values[] = new EditText[COLUMN_COUNT];
     EditText row_1_values[] = new EditText[COLUMN_COUNT];
     EditText row_2_values[] = new EditText[COLUMN_COUNT];
     EditText row_3_values[] = new EditText[COLUMN_COUNT];
-    EditText row_4_values[] = new EditText[COLUMN_COUNT];
+    //EditText row_4_values[] = new EditText[COLUMN_COUNT];
     EditText total_value;
 
     protected void bindUiResources(View view) {
@@ -447,10 +450,10 @@ public class DashboardTxnFragment extends Fragment {
         row_3_values[1] = (EditText) view.findViewById(R.id.table_row_3_col_2);
         row_3_values[2] = (EditText) view.findViewById(R.id.table_row_3_col_3);
 
-        rows_table[3] = (TableRow) view.findViewById(R.id.table_row_4);
+        /*rows_table[3] = (TableRow) view.findViewById(R.id.table_row_4);
         row_4_values[0] = (EditText) view.findViewById(R.id.table_row_4_col_1);
         row_4_values[1] = (EditText) view.findViewById(R.id.table_row_4_col_2);
-        row_4_values[2] = (EditText) view.findViewById(R.id.table_row_4_col_3);
+        row_4_values[2] = (EditText) view.findViewById(R.id.table_row_4_col_3);*/
 
         total_value = (EditText) view.findViewById(R.id.table_row_total_col_2);
 

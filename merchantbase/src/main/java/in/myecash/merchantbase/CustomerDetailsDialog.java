@@ -165,7 +165,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
             }
 
             mInputTotalBill.setText(AppCommonUtil.getAmtStr(cb.getBillAmt()));
-            mInputCbBill.setText(AppCommonUtil.getAmtStr(cb.getCbBillAmt()));
+            //mInputCbBill.setText(AppCommonUtil.getAmtStr(cb.getCbBillAmt()));
 
             mInputAccAvailable.setText(AppCommonUtil.getAmtStr(cb.getCurrClBalance()));
             mInputAccTotalAdd.setText(AppCommonUtil.getAmtStr(cb.getClCredit()));
@@ -217,7 +217,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
     //private EditText mInputAdminRemarks;
 
     private EditText mInputTotalBill;
-    private EditText mInputCbBill;
+    //private EditText mInputCbBill;
 
     private EditText mInputAccAvailable;
     private EditText mInputAccTotalAdd;
@@ -257,7 +257,7 @@ public class CustomerDetailsDialog extends DialogFragment  {
         //mInputAdminRemarks = (EditText) v.findViewById(R.id.input_status_remarks);
 
         mInputTotalBill = (EditText) v.findViewById(R.id.input_total_bill);
-        mInputCbBill = (EditText) v.findViewById(R.id.input_cb_bill);
+        //mInputCbBill = (EditText) v.findViewById(R.id.input_cb_bill);
 
         mInputAccAvailable = (EditText) v.findViewById(R.id.input_acc_balance);
         mInputAccTotalAdd = (EditText) v.findViewById(R.id.input_acc_add);

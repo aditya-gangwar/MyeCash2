@@ -3,9 +3,21 @@
     style="@style/LL_Vertical_paddingSidesLarge"
     android:layout_height="wrap_content">
 
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/medium_space"
+        android:elevation="3dp"
+        card_view:cardCornerRadius="2dp">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/small_space"
+        android:layout_marginRight="@dimen/small_space">
 
         <EditText
             style="@style/Edittext_only_click_small"
@@ -14,6 +26,7 @@
             android:layout_width="wrap_content"
             android:text="AUX67DF4"
             android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingTop="@dimen/edittext_padding_less"
             android:paddingRight="0dp"
             android:textStyle="bold"
             android:textColor="@color/subheading"
@@ -27,6 +40,7 @@
             android:layout_alignParentRight="true"
             android:text="08 Apr,16  20:15"
             android:paddingBottom="@dimen/edittext_padding_less"
+            android:paddingTop="@dimen/edittext_padding_less"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"/>
 
@@ -190,8 +204,10 @@
 
     </RelativeLayout>
 
-    <View
+    <!--View
         style="@style/Divider_horizontal_Large"
-        android:id="@+id/cust_divider_1"/>
+        android:id="@+id/cust_divider_1"/-->
+
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

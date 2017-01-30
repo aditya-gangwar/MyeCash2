@@ -47,6 +47,7 @@ public class GlobalSettingConstants {
     public static final String SETTINGS_TXN_IMAGE_CAPTURE_MODE = "Txn_Image_Capture_Mode";
     public static final String SETTINGS_DAILY_DOWNTIME_START_HOUR = "Daily_Downtime_Start_Hour";
     public static final String SETTINGS_DAILY_DOWNTIME_END_HOUR = "Daily_Downtime_End_Hour";
+    public static final String SETTINGS_SERVICE_NA_URL = "Service_NotAvailable_URL";
 
     /*
      * Ones defined only in backend as constant values - as not used by App
@@ -104,6 +105,7 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_TXN_IMAGE_CAPTURE_MODE,String.valueOf(TXN_IMAGE_CAPTURE_CARD_REQUIRED));
         aMap.put(SETTINGS_DAILY_DOWNTIME_START_HOUR,"1");
         aMap.put(SETTINGS_DAILY_DOWNTIME_END_HOUR,"6");
+        aMap.put(SETTINGS_SERVICE_NA_URL,"http://www.whysotechnologies.com/backsoon");
         valuesGlobalSettings = Collections.unmodifiableMap(aMap);
     }
 
@@ -142,6 +144,7 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_TXN_IMAGE_CAPTURE_MODE, null);
         aMap.put(SETTINGS_DAILY_DOWNTIME_START_HOUR, "Start Hour for Daily service downtime (24 hour format).");
         aMap.put(SETTINGS_DAILY_DOWNTIME_END_HOUR, "End Hour for Daily service downtime (24 hour format).");
+        aMap.put(SETTINGS_SERVICE_NA_URL, "URL to which App will redirect if backend is not available");
         descGlobalSettings = Collections.unmodifiableMap(aMap);
     }
 
@@ -186,6 +189,7 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_TXN_IMAGE_CAPTURE_MODE, DATATYPE_INT);
         aMap.put(SETTINGS_DAILY_DOWNTIME_START_HOUR, DATATYPE_INT);
         aMap.put(SETTINGS_DAILY_DOWNTIME_END_HOUR, DATATYPE_INT);
+        aMap.put(SETTINGS_SERVICE_NA_URL, DATATYPE_STRING);
         valueTypesGlobalSettings = Collections.unmodifiableMap(aMap);
     }
 }

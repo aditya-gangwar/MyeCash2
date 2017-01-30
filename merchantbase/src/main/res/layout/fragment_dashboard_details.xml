@@ -172,7 +172,7 @@
                     android:text="25 %"/>
             </TableRow>
 
-            <TableRow
+            <!--TableRow
                 android:background="@color/iron2"
                 android:id="@+id/table_row_4">
 
@@ -196,7 +196,7 @@
                     android:gravity="left"
                     android:layout_height="wrap_content"
                     android:text="12 %" />
-            </TableRow>
+            </TableRow-->
 
             <View
                 style="@style/Divider_horizontal_Medium"

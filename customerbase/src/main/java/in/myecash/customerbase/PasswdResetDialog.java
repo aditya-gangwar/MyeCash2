@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -60,7 +61,9 @@ public class PasswdResetDialog extends DialogFragment implements DialogInterface
                     }
                 })
                 .create();
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        if(AppConstants.IS_PROD_BUILD) {
+            alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        }
 
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override

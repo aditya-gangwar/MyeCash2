@@ -297,6 +297,7 @@ public class TxnListFragment extends Fragment {
             if(emailId!=null && emailId.length()>0) {
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {emailId}); // recipients
             }
+            //emailIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyeCash Merchant Statement");
             emailIntent.putExtra(Intent.EXTRA_TEXT, "Dear Sir - \n\nPlease find attached the requested MyeCash transaction statement.\n\nThanks.\n\nRegards,\nMyeCash Team.");
             emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(csvFile));
@@ -642,7 +643,7 @@ public class TxnListFragment extends Fragment {
             mCustId.setText(mTxn.getCust_private_id());
 
             if(mTxn.getTotal_billed() > 0) {
-                mBillAmount.setText(AppCommonUtil.getSignedAmtStr(mTxn.getTotal_billed(), true));
+                mBillAmount.setText(AppCommonUtil.getAmtStr(mTxn.getTotal_billed()));
             } else {
                 mBillAmount.setText("-");
             }
@@ -674,7 +675,7 @@ public class TxnListFragment extends Fragment {
             }
 
             if(mTxn.getCb_credit() > 0) {
-                String cbData = AppCommonUtil.getAmtStr(mTxn.getCb_credit())+" @ "+mTxn.getCb_percent()+"%";
+                String cbData = AppCommonUtil.getSignedAmtStr(mTxn.getCb_credit(), true)+" @ "+mTxn.getCb_percent()+"%";
                 mCashbackAward.setText(cbData);
             } else {
                 mCashbackAward.setText("-");

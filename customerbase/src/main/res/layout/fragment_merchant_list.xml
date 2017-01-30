@@ -26,7 +26,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="* Last Updated:"
+            android:text="* Updated:"
             android:textStyle="italic"
             android:paddingBottom="@dimen/edittext_padding_less"/>
         <EditText

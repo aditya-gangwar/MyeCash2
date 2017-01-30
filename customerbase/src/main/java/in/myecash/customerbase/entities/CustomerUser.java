@@ -132,8 +132,8 @@ public class CustomerUser {
     public static int login(String userId, String password) {
         LogMy.d(TAG, "In login");
         try {
-            BackendlessUser user = Backendless.UserService.login(userId, password, true);
-            //BackendlessUser user = Backendless.UserService.login(userId, password, false);
+            //BackendlessUser user = Backendless.UserService.login(userId, password, true);
+            BackendlessUser user = Backendless.UserService.login(userId, password, false);
             LogMy.d(TAG, "Customer Login Success: " + userId);
 
             int retStatus = loadOnLogin(user);

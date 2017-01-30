@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -65,7 +66,8 @@ public class LoginCustActivity extends AppCompatActivity implements
 
     private String          mPassword;
     private String          mLoginId;
-    boolean                 mProcessingResetPasswd;
+    private boolean         mProcessingResetPasswd;
+    //private boolean         mRememberMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,17 +131,21 @@ public class LoginCustActivity extends AppCompatActivity implements
 
     @Override
     public void onBgThreadCreated() {
-        if(checkPermissions()) {
+        /*
+         * Auto login was creating some session hang issue on backendless backend - so not using it for now
+         */
+        processManualLogin();
+
+        /*if(checkPermissions()) {
             // If permissions not available - proceed with normal login
             AppCommonUtil.showProgressDialog(this, AppConstants.progressLogin);
             mWorkFragment.tryAutoLogin();
         } else {
             processManualLogin();
-        }
+        }*/
     }
 
     private void processManualLogin() {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         // setting off fullscreen mode as 'screen pan on keyboard' doesn't work fine with fullscreen
         // http://stackoverflow.com/questions/7417123/android-how-to-adjust-layout-in-full-screen-mode-when-softkeyboard-is-visible
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
@@ -548,6 +554,9 @@ public class LoginCustActivity extends AppCompatActivity implements
                 .putString(AppConstants.PREF_LOGIN_ID, mLoginId)
                 .apply();
 
+        // Global settings should be available by now
+        AppCommonUtil.storeGSLocally(LoginCustActivity.this);
+
         delLocalFiles();
         startCbFrag();
     }
@@ -606,11 +615,25 @@ public class LoginCustActivity extends AppCompatActivity implements
     private EditText    mIdTextRes;
     private EditText    mPasswdTextRes;
     private Button      mLoginButton;
+    //private AppCompatCheckBox mRadioRemember;
 
     private void bindUiResources() {
         mIdTextRes = (EditText) findViewById(R.id.input_cust_mobile);
         mPasswdTextRes = (EditText) findViewById(R.id.input_password);
         mLoginButton = (Button) findViewById(R.id.btn_login);
+
+        /*mRadioRemember = (AppCompatCheckBox) findViewById(R.id.radio_remember);
+        mRadioRemember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //is chkIos checked?
+                if (((AppCompatCheckBox) v).isChecked()) {
+                    mRememberMe = true;
+                } else {
+                    mRememberMe = false;
+                }
+            }
+        });*/
     }
 
     @Override
@@ -632,7 +655,9 @@ public class LoginCustActivity extends AppCompatActivity implements
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        if(AppConstants.IS_PROD_BUILD) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        }
         AppCommonUtil.setUserType(DbConstants.USER_TYPE_CUSTOMER);
         mWorkFragment.setResumeOk(true);
     }

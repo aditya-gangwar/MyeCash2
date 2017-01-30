@@ -78,7 +78,6 @@ public class MobileChangePreference extends DialogPreference
     @Override
     protected void showDialog(Bundle bundle) {
         super.showDialog(bundle);
-        getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         getDialog().setCanceledOnTouchOutside(false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -132,6 +131,7 @@ public class MobileChangePreference extends DialogPreference
                 dialog.dismiss();
             }
         });
+        builder.setTitle(null);
     }
 
     @Override

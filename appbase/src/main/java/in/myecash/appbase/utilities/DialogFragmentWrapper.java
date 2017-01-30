@@ -231,8 +231,6 @@ public class DialogFragmentWrapper extends DialogFragment {
         }*/
 
         Dialog dialog =  builder.create();
-        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override

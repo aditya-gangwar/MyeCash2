@@ -23,8 +23,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="C U S T O M E R"
-                android:textColor="@color/secondary_text"
-                android:textStyle="bold"/>
+                android:textColor="@color/primary_dark"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/small_space"/>
 
             <Space
                 android:layout_width="wrap_content"
@@ -66,6 +67,17 @@
                 android:id="@+id/btn_login"
                 android:text="@string/login_button_label"
                 android:layout_marginTop="@dimen/XL_space"/>
+
+            <!--android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/radio_remember"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/medium_space"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/large_space"
+                android:text="Remember Me"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/text_size_small"/-->
 
             <TextView
                 android:id="@+id/link_forgot_passwd"

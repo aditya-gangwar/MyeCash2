@@ -1,6 +1,7 @@
 package in.myecash.merchantbase;
 
 import android.app.AlertDialog;
+import android.app.FragmentBreadCrumbs;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -11,7 +12,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.LogMy;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.ValidationHelper;
 
@@ -43,6 +46,13 @@ public class PasswordPreference extends DialogPreference
     }
 
     @Override
+    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+        LogMy.d(TAG, "In onPrepareDialogBuilder");
+        super.onPrepareDialogBuilder(builder);    //To change body of overridden methods use File | Settings | File Templates.
+        builder.setTitle(null);
+    }
+
+    @Override
     protected void onBindDialogView (View view) {
         inputCurrPasswd = (EditText) view.findViewById(R.id.input_current_passwd);
         inputNewPasswd = (EditText) view.findViewById(R.id.input_new_passwd);
@@ -52,8 +62,11 @@ public class PasswordPreference extends DialogPreference
 
     @Override
     protected void showDialog(Bundle bundle) {
+        LogMy.d(TAG, "In showDialog");
         super.showDialog(bundle);
-        getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        if(AppConstants.IS_PROD_BUILD) {
+            getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        }
         getDialog().setCanceledOnTouchOutside(false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 

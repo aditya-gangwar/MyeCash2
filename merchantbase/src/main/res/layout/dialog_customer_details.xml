@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/LL_Vertical"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="@dimen/medium_space">
 
     <EditText
         style="@style/Dialog_title"
@@ -12,7 +12,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/label_title">
 
         <LinearLayout
             style="@style/LL_Vertical_paddingSidesLarge"
@@ -288,7 +289,7 @@
                         style="@style/Edittext_only_view_small_lessPad"
                         android:layout_height="match_parent"
                         android:layout_width="0dp"
-                        android:text="Status"
+                        android:text="Card Status"
                         android:layout_weight="45"
                         android:gravity="left|center_vertical"
                         android:paddingTop="0dp"/>
@@ -363,7 +364,7 @@
                     android:singleLine="true"
                     android:ellipsize="end"/>
             </LinearLayout>
-            <LinearLayout
+            <!--LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_cb_bill">
 
@@ -390,7 +391,7 @@
                     android:layout_weight="55"
                     android:gravity="left|center_vertical"
                     android:paddingTop="0dp"/>
-            </LinearLayout>
+            </LinearLayout-->
 
             <EditText
                 style="@style/Edittext_only_view_small"
@@ -582,4 +583,4 @@
 
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</RelativeLayout>

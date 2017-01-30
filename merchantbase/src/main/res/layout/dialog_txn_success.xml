@@ -1,191 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="?android:attr/windowBackground">
-
-
-    <ImageView
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/logo_success_96dp"
-        android:background="@color/iron2"
-        android:paddingTop="@dimen/XL_space"/>
+        android:layout_height="wrap_content">
 
-
-    <EditText
-        style="@style/Edittext_only_view_medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Success"
-        android:background="@color/iron2"
-        android:paddingTop="@dimen/large_space"/>
-
-    <EditText
-        style="@style/Edittext_only_view_small_lessPad"
-        android:id="@+id/input_cust_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:gravity="center"
-        android:text="Customer: xxxxxxx535"
-        android:textStyle="bold"
-        android:background="@color/iron2"/>
-
-    <EditText
-        style="@style/Edittext_only_view_small_lessPad"
-        android:id="@+id/input_txn_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="false"
-        android:gravity="center"
-        android:text="TXN ID: ASD7865IO09"
-        android:textStyle="italic"
-        android:background="@color/iron2"/>
-
-    <View
-        style="@style/Divider_horizontal_Large" />
-
-    <LinearLayout
-        style="@style/LL_Vertical_paddingSidesXL">
-
-        <Space
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
-
-        <EditText
-            style="@style/Edittext_only_view_small"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="NEW Balance"
-            android:textStyle="normal"
-            android:textColor="@color/subheading"
-            android:paddingLeft="0dp"/>
+            android:orientation="vertical"
+            android:background="?android:attr/windowBackground">
 
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_medium_lessPad"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="Account"
-                android:layout_weight="60"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
+                android:src="@drawable/logo_success_96dp"
+                android:background="@color/iron2"
+                android:paddingTop="@dimen/XL_space"/>
+
+
             <EditText
-                style="@style/Edittext_only_view_medium_lessPad"
-                android:id="@+id/input_account_balance"
-                android:layout_width="0dp"
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="\u20B9 0"
-                android:layout_weight="40"
-                android:gravity="right"/>
+                android:gravity="center"
+                android:text="Success"
+                android:background="@color/iron2"
+                android:paddingTop="@dimen/large_space"/>
+
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_cust_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:gravity="center"
+                android:text="Customer: xxxxxxx535"
+                android:textStyle="bold"
+                android:background="@color/iron2"/>
+
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_txn_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:gravity="center"
+                android:text="TXN ID: ASD7865IO09"
+                android:textStyle="italic"
+                android:background="@color/bg_light_grey"/>
+
+            <View
+                style="@style/Divider_horizontal_Large" />
+
+            <LinearLayout
+                style="@style/LL_Vertical_paddingSidesXL">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/XL_space"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="NEW Balance"
+                    android:textStyle="normal"
+                    android:textColor="@color/subheading"
+                    android:paddingLeft="0dp"/>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                        android:tint="@color/primary"/>
+                    <EditText
+                        style="@style/Edittext_only_view_medium_lessPad"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="Account"
+                        android:layout_weight="60"
+                        android:gravity="left|bottom"
+                        android:layout_gravity="bottom"/>
+                    <EditText
+                        style="@style/Edittext_only_view_medium_lessPad"
+                        android:id="@+id/input_account_balance"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="\u20B9 0"
+                        android:layout_weight="40"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_favorite_white_18dp"
+                        android:tint="@color/primary"/>
+                    <EditText
+                        style="@style/Edittext_only_view_medium_lessPad"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="Cashback"
+                        android:layout_weight="60"
+                        android:gravity="left|bottom"
+                        android:layout_gravity="bottom"/>
+                    <EditText
+                        style="@style/Edittext_only_view_medium_lessPad"
+                        android:id="@+id/input_cb_balance"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="\u20B9 0"
+                        android:layout_weight="40"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/large_space" />
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="OLD Balance"
+                    android:textStyle="normal"
+                    android:textColor="@color/subheading"
+                    android:paddingLeft="0dp"/>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                        android:tint="@color/primary"/>
+                    <EditText
+                        style="@style/Edittext_only_view_medium_lessPad"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="Account"
+                        android:layout_weight="60"
+                        android:gravity="left|bottom"
+                        android:layout_gravity="bottom"/>
+                    <EditText
+                        style="@style/Edittext_only_view_medium_lessPad"
+                        android:id="@+id/input_account_balance_old"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="\u20B9 0"
+                        android:layout_weight="40"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_favorite_white_18dp"
+                        android:tint="@color/primary"/>
+                    <EditText
+                        style="@style/Edittext_only_view_medium_lessPad"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="Cashback"
+                        android:layout_weight="60"
+                        android:gravity="left|bottom"
+                        android:layout_gravity="bottom"/>
+                    <EditText
+                        style="@style/Edittext_only_view_medium_lessPad"
+                        android:id="@+id/input_cb_balance_old"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="\u20B9 0"
+                        android:layout_weight="40"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_favorite_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_medium_lessPad"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="Cashback"
-                android:layout_weight="60"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
-            <EditText
-                style="@style/Edittext_only_view_medium_lessPad"
-                android:id="@+id/input_cb_balance"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="\u20B9 0"
-                android:layout_weight="40"
-                android:gravity="right"/>
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space" />
-
-        <EditText
-            style="@style/Edittext_only_view_small"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="OLD Balance"
-            android:textStyle="normal"
-            android:textColor="@color/subheading"
-            android:paddingLeft="0dp"/>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_medium_lessPad"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="Account"
-                android:layout_weight="60"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
-            <EditText
-                style="@style/Edittext_only_view_medium_lessPad"
-                android:id="@+id/input_account_balance_old"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="\u20B9 0"
-                android:layout_weight="40"
-                android:gravity="right"/>
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_favorite_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_medium_lessPad"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="Cashback"
-                android:layout_weight="60"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
-            <EditText
-                style="@style/Edittext_only_view_medium_lessPad"
-                android:id="@+id/input_cb_balance_old"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="\u20B9 0"
-                android:layout_weight="40"
-                android:gravity="right"/>
-        </LinearLayout>
-
-    </LinearLayout>
-</LinearLayout>
-</ScrollView>
+    </ScrollView>
+</RelativeLayout>

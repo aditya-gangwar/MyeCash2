@@ -103,7 +103,6 @@ public class SortTxnDialog extends DialogFragment implements DialogInterface.OnC
                     }
                 })
                 .create();
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override

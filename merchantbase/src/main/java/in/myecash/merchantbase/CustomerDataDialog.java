@@ -58,7 +58,6 @@ public class CustomerDataDialog extends DialogFragment implements DialogInterfac
                     }
                 })
                 .create();
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override

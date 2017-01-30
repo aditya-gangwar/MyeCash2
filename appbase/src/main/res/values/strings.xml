@@ -24,6 +24,7 @@
     <string name="ops_no_data_info">No Operations done in last %s days.</string>
 
 
+    <string name="serviceNaDefaultUrl">http://www.whysotechnologies.com/backsoon</string>
 
 
     <string name="empty_in_angle_brackets">\u003Cempty\u003E</string>

@@ -50,7 +50,13 @@ public class SplashActivity extends AppCompatActivity
         // Map all tables to class here - except 'cashback' and 'transaction'
         AppCommonUtil.initTableToClassMappings();
 
-        startLoginActivity();
+        String naErrorStr = AppCommonUtil.isDownAsPerLocalData(SplashActivity.this);
+        if(naErrorStr!=null) {
+            DialogFragmentWrapper.createNotification(AppConstants.serviceNATitle, naErrorStr, false, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        } else {
+            startLoginActivity();
+        }
 
         /*if(savedInstanceState==null) {
             int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(SplashActivity.this);

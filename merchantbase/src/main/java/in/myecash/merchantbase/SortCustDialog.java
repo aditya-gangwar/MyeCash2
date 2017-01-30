@@ -107,7 +107,6 @@ public class SortCustDialog extends DialogFragment implements DialogInterface.On
                     }
                 })
                 .create();
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override

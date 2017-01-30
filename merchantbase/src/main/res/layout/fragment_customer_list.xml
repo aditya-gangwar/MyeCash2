@@ -7,14 +7,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/list_header"
-        android:background="@color/bg_light_grey">
+        android:background="@color/bg_listWithCard_header">
 
         <EditText
             style="@style/Edittext_only_view_small_lessPad"
             android:layout_width="wrap_content"
             android:id="@+id/list_header_id"
             android:layout_height="wrap_content"
-            android:text="Customer ID"/>
+            android:text="Customer ID"
+            android:textColor="@color/white"
+            android:paddingBottom="0dp"/>
 
         <EditText
             style="@style/Edittext_only_view_small_lessPad"
@@ -23,7 +25,9 @@
             android:layout_below="@id/list_header_id"
             android:layout_height="wrap_content"
             android:text="Account:  Add - Debit = Balance"
-            android:paddingTop="0dp"/>
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:textColor="@color/white"/>
 
         <EditText
             style="@style/Edittext_only_view_small_lessPad"
@@ -32,7 +36,8 @@
             android:layout_below="@id/list_header_acc"
             android:layout_height="wrap_content"
             android:text="Cashback:  Add - Debit = Balance"
-            android:paddingTop="0dp"/>
+            android:paddingTop="0dp"
+            android:textColor="@color/white"/>
 
         <EditText
             style="@style/Edittext_only_view_small_lessPad"
@@ -41,7 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="▼Last Txn Time"
-            android:textStyle="bold"/>
+            android:paddingBottom="0dp"
+            android:textColor="@color/white"/>
 
         <EditText
             style="@style/Edittext_only_view_small_lessPad"
@@ -51,7 +57,9 @@
             android:layout_below="@id/list_header_txnTime"
             android:layout_alignParentRight="true"
             android:text="Total Bill"
-            android:paddingTop="0dp"/>
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:textColor="@color/white"/>
 
         <View
             style="@style/Divider_horizontal_Large"
@@ -64,13 +72,15 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cust_recycler_view">
+        android:background="@color/bg_light_grey"
+        android:id="@+id/cust_recycler_view"
+        android:layout_weight="1">
     </android.support.v7.widget.RecyclerView>
 
-    <Space
+    <!--Space
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="100"/>
+        android:layout_weight="100"/-->
 
     <LinearLayout
         style="@style/LL_Horizontal_wrap"
@@ -92,12 +102,12 @@
             android:textColor="@color/accent2"
             android:paddingLeft="0dp"/>
     </LinearLayout>
+
     <EditText
         style="@style/Edittext_only_view_small_lessPad"
         android:id="@+id/updated_time_details"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_marginBottom="@dimen/medium_space"
         android:paddingTop="0dp"
         android:text="Data is updated only once every 4 hours."
         android:textStyle="italic"/>
