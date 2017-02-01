@@ -1,6 +1,8 @@
 package in.myecash.merchantbase;
 
 import android.app.Fragment;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
@@ -185,6 +187,11 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.mobile_frag_menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_calc);
+        if (menuItem != null) {
+            AppCommonUtil.tintMenuIcon(getActivity(), menuItem, R.color.hint);
+        }
     }
 
     @Override

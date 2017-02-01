@@ -30,16 +30,19 @@ public class NumberInputDialog extends DialogFragment implements View.OnClickLis
     private static final String ARG_LABEL = "label";
     private static final String ARG_IS_AMOUNT = "isAmount";
     private static final String ARG_CUR_VALUE = "curValue";
+    private static final String ARG_MIN_VALUE = "minValue";
     private static final String ARG_MAX_VALUE = "maxValue";
 
+    private int minValue;
     private int maxValue;
 
-    public static NumberInputDialog newInstance(String label, String curValue, Boolean isAmount, int maxValue) {
+    public static NumberInputDialog newInstance(String label, String curValue, Boolean isAmount, int minValue, int maxValue) {
         LogMy.d(TAG, "Creating new input number dialog");
         Bundle args = new Bundle();
         args.putString(ARG_LABEL, label);
         args.putBoolean(ARG_IS_AMOUNT, isAmount);
         args.putString(ARG_CUR_VALUE, curValue);
+        args.putInt(ARG_MIN_VALUE, minValue);
         args.putInt(ARG_MAX_VALUE, maxValue);
 
         NumberInputDialog fragment = new NumberInputDialog();
@@ -59,6 +62,7 @@ public class NumberInputDialog extends DialogFragment implements View.OnClickLis
         String label = getArguments().getString(ARG_LABEL);
         Boolean isAmount = getArguments().getBoolean(ARG_IS_AMOUNT);
         String curValue = getArguments().getString(ARG_CUR_VALUE);
+        minValue = getArguments().getInt(ARG_MIN_VALUE);
         maxValue = getArguments().getInt(ARG_MAX_VALUE);
 
         mLabelInputNum.setText(label);
@@ -124,10 +128,14 @@ public class NumberInputDialog extends DialogFragment implements View.OnClickLis
                     LogMy.d(TAG, "Clicked Ok");
                     String curStr = mInputNum.getText().toString();
                     if (curStr.isEmpty()) {
-                        sendResult(Activity.RESULT_OK, mInputOldValue.getText().toString());
+                        //sendResult(Activity.RESULT_OK, mInputOldValue.getText().toString());
+                        sendResult(Activity.RESULT_OK, "0");
                     } else {
                         int curValue = Integer.parseInt(curStr);
-                        if(maxValue > 0 && curValue > maxValue) {
+                        if(curValue > 0 && curValue < minValue) {
+                            wantToCloseDialog = false;
+                            mInputNum.setError("Cannot be less than: "+ AppCommonUtil.getAmtStr(minValue));
+                        } else if(maxValue > 0 && curValue > maxValue) {
                             wantToCloseDialog = false;
                             mInputNum.setError("Cannot be more than: "+ AppCommonUtil.getAmtStr(maxValue));
                         } else {
@@ -165,19 +173,6 @@ public class NumberInputDialog extends DialogFragment implements View.OnClickLis
             if (!(v.getId() == R.id.input_kb_0 && curStr.isEmpty())) {
                 mInputNum.append(key.getText());
             }
-
-
-            /*
-            case R.id.rs_input_number:
-            case R.id.input_number:
-                LogMy.d(TAG,"Clicked input number");
-                if(curStr.isEmpty()) {
-                    sendResult(Activity.RESULT_OK, mInputNum.getHint().toString());
-                } else {
-                    sendResult(Activity.RESULT_OK, curStr);
-                }
-                getDialog().dismiss();
-                break;*/
         }
     }
 

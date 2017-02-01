@@ -25,9 +25,11 @@ import android.provider.Settings;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -482,6 +484,14 @@ public class AppCommonUtil {
         int color = ContextCompat.getColor(context, colorResId);
         drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         return drawable;
+    }
+
+    public static void tintMenuIcon(Context context, MenuItem item, @ColorRes int colorResId) {
+        Drawable normalDrawable = item.getIcon();
+        Drawable wrapDrawable = DrawableCompat.wrap(normalDrawable);
+        DrawableCompat.setTint(wrapDrawable, ContextCompat.getColor(context, colorResId));
+
+        item.setIcon(wrapDrawable);
     }
 
     /*

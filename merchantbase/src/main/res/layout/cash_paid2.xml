@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical"
+    android:layout_height="wrap_content"
+    android:id="@+id/layout_cash_paid"
+    android:layout_marginLeft="@dimen/small_space"
+    android:layout_marginRight="@dimen/small_space"
+    android:visibility="visible">
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap">
+
+        <View
+            style="@style/Divider_horizontal_Medium"
+            android:layout_weight="50"
+            android:background="@color/primary"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cash_logo_18dp"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_gravity="center"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="wrap_content"
+            android:id="@+id/label_cash_back"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:text="CASH PAID"
+            android:textStyle="bold"
+            android:padding="@dimen/edittext_padding_less"
+            android:textColor="@color/secondary_text"
+            android:layout_marginRight="@dimen/small_space"/>
+
+        <!--EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:text="CASH PAID"
+            android:textStyle="bold"
+            android:padding="@dimen/edittext_padding_less"
+            android:drawableLeft="@drawable/cash_logo_18dp"
+            android:drawablePadding="@dimen/medium_space"
+            android:textColor="@color/secondary_text"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_marginRight="@dimen/small_space"/-->
+
+        <View
+            style="@style/Divider_horizontal_Medium"
+            android:layout_weight="50"
+            android:background="@color/primary"/>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_space"/>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:id="@+id/layout_choice_row1"
+        android:layout_marginLeft="@dimen/small_space"
+        android:layout_marginRight="@dimen/small_space">
+
+        <EditText
+            style="@style/Edittext_only_view_medium"
+            android:layout_width="0dp"
+            android:layout_weight="29"
+            android:id="@+id/choice_cash_pay_1"
+            android:hint="\u20B9 0"
+            android:textColor="@color/secondary_text" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6.5"/>
+
+        <EditText
+            style="@style/Edittext_only_view_medium"
+            android:layout_width="0dp"
+            android:layout_weight="29"
+            android:id="@+id/choice_cash_pay_2"
+            android:hint="\u20B9 0"
+            android:textColor="@color/secondary_text"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6.5"/>
+
+        <!-- paddingRight of 24 dp to bring it in line with custom amount box below
+        24 dp = 18dp (pencil drwawble size) + 6 dp (normal edittext padding) -->
+        <EditText
+            style="@style/Edittext_only_view_medium"
+            android:layout_width="0dp"
+            android:layout_weight="29"
+            android:id="@+id/choice_cash_pay_3"
+            android:hint="\u20B9 0"
+            android:textColor="@color/secondary_text"
+            android:paddingRight="@dimen/cash_paid_3_padding"/>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_space"/>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:layout_marginRight="@dimen/small_space"
+        android:layout_marginLeft="@dimen/small_space">
+
+        <EditText
+            style="@style/Edittext_only_view_medium"
+            android:layout_width="0dp"
+            android:layout_weight="29"
+            android:id="@+id/choice_cash_pay_4"
+            android:hint="\u20B9 0"
+            android:textColor="@color/secondary_text" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7.5"/>
+
+        <EditText
+            style="@style/Edittext_only_view_medium"
+            android:layout_width="0dp"
+            android:layout_weight="29"
+            android:id="@+id/choice_cash_pay_5"
+            android:hint="\u20B9 0"
+            android:textColor="@color/secondary_text" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7.5"/>
+
+        <EditText
+            style="@style/Edittext_only_view_medium"
+            android:layout_width="0dp"
+            android:layout_weight="29"
+            android:id="@+id/choice_cash_pay_custom"
+            android:hint="@string/cash_paid_other_label"
+            android:textColor="@color/secondary_text"
+            android:drawableRight="@drawable/ic_edit_18dp_999"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -32,14 +32,13 @@
     <dimen name="edittext_padding">6dp</dimen>
     <dimen name="edittext_padding_more">10dp</dimen>
 
+    <!-- paddingRight of 24 dp to bring 'choice_cash_pay_3' box in line with 'choice_cash_pay_custom' box
+    24 dp = 18dp (pencil drwawble size) + 6 dp (normal edittext padding) -->
+    <dimen name="cash_paid_3_padding">24dp</dimen>
+
     <!-- 10 + 12 = total 22dp side padding -->
     <dimen name="screen_side_padding">10dp</dimen>
     <dimen name="screen_side_padding_more">14dp</dimen>
-
-    <!--dimen name="button_padding_XXL">16dp</dimen>
-    <dimen name="button_padding_XL">12dp</dimen>
-    <dimen name="button_padding_large">8dp</dimen>
-    <dimen name="button_padding_med">4dp</dimen-->
 
     <dimen name="keyboard_button_height_dialog_less">72dp</dimen>
     <dimen name="keyboard_button_width_dialog_less">84dp</dimen>

@@ -47,13 +47,13 @@ public class AppConstants {
 
 
     public static final String generalFailureTitle = "Error";
-    public static final String regFailureTitle = "Error: Registration Failed";
-    public static final String noInternetTitle = "Error: No Internet Connection";
-    public static final String loginFailureTitle = "Error: Login Failed";
-    public static final String noPermissionTitle = "Error: No Permissions";
-    public static final String noDataFailureTitle = "Error: No Data";
-    public static final String serviceNATitle = "Error: Service Not Available";
-    public static final String notLoggedInTitle = "Error: Not Logged In";
+    public static final String regFailureTitle = "Error";
+    public static final String noInternetTitle = "Error";
+    public static final String loginFailureTitle = "Error";
+    public static final String noPermissionTitle = "Error";
+    public static final String noDataFailureTitle = "Error";
+    public static final String serviceNATitle = "Error";
+    public static final String notLoggedInTitle = "Error";
 
     // Txn summary constants
     public static int INDEX_TXN_COUNT = 0;

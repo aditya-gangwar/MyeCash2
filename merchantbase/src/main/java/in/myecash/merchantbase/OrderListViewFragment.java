@@ -120,7 +120,7 @@ public class OrderListViewFragment extends ListFragment implements
         FragmentManager manager = getFragmentManager();
         // cash to be paid
         NumberInputDialog dialog = NumberInputDialog.newInstance("Unit Price:",
-                mRetainedFragment.mOrderItems.get(position).getUnitPriceStr(), true, 0);
+                mRetainedFragment.mOrderItems.get(position).getUnitPriceStr(), true, 0, 0);
         dialog.setTargetFragment(this, REQ_NEW_UNIT_PRICE);
         dialog.show(manager, DIALOG_NUM_INPUT);
     }
@@ -133,7 +133,7 @@ public class OrderListViewFragment extends ListFragment implements
         FragmentManager manager = getFragmentManager();
         // cash to be paid
         NumberInputDialog dialog = NumberInputDialog.newInstance("Quantity:",
-                mRetainedFragment.mOrderItems.get(position).getQuantityStr(), false, 0);
+                mRetainedFragment.mOrderItems.get(position).getQuantityStr(), false, 0, 0);
         dialog.setTargetFragment(this, REQ_NEW_QTY);
         dialog.show(manager, DIALOG_NUM_INPUT);
     }

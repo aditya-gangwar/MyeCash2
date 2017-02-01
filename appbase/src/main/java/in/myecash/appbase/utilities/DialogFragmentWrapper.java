@@ -245,11 +245,14 @@ public class DialogFragmentWrapper extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         LogMy.d(TAG,"In onCancel");
-        final boolean frag_call = getArguments().getBoolean(ARG_FRAG_CALL);
-        if (frag_call && getTargetFragment()!=null) {
-            getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
-        } else if (mListener != null) {
-            mListener.onDialogResult(getTag(), Activity.RESULT_OK, null);
+        String type = getArguments().getString(ARG_TYPE);
+        if(type.equals(DIALOG_NOTIFICATION)) {
+            final boolean frag_call = getArguments().getBoolean(ARG_FRAG_CALL);
+            if (frag_call && getTargetFragment() != null) {
+                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
+            } else if (mListener != null) {
+                mListener.onDialogResult(getTag(), Activity.RESULT_OK, null);
+            }
         }
         super.onCancel(dialog);
     }

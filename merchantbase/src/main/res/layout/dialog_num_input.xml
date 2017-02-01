@@ -13,7 +13,7 @@
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
-            android:background="@color/iron2"
+            android:background="@color/bg_light_grey"
             android:paddingTop="@dimen/XL_space"
             android:paddingBottom="@dimen/XL_space">
 
@@ -40,9 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|left"
-                android:id="@+id/input_old_value"
-                android:text="123"
-                android:maxLength="@string/cash_char_limit">
+                android:id="@+id/input_old_value">
             </EditText>
 
             <EditText
@@ -53,7 +51,9 @@
                 android:id="@+id/input_number"
                 android:gravity="left"
                 android:hint="New Value"
-                android:maxLength="@string/cash_char_limit">
+                android:maxLength="@string/cash_char_limit"
+                android:textColor="@color/green_positive"
+                android:textStyle="bold">
             </EditText>
         </LinearLayout>
 
