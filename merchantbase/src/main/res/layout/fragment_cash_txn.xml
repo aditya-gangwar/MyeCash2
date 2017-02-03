@@ -83,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/space_cash_account"
-                android:layout_weight="20"/>
+                android:layout_weight="22.5"/>
 
             <LinearLayout
                 style="@style/LL_Vertical"
@@ -99,7 +99,7 @@
                     <View
                         style="@style/Divider_horizontal_Medium"
                         android:layout_width="0dp"
-                        android:layout_weight="50"
+                        android:layout_weight="100"
                         android:background="@color/primary"/>
 
                     <ImageView
@@ -107,8 +107,9 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_account_balance_wallet_white_18dp"
                         android:layout_marginLeft="@dimen/small_space"
+                        android:layout_marginRight="@dimen/small_space"
                         android:tint="@color/primary"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="right|center_vertical"/>
 
                     <EditText
                         style="@style/Edittext_only_view_small"
@@ -119,30 +120,29 @@
                         android:text="ACCOUNT"
                         android:textStyle="bold"
                         android:padding="@dimen/edittext_padding_less"
-                        android:textColor="@color/secondary_text"
-                        android:layout_marginRight="@dimen/small_space"/>
+                        android:textColor="@color/secondary_text" />
 
-                    <View
+                    <!--View
                         style="@style/Divider_horizontal_Medium"
                         android:layout_width="0dp"
                         android:layout_weight="40"
                         android:background="@color/primary"
                         android:layout_marginRight="0dp"
-                        android:paddingRight="0dp"/>
+                        android:paddingRight="0dp"
+                        android:visibility="gone"/-->
 
                     <android.support.v7.widget.AppCompatImageButton
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:id="@+id/btn_expand_acc"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="10"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_expand_more_white_18dp"
                         android:minHeight="0dp"
                         android:minWidth="0dp"
                         android:layout_marginLeft="0dp"
                         android:paddingRight="@dimen/XS_space"
-                        android:paddingLeft="@dimen/medium_space"
+                        android:paddingLeft="@dimen/small_space"
                         android:tint="@color/primary"/>
 
                 </LinearLayout>
@@ -227,9 +227,11 @@
 
                     <View
                         style="@style/Divider_horizontal_Medium"
+                        android:id="@+id/cb_divider_1"
                         android:layout_width="0dp"
-                        android:layout_weight="50"
-                        android:background="@color/primary"/>
+                        android:layout_weight="100"
+                        android:background="@color/primary"
+                        android:visibility="visible"/>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -249,27 +251,28 @@
                         android:textStyle="bold"
                         android:padding="@dimen/edittext_padding_less"
                         android:textColor="@color/secondary_text"
-                        android:layout_marginRight="@dimen/small_space"/>
+                        android:visibility="visible"/>
 
-                    <View
+                    <!--View
                         style="@style/Divider_horizontal_Medium"
+                        android:id="@+id/cb_divider_2"
                         android:layout_width="0dp"
-                        android:layout_weight="40"
-                        android:background="@color/primary"/>
+                        android:layout_weight="45"
+                        android:background="@color/primary"
+                        android:visibility="gone"/-->
 
                     <android.support.v7.widget.AppCompatImageButton
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:id="@+id/btn_expand_cb"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="10"
-                        android:layout_gravity="center"
+                        android:layout_gravity="right"
                         android:src="@drawable/ic_expand_more_white_18dp"
                         android:minHeight="0dp"
                         android:minWidth="0dp"
                         android:layout_marginLeft="0dp"
                         android:paddingRight="@dimen/XS_space"
-                        android:paddingLeft="@dimen/medium_space"
+                        android:paddingLeft="@dimen/small_space"
                         android:tint="@color/primary"/>
 
                 </LinearLayout>
@@ -355,7 +358,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/space_above_button"
-                android:layout_weight="20"/>
+                android:layout_weight="17.5"/>
 
         </LinearLayout>
     </ScrollView>

@@ -98,4 +98,11 @@ public class CardDetailsFragment extends Fragment {
         mCustId = (EditText) v.findViewById(R.id.input_cust_id);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mCallback.getRetainedFragment().setResumeOk(true);
+    }
+
+
 }

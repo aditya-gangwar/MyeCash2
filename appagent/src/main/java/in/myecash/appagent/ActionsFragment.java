@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.myecash.appagent.entities.AgentUser;
+import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.appbase.utilities.LogMy;
@@ -86,6 +87,7 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
     // Container Activity must implement this interface
     public interface ActionsFragmentIf {
         void onActionBtnClick(String action);
+        MyRetainedFragment getRetainedFragment();
     }
 
     @Override
@@ -287,4 +289,12 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
         mLayoutCardBtns2 = v.findViewById(R.id.layout_cards_btns_2);
         mLayoutOthers = v.findViewById(R.id.layout_others_btns);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mCallback.getRetainedFragment().setResumeOk(true);
+    }
+
+
 }

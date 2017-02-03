@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.MyGlobalSettings;
@@ -174,7 +176,7 @@ public class CashTransactionFragment extends Fragment implements
             }
 
             // Init view - only to be done after states are set above
-            initAmtUiVisibility();
+            initAmtUiVisibility(false);
             // both of below to be done twice - 1) at init here 2) if bill amount is changed
             displayInputBillAmt();
             calcAndSetAddCb();
@@ -453,7 +455,7 @@ public class CashTransactionFragment extends Fragment implements
             } else {
                 setDebitCashload(Math.min(mClBalance, (effectiveToPay - mCashPaid)));
             }
-        } else if (mDebitClStatus ==STATUS_CLEARED) {
+        } else if (mDebitClStatus ==STATUS_CLEARED || mDebitClStatus ==STATUS_NO_BILL_AMT) {
             setDebitCashload(0);
         }
         LogMy.d(TAG,"mDebitCashload: "+ mDebitCashload +", "+effectiveToPay);
@@ -470,7 +472,7 @@ public class CashTransactionFragment extends Fragment implements
             } else {
                 setRedeemCashback(Math.min(mCbBalance, (effectiveToPay - mCashPaid)));
             }
-        } else if (mDebitCbStatus ==STATUS_CLEARED) {
+        } else if (mDebitCbStatus ==STATUS_CLEARED || mDebitClStatus ==STATUS_NO_BILL_AMT) {
             setRedeemCashback(0);
         }
         LogMy.d(TAG,"mDebitCashback: "+ mDebitCashback +", "+effectiveToPay);
@@ -527,17 +529,20 @@ public class CashTransactionFragment extends Fragment implements
 
     private boolean billAmtEditAllowed() {
         // To avoid inconsistancy, editing allowed only if:
+        // 0) No item added
         // 1) single item in order
         // 2) that item has single quantity
         // basically, only when merchant have probably entered final order cost only
-        if(mRetainedFragment.mOrderItems != null &&
-                mRetainedFragment.mOrderItems.size() == 1 &&
-                mRetainedFragment.mOrderItems.get(0).getQuantity() == 1) {
+        if(mRetainedFragment.mOrderItems == null ||
+                mRetainedFragment.mOrderItems.size() == 0) {
             return true;
         } else {
-            //AppCommonUtil.toast(getActivity(), "Use billing screen to edit");
-            mCallback.onViewOrderList();
-            return false;
+            if(mRetainedFragment.mOrderItems.size() == 1 &&
+                    mRetainedFragment.mOrderItems.get(0).getQuantity() == 1) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -564,19 +569,28 @@ public class CashTransactionFragment extends Fragment implements
                     String newBillAmt = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
                     mRetainedFragment.mBillTotal = Integer.parseInt(newBillAmt);
                     displayInputBillAmt();
-                    // update order item amount
-                    OrderItem item = mRetainedFragment.mOrderItems.get(0);
-                    item.setUnitPriceStr(newBillAmt);
+                    if(mRetainedFragment.mOrderItems==null ||
+                            mRetainedFragment.mOrderItems.size()==0) {
+                        if(mRetainedFragment.mOrderItems==null) {
+                            mRetainedFragment.mOrderItems = new ArrayList<>();
+                        }
+                        mRetainedFragment.mOrderItems.add(new OrderItem(1, mRetainedFragment.mBillTotal, false));
 
-                    if (item.isCashbackExcluded()) {
-                        mRetainedFragment.mCbExcludedTotal = Integer.parseInt(newBillAmt);
+                    } else {
+                        // update order item amount
+                        OrderItem item = mRetainedFragment.mOrderItems.get(0);
+                        item.setUnitPriceStr(newBillAmt);
+
+                        if (item.isCashbackExcluded()) {
+                            mRetainedFragment.mCbExcludedTotal = Integer.parseInt(newBillAmt);
+                        }
                     }
 
                     // except 'Add Cl', status of all others is impacted by 'Bill Amount'
                     // i.e. when Bill amount was 0 earlier, but not now
                     // or it was not 0 earlier, but it is now
                     initAmtUiStates();
-                    initAmtUiVisibility();
+                    initAmtUiVisibility(false);
 
                     // re-calculate all amounts
                     calcAndSetAmts(false);
@@ -717,8 +731,10 @@ public class CashTransactionFragment extends Fragment implements
                 if (i == R.id.input_trans_bill_amt) {
                     // open 'bill amount' for editing
                     if (billAmtEditAllowed()) {
-                        String amount = mInputBillAmt.getText().toString().replace(AppConstants.SYMBOL_RS,"");
+                        String amount = mInputBillAmt.getText().toString().replace(AppConstants.SYMBOL_RS,"").replace("+","").replace(" ","");
                         startNumInputDialog(REQ_NEW_BILL_AMT, "Bill Amount:", amount, 0, 0);
+                    } else {
+                        mCallback.onViewOrderList();
                     }
 
                 }
@@ -806,6 +822,7 @@ public class CashTransactionFragment extends Fragment implements
                         case STATUS_BALANCE_BELOW_LIMIT:
                             AppCommonUtil.toast(getActivity(), "Cashback balance below " +
                                     AppCommonUtil.getAmtStr(MyGlobalSettings.getCbRedeemLimit()));
+                            break;
                         case STATUS_NO_BILL_AMT:
                             AppCommonUtil.toast(getActivity(), "Billing Amount is 0");
                             break;
@@ -894,9 +911,11 @@ public class CashTransactionFragment extends Fragment implements
                 }
 
             } else if(i == R.id.btn_expand_acc) {
-
+                initAccUiVisibility(true);
             } else if(i == R.id.btn_expand_cb) {
-
+                initCbUiVisibility(true);
+            } else if(i == R.id.btn_expand_cash) {
+                initCashUiVisibility();
             }
         } catch (Exception e) {
             LogMy.e(TAG, "Exception in CashTxnFragment:onClick", e);
@@ -1040,7 +1059,8 @@ public class CashTransactionFragment extends Fragment implements
                 //mLabelAddCb.setEnabled(false);
                 mLabelAddCb.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 mInputAddCb.setEnabled(false);
-                mSubHeadAddCb.setEnabled(false);
+                //mSubHeadAddCb.setEnabled(false);
+                mSubHeadAddCb.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 break;
             case STATUS_AUTO:
                 mCheckboxAddCb.setChecked(true);
@@ -1076,6 +1096,7 @@ public class CashTransactionFragment extends Fragment implements
         mInputToPayCash.setOnClickListener(this);
         mAccExpand.setOnClickListener(this);
         mCbExpand.setOnClickListener(this);
+        mCashExpand.setOnClickListener(this);
     }
 
     private void initAmtUiStates() {
@@ -1084,7 +1105,11 @@ public class CashTransactionFragment extends Fragment implements
         // Init 'add cash' status
         if(mMerchantUser.getMerchant().getCl_add_enable()) {
             // by default, dont try add cash
-            setAddClStatus(STATUS_CLEARED);
+            if(mRetainedFragment.mBillTotal==0) {
+                setAddClStatus(STATUS_AUTO);
+            } else {
+                setAddClStatus(STATUS_CLEARED);
+            }
         } else {
             setAddClStatus(STATUS_DISABLED);
         }
@@ -1128,44 +1153,14 @@ public class CashTransactionFragment extends Fragment implements
         }
     }
 
-    private void initAmtUiVisibility() {
+    private void initAmtUiVisibility(boolean expandClickCase) {
         LogMy.d(TAG, "In initAmtUiVisibility");
 
         // Cash Account section
-        if(mAddClStatus==STATUS_DISABLED) {
-           mLayoutAddCl.setVisibility(View.GONE);
-        } else {
-            mLayoutAddCl.setVisibility(View.VISIBLE);
-        }
-        if(mDebitClStatus==STATUS_NO_BALANCE || mDebitClStatus==STATUS_QR_CARD_NOT_USED) {
-            mLayoutDebitCl.setVisibility(View.GONE);
-        } else {
-            mLayoutDebitCl.setVisibility(View.VISIBLE);
-        }
-        if(mLayoutAddCl.getVisibility()==View.GONE &&
-                mLayoutDebitCl.getVisibility()==View.GONE) {
-            mLayoutCashAccount.setAlpha(0.4f);
-        } else {
-            mLayoutCashAccount.setAlpha(1.0f);
-        }
+        initAccUiVisibility(expandClickCase);
 
         // Cashback section
-        if(mAddCbStatus==STATUS_NO_BILL_AMT) {
-            mLayoutAddCb.setVisibility(View.GONE);
-        } else {
-            mLayoutAddCb.setVisibility(View.VISIBLE);
-        }
-        if(mDebitCbStatus!=STATUS_AUTO && mDebitCbStatus!=STATUS_CLEARED && mDebitCbStatus!=STATUS_AUTO_CLEARED) {
-            mLayoutDebitCb.setVisibility(View.GONE);
-        } else {
-            mLayoutDebitCb.setVisibility(View.VISIBLE);
-        }
-        if(mLayoutAddCb.getVisibility()==View.GONE &&
-                mLayoutDebitCb.getVisibility()==View.GONE) {
-            mLayoutCashBack.setAlpha(0.4f);
-        } else {
-            mLayoutCashBack.setAlpha(1.0f);
-        }
+        initCbUiVisibility(expandClickCase);
 
         // Cash Paid section
         if(mCashPaidHelper==null) {
@@ -1175,6 +1170,137 @@ public class CashTransactionFragment extends Fragment implements
         }
         // initView for 'backstack' scenarios also - as it contain pointers to onscreen views
         mCashPaidHelper.initView(getView());
+    }
+
+    private void initAccUiVisibility(boolean expandClickCase) {
+        // Add account row
+        if(mAddClStatus==STATUS_DISABLED) {
+            // this can be hidden
+            hideIfReq(mLayoutAddCl, expandClickCase);
+        } else {
+            // expand icon click have no meaning, if this cant be hidden
+            mLayoutAddCl.setVisibility(View.VISIBLE);
+        }
+        // Debit account row
+        if(mDebitCbStatus!=STATUS_AUTO && mDebitCbStatus!=STATUS_CLEARED && mDebitCbStatus!=STATUS_AUTO_CLEARED) {
+            // this can be hidden
+            hideIfReq(mLayoutDebitCl, expandClickCase);
+        } else {
+            mLayoutDebitCl.setVisibility(View.VISIBLE);
+        }
+        // Change expand icon and layour visibility - based on final status
+        if(mLayoutAddCl.getVisibility()==View.GONE &&
+                mLayoutDebitCl.getVisibility()==View.GONE) {
+            //mLayoutCashAccount.setAlpha(0.4f);
+            mAccExpand.setEnabled(true);
+            mAccExpand.setAlpha(1.0f);
+            mAccExpand.setVisibility(View.VISIBLE);
+            mAccExpand.setImageResource(R.drawable.ic_expand_more_white_18dp);
+
+        } else if(mLayoutAddCl.getVisibility()==View.GONE ||
+                mLayoutDebitCl.getVisibility()==View.GONE) {
+            // one row is hidden, show expand icon
+            //mLayoutCashAccount.setAlpha(1.0f);
+            mAccExpand.setEnabled(true);
+            mAccExpand.setAlpha(1.0f);
+            mAccExpand.setVisibility(View.VISIBLE);
+            mAccExpand.setImageResource(R.drawable.ic_expand_more_white_18dp);
+        } else {
+            // all visible - dont show expand icon if this is not 'expand icon' click case
+            if(expandClickCase) {
+                //mLayoutCashAccount.setAlpha(1.0f);
+                mAccExpand.setEnabled(true);
+                mAccExpand.setAlpha(1.0f);
+                mAccExpand.setVisibility(View.VISIBLE);
+                mAccExpand.setImageResource(R.drawable.ic_expand_less_white_18dp);
+            } else {
+                //mAccExpand.setVisibility(View.GONE);
+                mAccExpand.setEnabled(false);
+                mAccExpand.setAlpha(0.3f);
+            }
+        }
+    }
+
+    private void initCbUiVisibility(boolean expandClickCase) {
+        // Add cashback row
+        if(mAddCbStatus==STATUS_NO_BILL_AMT) {
+            // this can be hidden
+            hideIfReq(mLayoutAddCb, expandClickCase);
+        } else {
+            // expand icon click have no meaning, if this cant be hidden
+            mLayoutAddCb.setVisibility(View.VISIBLE);
+        }
+        // Debit cashback row
+        if(mDebitCbStatus!=STATUS_AUTO && mDebitCbStatus!=STATUS_CLEARED && mDebitCbStatus!=STATUS_AUTO_CLEARED) {
+            // this can be hidden
+            hideIfReq(mLayoutDebitCb, expandClickCase);
+        } else {
+            mLayoutDebitCb.setVisibility(View.VISIBLE);
+        }
+        // Change expand icon and layout visibility - based on final status
+        if(mLayoutAddCb.getVisibility()==View.GONE &&
+                mLayoutDebitCb.getVisibility()==View.GONE) {
+            //mLayoutCashBack.setAlpha(0.4f);
+            //mCbDiv1.setVisibility(View.INVISIBLE);
+            //mCbLabel.setVisibility(View.VISIBLE);
+            //mCbDiv2.setVisibility(View.GONE);
+            mCbExpand.setEnabled(true);
+            mCbExpand.setAlpha(1.0f);
+            mCbExpand.setVisibility(View.VISIBLE);
+            mCbExpand.setImageResource(R.drawable.ic_expand_more_white_18dp);
+
+        } else if(mLayoutAddCb.getVisibility()==View.GONE ||
+                mLayoutDebitCb.getVisibility()==View.GONE) {
+            // one row is hidden, show expand icon
+            //mLayoutCashBack.setAlpha(1.0f);
+            //mCbDiv1.setVisibility(View.VISIBLE);
+            //mCbLabel.setVisibility(View.VISIBLE);
+            //mCbDiv2.setVisibility(View.VISIBLE);
+            mCbExpand.setEnabled(true);
+            mCbExpand.setAlpha(1.0f);
+            mCbExpand.setVisibility(View.VISIBLE);
+            mCbExpand.setImageResource(R.drawable.ic_expand_more_white_18dp);
+        } else {
+            // all visible - disable expand icon if this is not 'expand icon' click case
+            //mLayoutCashBack.setAlpha(1.0f);
+            if(expandClickCase) {
+                //mCbDiv1.setVisibility(View.VISIBLE);
+                //mCbLabel.setVisibility(View.VISIBLE);
+                //mCbDiv2.setVisibility(View.VISIBLE);
+                mCbExpand.setEnabled(true);
+                mCbExpand.setAlpha(1.0f);
+                mCbExpand.setVisibility(View.VISIBLE);
+                mCbExpand.setImageResource(R.drawable.ic_expand_less_white_18dp);
+            } else {
+                //mCbExpand.setVisibility(View.GONE);
+                mCbExpand.setEnabled(false);
+                mCbExpand.setAlpha(0.3f);
+            }
+        }
+    }
+
+    private void hideIfReq(View layout, boolean expandClickCase) {
+        if(expandClickCase) {
+            // reverse the current status
+            if(layout.getVisibility()==View.GONE) {
+                layout.setVisibility(View.VISIBLE);
+            } else {
+                layout.setVisibility(View.GONE);
+            }
+        } else {
+            layout.setVisibility(View.GONE);
+        }
+    }
+
+    private void initCashUiVisibility() {
+        // Add cashback row
+        hideIfReq(mCashRow1, true);
+        hideIfReq(mCashRow2, true);
+
+        if(mCashRow1.getVisibility()==View.GONE ||
+                mCashRow2.getVisibility()==View.GONE) {
+            mCashExpand.setImageResource(R.drawable.ic_expand_more_white_18dp);
+        }
     }
 
     /*private void initAmtUiVisibility() {
@@ -1257,6 +1383,9 @@ public class CashTransactionFragment extends Fragment implements
     private EditText mLabelDebitCb;
     private EditText mInputDebitCb;
 
+    private View mCbDiv1;
+    private View mCbLabel;
+    //private View mCbDiv2;
     private View mLayoutAddCb;
     private AppCompatCheckBox mCheckboxAddCb;
     private EditText mLabelAddCb;
@@ -1279,6 +1408,10 @@ public class CashTransactionFragment extends Fragment implements
 
     private AppCompatImageButton mAccExpand;
     private AppCompatImageButton mCbExpand;
+    private AppCompatImageButton mCashExpand;
+
+    private View mCashRow1;
+    private View mCashRow2;
 
     private void bindUiResources(View v) {
 
@@ -1298,6 +1431,10 @@ public class CashTransactionFragment extends Fragment implements
         mLabelDebitCl = (EditText) v.findViewById(R.id.label_trans_redeem_cl);
         mInputDebitCl = (EditText) v.findViewById(R.id.input_trans_redeem_cl);
 
+
+        mCbDiv1 = v.findViewById(R.id.cb_divider_1);
+        mCbLabel = v.findViewById(R.id.label_cash_back);
+        //mCbDiv2 = v.findViewById(R.id.cb_divider_2);
         mSpaceCashAccount = v.findViewById(R.id.space_cash_account);
         mSpaceCashBack = v.findViewById(R.id.space_cashback);
         mSpaceCashPaid = v.findViewById(R.id.space_cash_paid);
@@ -1326,6 +1463,10 @@ public class CashTransactionFragment extends Fragment implements
 
         mAccExpand = (AppCompatImageButton) v.findViewById(R.id.btn_expand_acc);
         mCbExpand = (AppCompatImageButton) v.findViewById(R.id.btn_expand_cb);
+        mCashExpand = (AppCompatImageButton) v.findViewById(R.id.btn_expand_cash);
+
+        mCashRow1 = v.findViewById(R.id.layout_cash_row1);
+        mCashRow2 = v.findViewById(R.id.layout_cash_row2);
     }
 
     @Override

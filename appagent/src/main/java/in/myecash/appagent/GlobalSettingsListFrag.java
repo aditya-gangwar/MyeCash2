@@ -3,6 +3,7 @@ package in.myecash.appagent;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.appbase.utilities.LogMy;
@@ -25,6 +27,24 @@ public class GlobalSettingsListFrag extends Fragment {
 
     private SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
     private RecyclerView mRecyclerView;
+
+    public interface GlobalSettingsListFragIf {
+        MyRetainedFragment getRetainedFragment();
+    }
+    private GlobalSettingsListFragIf mCallback;
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        try {
+            mCallback = (GlobalSettingsListFragIf) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement GlobalSettingsListFragIf");
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +73,7 @@ public class GlobalSettingsListFrag extends Fragment {
         super.onResume();
         //mCallback.setDrawerState(false);
         updateUI();
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     private class MyItemHolder extends RecyclerView.ViewHolder {

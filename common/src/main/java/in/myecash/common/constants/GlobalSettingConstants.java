@@ -83,8 +83,8 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_CUSTOMER_NO_REFRESH_MINS,"10");
         aMap.put(SETTINGS_WRONG_ATTEMPT_RESET_MINS,"120");
 
-        aMap.put(SETTINGS_CB_REDEEM_CARD_REQ,"true");
-        aMap.put(SETTINGS_ACC_DB_CARD_REQ,"true");
+        aMap.put(SETTINGS_CB_REDEEM_CARD_REQ,"false");
+        aMap.put(SETTINGS_ACC_DB_CARD_REQ,"false");
         aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN,"500");
         aMap.put(SETTINGS_CL_DEBIT_LIMIT_FOR_PIN,"0");
         aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN,"0");

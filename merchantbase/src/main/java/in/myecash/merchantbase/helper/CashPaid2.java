@@ -229,7 +229,8 @@ public class CashPaid2 implements Serializable, View.OnTouchListener {
     private void handleCustomAmtEnter() {
         LogMy.d(TAG,"In handleCustomAmtEnter");
 
-        if(mInputAmt.getText().toString().isEmpty()) {
+        if(mInputAmt.getText().toString().isEmpty() ||
+                mInputAmt.getText().toString().equals("0")) {
             // to do other tasks - like clearFocus, unmark etc
             clearCustomAmt();
             if(!anyFixedValueMarked()) {

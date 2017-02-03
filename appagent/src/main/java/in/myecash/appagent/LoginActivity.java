@@ -451,8 +451,22 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,WindowManager.LayoutParams.FLAG_SECURE);
+        if(AppCommonUtil.getProgressDialogMsg()!=null) {
+            AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
+        }
+        if(AppConstants.IS_PROD_BUILD) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        }
+        AppCommonUtil.setUserType(DbConstants.USER_TYPE_CC);
+        mWorkFragment.setResumeOk(true);
+    }
+
+    @Override
+    protected void onPause() {
+        LogMy.d(TAG,"In onPause: ");
+        super.onPause();
+        AppCommonUtil.cancelProgressDialog(false);
+        mWorkFragment.setResumeOk(false);
     }
 
     @Override

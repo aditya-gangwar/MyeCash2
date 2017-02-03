@@ -201,5 +201,11 @@ public class MerchantDetailsFragment extends Fragment
         mLaunchApp = (AppCompatButton) v.findViewById(R.id.btn_launch_app);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mCallback.getRetainedFragment().setResumeOk(true);
+    }
+
 }
 

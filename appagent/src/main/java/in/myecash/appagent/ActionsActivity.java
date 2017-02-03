@@ -448,6 +448,8 @@ public class ActionsActivity extends AppCompatActivity implements
         }
     }
 
+
+
     /*
      * Activity and Fragment start fxs
      */
@@ -557,10 +559,25 @@ public class ActionsActivity extends AppCompatActivity implements
     protected void onResume() {
         LogMy.d(TAG, "In onResume");
         super.onResume();
+        if(getFragmentManager().getBackStackEntryCount()==0) {
+            // no fragment in backstack - so flag wont get set by any fragment - so set it here
+            // though this shud never happen - as CashbackActivity always have a fragment
+            mWorkFragment.setResumeOk(true);
+        }
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
         AppCommonUtil.setUserType(DbConstants.USER_TYPE_CC);
     }
+
+    @Override
+    protected void onPause() {
+        LogMy.d(TAG,"In onPause: ");
+        super.onPause();
+        // no need to do this in each fragment - as activity onPause will always get called
+        mWorkFragment.setResumeOk(false);
+        AppCommonUtil.cancelProgressDialog(false);
+    }
+
 }
 

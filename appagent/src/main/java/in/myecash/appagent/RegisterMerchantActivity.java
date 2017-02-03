@@ -38,6 +38,7 @@ import in.myecash.appbase.entities.MyCities;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Address;
 import in.myecash.common.database.Cities;
@@ -549,6 +550,15 @@ public class RegisterMerchantActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        if(getFragmentManager().getBackStackEntryCount()==0) {
+            // no fragment in backstack - so flag wont get set by any fragment - so set it here
+            // though this shud never happen - as CashbackActivity always have a fragment
+            mWorkFragment.setResumeOk(true);
+        }
+        if(AppCommonUtil.getProgressDialogMsg()!=null) {
+            AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
+        }
+        AppCommonUtil.setUserType(DbConstants.USER_TYPE_CC);
         //Now lets connect to the API
         //mGoogleApiClient.connect();
     }
@@ -563,6 +573,9 @@ public class RegisterMerchantActivity extends AppCompatActivity
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             mGoogleApiClient.disconnect();
         }
+
+        AppCommonUtil.cancelProgressDialog(false);
+        mWorkFragment.setResumeOk(false);
     }
 
     //Define a request code to send to Google Play services

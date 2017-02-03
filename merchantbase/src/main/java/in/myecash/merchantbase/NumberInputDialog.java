@@ -128,8 +128,8 @@ public class NumberInputDialog extends DialogFragment implements View.OnClickLis
                     LogMy.d(TAG, "Clicked Ok");
                     String curStr = mInputNum.getText().toString();
                     if (curStr.isEmpty()) {
-                        //sendResult(Activity.RESULT_OK, mInputOldValue.getText().toString());
-                        sendResult(Activity.RESULT_OK, "0");
+                        sendResult(Activity.RESULT_OK, mInputOldValue.getText().toString());
+                        //sendResult(Activity.RESULT_OK, "0");
                     } else {
                         int curValue = Integer.parseInt(curStr);
                         if(curValue > 0 && curValue < minValue) {
@@ -169,10 +169,15 @@ public class NumberInputDialog extends DialogFragment implements View.OnClickLis
 
         } else if (vId == R.id.input_kb_0 || vId == R.id.input_kb_1 || vId == R.id.input_kb_2 || vId == R.id.input_kb_3 || vId == R.id.input_kb_4 || vId == R.id.input_kb_5 || vId == R.id.input_kb_6 || vId == R.id.input_kb_7 || vId == R.id.input_kb_8 || vId == R.id.input_kb_9) {
             AppCompatButton key = (AppCompatButton) v;
-            // ignore 0 as first entered digit
-            if (!(v.getId() == R.id.input_kb_0 && curStr.isEmpty())) {
-                mInputNum.append(key.getText());
+            // clear 0 if it was first digit added
+            if(curStr.equals("0")) {
+                mInputNum.setText("");
             }
+            mInputNum.append(key.getText());
+            // ignore 0 as first entered digit
+            /*if (!(v.getId() == R.id.input_kb_0 && curStr.isEmpty())) {
+                mInputNum.append(key.getText());
+            }*/
         }
     }
 

@@ -304,6 +304,7 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
     public void onResume() {
         super.onResume();
         updateUI();
+        mCallback.getRetainedFragment().setResumeOk(true);
     }
 
     @Override
@@ -469,4 +470,5 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
             }
         }
     }
+
 }
