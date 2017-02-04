@@ -32,10 +32,6 @@ public abstract class RetainedFragment extends Fragment {
     final Lock lock = new ReentrantLock();
     final Condition nowReady = lock.newCondition();
 
-
-    // Single background worker thread hosted in this retained fragment
-    //protected BackgroundProcessor<String> mBackgroundProcessor;
-
     public Boolean getResumeOk() {
         return resumeOk;
     }
@@ -158,8 +154,6 @@ public abstract class RetainedFragment extends Fragment {
             bgProcessor.start();
             bgProcessor.getLooper();
         }
-
-
     }
 
     @Override
@@ -193,6 +187,7 @@ public abstract class RetainedFragment extends Fragment {
     }
 
     protected abstract void doOnActivityCreated();
+    // Single background worker thread hosted in this retained fragment
     protected abstract BackgroundProcessor<String> getBackgroundProcessor();
 
     /**

@@ -361,8 +361,8 @@ public class LoginActivity extends AppCompatActivity implements
                             .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else if (errorCode == ErrorCodes.OP_SCHEDULED) {
                     // Show success notification dialog
-                    Integer mins = MyGlobalSettings.getMchntPasswdResetMins() + GlobalSettingConstants.MERCHANT_PASSWORD_RESET_TIMER_INTERVAL;
-                    String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
+                    //Integer mins = MyGlobalSettings.getMchntPasswdResetMins() + GlobalSettingConstants.MERCHANT_PASSWORD_RESET_TIMER_INTERVAL;
+                    String msg = String.format(AppConstants.pwdGenerateSuccessMsg, String.valueOf(AppCommonUtil.mErrorParams.opScheduledMins));
                     DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, msg, false, false)
                             .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else if (errorCode == ErrorCodes.DUPLICATE_ENTRY) {
@@ -530,24 +530,11 @@ public class LoginActivity extends AppCompatActivity implements
                 .putString(AppConstants.PREF_LOGIN_ID, mLoginId)
                 .apply();
 
-        if(MerchantUser.getInstance().getMerchant().getDelLocalFilesReq()!=null) {
-            // Find last local files delete time - as stored
-            long lastDelTime = PreferenceManager.getDefaultSharedPreferences(this).
-                    getLong(AppConstants.PREF_ALL_FILES_DEL_TIME, 0);
+        // Global settings should be available by now
+        AppCommonUtil.storeGSLocally(LoginActivity.this);
 
-            long reqEpoch = MerchantUser.getInstance().getMerchant().getDelLocalFilesReq().getTime();
-            if(lastDelTime < reqEpoch) {
-                // Request made time in DB is later than 'last all files delete' time in shared preferences
-                // Delete all files in internal storage
-                AppCommonUtil.delAllInternalFiles(this);
-
-                // Update time in shared preferences
-                PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
-                        .edit()
-                        .putLong(AppConstants.PREF_ALL_FILES_DEL_TIME, System.currentTimeMillis())
-                        .apply();
-            }
-        }
+        // delete local files - if required
+        AppCommonUtil.delLocalFiles(MerchantUser.getInstance().getMerchant().getDelLocalFilesReq(), this);
         startCbFrag();
     }
 

@@ -360,10 +360,10 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         {
             int errCode = AppCommonUtil.getLocalErrorCode(e);
             if(errCode==ErrorCodes.OP_SCHEDULED) {
-                // Retrive imgFilename from exception message
-                String imgFilename = e.getMessage();
-                LogMy.d(TAG,"executeCustOp returned img filename as: "+imgFilename);
-                mRetainedFragment.mCustomerOp.setImageFilename(imgFilename);
+                // Retrieve imgFilename from exception message
+                //String imgFilename = e.getMessage();
+                //LogMy.d(TAG,"executeCustOp returned img filename as: "+imgFilename);
+                mRetainedFragment.mCustomerOp.setImageFilename(AppCommonUtil.mErrorParams.imgFileName);
 
             } else if(errCode!=ErrorCodes.OTP_GENERATED) {
                 LogMy.e(TAG, "exec customer op failed: "+ e.toString());

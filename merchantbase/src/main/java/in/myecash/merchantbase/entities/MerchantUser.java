@@ -15,6 +15,7 @@ import com.backendless.files.BackendlessFile;
 import com.crashlytics.android.Crashlytics;
 import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.appbase.entities.MyTransaction;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -148,6 +149,12 @@ public class MerchantUser
             if(mInstance.mUserToken == null || mInstance.mUserToken.isEmpty()) {
                 logoutSync();
                 return ErrorCodes.GENERAL_ERROR;
+            }
+
+            int retStatus = AppCommonUtil.loadGlobalSettings(MyGlobalSettings.RunMode.appMerchant);
+            if( retStatus!= ErrorCodes.NO_ERROR) {
+                logoutSync();
+                return retStatus;
             }
 
             LogMy.d(TAG, "Login Success: " + mInstance.mMerchant.getAuto_id()+", "+mInstance.mUserToken);

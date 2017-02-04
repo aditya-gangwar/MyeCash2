@@ -37,14 +37,22 @@ public class SplashActivity extends AppCompatActivity
         implements DialogFragmentWrapper.DialogFragmentWrapperIf {
     private static final String TAG = "MchntApp-SplashActivity";
 
-    private FetchGlobalSettings mTask;
+    //private FetchGlobalSettings mTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        if(savedInstanceState==null) {
+        String naErrorStr = AppCommonUtil.isDownAsPerLocalData(SplashActivity.this);
+        if(naErrorStr!=null) {
+            DialogFragmentWrapper.createNotification(AppConstants.serviceNATitle, naErrorStr, false, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        } else {
+            startLoginActivity();
+        }
+
+        /*if(savedInstanceState==null) {
             String naErrorStr = AppCommonUtil.isDownAsPerLocalData(SplashActivity.this);
             if(naErrorStr!=null) {
                 DialogFragmentWrapper.createNotification(AppConstants.serviceNATitle, naErrorStr, false, true)
@@ -62,10 +70,10 @@ public class SplashActivity extends AppCompatActivity
                     mTask.execute();
                 }
             }
-        }
+        }*/
     }
 
-    @Override
+    /*@Override
     public void onDestroy() {
         if(mTask!=null) {
             mTask.cancel(true);
@@ -73,7 +81,7 @@ public class SplashActivity extends AppCompatActivity
             LogMy.d(TAG, "Background thread destroyed");
         }
         super.onDestroy();
-    }
+    }*/
 
     private void startLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
@@ -89,7 +97,7 @@ public class SplashActivity extends AppCompatActivity
         }
     }
 
-    private class FetchGlobalSettings extends AsyncTask<Void,Void,Integer> {
+    /*private class FetchGlobalSettings extends AsyncTask<Void,Void,Integer> {
         @Override
         protected Integer doInBackground(Void... params) {
             return AppCommonUtil.loadGlobalSettings(MyGlobalSettings.RunMode.appMerchant);
@@ -134,5 +142,5 @@ public class SplashActivity extends AppCompatActivity
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         }
-    }
+    }*/
 }

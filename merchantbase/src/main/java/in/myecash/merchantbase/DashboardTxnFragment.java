@@ -277,7 +277,7 @@ public class DashboardTxnFragment extends Fragment {
         rows_table[1].setVisibility(View.VISIBLE);
 
         rows_table[2].setVisibility(View.GONE);
-        rows_table[3].setVisibility(View.GONE);
+        //rows_table[3].setVisibility(View.GONE);
 
         amount = AppConstants.SYMBOL_RS + String.valueOf(mMerchantStats.getCb_credit());
         total_value.setText(amount);
@@ -334,7 +334,7 @@ public class DashboardTxnFragment extends Fragment {
         total_value.setText(amount);
 
         rows_table[2].setVisibility(View.GONE);
-        rows_table[3].setVisibility(View.GONE);
+        //rows_table[3].setVisibility(View.GONE);
     }
 
     private void createBillAmountChart() {
@@ -409,7 +409,7 @@ public class DashboardTxnFragment extends Fragment {
         amount = AppConstants.SYMBOL_RS + String.valueOf(mMerchantStats.getBill_amt_total());
         total_value.setText(amount);
 
-        rows_table[3].setVisibility(View.GONE);
+        //rows_table[3].setVisibility(View.GONE);
     }
 
 

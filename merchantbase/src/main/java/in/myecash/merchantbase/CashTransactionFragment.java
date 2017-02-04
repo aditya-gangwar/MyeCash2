@@ -177,6 +177,7 @@ public class CashTransactionFragment extends Fragment implements
 
             // Init view - only to be done after states are set above
             initAmtUiVisibility(false);
+            initCashUiVisibility(false);
             // both of below to be done twice - 1) at init here 2) if bill amount is changed
             displayInputBillAmt();
             calcAndSetAddCb();
@@ -915,7 +916,7 @@ public class CashTransactionFragment extends Fragment implements
             } else if(i == R.id.btn_expand_cb) {
                 initCbUiVisibility(true);
             } else if(i == R.id.btn_expand_cash) {
-                initCashUiVisibility();
+                initCashUiVisibility(true);
             }
         } catch (Exception e) {
             LogMy.e(TAG, "Exception in CashTxnFragment:onClick", e);
@@ -1032,6 +1033,7 @@ public class CashTransactionFragment extends Fragment implements
                 break;
             case STATUS_AUTO:
                 mCheckboxDebitCb.setChecked(true);
+                mCheckboxDebitCb.setEnabled(true);
                 //mLabelDebitCb.setEnabled(true);
                 mLabelDebitCb.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary_text));
                 mInputDebitCb.setEnabled(true);
@@ -1292,14 +1294,18 @@ public class CashTransactionFragment extends Fragment implements
         }
     }
 
-    private void initCashUiVisibility() {
+    private void initCashUiVisibility(boolean expandClickCase) {
         // Add cashback row
-        hideIfReq(mCashRow1, true);
-        hideIfReq(mCashRow2, true);
+        if(expandClickCase) {
+            hideIfReq(mCashRow1, expandClickCase);
+            hideIfReq(mCashRow2, expandClickCase);
+        }
 
         if(mCashRow1.getVisibility()==View.GONE ||
                 mCashRow2.getVisibility()==View.GONE) {
             mCashExpand.setImageResource(R.drawable.ic_expand_more_white_18dp);
+        } else {
+            mCashExpand.setImageResource(R.drawable.ic_expand_less_white_18dp);
         }
     }
 

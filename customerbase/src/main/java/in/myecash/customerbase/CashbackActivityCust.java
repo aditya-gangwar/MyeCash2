@@ -737,7 +737,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
         } else if(mLastMenuItemId==R.id.menu_forgot_pin) {
             if(errorCode == ErrorCodes.OP_SCHEDULED) {
                 // Show success notification dialog
-                String msg = String.format(AppConstants.pinGenerateSuccessMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
+                String msg = String.format(AppConstants.pinGenerateSuccessMsg, Integer.toString(AppCommonUtil.mErrorParams.opScheduledMins));
                 DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, msg, false, false)
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
 

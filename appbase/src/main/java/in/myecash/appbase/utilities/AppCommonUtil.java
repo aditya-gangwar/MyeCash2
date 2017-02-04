@@ -17,9 +17,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
-import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.ColorRes;
@@ -44,8 +42,8 @@ import com.backendless.exceptions.BackendlessException;
 import in.myecash.appbase.R;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.DateUtil;
+import in.myecash.common.MyErrorParams;
 import in.myecash.common.constants.CommonConstants;
-import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.database.Address;
@@ -85,9 +83,14 @@ public class AppCommonUtil {
         AppCommonUtil.mUserType = userType;
     }
 
+    // Store params (if returned) frm last backend request
+    // As there's only single background thread interacting with backend
+    // so this shud work fine for now
+    public static MyErrorParams mErrorParams = new MyErrorParams();
+
     /*
-         * Progress Dialog related fxs
-         */
+     * Progress Dialog related fxs
+     */
     public static void showProgressDialog(final Context context, String message) {
         cancelProgressDialog(true);
         mProgressDialogMsg = message;
@@ -183,16 +186,17 @@ public class AppCommonUtil {
         LogMy.d(TAG,"Entering getLocalErrorCode: "+e.getCode());
 
         String expCode;
-        String expMsg;
+        String expMsg = e.getMessage();
 
-        if( e.getCode().equals("0") && e.getMessage().startsWith(CommonConstants.PREFIX_ERROR_CODE_AS_MSG) ) {
-            LogMy.d(TAG,"Custom error code case: Orig: "+e.getCode()+","+e.getMessage());
-            String[] csvFields = e.getMessage().split(CommonConstants.SPECIAL_DELIMETER, -1);
+        if( e.getCode().equals("0") && expMsg.startsWith(MyErrorParams.ERROR_PARAMS_IN_MSG_MARKER) ) {
+            LogMy.d(TAG,"Custom error code case: Orig: "+e.getCode()+","+expMsg);
+            /*String[] csvFields = e.getMessage().split(CommonConstants.SPECIAL_DELIMETER, -1);
             expCode = csvFields[1];
-            expMsg = csvFields[2];
+            expMsg = csvFields[2];*/
+            mErrorParams.init(expMsg);
+            expCode = String.valueOf(mErrorParams.errorCode);
         } else {
             expCode = e.getCode();
-            expMsg = e.getMessage();
         }
 
         int errorCode;
@@ -232,7 +236,7 @@ public class AppCommonUtil {
 
             // for some Special cases - some more info (integer) is sent by backend as exception msg
             // Extract and append that info in error code
-            int newErrorCode = transformErrorCode(errorCode, expMsg);
+            int newErrorCode = checkForParamsInMsg(errorCode, expMsg);
 
             LogMy.d(TAG,"Exiting getLocalErrorCode: "+newErrorCode+", "+errorCode);
             return newErrorCode;
@@ -284,8 +288,8 @@ public class AppCommonUtil {
         }
     }
 
-    private static int transformErrorCode(int errorCode, String errMsg) {
-        LogMy.d(TAG,"In transformErrorCode: "+mUserType+", "+errorCode+", "+errMsg);
+    private static int checkForParamsInMsg(int errorCode, String errMsg) {
+        LogMy.d(TAG,"In checkForParamsInMsg: "+mUserType+", "+errorCode+", "+errMsg);
         // handle all error messages requiring substitution seperatly
         switch(errorCode) {
             case ErrorCodes.WRONG_PIN:
@@ -302,6 +306,10 @@ public class AppCommonUtil {
                     // ignore
                     return errorCode;
                 }
+
+            case ErrorCodes.OP_SCHEDULED:
+                mErrorParams.init(errMsg);
+                return ErrorCodes.OP_SCHEDULED;
 
             default:
                 return errorCode;
@@ -550,6 +558,36 @@ public class AppCommonUtil {
                 } else {
                     LogMy.e(TAG, "Failed to delete file: " + fileName);
                 }
+            }
+        }
+    }
+
+    public static void delLocalFiles(Date reqTime, Activity activity) {
+        if(reqTime!=null) {
+            // Find last local files delete time - as stored
+            long lastDelTime = PreferenceManager.getDefaultSharedPreferences(activity).
+                    getLong(AppConstants.PREF_ALL_FILES_DEL_TIME, 0);
+
+            if(lastDelTime < reqTime.getTime()) {
+                // Request made time in DB is later than 'last all files delete' time in shared preferences
+                // Delete all files in internal storage
+                String[] files = activity.fileList();
+                for (String fileName :
+                        files) {
+                    if(AppCommonUtil.isAppFile(fileName)) {
+                        if (activity.deleteFile(fileName)) {
+                            LogMy.d(TAG, "Deleted file: " + fileName);
+                        } else {
+                            LogMy.e(TAG, "Failed to delete file: " + fileName);
+                        }
+                    }
+                }
+
+                // Update time in shared preferences
+                PreferenceManager.getDefaultSharedPreferences(activity)
+                        .edit()
+                        .putLong(AppConstants.PREF_ALL_FILES_DEL_TIME, System.currentTimeMillis())
+                        .apply();
             }
         }
     }

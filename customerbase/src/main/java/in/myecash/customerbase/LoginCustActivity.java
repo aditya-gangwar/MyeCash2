@@ -389,8 +389,8 @@ public class LoginCustActivity extends AppCompatActivity implements
                             .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else if (errorCode == ErrorCodes.OP_SCHEDULED) {
                     // Show success notification dialog
-                    Integer mins = MyGlobalSettings.getCustPasswdResetMins() + GlobalSettingConstants.CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL;
-                    String msg = String.format(AppConstants.pwdGenerateSuccessMsg, mins);
+                    //Integer mins = MyGlobalSettings.getCustPasswdResetMins() + GlobalSettingConstants.CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL;
+                    String msg = String.format(AppConstants.pwdGenerateSuccessMsg, String.valueOf(AppCommonUtil.mErrorParams.opScheduledMins));
                     DialogFragmentWrapper.createNotification(AppConstants.pwdGenerateSuccessTitle, msg, false, false)
                             .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else if (errorCode == ErrorCodes.DUPLICATE_ENTRY) {
@@ -556,40 +556,9 @@ public class LoginCustActivity extends AppCompatActivity implements
 
         // Global settings should be available by now
         AppCommonUtil.storeGSLocally(LoginCustActivity.this);
-
-        delLocalFiles();
+        // Delete local files - if required
+        AppCommonUtil.delLocalFiles(CustomerUser.getInstance().getCustomer().getDelLocalFilesReq(), this);
         startCbFrag();
-    }
-
-    private void delLocalFiles() {
-        if(CustomerUser.getInstance().getCustomer().getDelLocalFilesReq()!=null) {
-            // Find last local files delete time - as stored
-            long lastDelTime = PreferenceManager.getDefaultSharedPreferences(this).
-                    getLong(AppConstants.PREF_ALL_FILES_DEL_TIME, 0);
-
-            long reqEpoch = CustomerUser.getInstance().getCustomer().getDelLocalFilesReq().getTime();
-            if(lastDelTime < reqEpoch) {
-                // Request made time in DB is later than 'last all files delete' time in shared preferences
-                // Delete all files in internal storage
-                String[] files = fileList();
-                for (String fileName :
-                        files) {
-                    if(AppCommonUtil.isAppFile(fileName)) {
-                        if (deleteFile(fileName)) {
-                            LogMy.d(TAG, "Deleted file: " + fileName);
-                        } else {
-                            LogMy.e(TAG, "Failed to delete file: " + fileName);
-                        }
-                    }
-                }
-
-                // Update time in shared preferences
-                PreferenceManager.getDefaultSharedPreferences(LoginCustActivity.this)
-                        .edit()
-                        .putLong(AppConstants.PREF_ALL_FILES_DEL_TIME, System.currentTimeMillis())
-                        .apply();
-            }
-        }
     }
 
     private void startCbFrag() {

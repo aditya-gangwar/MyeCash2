@@ -91,4 +91,8 @@ public class CommonUtils {
         }
         return retValue;
     }
+
+    public static int roundUpTo(int i, int v){
+        return Math.round(i/v) * v;
+    }
 }
