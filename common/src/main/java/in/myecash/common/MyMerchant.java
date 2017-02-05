@@ -22,7 +22,9 @@ public class MyMerchant {
     private static final int MCHNT_CSV_STATUS_TIME = 9;
     private static final int MCHNT_CSV_REMOVE_REQ_DATE = 10;
     private static final int MCHNT_CSV_DP_FILENAME = 11;
-    private static final int MCHNT_CSV_FIELD_CNT = 12;
+    private static final int MCHNT_CSV_PP_CB_RATE = 12;
+    private static final int MCHNT_CSV_PP_MIN_AMT = 13;
+    private static final int MCHNT_CSV_FIELD_CNT = 14;
 
     // Total size of above fields = 50+50+10*7
     private static final int MCHNT_CSV_MAX_SIZE = 200;
@@ -34,6 +36,8 @@ public class MyMerchant {
     private String mContactPhone;
     private String mCbRate;
     private String mBusinessCategory;
+    private String mPpCbRate;
+    private int mPpMinAmt;
     // address data
     private String mAddressLine1;
     private String mCity;
@@ -62,6 +66,8 @@ public class MyMerchant {
             mRemoveReqDate = new Date(Long.parseLong(csvFields[MCHNT_CSV_REMOVE_REQ_DATE]));
         }
         mDpFilename = csvFields[MCHNT_CSV_DP_FILENAME];
+        mPpCbRate = csvFields[MCHNT_CSV_PP_CB_RATE];
+        mPpMinAmt = Integer.valueOf(csvFields[MCHNT_CSV_PP_MIN_AMT]);
     }
 
     // Convert to CSV string
@@ -83,6 +89,9 @@ public class MyMerchant {
             csvFields[MCHNT_CSV_REMOVE_REQ_DATE] = Long.toString(merchant.getRemoveReqDate().getTime());
         }
         csvFields[MCHNT_CSV_DP_FILENAME] = merchant.getDisplayImage();
+
+        csvFields[MCHNT_CSV_PP_CB_RATE] = merchant.getPrepaidCbRate();
+        csvFields[MCHNT_CSV_PP_MIN_AMT] = String.valueOf(merchant.getPrepaidCbMinAmt());
 
         // join the fields in single CSV string
         StringBuilder sb = new StringBuilder(MCHNT_CSV_MAX_SIZE);
@@ -142,6 +151,14 @@ public class MyMerchant {
 
     public String getDpFilename() {
         return mDpFilename;
+    }
+
+    public int getPpMinAmt() {
+        return mPpMinAmt;
+    }
+
+    public String getPpCbRate() {
+        return mPpCbRate;
     }
 }
 

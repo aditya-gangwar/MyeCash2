@@ -48,9 +48,10 @@ import in.myecash.common.database.Transaction;
     }
 
     public Merchants updateSettings(java.lang.String cbRate, boolean addClEnabled, java.lang.String email, java.lang.String contactPhone,
-                                    boolean askLinkedInvNum, boolean linkedInvNumOptional, boolean invNumOnlyNmbrs)
+                                    boolean askLinkedInvNum, boolean linkedInvNumOptional, boolean invNumOnlyNmbrs,
+                                    String ppCbRate, int ppMinAmt)
     {
-        Object[] args = new Object[]{cbRate, addClEnabled, email, contactPhone, askLinkedInvNum, linkedInvNumOptional, invNumOnlyNmbrs};
+        Object[] args = new Object[]{cbRate, addClEnabled, email, contactPhone, askLinkedInvNum, linkedInvNumOptional, invNumOnlyNmbrs, ppCbRate, ppMinAmt};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "updateSettings", args, Merchants.class );
     }
 

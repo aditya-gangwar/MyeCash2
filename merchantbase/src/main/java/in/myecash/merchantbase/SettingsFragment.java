@@ -33,6 +33,9 @@ public class SettingsFragment extends PreferenceFragment
 
     public static final String KEY_CB_RATE = "settings_cb_rate";
     public static final String KEY_ADD_CL_ENABLED = "settings_cl_add_enabled";
+    public static final String KEY_PP_CB_RATE = "settings_ppcb_rate";
+    public static final String KEY_PP_MIN_AMT = "settings_ppcb_amt";
+
     public static final String KEY_MOBILE_NUM = "settings_change_mobile";
     public static final String KEY_EMAIL = "settings_email_id";
     public static final String KEY_CONTACT_PHONE = "settings_contact_num";
@@ -87,6 +90,10 @@ public class SettingsFragment extends PreferenceFragment
         pref.setOnPreferenceChangeListener(this);
         pref = getPreferenceScreen().findPreference(KEY_ADD_CL_ENABLED);
         pref.setOnPreferenceChangeListener(this);
+        pref = getPreferenceScreen().findPreference(KEY_PP_CB_RATE);
+        pref.setOnPreferenceChangeListener(this);
+        pref = getPreferenceScreen().findPreference(KEY_PP_MIN_AMT);
+        pref.setOnPreferenceChangeListener(this);
         pref = getPreferenceScreen().findPreference(KEY_EMAIL);
         pref.setOnPreferenceChangeListener(this);
         pref = getPreferenceScreen().findPreference(KEY_CONTACT_PHONE);
@@ -121,6 +128,22 @@ public class SettingsFragment extends PreferenceFragment
                 mMerchantUser.setNewIsAddClEnabled(isAddClEnabled);
                 mSettingsChanged = true;
                 setAddCashSummary(isAddClEnabled, false);
+            //}
+        } else if (key.equals(KEY_PP_CB_RATE)) {
+            newValue = (String)o;
+            errorCode = ValidationHelper.validateCbRate(newValue);
+            if (errorCode == ErrorCodes.NO_ERROR) {
+                mMerchantUser.setNewPpCbRate(newValue);
+                mSettingsChanged = true;
+                setPpCbRateSummary(newValue, false);
+            }
+        } else if (key.equals(KEY_PP_MIN_AMT)) {
+            newValue = (String)o;
+            //errorCode = ValidationHelper.validateCbRate(newValue);
+            //if (errorCode == ErrorCodes.NO_ERROR) {
+                mMerchantUser.setNewPpMinAmt(Integer.valueOf(newValue));
+                mSettingsChanged = true;
+                setPpMinAmtSummary(newValue, false);
             //}
         } else if (key.equals(KEY_EMAIL)) {
             //newValue = sharedPreferences.getString(KEY_EMAIL, null);
@@ -257,6 +280,8 @@ public class SettingsFragment extends PreferenceFragment
 
         setCbRateSummary(prefs.getString(KEY_CB_RATE,null), disablePref);
         setAddCashSummary(prefs.getBoolean(KEY_ADD_CL_ENABLED, false), disablePref);
+        setPpCbRateSummary(prefs.getString(KEY_PP_CB_RATE,null), disablePref);
+        setPpMinAmtSummary(prefs.getString(KEY_PP_MIN_AMT,null), disablePref);
 
         setMobileNumSummary(prefs.getString(KEY_MOBILE_NUM, null));
         setContactPhoneSummary(prefs.getString(KEY_CONTACT_PHONE, null));
@@ -272,7 +297,7 @@ public class SettingsFragment extends PreferenceFragment
             pref.setSummary("Not allowed to change, as Cashback Credit not allowed in 'expiry' notice period");
             pref.setEnabled(false);
         } else {
-            String summary = String.format("%s%% cashback of eligible bill amount.\n0 means disabled.", value);
+            String summary = String.format("%s%% Cashback on Bill Amount.\n0 means Disabled.", value);
             pref.setSummary(summary);
         }
     }
@@ -284,6 +309,34 @@ public class SettingsFragment extends PreferenceFragment
             pref.setEnabled(false);
         } else {
             String summary = String.format("%s add cash to customer account.", value?"Disable":"Enable");
+            pref.setSummary(summary);
+        }
+    }
+
+    private void setPpCbRateSummary(String value, boolean disable) {
+        if(null==value) {
+            return;
+        }
+        Preference pref = findPreference(KEY_PP_CB_RATE);
+        if(disable) {
+            pref.setSummary("Not allowed to change, as Prepaid Credit not allowed in 'Account Expiry' notice period");
+            pref.setEnabled(false);
+        } else {
+            String summary = String.format("%s%% extra Cashback on Prepaid Amount.\n0 means Disabled.", value);
+            pref.setSummary(summary);
+        }
+    }
+
+    private void setPpMinAmtSummary(String value, boolean disable) {
+        if(null==value) {
+            return;
+        }
+        Preference pref = findPreference(KEY_PP_MIN_AMT);
+        if(disable) {
+            pref.setSummary("Not allowed to change, as Prepaid Credit not allowed in 'Account Expiry' notice period");
+            pref.setEnabled(false);
+        } else {
+            String summary = String.format("%s is Minimum Prepaid Deposit for Extra Cashback.", value);
             pref.setSummary(summary);
         }
     }

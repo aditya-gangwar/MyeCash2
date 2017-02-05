@@ -10,8 +10,7 @@
         android:text="MERCHANT  DETAILS"/>
 
     <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+        android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -80,6 +79,7 @@
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_cashback"
                 android:layout_width="wrap_content"
                 android:layout_below="@+id/input_category_city"
                 android:layout_toRightOf="@id/img_merchant">
@@ -95,12 +95,34 @@
                     android:id="@+id/input_cb_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5 %"
+                    android:text="5% + 5% *"
                     android:paddingLeft="0dp"
                     android:paddingTop="0dp"
                     android:textColor="@color/green_positive"
                     android:textStyle="bold"/>
+                <!--EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:id="@+id/input_pp_cb_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(+ 5% *)"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="0dp"
+                    android:textColor="@color/accent2"
+                    android:textStyle="bold"/-->
             </LinearLayout>
+
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_below="@+id/layout_cashback"
+                android:layout_toRightOf="@id/img_merchant"
+                android:gravity="left|center"
+                android:id="@+id/input_pp_cb_details"
+                android:layout_width="match_parent"
+                android:paddingTop="0dp"
+                android:layout_height="wrap_content"
+                android:textStyle="italic"
+                android:text="* Extra 5% when Prepaid amount > \u20B9 1000"/>
 
         </RelativeLayout>
 

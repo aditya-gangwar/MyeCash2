@@ -59,7 +59,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_receipt_white_24dp"
                     android:id="@+id/img_trans_bill_amt"
-                    android:layout_marginRight="@dimen/medium_space"
+                    android:layout_marginRight="@dimen/small_space"
                     android:tint="@color/icon_grey"/>
 
                 <EditText
@@ -100,7 +100,8 @@
                         style="@style/Divider_horizontal_Medium"
                         android:layout_width="0dp"
                         android:layout_weight="100"
-                        android:background="@color/primary"/>
+                        android:background="@color/primary"
+                        android:visibility="visible"/>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -155,7 +156,7 @@
                         android:id="@+id/radio_add_cl"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="@dimen/medium_space"
+                        android:layout_marginRight="@dimen/small_space"
                         android:clickable="false"/>
 
                     <EditText
@@ -184,7 +185,7 @@
                         android:id="@+id/radio_redeem_cl"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="@dimen/medium_space"
+                        android:layout_marginRight="@dimen/small_space"
                         android:clickable="false"/>
 
                     <EditText
@@ -285,7 +286,7 @@
                         android:id="@+id/checkbox_add_cb"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="@dimen/medium_space"
+                        android:layout_marginRight="@dimen/small_space"
                         android:checked="true"
                         android:clickable="false"/>
 
@@ -320,7 +321,7 @@
                         android:id="@+id/checkbox_redeem_cb"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="@dimen/medium_space"
+                        android:layout_marginRight="@dimen/small_space"
                         android:checked="false"
                         android:clickable="false"/>
 

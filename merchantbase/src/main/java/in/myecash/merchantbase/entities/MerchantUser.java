@@ -54,6 +54,8 @@ public class MerchantUser
     private Boolean mNewInvNumAsk;
     private Boolean mNewInvNumOptional;
     private Boolean mNewInvNumOnlyNumbers;
+    private String mNewPpCbRate;
+    private Integer mNewPpMinAmt;
 
     /*
      * Singleton class
@@ -253,9 +255,16 @@ public class MerchantUser
             if(mNewInvNumOnlyNumbers==null) {
                 mNewInvNumOnlyNumbers = mMerchant.isInvoiceNumOnlyNumbers();
             }
+            if(mNewPpCbRate==null) {
+                mNewPpCbRate = mMerchant.getPrepaidCbRate();
+            }
+            if(mNewPpMinAmt==null) {
+                mNewPpMinAmt = mMerchant.getPrepaidCbMinAmt();
+            }
 
             mMerchant = MerchantServices.getInstance().updateSettings(mNewCbRate, newAddClEnabled, mNewEmail, mNewContactPhone,
-                    mNewInvNumAsk, mNewInvNumOptional, mNewInvNumOnlyNumbers);
+                    mNewInvNumAsk, mNewInvNumOptional, mNewInvNumOnlyNumbers,
+                    mNewPpCbRate, mNewPpMinAmt);
             LogMy.d(TAG,"updateSettings success");
 
         } catch (BackendlessException e) {
@@ -270,6 +279,8 @@ public class MerchantUser
         mNewInvNumAsk = null;
         mNewInvNumOptional = null;
         mNewInvNumOnlyNumbers = null;
+        mNewPpCbRate = null;
+        mNewPpMinAmt = null;
 
         return ErrorCodes.NO_ERROR;
     }
@@ -464,9 +475,17 @@ public class MerchantUser
         this.mNewInvNumOnlyNumbers = newInvNumOnlyNumbers;
     }
 
+    public void setNewPpMinAmt(Integer mNewPpMinAmt) {
+        this.mNewPpMinAmt = mNewPpMinAmt;
+    }
+
+    public void setNewPpCbRate(String mNewPpCbRate) {
+        this.mNewPpCbRate = mNewPpCbRate;
+    }
+
     /*
-     * Getter fxs
-     */
+         * Getter fxs
+         */
     public String getUserToken() {
         return mUserToken;
     }

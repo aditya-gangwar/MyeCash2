@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
     <PreferenceCategory
         android:title="CASHBACK">
 
         <EditTextPreference
-            android:title="Change Rate (%)"
+            android:title="Cashback Rate (%)"
             android:key="settings_cb_rate"
-            android:summary="0% cashback of eligible bill amount.\n0 means disabled."
+            android:summary="0% Cashback on Bill Amount.\n0 means Disabled."
             android:inputType="number"
             android:digits="0123456789."
             android:maxLength="@string/cb_rate_char_limit">
@@ -17,14 +18,58 @@
         android:title="ACCOUNT">
 
         <SwitchPreference
-            android:title="Cash Account Add"
+            android:title="Add Cash to Account"
             android:key="settings_cl_add_enabled"
-            android:summary="Enable/Disable 'add cash' to customer account.">
+            android:summary="Enable/Disable 'Add Cash' to Customer Account.">
         </SwitchPreference>
+
+        <!--EditTextPreference
+            android:title="Prepaid Extra Cashback (%)"
+            android:key="settings_ppcb_rate"
+            android:summary="0% extra Cashback on Prepaid Amount.\n0 means Disabled."
+            android:inputType="number"
+            android:digits="0123456789."
+            android:maxLength="@string/cb_rate_char_limit"
+            android:dependency="settings_cl_add_enabled">
+        </EditTextPreference>
+
+        <EditTextPreference
+            android:title="Prepaid Minimum Amount"
+            android:key="settings_ppcb_amt"
+            android:summary="Minimum Prepaid Deposit for Extra Cashback"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:maxLength="@string/cash_char_limit"
+            android:dependency="settings_cl_add_enabled">
+        </EditTextPreference-->
+
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="PROFILE">
+        android:title="PREPAID">
+
+        <EditTextPreference
+            android:title="Prepaid Extra Cashback (%)"
+            android:key="settings_ppcb_rate"
+            android:summary="0% extra Cashback on Prepaid Amount.\n0 means Disabled."
+            android:inputType="number"
+            android:digits="0123456789."
+            android:maxLength="@string/cb_rate_char_limit">
+        </EditTextPreference>
+
+        <EditTextPreference
+            android:title="Prepaid Minimum Amount"
+            android:key="settings_ppcb_amt"
+            android:summary="Minimum Prepaid Deposit for Extra Cashback"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:maxLength="@string/cash_char_limit">
+        </EditTextPreference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="OTHERS">
 
         <PreferenceScreen
             android:title="Profile Settings">
@@ -56,9 +101,42 @@
             </EditTextPreference>
 
         </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="External Invoice Settings">
+
+            <SwitchPreference
+                android:title="Ask Linked Invoice#"
+                android:key="settings_linked_invoice"
+                android:summary="Ask for Linked External Invoice Number for each Transaction?">
+            </SwitchPreference>
+
+            <SwitchPreference
+                android:title="Linked Invoice# Optional"
+                android:key="settings_invoice_optional"
+                android:summary="If disabled, transaction without Invoice Number is not allowed."
+                android:dependency="settings_linked_invoice">
+            </SwitchPreference>
+
+            <SwitchPreference
+                android:title="Invoice# Only Numbers"
+                android:key="settings_invoice_numbers_only"
+                android:summary="Invoice Number contain only numbers from 0-9?"
+                android:dependency="settings_linked_invoice">
+            </SwitchPreference>
+
+        </PreferenceScreen>
+
+        <SwitchPreference
+            android:title="Use Camera Flash"
+            android:key="settings_camera_flash"
+            android:summary="Always use Camera Flash while Scanning Card"
+            android:defaultValue="false">
+        </SwitchPreference>
+
     </PreferenceCategory>
 
-    <PreferenceCategory
+    <!--PreferenceCategory
         android:title="LINKED INVOICE">
 
         <PreferenceScreen
@@ -96,6 +174,6 @@
             android:summary="Always use Camera Flash while Scanning Card"
             android:defaultValue="false">
         </SwitchPreference>
-    </PreferenceCategory>
+    </PreferenceCategory-->
 
 </PreferenceScreen>

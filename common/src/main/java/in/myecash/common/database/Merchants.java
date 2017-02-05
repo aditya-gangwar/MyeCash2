@@ -40,12 +40,30 @@ public class Merchants
   private String agentId;
   private Date lastRenewDate;
   private Date removeReqDate;
-  private boolean invoiceNumAsk;
-  private boolean invoiceNumOptional;
-  private boolean invoiceNumOnlyNumbers;
+  private Boolean invoiceNumAsk;
+  private Boolean invoiceNumOptional;
+  private Boolean invoiceNumOnlyNumbers;
   private Date delLocalFilesReq;
   private String contactPhone;
   private String contactName;
+  private String prepaidCbRate;
+  private Integer prepaidCbMinAmt;
+
+  public Integer getPrepaidCbMinAmt() {
+    return prepaidCbMinAmt;
+  }
+
+  public void setPrepaidCbMinAmt(Integer prepaidCbMinAmt) {
+    this.prepaidCbMinAmt = prepaidCbMinAmt;
+  }
+
+  public String getPrepaidCbRate() {
+    return prepaidCbRate;
+  }
+
+  public void setPrepaidCbRate(String prepaidCbRate) {
+    this.prepaidCbRate = prepaidCbRate;
+  }
 
   public String getContactName() {
     return contactName;

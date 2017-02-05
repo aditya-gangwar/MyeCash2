@@ -35,6 +35,25 @@ public class Transaction implements Serializable
   private Integer cb_credit;
   private java.util.Date updated;
   private Cashback cashback;
+  /*private String ppCbRate;
+  private Integer ppCbCredit;
+
+  public String getPpCbRate() {
+    return ppCbRate;
+  }
+
+  public void setPpCbRate(String ppCbRate) {
+    this.ppCbRate = ppCbRate;
+  }
+
+  public Integer getPpCbCredit() {
+    return ppCbCredit;
+  }
+
+  public void setPpCbCredit(Integer ppCbCredit) {
+    this.ppCbCredit = ppCbCredit;
+  }*/
+
   public String getCust_private_id()
   {
     return cust_private_id;

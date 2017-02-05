@@ -825,6 +825,9 @@ public class CashbackActivity extends AppCompatActivity implements
 
         prefs.putString(SettingsFragment.KEY_CB_RATE, mMerchant.getCb_rate());
         prefs.putBoolean(SettingsFragment.KEY_ADD_CL_ENABLED, mMerchant.getCl_add_enable());
+        prefs.putString(SettingsFragment.KEY_PP_CB_RATE, mMerchant.getPrepaidCbRate());
+        prefs.putString(SettingsFragment.KEY_PP_MIN_AMT, String.valueOf(mMerchant.getPrepaidCbMinAmt()));
+
         prefs.putString(SettingsFragment.KEY_MOBILE_NUM, mMerchant.getMobile_num());
         prefs.putString(SettingsFragment.KEY_EMAIL, mMerchant.getEmail());
         prefs.putString(SettingsFragment.KEY_CONTACT_PHONE, mMerchant.getContactPhone());

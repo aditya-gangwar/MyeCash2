@@ -135,8 +135,19 @@ public class MerchantDetailsDialog extends DialogFragment  {
             mName.setText(merchant.getName());
             String txt = merchant.getBusinessCategory()+", "+merchant.getCity();
             mCategoryNdCity.setText(txt);
-            String text = merchant.getCbRate()+" %";
-            mCbRate.setText(text);
+
+            String textCbRate = "";
+            if(Integer.valueOf(merchant.getPpCbRate()) <= 0) {
+                textCbRate = merchant.getCbRate() + "%";
+                mPpCbDetails.setVisibility(View.GONE);
+            } else {
+                textCbRate = merchant.getCbRate()+"% + "+merchant.getPpCbRate()+"% *";
+                mPpCbDetails.setVisibility(View.VISIBLE);
+                String ppCbDetails = "* Extra "+merchant.getPpCbRate()+"% when Prepaid amount > "+AppCommonUtil.getAmtStr(merchant.getPpMinAmt());
+                mPpCbDetails.setText(ppCbDetails);
+            }
+            mCbRate.setText(textCbRate);
+
             Date time = cb.getLastTxnTime();
             if(time==null) {
                 time = cb.getCreateTime();
@@ -171,8 +182,9 @@ public class MerchantDetailsDialog extends DialogFragment  {
     private EditText mName;
     private EditText mCategoryNdCity;
     private EditText mCbRate;
-    private EditText mLastTxnTime;
+    private EditText mPpCbDetails;
 
+    private EditText mLastTxnTime;
     private EditText mInputTotalBill;
 
     private EditText mInputAccAvailable;
@@ -200,6 +212,7 @@ public class MerchantDetailsDialog extends DialogFragment  {
         mName = (EditText) v.findViewById(R.id.input_brand_name);;
         mCategoryNdCity = (EditText) v.findViewById(R.id.input_category_city);;
         mCbRate = (EditText) v.findViewById(R.id.input_cb_rate);;
+        mPpCbDetails = (EditText) v.findViewById(R.id.input_pp_cb_details);;
         mLastTxnTime = (EditText) v.findViewById(R.id.input_last_txn_time);;
 
         mInputTotalBill = (EditText) v.findViewById(R.id.input_total_bill);

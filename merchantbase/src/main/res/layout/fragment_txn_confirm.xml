@@ -59,13 +59,13 @@
 
         <LinearLayout
             style="@style/LL_Vertical_paddingSidesXL"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_space">
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_bill_amt"
-                android:layout_marginBottom="@dimen/medium_space"
-                android:layout_marginTop="@dimen/large_space">
+                android:layout_marginBottom="@dimen/medium_space">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -93,17 +93,20 @@
                 android:layout_marginBottom="@dimen/medium_space"
                 android:visibility="visible">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_account_balance_wallet_white_18dp"
-                    android:tint="@color/primary"/>
                 <EditText
                     style="@style/Edittext_only_view_medium"
                     android:layout_width="wrap_content"
                     android:text="Debit Account"
                     android:layout_weight="1"
-                    android:gravity="left" />
+                    android:gravity="left"
+                    android:id="@+id/editText" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                    android:tint="@color/primary"/>
+
                 <EditText
                     style="@style/Edittext_only_view_medium"
                     android:id="@+id/input_debit_account"
@@ -278,15 +281,21 @@
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:id="@+id/layout_add_cb">
+                android:id="@+id/layout_add_cb"
+                android:layout_marginTop="@dimen/medium_space">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_favorite_white_18dp"
+                    android:tint="@color/primary"/>
                 <EditText
-                    style="@style/Edittext_only_view_small"
+                    style="@style/Edittext_only_view_medium"
                     android:layout_width="wrap_content"
                     android:text="Add Cashback:"
                     android:textStyle="italic"
                     android:gravity="left"/>
                 <EditText
-                    style="@style/Edittext_only_view_small"
+                    style="@style/Edittext_only_view_medium"
                     android:id="@+id/input_add_cb"
                     android:layout_width="wrap_content"
                     android:text="\u20B9 99"
