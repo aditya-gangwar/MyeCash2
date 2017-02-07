@@ -1,5 +1,7 @@
 package in.myecash.appbase.entities;
 
+import android.view.View;
+
 import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
 import com.backendless.exceptions.BackendlessException;
@@ -88,6 +90,27 @@ public class MyTransaction {
         mCurrTransaction = Backendless.Persistence.save( mCurrTransaction );
     }
 
+    public static String getCbDetailStr(Transaction txn) {
+
+        String detail = "";
+        int cbEligibleAmt = txn.getCb_billed() - txn.getCb_debit();
+
+        if( txn.getCb_credit()>0 && txn.getExtra_cb_credit()>0) {
+            detail = "( "+
+                    AppCommonUtil.getAmtStr(txn.getCb_credit()) + " @ " + txn.getCb_percent()+"% of "+ cbEligibleAmt +
+                    "  +\n  "+
+                    AppCommonUtil.getAmtStr(txn.getExtra_cb_credit()) + " @ " + txn.getExtra_cb_percent()+"% of "+ txn.getCl_credit()+
+                    " )";
+        } else {
+            if(txn.getCb_credit()>0) {
+                detail = "(" + txn.getCb_percent()+"% of "+AppCommonUtil.getAmtStr(cbEligibleAmt) + ")";
+            } else if(txn.getExtra_cb_credit()>0) {
+                detail = "(" + txn.getExtra_cb_percent()+"% of "+AppCommonUtil.getAmtStr(txn.getCl_credit()) + ")";
+            }
+        }
+        return detail;
+    }
+
     /*
      * comparator functions for sorting
      */
@@ -119,7 +142,7 @@ public class MyTransaction {
         @Override
         public int compare(Transaction lhs, Transaction rhs) {
             // TODO: Handle null x or y values
-            return compare(lhs.getCb_credit(), rhs.getCb_credit());
+            return compare( (lhs.getCb_credit()+lhs.getExtra_cb_credit()), (rhs.getCb_credit()+rhs.getExtra_cb_credit()) );
         }
         private static int compare(int a, int b) {
             return a < b ? -1

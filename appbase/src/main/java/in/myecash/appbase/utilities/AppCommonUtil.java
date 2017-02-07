@@ -62,8 +62,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by adgangwa on 16-02-2016.
@@ -162,6 +170,30 @@ public class AppCommonUtil {
         return isNetworkConnected? ErrorCodes.NO_ERROR:ErrorCodes.NO_INTERNET_CONNECTION;
     }
 
+    // This function can be called from background thread only
+    // as it checks for internet website
+    public static int isInternetConnected() {
+        InetAddress inetAddress = null;
+        try {
+            Future<InetAddress> future = Executors.newSingleThreadExecutor().submit(new Callable<InetAddress>() {
+                @Override
+                public InetAddress call() {
+                    try {
+                        return InetAddress.getByName("google.com");
+                    } catch (UnknownHostException e) {
+                        return null;
+                    }
+                }
+            });
+            inetAddress = future.get(AppConstants.INTERNET_CHECK_TIMEUT_MILISECS, TimeUnit.MILLISECONDS);
+            future.cancel(true);
+        } catch (InterruptedException e) {
+        } catch (ExecutionException e) {
+        } catch (TimeoutException e) {
+        }
+        return (inetAddress!=null && !inetAddress.equals(""))? ErrorCodes.NO_ERROR: ErrorCodes.NO_INTERNET_CONNECTION;
+    }
+
     /*
      * Fxs to hide onscreen keyboard
      */
@@ -195,6 +227,9 @@ public class AppCommonUtil {
             expMsg = csvFields[2];*/
             mErrorParams.init(expMsg);
             expCode = String.valueOf(mErrorParams.errorCode);
+            if(mErrorParams.attemptAvailable!=-1) {
+                expMsg = String.valueOf(mErrorParams.attemptAvailable);
+            }
         } else {
             expCode = e.getCode();
         }
@@ -503,7 +538,7 @@ public class AppCommonUtil {
     }
 
     /*
-     * Functions to add Rupee symbol to givcen Amount
+     * Functions to add Rupee symbol to given Amount
      */
     public static String getSignedAmtStr(int value, boolean isCredit) {
         if(value==0) {

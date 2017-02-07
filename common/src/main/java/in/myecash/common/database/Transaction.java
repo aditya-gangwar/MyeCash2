@@ -35,24 +35,24 @@ public class Transaction implements Serializable
   private Integer cb_credit;
   private java.util.Date updated;
   private Cashback cashback;
-  /*private String ppCbRate;
-  private Integer ppCbCredit;
+  private String extra_cb_percent;
+  private Integer extra_cb_credit;
 
-  public String getPpCbRate() {
-    return ppCbRate;
+  public String getExtra_cb_percent() {
+    return extra_cb_percent;
   }
 
-  public void setPpCbRate(String ppCbRate) {
-    this.ppCbRate = ppCbRate;
+  public void setExtra_cb_percent(String extra_cb_percent) {
+    this.extra_cb_percent = extra_cb_percent;
   }
 
-  public Integer getPpCbCredit() {
-    return ppCbCredit;
+  public Integer getExtra_cb_credit() {
+    return extra_cb_credit;
   }
 
-  public void setPpCbCredit(Integer ppCbCredit) {
-    this.ppCbCredit = ppCbCredit;
-  }*/
+  public void setExtra_cb_credit(Integer extra_cb_credit) {
+    this.extra_cb_credit = extra_cb_credit;
+  }
 
   public String getCust_private_id()
   {

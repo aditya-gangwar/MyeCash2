@@ -55,7 +55,14 @@
                 android:id="@+id/txn_cashback_award"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="\u20B9 23  @ 4%"
+                android:text="\u20B9 23"
+                android:textStyle="italic"/>
+            <EditText
+                style="@style/Edittext_only_click_small_lessPad"
+                android:id="@+id/txn_cb_award_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\u20B9 23"
                 android:textStyle="italic"/>
 
         </LinearLayout>

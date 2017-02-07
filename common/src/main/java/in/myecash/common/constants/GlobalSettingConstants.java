@@ -75,7 +75,7 @@ public class GlobalSettingConstants {
     static {
         Map<String, String> aMap = new HashMap<>(TOTAL_SETTINGS_CNT);
         aMap.put(SETTINGS_MERCHANT_PASSWD_RESET_MINS,"10");
-        aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS,"1");
+        aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS,"10");
         aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_MINS,"10");
         aMap.put(SETTINGS_CUSTOMER_ACCOUNT_BLOCK_MINS,"10");
         aMap.put(SETTINGS_CUST_ACC_LIMIT_MODE_MINS,"10");
@@ -85,11 +85,11 @@ public class GlobalSettingConstants {
 
         aMap.put(SETTINGS_CB_REDEEM_CARD_REQ,"false");
         aMap.put(SETTINGS_ACC_DB_CARD_REQ,"false");
-        aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN,"500");
+        aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN,"5000");
         aMap.put(SETTINGS_CL_DEBIT_LIMIT_FOR_PIN,"0");
-        aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN,"0");
+        aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN,"10");
         aMap.put(SETTINGS_CB_REDEEM_LIMIT,"200");
-        aMap.put(SETTINGS_CUSTOMER_CASH_LIMIT,"500");
+        aMap.put(SETTINGS_CUSTOMER_CASH_LIMIT,"5000");
 
         aMap.put(SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS,"30");
         aMap.put(SETTINGS_TXNS_INTABLE_KEEP_DAYS,"2");
@@ -103,7 +103,7 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_CUST_TXN_HISTORY_DAYS,"90");
         aMap.put(SETTINGS_SERVICE_DISABLED_UNTIL,null);
         aMap.put(SETTINGS_TXN_IMAGE_CAPTURE_MODE,String.valueOf(TXN_IMAGE_CAPTURE_CARD_REQUIRED));
-        aMap.put(SETTINGS_DAILY_DOWNTIME_START_HOUR,"1");
+        aMap.put(SETTINGS_DAILY_DOWNTIME_START_HOUR,"5");
         aMap.put(SETTINGS_DAILY_DOWNTIME_END_HOUR,"6");
         aMap.put(SETTINGS_SERVICE_NA_URL,"http://www.whysotechnologies.com/backsoon");
         valuesGlobalSettings = Collections.unmodifiableMap(aMap);

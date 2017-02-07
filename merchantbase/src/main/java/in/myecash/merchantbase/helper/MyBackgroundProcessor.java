@@ -204,6 +204,15 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     protected int handleMsg(Message msg) {
         int error = ErrorCodes.NO_ERROR;
         try {
+
+            // It checks with internet site - so checking only during login
+            if( msg.what==MyRetainedFragment.REQUEST_LOGIN) {
+                int err = AppCommonUtil.isInternetConnected();
+                if(err!=ErrorCodes.NO_ERROR) {
+                    return err;
+                }
+            }
+
             switch (msg.what) {
                 case MyRetainedFragment.REQUEST_GET_CASHBACK:
                     error = getCashback((String) msg.obj);

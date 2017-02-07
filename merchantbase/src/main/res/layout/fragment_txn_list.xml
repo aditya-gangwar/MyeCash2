@@ -8,9 +8,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar_report"
         android:id="@+id/txnlist_header"
-        android:background="@color/bg_light_grey">
+        android:background="@color/bg_light_grey"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <EditText
             style="@style/Edittext_only_view_small"
@@ -44,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Total Bill  |  + Cashback @ x%"
+            android:text="Total Bill  |  + Cashback Add"
             android:paddingBottom="@dimen/edittext_padding_less"/>
 
         <EditText
@@ -83,5 +85,6 @@
         android:id="@+id/txn_recycler_view"
         android:layout_below="@id/txnlist_header">
     </android.support.v7.widget.RecyclerView>
+
 
 </RelativeLayout>

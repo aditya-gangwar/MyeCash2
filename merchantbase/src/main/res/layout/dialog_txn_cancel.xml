@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="?android:attr/windowBackground">
 
     <EditText
@@ -13,9 +12,13 @@
 
     <ScrollView
         android:id="@+id/scroll"
+        android:layout_below="@id/label_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="false">
+        android:fillViewport="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             style="@style/LL_Vertical_paddingSidesLarge">
@@ -58,7 +61,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="AUX789R5"
-                    android:layout_weight="65"
+                    android:layout_weight="70"
                     android:gravity="left"/>
             </LinearLayout>
             <LinearLayout
@@ -84,7 +87,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:text="xxxxxx9675"
-                    android:layout_weight="65"
+                    android:layout_weight="70"
                     android:gravity="left"/>
             </LinearLayout>
 
@@ -133,15 +136,15 @@
                         android:layout_gravity="bottom"/>
                     <EditText
                         style="@style/Edittext_only_view_small_lessPad"
-                        android:layout_weight="30"
+                        android:layout_weight="25"
                         android:gravity="left"
                         android:id="@+id/input_acc_debit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="+ \u20B9 455"/>
+                        android:text="+ \u20B9 4554"/>
                     <EditText
                         style="@style/Edittext_only_view_small_lessPad"
-                        android:layout_weight="40"
+                        android:layout_weight="45"
                         android:gravity="left"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -162,28 +165,28 @@
                         android:visibility="invisible"/>
                     <EditText
                         style="@style/Edittext_only_view_small_lessPad"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_width="0dp"
                         android:text="Add"
                         android:layout_weight="30"
-                        android:gravity="left|bottom"
+                        android:gravity="left|top"
                         android:layout_gravity="bottom"/>
                     <EditText
                         style="@style/Edittext_only_view_small_lessPad"
-                        android:layout_weight="30"
+                        android:layout_weight="25"
                         android:gravity="left"
                         android:id="@+id/input_acc_add"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="+ \u20B9 455"/>
                     <EditText
                         style="@style/Edittext_only_view_small_lessPad"
-                        android:layout_weight="40"
+                        android:layout_weight="45"
                         android:gravity="left"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="No Return"
-                        android:textColor="@color/red_negative"/>
+                        android:layout_height="match_parent"
+                        android:text="Can't be Cancelled"
+                        android:textColor="@color/accent2"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -225,26 +228,26 @@
                         android:visibility="invisible"/>
                     <EditText
                         style="@style/Edittext_only_view_small_lessPad"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_width="0dp"
                         android:text="Debit"
                         android:layout_weight="30"
-                        android:gravity="left|bottom"
+                        android:gravity="left|top"
                         android:layout_gravity="bottom"/>
                     <EditText
                         style="@style/Edittext_only_view_small_lessPad"
-                        android:layout_weight="30"
+                        android:layout_weight="25"
                         android:gravity="left"
                         android:id="@+id/input_cb_debit"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="+ \u20B9 455"/>
                     <EditText
                         style="@style/Edittext_only_view_small_lessPad"
-                        android:layout_weight="40"
+                        android:layout_weight="45"
                         android:gravity="left"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="Will be Refunded"
                         android:textColor="@color/green_positive"/>
                 </LinearLayout>
@@ -262,28 +265,51 @@
                         android:visibility="invisible"/>
                     <EditText
                         style="@style/Edittext_only_view_small_lessPad"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_width="0dp"
                         android:text="Add"
                         android:layout_weight="30"
-                        android:gravity="left|bottom"
+                        android:gravity="left|top"
                         android:layout_gravity="bottom"/>
                     <EditText
                         style="@style/Edittext_only_view_small_lessPad"
-                        android:layout_weight="30"
+                        android:layout_weight="25"
                         android:gravity="left"
                         android:id="@+id/input_cb_add"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="+ \u20B9 455"/>
                     <EditText
                         style="@style/Edittext_only_view_small_lessPad"
-                        android:layout_weight="40"
+                        android:id="@+id/details_cb_add"
+                        android:layout_weight="45"
                         android:gravity="left"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Will be Cancelled"
+                        android:layout_height="match_parent"
+                        android:text="* Only \u20B9 175 will be Cancelled."
                         android:textColor="@color/green_positive"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap"
+                    android:visibility="visible"
+                    android:id="@+id/layout_cb_add_remarks">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_favorite_white_18dp"
+                        android:tint="@color/primary"
+                        android:visibility="invisible"/>
+                    <EditText
+                        style="@style/Edittext_only_view_small_lessPad"
+                        android:id="@+id/remarks_cb_add"
+                        android:layout_weight="100"
+                        android:gravity="left"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:paddingTop="0dp"
+                        android:text="* \u20B9 175 can't be cancelled, as given as Extra Cashback on Cash added to Account."/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -327,7 +353,7 @@
                     android:layout_width="0dp"
                     android:text="Card"
                     android:layout_weight="30"
-                    android:gravity="left|bottom"
+                    android:gravity="left|top"
                     android:layout_gravity="bottom"/>
                 <!--View
                     style="@style/Divider_vertical_Medium"/-->
@@ -337,7 +363,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:hint="Touch to Scan"
-                    android:layout_weight="65"
+                    android:layout_weight="70"
                     android:gravity="left"/>
             </LinearLayout>
 
@@ -345,4 +371,4 @@
 
     </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>

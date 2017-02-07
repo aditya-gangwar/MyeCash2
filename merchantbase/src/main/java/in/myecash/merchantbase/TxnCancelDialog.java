@@ -227,8 +227,18 @@ public class TxnCancelDialog extends DialogFragment
             } else {
                 mLayoutCbDebit.setVisibility(View.GONE);
             }
-            if(txn.getCb_credit()>0) {
-                mInputCbAdd.setText(AppCommonUtil.getSignedAmtStr(txn.getCb_credit(), true));
+            int totalCb = txn.getCb_credit()+txn.getExtra_cb_credit();
+            if( totalCb > 0 ) {
+                mInputCbAdd.setText(AppCommonUtil.getAmtStr(totalCb));
+                if(txn.getExtra_cb_credit() > 0) {
+                    String str = "* Only " + AppCommonUtil.getAmtStr(txn.getCb_credit()) + " will be Cancelled";
+                    mDetailsCbAdd.setText(str);
+                    mLayoutCbAddRemarks.setVisibility(View.VISIBLE);
+                    str = "* " + AppCommonUtil.getAmtStr(txn.getExtra_cb_credit()) + " can't be cancelled, as Extra Cashback on Cash added to Account.";
+                    mRemarksCbAdd.setText(str);
+                } else {
+                    mLayoutCbAddRemarks.setVisibility(View.GONE);
+                }
             } else {
                 mLayoutCbAdd.setVisibility(View.GONE);
             }
@@ -253,8 +263,12 @@ public class TxnCancelDialog extends DialogFragment
     private View mLayoutCb;
     private View mLayoutCbDebit;
     private EditText mInputCbDebit;
+
     private View mLayoutCbAdd;
     private EditText mInputCbAdd;
+    private EditText mDetailsCbAdd;
+    private View mLayoutCbAddRemarks;
+    private EditText mRemarksCbAdd;
 
     private EditText mInputQrCard;
 
@@ -271,8 +285,12 @@ public class TxnCancelDialog extends DialogFragment
         mLayoutCb = v.findViewById(R.id.layout_cb);
         mLayoutCbDebit = v.findViewById(R.id.layout_cb_debit);
         mInputCbDebit = (EditText) v.findViewById(R.id.input_cb_debit);
+
         mLayoutCbAdd = v.findViewById(R.id.layout_cb_add);
         mInputCbAdd = (EditText) v.findViewById(R.id.input_cb_add);
+        mDetailsCbAdd = (EditText) v.findViewById(R.id.details_cb_add);
+        mLayoutCbAddRemarks = v.findViewById(R.id.layout_cb_add_remarks);
+        mRemarksCbAdd = (EditText) v.findViewById(R.id.remarks_cb_add);
 
         mInputQrCard = (EditText) v.findViewById(R.id.input_qr_card);
     }

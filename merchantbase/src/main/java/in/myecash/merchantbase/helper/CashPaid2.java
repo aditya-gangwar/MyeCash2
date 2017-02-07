@@ -157,6 +157,7 @@ public class CashPaid2 implements Serializable, View.OnTouchListener {
 
         // disable remaining slots - if any
         for(int i=index; i<UI_SLOT_COUNT; i++) {
+            unmarkInputAmt(i);
             mInputCashPay[i].setText(AppCommonUtil.getAmtStr(0));
             //mInputCashPay[i].setText(AppConstants.SYMBOL_RS);
             mInputCashPay[i].setEnabled(false);

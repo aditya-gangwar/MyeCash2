@@ -303,7 +303,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="left"
                         android:layout_weight="1"
-                        android:text="(4% of  \u20B9 4567)"
+                        android:text="(4% + 10%)"
                         android:id="@+id/label_trans_add_cb_sub"/>
                     <EditText
                         style="@style/Edittext_only_view_medium"

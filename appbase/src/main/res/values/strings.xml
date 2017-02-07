@@ -20,11 +20,22 @@
     <string name="reset_passwd_info">New password will be sent on your registered Mobile number after %s minutes.\n\nYou will not be able to login using old password till then.</string>
     <string name="mchnt_txn_history_info">View Transactions done in last %s days.</string>
 
+    <!-- Text used in Preferences.xml -->
+    <string name="addCashSummary">%s ability to Add Cash to Customer Account.</string>
+    <string name="addCBSummary">%s%% of Bill Amount is given as Cashback to Customer.\nIf 0%%, means No Cashback is given.</string>
+    <string name="addExtraCBSummary">%s%% of \'Cash Added\' to Customer Account is given as \'Extra Cashback\'.\nIf 0%%, means No Extra Cashback is given.</string>
+    <string name="minCashExtraCBSummary">Extra Cashback applies, only if \'Cash Added\' to Customer Account (in single go) is more than %s.</string>
+    <string name="passwordSummary">Change your account password.</string>
+    <string name="regdMobileSummary">"Change \'%s\' as Registered Mobile number."</string>
+    <string name="emailSummary">"Change \'%s\' as contact Email ID."</string>
+    <string name="contactPhoneSummary">"Change \'%s\' as Business Contact Phone number.\nDo not add 0 in start."</string>
+
+
     <!-- Text used in from code only -->
     <string name="ops_no_data_info">No Operations done in last %s days.</string>
-
-
     <string name="serviceNaDefaultUrl">http://www.whysotechnologies.com/backsoon</string>
+
+
 
 
     <string name="empty_in_angle_brackets">\u003Cempty\u003E</string>

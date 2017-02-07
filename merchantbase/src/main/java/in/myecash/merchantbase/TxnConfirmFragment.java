@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
@@ -201,11 +202,17 @@ public class TxnConfirmFragment extends Fragment {
         }
 
         // add cashback
-        value = curTransaction.getCb_credit();
+        //value = curTransaction.getCb_credit();
+        value = curTransaction.getCb_credit() + curTransaction.getExtra_cb_credit();
         if(value == 0) {
             mLayoutAddCb.setVisibility(View.GONE);
+            mLayoutCbDetails.setVisibility(View.GONE);
         } else {
-            mInputAddCb.setText(AppCommonUtil.getSignedAmtStr(value, true));
+            mLayoutAddCb.setVisibility(View.VISIBLE);
+            mLayoutCbDetails.setVisibility(View.VISIBLE);
+
+            mInputAddCb.setText(AppCommonUtil.getAmtStr(value));
+            mInputCbDetails.setText(MyTransaction.getCbDetailStr(curTransaction));
         }
 
         if(mMerchant.isInvoiceNumAsk()) {
@@ -253,6 +260,9 @@ public class TxnConfirmFragment extends Fragment {
     private LinearLayout mLayoutAddCb;
     private EditText mInputAddCb;
 
+    private View mLayoutCbDetails;
+    private EditText mInputCbDetails;
+
     private View mLayoutExtraDetails;
     private View mLayoutInvoiceNum;
     private EditText mInputInvoiceNum;
@@ -293,6 +303,9 @@ public class TxnConfirmFragment extends Fragment {
 
         mLayoutAddCb = (LinearLayout) v.findViewById(R.id.layout_add_cb);
         mInputAddCb = (EditText) v.findViewById(R.id.input_add_cb);
+
+        mLayoutCbDetails = v.findViewById(R.id.layout_cb_details);
+        mInputCbDetails = (EditText) v.findViewById(R.id.input_cb_details);
 
         mLayoutExtraDetails = v.findViewById(R.id.layout_extra_details);
         mLayoutInvoiceNum = v.findViewById(R.id.layout_invoice_num);

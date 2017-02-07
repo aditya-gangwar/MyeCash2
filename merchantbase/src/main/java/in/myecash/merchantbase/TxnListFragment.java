@@ -439,8 +439,15 @@ public class TxnListFragment extends Fragment {
                 } else {
                     sb.append("0").append(CommonConstants.CSV_DELIMETER);
                 }
+                if(txn.getExtra_cb_credit() > 0) {
+                    sb.append(txn.getExtra_cb_credit()).append(CommonConstants.CSV_DELIMETER);
+                    cbAwardTotal = cbAwardTotal + txn.getExtra_cb_credit();
+                } else {
+                    sb.append("0").append(CommonConstants.CSV_DELIMETER);
+                }
 
                 sb.append(txn.getCb_percent()).append("%").append(CommonConstants.CSV_DELIMETER);
+                sb.append(txn.getExtra_cb_percent()).append("%").append(CommonConstants.CSV_DELIMETER);
 
                 /*if(txn.getUsedCardId()==null) {
                     sb.append(CommonConstants.CSV_DELIMETER);
@@ -570,6 +577,7 @@ public class TxnListFragment extends Fragment {
 
         public EditText mBillAmount;
         public EditText mCashbackAward;
+        public EditText mCbAwardCancel;
         public View mAccountIcon;
         public EditText mAccountAmt;
         public View mCashbackIcon;
@@ -594,6 +602,7 @@ public class TxnListFragment extends Fragment {
             mCashbackAmt = (EditText) itemView.findViewById(R.id.txn_cashback_amt);
 
             mCashbackAward = (EditText) itemView.findViewById(R.id.txn_cashback_award);
+            mCbAwardCancel = (EditText) itemView.findViewById(R.id.txn_cb_award_cancel);
             //mSecureIcon = (ImageView)itemView.findViewById(R.id.txn_secure_icon);
 
             mLayoutCancel = itemView.findViewById(R.id.layout_cancelled);
@@ -674,8 +683,10 @@ public class TxnListFragment extends Fragment {
                 mCashbackAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary_text));
             }
 
-            if(mTxn.getCb_credit() > 0) {
-                String cbData = AppCommonUtil.getSignedAmtStr(mTxn.getCb_credit(), true)+" @ "+mTxn.getCb_percent()+"%";
+            int totalCb = mTxn.getCb_credit()+mTxn.getExtra_cb_credit();
+            if( totalCb > 0) {
+                //String cbData = AppCommonUtil.getAmtStr(mTxn.getCb_credit())+" @ "+mTxn.getCb_percent()+"%";
+                String cbData = AppCommonUtil.getAmtStr(totalCb);
                 mCashbackAward.setText(cbData);
             } else {
                 mCashbackAward.setText("-");
@@ -684,6 +695,8 @@ public class TxnListFragment extends Fragment {
             // changes if txn was cancelled
             if(mTxn.getCancelTime()==null) {
                 mLayoutCancel.setVisibility(View.GONE);
+                mCbAwardCancel.setVisibility(View.GONE);
+
                 // need to remove strike through - must if last txn was cancelled one
                 mBillAmount.setPaintFlags(mBillAmount.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
                 mCashbackAward.setPaintFlags(mCashbackAward.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
@@ -701,6 +714,14 @@ public class TxnListFragment extends Fragment {
                 if(txn.getCb_credit() > 0) {
                     mCashbackAward.setPaintFlags(mCashbackAward.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 }
+                if(txn.getExtra_cb_credit() > 0) {
+                    // Extra CB can't be cancelled
+                    mCbAwardCancel.setVisibility(View.VISIBLE);
+                    mCbAwardCancel.setText(AppCommonUtil.getAmtStr(mTxn.getExtra_cb_credit()));
+                } else {
+                    mCbAwardCancel.setVisibility(View.GONE);
+                }
+
                 if(txn.getCb_debit()>0) {
                     mCashbackAmt.setPaintFlags(mCashbackAmt.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 }

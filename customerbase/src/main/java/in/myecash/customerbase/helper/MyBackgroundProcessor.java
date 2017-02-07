@@ -128,6 +128,15 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     @Override
     protected int handleMsg(Message msg) {
         int error = ErrorCodes.NO_ERROR;
+
+        // It checks with internet site - so checking only during login
+        if( msg.what==MyRetainedFragment.REQUEST_LOGIN) {
+            int err = AppCommonUtil.isInternetConnected();
+            if(err!=ErrorCodes.NO_ERROR) {
+                return err;
+            }
+        }
+
         switch(msg.what) {
             case MyRetainedFragment.REQUEST_LOGIN:
                 error = loginCustomer((MessageLogin) msg.obj);

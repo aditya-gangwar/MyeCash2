@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 
+import in.myecash.common.constants.ErrorCodes;
+
 /**
  * Created by adgangwa on 17-07-2016.
  */
@@ -33,9 +35,12 @@ public abstract class BackgroundProcessor<T> extends HandlerThread {
         mRequestHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
+
                 // return result to calling UI thread
                 final int currOperation = msg.what;
+                //final int errorCode = (err==ErrorCodes.NO_ERROR) ? handleMsg(msg) : err;
                 final int errorCode = handleMsg(msg);
+
                 /*if(mListener.isQuitting()) {
                     LogMy.d(TAG,"Fragment is quitting: "+currOperation+", "+errorCode);
                     return;

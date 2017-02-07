@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/LL_Vertical"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
     <EditText
         style="@style/Dialog_title"
@@ -12,7 +12,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="false">
+        android:fillViewport="false"
+        android:layout_below="@id/label_title">
 
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesLarge"
@@ -64,7 +65,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Txn ID"
-                android:layout_weight="45"
+                android:layout_weight="40"
                 android:gravity="left|center_vertical"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
@@ -72,7 +73,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="TBS"
-                android:layout_weight="55"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -88,7 +89,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Time"
-                android:layout_weight="45"
+                android:layout_weight="40"
                 android:gravity="left|center_vertical"
                 />
             <EditText
@@ -97,7 +98,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="TBS"
-                android:layout_weight="55"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"
                 />
         </LinearLayout>
@@ -116,8 +117,8 @@
                 style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
-                android:text="Linked Invoice#"
-                android:layout_weight="45"
+                android:text="Invoice#"
+                android:layout_weight="40"
                 android:gravity="left|center_vertical"
                 />
             <EditText
@@ -126,7 +127,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="TBS"
-                android:layout_weight="55"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"
                 />
         </LinearLayout>
@@ -144,7 +145,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Card Used"
-                android:layout_weight="45"
+                android:layout_weight="40"
                 android:gravity="left|center_vertical"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
@@ -152,7 +153,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="TBS"
-                android:layout_weight="55"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"/>
         </LinearLayout>
         <LinearLayout
@@ -169,7 +170,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="PIN Used"
-                android:layout_weight="45"
+                android:layout_weight="40"
                 android:gravity="left|center_vertical"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
@@ -177,7 +178,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="TBS"
-                android:layout_weight="55"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"/>
         </LinearLayout>
 
@@ -198,8 +199,8 @@
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Bill Amount"
-                android:layout_weight="45"
-                android:gravity="left|bottom"
+                android:layout_weight="40"
+                android:gravity="left|top"
                 android:layout_gravity="bottom"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
@@ -207,9 +208,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="\u20B9 NA"
-                android:layout_weight="55"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"
-                android:singleLine="true"
                 android:ellipsize="end"/>
         </LinearLayout>
         <LinearLayout
@@ -227,7 +227,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Cashback Bill"
-                android:layout_weight="45"
+                android:layout_weight="40"
                 android:gravity="left|center_vertical"
                 android:paddingTop="0dp"/>
             <EditText
@@ -236,7 +236,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="\u20B9 NA"
-                android:layout_weight="55"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"
                 android:paddingTop="0dp"/>
         </LinearLayout>
@@ -268,12 +268,12 @@
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Debit"
-                android:layout_weight="45"
-                android:gravity="left|bottom"
+                android:layout_weight="40"
+                android:gravity="left|top"
                 android:layout_gravity="bottom"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="55"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"
                 android:id="@+id/input_cb_redeem"
                 android:layout_width="0dp"
@@ -294,24 +294,69 @@
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Add"
-                android:layout_weight="45"
-                android:gravity="left|bottom"
+                android:layout_weight="40"
+                android:gravity="left|top"
                 android:layout_gravity="bottom"
                 android:paddingTop="0dp"/>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:layout_weight="60"
+                android:layout_width="0dp"
+                android:visibility="visible">
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:gravity="left|center_vertical"
+                    android:id="@+id/input_cb_award"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="\u20B9 252"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:gravity="left|center_vertical"
+                    android:id="@+id/input_cb_award2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="\u20B9 252"
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_cb_details"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_favorite_white_18dp"
+                android:visibility="invisible"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="55"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:text="Add"
+                android:layout_weight="40"
+                android:gravity="left|top"
+                android:layout_gravity="bottom"
+                android:paddingTop="0dp"
+                android:visibility="invisible"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"
-                android:id="@+id/input_cb_award"
+                android:id="@+id/input_cb_details"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="+ \u20B9 NA"
-                android:paddingTop="0dp"/>
+                android:text="( \u20B9 123 @ 5% of 2345  +  \n  \u20B9 123 @ 10% of 7865 )"
+                android:paddingTop="0dp"
+                android:textStyle="italic"/>
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="@dimen/small_space"/>
+            android:layout_height="@dimen/XS_space"/>
 
         <EditText
             style="@style/Edittext_only_view_small"
@@ -336,13 +381,13 @@
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Debit"
-                android:layout_weight="45"
-                android:gravity="left|bottom"
+                android:layout_weight="40"
+                android:gravity="left|top"
                 android:layout_gravity="bottom"
                 android:paddingTop="0dp"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="55"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"
                 android:id="@+id/input_acc_debit"
                 android:layout_width="0dp"
@@ -366,12 +411,12 @@
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Add"
-                android:layout_weight="45"
-                android:gravity="left|bottom"
+                android:layout_weight="40"
+                android:gravity="left|top"
                 android:layout_gravity="bottom"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="55"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"
                 android:id="@+id/input_acc_add"
                 android:layout_width="0dp"
@@ -406,7 +451,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Customer ID"
-                android:layout_weight="45"
+                android:layout_weight="40"
                 android:gravity="left|center_vertical"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
@@ -414,7 +459,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="TBS"
-                android:layout_weight="55"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"
                 android:textColor="@color/link_blue"/>
         </LinearLayout>
@@ -433,7 +478,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Mobile"
-                android:layout_weight="45"
+                android:layout_weight="40"
                 android:gravity="left|center_vertical"/>
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
@@ -441,7 +486,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="TBS"
-                android:layout_weight="55"
+                android:layout_weight="60"
                 android:gravity="left|center_vertical"/>
         </LinearLayout>
 
@@ -457,4 +502,4 @@
 
     </LinearLayout>
 </ScrollView>
-</LinearLayout>
+</RelativeLayout>

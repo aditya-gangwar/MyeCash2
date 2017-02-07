@@ -10,14 +10,14 @@ public class MyErrorParams {
     // Class contains some parameters returned by Backend in some cases
     // as error message of exception thrown
     public int errorCode;
-    //private int attemptAvailable;
+    public int attemptAvailable;
     public int opScheduledMins;
     public String imgFileName;
 
     public MyErrorParams() {}
     public MyErrorParams(int errorCode, int attemptAvailable, int opScheduledMins, String imgFileName) {
         this.errorCode = errorCode;
-        //this.attemptAvailable = attemptAvailable;
+        this.attemptAvailable = attemptAvailable;
         this.opScheduledMins = opScheduledMins;
         this.imgFileName = imgFileName;
     }
@@ -27,7 +27,7 @@ public class MyErrorParams {
     // Index of above parameters in CSV record
     private static int ERPM_CSV_MARKER = 0;
     private static int ERPM_CSV_ERROR_CODE = 1;
-    //private static int ERPM_CSV_ATTEMPTS = 2;
+    private static int ERPM_CSV_ATTEMPTS = 2;
     private static int ERPM_CSV_OP_SCH = 3;
     private static int ERPM_CSV_IMG = 4;
     private static int ERPM_CSV_TOTAL_FIELDS = 5;
@@ -41,11 +41,11 @@ public class MyErrorParams {
         csvFields[ERPM_CSV_MARKER] = ERROR_PARAMS_IN_MSG_MARKER;
         csvFields[ERPM_CSV_ERROR_CODE] = String.valueOf(errorCode);
 
-        /*if(attemptAvailable>=0) {
+        if(attemptAvailable>=0) {
             csvFields[ERPM_CSV_ATTEMPTS] = String.valueOf(attemptAvailable);
         } else {
             csvFields[ERPM_CSV_ATTEMPTS] = "";
-        }*/
+        }
 
         if(opScheduledMins>=0) {
             csvFields[ERPM_CSV_OP_SCH] = String.valueOf(opScheduledMins);
@@ -65,7 +65,7 @@ public class MyErrorParams {
     public boolean init(String csvStr) {
         if(csvStr== null || csvStr.isEmpty() || !csvStr.startsWith(ERROR_PARAMS_IN_MSG_MARKER)) {
             errorCode = -1;
-            //attemptAvailable = 0;
+            attemptAvailable = 0;
             opScheduledMins = 0;
             imgFileName = "";
             return false;
@@ -74,11 +74,11 @@ public class MyErrorParams {
 
         errorCode = Integer.parseInt(csvFields[ERPM_CSV_ERROR_CODE]);
 
-        /*if(!csvFields[ERPM_CSV_ATTEMPTS].isEmpty()) {
+        if(!csvFields[ERPM_CSV_ATTEMPTS].isEmpty()) {
             attemptAvailable = Integer.parseInt(csvFields[ERPM_CSV_ATTEMPTS]);
         } else {
             attemptAvailable = -1;
-        }*/
+        }
 
         if(!csvFields[ERPM_CSV_OP_SCH].isEmpty()) {
             opScheduledMins = Integer.parseInt(csvFields[ERPM_CSV_OP_SCH]);

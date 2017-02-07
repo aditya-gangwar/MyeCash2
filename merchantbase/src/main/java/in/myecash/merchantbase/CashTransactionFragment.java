@@ -80,7 +80,8 @@ public class CashTransactionFragment extends Fragment implements
     private int mDebitCashload;
     private int mDebitCashback;
     private int mAddCashload;
-    private int mAddCashback;
+    private int mAddCbOnBill;
+    private int mAddCbOnAcc;
     private int mCashPaid;
     //private int mToPayCash;
     private int mReturnCash;
@@ -198,7 +199,9 @@ public class CashTransactionFragment extends Fragment implements
                     setDebitCashload(savedInstanceState.getInt("mDebitCashload"));
                     setRedeemCashback(savedInstanceState.getInt("mDebitCashback"));
                     setAddCashload(savedInstanceState.getInt("mAddCashload"));
-                    setAddCashback(savedInstanceState.getInt("mAddCashback"));
+                    //setAddCashback(savedInstanceState.getInt("mAddCashback"));
+                    setAddCashback(savedInstanceState.getInt("mAddCbOnBill"),
+                            savedInstanceState.getInt("mAddCbOnAcc"));
                     setCashPaid(savedInstanceState.getInt("mCashPaid"));
 
                     //mToPayCash = savedInstanceState.getInt("mToPayCash");
@@ -250,9 +253,12 @@ public class CashTransactionFragment extends Fragment implements
         return mInputAddCl.getError()==null ? null : mInputAddCl.getError().toString();
     }
 
-    private void setAddCashback(int value) {
-        this.mAddCashback = value;
-        mInputAddCb.setText(AppCommonUtil.getAmtStr(mAddCashback));
+    private void setAddCashback(int onBill, int onAcc) {
+        mAddCbOnBill = onBill;
+        mAddCbOnAcc = onAcc;
+        int total = mAddCbOnBill + mAddCbOnAcc;
+        //this.mAddCashback = value;
+        mInputAddCb.setText(AppCommonUtil.getAmtStr(total));
     }
 
     private void setCashBalance() {
@@ -529,7 +535,30 @@ public class CashTransactionFragment extends Fragment implements
     private void calcAndSetAddCb() {
         // calculate add cashback
         if(STATUS_DISABLED != mAddCbStatus) {
-            int cbAmt = 0;
+
+            boolean cbApply = (mRetainedFragment.mBillTotal > 0);
+            boolean cbExtraApply = (mAddCashload >= mMerchantUser.getMerchant().getPrepaidCbMinAmt() && mPpCbRate>0);
+
+            // calculate cashbacks
+            int cbEligibleAmt = mRetainedFragment.mBillTotal - mRetainedFragment.mCbExcludedTotal - mDebitCashback;
+            mAddCbOnBill = (int)(cbEligibleAmt * mCbRate) / 100;
+            mAddCbOnAcc = (int)(mAddCashload * mPpCbRate) / 100;
+            setAddCashback(mAddCbOnBill, mAddCbOnAcc);
+            LogMy.d(TAG, "mAddCbOnBill: " + mAddCbOnBill+", mAddCbOnAcc: "+mAddCbOnAcc);
+
+            // show cashback details
+            String str = "";
+            if(cbApply && cbExtraApply) {
+                // both CB appl - show only rates - else string will be too long to display in single line
+                str = "("+mCbRate+"% + "+mPpCbRate+"%)";
+            } else if(cbApply) {
+                str = "("+mCbRate+"% of  "+ AppCommonUtil.getAmtStr(cbEligibleAmt)+")";
+            } else if(cbExtraApply) {
+                str = "("+mPpCbRate+"% of  "+ AppCommonUtil.getAmtStr(mAddCashload)+")";
+            }
+            mSubHeadAddCb.setText(str);
+
+            /*int cbAmt = 0;
             //int cbPrepaid = 0;
             String str1 = "";
 
@@ -537,26 +566,28 @@ public class CashTransactionFragment extends Fragment implements
             // i.e. when Bill Amount is 0
             if(mRetainedFragment.mBillTotal > 0) {
                 int cbEligibleAmt = mRetainedFragment.mBillTotal - mRetainedFragment.mCbExcludedTotal - mDebitCashback;
-                cbAmt = (int)(cbEligibleAmt * mCbRate) / 100;
-                //str1 = mCbRate+"% of "+ cbEligibleAmt;
-                str1 = "("+mCbRate+"% of  "+ AppCommonUtil.getAmtStr(cbEligibleAmt)+")";
+                mAddCbOnBill = (int)(cbEligibleAmt * mCbRate) / 100;
+                str1 = mCbRate+"% of "+ cbEligibleAmt;
+                //str1 = "("+mCbRate+"% of  "+ AppCommonUtil.getAmtStr(cbEligibleAmt)+")";
 
-            } else if(mAddCashload >= mMerchantUser.getMerchant().getPrepaidCbMinAmt() && mPpCbRate>0) {
-                cbAmt = (int)(mAddCashload * mPpCbRate) / 100;
-                /*if(!str1.isEmpty()) {
-                    str1 = str1+" + ";
-                }
-                str1 = str1+mPpCbRate+"% of "+ mAddCashload;*/
-                str1 = "("+mPpCbRate+"% of  "+ AppCommonUtil.getAmtStr(mAddCashload)+")";
             }
 
-            setAddCashback(cbAmt);
-            LogMy.d(TAG, "mAddCashback: " + mAddCashback);
+            if(mAddCashload >= mMerchantUser.getMerchant().getPrepaidCbMinAmt() && mPpCbRate>0) {
+                mAddCbOnAcc = (int)(mAddCashload * mPpCbRate) / 100;
+                if(!str1.isEmpty()) {
+                    str1 = str1+" + ";
+                }
+                str1 = str1+mPpCbRate+"% of "+ mAddCashload;
+                //str1 = "("+mPpCbRate+"% of  "+ AppCommonUtil.getAmtStr(mAddCashload)+")";
+            }
+
+            setAddCashback(mAddCbOnBill, mAddCbOnAcc);
+            LogMy.d(TAG, "mAddCbOnBill: " + mAddCbOnBill+", mAddCbOnAcc: "+mAddCbOnAcc);
 
             // display cashback details
             //String str = "("+mMerchantUser.getMerchant().getCb_rate()+"% of  "+ AppCommonUtil.getAmtStr(cbEligibleAmt)+")";
-            //String str = "(" + str1 + ")";
-            mSubHeadAddCb.setText(str1);
+            String str = "(" + str1 + ")";
+            mSubHeadAddCb.setText(str);*/
         }
     }
 
@@ -735,17 +766,23 @@ public class CashTransactionFragment extends Fragment implements
         Transaction trans = new Transaction();
         // Set only the amounts
         trans.setTotal_billed(mRetainedFragment.mBillTotal);
+
         trans.setCb_billed(mRetainedFragment.mBillTotal - mRetainedFragment.mCbExcludedTotal);
         trans.setCl_credit(mAddCashload);
         trans.setCl_debit(mDebitCashload);
-        trans.setCb_credit(mAddCashback);
+
+        trans.setCb_credit(mAddCbOnBill);
+        trans.setExtra_cb_credit(mAddCbOnAcc);
         trans.setCb_debit(mDebitCashback);
 
-        if(mRetainedFragment.mBillTotal > 0) {
+        trans.setCb_percent(String.valueOf(mCbRate));
+        trans.setExtra_cb_percent(String.valueOf(mPpCbRate));
+
+        /*if(mRetainedFragment.mBillTotal > 0) {
             trans.setCb_percent(String.valueOf(mCbRate));
         } else {
             trans.setCb_percent(String.valueOf(mPpCbRate));
-        }
+        }*/
 
         trans.setCust_private_id(mRetainedFragment.mCurrCustomer.getPrivateId());
         if(isCardPresentedAndUsable()) {
@@ -879,10 +916,10 @@ public class CashTransactionFragment extends Fragment implements
 
                             } else {
                                 if(mPpCbRate <= 0) {
-                                    AppCommonUtil.toast(getActivity(), "Prepaid Extra Cashback Rate(%) is 0");
+                                    AppCommonUtil.toast(getActivity(), "Extra Cashback Rate(%) is 0");
 
                                 } else if (mAddCashload <= mMerchantUser.getMerchant().getPrepaidCbMinAmt()) {
-                                    AppCommonUtil.toast(getActivity(), "Add Cash is less than "+
+                                    AppCommonUtil.toast(getActivity(), "'Add Cash' is less than "+
                                             AppCommonUtil.getAmtStr(mMerchantUser.getMerchant().getPrepaidCbMinAmt()));
                                 }
                             }
@@ -919,7 +956,7 @@ public class CashTransactionFragment extends Fragment implements
                     // If all 0 - no point going ahead
                     // This may happen, if this txn involves only cashback and
                     // that cashback is less than 1 rupee - which will be rounded of to 0
-                    if (mAddCashback <= 0 && mAddCashload <= 0 && mDebitCashback <= 0 && mDebitCashload <= 0) {
+                    if ((mAddCbOnBill+mAddCbOnAcc) <= 0 && mAddCashload <= 0 && mDebitCashback <= 0 && mDebitCashload <= 0) {
                         //AppCommonUtil.toast(getActivity(), "No MyeCash data to process !!");
                         String msg = null;
                         if (mRetainedFragment.mBillTotal <= 0) {
@@ -1572,7 +1609,9 @@ public class CashTransactionFragment extends Fragment implements
         outState.putInt("mDebitCashload", mDebitCashload);
         outState.putInt("mDebitCashback", mDebitCashback);
         outState.putInt("mAddCashload", mAddCashload);
-        outState.putInt("mAddCashback", mAddCashback);
+        //outState.putInt("mAddCashback", mAddCashback);
+        outState.putInt("mAddCbOnBill", mAddCbOnBill);
+        outState.putInt("mAddCbOnAcc", mAddCbOnAcc);
         outState.putInt("mCashPaid", mCashPaid);
         //outState.putInt("mToPayCash", mToPayCash);
         outState.putInt("mReturnCash", mReturnCash);

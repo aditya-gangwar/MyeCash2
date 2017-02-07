@@ -44,7 +44,9 @@ public class CsvConverter {
     private static int TXN_CSV_IDX_IMG_FILE = 15;
     private static int TXN_CSV_IDX_INV_NUM = 16;
     private static int TXN_CSV_IDX_CANCEL_TIME = 17;
-    private static int TXN_CSV_TOTAL_FIELDS = 18;
+    private static int TXN_CSV_IDX_EXT_CB_CREDIT = 18;
+    private static int TXN_CSV_IDX_EXT_CB_RATE = 19;
+    private static int TXN_CSV_TOTAL_FIELDS = 20;
 
     // Total size of above fields = 15*10 + 50;
     public static final int TXN_CSV_MAX_SIZE = 256;
@@ -95,6 +97,9 @@ public class CsvConverter {
             csvFields[TXN_CSV_IDX_CANCEL_TIME] = "";
         }
 
+        csvFields[TXN_CSV_IDX_EXT_CB_CREDIT] = String.valueOf(txn.getExtra_cb_credit());
+        csvFields[TXN_CSV_IDX_EXT_CB_RATE] = txn.getExtra_cb_percent();
+
         // join the fields in single CSV string
         StringBuilder sb = new StringBuilder(TXN_CSV_MAX_SIZE);
         for(int i=0; i<TXN_CSV_TOTAL_FIELDS; i++) {
@@ -129,6 +134,23 @@ public class CsvConverter {
         } else {
             txn.setCancelTime(new Date(Long.parseLong(csvFields[TXN_CSV_IDX_CANCEL_TIME])));
         }
+
+        // New fields added - shudn't break old CSV files
+        if(TXN_CSV_IDX_EXT_CB_CREDIT < csvFields.length &&
+                !csvFields[TXN_CSV_IDX_EXT_CB_CREDIT].isEmpty() &&
+                !csvFields[TXN_CSV_IDX_EXT_CB_CREDIT].equals("null")) {
+            txn.setExtra_cb_credit(Integer.parseInt(csvFields[TXN_CSV_IDX_EXT_CB_CREDIT]));
+        } else {
+            txn.setExtra_cb_credit(0);
+        }
+        if(TXN_CSV_IDX_EXT_CB_RATE < csvFields.length &&
+                !csvFields[TXN_CSV_IDX_EXT_CB_RATE].isEmpty() &&
+                !csvFields[TXN_CSV_IDX_EXT_CB_RATE].equals("null")) {
+            txn.setExtra_cb_percent(csvFields[TXN_CSV_IDX_EXT_CB_RATE]);
+        } else {
+            txn.setExtra_cb_percent("0");
+        }
+
         return txn;
     }
 
