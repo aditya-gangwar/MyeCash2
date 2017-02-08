@@ -58,6 +58,7 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -778,7 +779,7 @@ public class CashbackActivity extends AppCompatActivity implements
         if(toUploadImgFilename != null) {
             mWorkFragment.uploadImageFile(this, mWorkFragment.mCardImageFilename,
                     toUploadImgFilename,
-                    CommonUtils.getTxnImgDir(mMerchant.getAuto_id()));
+                    CommonUtils.getTxnImgDir(new Date()));
             mWorkFragment.mCardImageFilename = null;
         }
     }
@@ -1395,7 +1396,7 @@ public class CashbackActivity extends AppCompatActivity implements
             if(mWorkFragment.mCardImageFilename != null) {
                 mWorkFragment.uploadImageFile(this, mWorkFragment.mCardImageFilename,
                         mWorkFragment.mCurrTransaction.getTransaction().getImgFileName(),
-                        CommonUtils.getTxnImgDir(mMerchant.getAuto_id()));
+                        CommonUtils.getTxnImgDir(new Date()));
                 mWorkFragment.mCardImageFilename = null;
             }
         } else {

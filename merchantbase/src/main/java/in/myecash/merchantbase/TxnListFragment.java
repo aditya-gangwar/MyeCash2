@@ -61,7 +61,7 @@ public class TxnListFragment extends Fragment {
     private static final String CSV_REPORT_HEADER_5 = "%s,,,,,,,Currency,INR,,";
     private static final String CSV_REPORT_HEADER_6 = ",,,,,,,,,,";
     private static final String CSV_REPORT_HEADER_7 = ",,,,,,,,,,";
-    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Customer Customer ID,Bill Amount,Account Debit,Account Add,Cashback Debit,Cashback Add,Cashback Rate,Linked Invoice,Cancel Time,Comments";
+    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Customer Customer ID,Bill Amount,Account Debit,Account Add,Cashback Debit,Cashback Add,Extra Cashback Add,Cashback Rate,Extra Cashback Rate,Linked Invoice,Cancel Time,Comments";
     // 5+10+10+10+10+10+5+5+5+5 = 75
     private static final int CSV_RECORD_MAX_CHARS = 100;
     //TODO: change this to 100 in production

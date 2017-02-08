@@ -163,8 +163,18 @@ public class TxnDetailsDialog extends DialogFragment {
             }
             mPinUsed.setText(txn.getCpin());
 
-            mInputTotalBill.setText(AppCommonUtil.getAmtStr(txn.getTotal_billed()));
-            mInputCbBill.setText(AppCommonUtil.getAmtStr(txn.getCb_billed()));
+            int noCbBill = txn.getTotal_billed() - txn.getCb_billed();
+            if(noCbBill > 0) {
+                String str = "* "+AppCommonUtil.getAmtStr(txn.getTotal_billed());
+                mInputTotalBill.setText(str);
+
+                mLayoutCbBill.setVisibility(View.VISIBLE);
+                str = "(* " + AppCommonUtil.getAmtStr(noCbBill) + " Bill for No Cashback Items)";
+                mInputCbBill.setText(str);
+            } else {
+                mInputTotalBill.setText(AppCommonUtil.getAmtStr(txn.getTotal_billed()));
+                mLayoutCbBill.setVisibility(View.GONE);
+            }
 
             mInputCustomerId.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -290,6 +300,7 @@ public class TxnDetailsDialog extends DialogFragment {
     private EditText mInvoiceNum;
 
     private EditText mInputTotalBill;
+    private View mLayoutCbBill;
     private EditText mInputCbBill;
 
     private EditText mInputCustomerId;
@@ -321,6 +332,7 @@ public class TxnDetailsDialog extends DialogFragment {
         mInvoiceNum = (EditText) v.findViewById(R.id.input_invoice_num);
 
         mInputTotalBill = (EditText) v.findViewById(R.id.input_total_bill);
+        mLayoutCbBill = v.findViewById(R.id.layout_cb_bill);
         mInputCbBill = (EditText) v.findViewById(R.id.input_cb_bill);
 
         mInputCustomerId = (EditText) v.findViewById(R.id.input_customer_id);;

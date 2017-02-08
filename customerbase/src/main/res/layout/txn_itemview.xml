@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:text="08 Apr,16  20:15"
             android:textStyle="bold"
-            android:textColor="@color/accent"
+            android:textColor="@color/subheading"
             android:longClickable="false"
             android:textIsSelectable="false"/>
 
@@ -64,7 +64,6 @@
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:layout_below="@id/txn_time"
-            android:layout_alignParentRight="true"
             android:id="@+id/row2">
 
             <EditText
@@ -72,21 +71,20 @@
                 android:id="@+id/txn_mchnt_name"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:layout_weight="60"
+                android:layout_weight="45"
                 android:text="Ganga Stores and Sons Pvt Ltd"
                 android:paddingTop="0dp"
                 android:longClickable="false"
                 android:textIsSelectable="false"
                 android:gravity="left"
                 android:textStyle="italic"
-                android:ellipsize="end"
-                android:singleLine="true"/>
+                android:ellipsize="end"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/txn_amts_layout"
                 android:layout_width="0dp"
-                android:layout_weight="40"
+                android:layout_weight="55"
                 android:layout_marginLeft="@dimen/medium_space"
                 android:gravity="right">
 
@@ -103,7 +101,7 @@
                     android:id="@+id/txn_account_amt"
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
-                    android:text="+ \u20B9 3456"
+                    android:text="+ \u20B9 345"
                     android:paddingTop="0dp"
                     android:paddingRight="0dp"/>
                 <EditText
@@ -127,7 +125,7 @@
                     android:id="@+id/txn_cashback_amt"
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
-                    android:text="-"
+                    android:text="- \u20B9 3456"
                     android:paddingTop="0dp"/>
 
             </LinearLayout>

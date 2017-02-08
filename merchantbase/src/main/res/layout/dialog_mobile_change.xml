@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/LL_Vertical"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/windowBackground">
 
     <EditText
         style="@style/Dialog_title"
@@ -12,14 +13,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="false">
-
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="?android:attr/windowBackground">
+        android:layout_below="@id/label_title">
 
         <LinearLayout
             style="@style/LL_Vertical_paddingSidesLarge">
@@ -171,6 +165,5 @@
                 android:imeOptions="actionDone"/>
 
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
-</LinearLayout>
+    </ScrollView>
+</RelativeLayout>

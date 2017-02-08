@@ -68,12 +68,16 @@ public class CommonUtils {
         return CommonConstants.MERCHANT_TXN_FILE_PREFIX + merchantId + "_" + mSdfOnlyDateFilename.format(date) + CommonConstants.CSV_FILE_EXT;
     }
 
-    public static String getTxnImgDir(String merchantId) {
+    /*public static String getTxnImgDir(String merchantId) {
         // merchant directory: merchants/<first 3 chars of merchant id>/<next 2 chars of merchant id>/<merchant id>/
         return CommonConstants.MERCHANT_TXN_IMAGE_ROOT_DIR +
                 merchantId.substring(0,3) + CommonConstants.FILE_PATH_SEPERATOR +
                 merchantId.substring(0,5) + CommonConstants.FILE_PATH_SEPERATOR +
                 merchantId;
+    }*/
+
+    public static String getTxnImgDir(Date date) {
+        return CommonConstants.MERCHANT_TXN_IMAGE_ROOT_DIR + mSdfOnlyDateFilename.format(date);
     }
 
     public static boolean mchntStatsRefreshReq(MerchantStats stats) {

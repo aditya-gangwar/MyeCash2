@@ -17,6 +17,7 @@ import android.widget.ImageView;
 
 import java.text.SimpleDateFormat;
 
+import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.common.CommonUtils;
@@ -111,11 +112,39 @@ public class TxnDetailsDialog extends DialogFragment {
             mCardUsed.setText(txn.getUsedCardId());
             mPinUsed.setText(txn.getCpin());
 
-            mInputTotalBill.setText(AppCommonUtil.getAmtStr(txn.getTotal_billed()));
-            mInputCbBill.setText(AppCommonUtil.getAmtStr(txn.getCb_billed()));
+            //mInputTotalBill.setText(AppCommonUtil.getAmtStr(txn.getTotal_billed()));
+            //mInputCbBill.setText(AppCommonUtil.getAmtStr(txn.getCb_billed()));
+            int noCbBill = txn.getTotal_billed() - txn.getCb_billed();
+            if(noCbBill > 0) {
+                String str = "* "+AppCommonUtil.getAmtStr(txn.getTotal_billed());
+                mInputTotalBill.setText(str);
 
-            String cbData = AppCommonUtil.getAmtStr(txn.getCb_credit())+" @ "+txn.getCb_percent()+"%";
-            mInputCbAward.setText(cbData);
+                mLayoutCbBill.setVisibility(View.VISIBLE);
+                str = "(* " + AppCommonUtil.getAmtStr(noCbBill) + " Bill for No Cashback Items)";
+                mInputCbBill.setText(str);
+            } else {
+                mInputTotalBill.setText(AppCommonUtil.getAmtStr(txn.getTotal_billed()));
+                mLayoutCbBill.setVisibility(View.GONE);
+            }
+
+            //String cbData = AppCommonUtil.getAmtStr(txn.getCb_credit())+" @ "+txn.getCb_percent()+"%";
+            //mInputCbAward.setText(cbData);
+            int totalCb = txn.getCb_credit() + txn.getExtra_cb_credit();
+            String detailStr = MyTransaction.getCbDetailStr(txn);
+
+            if( txn.getCb_credit()>0 && txn.getExtra_cb_credit()>0) {
+                // both CB applicable - this long details - show in seperate line
+                mInputCbAward.setText(AppCommonUtil.getAmtStr(totalCb));
+                mLayoutCbDetails.setVisibility(View.VISIBLE);
+                mInputCbDetails.setText(detailStr);
+
+            } else {
+                // single CB type - thus show in same line
+                mLayoutCbDetails.setVisibility(View.GONE);
+                String str2 = AppCommonUtil.getAmtStr(totalCb) + " " + detailStr;
+                mInputCbAward.setText(str2);
+            }
+
             mInputCbRedeem.setText(AppCommonUtil.getAmtStr(txn.getCb_debit()));
 
             mInputAccAdd.setText(AppCommonUtil.getAmtStr(txn.getCl_credit()));
@@ -137,6 +166,7 @@ public class TxnDetailsDialog extends DialogFragment {
             mInputMchntId.setText(Html.fromHtml("<u>"+txn.getMerchant_id()+"</u>"));*/
 
             // Changes if cancelled txn
+            mInputCbAward2.setVisibility(View.GONE);
             if(txn.getCancelTime()!=null) {
                 mLayoutCancelled.setVisibility(View.VISIBLE);
                 mInputCancelTime.setText(mSdfDateWithTime.format(txn.getCancelTime()));
@@ -150,7 +180,12 @@ public class TxnDetailsDialog extends DialogFragment {
 
                 if(txn.getCb_credit() > 0) {
                     mInputCbAward.setPaintFlags(mInputCbAward.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    if(txn.getExtra_cb_credit() > 0) {
+                        mInputCbAward2.setVisibility(View.VISIBLE);
+                        mInputCbAward2.setText(AppCommonUtil.getAmtStr(txn.getExtra_cb_credit()));
+                    }
                 }
+
                 if(txn.getCb_debit()>0) {
                     mInputCbRedeem.setPaintFlags(mInputCbRedeem.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 }
@@ -186,9 +221,14 @@ public class TxnDetailsDialog extends DialogFragment {
     private EditText mPinUsed;
 
     private EditText mInputTotalBill;
+    private View mLayoutCbBill;
     private EditText mInputCbBill;
 
     private EditText mInputCbAward;
+    private EditText mInputCbAward2;
+    private View mLayoutCbDetails;
+    private EditText mInputCbDetails;
+
     private EditText mInputCbRedeem;
 
     private EditText mInputAccAdd;
@@ -213,12 +253,17 @@ public class TxnDetailsDialog extends DialogFragment {
         mPinUsed = (EditText) v.findViewById(R.id.input_pin_used);
 
         mInputTotalBill = (EditText) v.findViewById(R.id.input_total_bill);
+        mLayoutCbBill = v.findViewById(R.id.layout_cb_bill);
         mInputCbBill = (EditText) v.findViewById(R.id.input_cb_bill);
 
         mInputAccAdd = (EditText) v.findViewById(R.id.input_acc_add);
         mInputAccDebit = (EditText) v.findViewById(R.id.input_acc_debit);
 
         mInputCbAward = (EditText) v.findViewById(R.id.input_cb_award);
+        mInputCbAward2 = (EditText) v.findViewById(R.id.input_cb_award2);
+        mLayoutCbDetails = v.findViewById(R.id.layout_cb_details);
+        mInputCbDetails = (EditText) v.findViewById(R.id.input_cb_details);
+
         mInputCbRedeem = (EditText) v.findViewById(R.id.input_cb_redeem);
 
         mInputMerchant = (EditText) v.findViewById(R.id.input_merchant_name);

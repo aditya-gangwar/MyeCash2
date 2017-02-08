@@ -343,7 +343,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
                             if(mWorkFragment.mCardImageFilename != null) {
                                 mWorkFragment.uploadImageFile(this, mWorkFragment.mCardImageFilename,
                                         cancelledTxn.getCanImgFileName(),
-                                        CommonUtils.getTxnImgDir(cancelledTxn.getMerchant_id()));
+                                        CommonUtils.getTxnImgDir(new Date()));
                                 mWorkFragment.mCardImageFilename = null;
                             }
 
@@ -429,9 +429,10 @@ public class TxnReportsActivity extends AppCompatActivity implements
         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
         mLastTxnPos = currTxnPos;
         String txnImgFileName = mWorkFragment.mLastFetchTransactions.get(currTxnPos).getImgFileName();
-        String mchntId = mWorkFragment.mLastFetchTransactions.get(currTxnPos).getMerchant_id();
+        Date txnCreated = mWorkFragment.mLastFetchTransactions.get(currTxnPos).getCreate_time();
+        //String mchntId = mWorkFragment.mLastFetchTransactions.get(currTxnPos).getMerchant_id();
 
-        String url = CommonUtils.getTxnImgDir(mchntId)+txnImgFileName;
+        String url = CommonUtils.getTxnImgDir(txnCreated)+CommonConstants.FILE_PATH_SEPERATOR+txnImgFileName;
         mWorkFragment.fetchImageFile(url);
     }
 
