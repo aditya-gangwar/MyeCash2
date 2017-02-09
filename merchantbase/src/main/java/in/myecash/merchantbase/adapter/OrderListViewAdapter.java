@@ -150,15 +150,24 @@ public class OrderListViewAdapter extends ArrayAdapter<OrderItem> {
             totalPrice.append(item.getPriceStr());
             if(item.isCashbackExcluded()) {
                 markItemExclusion(item);
+            } else {
+                unmarkItemExclusion(item);
             }
         }
 
         private void markItemExclusion(OrderItem item) {
             //item.setCashbackExcluded(true);
             // set text color to highlight exclusion
-            oldColor = totalPrice.getCurrentTextColor();
+            //oldColor = totalPrice.getCurrentTextColor();
             totalPrice.setTextColor(ContextCompat.getColor(mActivity, R.color.cb_exclusion));
             cbExclusion.setVisibility(View.VISIBLE);
+        }
+        private void unmarkItemExclusion(OrderItem item) {
+            //item.setCashbackExcluded(true);
+            // set text color to highlight exclusion
+            //oldColor = totalPrice.getCurrentTextColor();
+            totalPrice.setTextColor(ContextCompat.getColor(mActivity, R.color.primary_text));
+            cbExclusion.setVisibility(View.GONE);
         }
         /*
         public void toggleItemExclusion(OrderItem item) {

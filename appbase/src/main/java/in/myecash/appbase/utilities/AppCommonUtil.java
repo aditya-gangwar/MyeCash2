@@ -18,6 +18,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.ColorRes;
@@ -172,7 +173,7 @@ public class AppCommonUtil {
 
     // This function can be called from background thread only
     // as it checks for internet website
-    public static int isInternetConnected() {
+    public static boolean isInternetConnected() {
         InetAddress inetAddress = null;
         try {
             Future<InetAddress> future = Executors.newSingleThreadExecutor().submit(new Callable<InetAddress>() {
@@ -191,7 +192,7 @@ public class AppCommonUtil {
         } catch (ExecutionException e) {
         } catch (TimeoutException e) {
         }
-        return (inetAddress!=null && !inetAddress.equals(""))? ErrorCodes.NO_ERROR: ErrorCodes.NO_INTERNET_CONNECTION;
+        return (inetAddress!=null && !inetAddress.equals(""));
     }
 
     /*
@@ -201,6 +202,14 @@ public class AppCommonUtil {
         if (activity != null && activity.getWindow() != null && activity.getWindow().getDecorView() != null) {
             InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
+    public static void hideKeyboard(Activity activity, EditText et) {
+        if (activity != null && activity.getWindow() != null && activity.getWindow().getDecorView() != null) {
+            InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(et, 0);
+            imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
         }
     }
 
@@ -524,6 +533,12 @@ public class AppCommonUtil {
 
     public static Drawable getTintedDrawable(Context context, @DrawableRes int drawableResId, @ColorRes int colorResId) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableResId);
+        int color = ContextCompat.getColor(context, colorResId);
+        drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        return drawable;
+    }
+
+    public static Drawable getTintedDrawable(Context context, Drawable drawable, @ColorRes int colorResId) {
         int color = ContextCompat.getColor(context, colorResId);
         drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         return drawable;

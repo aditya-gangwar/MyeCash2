@@ -34,7 +34,8 @@
         </activity>
 
         <activity
-            android:name="in.myecash.merchantbase.LoginActivity">
+            android:name="in.myecash.merchantbase.LoginActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
         <activity

@@ -5,19 +5,6 @@
     android:layout_below="@id/toolbar"
     android:background="?android:attr/windowBackground">
 
-    <!--android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:minHeight="?attr/actionBarSize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"/-->
-
-    <!--android.support.v7.widget.AppCompatButton
-        style="@style/button_normal"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/btn_bill_total"
-        android:text="Bill    + \u20B9 256"/-->
-
     <LinearLayout
         style="@style/LL_Vertical"
         android:layout_height="wrap_content"
@@ -43,7 +30,8 @@
             style="@style/Edittext_only_view_small"
             android:id="@+id/input_more_info"
             android:layout_height="0dp"
-            android:layout_width="wrap_content"
+            android:layout_weight="7.5"
+            android:layout_width="match_parent"
             android:text="* Cashback Excluded *"
             android:textColor="@color/accent2"
             android:textStyle="bold"
@@ -59,7 +47,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="82.5"
                 android:gravity="center"
-                android:text="@string/Rs_0"/>
+                android:text="@string/Rs_0"
+                android:textColor="@color/green_positive"/>
 
             <ImageButton
                 style="@style/button_keyboard"

@@ -479,7 +479,7 @@ public class CashbackActivity extends AppCompatActivity implements
         // no error case: all cashback values available
         mTbTitle.setText(CommonUtils.getPartialVisibleStr(mWorkFragment.mCustMobile));
         // display image
-        setTbImage(R.drawable.ic_account_circle_white_48dp, R.color.success);
+        setTbImage(R.drawable.ic_account_circle_white_48dp, R.color.bg_light_green);
         mTbImageIsMerchant = false;
 
         mTbTitle2.setVisibility(View.GONE);
@@ -834,7 +834,7 @@ public class CashbackActivity extends AppCompatActivity implements
         prefs.putString(SettingsFragment.KEY_CONTACT_PHONE, mMerchant.getContactPhone());
 
         prefs.putBoolean(SettingsFragment.KEY_LINKED_INV, mMerchant.isInvoiceNumAsk());
-        prefs.putBoolean(SettingsFragment.KEY_LINKED_INV_OPTIONAL, mMerchant.isInvoiceNumOptional());
+        prefs.putBoolean(SettingsFragment.KEY_LINKED_INV_MANDATORY, mMerchant.isInvoiceNumOptional());
         prefs.putBoolean(SettingsFragment.KEY_LINKED_INV_ONLY_NMBRS, mMerchant.isInvoiceNumOnlyNumbers());
 
         return prefs.commit();

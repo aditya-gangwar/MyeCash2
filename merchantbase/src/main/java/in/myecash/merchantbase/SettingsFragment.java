@@ -1,14 +1,24 @@
 package in.myecash.merchantbase;
 
-import android.content.Context;
+import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.CommonUtils;
@@ -25,11 +35,19 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
  * Created by adgangwa on 30-03-2016.
  */
 public class SettingsFragment extends PreferenceFragment
-        implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
+implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
 
     private static final String TAG = "MchntApp-SettingsFragment";
 
     private static final int REQ_NOTIFICATION = 0;
+
+    public static final String KEY_GRP_CB_ACC = "prefGrpCbAcc";
+    public static final String KEY_GRP_PROFILE = "prefGrpProfile";
+    //public static final String KEY_GRP_INVOICE = "prefGrpInvoice";
+    public static final String KEY_GRP_OTHERS = "prefGrpOthers";
+
+    public static final String KEY_CAT_ACC = "prefCatAcc";
+    public static final String KEY_CAT_CB = "prefCatCb";
 
     public static final String KEY_CB_RATE = "settings_cb_rate";
     public static final String KEY_ADD_CL_ENABLED = "settings_cl_add_enabled";
@@ -41,7 +59,7 @@ public class SettingsFragment extends PreferenceFragment
     public static final String KEY_CONTACT_PHONE = "settings_contact_num";
 
     public static final String KEY_LINKED_INV = "settings_linked_invoice";
-    public static final String KEY_LINKED_INV_OPTIONAL = "settings_invoice_optional";
+    public static final String KEY_LINKED_INV_MANDATORY = "settings_invoice_mandatory";
     public static final String KEY_LINKED_INV_ONLY_NMBRS = "settings_invoice_numbers_only";
     public static final String KEY_CAMERA_FLASH = "settings_camera_flash";
 
@@ -74,6 +92,27 @@ public class SettingsFragment extends PreferenceFragment
         getView().setClickable(true);
 
         setAllSummaries();
+
+        // Set Icons
+        PreferenceScreen pref = (PreferenceScreen) getPreferenceScreen().findPreference(KEY_GRP_PROFILE);
+        Drawable icon = AppCommonUtil.getTintedDrawable(getActivity(), R.drawable.ic_perm_identity_white_24dp, R.color.primary);
+        pref.setIcon(icon);
+
+        pref = (PreferenceScreen) getPreferenceScreen().findPreference(KEY_GRP_OTHERS);
+        icon = AppCommonUtil.getTintedDrawable(getActivity(), R.drawable.ic_more_horiz_white_24dp, R.color.primary);
+        pref.setIcon(icon);
+
+        pref = (PreferenceScreen) getPreferenceScreen().findPreference(KEY_GRP_CB_ACC);
+        icon = AppCommonUtil.getTintedDrawable(getActivity(), R.drawable.ic_account_balance_wallet_white_24dp, R.color.primary);
+        pref.setIcon(icon);
+
+        /*PreferenceCategory pref1 = (PreferenceCategory) getPreferenceScreen().findPreference(KEY_CAT_ACC);
+        icon = AppCommonUtil.getTintedDrawable(getActivity(), R.drawable.ic_account_balance_wallet_white_18dp, R.color.primary);
+        pref1.setIcon(icon);
+
+        pref1 = (PreferenceCategory) getPreferenceScreen().findPreference(KEY_CAT_CB);
+        icon = AppCommonUtil.getTintedDrawable(getActivity(), R.drawable.ic_favorite_white_18dp, R.color.primary);
+        pref1.setIcon(icon);*/
     }
 
     @Override
@@ -100,10 +139,74 @@ public class SettingsFragment extends PreferenceFragment
         pref.setOnPreferenceChangeListener(this);
         pref = getPreferenceScreen().findPreference(KEY_LINKED_INV);
         pref.setOnPreferenceChangeListener(this);
-        pref = getPreferenceScreen().findPreference(KEY_LINKED_INV_OPTIONAL);
+        pref = getPreferenceScreen().findPreference(KEY_LINKED_INV_MANDATORY);
         pref.setOnPreferenceChangeListener(this);
         pref = getPreferenceScreen().findPreference(KEY_LINKED_INV_ONLY_NMBRS);
         pref.setOnPreferenceChangeListener(this);
+    }
+
+    /*
+     * Hack to show toolbar - taken from below:
+     * http://stackoverflow.com/questions/26509180/no-actionbar-in-preferenceactivity-after-upgrade-to-support-library-v21/27455363#27455363
+     * https://github.com/davcpas1234/MaterialSettings/tree/master/app/src/main
+     */
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        super.onPreferenceTreeClick(preferenceScreen, preference);
+
+        // If the user has clicked on a preference screen, set up the screen
+        if (preference instanceof PreferenceScreen) {
+            setUpNestedScreen((PreferenceScreen) preference);
+        }
+
+        return false;
+    }
+
+    public void setUpNestedScreen(PreferenceScreen preferenceScreen) {
+        final Dialog dialog = preferenceScreen.getDialog();
+
+        AppBarLayout appBar;
+
+        View listRoot = dialog.findViewById(android.R.id.list);
+        ViewGroup mRootView = (ViewGroup) dialog.findViewById(android.R.id.content);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            LinearLayout root = (LinearLayout) dialog.findViewById(android.R.id.list).getParent().getParent();
+            appBar = (AppBarLayout) LayoutInflater.from(getActivity()).inflate(R.layout.settings_toolbar, root, false);
+            root.addView(appBar, 0);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            LinearLayout root = (LinearLayout) dialog.findViewById(android.R.id.list).getParent();
+            appBar = (AppBarLayout) LayoutInflater.from(getActivity()).inflate(R.layout.settings_toolbar, root, false);
+            root.addView(appBar, 0);
+        } else {
+            ListView content = (ListView) mRootView.getChildAt(0);
+            mRootView.removeAllViews();
+
+            LinearLayout LL = new LinearLayout(getActivity());
+            LL.setOrientation(LinearLayout.VERTICAL);
+
+            ViewGroup.LayoutParams LLParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            LL.setLayoutParams(LLParams);
+
+            appBar = (AppBarLayout) LayoutInflater.from(getActivity()).inflate(R.layout.settings_toolbar, mRootView, false);
+
+            LL.addView(appBar);
+            LL.addView(content);
+
+            mRootView.addView(LL);
+        }
+
+        Toolbar Tbar = (Toolbar) appBar.getChildAt(0);
+
+        Tbar.setTitle(preferenceScreen.getTitle());
+
+        Tbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
     @Override
@@ -174,10 +277,10 @@ public class SettingsFragment extends PreferenceFragment
                 mMerchantUser.setNewInvNumAsk(askLinkedInvNum);
                 mSettingsChanged = true;
             //}
-        } else if (key.equals(KEY_LINKED_INV_OPTIONAL)) {
+        } else if (key.equals(KEY_LINKED_INV_MANDATORY)) {
             boolean linkedInvOptional = (boolean)o;
             //if (linkedInvOptional != mMerchantUser.getMerchant().isInvoiceNumOptional()) {
-                mMerchantUser.setNewInvNumOptional(linkedInvOptional);
+                mMerchantUser.setNewInvNumOptional(!linkedInvOptional);
                 mSettingsChanged = true;
             //}
         } else if (key.equals(KEY_LINKED_INV_ONLY_NMBRS)) {

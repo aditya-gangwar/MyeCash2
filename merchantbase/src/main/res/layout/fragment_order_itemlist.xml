@@ -21,8 +21,7 @@
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="8"
+            android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:text="#."
             android:paddingLeft="@dimen/edittext_padding_less"
@@ -33,7 +32,7 @@
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="0dp"
-            android:layout_weight="30"
+            android:layout_weight="35"
             android:layout_height="wrap_content"
             android:text="PRICE"
             android:gravity="left"
@@ -43,7 +42,7 @@
             style="@style/Edittext_only_view_medium"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
-            android:layout_weight="7"
+            android:layout_weight="10"
             android:text="x"
             android:textStyle="bold"/>
 

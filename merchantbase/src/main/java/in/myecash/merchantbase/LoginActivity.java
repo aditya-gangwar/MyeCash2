@@ -16,6 +16,7 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -81,7 +82,6 @@ public class LoginActivity extends AppCompatActivity implements
 
         // show the keyboard and adjust screen for the same
         //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         bindUiResources();
 
@@ -104,8 +104,17 @@ public class LoginActivity extends AppCompatActivity implements
         String oldId = PreferenceManager.getDefaultSharedPreferences(this).getString(AppConstants.PREF_LOGIN_ID, null);
         if( oldId != null) {
             mIdTextRes.setText(oldId);
+            mIdTextRes.clearFocus();
             mPasswdTextRes.requestFocus();
         }
+
+        mPasswdTextRes.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                return false;
+            }
+        });
 
         mPasswdTextRes.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

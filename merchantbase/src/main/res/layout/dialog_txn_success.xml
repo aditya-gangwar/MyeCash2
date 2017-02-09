@@ -77,6 +77,31 @@
 
                 <LinearLayout
                     style="@style/LL_Horizontal_wrap">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_favorite_white_18dp"
+                        android:tint="@color/primary"/>
+                    <EditText
+                        style="@style/Edittext_only_view_medium_lessPad"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="Cashback"
+                        android:layout_weight="60"
+                        android:gravity="left|bottom"
+                        android:layout_gravity="bottom"/>
+                    <EditText
+                        style="@style/Edittext_only_view_medium_lessPad"
+                        android:id="@+id/input_cb_balance"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="\u20B9 0"
+                        android:layout_weight="40"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -101,6 +126,19 @@
                         android:gravity="right"/>
                 </LinearLayout>
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/large_space" />
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="OLD Balance"
+                    android:textStyle="normal"
+                    android:textColor="@color/subheading"
+                    android:paddingLeft="0dp"/>
+
                 <LinearLayout
                     style="@style/LL_Horizontal_wrap">
                     <ImageView
@@ -118,26 +156,13 @@
                         android:layout_gravity="bottom"/>
                     <EditText
                         style="@style/Edittext_only_view_medium_lessPad"
-                        android:id="@+id/input_cb_balance"
+                        android:id="@+id/input_cb_balance_old"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="\u20B9 0"
                         android:layout_weight="40"
                         android:gravity="right"/>
                 </LinearLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/large_space" />
-
-                <EditText
-                    style="@style/Edittext_only_view_small"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="OLD Balance"
-                    android:textStyle="normal"
-                    android:textColor="@color/subheading"
-                    android:paddingLeft="0dp"/>
 
                 <LinearLayout
                     style="@style/LL_Horizontal_wrap">
@@ -158,31 +183,6 @@
                     <EditText
                         style="@style/Edittext_only_view_medium_lessPad"
                         android:id="@+id/input_account_balance_old"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="\u20B9 0"
-                        android:layout_weight="40"
-                        android:gravity="right"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/LL_Horizontal_wrap">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ic_favorite_white_18dp"
-                        android:tint="@color/primary"/>
-                    <EditText
-                        style="@style/Edittext_only_view_medium_lessPad"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="Cashback"
-                        android:layout_weight="60"
-                        android:gravity="left|bottom"
-                        android:layout_gravity="bottom"/>
-                    <EditText
-                        style="@style/Edittext_only_view_medium_lessPad"
-                        android:id="@+id/input_cb_balance_old"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="\u20B9 0"

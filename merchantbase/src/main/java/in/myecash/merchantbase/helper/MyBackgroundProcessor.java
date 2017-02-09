@@ -206,11 +206,9 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         try {
 
             // It checks with internet site - so checking only during login
-            if( msg.what==MyRetainedFragment.REQUEST_LOGIN) {
-                int err = AppCommonUtil.isInternetConnected();
-                if(err!=ErrorCodes.NO_ERROR) {
-                    return err;
-                }
+            if( msg.what==MyRetainedFragment.REQUEST_LOGIN &&
+                    !AppCommonUtil.isInternetConnected()) {
+                return ErrorCodes.NO_INTERNET_CONNECTION;
             }
 
             switch (msg.what) {

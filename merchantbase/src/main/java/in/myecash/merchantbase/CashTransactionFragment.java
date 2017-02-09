@@ -1270,7 +1270,7 @@ public class CashTransactionFragment extends Fragment implements
             mLayoutAddCl.setVisibility(View.VISIBLE);
         }
         // Debit account row
-        if(mDebitCbStatus!=STATUS_AUTO && mDebitCbStatus!=STATUS_CLEARED && mDebitCbStatus!=STATUS_AUTO_CLEARED) {
+        if(mDebitClStatus!=STATUS_AUTO && mDebitClStatus!=STATUS_CLEARED && mDebitClStatus!=STATUS_AUTO_CLEARED) {
             // this can be hidden
             hideIfReq(mLayoutDebitCl, expandClickCase);
         } else {
