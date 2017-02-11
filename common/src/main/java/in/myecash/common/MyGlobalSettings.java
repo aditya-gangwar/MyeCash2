@@ -46,6 +46,10 @@ public class MyGlobalSettings
         public Date updated;
     }
 
+    public static boolean isAvailable() {
+        return mSettings!=null;
+    }
+
     /*
      * Access Functions
      */

@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import in.myecash.appbase.ServerNaActivity;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.RootUtil;
 import in.myecash.common.constants.CommonConstants;
@@ -326,6 +327,13 @@ public class LoginCustActivity extends AppCompatActivity implements
                     .show(getFragmentManager(), DIALOG_SESSION_TIMEOUT);
             return;
         }*/
+
+        if(errorCode==ErrorCodes.INTERNET_OK_SERVICE_NOK) {
+            AppCommonUtil.cancelProgressDialog(true);
+            Intent intent = new Intent( this, ServerNaActivity.class );
+            startActivity(intent);
+            return;
+        }
 
         try {
 

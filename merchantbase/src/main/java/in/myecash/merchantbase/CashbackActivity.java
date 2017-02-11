@@ -34,6 +34,7 @@ import com.crashlytics.android.Crashlytics;
 import com.helpshift.support.Support;
 
 import in.myecash.appbase.OtpPinInputDialog;
+import in.myecash.appbase.ServerNaActivity;
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.constants.AppConstants;
 
@@ -834,7 +835,7 @@ public class CashbackActivity extends AppCompatActivity implements
         prefs.putString(SettingsFragment.KEY_CONTACT_PHONE, mMerchant.getContactPhone());
 
         prefs.putBoolean(SettingsFragment.KEY_LINKED_INV, mMerchant.isInvoiceNumAsk());
-        prefs.putBoolean(SettingsFragment.KEY_LINKED_INV_MANDATORY, mMerchant.isInvoiceNumOptional());
+        prefs.putBoolean(SettingsFragment.KEY_LINKED_INV_MANDATORY, !mMerchant.isInvoiceNumOptional());
         prefs.putBoolean(SettingsFragment.KEY_LINKED_INV_ONLY_NMBRS, mMerchant.isInvoiceNumOnlyNumbers());
 
         return prefs.commit();

@@ -51,7 +51,8 @@
             android:layout_height="wrap_content"
             android:text="\u20B9 99999"
             android:layout_weight="40"
-            android:gravity="right"/>
+            android:gravity="right"
+            android:longClickable="false"/>
 
         <android.support.v7.widget.AppCompatImageButton
             style="@style/Widget.AppCompat.Button.Borderless"

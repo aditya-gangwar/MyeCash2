@@ -19,6 +19,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.ColorRes;
@@ -45,6 +46,7 @@ import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.DateUtil;
 import in.myecash.common.MyErrorParams;
 import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.database.Address;
@@ -67,6 +69,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -248,8 +252,30 @@ public class AppCommonUtil {
             errorCode = Integer.parseInt(expCode);
         } catch(Exception et) {
             if( expMsg!=null && (expMsg.contains(CommonConstants.BACKENDLESS_HOST_IP)||expMsg.contains("Connection refused")) ) {
-                LogMy.d(TAG,"Exiting getLocalErrorCode: "+ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE);
-                return ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE;
+
+                // check if internet is available
+                // dont check if in main UI thread
+                if(!(Looper.myLooper() == Looper.getMainLooper())) {
+                    if(isInternetConnected()) {
+                        // internet available - means our service itself is down
+                        // Check if service is supposed to be down - as per last fetched GlobalSettings
+                        int status = checkServiceTime();
+                        if(status==ErrorCodes.NO_ERROR) {
+                            // Service genuinely not available
+                            // raise alarm
+                            LogMy.e(TAG, "Remote Service Not available");
+                            AppAlarms.serviceUnavailable("getLocalErrorCode");
+                            return ErrorCodes.INTERNET_OK_SERVICE_NOK;
+                        } else {
+                            return status;
+                        }
+                    } else {
+                        return ErrorCodes.NO_INTERNET_CONNECTION;
+                    }
+                } else {
+                    LogMy.d(TAG, "Exiting getLocalErrorCode: " + ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE);
+                    return ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE;
+                }
             }
             LogMy.e(TAG,"Non-integer error code: "+expCode,e);
             return ErrorCodes.GENERAL_ERROR;
@@ -310,6 +336,11 @@ public class AppCommonUtil {
 
             case ErrorCodes.CASH_ACCOUNT_LIMIT_RCHD:
                 return String.format(ErrorCodes.appErrorDesc.get(errorCode),Integer.toString(MyGlobalSettings.getCashAccLimit()));
+
+            case ErrorCodes.UNDER_DAILY_DOWNTIME:
+                return String.format(ErrorCodes.appErrorDesc.get(errorCode),
+                        Integer.toString(MyGlobalSettings.getDailyDownStartHour()),
+                        Integer.toString(MyGlobalSettings.getDailyDownEndHour()));
 
             case ErrorCodes.WRONG_PIN:
             case ErrorCodes.VERIFICATION_FAILED_CARDID:
@@ -682,6 +713,10 @@ public class AppCommonUtil {
     }
 
     private static int checkServiceTime() {
+
+        if(!MyGlobalSettings.isAvailable()) {
+            return ErrorCodes.NO_ERROR;
+        }
         // Check for daily downtime
         int startHour = MyGlobalSettings.getDailyDownStartHour();
         int endHour = MyGlobalSettings.getDailyDownEndHour();

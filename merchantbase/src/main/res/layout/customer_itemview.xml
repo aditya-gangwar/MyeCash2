@@ -73,9 +73,74 @@
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
-            android:id="@+id/layout_account"
+            android:id="@+id/layout_cashback"
             android:layout_width="wrap_content"
             android:layout_below="@id/input_cust_id">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/cust_cb_icon"
+                android:src="@drawable/ic_favorite_white_18dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingTop="0dp"
+                android:tint="@color/primary"
+                android:clickable="false"/>
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:id="@+id/cust_cb_credit"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="\u20B9 3456"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingRight="0dp"/>
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text=" - "
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingRight="@dimen/edittext_padding_less"
+                android:paddingLeft="@dimen/edittext_padding_less"/>
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:id="@+id/cust_cb_debit"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="\u20B9 3456"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingRight="0dp"
+                android:paddingLeft="0dp"/>
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text=" = "
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingRight="@dimen/edittext_padding_less"
+                android:paddingLeft="@dimen/edittext_padding_less"/>
+            <EditText
+                style="@style/Edittext_only_click_small"
+                android:id="@+id/cust_cb_balance"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="\u20B9 3456"
+                android:paddingTop="0dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingRight="0dp"
+                android:paddingLeft="0dp"
+                android:textColor="@color/green_positive"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_account"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/layout_cashback">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -127,71 +192,6 @@
             <EditText
                 style="@style/Edittext_only_click_small"
                 android:id="@+id/cust_acc_balance"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:text="\u20B9 3456"
-                android:paddingTop="0dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="0dp"
-                android:paddingLeft="0dp"
-                android:textColor="@color/green_positive"/>
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:id="@+id/layout_cashback"
-            android:layout_width="wrap_content"
-            android:layout_below="@id/layout_account">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/cust_cb_icon"
-                android:src="@drawable/ic_favorite_white_18dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingTop="0dp"
-                android:tint="@color/primary"
-                android:clickable="false"/>
-            <EditText
-                style="@style/Edittext_only_click_small"
-                android:id="@+id/cust_cb_credit"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:text="\u20B9 3456"
-                android:paddingTop="0dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="0dp"/>
-            <EditText
-                style="@style/Edittext_only_click_small"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:text=" - "
-                android:paddingTop="0dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="@dimen/edittext_padding_less"
-                android:paddingLeft="@dimen/edittext_padding_less"/>
-            <EditText
-                style="@style/Edittext_only_click_small"
-                android:id="@+id/cust_cb_debit"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:text="\u20B9 3456"
-                android:paddingTop="0dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="0dp"
-                android:paddingLeft="0dp"/>
-            <EditText
-                style="@style/Edittext_only_click_small"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:text=" = "
-                android:paddingTop="0dp"
-                android:paddingBottom="@dimen/edittext_padding_less"
-                android:paddingRight="@dimen/edittext_padding_less"
-                android:paddingLeft="@dimen/edittext_padding_less"/>
-            <EditText
-                style="@style/Edittext_only_click_small"
-                android:id="@+id/cust_cb_balance"
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:text="\u20B9 3456"

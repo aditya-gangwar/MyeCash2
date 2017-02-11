@@ -7,6 +7,7 @@ import android.os.Message;
 
 import com.backendless.exceptions.BackendlessException;
 
+import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Cashback;
@@ -15,6 +16,7 @@ import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.BackgroundProcessor;
 import in.myecash.appbase.utilities.FileFetchr;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.merchantbase.backendAPI.MerchantServices;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.appbase.entities.MyTransaction;
@@ -453,6 +455,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         mRetainedFragment.mLastFetchTransactions = null;
 
         try {
+            isSessionValid();
             mRetainedFragment.mLastFetchTransactions = MyTransaction.fetch(query, MerchantUser.getInstance().getMerchant().getTxn_table());
             if (mRetainedFragment.mLastFetchTransactions == null || mRetainedFragment.mLastFetchTransactions.size() == 0) {
                 return ErrorCodes.NO_DATA_FOUND;
@@ -475,6 +478,12 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     private int fetchTxnFiles(Context ctxt) {
         int errorCode = ErrorCodes.NO_ERROR;
 
+        try {
+            isSessionValid();
+        } catch (BackendlessException e) {
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+
         // create a copy of list
         List<String> missingFiles = new ArrayList<>(mRetainedFragment.mMissingFiles);
 
@@ -496,16 +505,16 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     }
 
     private int downloadFile(MessageFileDownload msg) {
-        String filepath = msg.fileUrl;
-        String fileURL = CommonConstants.BACKEND_FILE_BASE_URL + filepath;
-        //String filename = filepath.substring(filepath.lastIndexOf('/')+1);
-        String filename = Uri.parse(fileURL).getLastPathSegment();
-        LogMy.d(TAG,"Fetching "+fileURL+", Filename: "+filename);
-
-        FileOutputStream outputStream;
         try {
+            String filepath = msg.fileUrl;
+            String fileURL = CommonConstants.BACKEND_FILE_BASE_URL + filepath;
+            //String filename = filepath.substring(filepath.lastIndexOf('/')+1);
+            String filename = Uri.parse(fileURL).getLastPathSegment();
+            LogMy.d(TAG,"Fetching "+fileURL+", Filename: "+filename);
+
             byte[] bytes = new FileFetchr().getUrlBytes(fileURL, mRetainedFragment.mUserToken);
 
+            FileOutputStream outputStream;
             outputStream = msg.ctxt.openFileOutput(filename, Context.MODE_PRIVATE);
             outputStream.write(bytes);
             outputStream.close();
@@ -513,10 +522,20 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         } catch(FileNotFoundException fnf) {
             LogMy.d(TAG, "File not found: "+fnf.toString());
             return ErrorCodes.FILE_NOT_FOUND;
-        } catch(IOException ioe) {
-            LogMy.e(TAG, "Failed to fetch file: "+ioe.toString());
+        } catch(Exception e) {
+            LogMy.e(TAG, "Failed to fetch file: "+e.toString());
             return ErrorCodes.GENERAL_ERROR;
         }
         return ErrorCodes.NO_ERROR;
+    }
+
+    private void isSessionValid() {
+        try {
+            CommonServices.getInstance().isSessionValid();
+            LogMy.d(TAG,"Session is valid");
+        } catch (BackendlessException e) {
+            LogMy.e(TAG, "Session not valid: "+ e.toString());
+            throw e;
+        }
     }
 }

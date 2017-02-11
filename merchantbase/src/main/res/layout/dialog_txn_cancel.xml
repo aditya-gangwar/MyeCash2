@@ -14,10 +14,11 @@
         android:id="@+id/scroll"
         android:layout_below="@id/label_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            style="@style/LL_Vertical_paddingSidesLarge">
+            style="@style/LL_Vertical_paddingSidesLarge"
+            android:layout_height="wrap_content">
 
             <Space
                 android:layout_width="match_parent"
@@ -90,7 +91,7 @@
             <LinearLayout
                 style="@style/LL_Vertical"
                 android:id="@+id/layout_account"
-                android:layout_marginTop="@dimen/medium_space">
+                android:layout_marginTop="@dimen/XL_space">
 
                 <LinearLayout
                     style="@style/LL_Horizontal_wrap"
@@ -282,7 +283,7 @@
                         android:gravity="left"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:text="* Only \u20B9 175 will be Cancelled."
+                        android:text="Will be Refunded"
                         android:textColor="@color/green_positive"/>
                 </LinearLayout>
 
@@ -334,7 +335,8 @@
                 android:layout_height="@dimen/small_space"/>
 
             <LinearLayout
-                style="@style/LL_Horizontal_wrap">
+                style="@style/LL_Horizontal_wrap"
+                android:layout_marginBottom="@dimen/medium_space">
 
                 <ImageView
                     android:layout_width="wrap_content"

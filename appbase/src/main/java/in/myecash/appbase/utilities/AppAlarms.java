@@ -37,6 +37,7 @@ public class AppAlarms {
     private static String FILE_DOWNLOAD_FAILED = "fileDownloadFailed";
     private static String ALARM_INVALID_MERCHANT_STATE = "invalidMerchantState";
     private static String ALARM_WTF = "iShudNotBeHere";
+    private static String ALARM_SERVICE_NOT_AVAILABLE = "serviceNotAvailable";
 
     // Exception logging methods
     public static void handleException(BackendlessException e) {
@@ -142,6 +143,16 @@ public class AppAlarms {
                 methodName+ALARM_CSV_DELIM +
                 getParamStr(params));
     }
+    public static void serviceUnavailable(String methodName) {
+        raiseAlarm(String.valueOf(System.currentTimeMillis())+ALARM_CSV_DELIM +
+                ""+ALARM_CSV_DELIM +
+                ""+ALARM_CSV_DELIM +
+                ALARM_SEVERITY_FATAL+ALARM_CSV_DELIM +
+                ALARM_SERVICE_NOT_AVAILABLE+ALARM_CSV_DELIM +
+                ALARM_SERVICE_NOT_AVAILABLE+ALARM_CSV_DELIM +
+                methodName+ALARM_CSV_DELIM +
+                "");
+    }
 
 
     private static String getParamStr(Map<String,String> params) {
@@ -163,6 +174,7 @@ public class AppAlarms {
     }
 
     private static void raiseAlarm(String alarmMsg) {
+        LogMy.e("BaseApp","Raising Alarm: "+alarmMsg);
         Crashlytics.logException(new Exception(alarmMsg));
     }
 

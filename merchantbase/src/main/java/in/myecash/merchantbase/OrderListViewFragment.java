@@ -140,7 +140,7 @@ public class OrderListViewFragment extends ListFragment implements
 
     @Override
     public void onToggleExclusion(int position) {
-        LogMy.d(TAG, "In onEditQuantity");
+        LogMy.d(TAG, "In onToggleExclusion");
 
         OrderItem item = mRetainedFragment.mOrderItems.get(position);
         item.setCashbackExcluded(!item.isCashbackExcluded());

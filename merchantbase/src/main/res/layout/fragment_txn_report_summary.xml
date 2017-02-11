@@ -133,86 +133,6 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@color/account"
-                    android:layout_marginRight="@dimen/medium_space">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_account_balance_wallet_white_24dp"
-                        android:layout_gravity="center"
-                        android:padding="@dimen/medium_space"/>
-                </FrameLayout>
-
-                <LinearLayout
-                    style="@style/LL_Vertical">
-
-                    <EditText
-                        style="@style/Edittext_only_view_small"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/label_cash_account"
-                        android:layout_width="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="ACCOUNT"
-                        android:textColor="@color/primary"/>
-
-                    <LinearLayout
-                        style="@style/LL_Horizontal_wrap">
-
-                            <EditText
-                                style="@style/Edittext_only_view_medium"
-                                android:layout_width="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="left|center_vertical"
-                                android:text="Total Add"/>
-                            <EditText
-                                style="@style/Edittext_only_click_medium"
-                                android:layout_width="wrap_content"
-                                android:id="@+id/input_trans_add_account"
-                                android:text="+ \u20B9 235"
-                                android:textStyle="bold"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        style="@style/LL_Horizontal_wrap"
-                        android:layout_marginBottom="@dimen/small_space">
-
-                        <EditText
-                            style="@style/Edittext_only_view_medium"
-                            android:layout_width="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="left|center_vertical"
-                            android:text="Total Debit"/>
-                        <EditText
-                            style="@style/Edittext_only_click_medium"
-                            android:layout_width="wrap_content"
-                            android:id="@+id/input_trans_debit_account"
-                            android:text="- \u20B9 235"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"/>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            card_view:cardCornerRadius="4dp">
-
-            <LinearLayout
-                style="@style/LL_Horizontal_wrap">
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
                     android:background="@color/cashback"
                     android:layout_marginRight="@dimen/medium_space">
 
@@ -266,6 +186,86 @@
                             style="@style/Edittext_only_click_medium"
                             android:layout_width="wrap_content"
                             android:id="@+id/input_trans_redeem_cb"
+                            android:text="- \u20B9 235"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="4dp">
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/account"
+                    android:layout_marginRight="@dimen/medium_space">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/medium_space"/>
+                </FrameLayout>
+
+                <LinearLayout
+                    style="@style/LL_Vertical">
+
+                    <EditText
+                        style="@style/Edittext_only_view_small"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/label_cash_account"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="ACCOUNT"
+                        android:textColor="@color/primary"/>
+
+                    <LinearLayout
+                        style="@style/LL_Horizontal_wrap">
+
+                        <EditText
+                            style="@style/Edittext_only_view_medium"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left|center_vertical"
+                            android:text="Total Add"/>
+                        <EditText
+                            style="@style/Edittext_only_click_medium"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/input_trans_add_account"
+                            android:text="+ \u20B9 235"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/LL_Horizontal_wrap"
+                        android:layout_marginBottom="@dimen/small_space">
+
+                        <EditText
+                            style="@style/Edittext_only_view_medium"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left|center_vertical"
+                            android:text="Total Debit"/>
+                        <EditText
+                            style="@style/Edittext_only_click_medium"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/input_trans_debit_account"
                             android:text="- \u20B9 235"
                             android:textStyle="bold"/>
                     </LinearLayout>

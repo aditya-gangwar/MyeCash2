@@ -25,6 +25,10 @@
         <activity
             android:name="in.myecash.customerbase.LoginCustActivity">
         </activity>
+
+        <activity android:name="in.myecash.appbase.ServerNaActivity"
+            android:label="Service Not Available"/>
+
         <activity
             android:name="in.myecash.customerbase.CashbackActivityCust"
             android:label="CashbackActivity"

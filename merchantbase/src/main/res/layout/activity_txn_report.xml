@@ -30,9 +30,7 @@
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesXL"
         android:id="@+id/layout_report_main"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_height="match_parent"
         android:layout_below="@id/toolbar_report">
 
         <Space
@@ -135,12 +133,9 @@
             android:layout_height="wrap_content"
             android:text="Enter Customer 'Mobile Number' or 'ID'\nLeave Empty for All Customers"/>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"/>
-
         <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/medium_space">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -165,7 +160,6 @@
                 android:hint="Optional"
                 android:layout_weight="60"
                 android:gravity="center"
-                android:singleLine="true"
                 android:ellipsize="end"
                 android:inputType="textCapCharacters"/>
         </LinearLayout>

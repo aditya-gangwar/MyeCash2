@@ -44,7 +44,8 @@
                 android:hint="Mobile Number"
                 android:drawableLeft="@drawable/ic_mobile"
                 android:text="8800"
-                android:typeface="monospace"/>
+                android:typeface="monospace"
+                android:longClickable="false"/>
             <!--EditText
                 style="@style/Edittext_biggest_main_input"
                 android:layout_width="wrap_content"

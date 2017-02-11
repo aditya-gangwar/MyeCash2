@@ -39,6 +39,8 @@ public class TxnCancelDialog extends DialogFragment
     private String mTxnId;
     private String scannedCardId;
 
+    private boolean mAnythingToCancel;
+
     public interface TxnCancelDialogIf {
         void onCancelTxnConfirm(String txnId, String cardId, String imgFileName);
     }
@@ -122,6 +124,11 @@ public class TxnCancelDialog extends DialogFragment
                 public void onClick(View v) {
                     Boolean wantToCloseDialog = false;
 
+                    if(!mAnythingToCancel) {
+                        AppCommonUtil.toast(getActivity(),"Nothing to Cancel");
+                        return;
+                    }
+
                     int errorCode = ValidationHelper.validateCardId(scannedCardId);
                     if(errorCode != ErrorCodes.NO_ERROR) {
                         mInputQrCard.setError(AppCommonUtil.getErrorDesc(errorCode));
@@ -195,6 +202,7 @@ public class TxnCancelDialog extends DialogFragment
             //TODO: raise alarm
             return;
         }
+        mAnythingToCancel = false;
 
         mTxnId = txn.getTrans_id();
         mInputTxnId.setText(txn.getTrans_id());
@@ -206,6 +214,7 @@ public class TxnCancelDialog extends DialogFragment
             mLayoutAccount.setVisibility(View.VISIBLE);
 
             if(txn.getCl_debit()>0) {
+                mAnythingToCancel = true;
                 mInputAccDebit.setText(AppCommonUtil.getSignedAmtStr(txn.getCl_debit(), false));
             } else {
                 mLayoutAccDebit.setVisibility(View.GONE);
@@ -223,6 +232,7 @@ public class TxnCancelDialog extends DialogFragment
             mLayoutCb.setVisibility(View.VISIBLE);
 
             if(txn.getCb_debit()>0) {
+                mAnythingToCancel = true;
                 mInputCbDebit.setText(AppCommonUtil.getSignedAmtStr(txn.getCb_debit(), false));
             } else {
                 mLayoutCbDebit.setVisibility(View.GONE);
@@ -231,12 +241,24 @@ public class TxnCancelDialog extends DialogFragment
             if( totalCb > 0 ) {
                 mInputCbAdd.setText(AppCommonUtil.getAmtStr(totalCb));
                 if(txn.getExtra_cb_credit() > 0) {
-                    String str = "* Only " + AppCommonUtil.getAmtStr(txn.getCb_credit()) + " will be Cancelled";
-                    mDetailsCbAdd.setText(str);
-                    mLayoutCbAddRemarks.setVisibility(View.VISIBLE);
-                    str = "* " + AppCommonUtil.getAmtStr(txn.getExtra_cb_credit()) + " can't be cancelled, as Extra Cashback on Cash added to Account.";
-                    mRemarksCbAdd.setText(str);
+                    if(txn.getCb_credit() > 0) {
+                        mAnythingToCancel = true;
+                        // Both CB and Extra CB are applicable
+                        String str = "* Only " + AppCommonUtil.getAmtStr(txn.getCb_credit()) + " will be Cancelled";
+                        mDetailsCbAdd.setText(str);
+                        mLayoutCbAddRemarks.setVisibility(View.VISIBLE);
+                        str = "* " + AppCommonUtil.getAmtStr(txn.getExtra_cb_credit()) + " can't be cancelled, as Extra Cashback on Cash added to Account.";
+                        mRemarksCbAdd.setText(str);
+                    } else {
+                        // Only Extra CB is applicable
+                        mDetailsCbAdd.setText("Can't be Cancelled");
+                        mLayoutCbAddRemarks.setVisibility(View.VISIBLE);
+                        String str = "* " + AppCommonUtil.getAmtStr(txn.getExtra_cb_credit()) + " can't be cancelled, as Extra Cashback on Cash added to Account.";
+                        mRemarksCbAdd.setText(str);
+                    }
                 } else {
+                    // Only CB is applicable
+                    mAnythingToCancel = true;
                     mLayoutCbAddRemarks.setVisibility(View.GONE);
                 }
             } else {
@@ -244,13 +266,20 @@ public class TxnCancelDialog extends DialogFragment
             }
         }
 
+        if(!mAnythingToCancel) {
+            mTitle.setText("Transaction Cannot be Cancelled, as no amount eligible for cancellation.");
+            mTitle.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+            mInputQrCard.setEnabled(false);
+        } else {
+            mInputQrCard.setEnabled(true);
+        }
     }
 
     private String getTempImgFilename(String txnId) {
         return CommonConstants.PREFIX_TXN_CANCEL_IMG_FILE_NAME+Long.toString(System.currentTimeMillis())+"."+CommonConstants.PHOTO_FILE_FORMAT;
     }
 
-
+    private EditText mTitle;
     private EditText mInputTxnId;
     private EditText mInputCustId;
 
@@ -273,6 +302,7 @@ public class TxnCancelDialog extends DialogFragment
     private EditText mInputQrCard;
 
     private void bindUiResources(View v) {
+        mTitle = (EditText) v.findViewById(R.id.label_info_1);
         mInputTxnId = (EditText) v.findViewById(R.id.input_txn_id);
         mInputCustId = (EditText) v.findViewById(R.id.input_custId);
 

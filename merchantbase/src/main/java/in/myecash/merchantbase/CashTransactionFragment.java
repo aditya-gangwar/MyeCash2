@@ -541,8 +541,16 @@ public class CashTransactionFragment extends Fragment implements
 
             // calculate cashbacks
             int cbEligibleAmt = mRetainedFragment.mBillTotal - mRetainedFragment.mCbExcludedTotal - mDebitCashback;
-            mAddCbOnBill = (int)(cbEligibleAmt * mCbRate) / 100;
-            mAddCbOnAcc = (int)(mAddCashload * mPpCbRate) / 100;
+            if(cbApply) {
+                mAddCbOnBill = (int) (cbEligibleAmt * mCbRate) / 100;
+            } else {
+                mAddCbOnBill = 0;
+            }
+            if(cbExtraApply) {
+                mAddCbOnAcc = (int) (mAddCashload * mPpCbRate) / 100;
+            } else {
+                mAddCbOnAcc = 0;
+            }
             setAddCashback(mAddCbOnBill, mAddCbOnAcc);
             LogMy.d(TAG, "mAddCbOnBill: " + mAddCbOnBill+", mAddCbOnAcc: "+mAddCbOnAcc);
 

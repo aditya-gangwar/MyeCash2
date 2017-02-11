@@ -38,6 +38,12 @@ package in.myecash.appbase.backendAPI;
           Backendless.initApp( CommonConstants.APPLICATION_ID, CommonConstants.ANDROID_SECRET_KEY, CommonServices.APP_VERSION );
       }
 
+      public void isSessionValid()
+      {
+          Object[] args = new Object[]{};
+          Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "isSessionValid", args );
+      }
+
       public void changePassword(String userId, String oldPasswd, String newPasswd)
       {
           Object[] args = new Object[]{userId, oldPasswd, newPasswd};

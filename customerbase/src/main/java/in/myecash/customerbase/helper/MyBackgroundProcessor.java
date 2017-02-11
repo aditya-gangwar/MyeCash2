@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.appbase.utilities.FileFetchr;
 import in.myecash.common.constants.CommonConstants;
@@ -282,6 +283,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         int errorCode = ErrorCodes.NO_ERROR;
 
         try {
+            isSessionValid();
             List<Transaction> txns = CustomerUser.getInstance().fetchTxns(query);
             if(txns!=null && txns.size() > 0) {
                 mRetainedFragment.mLastFetchTransactions = txns;
@@ -299,6 +301,12 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
     private int fetchTxnFiles(Context ctxt) {
         int errorCode = ErrorCodes.NO_ERROR;
+
+        try {
+            isSessionValid();
+        } catch (BackendlessException e) {
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
 
         // create a copy of list
         List<String> missingFiles = new ArrayList<>(mRetainedFragment.mMissingFiles);
@@ -363,6 +371,16 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;
+    }
+
+    private void isSessionValid() {
+        try {
+            CommonServices.getInstance().isSessionValid();
+            LogMy.d(TAG,"Session is valid");
+        } catch (BackendlessException e) {
+            LogMy.e(TAG, "Session not valid: "+ e.toString());
+            throw e;
+        }
     }
 
     /*

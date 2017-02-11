@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -131,6 +132,14 @@ public class TxnReportsActivity extends AppCompatActivity implements
             mLastTxnPos = -1;
         }
         mInputCustId.setText(getIntent().getStringExtra(EXTRA_CUSTOMER_ID));
+
+        mInputCustId.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                return false;
+            }
+        });
 
     }
 

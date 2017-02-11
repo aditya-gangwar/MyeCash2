@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.helpshift.support.Support;
 
+import in.myecash.appbase.ServerNaActivity;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
@@ -331,6 +332,13 @@ public class LoginActivity extends AppCompatActivity implements
                     .show(getFragmentManager(), DIALOG_SESSION_TIMEOUT);
             return;
         }*/
+
+        if(errorCode==ErrorCodes.INTERNET_OK_SERVICE_NOK) {
+            AppCommonUtil.cancelProgressDialog(true);
+            Intent intent = new Intent( this, ServerNaActivity.class );
+            startActivity(intent);
+            return;
+        }
 
         try {
             if (operation == MyRetainedFragment.REQUEST_LOGIN) {
