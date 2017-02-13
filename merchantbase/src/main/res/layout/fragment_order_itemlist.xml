@@ -51,8 +51,8 @@
             android:id="@+id/input_quantity"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
-            android:layout_weight="25"
-            android:text="COUNT"
+            android:layout_weight="20"
+            android:text="QTY"
             android:gravity="left"
             android:textStyle="bold"/>
 
@@ -62,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="TOTAL"
-            android:layout_weight="30"
+            android:layout_weight="35"
             android:gravity="right"
             android:textStyle="bold"/>
 

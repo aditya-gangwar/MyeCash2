@@ -32,14 +32,22 @@ public class SplashActivity extends AppCompatActivity
         implements DialogFragmentWrapper.DialogFragmentWrapperIf {
     private static final String TAG = "AgentApp-SplashActivity";
 
-    private FetchGlobalSettings mTask;
+    //private FetchGlobalSettings mTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(SplashActivity.this);
+        String naErrorStr = AppCommonUtil.isDownAsPerLocalData(SplashActivity.this);
+        if(naErrorStr!=null) {
+            DialogFragmentWrapper.createNotification(AppConstants.serviceNATitle, naErrorStr, false, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        } else {
+            startLoginActivity();
+        }
+
+        /*int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(SplashActivity.this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
             DialogFragmentWrapper.createNotification(AppConstants.noInternetTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
@@ -47,10 +55,10 @@ public class SplashActivity extends AppCompatActivity
         } else {
             mTask = new FetchGlobalSettings();
             mTask.execute();
-        }
+        }*/
     }
 
-    @Override
+    /*@Override
     public void onDestroy() {
         if(mTask!=null) {
             mTask.cancel(true);
@@ -58,18 +66,18 @@ public class SplashActivity extends AppCompatActivity
         }
         LogMy.i(TAG, "Background thread destroyed");
         super.onDestroy();
-    }
+    }*/
 
 
     private void startLoginActivity() {
 
-        if(MyGlobalSettings.mSettings==null) {
+        /*if(MyGlobalSettings.mSettings==null) {
             // I should not be here
             // Show error notification dialog
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             finish();
-        }
+        }*/
 
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -82,7 +90,7 @@ public class SplashActivity extends AppCompatActivity
         // do nothing
     }
 
-    private class FetchGlobalSettings extends AsyncTask<Void,Void,Integer> {
+    /*private class FetchGlobalSettings extends AsyncTask<Void,Void,Integer> {
         @Override
         protected Integer doInBackground(Void... params) {
             try {
@@ -132,5 +140,5 @@ public class SplashActivity extends AppCompatActivity
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         }
-    }
+    }*/
 }

@@ -184,7 +184,7 @@ public class MerchantDetailsFragment extends Fragment
         mInputReason = (EditText) v.findViewById(R.id.input_status_reason);
         mInputStatusDate = (EditText) v.findViewById(R.id.input_status_date);
 
-        mContactName = (EditText) v.findViewById(R.id.input_contact_num);
+        mContactName = (EditText) v.findViewById(R.id.input_contact_name);
         mContactPhone = (EditText) v.findViewById(R.id.input_contact_phone);
         mInputEmail = (EditText) v.findViewById(R.id.input_merchant_email);
 

@@ -133,7 +133,7 @@ public class CustomerOpListFrag extends Fragment {
 
             mOpName.setText(op.getOp_code());
             mOpTime.setText(mSdfDateWithTime.format(op.getCreated()));
-            String initBy = op.getInitiatedBy();
+            String initBy = "By '"+op.getInitiatedBy()+"'";
             if(op.getInitiatedVia()!=null && !op.getInitiatedVia().isEmpty()) {
                 initBy = initBy+" Via "+op.getInitiatedVia();
             }

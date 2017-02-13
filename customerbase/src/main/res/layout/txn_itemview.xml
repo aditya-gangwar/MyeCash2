@@ -3,13 +3,11 @@
     style="@style/LL_Vertical_paddingSidesLarge"
     android:layout_height="wrap_content">
 
-    <View
-        style="@style/Divider_horizontal_Large"
-        android:id="@+id/txn_divider_1"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/medium_space"
+        android:paddingBottom="@dimen/medium_space">
 
         <EditText
             style="@style/Edittext_only_click_small_lessPad"
@@ -34,7 +32,8 @@
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:text="\u20B9 99,999"
-                android:paddingRight="0dp"/>
+                android:paddingRight="0dp"
+                android:textStyle="bold"/>
 
             <EditText
                 style="@style/Edittext_only_click_small_lessPad"
@@ -44,20 +43,27 @@
                 android:text="|"
                 android:paddingTop="0dp" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/txn_cashback_icon_1"
+                android:src="@drawable/ic_favorite_white_18dp"
+                android:paddingTop="@dimen/edittext_padding_less"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:tint="@color/primary"/>
+
             <EditText
                 style="@style/Edittext_only_click_small_lessPad"
                 android:id="@+id/txn_cashback_award"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="\u20B9 23"
-                android:textStyle="italic"/>
+                android:text="+ \u20B9 23"/>
             <EditText
                 style="@style/Edittext_only_click_small_lessPad"
                 android:id="@+id/txn_cb_award_cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="\u20B9 23"
-                android:textStyle="italic"/>
+                android:layout_height="match_parent"
+                android:text="\u20B9 23"/>
 
         </LinearLayout>
 
@@ -159,5 +165,9 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+    <View
+        style="@style/Divider_horizontal_Large"
+        android:id="@+id/txn_divider_1"/>
 
 </LinearLayout>

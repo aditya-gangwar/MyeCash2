@@ -29,7 +29,6 @@ public class DisableCardDialog extends DialogFragment
     public static final String TAG = "AgentApp-DisableCardDialog";
     private static final String ARG_ACTION = "argAction";
 
-    boolean isLtdMode;
     private String reasonStr;
     private DisableCardDialogIf mListener;
 

@@ -42,7 +42,8 @@ public class ActionsActivity extends AppCompatActivity implements
         DisableMchntDialog.DisableMchntDialogIf, SearchCustomerDialog.SearchCustomerDialogIf,
         CustomerDetailsFragment.CustomerDetailsFragmentIf, DisableCustDialog.DisableCustDialogIf,
         SearchCardDialog.SearchCardDialogIf, CardDetailsFragment.CardDetailsFragmentIf,
-        CardsActionListFrag.CardsActionListFragIf, DisableCardDialog.DisableCardDialogIf
+        CardsActionListFrag.CardsActionListFragIf, DisableCardDialog.DisableCardDialogIf,
+        GlobalSettingsListFrag.GlobalSettingsListFragIf
 {
 
     private static final String TAG = "AgentApp-ActionsActivity";

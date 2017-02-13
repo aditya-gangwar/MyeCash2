@@ -577,6 +577,7 @@ public class TxnListFragment extends Fragment {
 
         public EditText mBillAmount;
         public EditText mCashbackAward;
+        public View mCashbackIcon1;
         public EditText mCbAwardCancel;
         public View mAccountIcon;
         public EditText mAccountAmt;
@@ -602,6 +603,7 @@ public class TxnListFragment extends Fragment {
             mCashbackAmt = (EditText) itemView.findViewById(R.id.txn_cashback_amt);
 
             mCashbackAward = (EditText) itemView.findViewById(R.id.txn_cashback_award);
+            mCashbackIcon1 = itemView.findViewById(R.id.txn_cashback_icon_1);
             mCbAwardCancel = (EditText) itemView.findViewById(R.id.txn_cb_award_cancel);
             //mSecureIcon = (ImageView)itemView.findViewById(R.id.txn_secure_icon);
 
@@ -686,9 +688,11 @@ public class TxnListFragment extends Fragment {
             int totalCb = mTxn.getCb_credit()+mTxn.getExtra_cb_credit();
             if( totalCb > 0) {
                 //String cbData = AppCommonUtil.getAmtStr(mTxn.getCb_credit())+" @ "+mTxn.getCb_percent()+"%";
-                String cbData = AppCommonUtil.getAmtStr(totalCb);
+                mCashbackIcon1.setVisibility(View.VISIBLE);
+                String cbData = AppCommonUtil.getSignedAmtStr(totalCb, true);
                 mCashbackAward.setText(cbData);
             } else {
+                mCashbackIcon1.setVisibility(View.GONE);
                 mCashbackAward.setText("-");
             }
 

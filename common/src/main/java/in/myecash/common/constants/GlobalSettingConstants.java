@@ -105,6 +105,7 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_TXN_IMAGE_CAPTURE_MODE,String.valueOf(TXN_IMAGE_CAPTURE_CARD_REQUIRED));
         aMap.put(SETTINGS_DAILY_DOWNTIME_START_HOUR,"5");
         aMap.put(SETTINGS_DAILY_DOWNTIME_END_HOUR,"6");
+        //URL to which App will redirect if backend is not available
         aMap.put(SETTINGS_SERVICE_NA_URL,"http://www.whysotechnologies.com/backsoon");
         valuesGlobalSettings = Collections.unmodifiableMap(aMap);
     }
@@ -144,7 +145,7 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_TXN_IMAGE_CAPTURE_MODE, null);
         aMap.put(SETTINGS_DAILY_DOWNTIME_START_HOUR, "Start Hour for Daily service downtime (24 hour format).");
         aMap.put(SETTINGS_DAILY_DOWNTIME_END_HOUR, "End Hour for Daily service downtime (24 hour format).");
-        aMap.put(SETTINGS_SERVICE_NA_URL, "URL to which App will redirect if backend is not available");
+        aMap.put(SETTINGS_SERVICE_NA_URL, null);
         descGlobalSettings = Collections.unmodifiableMap(aMap);
     }
 

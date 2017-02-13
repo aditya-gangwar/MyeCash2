@@ -6,8 +6,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/small_space"
-        android:paddingBottom="@dimen/small_space">
+        android:paddingTop="@dimen/medium_space"
+        android:paddingBottom="@dimen/medium_space">
 
         <EditText
             style="@style/Edittext_only_click_small_lessPad"
@@ -27,32 +27,40 @@
             <EditText
                 style="@style/Edittext_only_click_small_lessPad"
                 android:id="@+id/txn_bill"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:text="\u20B9 99,999"
-                android:paddingRight="0dp"/>
+                android:paddingRight="0dp"
+                android:textStyle="bold"/>
 
             <EditText
                 style="@style/Edittext_only_click_small_lessPad"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:id="@+id/txn_bill_divider"
                 android:text=" | "/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/txn_cashback_icon_1"
+                android:src="@drawable/ic_favorite_white_18dp"
+                android:paddingBottom="@dimen/edittext_padding_less"
+                android:paddingTop="@dimen/edittext_padding_less"
+                android:tint="@color/primary"/>
 
             <EditText
                 style="@style/Edittext_only_click_small_lessPad"
                 android:id="@+id/txn_cashback_award"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="\u20B9 23"
-                android:textStyle="italic"/>
+                android:layout_height="match_parent"
+                android:text="+ \u20B9 23"/>
             <EditText
                 style="@style/Edittext_only_click_small_lessPad"
                 android:id="@+id/txn_cb_award_cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="\u20B9 23"
-                android:textStyle="italic"/>
+                android:layout_height="match_parent"
+                android:text="\u20B9 23"/>
 
         </LinearLayout>
 

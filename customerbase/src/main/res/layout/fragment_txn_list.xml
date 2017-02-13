@@ -29,7 +29,7 @@
             android:layout_below="@id/txnlist_filter_mchnt"
             android:id="@+id/txnlist_filter_duration"
             android:layout_height="wrap_content"
-            android:text="From: 16 Oct 2016,  To: 20 Oct 2016"
+            android:text="From: 16 Oct 2016  -  To: 20 Oct 2016"
             android:paddingTop="0dp"
             android:textStyle="italic"/>
 

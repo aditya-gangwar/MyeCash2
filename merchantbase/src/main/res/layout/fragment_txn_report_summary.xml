@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground">
 
+    <EditText
+        style="@style/Edittext_only_view_small"
+        android:layout_width="match_parent"
+        android:layout_below="@id/toolbar"
+        android:id="@+id/txnlist_filter_duration"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="16 Oct 2016   -   20 Oct 2016"
+        android:textStyle="italic|bold"
+        android:background="@color/bg_filters"/>
+    
     <LinearLayout
         style="@style/LL_Vertical"
         android:layout_height="wrap_content"
@@ -24,7 +35,7 @@
 
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesLarge"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/txnlist_filter_duration"
         android:layout_above="@id/layout_last_row_btn"
         android:background="@color/bg_light_grey">
 
@@ -44,7 +55,7 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@color/txns"
+                    android:background="@color/primary"
                     android:layout_marginRight="@dimen/medium_space">
 
                     <ImageView
@@ -52,22 +63,23 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_swap_horiz_white_24dp"
                         android:layout_gravity="center"
-                        android:padding="@dimen/medium_space"/>
+                        android:padding="@dimen/small_space"/>
                 </FrameLayout>
 
                 <EditText
-                    style="@style/Edittext_only_view_medium"
-                    android:layout_width="wrap_content"
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_width="0dp"
                     android:layout_weight="1"
                     android:gravity="left|center_vertical"
                     android:text="Total Transactions" />
 
                 <EditText
-                    style="@style/Edittext_only_view_medium"
+                    style="@style/Edittext_only_view_small_lessPad"
                     android:layout_width="wrap_content"
                     android:id="@+id/input_trans_count"
                     android:text="25"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:layout_marginRight="@dimen/medium_space"/>
 
             </LinearLayout>
 
@@ -89,7 +101,7 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@color/bill"
+                    android:background="@color/primary"
                     android:layout_marginRight="@dimen/medium_space">
 
                     <ImageView
@@ -97,21 +109,22 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_receipt_white_24dp"
                         android:layout_gravity="center"
-                        android:padding="@dimen/medium_space"/>
+                        android:padding="@dimen/small_space"/>
                 </FrameLayout>
 
                 <EditText
-                    style="@style/Edittext_only_view_medium"
+                    style="@style/Edittext_only_view_small_lessPad"
                     android:layout_width="wrap_content"
                     android:layout_weight="1"
                     android:gravity="left|center_vertical"
                     android:text="Total Bill"/>
                 <EditText
-                    style="@style/Edittext_only_click_medium"
+                    style="@style/Edittext_only_view_small_lessPad"
                     android:layout_width="wrap_content"
                     android:id="@+id/input_trans_bill_amt"
                     android:text="+ \u20B9 235"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:layout_marginRight="@dimen/medium_space"/>
 
             </LinearLayout>
 
@@ -133,7 +146,7 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@color/cashback"
+                    android:background="@color/primary"
                     android:layout_marginRight="@dimen/medium_space">
 
                     <ImageView
@@ -141,14 +154,14 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_favorite_white_24dp"
                         android:layout_gravity="center"
-                        android:padding="@dimen/medium_space"/>
+                        android:padding="@dimen/small_space"/>
                 </FrameLayout>
 
                 <LinearLayout
                     style="@style/LL_Vertical">
 
                     <EditText
-                        style="@style/Edittext_only_view_small"
+                        style="@style/Edittext_only_view_small_lessPad"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:layout_gravity="center"
@@ -159,35 +172,36 @@
                         style="@style/LL_Horizontal_wrap">
 
                         <EditText
-                            style="@style/Edittext_only_view_medium"
-                            android:layout_width="wrap_content"
+                            style="@style/Edittext_only_view_small_lessPad"
+                            android:layout_width="0dp"
                             android:layout_weight="1"
                             android:gravity="left|center_vertical"
                             android:text="Total Add"/>
                         <EditText
-                            style="@style/Edittext_only_click_medium"
+                            style="@style/Edittext_only_view_small_lessPad"
                             android:layout_width="wrap_content"
                             android:id="@+id/input_trans_add_cb"
                             android:text="+ \u20B9 235"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            android:layout_marginRight="@dimen/medium_space"/>
                     </LinearLayout>
 
                     <LinearLayout
-                        style="@style/LL_Horizontal_wrap"
-                        android:layout_marginBottom="@dimen/small_space">
+                        style="@style/LL_Horizontal_wrap">
 
                         <EditText
-                            style="@style/Edittext_only_view_medium"
+                            style="@style/Edittext_only_view_small_lessPad"
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
                             android:gravity="left|center_vertical"
                             android:text="Total Debit"/>
                         <EditText
-                            style="@style/Edittext_only_click_medium"
+                            style="@style/Edittext_only_view_small_lessPad"
                             android:layout_width="wrap_content"
                             android:id="@+id/input_trans_redeem_cb"
                             android:text="- \u20B9 235"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            android:layout_marginRight="@dimen/medium_space"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -212,7 +226,7 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@color/account"
+                    android:background="@color/primary"
                     android:layout_marginRight="@dimen/medium_space">
 
                     <ImageView
@@ -220,14 +234,14 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_account_balance_wallet_white_24dp"
                         android:layout_gravity="center"
-                        android:padding="@dimen/medium_space"/>
+                        android:padding="@dimen/small_space"/>
                 </FrameLayout>
 
                 <LinearLayout
                     style="@style/LL_Vertical">
 
                     <EditText
-                        style="@style/Edittext_only_view_small"
+                        style="@style/Edittext_only_view_small_lessPad"
                         android:layout_height="wrap_content"
                         android:id="@+id/label_cash_account"
                         android:layout_width="wrap_content"
@@ -239,35 +253,36 @@
                         style="@style/LL_Horizontal_wrap">
 
                         <EditText
-                            style="@style/Edittext_only_view_medium"
-                            android:layout_width="wrap_content"
+                            style="@style/Edittext_only_view_small_lessPad"
+                            android:layout_width="0dp"
                             android:layout_weight="1"
                             android:gravity="left|center_vertical"
                             android:text="Total Add"/>
                         <EditText
-                            style="@style/Edittext_only_click_medium"
+                            style="@style/Edittext_only_view_small_lessPad"
                             android:layout_width="wrap_content"
                             android:id="@+id/input_trans_add_account"
                             android:text="+ \u20B9 235"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            android:layout_marginRight="@dimen/medium_space"/>
                     </LinearLayout>
 
                     <LinearLayout
-                        style="@style/LL_Horizontal_wrap"
-                        android:layout_marginBottom="@dimen/small_space">
+                        style="@style/LL_Horizontal_wrap">
 
                         <EditText
-                            style="@style/Edittext_only_view_medium"
-                            android:layout_width="wrap_content"
+                            style="@style/Edittext_only_view_small_lessPad"
+                            android:layout_width="0dp"
                             android:layout_weight="1"
                             android:gravity="left|center_vertical"
                             android:text="Total Debit"/>
                         <EditText
-                            style="@style/Edittext_only_click_medium"
+                            style="@style/Edittext_only_view_small_lessPad"
                             android:layout_width="wrap_content"
                             android:id="@+id/input_trans_debit_account"
                             android:text="- \u20B9 235"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            android:layout_marginRight="@dimen/medium_space"/>
                     </LinearLayout>
 
                 </LinearLayout>

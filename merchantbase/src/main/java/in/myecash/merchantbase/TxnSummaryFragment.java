@@ -23,6 +23,8 @@ public class TxnSummaryFragment extends Fragment {
     private static final String TAG = "MchntApp-TxnSummaryFragment";
 
     private static final String ARG_SUMMARY = "summary";
+    private static final String ARG_FRM_DATE = "fromDate";
+    private static final String ARG_TO_DATE = "toDate";
 
     public interface TxnSummaryFragmentIf {
         MyRetainedFragment getRetainedFragment();
@@ -32,9 +34,11 @@ public class TxnSummaryFragment extends Fragment {
 
     private TxnSummaryFragmentIf mCallback;
 
-    public static TxnSummaryFragment newInstance(int[] summary) {
+    public static TxnSummaryFragment newInstance(int[] summary, String fromDate, String toDate) {
         Bundle args = new Bundle();
         args.putIntArray(ARG_SUMMARY, summary);
+        args.putString(ARG_FRM_DATE, fromDate);
+        args.putString(ARG_TO_DATE, toDate);
         TxnSummaryFragment fragment = new TxnSummaryFragment();
         fragment.setArguments(args);
         return fragment;
@@ -63,16 +67,6 @@ public class TxnSummaryFragment extends Fragment {
             // access to UI elements
             bindUiResources(v);
 
-            // update values
-            int[] summary = getArguments().getIntArray(ARG_SUMMARY);
-
-            input_values[AppConstants.INDEX_TXN_COUNT].setText(String.valueOf(summary[AppConstants.INDEX_TXN_COUNT]));
-            input_values[AppConstants.INDEX_BILL_AMOUNT].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_BILL_AMOUNT], true));
-            input_values[AppConstants.INDEX_ADD_ACCOUNT].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_ADD_ACCOUNT], true));
-            input_values[AppConstants.INDEX_DEBIT_ACCOUNT].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_DEBIT_ACCOUNT], false));
-            input_values[AppConstants.INDEX_CASHBACK].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_CASHBACK], true));
-            input_values[AppConstants.INDEX_DEBIT_CASHBACK].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_DEBIT_CASHBACK], true));
-
             detailsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -92,10 +86,26 @@ public class TxnSummaryFragment extends Fragment {
         return v;
     }
 
+    private void updateUi() {
+        String txt = getArguments().getString(ARG_FRM_DATE,"")+"   -   "+getArguments().getString(ARG_TO_DATE,"");
+        dates.setText(txt);
+
+        int[] summary = getArguments().getIntArray(ARG_SUMMARY);
+
+        input_values[AppConstants.INDEX_TXN_COUNT].setText(String.valueOf(summary[AppConstants.INDEX_TXN_COUNT]));
+        input_values[AppConstants.INDEX_BILL_AMOUNT].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_BILL_AMOUNT], true));
+        input_values[AppConstants.INDEX_ADD_ACCOUNT].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_ADD_ACCOUNT], true));
+        input_values[AppConstants.INDEX_DEBIT_ACCOUNT].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_DEBIT_ACCOUNT], false));
+        input_values[AppConstants.INDEX_CASHBACK].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_CASHBACK], true));
+        input_values[AppConstants.INDEX_DEBIT_CASHBACK].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_DEBIT_CASHBACK], true));
+    }
+
     EditText input_values[] = new EditText[AppConstants.INDEX_SUMMARY_MAX_VALUE];
+    EditText dates;
     AppCompatButton detailsButton;
 
     protected void bindUiResources(View view) {
+        dates = (EditText) view.findViewById(R.id.txnlist_filter_duration);
         input_values[AppConstants.INDEX_TXN_COUNT] = (EditText) view.findViewById(R.id.input_trans_count);
         input_values[AppConstants.INDEX_BILL_AMOUNT] = (EditText) view.findViewById(R.id.input_trans_bill_amt);
         input_values[AppConstants.INDEX_ADD_ACCOUNT] = (EditText) view.findViewById(R.id.input_trans_add_account);
@@ -110,6 +120,15 @@ public class TxnSummaryFragment extends Fragment {
     public void onResume() {
         LogMy.d(TAG, "In onResume");
         super.onResume();
+        // update values
+        try {
+            updateUi();
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in TxnSummaryFragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            getActivity().onBackPressed();
+        }
         mCallback.getRetainedFragment().setResumeOk(true);
     }
 

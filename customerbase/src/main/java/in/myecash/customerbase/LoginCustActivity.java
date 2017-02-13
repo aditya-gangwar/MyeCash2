@@ -85,6 +85,8 @@ public class LoginCustActivity extends AppCompatActivity implements
             fm.beginTransaction().add(mWorkFragment, RETAINED_FRAGMENT_TAG).commit();
         }
 
+        processManualLogin();
+
         /*AsyncCallback<Boolean> isValidLoginCallback = new AsyncCallback<Boolean>()
         {
             @Override
@@ -135,7 +137,7 @@ public class LoginCustActivity extends AppCompatActivity implements
         /*
          * Auto login was creating some session hang issue on backendless backend - so not using it for now
          */
-        processManualLogin();
+        //processManualLogin();
 
         /*if(checkPermissions()) {
             // If permissions not available - proceed with normal login

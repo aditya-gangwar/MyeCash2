@@ -512,7 +512,9 @@ public class TxnReportsActivity extends AppCompatActivity implements
             LogMy.d(TAG,"Creating new txn summary fragment");
 
             // Create new fragment and transaction
-            fragment = TxnSummaryFragment.newInstance(mWorkFragment.mSummary);
+            fragment = TxnSummaryFragment.newInstance(mWorkFragment.mSummary,
+                    mSdfOnlyDateDisplay.format(mFromDate),
+                    mSdfOnlyDateDisplay.format(mToDate));
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
             // Add over the existing fragment

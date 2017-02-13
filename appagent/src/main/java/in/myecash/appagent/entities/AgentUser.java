@@ -11,6 +11,7 @@ import com.backendless.servercode.InvocationContext;
 
 import in.myecash.appagent.backendAPI.InternalUserServices;
 import in.myecash.appagent.backendAPI.InternalUserServicesNoLogin;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -26,13 +27,33 @@ import java.io.File;
 public class AgentUser {
     private static final String TAG = "AgentApp-AgentUser";
 
+    private static AgentUser mInstance;
+
     private BackendlessUser mAgentUser;
     public String mLastRegMerchantId;
     private String mUserToken;
+
+    /*
+     * Singleton class
+     */
     /*
      * Singleton class
      */
     private AgentUser(){
+    }
+
+    public static AgentUser getInstance() {
+        return mInstance;
+    }
+
+    private static void createInstance() {
+        if(mInstance==null) {
+            LogMy.d(TAG, "Creating AgentUser instance");
+            mInstance = new AgentUser();
+        }
+    }
+
+    /*private AgentUser(){
         mAgentUser = new BackendlessUser();
     }
 
@@ -45,7 +66,102 @@ public class AgentUser {
     }
     public static void reset() {
         mInstance = null;
+    }*/
+
+
+    /*
+     * Static public methods
+     */
+    public static void reset() {
+        LogMy.d(TAG, "In reset");
+        if(mInstance!=null) {
+            mInstance.mAgentUser = null;
+            mInstance = null;
+        }
     }
+
+    /*
+     * Methods to restore loginId / password
+     */
+    public static int resetPassword(String userId, String secret) {
+        try {
+            InternalUserServicesNoLogin.getInstance().resetInternalUserPassword(userId, secret);
+            LogMy.d(TAG,"resetPassword success");
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"InternalUser password generate failed: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    /*
+     * Login-Logout methods
+     * AgentUser singleton instance is created on successfull login
+     * and destroyed on logout / explicit reset.
+     */
+    public static int login(String userId, String password, String instanceId) {
+        LogMy.d(TAG, "In login");
+        try {
+            LogMy.d(TAG, "Calling setDeviceForLogin: "+userId+","+instanceId);
+            InternalUserServicesNoLogin.getInstance().setDeviceForInternalUserLogin(userId, instanceId);
+            LogMy.d(TAG,"setDeviceForLogin success");
+
+            BackendlessUser user = Backendless.UserService.login(userId, password, false);
+            int userType = (Integer)user.getProperty("user_type");
+            if(  userType != DbConstants.USER_TYPE_AGENT &&
+                    userType != DbConstants.USER_TYPE_CC &&
+                    userType != DbConstants.USER_TYPE_CCNT) {
+                // wrong user type
+                LogMy.e(TAG,"Invalid usertype in agent app: "+userType+", "+userId);
+                logout();
+                return ErrorCodes.USER_WRONG_ID_PASSWD;
+            }
+
+            // create instance of AgentUser class
+            createInstance();
+            mInstance.mAgentUser = user;
+
+            // Store user token
+            mInstance.mUserToken = HeadersManager.getInstance().getHeader(HeadersManager.HeadersEnum.USER_TOKEN_KEY);
+            if(mInstance.mUserToken == null || mInstance.mUserToken.isEmpty()) {
+                logout();
+                return ErrorCodes.GENERAL_ERROR;
+            }
+
+            int retStatus = AppCommonUtil.loadGlobalSettings(MyGlobalSettings.RunMode.appInternalUser);
+            if( retStatus!= ErrorCodes.NO_ERROR) {
+                logout();
+                return retStatus;
+            }
+
+            LogMy.d(TAG, "Login Success: " + mInstance.getUser_id()+", "+mInstance.mUserToken);
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Login failed: "+e.toString());
+            logout();
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    public static int logout() {
+        LogMy.d(TAG, "In logoutSync");
+
+        if(mInstance!=null) {
+            try {
+                Backendless.UserService.logout();
+                LogMy.d(TAG, "Logout Success");
+            } catch (BackendlessException e) {
+                LogMy.e(TAG, "Logout failed: " + e.toString());
+                return AppCommonUtil.getLocalErrorCode(e);
+            }
+        }
+        // reset all
+        reset();
+        return ErrorCodes.NO_ERROR;
+    }
+
+
 
 
     /*
@@ -64,7 +180,7 @@ public class AgentUser {
     /*
      * Public member methods fro business logic
      */
-    public int login(String userId, String password, String instanceId) {
+    /*public int login(String userId, String password, String instanceId) {
         LogMy.d(TAG, "In login");
         try {
             LogMy.d(TAG, "Calling setDeviceForLogin: "+userId+","+instanceId);
@@ -112,7 +228,7 @@ public class AgentUser {
         // reset all
         mAgentUser = null;
         return errorCode;
-    }
+    }*/
 
 
     /*

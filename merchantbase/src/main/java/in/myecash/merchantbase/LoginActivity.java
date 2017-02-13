@@ -116,6 +116,13 @@ public class LoginActivity extends AppCompatActivity implements
                 return false;
             }
         });
+        mIdTextRes.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                return false;
+            }
+        });
 
         mPasswdTextRes.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

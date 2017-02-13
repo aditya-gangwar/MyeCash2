@@ -202,14 +202,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     }
 
     private int generatePassword(MessageLogin msg) {
-        try {
-            InternalUserServicesNoLogin.getInstance().resetInternalUserPassword(msg.userId, msg.password);
-            LogMy.d(TAG,"generatePassword success");
-        } catch (BackendlessException e) {
-            LogMy.e(TAG,"Agent password generate failed: "+e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;
+        return AgentUser.resetPassword(msg.userId, msg.password);
     }
 
     private int changePassword(MessageChangePassword msg) {

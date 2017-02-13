@@ -30,6 +30,7 @@ public class CustomerDetailsFragment extends Fragment
     private static final String TAG = "AgentApp-CustomerDetailsFragment";
 
     private static final String DIALOG_DISABLE_CUST = "disableCustomer";
+    private static final String DIALOG_DISABLE_CARD = "disableCard";
 
     private final SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
     private SimpleDateFormat mSdfDateOnly = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
@@ -106,7 +107,7 @@ public class CustomerDetailsFragment extends Fragment
             mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
         }
         mCardStatusDate.setText(mSdfDateWithTime.format(card.getStatus_update_time()));
-        mCardStatusReason.setText(mSdfDateWithTime.format(card.getStatus_reason()));
+        mCardStatusReason.setText(card.getStatus_reason());
 
         if( status!=DbConstants.USER_STATUS_ACTIVE && (mAccDisable.getVisibility()==View.VISIBLE) ) {
             mAccDisable.setEnabled(false);
@@ -147,6 +148,13 @@ public class CustomerDetailsFragment extends Fragment
                 // show disable dialog
                 dialog = DisableCustDialog.getInstance(true);
                 dialog.show(getFragmentManager(), DIALOG_DISABLE_CUST);
+                break;
+
+            case R.id.btn_disable_card:
+                LogMy.d(TAG,"Clicked disable card button.");
+                // show disable dialog
+                DisableCardDialog dialogCard = new DisableCardDialog();
+                dialogCard.show(getFragmentManager(), DIALOG_DISABLE_CARD);
                 break;
         }
     }
