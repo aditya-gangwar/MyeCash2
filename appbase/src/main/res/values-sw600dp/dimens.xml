@@ -16,6 +16,9 @@
     <dimen name="dp_dialog_image_width">105dp</dimen>
     <dimen name="dp_dialog_image_height">105dp</dimen>
 
+    <dimen name="normal_icon_width">32dp</dimen>
+    <dimen name="normal_icon_height">32dp</dimen>
+
     <dimen name="toolbar_icon_width">42dp</dimen>
     <dimen name="toolbar_icon_height">42dp</dimen>
     <dimen name="toolbar_image_width">56dp</dimen>

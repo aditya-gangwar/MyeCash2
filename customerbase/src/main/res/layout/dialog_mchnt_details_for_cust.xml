@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/LL_Vertical"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
 
     <EditText
         style="@style/Dialog_title"
@@ -11,513 +11,216 @@
 
     <ScrollView
         android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        style="@style/LL_Vertical_paddingSidesLarge"
-        android:scrollbars="vertical"
-        android:scrollbarAlwaysDrawVerticalTrack="true">
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/label_title">
 
         <LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:id="@+id/layout_expiry_notice">
+            style="@style/LL_Vertical_paddingSidesLarge"
+            android:scrollbars="vertical"
+            android:scrollbarAlwaysDrawVerticalTrack="true">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_warning_white_24dp"
-                android:tint="@color/red_negative"
-                android:paddingTop="@dimen/edittext_padding"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_expiry_notice"
-                android:layout_height="wrap_content"
+            <Space
                 android:layout_width="match_parent"
-                android:text="This Merchant is under Expiry notice. Please use all your balance with it, before 22 July 2016."
-                android:textColor="@color/red_negative"
-                android:gravity="left|center"/>
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/img_merchant"
-                android:src="@drawable/ic_store_grey_48dp"
-                android:layout_width="@dimen/dp_dialog_image_width"
-                android:layout_height="@dimen/dp_dialog_image_width"
-                android:scaleType="centerInside"
-                android:layout_marginRight="@dimen/medium_space"
-                android:layout_gravity="top"/>
-
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_brand_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textCapSentences"
-                android:text="TBS"
-                android:layout_toRightOf="@id/img_merchant"
-                android:gravity="left|center"
-                android:paddingTop="0dp"
-                android:textStyle="bold"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_below="@+id/input_brand_name"
-                android:layout_toRightOf="@id/img_merchant"
-                android:gravity="left|center"
-                android:id="@+id/input_category_city"
-                android:layout_width="match_parent"
-                android:paddingTop="0dp"
-                android:layout_height="wrap_content"
-                android:text="TBS"/>
+                android:layout_height="@dimen/medium_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:id="@+id/layout_cashback"
-                android:layout_width="wrap_content"
-                android:layout_below="@+id/input_category_city"
-                android:layout_toRightOf="@id/img_merchant">
+                android:id="@+id/layout_expiry_notice">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_warning_white_24dp"
+                    android:tint="@color/red_negative"
+                    android:paddingTop="@dimen/edittext_padding"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:id="@+id/input_expiry_notice"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:text="This Merchant is under Expiry notice. Please use all your balance with it, before 22 July 2016."
+                    android:textColor="@color/red_negative"
+                    android:gravity="left|center"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img_merchant"
+                    android:src="@drawable/ic_store_grey_48dp"
+                    android:layout_width="@dimen/dp_dialog_image_width"
+                    android:layout_height="@dimen/dp_dialog_image_width"
+                    android:scaleType="centerInside"
+                    android:layout_marginRight="@dimen/medium_space"
+                    android:layout_gravity="top"/>
 
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
+                    android:id="@+id/input_brand_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:text="TBS"
+                    android:layout_toRightOf="@id/img_merchant"
+                    android:gravity="left|center"
+                    android:paddingTop="0dp"
+                    android:textStyle="bold"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_below="@+id/input_brand_name"
+                    android:layout_toRightOf="@id/img_merchant"
+                    android:gravity="left|center"
+                    android:id="@+id/input_category_city"
+                    android:layout_width="match_parent"
+                    android:paddingTop="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="TBS"/>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap"
+                    android:id="@+id/layout_cashback"
                     android:layout_width="wrap_content"
-                    android:text="Cashback @"
-                    android:paddingTop="0dp"/>
+                    android:layout_below="@+id/input_category_city"
+                    android:layout_toRightOf="@id/img_merchant">
+
+                    <EditText
+                        style="@style/Edittext_only_view_small_lessPad"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="Cashback @"
+                        android:paddingTop="0dp"/>
+                    <EditText
+                        style="@style/Edittext_only_view_small_lessPad"
+                        android:id="@+id/input_cb_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5% + 5% *"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:textColor="@color/green_positive"
+                        android:textStyle="bold"/>
+                    <!--EditText
+                        style="@style/Edittext_only_view_small_lessPad"
+                        android:id="@+id/input_pp_cb_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(+ 5% *)"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:textColor="@color/accent2"
+                        android:textStyle="bold"/-->
+                </LinearLayout>
+
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_below="@+id/layout_cashback"
+                    android:layout_toRightOf="@id/img_merchant"
+                    android:gravity="left|center"
+                    android:id="@+id/input_pp_cb_details"
+                    android:layout_width="match_parent"
+                    android:paddingTop="0dp"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:text="* Extra 5% when Prepaid amount > \u20B9 1000"/>
+
+            </RelativeLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/medium_space" />
+
+            <!--LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_favorite_white_18dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Cashback Rate"
+                    android:layout_weight="40"
+                    android:gravity="left|center"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/input_cb_rate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="5% + 5% *"
-                    android:paddingLeft="0dp"
-                    android:paddingTop="0dp"
+                    android:text="5 %"
+                    android:layout_weight="60"
+                    android:gravity="left|center"
                     android:textColor="@color/green_positive"
                     android:textStyle="bold"/>
-                <!--EditText
-                    style="@style/Edittext_only_view_small_lessPad"
-                    android:id="@+id/input_pp_cb_rate"
+            </LinearLayout-->
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(+ 5% *)"
-                    android:paddingLeft="0dp"
-                    android:paddingTop="0dp"
-                    android:textColor="@color/accent2"
-                    android:textStyle="bold"/-->
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_access_time_white_18dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="Last Txn"
+                    android:layout_weight="40"
+                    android:gravity="left|center"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:id="@+id/input_last_txn_time"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="22 July 16, 23:00"
+                    android:layout_weight="60"
+                    android:gravity="left|center"/>
             </LinearLayout>
 
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_below="@+id/layout_cashback"
-                android:layout_toRightOf="@id/img_merchant"
-                android:gravity="left|center"
-                android:id="@+id/input_pp_cb_details"
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_receipt_white_18dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="Total Bill"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:id="@+id/input_total_bill"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="\u20B9 NA"
+                    android:layout_weight="60"
+                    android:gravity="left|center" />
+            </LinearLayout>
+
+            <Space
                 android:layout_width="match_parent"
-                android:paddingTop="0dp"
+                android:layout_height="@dimen/small_space"/>
+
+            <EditText
+                style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
-                android:textStyle="italic"
-                android:text="* Extra 5% when Prepaid amount > \u20B9 1000"/>
-
-        </RelativeLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space" />
-
-        <!--LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_favorite_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="Cashback Rate"
-                android:layout_weight="40"
-                android:gravity="left|center"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_cb_rate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="5 %"
-                android:layout_weight="60"
-                android:gravity="left|center"
-                android:textColor="@color/green_positive"
-                android:textStyle="bold"/>
-        </LinearLayout-->
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_access_time_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="Last Txn"
-                android:layout_weight="40"
-                android:gravity="left|center"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_last_txn_time"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="22 July 16, 23:00"
-                android:layout_weight="60"
-                android:gravity="left|center"/>
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_receipt_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="Total Bill"
-                android:layout_weight="40"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_total_bill"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="\u20B9 NA"
-                android:layout_weight="60"
-                android:gravity="left|center" />
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/small_space"/>
-
-        <EditText
-            style="@style/Edittext_only_view_small"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Cashback (CB)"
-            android:textStyle="bold"
-            android:textColor="@color/subheading"
-            android:paddingLeft="0dp"/>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_favorite_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="Balance"
-                android:layout_weight="40"
-                android:gravity="left|center"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_cb_balance"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="+ \u20B9 NA"
-                android:layout_weight="60"
-                android:gravity="left|center"
-                android:textColor="@color/green_positive"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_favorite_white_18dp"
-                android:visibility="invisible"
-                android:paddingTop="0dp"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="Total Add"
-                android:layout_weight="40"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"
-                android:paddingTop="0dp"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="60"
-                android:gravity="left|center"
-                android:id="@+id/input_cb_award"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="+ \u20B9 NA"
-                android:paddingTop="0dp"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_favorite_white_18dp"
-                android:visibility="invisible"
-                android:paddingTop="0dp"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="Total Used"
-                android:layout_weight="40"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"
-                android:paddingTop="0dp"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="60"
-                android:gravity="left|center"
-                android:id="@+id/input_cb_redeem"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="+ \u20B9 NA"
-                android:paddingTop="0dp"/>
-        </LinearLayout>
-
-        <EditText
-            style="@style/Edittext_only_view_small"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Account (AC)"
-            android:textStyle="bold"
-            android:textColor="@color/subheading"
-            android:paddingLeft="0dp"/>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="Balance"
-                android:layout_weight="40"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_acc_balance"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="+ \u20B9 NA"
-                android:layout_weight="60"
-                android:gravity="left|center"
-                android:textColor="@color/green_positive"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_18dp"
-                android:visibility="invisible"
-                android:paddingTop="0dp"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="Total Add"
-                android:layout_weight="40"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"
-                android:paddingTop="0dp"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="60"
-                android:gravity="left|center"
-                android:id="@+id/input_acc_add"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="+ \u20B9 NA"
-                android:paddingTop="0dp"/>
-        </LinearLayout>
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_account_balance_wallet_white_18dp"
-                android:visibility="invisible"
-                android:paddingTop="0dp"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="Total Used"
-                android:layout_weight="40"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"
-                android:paddingTop="0dp"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="60"
-                android:gravity="left|center"
-                android:id="@+id/input_acc_debit"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="+ \u20B9 NA"
-                android:paddingTop="0dp"/>
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/small_space"/>
-
-        <EditText
-            style="@style/Edittext_only_view_small"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="More Details"
-            android:textStyle="bold"
-            android:textColor="@color/subheading"
-            android:paddingLeft="0dp"/>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_perm_identity_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="MyeCash ID"
-                android:layout_weight="40"
-                android:gravity="left|center"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_merchant_id"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="TBS"
-                android:layout_weight="60"
-                android:gravity="left|center"/>
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/label_customer_mobile"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="Contact Phone"
-                android:layout_weight="40"
-                android:gravity="left|center"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_mobile"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="TBS"
-                android:layout_weight="60"
-                android:gravity="left|center"/>
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_input_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="Status"
-                android:layout_weight="40"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="60"
-                android:gravity="left|center"
-                android:id="@+id/input_status"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="Active"
-                android:textColor="@color/green_positive"/>
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_place_white_18dp"
-                android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:text="Address"
-                android:layout_weight="40"
-                android:gravity="left|center_vertical"/>
-            <EditText
-                style="@style/Edittext_only_view_small_lessPad"
-                android:layout_weight="60"
-                android:gravity="left|center_vertical"
-                android:id="@+id/input_address"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="TBS"/>
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/LL_Vertical">
+                android:text="Cashback (CB)"
+                android:textStyle="bold"
+                android:textColor="@color/subheading"
+                android:paddingLeft="0dp"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap">
@@ -525,14 +228,40 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_place_white_18dp"
+                    android:src="@drawable/ic_favorite_white_18dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="Balance"
+                    android:layout_weight="40"
+                    android:gravity="left|center"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:id="@+id/input_cb_balance"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="+ \u20B9 NA"
+                    android:layout_weight="60"
+                    android:gravity="left|center"
+                    android:textColor="@color/green_positive"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_favorite_white_18dp"
                     android:visibility="invisible"
                     android:paddingTop="0dp"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
-                    android:text="Area / City"
+                    android:text="Total Add"
                     android:layout_weight="40"
                     android:gravity="left|bottom"
                     android:layout_gravity="bottom"
@@ -541,11 +270,226 @@
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_weight="60"
                     android:gravity="left|center"
-                    android:id="@+id/input_city"
+                    android:id="@+id/input_cb_award"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="+ \u20B9 NA"
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_favorite_white_18dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="Total Used"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_weight="60"
+                    android:gravity="left|center"
+                    android:id="@+id/input_cb_redeem"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="+ \u20B9 NA"
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Account (AC)"
+                android:textStyle="bold"
+                android:textColor="@color/subheading"
+                android:paddingLeft="0dp"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="Balance"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:id="@+id/input_acc_balance"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="+ \u20B9 NA"
+                    android:layout_weight="60"
+                    android:gravity="left|center"
+                    android:textColor="@color/green_positive"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="Total Add"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_weight="60"
+                    android:gravity="left|center"
+                    android:id="@+id/input_acc_add"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="+ \u20B9 NA"
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                    android:visibility="invisible"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="Total Used"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"
+                    android:paddingTop="0dp"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_weight="60"
+                    android:gravity="left|center"
+                    android:id="@+id/input_acc_debit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="+ \u20B9 NA"
+                    android:paddingTop="0dp"/>
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/small_space"/>
+
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="More Details"
+                android:textStyle="bold"
+                android:textColor="@color/subheading"
+                android:paddingLeft="0dp"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_perm_identity_white_18dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="MyeCash ID"
+                    android:layout_weight="40"
+                    android:gravity="left|center"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:id="@+id/input_merchant_id"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:text="TBS"
-                    android:paddingTop="0dp"/>
+                    android:layout_weight="60"
+                    android:gravity="left|center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_phone_android_white_18dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:id="@+id/label_customer_mobile"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="Contact Phone"
+                    android:layout_weight="40"
+                    android:gravity="left|center"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:id="@+id/input_mobile"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="TBS"
+                    android:layout_weight="60"
+                    android:gravity="left|center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_input_white_18dp"
+                    android:tint="@color/primary"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="Status"
+                    android:layout_weight="40"
+                    android:gravity="left|bottom"
+                    android:layout_gravity="bottom"/>
+                <EditText
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:layout_weight="60"
+                    android:gravity="left|center"
+                    android:id="@+id/input_status"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="Active"
+                    android:textColor="@color/green_positive"/>
             </LinearLayout>
 
             <LinearLayout
@@ -555,29 +499,86 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_place_white_18dp"
-                    android:visibility="invisible"
-                    android:paddingTop="0dp"/>
+                    android:tint="@color/primary"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
-                    android:text="State"
+                    android:text="Address"
                     android:layout_weight="40"
-                    android:gravity="left|bottom"
-                    android:layout_gravity="bottom"
-                    android:paddingTop="0dp"/>
+                    android:gravity="left|center_vertical"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_weight="60"
-                    android:gravity="left|center"
-                    android:id="@+id/input_state"
+                    android:gravity="left|center_vertical"
+                    android:id="@+id/input_address"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="TBS"
-                    android:paddingTop="0dp"/>
+                    android:text="TBS"/>
             </LinearLayout>
-        </LinearLayout>
 
-    </LinearLayout>
-</ScrollView>
-</LinearLayout>
+            <LinearLayout
+                style="@style/LL_Vertical">
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_place_white_18dp"
+                        android:visibility="invisible"
+                        android:paddingTop="0dp"/>
+                    <EditText
+                        style="@style/Edittext_only_view_small_lessPad"
+                        android:layout_height="match_parent"
+                        android:layout_width="0dp"
+                        android:text="Area / City"
+                        android:layout_weight="40"
+                        android:gravity="left|bottom"
+                        android:layout_gravity="bottom"
+                        android:paddingTop="0dp"/>
+                    <EditText
+                        style="@style/Edittext_only_view_small_lessPad"
+                        android:layout_weight="60"
+                        android:gravity="left|center"
+                        android:id="@+id/input_city"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="TBS"
+                        android:paddingTop="0dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_place_white_18dp"
+                        android:visibility="invisible"
+                        android:paddingTop="0dp"/>
+                    <EditText
+                        style="@style/Edittext_only_view_small_lessPad"
+                        android:layout_height="match_parent"
+                        android:layout_width="0dp"
+                        android:text="State"
+                        android:layout_weight="40"
+                        android:gravity="left|bottom"
+                        android:layout_gravity="bottom"
+                        android:paddingTop="0dp"/>
+                    <EditText
+                        style="@style/Edittext_only_view_small_lessPad"
+                        android:layout_weight="60"
+                        android:gravity="left|center"
+                        android:id="@+id/input_state"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="TBS"
+                        android:paddingTop="0dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

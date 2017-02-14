@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/LL_Vertical"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
 
     <EditText
         style="@style/Dialog_title"
@@ -10,185 +10,186 @@
         android:text="CHANGE  MOBILE"/>
 
     <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="?android:attr/windowBackground">
-
-    <LinearLayout
-        style="@style/LL_Vertical_paddingSidesLarge">
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"/>
-
-        <EditText
-            style="@style/Edittext_only_view_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/label_info1"
-            android:textStyle="italic"
-            android:text="You will also need your PIN to change mobile number" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space"/>
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/label_title">
 
         <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="?android:attr/windowBackground">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/image_mobile"
-                android:src="@drawable/ic_phone_android_white_24dp"
-                android:tint="@color/primary"
-                android:layout_gravity="center"/>
+            <LinearLayout
+                style="@style/LL_Vertical_paddingSidesLarge">
 
-            <EditText
-                style="@style/Edittext_only_view_small"
-                android:id="@+id/label_new_mobile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:text="Enter New Mobile number to set" />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/medium_space"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/label_info1"
+                    android:textStyle="italic"
+                    android:text="You will also need your PIN to change mobile number" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/large_space"/>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/image_mobile"
+                        android:src="@drawable/ic_phone_android_white_24dp"
+                        android:tint="@color/primary"
+                        android:layout_gravity="center"/>
+
+                    <EditText
+                        style="@style/Edittext_only_view_small"
+                        android:id="@+id/label_new_mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:text="Enter New Mobile number to set" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/input_new_mobile"
+                    style="@style/MyEdittext_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:hint="New Mobile"
+                    android:maxLength="@string/mobile_char_limit"
+                    android:gravity="center"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/medium_space"/>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_phone_android_white_24dp"
+                        android:tint="@color/primary"
+                        android:layout_gravity="center"
+                        android:visibility="invisible"/>
+
+                    <EditText
+                        style="@style/Edittext_only_view_small"
+                        android:id="@+id/label_new_mobile2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:text="Confirm New Mobile number" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/input_new_mobile2"
+                    style="@style/MyEdittext_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:hint="Confirm New Mobile"
+                    android:maxLength="@string/mobile_char_limit"
+                    android:gravity="center"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/XL_space"/>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/image_cardNum"
+                        android:src="@drawable/ic_card_membership_white_24dp"
+                        android:tint="@color/primary"
+                        android:layout_gravity="top"
+                        android:paddingTop="@dimen/edittext_padding"/>
+
+                    <EditText
+                        style="@style/Edittext_only_view_small"
+                        android:id="@+id/label_card_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Enter your Card Number below" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/input_card_num"
+                    style="@style/MyEdittext_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Card Number"
+                    android:maxLength="@string/card_number_limit"
+                    android:gravity="center"
+                    android:inputType="number"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/large_space"/>
+
+                <LinearLayout
+                    style="@style/LL_Horizontal_wrap">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/image_otp"
+                        android:src="@drawable/ic_security_white_24dp"
+                        android:tint="@color/primary"
+                        android:layout_gravity="center"/>
+
+                    <EditText
+                        style="@style/Edittext_only_view_small"
+                        android:id="@+id/label_otp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Provide OTP as received on New Mobile" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/input_otp"
+                    style="@style/MyEdittext_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberPassword"
+                    android:hint="Enter OTP"
+                    android:maxLength="@string/otp_char_limit"
+                    android:gravity="center"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/large_space"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/label_info"
+                    android:text="@string/cust_mobile_change_info"
+                    android:textColor="@color/accent2"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/medium_space"/>
+
+
+            </LinearLayout>
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/input_new_mobile"
-            style="@style/MyEdittext_Medium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:hint="New Mobile"
-            android:maxLength="@string/mobile_char_limit"
-            android:gravity="center"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"/>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_phone_android_white_24dp"
-                android:tint="@color/primary"
-                android:layout_gravity="center"
-                android:visibility="invisible"/>
-
-            <EditText
-                style="@style/Edittext_only_view_small"
-                android:id="@+id/label_new_mobile2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:text="Confirm New Mobile number" />
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/input_new_mobile2"
-            style="@style/MyEdittext_Medium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:hint="Confirm New Mobile"
-            android:maxLength="@string/mobile_char_limit"
-            android:gravity="center"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/image_cardNum"
-                android:src="@drawable/ic_card_membership_white_24dp"
-                android:tint="@color/primary"
-                android:layout_gravity="top"
-                android:paddingTop="@dimen/edittext_padding"/>
-
-            <EditText
-                style="@style/Edittext_only_view_small"
-                android:id="@+id/label_card_num"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Enter your Card Number below" />
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/input_card_num"
-            style="@style/MyEdittext_Medium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Card Number"
-            android:maxLength="@string/card_number_limit"
-            android:gravity="center"
-            android:inputType="number"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space"/>
-
-        <LinearLayout
-            style="@style/LL_Horizontal_wrap">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/image_otp"
-                android:src="@drawable/ic_security_white_24dp"
-                android:tint="@color/primary"
-                android:layout_gravity="center"/>
-
-            <EditText
-                style="@style/Edittext_only_view_small"
-                android:id="@+id/label_otp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Provide OTP as received on New Mobile" />
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/input_otp"
-            style="@style/MyEdittext_Medium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberPassword"
-            android:hint="Enter OTP"
-            android:maxLength="@string/otp_char_limit"
-            android:gravity="center"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space"/>
-
-        <EditText
-            style="@style/Edittext_only_view_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/label_info"
-            android:text="@string/cust_mobile_change_info"
-            android:textColor="@color/accent2"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"/>
-
-
-    </LinearLayout>
-</LinearLayout>
-</ScrollView>
-</LinearLayout>
+    </ScrollView>
+</RelativeLayout>

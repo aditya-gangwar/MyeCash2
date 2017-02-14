@@ -96,11 +96,35 @@ public class DbConstants {
     public static final String OP_RESET_PIN = "Reset PIN";
     public static final String OP_CHANGE_PIN = "Change PIN";
 
-
-
     // Transactions table values
     public static final String TXN_CUSTOMER_PIN_USED = "Yes";
     public static final String TXN_CUSTOMER_PIN_NOT_USED = "No";
+
+    // Merchant Orders Table values
+    public enum MCHNT_ORDER_STATUS {
+        New,
+        In_Process,
+        On_Way,
+        Payment_Verification_Pending,
+        Completed,
+        Rejected
+    }
+    public enum MO_PLAN_PAY_MODE {
+        Cash,
+        Cheque,
+        Other
+    }
+    public enum MO_ACTUAL_PAY_MODE {
+        Cash,
+        Cheque,
+        Credit_Card,
+        Debit_Card,
+        PayTm,
+        NEFT,
+        IMPS,
+        UPI
+    }
+
 
 
 }

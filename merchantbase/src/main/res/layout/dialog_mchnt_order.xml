@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/windowBackground">
+
+    <EditText
+        style="@style/Dialog_title"
+        android:id="@+id/label_cust_op_title"
+        android:text="Merchant Order"/>
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesLarge"
+        android:layout_below="@id/label_cust_op_title">
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/label_info_otp"
+            android:text="Order Customer Cards from here.\nOur Sales Executive will deliver the same in 2-4 working days."
+            android:textStyle="italic"
+            android:textColor="@color/accent2"
+            android:layout_marginTop="@dimen/medium_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/large_space">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_shopping_cart_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Item"
+                android:layout_weight="50"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:text="Customer Cards"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_shopping_cart_white_24dp"
+                android:tint="@color/primary"
+                android:visibility="invisible"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Quantity"
+                android:layout_weight="50"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <!--View
+                style="@style/Divider_vertical_Medium"/-->
+            <EditText
+                style="@style/MyEdittext_Medium"
+                android:id="@+id/input_qty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:layout_weight="50"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/large_space">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/cash_logo_24dp"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text=" Price"
+                android:layout_weight="50"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <!--View
+                style="@style/Divider_vertical_Medium"/-->
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:id="@+id/input_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="\u20B9  30"
+                android:layout_weight="50"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/cash_logo_24dp"
+                android:visibility="invisible"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text=" Total Bill"
+                android:layout_weight="50"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"/>
+            <!--View
+                style="@style/Divider_vertical_Medium"/-->
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:id="@+id/input_bill"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="\u20B9  600"
+                android:layout_weight="50"
+                android:textColor="@color/green_positive"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_new_mobile"
+            android:visibility="visible"
+            android:layout_marginTop="@dimen/large_space">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_payment_white_24dp"
+                android:id="@+id/image_newMobile"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:id="@+id/label_new_mobile"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Payment Mode"
+                android:layout_weight="50"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_click_bg_medium"
+                android:layout_weight="50"
+                android:gravity="left"
+                android:id="@+id/input_payMode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Select"
+                android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+                android:drawableTint="?android:textColorPrimary"/>
+        </LinearLayout>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/label_info"
+            android:text="(Actual Payment to be done at the time of delivery only)"
+            android:textStyle="italic"
+            android:paddingTop="0dp"
+            android:layout_marginBottom="@dimen/large_space"/>
+
+    </LinearLayout>
+</RelativeLayout>

@@ -6,7 +6,29 @@
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground">
 
-    <EditText
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:id="@+id/txnSummary_header"
+        android:background="@color/bg_listWithCard_header">
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:id="@+id/txnlist_filter_duration"
+            android:layout_height="wrap_content"
+            android:text="16 Oct 2016   -   20 Oct 2016"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
+
+        <View
+            style="@style/Divider_horizontal_Large"
+            android:layout_below="@id/custlist_header_id"/>
+
+    </RelativeLayout>
+
+    <!--EditText
         style="@style/Edittext_only_view_small"
         android:layout_width="match_parent"
         android:layout_below="@id/toolbar"
@@ -15,7 +37,7 @@
         android:gravity="center"
         android:text="16 Oct 2016   -   20 Oct 2016"
         android:textStyle="italic|bold"
-        android:background="@color/bg_filters"/>
+        android:background="@color/bg_filters"/-->
     
     <LinearLayout
         style="@style/LL_Vertical"
@@ -35,7 +57,7 @@
 
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesLarge"
-        android:layout_below="@id/txnlist_filter_duration"
+        android:layout_below="@id/txnSummary_header"
         android:layout_above="@id/layout_last_row_btn"
         android:background="@color/bg_light_grey">
 
