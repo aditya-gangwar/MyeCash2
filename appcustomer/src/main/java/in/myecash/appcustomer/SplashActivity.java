@@ -49,6 +49,7 @@ public class SplashActivity extends AppCompatActivity
 
         // Map all tables to class here - except 'cashback' and 'transaction'
         AppCommonUtil.initTableToClassMappings();
+        MyGlobalSettings.setRunMode(MyGlobalSettings.RunMode.appCustomer);
 
         String naErrorStr = AppCommonUtil.isDownAsPerLocalData(SplashActivity.this);
         if(naErrorStr!=null) {

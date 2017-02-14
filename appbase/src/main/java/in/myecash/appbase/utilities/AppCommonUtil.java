@@ -178,7 +178,38 @@ public class AppCommonUtil {
     // This function can be called from background thread only
     // as it checks for internet website
     public static boolean isInternetConnected() {
-        InetAddress inetAddress = null;
+        String command = "ping -c 1 google.com";
+        try {
+            return (Runtime.getRuntime().exec(command).waitFor() == 0);
+        } catch (Exception e) {
+            return false;
+        }
+
+        /*ConnectivityManager cm = (ConnectivityManager)context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            try {
+                URL url = new URL("http://www.google.com/");
+                HttpURLConnection urlc = (HttpURLConnection)url.openConnection();
+                urlc.setRequestProperty("User-Agent", "test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1000); // mTimeout is in seconds
+                urlc.connect();
+                if (urlc.getResponseCode() == 200) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (IOException e) {
+                Log.i("warning", "Error checking internet connection", e);
+                return false;
+            }
+        }
+
+        return false;*/
+        /*InetAddress inetAddress = null;
         try {
             Future<InetAddress> future = Executors.newSingleThreadExecutor().submit(new Callable<InetAddress>() {
                 @Override
@@ -196,7 +227,7 @@ public class AppCommonUtil {
         } catch (ExecutionException e) {
         } catch (TimeoutException e) {
         }
-        return (inetAddress!=null && !inetAddress.equals(""));
+        return (inetAddress!=null && !inetAddress.equals(""));*/
     }
 
     /*
@@ -251,7 +282,10 @@ public class AppCommonUtil {
         try {
             errorCode = Integer.parseInt(expCode);
         } catch(Exception et) {
-            if( expMsg!=null && (expMsg.contains(CommonConstants.BACKENDLESS_HOST_IP)||expMsg.contains("Connection refused")) ) {
+            // we get 'Internal client exception' when we try to invoke any backend API, while internet is not conneccted
+            if( (expMsg!=null && (expMsg.contains(CommonConstants.BACKENDLESS_HOST_IP)||
+                    expMsg.contains("Connection refused"))) ||
+                    expCode.contains("Internal client exception") ) {
 
                 // check if internet is available
                 // dont check if in main UI thread
@@ -264,7 +298,10 @@ public class AppCommonUtil {
                             // Service genuinely not available
                             // raise alarm
                             LogMy.e(TAG, "Remote Service Not available");
-                            AppAlarms.serviceUnavailable("getLocalErrorCode");
+                            Map<String,String> params = new HashMap<>();
+                            params.put("expCode",expCode);
+                            params.put("expMsg",expMsg);
+                            AppAlarms.serviceUnavailable("",getUserType(),"getLocalErrorCode",params);
                             return ErrorCodes.INTERNET_OK_SERVICE_NOK;
                         } else {
                             return status;
@@ -388,6 +425,21 @@ public class AppCommonUtil {
 
             default:
                 return errorCode;
+        }
+    }
+
+    public static int getUserType() {
+        MyGlobalSettings.RunMode runMode = MyGlobalSettings.getRunMode();
+
+        if(runMode==MyGlobalSettings.RunMode.appMerchant) {
+            return DbConstants.USER_TYPE_MERCHANT;
+
+        } else if(runMode==MyGlobalSettings.RunMode.appCustomer) {
+            return DbConstants.USER_TYPE_CUSTOMER;
+
+        } else {
+            // Cant identify CC, Agent - so returning Agent as default
+            return DbConstants.USER_TYPE_AGENT;
         }
     }
 

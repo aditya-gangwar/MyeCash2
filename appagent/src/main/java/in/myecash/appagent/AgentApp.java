@@ -11,6 +11,7 @@ import com.helpshift.exceptions.InstallException;
 
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import io.fabric.sdk.android.Fabric;
 
@@ -31,6 +32,7 @@ public class AgentApp extends Application {
 
         // Map all tables to class here - except 'cashback' and 'transaction'
         AppCommonUtil.initTableToClassMappings();
+        MyGlobalSettings.setRunMode(MyGlobalSettings.RunMode.appMerchant);
 
         // Init crashlytics
         Fabric.with(this, new Crashlytics());

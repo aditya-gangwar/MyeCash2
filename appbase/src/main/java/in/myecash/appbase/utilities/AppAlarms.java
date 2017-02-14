@@ -143,10 +143,10 @@ public class AppAlarms {
                 methodName+ALARM_CSV_DELIM +
                 getParamStr(params));
     }
-    public static void serviceUnavailable(String methodName) {
+    public static void serviceUnavailable(String userId, int userType, String methodName, Map<String,String> params) {
         raiseAlarm(String.valueOf(System.currentTimeMillis())+ALARM_CSV_DELIM +
-                ""+ALARM_CSV_DELIM +
-                ""+ALARM_CSV_DELIM +
+                userId+ALARM_CSV_DELIM +
+                DbConstants.userTypeDesc[userType]+ALARM_CSV_DELIM +
                 ALARM_SEVERITY_FATAL+ALARM_CSV_DELIM +
                 ALARM_SERVICE_NOT_AVAILABLE+ALARM_CSV_DELIM +
                 ALARM_SERVICE_NOT_AVAILABLE+ALARM_CSV_DELIM +

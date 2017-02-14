@@ -86,7 +86,7 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_CB_REDEEM_CARD_REQ,"false");
         aMap.put(SETTINGS_ACC_DB_CARD_REQ,"false");
         aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN,"5000");
-        aMap.put(SETTINGS_CL_DEBIT_LIMIT_FOR_PIN,"0");
+        aMap.put(SETTINGS_CL_DEBIT_LIMIT_FOR_PIN,"10");
         aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN,"10");
         aMap.put(SETTINGS_CB_REDEEM_LIMIT,"200");
         aMap.put(SETTINGS_CUSTOMER_CASH_LIMIT,"5000");
@@ -118,8 +118,8 @@ public class GlobalSettingConstants {
         Map<String, String> aMap = new HashMap<>(TOTAL_SETTINGS_CNT);
         aMap.put(SETTINGS_MERCHANT_PASSWD_RESET_MINS, "Merchant: Minutes after which new password is sent on reset.");
         aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS, "Customer: Minutes after which new password is sent on reset.");
-        aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_MINS, "Merchant: Hours for which account is kept Locked. Enabled automatically after this.");
-        aMap.put(SETTINGS_CUSTOMER_ACCOUNT_BLOCK_MINS, "Merchant: Hours for which account is kept Locked. Enabled automatically after this.");
+        aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_MINS, "Merchant: Minutes for which account is kept Locked. Enabled automatically after this.");
+        aMap.put(SETTINGS_CUSTOMER_ACCOUNT_BLOCK_MINS, "Merchant: Minutes for which account is kept Locked. Enabled automatically after this.");
         aMap.put(SETTINGS_CB_REDEEM_CARD_REQ, "If Customer Card Mandatory to be scanned, for Cashback redeem ?");
         aMap.put(SETTINGS_ACC_DB_CARD_REQ, "If Customer Card Mandatory to be scanned, for Account debit ?");
         aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN, "Account Credit: Amount over which Customer PIN is asked during txn.");
@@ -129,7 +129,7 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_CUSTOMER_NO_REFRESH_MINS, null);
         aMap.put(SETTINGS_CUSTOMER_CASH_LIMIT, "Customer: Maximum amount that can be kept in any account of single merchant.");
         aMap.put(SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS, null);
-        aMap.put(SETTINGS_CUST_ACC_LIMIT_MODE_MINS, "Customer: Hours for which account is kept in Limited Mode. Enabled automatically after this.");
+        aMap.put(SETTINGS_CUST_ACC_LIMIT_MODE_MINS, "Customer: Minutes for which account is kept in Limited Mode. Enabled automatically after this.");
         aMap.put(SETTINGS_WRONG_ATTEMPT_RESET_MINS, null);
         aMap.put(SETTINGS_TXNS_INTABLE_KEEP_DAYS, "Transactions can be cancelled within this many days.");
         aMap.put(SETTINGS_OPS_KEEP_DAYS, "Service Requests for any account older than these many days are Purged.");

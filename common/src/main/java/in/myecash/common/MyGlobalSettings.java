@@ -32,12 +32,15 @@ public class MyGlobalSettings
         backend
     }
     private static RunMode mRunMode;
-    public static RunMode getRunMode(RunMode runMode) {
-        return runMode;
+    public static RunMode getRunMode() {
+        return mRunMode;
+    }
+    public static void setRunMode(RunMode mRunMode) {
+        MyGlobalSettings.mRunMode = mRunMode;
     }
 
     public static Map<String,Object> mSettings;
-    public static List<gSettings> userVisibleSettings = new ArrayList<>();
+    public static List<gSettings> userVisibleSettings;
 
     public static class gSettings {
         public String name;
@@ -186,7 +189,16 @@ public class MyGlobalSettings
 
         if(mSettings==null) {
             mSettings = new TreeMap<>();
+        } else {
+            mSettings.clear();
         }
+
+        if(userVisibleSettings==null) {
+            userVisibleSettings = new ArrayList<>();
+        } else {
+            userVisibleSettings.clear();
+        }
+
         //try {
         BackendlessCollection<GlobalSettings> settings = Backendless.Persistence.of( GlobalSettings.class).find();
 

@@ -12,6 +12,7 @@ import com.helpshift.exceptions.InstallException;
 
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import io.fabric.sdk.android.Fabric;
 
@@ -51,6 +52,7 @@ public class MerchantApp extends Application {
 
         // Map all tables to class here - except 'cashback' and 'transaction'
         AppCommonUtil.initTableToClassMappings();
+        MyGlobalSettings.setRunMode(MyGlobalSettings.RunMode.appMerchant);
 
         // This is to avoid android.os.FileUriExposedException exception
         // while trying to pass CSV file path to Email app intent (txn list email)

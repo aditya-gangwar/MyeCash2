@@ -119,6 +119,7 @@ public class MerchantUser
      */
     public static int login(String userId, String password, String deviceId, String otp) {
         LogMy.d(TAG, "In login");
+        boolean loginSuccess = false;
         try {
             String deviceInfo = deviceId+","
                     + AppCommonUtil.getDeviceManufacturer()+","
@@ -138,6 +139,7 @@ public class MerchantUser
             }
 
             // create instance of MerchantUser class
+            loginSuccess = true;
             createInstance();
             mInstance.mMerchant = (Merchants) user.getProperty("merchant");
             mInstance.initWithMchntObject();
@@ -163,7 +165,9 @@ public class MerchantUser
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Login failed: "+e.toString());
-            logoutSync();
+            if(loginSuccess) {
+                logoutSync();
+            }
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;
