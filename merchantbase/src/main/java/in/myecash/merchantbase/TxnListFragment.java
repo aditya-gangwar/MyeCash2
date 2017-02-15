@@ -24,6 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseDialog;
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.SortTxnDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.CommonUtils;
@@ -47,7 +49,7 @@ import java.util.List;
 /**
  * Created by adgangwa on 07-04-2016.
  */
-public class TxnListFragment extends Fragment {
+public class TxnListFragment extends BaseFragment {
     private static final String TAG = "MchntApp-TxnListFragment";
 
     private static final String CSV_REPORT_HEADER_1 = ",,MyeCash Merchant Statement,,,,,,,,";
@@ -552,6 +554,16 @@ public class TxnListFragment extends Fragment {
         }
     }
 
+    @Override
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
+        // do nothing
+    }
 
     @Override
     public void onResume() {

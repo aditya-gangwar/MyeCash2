@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseFragment;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.database.MerchantStats;
@@ -22,8 +23,7 @@ import java.util.Date;
 /**
  * Created by adgangwa on 05-07-2016.
  */
-public class DashboardFragment extends Fragment
-        implements View.OnClickListener, View.OnTouchListener {
+public class DashboardFragment extends BaseFragment {
     private static final String TAG = "MchntApp-DashboardSummary";
 
     public static final int DB_TYPE_CUSTOMER = 1;
@@ -106,8 +106,27 @@ public class DashboardFragment extends Fragment
         //emailDataFile.setOnClickListener(this);
     }
 
-    @Override
+    /*@Override
     public void onClick(View v) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return;
+
+        LogMy.d(TAG,"In onClick: "+v.getId());
+        showDetailedView(v);
+    }*/
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return true;
+
+        LogMy.d(TAG,"In onTouch: "+v.getId());
+        showDetailedView(v);
+        return true;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
         if(!mCallback.getRetainedFragment().getResumeOk())
             return;
 
@@ -115,7 +134,7 @@ public class DashboardFragment extends Fragment
         showDetailedView(v);
     }
 
-    @Override
+    /*@Override
     public boolean onTouch(View v, MotionEvent event) {
         if(!mCallback.getRetainedFragment().getResumeOk())
             return true;
@@ -125,7 +144,7 @@ public class DashboardFragment extends Fragment
             showDetailedView(v);
         }
         return true;
-    }
+    }*/
 
     private void showDetailedView(View v) {
         int id = v.getId();

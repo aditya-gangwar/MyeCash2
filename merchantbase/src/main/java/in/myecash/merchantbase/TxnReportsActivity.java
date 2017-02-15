@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import in.myecash.appbase.BaseActivity;
 import in.myecash.appbase.DatePickerDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyTransaction;
@@ -46,13 +47,13 @@ import java.util.TimeZone;
 /**
  * Created by adgangwa on 04-04-2016.
  */
-public class TxnReportsActivity extends AppCompatActivity implements
-        View.OnClickListener, MyRetainedFragment.RetainedFragmentIf,
+public class TxnReportsActivity extends BaseActivity implements
+        MyRetainedFragment.RetainedFragmentIf,
         DatePickerDialog.DatePickerIf, TxnSummaryFragment.TxnSummaryFragmentIf,
         TxnListFragment.TxnListFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         TxnDetailsDialog.TxnDetailsDialogIf, TxnReportsHelper.TxnReportsHelperIf,
         TxnCancelDialog.TxnCancelDialogIf, TxnPinInputDialog.TxnPinInputDialogIf,
-        CustomerDetailsDialog.CustomerDetailsDialogIf, View.OnTouchListener {
+        CustomerDetailsDialog.CustomerDetailsDialogIf {
     private static final String TAG = "MchntApp-TxnReportsActivity";
 
     public static final String EXTRA_CUSTOMER_ID = "extraCustId";
@@ -144,6 +145,80 @@ public class TxnReportsActivity extends AppCompatActivity implements
     }
 
     @Override
+    public boolean handleTouchUp(View v) {
+        try {
+            if(!mWorkFragment.getResumeOk()) {
+                return true;
+            }
+
+            int vId = v.getId();
+            LogMy.d(TAG, "In onTouch: " + vId);
+
+            if (vId == R.id.input_date_from) {
+                // Find the minimum date for DatePicker
+                DateUtil minFrom = new DateUtil(new Date(), TimeZone.getDefault());
+                minFrom.removeDays(MyGlobalSettings.getMchntTxnHistoryDays());
+
+                DialogFragment fromDialog = DatePickerDialog.newInstance(mFromDate, minFrom.getTime(), mNow);
+                fromDialog.show(getFragmentManager(), DIALOG_DATE_FROM);
+
+            } else if (vId == R.id.input_date_to) {
+                if (mFromDate == null) {
+                    AppCommonUtil.toast(this, "Set From Date");
+                } else {
+                    DialogFragment toDialog = DatePickerDialog.newInstance(mToDate, mFromDate, mNow);
+                    toDialog.show(getFragmentManager(), DIALOG_DATE_TO);
+                }
+            }
+        } catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
+            LogMy.e(TAG, "Exception in TxnReportsActivity:onTouch", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
+        return true;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
+        if(!mWorkFragment.getResumeOk()) {
+            return;
+        }
+
+        int vId = v.getId();
+        LogMy.d(TAG, "In onClick: " + vId);
+
+        try {
+            if (vId == R.id.btn_get_report) {
+                // clear old data
+                //mWorkFragment.mAllFiles.clear();
+                //mWorkFragment.mMissingFiles.clear();
+                //mWorkFragment.mTxnsFromCsv.clear();
+                if (mWorkFragment.mLastFetchTransactions != null) {
+                    mWorkFragment.mLastFetchTransactions.clear();
+                    mWorkFragment.mLastFetchTransactions = null;
+                }
+                mCustomerId = mInputCustId.getText().toString();
+                if (mCustomerId.length() > 0) {
+                    if( mCustomerId.length() != CommonConstants.CUSTOMER_INTERNAL_ID_LEN &&
+                            mCustomerId.length() != CommonConstants.MOBILE_NUM_LENGTH ) {
+                        mInputCustId.setError(AppCommonUtil.getErrorDesc(ErrorCodes.INVALID_LENGTH));
+                        return;
+                    }
+                }
+
+                //fetchReportData();
+                mHelper.startTxnFetch(mFromDate, mToDate,
+                        MerchantUser.getInstance().getMerchantId(), mCustomerId);
+            }
+        } catch(Exception e) {
+            LogMy.e(TAG, "Exception is ReportsActivity:onClick: "+vId, e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
+    }
+
+    /*@Override
     public boolean onTouch(View v, MotionEvent event) {
         if(event.getAction()==MotionEvent.ACTION_UP) {
             try {
@@ -217,7 +292,7 @@ public class TxnReportsActivity extends AppCompatActivity implements
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
-    }
+    }*/
 
     private void initDateInputs(Bundle instanceState) {
         if(instanceState==null) {

@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import in.myecash.appbase.BaseActivity;
 import in.myecash.appbase.DatePickerDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyTransaction;
@@ -49,11 +50,11 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
 /**
  * Created by adgangwa on 04-04-2016.
  */
-public class TxnReportsCustActivity extends AppCompatActivity implements
-        View.OnClickListener, MyRetainedFragment.RetainedFragmentIf,
+public class TxnReportsCustActivity extends BaseActivity implements
+        MyRetainedFragment.RetainedFragmentIf,
         DatePickerDialog.DatePickerIf, TxnListFragment.TxnListFragmentIf,
         DialogFragmentWrapper.DialogFragmentWrapperIf, TxnDetailsDialog.TxnDetailsDialogIf,
-        TxnReportsHelper.TxnReportsHelperIf, View.OnTouchListener {
+        TxnReportsHelper.TxnReportsHelperIf {
     private static final String TAG = "CustApp-TxnReportsActivity";
 
     public static final String EXTRA_MERCHANT_ID = "extraMchntId";
@@ -154,6 +155,50 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
     }
 
     @Override
+    public boolean handleTouchUp(View v) {
+        try {
+            if(!mWorkFragment.getResumeOk()) {
+                return true;
+            }
+            int vId = v.getId();
+            LogMy.d(TAG, "In onTouch: " + vId);
+
+            if (vId == R.id.input_date_from) {
+                // Find the minimum date for DatePicker
+                DateUtil minFrom = new DateUtil(new Date(), TimeZone.getDefault());
+                minFrom.removeDays(MyGlobalSettings.getCustTxnHistoryDays());
+
+                DialogFragment fromDialog = DatePickerDialog.newInstance(mFromDate, minFrom.getTime(), mNow);
+                fromDialog.show(getFragmentManager(), DIALOG_DATE_FROM);
+
+            } else if (vId == R.id.input_date_to) {
+                if (mFromDate == null) {
+                    AppCommonUtil.toast(this, "Set From Date");
+                } else {
+                    DialogFragment toDialog = DatePickerDialog.newInstance(mToDate, mFromDate, mNow);
+                    toDialog.show(getFragmentManager(), DIALOG_DATE_TO);
+                }
+
+            }
+        } catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
+            LogMy.e(TAG, "Exception in TxnReportsCustActivity", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DIALOG_ERROR_NOTIFY);
+        }
+        return true;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
+        int vId = v.getId();
+        LogMy.d(TAG, "In onClick: " + vId);
+        if (vId == R.id.btn_get_report) {
+            startTxnFetch();
+        }
+    }
+
+    /*@Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         try {
             if(!mWorkFragment.getResumeOk()) {
@@ -197,7 +242,7 @@ public class TxnReportsCustActivity extends AppCompatActivity implements
         if (vId == R.id.btn_get_report) {
             startTxnFetch();
         }
-    }
+    }*/
 
     private void startTxnFetch() {
         try {

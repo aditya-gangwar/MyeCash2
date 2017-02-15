@@ -18,6 +18,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -32,7 +33,7 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
 /**
  * Created by adgangwa on 04-11-2016.
  */
-public class TxnConfirmFragment extends Fragment {
+public class TxnConfirmFragment extends BaseFragment {
     private static final String TAG = "MchntApp-TxnConfirmFragment";
     private static final String ARG_CASH_PAID = "cashPaid";
 
@@ -61,15 +62,17 @@ public class TxnConfirmFragment extends Fragment {
         try {
             bindUiResources(v);
 
-            mInputInvoiceNum.setOnTouchListener(new View.OnTouchListener() {
+            mInputInvoiceNum.setOnTouchListener(this);
+            /*mInputInvoiceNum.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                     return false;
                 }
-            });
+            });*/
 
-            mBtnConfirm.setOnClickListener(new View.OnClickListener() {
+            mBtnConfirm.setOnClickListener(this);
+            /*mBtnConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(!mCallback.getRetainedFragment().getResumeOk())
@@ -88,7 +91,7 @@ public class TxnConfirmFragment extends Fragment {
                         mCallback.onTransactionConfirm();
                     }
                 }
-            });
+            });*/
         } catch (Exception e) {
             LogMy.e(TAG, "Exception in Fragment: ", e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
@@ -118,6 +121,35 @@ public class TxnConfirmFragment extends Fragment {
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             getActivity().onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        if(v.getId()==R.id.input_invoice_num) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        }
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
+        if(v.getId()==R.id.btn_txn_confirm) {
+            if(!mCallback.getRetainedFragment().getResumeOk())
+                return;
+
+            // check if invoice num is mandatory
+            if (mMerchant.isInvoiceNumAsk() &&
+                    !mMerchant.isInvoiceNumOptional() &&
+                    mInputInvoiceNum.getText().toString().isEmpty()) {
+                mInputInvoiceNum.setError("Enter Linked Invoice Number");
+            } else {
+                AppCommonUtil.hideKeyboard(getActivity());
+                Transaction curTxn = mCallback.getRetainedFragment().mCurrTransaction.getTransaction();
+                curTxn.setInvoiceNum(mInputInvoiceNum.getText().toString());
+                //curTxn.setComments(mInputComments.getText().toString());
+                mCallback.onTransactionConfirm();
+            }
         }
     }
 

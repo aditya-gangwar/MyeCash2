@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseDialog;
 import in.myecash.common.CommonUtils;
 import in.myecash.common.DateUtil;
 import in.myecash.common.constants.CommonConstants;
@@ -28,7 +29,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by adgangwa on 21-05-2016.
  */
-public class CustomerDetailsDialog extends DialogFragment  {
+public class CustomerDetailsDialog extends BaseDialog {
     private static final String TAG = "MchntApp-CustomerDetailsDialog";
     private static final String ARG_CB_POSITION = "cbPosition";
     private static final String ARG_GETTXNS_BTN = "getTxnsBtn";
@@ -74,6 +75,27 @@ public class CustomerDetailsDialog extends DialogFragment  {
     }
 
     @Override
+    public void handleBtnClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+                mCallback.getCustTxns(mInputCustomerId.getText().toString());
+                dialog.dismiss();
+                break;
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        return false;
+    }
+
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_customer_details, null);
 
@@ -83,22 +105,10 @@ public class CustomerDetailsDialog extends DialogFragment  {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setView(v)
-                .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
+                .setPositiveButton(android.R.string.ok,this);
 
         if(showGetTxns) {
-            builder.setNeutralButton("Get Txns", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    mCallback.getCustTxns(mInputCustomerId.getText().toString());
-                    dialog.dismiss();
-                }
-            });
+            builder.setNeutralButton("Get Txns", this);
         }
 
         Dialog dialog = builder.create();

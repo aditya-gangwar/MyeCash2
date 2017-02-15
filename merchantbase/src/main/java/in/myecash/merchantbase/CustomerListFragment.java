@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
@@ -53,7 +54,7 @@ import java.util.List;
 /**
  * Created by adgangwa on 09-09-2016.
  */
-public class CustomerListFragment extends Fragment {
+public class CustomerListFragment extends BaseFragment {
     private static final String TAG = "MchntApp-CustomerListFragment";
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
     private static final String DIALOG_SORT_CUST_TYPES = "dialogSortCust";
@@ -144,6 +145,17 @@ public class CustomerListFragment extends Fragment {
         }
 
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
+       // do nothing
     }
 
     private void sortCustList(int sortType) {

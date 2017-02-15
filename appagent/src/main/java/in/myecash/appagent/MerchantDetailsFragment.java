@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
@@ -23,8 +24,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by adgangwa on 30-07-2016.
  */
-public class MerchantDetailsFragment extends Fragment
-    implements View.OnClickListener {
+public class MerchantDetailsFragment extends BaseFragment {
     private static final String TAG = "AgentApp-MerchantDetailsFragment";
 
     private static final String DIALOG_DISABLE_MCHNT = "disableMerchant";
@@ -118,7 +118,13 @@ public class MerchantDetailsFragment extends Fragment
     }
 
     @Override
-    public void onClick(View v) {
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
         switch (v.getId()) {
             case R.id.btn_acc_status:
                 LogMy.d(TAG,"Clicked change acc status button.");
@@ -135,6 +141,25 @@ public class MerchantDetailsFragment extends Fragment
                 break;
         }
     }
+
+    /*@Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_acc_status:
+                LogMy.d(TAG,"Clicked change acc status button.");
+                // show disable dialog
+                DisableMchntDialog dialog = new DisableMchntDialog();
+                dialog.show(getFragmentManager(), DIALOG_DISABLE_MCHNT);
+                //getDialog().dismiss();
+                break;
+
+            case R.id.btn_launch_app:
+                LogMy.d(TAG,"Clicked launch merchant app button.");
+                mCallback.launchMchntApp();
+                //getDialog().dismiss();
+                break;
+        }
+    }*/
 
     private EditText mMerchantId;
     private EditText mStoreName;

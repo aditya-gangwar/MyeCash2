@@ -14,17 +14,19 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.constants.ErrorCodes;
 
 /**
  * Created by adgangwa on 13-12-2016.
  */
-public class SearchCardDialog extends DialogFragment
-        implements DialogInterface.OnClickListener, View.OnTouchListener {
+public class SearchCardDialog extends BaseDialog
+        implements View.OnTouchListener {
 
     public static final String TAG = "AgentApp-SearchCardDialog";
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9004;
@@ -58,12 +60,7 @@ public class SearchCardDialog extends DialogFragment
         // return new dialog
         final AlertDialog alertDialog =  new AlertDialog.Builder(getActivity()).setView(v)
                 .setPositiveButton(R.string.ok, this)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setNegativeButton(R.string.cancel, this)
                 .create();
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
@@ -73,9 +70,9 @@ public class SearchCardDialog extends DialogFragment
                 AppCommonUtil.setDialogTextSize(SearchCardDialog.this, (AlertDialog) dialog);
 
                 Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
+                b.setOnClickListener(new OnSingleClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onSingleClick(View v) {
                         AppCommonUtil.hideKeyboard(getDialog());
 
                         if(mScannedCardNum==null || mScannedCardNum.isEmpty()) {
@@ -102,7 +99,7 @@ public class SearchCardDialog extends DialogFragment
         return alertDialog;
     }
 
-    @Override
+    /*@Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
             Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
@@ -112,7 +109,7 @@ public class SearchCardDialog extends DialogFragment
             startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
         }
         return false;
-    }
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -136,11 +133,38 @@ public class SearchCardDialog extends DialogFragment
     }
 
     @Override
+    public void handleBtnClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                //Do nothing here because we override this button in OnShowListener to change the close behaviour.
+                //However, we still need this because on older versions of Android unless we
+                //pass a handler the button doesn't get instantiated
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                AppCommonUtil.hideKeyboard(getDialog());
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+                break;
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
+        intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+        intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+
+        startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
+        return false;
+    }
+
+    /*@Override
     public void onClick(DialogInterface dialog, int which) {
         //Do nothing here because we override this button in OnShowListener to change the close behaviour.
         //However, we still need this because on older versions of Android unless we
         //pass a handler the button doesn't get instantiated
-    }
+    }*/
 
     @Override
     public void onCancel(DialogInterface dialog) {

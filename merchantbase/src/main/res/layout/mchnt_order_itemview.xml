@@ -26,7 +26,7 @@
 
                 <ImageView
                     android:id="@+id/img_merchant"
-                    android:src="@drawable/custCardImg"
+                    android:src="@drawable/cust_card_img"
                     android:layout_width="@dimen/dp_dialog_image_width"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"

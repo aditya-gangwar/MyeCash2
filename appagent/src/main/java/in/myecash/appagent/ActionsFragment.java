@@ -14,6 +14,7 @@ import java.util.Map;
 
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
+import in.myecash.appbase.BaseFragment;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.appbase.utilities.LogMy;
@@ -21,7 +22,7 @@ import in.myecash.appbase.utilities.LogMy;
 /**
  * Created by adgangwa on 28-02-2016.
  */
-public class ActionsFragment extends Fragment implements View.OnClickListener {
+public class ActionsFragment extends BaseFragment {
     private static final String TAG = "AgentApp-ActionsFragment";
 
     // Possible Merchant actions
@@ -117,7 +118,13 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
         int vId = v.getId();
         LogMy.d(TAG, "In onClick: " + vId);
 
@@ -137,6 +144,29 @@ public class ActionsFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
+
+    /*@Override
+    public void onClick(View v) {
+        int vId = v.getId();
+        LogMy.d(TAG, "In onClick: " + vId);
+
+        switch(vId) {
+            case R.id.btn_merchant_0:
+            case R.id.btn_merchant_1:
+            case R.id.btn_customer_0:
+            case R.id.btn_customer_1:
+            case R.id.btn_cards_0:
+            case R.id.btn_cards_1:
+            case R.id.btn_cards_2:
+            case R.id.btn_cards_3:
+            case R.id.btn_others_0:
+            case R.id.btn_others_1:
+                String btnLabel = ((AppCompatButton)v).getText().toString();
+                mCallback.onActionBtnClick(btnLabel);
+                break;
+        }
+    }*/
 
     private void initButtons() {
         String[] actions = null;

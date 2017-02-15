@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import in.myecash.appbase.BaseDialog;
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -27,8 +29,7 @@ import java.util.List;
 /**
  * Created by adgangwa on 29-05-2016.
  */
-public class TrustedDevicesFragment extends Fragment
-        implements View.OnClickListener {
+public class TrustedDevicesFragment extends BaseFragment {
     private static final String TAG = "MchntApp-TrustedDevicesFragment";
     private static final int REQ_CONFIRM_DEVICE_DELETE = 1;
     private static final int NOTIFY_DELETE_NOT_ALLOWED = 2;
@@ -119,7 +120,13 @@ public class TrustedDevicesFragment extends Fragment
     }
 
     @Override
-    public void onClick(View v) {
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
         if(!mCallback.getRetainedFragment().getResumeOk())
             return;
 
@@ -167,6 +174,50 @@ public class TrustedDevicesFragment extends Fragment
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
+
+    /*@Override
+    public void onClick(View v) {
+        if(!mCallback.getRetainedFragment().getResumeOk())
+            return;
+
+        int id = v.getId();
+
+        try {
+            List<MerchantDevice> devices = MerchantUser.getInstance().getTrustedDeviceList();
+
+            int index = 0;
+            if (id == R.id.device1_delete) {
+                index = 0;
+
+            } else if (id == R.id.device2_delete) {
+                index = 1;
+
+            } else if (id == R.id.device3_delete) {
+                index = 2;
+
+            }
+            // delete of device from which it is logged in is not allowed
+            if (devices.size() == 1) {
+                DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.deviceDeleteTitle,
+                        "Cannot remove last trusted device.", true, true);
+                dialog.setTargetFragment(this, NOTIFY_DELETE_NOT_ALLOWED);
+                dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            } else {
+                // ask for confirmation
+                String deviceName = devices.get(index).getManufacturer() + " " + devices.get(index).getModel();
+                mCallback.getRetainedFragment().toDeleteTrustedDeviceIndex = index;
+
+                String msg = String.format(AppConstants.deviceDeleteMsg, deviceName);
+                DialogFragmentWrapper dialog = DialogFragmentWrapper.createConfirmationDialog(AppConstants.deviceDeleteTitle, msg, true, false);
+                dialog.setTargetFragment(this, REQ_CONFIRM_DEVICE_DELETE);
+                dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
+            }
+        } catch (Exception e) {
+            LogMy.e(TAG, "Exception in TrustedDevicesFragment: ", e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

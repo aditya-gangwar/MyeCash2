@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.MyGlobalSettings;
@@ -36,8 +37,8 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
 /**
  * Created by adgangwa on 04-03-2016.
  */
-public class CashTransactionFragment extends Fragment implements
-        View.OnClickListener, CashPaid2.CashPaid2If, View.OnTouchListener {
+public class CashTransactionFragment extends BaseFragment implements
+        CashPaid2.CashPaid2If {
     private static final String TAG = "MchntApp-CashTransactionFragment";
 
     private static final int REQUEST_CASH_PAY = 1;
@@ -802,13 +803,14 @@ public class CashTransactionFragment extends Fragment implements
         mRetainedFragment.mCurrTransaction = new MyTransaction(trans);
     }
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
+    //@Override
+    //public boolean onTouch(View v, MotionEvent event) {
+    public boolean handleTouchUp(View v) {
         if(!mCallback.getRetainedFragment().getResumeOk())
             return true;
 
         try {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
+            //if (event.getAction() == MotionEvent.ACTION_UP) {
                 LogMy.d(TAG, "In onTouch: " + v.getId());
 
                 int i = v.getId();
@@ -937,7 +939,7 @@ public class CashTransactionFragment extends Fragment implements
                 } else {
                     return false;
                 }
-            }
+            //}
         } catch (Exception e) {
             LogMy.e(TAG, "Exception in CashTxnFragment:onTouch", e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
@@ -947,8 +949,9 @@ public class CashTransactionFragment extends Fragment implements
         return true;
     }
 
-    @Override
-    public void onClick(View v) {
+    //@Override
+    //public void onClick(View v) {
+    public void handleBtnClick(View v) {
         LogMy.d(TAG, "In onClick: " + v.getId());
         if(!mCallback.getRetainedFragment().getResumeOk())
             return;
@@ -1004,7 +1007,6 @@ public class CashTransactionFragment extends Fragment implements
                 } else {
                     AppCommonUtil.toast(getActivity(), "No MyeCash data to process !!");
                 }
-
             } else if(i == R.id.btn_expand_acc) {
                 initAccUiVisibility(true);
             } else if(i == R.id.btn_expand_cb) {

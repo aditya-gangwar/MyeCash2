@@ -16,6 +16,8 @@ import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.OnSingleClickListener;
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.merchantbase.adapter.OrderListViewAdapter;
 import in.myecash.merchantbase.entities.OrderItem;
@@ -24,8 +26,7 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
 /**
  * Created by adgangwa on 04-03-2016.
  */
-public class OrderListViewFragment extends ListFragment implements
-        View.OnClickListener, OrderListViewAdapter.OrderListViewIf {
+public class OrderListViewFragment extends ListFragment implements OrderListViewAdapter.OrderListViewIf {
 
     private static final String TAG = "MchntApp-OrderListViewFragment";
 
@@ -57,7 +58,24 @@ public class OrderListViewFragment extends ListFragment implements
         View view = inflater.inflate(R.layout.fragment_order_itemlist, container, false);
 
         bindUiResources(view);
-        mTotalBtn.setOnClickListener(this);
+        mTotalBtn.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                if (!mCallback.getRetainedFragment().getResumeOk())
+                    return;
+
+                try {
+                    int id = v.getId();
+                    if (id == R.id.btn_bill_total) {
+                        mCallback.onTotalBillFromOrderList();
+                    }
+                } catch (Exception e) {
+                    LogMy.e(TAG, "Exception in Fragment: ", e);
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                }
+            }
+        });
         return view;
     }
 
@@ -213,7 +231,7 @@ public class OrderListViewFragment extends ListFragment implements
         }
     }
 
-    @Override
+    /*@Override
     public void onClick(View v) {
         if(!mCallback.getRetainedFragment().getResumeOk())
             return;
@@ -228,7 +246,7 @@ public class OrderListViewFragment extends ListFragment implements
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
-    }
+    }*/
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

@@ -80,6 +80,7 @@ public class ErrorCodes {
     public static final int WRONG_USER_TYPE = 590;
     public static final int DEVICE_INSECURE = 591;
     public static final int LOGGED_IN_DEVICE_DELETE = 592;
+    public static final int WRNG_PSWD_NOT_TRUSTED_DEV = 593;
 
     // Misc errors
     public static final int DUPLICATE_ENTRY = 661;
@@ -138,6 +139,7 @@ public class ErrorCodes {
         aMap.put(WRONG_USER_TYPE,"Wrong user type");
         aMap.put(DEVICE_INSECURE,"Your device is not secure. Please install and run application on other device.");
         aMap.put(LOGGED_IN_DEVICE_DELETE,"You cannot delete device from which you are logged in.");
+        aMap.put(WRNG_PSWD_NOT_TRUSTED_DEV,"Not Trusted Device. Please enter correct User ID/Password to add in Trusted device list.");
 
         aMap.put(NO_SUCH_CARD,"Invalid Membership Card");
         aMap.put(WRONG_CARD,"Invalid Membership card. Please return to company agent for refund.");

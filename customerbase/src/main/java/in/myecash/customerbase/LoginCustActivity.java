@@ -35,6 +35,7 @@ import java.util.Map;
 
 import in.myecash.appbase.ServerNaActivity;
 import in.myecash.appbase.utilities.AppAlarms;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.appbase.utilities.RootUtil;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
@@ -181,9 +182,9 @@ public class LoginCustActivity extends AppCompatActivity implements
             }
         });
 
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
+        mLoginButton.setOnClickListener(new OnSingleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onSingleClick(View v) {
                 // check internet connectivity
                 int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(LoginCustActivity.this);
                 if (resultCode != ErrorCodes.NO_ERROR) {

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.common.constants.CommonConstants;
@@ -26,7 +27,7 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
 /**
  * Created by adgangwa on 18-09-2016.
  */
-public class MerchantOpListFrag extends Fragment {
+public class MerchantOpListFrag extends BaseFragment {
     private static final String TAG = "MchntApp-MerchantOpListFrag";
 
     private static final int REQ_NOTIFY_ERROR = 1;
@@ -74,6 +75,17 @@ public class MerchantOpListFrag extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
+        // do nothing
     }
 
     private void updateUI() {

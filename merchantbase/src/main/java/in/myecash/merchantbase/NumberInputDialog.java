@@ -16,14 +16,16 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 
 
 /**
  * Created by adgangwa on 28-03-2016.
  */
-public class NumberInputDialog extends DialogFragment implements View.OnClickListener {
+public class NumberInputDialog extends BaseDialog implements View.OnClickListener {
     public static final String TAG = "MchntApp-InputNumberDialog";
 
     public static final String EXTRA_INPUT_HUMBER = "cashPaid";
@@ -84,21 +86,8 @@ public class NumberInputDialog extends DialogFragment implements View.OnClickLis
         // return new dialog
         Dialog dialog =  new AlertDialog.Builder(getActivity(), R.style.WrapEverythingDialog)
                 .setView(v)
-                .setPositiveButton(android.R.string.ok,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //Do nothing here because we override this button later to change the close behaviour.
-                            //However, we still need this because on older versions of Android unless we
-                            //pass a handler the button doesn't get instantiated
-                        }
-                    })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        }
-                }).create();
+                .setPositiveButton(android.R.string.ok,this)
+                .setNegativeButton(android.R.string.cancel, this).create();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog.setCanceledOnTouchOutside(false);
@@ -113,6 +102,27 @@ public class NumberInputDialog extends DialogFragment implements View.OnClickLis
     }
 
     @Override
+    public void handleBtnClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                //Do nothing here because we override this button later to change the close behaviour.
+                //However, we still need this because on older versions of Android unless we
+                //pass a handler the button doesn't get instantiated
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+                break;
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        return false;
+    }
+
+    @Override
     public void onStart()
     {
         super.onStart();    //super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after this point
@@ -120,9 +130,9 @@ public class NumberInputDialog extends DialogFragment implements View.OnClickLis
         if(d != null)
         {
             Button positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
-            positiveButton.setOnClickListener(new View.OnClickListener() {
+            positiveButton.setOnClickListener(new OnSingleClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onSingleClick(View v) {
                     Boolean wantToCloseDialog = true;
 
                     LogMy.d(TAG, "Clicked Ok");

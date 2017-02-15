@@ -32,7 +32,8 @@ public class LogMy {
     public static void e(String tag, String msg, Exception e) {
         Log.e(tag,msg,e);
         Crashlytics.log(msg);
-        Crashlytics.logException(e);
+        //Crashlytics.logException(e);
+        Crashlytics.getInstance().core.logException(e);
     }
     public static void e(String tag, String msg, Throwable t) {
         Log.e(tag,msg,t);

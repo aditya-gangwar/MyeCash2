@@ -14,9 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
@@ -26,8 +28,7 @@ import in.myecash.common.database.Transaction;
 /**
  * Created by adgangwa on 30-10-2016.
  */
-public class TxnCancelDialog extends DialogFragment
-        implements View.OnTouchListener {
+public class TxnCancelDialog extends BaseDialog {
 
     private static final String TAG = "MchntApp-TxnCancelDialog";
     private static final String ARG_TXN = "txn";
@@ -83,21 +84,8 @@ public class TxnCancelDialog extends DialogFragment
 
         Dialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
-                .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //Do nothing here because we override this button later to change the close behaviour.
-                                //However, we still need this because on older versions of Android unless we
-                                //pass a handler the button doesn't get instantiated
-                            }
-                        })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton(android.R.string.ok, this)
+                .setNegativeButton(android.R.string.cancel, this)
                 .create();
 
         dialog.setCanceledOnTouchOutside(false);
@@ -112,6 +100,35 @@ public class TxnCancelDialog extends DialogFragment
     }
 
     @Override
+    public void handleBtnClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                //Do nothing here because we override this button in OnShowListener to change the close behaviour.
+                //However, we still need this because on older versions of Android unless we
+                //pass a handler the button doesn't get instantiated
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+                break;
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        if (v.getId() == R.id.input_qr_card) {// launch barcode activity.
+            Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
+            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+            intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+            mImgFilename = getTempImgFilename(mTxnId);
+            intent.putExtra(BarcodeCaptureActivity.ImageFileName, mImgFilename);
+            startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
+        }
+        return true;
+    }
+
+    @Override
     public void onStart()
     {
         super.onStart();    //super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after this point
@@ -119,9 +136,9 @@ public class TxnCancelDialog extends DialogFragment
         if(d != null)
         {
             Button positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
-            positiveButton.setOnClickListener(new View.OnClickListener() {
+            positiveButton.setOnClickListener(new OnSingleClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onSingleClick(View v) {
                     Boolean wantToCloseDialog = false;
 
                     if(!mAnythingToCancel) {
@@ -150,7 +167,7 @@ public class TxnCancelDialog extends DialogFragment
         }
     }
 
-    @Override
+    /*@Override
     public boolean onTouch(View v, MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_UP) {
             int vId = v.getId();
@@ -168,7 +185,7 @@ public class TxnCancelDialog extends DialogFragment
             return true;
         }
         return false;
-    }
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -11,15 +11,17 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.constants.ErrorCodes;
 
 /**
  * Created by adgangwa on 25-11-2016.
  */
-public class AccEnableDialog extends DialogFragment implements DialogInterface.OnClickListener {
+public class AccEnableDialog extends BaseDialog {
     private static final String TAG = "CustApp-AccEnableDialog";
 
     private static final String ARG_CARD_NUM = "ArgCardNum";
@@ -135,13 +137,7 @@ public class AccEnableDialog extends DialogFragment implements DialogInterface.O
         // return new dialog
         final android.support.v7.app.AlertDialog alertDialog =  new android.support.v7.app.AlertDialog.Builder(getActivity()).setView(v)
                 .setPositiveButton(R.string.ok, this)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        AppCommonUtil.hideKeyboard(getDialog());
-                        dialog.dismiss();
-                    }
-                })
+                .setNegativeButton(R.string.cancel, this)
                 .create();
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
@@ -150,9 +146,9 @@ public class AccEnableDialog extends DialogFragment implements DialogInterface.O
             public void onShow(DialogInterface dialog) {
 
                 Button b = alertDialog.getButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
+                b.setOnClickListener(new OnSingleClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onSingleClick(View v) {
                         AppCommonUtil.hideKeyboard(getDialog());
 
                         if (validate()) {
@@ -184,11 +180,33 @@ public class AccEnableDialog extends DialogFragment implements DialogInterface.O
     }
 
     @Override
+    public void handleBtnClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                //Do nothing here because we override this button in OnShowListener to change the close behaviour.
+                //However, we still need this because on older versions of Android unless we
+                //pass a handler the button doesn't get instantiated
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                AppCommonUtil.hideKeyboard(getDialog());
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+                break;
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        return false;
+    }
+
+    /*@Override
     public void onClick(DialogInterface dialog, int which) {
         //Do nothing here because we override this button in OnShowListener to change the close behaviour.
         //However, we still need this because on older versions of Android unless we
         //pass a handler the button doesn't get instantiated
-    }
+    }*/
 
     private EditText labelInfo1;
     private EditText labelInfo2;

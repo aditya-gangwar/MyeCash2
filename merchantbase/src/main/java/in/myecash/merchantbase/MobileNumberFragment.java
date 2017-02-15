@@ -17,10 +17,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseDialog;
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.SortTxnDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.LogMy;
@@ -29,7 +32,7 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
 /**
  * Created by adgangwa on 28-02-2016.
  */
-public class MobileNumberFragment extends Fragment implements View.OnClickListener {
+public class MobileNumberFragment extends BaseFragment {
     private static final String TAG = "MchntApp-MobileNumberFragment";
 
     private static final String MOBILE_NUM_EMPTY_CHAR = ".";
@@ -72,6 +75,18 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
         return v;
     }
 
+    @Override
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
+        // do nothing
+    }
+
+    // Not using BaseFragment's onClick method
     @Override
     public void onClick(View v) {
         if(!mCallback.getRetainedFragment().getResumeOk())
@@ -137,9 +152,9 @@ public class MobileNumberFragment extends Fragment implements View.OnClickListen
     }
 
     private void initButtons() {
-        mBtnProcess.setOnClickListener(new View.OnClickListener() {
+        mBtnProcess.setOnClickListener(new OnSingleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onSingleClick(View v) {
                 if(!mCallback.getRetainedFragment().getResumeOk())
                     return;
 

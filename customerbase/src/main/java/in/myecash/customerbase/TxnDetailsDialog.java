@@ -17,6 +17,7 @@ import android.widget.ImageView;
 
 import java.text.SimpleDateFormat;
 
+import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -28,7 +29,7 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
 /**
  * Created by adgangwa on 15-09-2016.
  */
-public class TxnDetailsDialog extends DialogFragment {
+public class TxnDetailsDialog extends BaseDialog {
     private static final String TAG = "CustApp-TxnDetailsDialog";
     private static final String ARG_POSITION = "argPosition";
 
@@ -74,13 +75,7 @@ public class TxnDetailsDialog extends DialogFragment {
 
         Dialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
-                .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
+                .setPositiveButton(android.R.string.ok, this)
                 .create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -199,6 +194,27 @@ public class TxnDetailsDialog extends DialogFragment {
             LogMy.wtf(TAG, "Txn object is null !!");
             getDialog().dismiss();
         }
+    }
+
+    @Override
+    public void handleBtnClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                //Do nothing here because we override this button in OnShowListener to change the close behaviour.
+                //However, we still need this because on older versions of Android unless we
+                //pass a handler the button doesn't get instantiated
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+                break;
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        return false;
     }
 
     @Override

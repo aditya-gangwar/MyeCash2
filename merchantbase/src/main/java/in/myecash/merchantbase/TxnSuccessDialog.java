@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.common.CommonUtils;
@@ -17,8 +18,7 @@ import in.myecash.common.CommonUtils;
 /**
  * Created by adgangwa on 24-04-2016.
  */
-public class TxnSuccessDialog extends DialogFragment
-        implements DialogInterface.OnClickListener {
+public class TxnSuccessDialog extends BaseDialog {
 
     private static final String TAG = "MchntApp-TxnSuccessDialog";
 
@@ -106,9 +106,22 @@ public class TxnSuccessDialog extends DialogFragment
     }
 
     @Override
-    public void onClick(DialogInterface dialog, int which) {
-        //sendResult();
-        dialog.dismiss();
+    public void handleBtnClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+                break;
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        return false;
     }
 
     private void sendResult() {

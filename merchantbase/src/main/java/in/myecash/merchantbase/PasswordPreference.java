@@ -15,14 +15,15 @@ import android.widget.EditText;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.OnSingleClickListener;
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.ValidationHelper;
 
 /**
  * Created by adgangwa on 25-04-2016.
  */
-public class PasswordPreference extends DialogPreference
-        implements View.OnClickListener {
+public class PasswordPreference extends DialogPreference {
     private static final String TAG = "MchntApp-PasswordPreference";
 
     public interface PasswordPreferenceIf {
@@ -71,10 +72,36 @@ public class PasswordPreference extends DialogPreference
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         Button pos = ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_POSITIVE);
-        pos.setOnClickListener(this);
+        pos.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                String currPasswd = inputCurrPasswd.getText().toString();
+                String newPassword = inputNewPasswd.getText().toString();
+
+                int errorCode = ValidationHelper.validatePassword(currPasswd);
+                if(errorCode!= ErrorCodes.NO_ERROR) {
+                    inputCurrPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
+                }
+                errorCode = ValidationHelper.validatePassword(newPassword);
+                if(errorCode!= ErrorCodes.NO_ERROR) {
+                    inputNewPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
+                }
+
+                String newPassword2 = inputNewPasswd2.getText().toString();
+                if(!newPassword.equals(newPassword2)) {
+                    inputNewPasswd2.setError("Does not match with new password above.");
+                    errorCode = ErrorCodes.GENERAL_ERROR;
+                }
+
+                if(errorCode==ErrorCodes.NO_ERROR) {
+                    mCallback.changePassword(currPasswd,newPassword);
+                    getDialog().dismiss();
+                }
+            }
+        });
     }
 
-    @Override
+    /*@Override
     public void onClick(View v) {
         String currPasswd = inputCurrPasswd.getText().toString();
         String newPassword = inputNewPasswd.getText().toString();
@@ -98,5 +125,5 @@ public class PasswordPreference extends DialogPreference
             mCallback.changePassword(currPasswd,newPassword);
             getDialog().dismiss();
         }
-    }
+    }*/
 }

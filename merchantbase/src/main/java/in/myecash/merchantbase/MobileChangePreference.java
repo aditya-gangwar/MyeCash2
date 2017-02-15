@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import in.myecash.appbase.utilities.AppCommonUtil;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
@@ -19,8 +20,7 @@ import in.myecash.merchantbase.helper.MyRetainedFragment;
 /**
  * Created by adgangwa on 07-06-2016.
  */
-public class MobileChangePreference extends DialogPreference
-        implements View.OnClickListener {
+public class MobileChangePreference extends DialogPreference {
     private static final String TAG = "MchntApp-MobileChangePreference";
 
     public interface MobileChangePreferenceIf {
@@ -117,7 +117,35 @@ public class MobileChangePreference extends DialogPreference
         });*/
 
         Button pos = ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_POSITIVE);
-        pos.setOnClickListener(this);
+        pos.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                if (validate()) {
+                    // OTP is only visible in second run
+                    String otp = null;
+                    if (inputNewOtp.getVisibility() == View.VISIBLE) {
+                        otp = inputNewOtp.getText().toString();
+                        mCallback.changeMobileNumOtp(otp);
+
+                    } else {
+                        if(!inputNewMobile2.getText().toString().equals(inputNewMobile.getText().toString())) {
+                            inputNewMobile2.setError("Value do not match with above");
+                            return;
+                        }
+                        // check old and new numbers are not same
+                        if(mCallback.getRetainedFragment().mMerchantUser.getMerchant().getMobile_num().equals(inputNewMobile.getText().toString())) {
+                            inputNewMobile.setError("Same as current registered number.");
+                            return;
+                        }
+
+                        mCallback.changeMobileNumOk(
+                                inputDob.getText().toString(),
+                                inputNewMobile.getText().toString());
+                    }
+                    getDialog().dismiss();
+                }
+            }
+        });
     }
 
     @Override
@@ -134,7 +162,7 @@ public class MobileChangePreference extends DialogPreference
         builder.setTitle(null);
     }
 
-    @Override
+    /*@Override
     public void onClick(View v) {
         if (validate()) {
             // OTP is only visible in second run
@@ -160,7 +188,7 @@ public class MobileChangePreference extends DialogPreference
             }
             getDialog().dismiss();
         }
-    }
+    }*/
 
     private boolean validate() {
         boolean retValue = true;

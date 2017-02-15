@@ -15,8 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.ErrorCodes;
@@ -24,8 +26,8 @@ import in.myecash.common.constants.ErrorCodes;
 /**
  * Created by adgangwa on 29-11-2016.
  */
-public class DisableCustDialog extends DialogFragment
-        implements DialogInterface.OnClickListener, AdapterView.OnItemSelectedListener {
+public class DisableCustDialog extends BaseDialog
+        implements AdapterView.OnItemSelectedListener {
     public static final String TAG = "AgentApp-DisableCustDialog";
     private static final String ARG_ACTION = "argAction";
 
@@ -86,13 +88,7 @@ public class DisableCustDialog extends DialogFragment
         // return new dialog
         final AlertDialog alertDialog =  new AlertDialog.Builder(getActivity()).setView(v)
                 .setPositiveButton(R.string.ok, this)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        AppCommonUtil.hideKeyboard(getDialog());
-                        dialog.dismiss();
-                    }
-                })
+                .setNegativeButton(R.string.cancel, this)
                 .create();
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
@@ -102,9 +98,9 @@ public class DisableCustDialog extends DialogFragment
                 AppCommonUtil.setDialogTextSize(DisableCustDialog.this, (AlertDialog) dialog);
 
                 Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new View.OnClickListener() {
+                b.setOnClickListener(new OnSingleClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onSingleClick(View v) {
                         AppCommonUtil.hideKeyboard(getDialog());
 
                         boolean allOk = true;
@@ -151,11 +147,33 @@ public class DisableCustDialog extends DialogFragment
     }
 
     @Override
+    public void handleBtnClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                //Do nothing here because we override this button in OnShowListener to change the close behaviour.
+                //However, we still need this because on older versions of Android unless we
+                //pass a handler the button doesn't get instantiated
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                AppCommonUtil.hideKeyboard(getDialog());
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+                break;
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        return false;
+    }
+
+    /*@Override
     public void onClick(DialogInterface dialog, int which) {
         //Do nothing here because we override this button in OnShowListener to change the close behaviour.
         //However, we still need this because on older versions of Android unless we
         //pass a handler the button doesn't get instantiated
-    }
+    }*/
 
     @Override
     public void onCancel(DialogInterface dialog) {

@@ -37,6 +37,7 @@ import in.myecash.appbase.entities.MyBusinessCategories;
 import in.myecash.appbase.entities.MyCities;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -127,9 +128,9 @@ public class RegisterMerchantActivity extends AppCompatActivity
         // Image upload handling
         mImageUploaded=false;
         final Intent pickImageIntent = prepareImageUpload();
-        mImageUploadBtn.setOnClickListener(new View.OnClickListener() {
+        mImageUploadBtn.setOnClickListener(new OnSingleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onSingleClick(View v) {
                 startActivityForResult(pickImageIntent, REQUEST_LOAD_IMAGE);
             }
         });
@@ -159,9 +160,9 @@ public class RegisterMerchantActivity extends AppCompatActivity
         }
 
         // Register button listener
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+        mRegisterButton.setOnClickListener(new OnSingleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onSingleClick(View v) {
                 // get all input values
                 getUiResourceValues();
                 // register merchant

@@ -19,7 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.Toast;
 
+import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.CommonUtils;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
@@ -34,8 +36,7 @@ import in.myecash.merchantbase.entities.MyCustomerOps;
 /**
  * Created by adgangwa on 21-05-2016.
  */
-public class CustomerOpDialog extends DialogFragment
-        implements View.OnTouchListener  {
+public class CustomerOpDialog extends BaseDialog  {
     private static final String TAG = "MchntApp-CustomerOpDialog";
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9003;
 
@@ -97,6 +98,39 @@ public class CustomerOpDialog extends DialogFragment
     }
 
     @Override
+    public void handleBtnClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                //Do nothing here because we override this button later to change the close behaviour.
+                //However, we still need this because on older versions of Android unless we
+                //pass a handler the button doesn't get instantiated
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+                mCallback.onCustomerOpReset(getTag());
+                dialog.dismiss();
+                break;
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        if (v.getId() == R.id.input_qr_card) {// launch barcode activity.
+            Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
+            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+            intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+            String opCode = getArguments().getString(ARG_OP_CODE);
+            mImgFilename = getTempImgFilename(opCode);
+            intent.putExtra(BarcodeCaptureActivity.ImageFileName, mImgFilename);
+
+            startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
+        }
+        return true;
+    }
+
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String opCode = getArguments().getString(ARG_OP_CODE);
         Boolean isOtpGenerated = getArguments().getBoolean(ARG_OTP_GENERATED);
@@ -114,30 +148,9 @@ public class CustomerOpDialog extends DialogFragment
 
         Dialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
-                .setPositiveButton(android.R.string.ok,
-                    new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            //Do nothing here because we override this button later to change the close behaviour.
-                            //However, we still need this because on older versions of Android unless we
-                            //pass a handler the button doesn't get instantiated
-                        }
-                    })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setNeutralButton("Restart", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mCallback.onCustomerOpReset(getTag());
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton(android.R.string.ok,this)
+                .setNegativeButton(android.R.string.cancel, this)
+                .setNeutralButton("Restart", this)
                 .create();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -262,9 +275,9 @@ public class CustomerOpDialog extends DialogFragment
         if(d != null)
         {
             Button positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
-            positiveButton.setOnClickListener(new View.OnClickListener() {
+            positiveButton.setOnClickListener(new OnSingleClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onSingleClick(View v) {
                     Boolean wantToCloseDialog = false;
 
                     if(validate()) {
@@ -351,7 +364,9 @@ public class CustomerOpDialog extends DialogFragment
         return retValue;
     }
 
-    @Override
+
+
+    /*@Override
     public boolean onTouch(View v, MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_UP) {
             int vId = v.getId();
@@ -370,7 +385,7 @@ public class CustomerOpDialog extends DialogFragment
             }
         }
         return true;
-    }
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

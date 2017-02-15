@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
@@ -40,7 +41,7 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
 /**
  * Created by adgangwa on 09-09-2016.
  */
-public class CashbackListFragment extends Fragment {
+public class CashbackListFragment extends BaseFragment {
     private static final String TAG = "CustApp-CashbackListFragment";
 
     private static final String DIALOG_MERCHANT_DETAILS = "dialogMerchantDetails";
@@ -269,6 +270,17 @@ public class CashbackListFragment extends Fragment {
             notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
             notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
+        // do nothing
     }
 
     private class CbHolder extends RecyclerView.ViewHolder

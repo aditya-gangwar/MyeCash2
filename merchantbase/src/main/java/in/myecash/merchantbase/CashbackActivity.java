@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.helpshift.support.Support;
 
+import in.myecash.appbase.BaseActivity;
 import in.myecash.appbase.OtpPinInputDialog;
 import in.myecash.appbase.ServerNaActivity;
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
@@ -64,7 +65,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class CashbackActivity extends AppCompatActivity implements
+public class CashbackActivity extends BaseActivity implements
         MyRetainedFragment.RetainedFragmentIf, MobileNumberFragment.MobileFragmentIf,
         BillingFragment.BillingFragmentIf, CashTransactionFragment.CashTransactionFragmentIf,
         DialogFragmentWrapper.DialogFragmentWrapperIf, OrderListViewFragment.OrderListViewFragmentIf,
@@ -186,7 +187,20 @@ public class CashbackActivity extends AppCompatActivity implements
         startMobileNumFragment();
     }
 
+    @Override
+    public boolean handleTouchUp(View v) {
+        if(v.getId()==mTbTitle.getId()) {
+            showUserDetails();
+        }
+        return true;
+    }
 
+    @Override
+    public void handleBtnClick(View v) {
+        if(v.getId()==mTbImage.getId()) {
+            showUserDetails();
+        }
+    }
 
     @Override
     public void setDrawerState(boolean isEnabled) {
@@ -357,14 +371,14 @@ public class CashbackActivity extends AppCompatActivity implements
         }
     }
 
-
-
     private void initToolbar() {
         LogMy.d(TAG, "In initToolbar");
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         initTbViews();
 
-        mTbImage.setOnClickListener(new View.OnClickListener() {
+        mTbImage.setOnClickListener(this);
+        mTbTitle.setOnTouchListener(this);
+        /*mTbImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showUserDetails();
@@ -380,7 +394,7 @@ public class CashbackActivity extends AppCompatActivity implements
                 }
                 return false;
             }
-        });
+        });*?
 
         /*mTbCalculator.setOnClickListener(new View.OnClickListener() {
             @Override

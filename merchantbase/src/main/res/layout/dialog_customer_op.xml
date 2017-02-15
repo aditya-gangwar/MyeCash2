@@ -2,7 +2,8 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/XXL_space"
     android:background="?android:attr/windowBackground">
 
     <EditText
@@ -16,7 +17,9 @@
 
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesLarge"
-        android:layout_below="@id/label_cust_op_title">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_cust_op_title"
+        android:layout_marginTop="@dimen/XL_space">
 
         <EditText
             style="@style/Edittext_only_view_small"
@@ -25,8 +28,7 @@
             android:id="@+id/label_info_otp"
             android:text="Please enter received OTP and submit the request again."
             android:textStyle="italic"
-            android:textColor="@color/accent2"
-            android:layout_marginTop="@dimen/medium_space"/>
+            android:textColor="@color/accent2"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"

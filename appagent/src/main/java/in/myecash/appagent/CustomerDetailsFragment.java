@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.common.CommonUtils;
@@ -25,8 +26,7 @@ import in.myecash.common.database.Customers;
 /**
  * Created by adgangwa on 29-11-2016.
  */
-public class CustomerDetailsFragment extends Fragment
-        implements View.OnClickListener {
+public class CustomerDetailsFragment extends BaseFragment {
     private static final String TAG = "AgentApp-CustomerDetailsFragment";
 
     private static final String DIALOG_DISABLE_CUST = "disableCustomer";
@@ -129,7 +129,13 @@ public class CustomerDetailsFragment extends Fragment
     }
 
     @Override
-    public void onClick(View v) {
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
         switch (v.getId()) {
             case R.id.btn_acc_status:
                 LogMy.d(TAG,"Clicked change acc status button.");
@@ -158,6 +164,37 @@ public class CustomerDetailsFragment extends Fragment
                 break;
         }
     }
+
+    /*@Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_acc_status:
+                LogMy.d(TAG,"Clicked change acc status button.");
+                // show disable dialog
+                DisableCustDialog dialog = DisableCustDialog.getInstance(false);
+                dialog.show(getFragmentManager(), DIALOG_DISABLE_CUST);
+                break;
+
+            case R.id.btn_launch_app:
+                LogMy.d(TAG,"Clicked launch merchant app button.");
+                mCallback.launchCustApp();
+                break;
+
+            case R.id.btn_acc_limited:
+                LogMy.d(TAG,"Clicked change acc status button.");
+                // show disable dialog
+                dialog = DisableCustDialog.getInstance(true);
+                dialog.show(getFragmentManager(), DIALOG_DISABLE_CUST);
+                break;
+
+            case R.id.btn_disable_card:
+                LogMy.d(TAG,"Clicked disable card button.");
+                // show disable dialog
+                DisableCardDialog dialogCard = new DisableCardDialog();
+                dialogCard.show(getFragmentManager(), DIALOG_DISABLE_CARD);
+                break;
+        }
+    }*/
 
     private EditText mName;
     private EditText mInternalId;
@@ -212,6 +249,5 @@ public class CustomerDetailsFragment extends Fragment
         super.onResume();
         mCallback.getRetainedFragment().setResumeOk(true);
     }
-
 
 }

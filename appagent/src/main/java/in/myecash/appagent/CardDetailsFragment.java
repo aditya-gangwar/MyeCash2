@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.common.CommonUtils;
@@ -25,7 +26,7 @@ import in.myecash.common.database.Customers;
 /**
  * Created by adgangwa on 13-12-2016.
  */
-public class CardDetailsFragment extends Fragment {
+public class CardDetailsFragment extends BaseFragment {
     private static final String TAG = "AgentApp-CardDetailsFragment";
 
     private final SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
@@ -102,6 +103,17 @@ public class CardDetailsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mCallback.getRetainedFragment().setResumeOk(true);
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
+        // do nothing
     }
 
 

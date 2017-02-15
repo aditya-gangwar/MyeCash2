@@ -9,17 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 /**
  * Created by adgangwa on 08-06-2016.
  */
-public class TxnSummaryFragment extends Fragment {
+public class TxnSummaryFragment extends BaseFragment {
     private static final String TAG = "MchntApp-TxnSummaryFragment";
 
     private static final String ARG_SUMMARY = "summary";
@@ -67,9 +69,9 @@ public class TxnSummaryFragment extends Fragment {
             // access to UI elements
             bindUiResources(v);
 
-            detailsButton.setOnClickListener(new View.OnClickListener() {
+            detailsButton.setOnClickListener(new OnSingleClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onSingleClick(View v) {
                     if(!mCallback.getRetainedFragment().getResumeOk())
                         return;
 
@@ -132,6 +134,15 @@ public class TxnSummaryFragment extends Fragment {
         mCallback.getRetainedFragment().setResumeOk(true);
     }
 
+    @Override
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
 
+    @Override
+    public void handleBtnClick(View v) {
+        // do nothing
+    }
 }
 

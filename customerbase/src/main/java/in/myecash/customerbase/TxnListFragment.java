@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.SortTxnDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyTransaction;
@@ -48,7 +49,7 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
 /**
  * Created by adgangwa on 07-04-2016.
  */
-public class TxnListFragment extends Fragment {
+public class TxnListFragment extends BaseFragment {
     private static final String TAG = "CustApp-TxnListFragment";
 
     private static final String CSV_REPORT_HEADER_1 = ",,MyeCash Customer Statement,,,,,,,,,,,,,";
@@ -598,6 +599,19 @@ public class TxnListFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putInt("mSelectedSortType", mSelectedSortType);
     }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
+        // do nothing
+    }
+
+
 
     private class TxnHolder extends RecyclerView.ViewHolder
             implements View.OnTouchListener {

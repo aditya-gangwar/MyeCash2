@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -27,7 +28,7 @@ import java.util.Collections;
 /**
  * Created by adgangwa on 30-04-2016.
  */
-public class OtpPinInputDialog extends DialogFragment
+public class OtpPinInputDialog extends BaseDialog
         implements View.OnClickListener {
 
     private static final String TAG = "BaseApp-OtpInputDialog";
@@ -193,6 +194,25 @@ public class OtpPinInputDialog extends DialogFragment
     }*/
 
     @Override
+    public void handleBtnClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                //Do nothing
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+                break;
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        return false;
+    }
+
+    @Override
     public void onClick(View v) {
         int vId = v.getId();
         LogMy.d(TAG,"In onClick: "+vId);
@@ -206,7 +226,7 @@ public class OtpPinInputDialog extends DialogFragment
                 mPin = mPin.substring(0,(mPin.length()-1));
             }
 
-        } else if (vId == R.id.input_kb_ok) {
+        } /*else if (vId == R.id.input_kb_ok) {
             //mInputPinOtp.setText("");
             LogMy.d(TAG, "Clicked Ok");
             Boolean wantToCloseDialog = true;
@@ -229,7 +249,7 @@ public class OtpPinInputDialog extends DialogFragment
             if (wantToCloseDialog)
                 getDialog().dismiss();
 
-        } else if (vId == R.id.input_kb_0 || vId == R.id.input_kb_1 || vId == R.id.input_kb_2 || vId == R.id.input_kb_3 || vId == R.id.input_kb_4 || vId == R.id.input_kb_5 || vId == R.id.input_kb_6 || vId == R.id.input_kb_7 || vId == R.id.input_kb_8 || vId == R.id.input_kb_9) {
+        }*/ else if (vId == R.id.input_kb_0 || vId == R.id.input_kb_1 || vId == R.id.input_kb_2 || vId == R.id.input_kb_3 || vId == R.id.input_kb_4 || vId == R.id.input_kb_5 || vId == R.id.input_kb_6 || vId == R.id.input_kb_7 || vId == R.id.input_kb_8 || vId == R.id.input_kb_9) {
             AppCompatButton key = (AppCompatButton) v;
             if(mPin.length() >= mAllowedLen) {
                 AppCommonUtil.toast(getActivity(), mAllowedLen+" digit PIN allowed");
@@ -281,7 +301,34 @@ public class OtpPinInputDialog extends DialogFragment
         }
 
         mKeyBspace.setOnClickListener(this);
-        mKeyOk.setOnClickListener(this);
+        //mKeyOk.setOnClickListener(this);
+        mKeyOk.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // Seperate click handler - to avoid double click of OK button
+                //mInputPinOtp.setText("");
+                LogMy.d(TAG, "Clicked Ok");
+                Boolean wantToCloseDialog = true;
+                //String pinOrOtp = mInputPinOtp.getText().toString();
+
+                int errorCode = ValidationHelper.validatePin(mPin);
+                if(errorCode == ErrorCodes.NO_ERROR) {
+                    mCallback.onPinOtp(mPin, getTag());
+                } else {
+                    // if PIN validation failed - then it may be Otp case
+                    errorCode = ValidationHelper.validateOtp(mPin);
+                    if(errorCode == ErrorCodes.NO_ERROR) {
+                        mCallback.onPinOtp(mPin, getTag());
+                    } else {
+                        mInputPinOtp.setError(AppCommonUtil.getErrorDesc(errorCode));
+                        wantToCloseDialog = false;
+                    }
+                }
+
+                if (wantToCloseDialog)
+                    getDialog().dismiss();
+            }
+        });
     }
 
     @Override

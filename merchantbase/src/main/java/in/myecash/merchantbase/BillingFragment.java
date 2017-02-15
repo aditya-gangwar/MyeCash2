@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
@@ -28,8 +29,7 @@ import java.util.ArrayList;
 /**
  * Created by adgangwa on 03-03-2016.
  */
-public class BillingFragment extends Fragment implements
-        View.OnClickListener, View.OnTouchListener {
+public class BillingFragment extends BaseFragment {
     private static final String TAG = "MchntApp-BillingFragment";
 
     private static final String MULTIPLY_STR = " x ";
@@ -135,7 +135,8 @@ public class BillingFragment extends Fragment implements
     }
 
     @Override
-    public void onClick(View v) {
+    //public void onClick(View v) {
+    public void handleBtnClick(View v) {
         if(!mCallback.getRetainedFragment().getResumeOk())
             return;
 
@@ -290,12 +291,13 @@ public class BillingFragment extends Fragment implements
         mInputItemAmt.setOnTouchListener(this);
     }
 
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
+    //@Override
+    //public boolean onTouch(View view, MotionEvent motionEvent) {
+    public boolean handleTouchUp(View view) {
         if(!mCallback.getRetainedFragment().getResumeOk())
             return true;
 
-        if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+        //if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
             if(view.getId()==mInputItemAmt.getId()) {
                 if(!mCalcMode) {
                     if (mTempCbExcluded) {
@@ -314,7 +316,7 @@ public class BillingFragment extends Fragment implements
             } else {
                 return false;
             }
-        }
+        //}
         return true;
     }
 

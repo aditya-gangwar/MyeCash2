@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_marginBottom="@dimen/medium_space"
+    android:layout_marginBottom="@dimen/XXL_space"
     android:background="?android:attr/windowBackground">
 
     <EditText
@@ -23,7 +23,8 @@
 
         <LinearLayout
             style="@style/LL_Vertical_paddingSidesLarge"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/XL_space">
 
             <EditText
                 style="@style/Edittext_only_view_small"
@@ -32,12 +33,11 @@
                 android:id="@+id/label_info_otp"
                 android:text="Enter received OTP and submit the request again."
                 android:textStyle="italic"
-                android:textColor="@color/accent2"
-                android:layout_marginTop="@dimen/large_space"/>
+                android:textColor="@color/accent2"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:layout_marginTop="@dimen/large_space">
+                android:layout_marginTop="@dimen/XXL_space">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -96,8 +96,8 @@
                 android:id="@+id/label_info_name"
                 android:gravity="left"
                 android:textStyle="italic"
-                android:textColor="@color/accent2"
-                android:text="Please provide correct name. ID proof copy may be requested, to restore access to account, in scenarios like Mobile lost etc. "/>
+                android:textColor="@color/secondary_text"
+                android:text="Use Correct Name. ID proof copy may be requested to restore access, in scenarios like Mobile lost etc. "/>
 
             <Space
                 android:layout_width="match_parent"
@@ -139,7 +139,7 @@
                 android:id="@+id/label_info_mobile"
                 android:gravity="left"
                 android:textStyle="italic"
-                android:textColor="@color/accent2"
+                android:textColor="@color/secondary_text"
                 android:text="OTP will be sent on this number for verification."/>
 
             <Space
@@ -174,7 +174,6 @@
                     android:hint="Touch to Scan"
                     android:layout_weight="63"
                     android:gravity="left"
-                    android:singleLine="true"
                     android:ellipsize="end"/>
             </LinearLayout>
 

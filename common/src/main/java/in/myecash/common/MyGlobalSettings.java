@@ -6,6 +6,8 @@ package in.myecash.common;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessCollection;
+import com.backendless.persistence.BackendlessDataQuery;
+import com.backendless.persistence.QueryOptions;
 
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
@@ -200,7 +202,14 @@ public class MyGlobalSettings
         }
 
         //try {
-        BackendlessCollection<GlobalSettings> settings = Backendless.Persistence.of( GlobalSettings.class).find();
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.addSortByOption("name ASC");
+        BackendlessDataQuery dataQuery = new BackendlessDataQuery();
+        dataQuery.setQueryOptions( queryOptions );
+
+
+        //BackendlessCollection<GlobalSettings> settings = Backendless.Persistence.of( GlobalSettings.class).find();
+        BackendlessCollection<GlobalSettings> settings = Backendless.Data.of(GlobalSettings.class).find(dataQuery);
 
         // create a map with 'name' as key and 'related value column' as value
         int cnt = settings.getTotalObjects();

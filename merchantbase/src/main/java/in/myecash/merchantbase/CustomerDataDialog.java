@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
+import in.myecash.appbase.BaseDialog;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -20,7 +22,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
 /**
  * Created by adgangwa on 09-09-2016.
  */
-public class CustomerDataDialog extends DialogFragment implements DialogInterface.OnClickListener {
+public class CustomerDataDialog extends BaseDialog {
     public static final String TAG = "MchntApp-CustomerDataDialog";
 
     private CustomerDataDialogIf mListener;
@@ -51,12 +53,7 @@ public class CustomerDataDialog extends DialogFragment implements DialogInterfac
 
         // return new dialog
         final AlertDialog alertDialog =  new AlertDialog.Builder(getActivity()).setView(v)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setNegativeButton(R.string.cancel, this)
                 .create();
 
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -65,6 +62,24 @@ public class CustomerDataDialog extends DialogFragment implements DialogInterfac
                 AppCommonUtil.setDialogTextSize(CustomerDataDialog.this, (AlertDialog) dialog);
 
                 //Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                mGetCustData.setOnClickListener(new OnSingleClickListener() {
+                    @Override
+                    public void onSingleClick(View v) {
+                        AppCommonUtil.hideKeyboard(getDialog());
+                        String custId = mInputCustId.getText().toString();
+                        int error = ValidationHelper.validateCustInternalId(custId);
+                        if(error == ErrorCodes.NO_ERROR) {
+                            mListener.searchCustByInternalId(custId);
+                            getDialog().dismiss();
+                        } else if(error == ErrorCodes.EMPTY_VALUE) {
+                            mListener.generateAllCustData();
+                            getDialog().dismiss();
+                        } else {
+                            mInputCustId.setError(AppCommonUtil.getErrorDesc(error));
+                        }
+                    }
+                });
+                /*
                 mGetCustData.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -81,7 +96,7 @@ public class CustomerDataDialog extends DialogFragment implements DialogInterfac
                             mInputCustId.setError(AppCommonUtil.getErrorDesc(error));
                         }
                     }
-                });
+                });*/
             }
         });
 
@@ -91,11 +106,32 @@ public class CustomerDataDialog extends DialogFragment implements DialogInterfac
     }
 
     @Override
+    public void handleBtnClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                //Do nothing here because we override this button in OnShowListener to change the close behaviour.
+                //However, we still need this because on older versions of Android unless we
+                //pass a handler the button doesn't get instantiated
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+                break;
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        return false;
+    }
+
+    /*@Override
     public void onClick(DialogInterface dialog, int which) {
         //Do nothing here because we override this button in OnShowListener to change the close behaviour.
         //However, we still need this because on older versions of Android unless we
         //pass a handler the button doesn't get instantiated
-    }
+    }*/
 
     @Override
     public void onCancel(DialogInterface dialog) {

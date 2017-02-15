@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
@@ -24,7 +25,7 @@ import java.text.SimpleDateFormat;
 /**
  * Created by adgangwa on 30-07-2016.
  */
-public class MerchantDetailsDialog extends DialogFragment {
+public class MerchantDetailsDialog extends BaseDialog {
     private static final String TAG = "MchntApp-MerchantDetailsDialog";
 
     private final SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
@@ -58,13 +59,7 @@ public class MerchantDetailsDialog extends DialogFragment {
 
         Dialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
-                .setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
+                .setPositiveButton(android.R.string.ok, this)
                 .create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -126,6 +121,25 @@ public class MerchantDetailsDialog extends DialogFragment {
         mCity.setText(merchant.getAddress().getCity());
         mState.setText(merchant.getAddress().getState());
         mPincode.setText(merchant.getAddress().getPincode());
+    }
+
+    @Override
+    public void handleBtnClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                dialog.dismiss();
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+                break;
+        }
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        return false;
     }
 
     private ImageView mDisplayImage;

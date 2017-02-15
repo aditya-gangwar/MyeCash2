@@ -15,6 +15,8 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 /**
  * Created by adgangwa on 09-06-2016.
  */
-public class DashboardTxnFragment extends Fragment {
+public class DashboardTxnFragment extends BaseFragment {
     private static final String TAG = "MchntApp-DashboardTxnFragment";
 
     //private static final String DIALOG_DASHBOARD_TYPE = "DialogDashboardType";
@@ -101,6 +103,17 @@ public class DashboardTxnFragment extends Fragment {
         bindUiResources(v);
         //initChoiceChartType();
         return v;
+    }
+
+    @Override
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View v) {
+        // do nothing
     }
 
     private void updateData(int index) {

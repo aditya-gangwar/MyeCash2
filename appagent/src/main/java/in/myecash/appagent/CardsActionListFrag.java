@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.MyCardForAction;
 import in.myecash.appagent.helper.MyRetainedFragment;
@@ -33,7 +34,7 @@ import in.myecash.common.constants.ErrorCodes;
 /**
  * Created by adgangwa on 14-12-2016.
  */
-public class CardsActionListFrag extends Fragment implements View.OnClickListener {
+public class CardsActionListFrag extends BaseFragment {
     private static final String TAG = "AgentApp-CardsActionListFrag";
 
     private static final String ARG_ACTION = "argAction";
@@ -125,7 +126,13 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public void onClick(View view) {
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public void handleBtnClick(View view) {
         if(view.getId()==mBtnScan.getId()) {
             if(mRetainedFragment.mLastCardsForAction.size() < MAX_CARD_ONE_GO) {
                 startCodeScan();
@@ -181,6 +188,66 @@ public class CardsActionListFrag extends Fragment implements View.OnClickListene
             }
         }
     }
+
+
+
+    /*@Override
+    public void onClick(View view) {
+        if(view.getId()==mBtnScan.getId()) {
+            if(mRetainedFragment.mLastCardsForAction.size() < MAX_CARD_ONE_GO) {
+                startCodeScan();
+            } else {
+                String txt = "Max limit is "+MAX_CARD_ONE_GO;
+                AppCommonUtil.toast(getActivity(), txt);
+            }
+
+        } else if(view.getId()==mBtnAction.getId()) {
+            // Validate Allottee ID
+            int error = ErrorCodes.NO_ERROR;
+            switch (mAction) {
+                case ActionsFragment.CARDS_ALLOT_AGENT:
+                    error = ValidationHelper.validateAgentId(mInputAllottee.getText().toString());
+                    break;
+                case ActionsFragment.CARDS_ALLOT_MCHNT:
+                    error = ValidationHelper.validateMerchantId(mInputAllottee.getText().toString());
+                    break;
+            }
+
+            if(error!=ErrorCodes.NO_ERROR) {
+                mInputAllottee.setError(AppCommonUtil.getErrorDesc(error));
+            } else {
+                if (mRetainedFragment.mLastCardsForAction.size() > 0) {
+                    // check if any card in pending state
+                    boolean pendingCard = false;
+                    for (MyCardForAction card :
+                            mRetainedFragment.mLastCardsForAction) {
+                        if (card.getActionStatus().equals(MyCardForAction.ACTION_STATUS_PENDING)) {
+                            pendingCard = true;
+                            break;
+                        }
+                    }
+
+                    if(pendingCard) {
+                        // dont ask for confirmation - if only getting card numbers
+                        if(!mRetainedFragment.cardNumFetched) {
+                            makeActionCall();
+                        } else {
+                            // ask for confirmation
+                            String title = mRetainedFragment.mLastCardsForAction.size() + " Cards";
+                            String msg = "Are you sure to " + mAction + " ?";
+                            DialogFragmentWrapper dialog = DialogFragmentWrapper.createConfirmationDialog(title, msg, true, false);
+                            dialog.setTargetFragment(this, REQ_CONFIRM_ACTION);
+                            dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
+                        }
+                    } else {
+                        AppCommonUtil.toast(getActivity(), "No Pending Cards Added");
+                    }
+                } else {
+                    AppCommonUtil.toast(getActivity(), "No Pending Cards Added");
+                }
+            }
+        }
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -27,6 +27,7 @@ import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppAlarms;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.appbase.utilities.RootUtil;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -122,9 +123,9 @@ public class LoginActivity extends AppCompatActivity implements
             }
         });
 
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
+        mLoginButton.setOnClickListener(new OnSingleClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onSingleClick(View v) {
                 // check internet connectivity
                 int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(LoginActivity.this);
                 if (resultCode != ErrorCodes.NO_ERROR) {
