@@ -225,8 +225,8 @@
         android:layout_width="wrap_content"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/menu"
+        app:headerLayout="@layout/drawer_header_custapp"
+        app:menu="@menu/drawer_menu_custapp"
         app:itemTextAppearance="@style/NavDrawerTextStyle"/>
 
 </android.support.v4.widget.DrawerLayout>

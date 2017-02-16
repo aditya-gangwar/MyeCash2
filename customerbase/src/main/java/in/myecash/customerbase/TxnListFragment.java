@@ -2,7 +2,6 @@ package in.myecash.customerbase;
 
 import android.app.Activity;
 import android.app.DownloadManager;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
@@ -122,7 +121,7 @@ public class TxnListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_txn_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_txn_list_custapp, container, false);
 
         mFilterMchnt = (EditText) view.findViewById(R.id.txnlist_filter_mchnt);
         mFilterDuration = (EditText) view.findViewById(R.id.txnlist_filter_duration);
@@ -287,7 +286,7 @@ public class TxnListFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.txn_list_menu, menu);
+        inflater.inflate(R.menu.txn_list_menu_custapp, menu);
     }
 
     @Override
@@ -811,7 +810,7 @@ public class TxnListFragment extends BaseFragment {
         @Override
         public TxnHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(R.layout.txn_itemview, parent, false);
+            View view = layoutInflater.inflate(R.layout.txn_itemview_custapp, parent, false);
             LogMy.d(TAG,"Root view: "+view.getId());
             view.setOnClickListener(mListener);
             return new TxnHolder(view);

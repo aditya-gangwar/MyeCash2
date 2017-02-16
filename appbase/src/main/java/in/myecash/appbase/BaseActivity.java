@@ -42,11 +42,15 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if(event.getAction()!=MotionEvent.ACTION_UP) {
+            return true;
+        }
+
         long currentClickTime= SystemClock.uptimeMillis();
         long elapsedTime=currentClickTime-mLastTouchTime;
         mLastTouchTime=currentClickTime;
 
-        if(elapsedTime<=AppConstants.MIN_CLICK_INTERVAL || event.getAction()!=MotionEvent.ACTION_UP) {
+        if(elapsedTime<=AppConstants.MIN_CLICK_INTERVAL) {
             LogMy.d(TAG,"Double Touch Case");
             return true;
         }

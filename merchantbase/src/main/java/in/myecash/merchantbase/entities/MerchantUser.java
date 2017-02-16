@@ -81,7 +81,7 @@ public class MerchantUser
      */
     public static void reset() {
         LogMy.d(TAG, "In reset");
-        if(mInstance!=null) {
+        if(mInstance!=null && !mInstance.mPseudoLoggedIn) {
             mInstance.mMerchant = null;
             mInstance = null;
         }

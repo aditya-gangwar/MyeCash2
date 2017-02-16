@@ -24,9 +24,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.crashlytics.android.Crashlytics;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -39,9 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.myecash.appbase.OtpPinInputDialog;
-import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.entities.MyCashback;
-import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.CsvConverter;
 import in.myecash.customerbase.entities.CustomerStats;
@@ -65,7 +60,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
         PasswdChangeDialog.PasswdChangeDialogIf, MobileChangeDialog.MobileChangeDialogIf,
         OtpPinInputDialog.OtpPinInputDialogIf, CashbackListFragment.CashbackListFragmentIf,
         PinResetDialog.PinResetDialogIf, PinChangeDialog.PinChangeDialogIf,
-        MerchantDetailsDialog.MerchantDetailsDialogIf, CustomerOpListFrag.CustomerOpListFragIf {
+        MchntDetailsDialogCustApp.MerchantDetailsDialogIf, CustomerOpListFrag.CustomerOpListFragIf {
 
     private static final String TAG = "CustApp-CashbackActivity";
     public static final String INTENT_EXTRA_USER_TOKEN = "extraUserToken";
@@ -116,7 +111,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cashback);
+        setContentView(R.layout.activity_cust_cashback);
 
         mCustomerUser = CustomerUser.getInstance();
         mCustomer = mCustomerUser.getCustomer();
@@ -254,7 +249,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 // show customer details dialog
-                CustomerDetailsDialog dialog = new CustomerDetailsDialog();
+                CustDetailsDialogCustApp dialog = new CustDetailsDialogCustApp();
                 dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
             }
         });
@@ -264,7 +259,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_UP) {
                     // show customer details dialog
-                    CustomerDetailsDialog dialog = new CustomerDetailsDialog();
+                    CustDetailsDialogCustApp dialog = new CustDetailsDialogCustApp();
                     dialog.show(mFragMgr, DIALOG_CUSTOMER_DETAILS);
                     return true;
                 }

@@ -18,7 +18,7 @@
     <!--item
         android:id="@+id/current_subheader_1"
         android:title="Merchant List">
-        <menu>
+        <drawer_menu_custapp>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/menu_sort_mchnts"
@@ -29,7 +29,7 @@
                     android:title="Refresh Merchants"
                     android:icon="@drawable/ic_refresh_black_24dp" />
             </group>
-        </menu>
+        </drawer_menu_custapp>
     </item-->
 
     <item
@@ -68,7 +68,7 @@
     <!--item
         android:id="@+id/current_subheader2"
         android:title="Help">
-        <menu>
+        <drawer_menu_custapp>
             <group android:checkableBehavior="single"
                 android:id="@+id/grp2">
                 <item
@@ -84,7 +84,7 @@
                     android:title="Contact Us"
                     android:icon="@drawable/ic_perm_phone_msg_black_24dp" />
             </group>
-        </menu>
+        </drawer_menu_custapp>
     </item-->
 
 

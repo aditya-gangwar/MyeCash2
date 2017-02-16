@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -23,9 +22,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.backendless.async.callback.AsyncCallback;
-import com.backendless.exceptions.BackendlessFault;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,7 +48,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
 
 public class LoginCustActivity extends AppCompatActivity implements
         MyRetainedFragment.RetainedFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
-        PasswdResetDialog.PasswdResetDialogIf, AccEnableDialog.AccEnableDialogIf {
+        PasswdResetDialogCustApp.PasswdResetDialogIf, AccEnableDialog.AccEnableDialogIf {
 
     private static final String TAG = "CustApp-LoginActivity";
 
@@ -462,7 +458,7 @@ public class LoginCustActivity extends AppCompatActivity implements
                     int errorCode = ValidationHelper.validateMobileNo(mLoginId);
                     if (errorCode == ErrorCodes.NO_ERROR) {
                         // Ask for confirmation and the PIN too
-                        PasswdResetDialog dialog = new PasswdResetDialog();
+                        PasswdResetDialogCustApp dialog = new PasswdResetDialogCustApp();
                         dialog.show(getFragmentManager(), DIALOG_PASSWD_RESET);
                     } else {
                         mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));

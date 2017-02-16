@@ -23,7 +23,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
 /**
  * Created by adgangwa on 26-04-2016.
  */
-public class PasswdResetDialog extends BaseDialog {
+public class PasswdResetDialogCustApp extends BaseDialog {
     public static final String TAG = "CustApp-PasswdResetDialog";
 
     private PasswdResetDialogIf mListener;

@@ -1,7 +1,6 @@
 package in.myecash.customerbase;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -427,7 +426,7 @@ public class CashbackListFragment extends BaseFragment {
                     LogMy.d(TAG,"In onClickListener of customer list item");
                     int pos = mRecyclerView.getChildAdapterPosition(v);
                     if (pos >= 0 && pos < getItemCount()) {
-                        MerchantDetailsDialog dialog = MerchantDetailsDialog.newInstance(mCbs.get(pos).getMerchantId());
+                        MchntDetailsDialogCustApp dialog = MchntDetailsDialogCustApp.newInstance(mCbs.get(pos).getMerchantId());
                         dialog.show(getFragmentManager(), DIALOG_MERCHANT_DETAILS);
                     } else {
                         LogMy.e(TAG,"Invalid position in onClickListener of customer list item: "+pos);

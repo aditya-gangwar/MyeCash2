@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.ErrorCodes;
@@ -803,14 +804,19 @@ public class CashTransactionFragment extends BaseFragment implements
         mRetainedFragment.mCurrTransaction = new MyTransaction(trans);
     }
 
-    //@Override
-    //public boolean onTouch(View v, MotionEvent event) {
+    // Not using BaseFragment's onTouch
+    // as we dont want 'double touch' check against these buttons
+    @Override
     public boolean handleTouchUp(View v) {
+        return false; // do nothing
+    }
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
         if(!mCallback.getRetainedFragment().getResumeOk())
             return true;
 
         try {
-            //if (event.getAction() == MotionEvent.ACTION_UP) {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
                 LogMy.d(TAG, "In onTouch: " + v.getId());
 
                 int i = v.getId();
@@ -939,7 +945,7 @@ public class CashTransactionFragment extends BaseFragment implements
                 } else {
                     return false;
                 }
-            //}
+            }
         } catch (Exception e) {
             LogMy.e(TAG, "Exception in CashTxnFragment:onTouch", e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
@@ -949,16 +955,20 @@ public class CashTransactionFragment extends BaseFragment implements
         return true;
     }
 
-    //@Override
-    //public void onClick(View v) {
+    // Not using BaseFragment's onClick method
+    @Override
     public void handleBtnClick(View v) {
+        // do nothing
+    }
+    @Override
+    public void onClick(View v) {
         LogMy.d(TAG, "In onClick: " + v.getId());
         if(!mCallback.getRetainedFragment().getResumeOk())
             return;
 
         int i = v.getId();
         try {
-            if (i == R.id.btn_collect_cash) {
+            /*if (i == R.id.btn_collect_cash) {
                 LogMy.d(TAG, "Clicked Process txn button");
                 if (mAddClStatus == STATUS_AUTO ||
                         mDebitClStatus == STATUS_AUTO ||
@@ -987,27 +997,14 @@ public class CashTransactionFragment extends BaseFragment implements
                         } else {
                             setTransactionValues();
                             mCallback.onTransactionSubmit(mCashPaid);
-                            // Show confirmation dialog
-                        /*TxnConfirmDialog dialog = TxnConfirmDialog.newInstance(mRetainedFragment.mCurrTransaction.getTransaction(), mCashPaid);
-                        dialog.setTargetFragment(CashTransactionFragment.this, REQ_CONFIRM_TRANS_COMMIT);
-                        dialog.show(getFragmentManager(), DIALOG_CONFIRM_TXN);*/
                         }
-                    /*if(getAddClError()==null) {
-                        setTransactionValues();
-                        // Show confirmation dialog
-                        TxnConfirmDialog dialog = TxnConfirmDialog.newInstance(mRetainedFragment.mCurrTransaction.getTransaction(), mCashPaid);
-                        dialog.setTargetFragment(CashTransactionFragment.this, REQ_CONFIRM_TRANS_COMMIT);
-                        dialog.show(getFragmentManager(), DIALOG_CONFIRM_TXN);
-                    } else {
-                        AppCommonUtil.toast(getActivity(), getAddClError());
-                    }*/
                     } else {
                         AppCommonUtil.toast(getActivity(), "Set Cash Paid");
                     }
                 } else {
                     AppCommonUtil.toast(getActivity(), "No MyeCash data to process !!");
                 }
-            } else if(i == R.id.btn_expand_acc) {
+            } else */if(i == R.id.btn_expand_acc) {
                 initAccUiVisibility(true);
             } else if(i == R.id.btn_expand_cb) {
                 initCbUiVisibility(true);
@@ -1191,7 +1188,47 @@ public class CashTransactionFragment extends BaseFragment implements
         mLayoutAddCb.setOnTouchListener(this);
         mLabelAddCb.setOnTouchListener(this);
 
-        mInputToPayCash.setOnClickListener(this);
+        mInputToPayCash.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                LogMy.d(TAG, "Clicked Process txn button");
+                if (mAddClStatus == STATUS_AUTO ||
+                        mDebitClStatus == STATUS_AUTO ||
+                        mAddCbStatus == STATUS_AUTO ||
+                        mDebitCbStatus == STATUS_AUTO) {
+                    // If all 0 - no point going ahead
+                    // This may happen, if this txn involves only cashback and
+                    // that cashback is less than 1 rupee - which will be rounded of to 0
+                    if ((mAddCbOnBill+mAddCbOnAcc) <= 0 && mAddCashload <= 0 && mDebitCashback <= 0 && mDebitCashload <= 0) {
+                        //AppCommonUtil.toast(getActivity(), "No MyeCash data to process !!");
+                        String msg = null;
+                        if (mRetainedFragment.mBillTotal <= 0) {
+                            msg = "All Credit/Debit amounts are 0, for both Cashback and Account";
+                        } else {
+                            msg = "'Award Cashback' is less than 1 Rupee. Other credit/debit amount are 0.";
+                        }
+                        DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, msg, true, true);
+                        dialog.setTargetFragment(CashTransactionFragment.this, REQ_NOTIFY_ERROR);
+                        dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                        return;
+                    }
+                    //if (getCashPaidError() == null) {
+                    if (mCashPaid >= 0) {
+                        if (mReturnCash != 0) {
+                            AppCommonUtil.toast(getActivity(), "Balance not 0 yet");
+                        } else {
+                            setTransactionValues();
+                            mCallback.onTransactionSubmit(mCashPaid);
+                        }
+                    } else {
+                        AppCommonUtil.toast(getActivity(), "Set Cash Paid");
+                    }
+                } else {
+                    AppCommonUtil.toast(getActivity(), "No MyeCash data to process !!");
+                }
+            }
+        });
+
         mAccExpand.setOnClickListener(this);
         mCbExpand.setOnClickListener(this);
         mCashExpand.setOnClickListener(this);

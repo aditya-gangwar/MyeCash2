@@ -161,6 +161,7 @@
                 android:layout_weight="60"
                 android:gravity="center"
                 android:ellipsize="end"
+                android:maxLength="@string/mobile_char_limit"
                 android:inputType="textCapCharacters"/>
         </LinearLayout>
 

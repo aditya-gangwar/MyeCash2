@@ -1,7 +1,6 @@
 package in.myecash.customerbase;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -25,7 +24,7 @@ import in.myecash.customerbase.entities.CustomerUser;
 /**
  * Created by adgangwa on 21-05-2016.
  */
-public class CustomerDetailsDialog extends BaseDialog {
+public class CustDetailsDialogCustApp extends BaseDialog {
     private static final String TAG = "CustApp-CustomerDetailsDialog";
 
     private SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
@@ -33,7 +32,7 @@ public class CustomerDetailsDialog extends BaseDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_customer_details, null);
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_customer_details_custapp, null);
 
         bindUiResources(v);
         initDialogView();
@@ -46,7 +45,7 @@ public class CustomerDetailsDialog extends BaseDialog {
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                AppCommonUtil.setDialogTextSize(CustomerDetailsDialog.this, (AlertDialog) dialog);
+                AppCommonUtil.setDialogTextSize(CustDetailsDialogCustApp.this, (AlertDialog) dialog);
             }
         });
 

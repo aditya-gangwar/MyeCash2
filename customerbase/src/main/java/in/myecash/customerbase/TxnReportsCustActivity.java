@@ -4,25 +4,16 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,13 +23,10 @@ import java.util.TimeZone;
 import in.myecash.appbase.BaseActivity;
 import in.myecash.appbase.DatePickerDialog;
 import in.myecash.appbase.constants.AppConstants;
-import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.TxnReportsHelper;
-import in.myecash.common.CommonUtils;
-import in.myecash.common.CsvConverter;
 import in.myecash.common.DateUtil;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
@@ -88,7 +76,7 @@ public class TxnReportsCustActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_txn_report);
+        setContentView(R.layout.activity_txn_report_cust);
         // gets handlers to screen resources
         bindUiResources();
 

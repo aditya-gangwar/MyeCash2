@@ -19,6 +19,7 @@ import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.merchantbase.entities.OrderItem;
@@ -135,8 +136,14 @@ public class BillingFragment extends BaseFragment {
     }
 
     @Override
-    //public void onClick(View v) {
     public void handleBtnClick(View v) {
+        // do nothing
+    }
+
+    // Not using BaseFragment's onClick method
+    @Override
+    public void onClick(View v) {
+    //public void handleBtnClick(View v) {
         if(!mCallback.getRetainedFragment().getResumeOk())
             return;
 
@@ -149,7 +156,7 @@ public class BillingFragment extends BaseFragment {
             String effectiveStr = actualStr.replace(AppConstants.SYMBOL_RS, "");
             LogMy.d(TAG, "In onClick, actualStr: " + actualStr + ", effectiveStr: " + effectiveStr);
 
-            if (resId == R.id.btn_bill_total) {
+            /*if (resId == R.id.btn_bill_total) {
                 if (mCalcMode) {
                     AppCommonUtil.toast(getActivity(), "In Calculator Mode");
                     return;
@@ -166,7 +173,7 @@ public class BillingFragment extends BaseFragment {
                 handlePlus(effectiveStr);
                 mCallback.onTotalBill();
 
-            } else if (resId == R.id.input_kb_plus) {
+            } else */if (resId == R.id.input_kb_plus) {
                 handlePlus(effectiveStr);
 
             } else if (resId == R.id.input_kb_X) {// not allowed as first character, also only single multiply is allowed
@@ -283,7 +290,31 @@ public class BillingFragment extends BaseFragment {
     }
 
     private void initButtons() {
-        mBtnTotal.setOnClickListener(this);
+        //mBtnTotal.setOnClickListener(this);
+        mBtnTotal.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                String actualStr = mInputItemAmt.getText().toString();
+                // remove rupee symbol for processing
+                String effectiveStr = actualStr.replace(AppConstants.SYMBOL_RS, "");
+
+                if (mCalcMode) {
+                    AppCommonUtil.toast(getActivity(), "In Calculator Mode");
+                    return;
+                }
+
+                if(mRetainedFragment.mCurrCustomer!=null &&
+                        mRetainedFragment.mCurrCustomer.getStatus() != DbConstants.USER_STATUS_ACTIVE &&
+                        mRetainedFragment.mCurrCustomer.getStatus() != DbConstants.USER_STATUS_LIMITED_CREDIT_ONLY ) {
+                    AppCommonUtil.toast(getActivity(), "Customer Not Active");
+                    return;
+                }
+
+                // do processing for +, just in case user forgets to press it in end
+                handlePlus(effectiveStr);
+                mCallback.onTotalBill();
+            }
+        });
         mLabelItemCnt.setOnTouchListener(this);
     }
 

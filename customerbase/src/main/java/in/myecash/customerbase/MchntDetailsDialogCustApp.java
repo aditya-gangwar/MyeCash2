@@ -1,7 +1,6 @@
 package in.myecash.customerbase;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,7 +30,7 @@ import in.myecash.customerbase.helper.MyRetainedFragment;
 /**
  * Created by adgangwa on 21-05-2016.
  */
-public class MerchantDetailsDialog extends BaseDialog {
+public class MchntDetailsDialogCustApp extends BaseDialog {
     private static final String TAG = "CustApp-MerchantDetailsDialog";
     private static final String ARG_CB_MCHNTID = "mchntId";
 
@@ -43,12 +42,12 @@ public class MerchantDetailsDialog extends BaseDialog {
         void getMchntTxns(String id, String name);
     }
 
-    public static MerchantDetailsDialog newInstance(String merchantId) {
+    public static MchntDetailsDialogCustApp newInstance(String merchantId) {
         LogMy.d(TAG, "Creating new MerchantDetailsDialog instance: "+merchantId);
         Bundle args = new Bundle();
         args.putString(ARG_CB_MCHNTID, merchantId);
 
-        MerchantDetailsDialog fragment = new MerchantDetailsDialog();
+        MchntDetailsDialogCustApp fragment = new MchntDetailsDialogCustApp();
         fragment.setArguments(args);
         return fragment;
     }
@@ -98,7 +97,7 @@ public class MerchantDetailsDialog extends BaseDialog {
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                AppCommonUtil.setDialogTextSize(MerchantDetailsDialog.this, (AlertDialog) dialog);
+                AppCommonUtil.setDialogTextSize(MchntDetailsDialogCustApp.this, (AlertDialog) dialog);
             }
         });
 

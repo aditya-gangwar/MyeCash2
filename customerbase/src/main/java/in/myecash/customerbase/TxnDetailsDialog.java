@@ -1,19 +1,14 @@
 package in.myecash.customerbase;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.text.Html;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import java.text.SimpleDateFormat;
 
@@ -21,7 +16,6 @@ import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
-import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.Transaction;
 import in.myecash.customerbase.helper.MyRetainedFragment;
@@ -69,7 +63,7 @@ public class TxnDetailsDialog extends BaseDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_txn_details, null);
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_txn_details_custapp, null);
 
         bindUiResources(v);
 

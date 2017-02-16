@@ -7,7 +7,7 @@ public class AppConstants {
 
     public static final boolean IS_PROD_BUILD = false;
     public static final int INTERNET_CHECK_TIMEUT_MILISECS = 20000;
-    public static final long MIN_CLICK_INTERVAL=2000;
+    public static final long MIN_CLICK_INTERVAL=1000;
 
     public static final String PHONE_COUNTRY_CODE = "+91 ";
     public static int MOBILE_NUM_PROCESS_MIN_LENGTH = 8;
