@@ -7,6 +7,7 @@ import in.myecash.common.database.Customers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by adgangwa on 02-06-2016.
@@ -56,6 +57,8 @@ public class MyCustomer {
         if(customerDetailsInCsvFormat== null || customerDetailsInCsvFormat.isEmpty()) {
             return;
         }
+
+        mSdfDateWithTime.setTimeZone(TimeZone.getTimeZone(CommonConstants.TIMEZONE));
 
         String[] csvFields = customerDetailsInCsvFormat.split(CUST_CSV_DELIM, -1);
         mPrivateId = csvFields[CUST_CSV_PRIVATE_ID];

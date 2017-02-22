@@ -16,7 +16,7 @@ import in.myecash.common.database.Transaction;
  */
 public class CsvConverter {
 
-    private static SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
+    //private static SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
 
     /*
      * Index of various parameters in Txn CSV records

@@ -408,6 +408,7 @@ public class MerchantUser
         }
         isLoginValid();
         // upload file
+        //String dir = remoteDir+CommonConstants.FILE_PATH_SEPERATOR;
         BackendlessFile newfile = Backendless.Files.upload(file, remoteDir, true);
         LogMy.d(TAG, "Image uploaded successfully at :" + newfile.getFileURL());
     }

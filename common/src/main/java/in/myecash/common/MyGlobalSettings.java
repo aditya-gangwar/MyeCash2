@@ -15,12 +15,7 @@ import in.myecash.common.constants.GlobalSettingConstants;
 import in.myecash.common.database.GlobalSettings;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class MyGlobalSettings
 {
@@ -256,6 +251,7 @@ public class MyGlobalSettings
                                 gSetting.value = value.toString();
                             } else {
                                 SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
+                                mSdfDateWithTime.setTimeZone(TimeZone.getTimeZone(CommonConstants.TIMEZONE));
                                 gSetting.value = mSdfDateWithTime.format(setting.getValue_date());
                             }
                             userVisibleSettings.add(gSetting);

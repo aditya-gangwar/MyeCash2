@@ -329,6 +329,9 @@ public class LoginCustActivity extends AppCompatActivity implements
 
         if(errorCode==ErrorCodes.INTERNET_OK_SERVICE_NOK) {
             AppCommonUtil.cancelProgressDialog(true);
+            if (operation == MyRetainedFragment.REQUEST_AUTO_LOGIN) {
+                mLoginButton.setEnabled(true);
+            }
             Intent intent = new Intent( this, ServerNaActivity.class );
             startActivity(intent);
             return;

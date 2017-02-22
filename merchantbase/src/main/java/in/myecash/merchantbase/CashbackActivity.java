@@ -1301,6 +1301,7 @@ public class CashbackActivity extends BaseActivity implements
             updateCustIds();
             updateTbForCustomer();
             if(mCashTxnStartPending) {
+                AppCommonUtil.cancelProgressDialog(true);
                 startCashTransFragment();
             } else if(mMobileNumFragment.isVisible()) {
                 // Register customer cases - start Billing fragment

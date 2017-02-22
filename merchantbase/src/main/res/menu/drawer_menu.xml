@@ -40,6 +40,10 @@
                     android:id="@+id/menu_operations"
                     android:title="Service Request History"
                     android:icon="@drawable/ic_change_history_black_24dp" />
+                <item
+                    android:id="@+id/menu_orders"
+                    android:title="My Orders"
+                    android:icon="@drawable/ic_shopping_cart_black_24dp" />
             </group>
         </menu>
     </item>

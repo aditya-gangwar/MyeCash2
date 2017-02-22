@@ -6,7 +6,8 @@
     android:background="?android:attr/windowBackground">
 
     <LinearLayout
-        style="@style/LL_Vertical_paddingSidesLarge">
+        style="@style/LL_Vertical_paddingSidesLarge"
+        android:layout_height="wrap_content">
 
         <Space
             android:layout_width="match_parent"

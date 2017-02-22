@@ -6,14 +6,12 @@
     android:background="?android:attr/windowBackground">
 
     <LinearLayout
-        style="@style/LL_Vertical_paddingSidesLarge">
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
+        style="@style/LL_Vertical_paddingSidesLarge"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/XL_space">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -31,10 +29,6 @@
                 android:text="Enter your Card Number below" />
         </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/large_space"/>
-
         <EditText
             android:id="@+id/input_secret_1"
             style="@style/MyEdittext_Medium"
@@ -44,14 +38,12 @@
             android:maxLength="@string/card_number_limit"
             android:gravity="center"
             android:inputType="number"
-            android:imeOptions="actionDone"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
+            android:imeOptions="actionDone"
+            android:layout_marginTop="@dimen/large_space"/>
 
         <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/XL_space">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -73,11 +65,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Are you sure to reset your PIN ?" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/XL_space"/>
-
+            android:text="Are you sure to reset your PIN ?"
+            android:layout_marginBottom="@dimen/XL_space"/>
     </LinearLayout>
 </RelativeLayout>

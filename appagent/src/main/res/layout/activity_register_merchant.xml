@@ -239,7 +239,7 @@
             android:id="@+id/input_merchant_dob"
             style="@style/MyEdittext_Small"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberPassword"
             android:hint="Date of Birth (DDMMYYYY)"
             android:maxLength="@string/dob_char_limit"/>
     </android.support.design.widget.TextInputLayout>

@@ -22,6 +22,7 @@ import android.widget.ListView;
 
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.CommonUtils;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -215,6 +216,7 @@ implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPref
         int errorCode = ErrorCodes.NO_ERROR;
         String key = preference.getKey();
         String newValue = null;
+        String errDesc = null;
 
         if (key.equals(KEY_CB_RATE)) {
             newValue = (String)o;
@@ -247,12 +249,16 @@ implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPref
             }
         } else if (key.equals(KEY_PP_MIN_AMT)) {
             newValue = (String)o;
-            //errorCode = ValidationHelper.validateCbRate(newValue);
-            //if (errorCode == ErrorCodes.NO_ERROR) {
-                mMerchantUser.setNewPpMinAmt(Integer.valueOf(newValue));
+            int newVal = Integer.valueOf(newValue);
+            if(newVal> MyGlobalSettings.getCashAccLimit()) {
+                errDesc = "Value more than Cash Account Limit of "+
+                        AppCommonUtil.getValueAmtStr(MyGlobalSettings.getCashAccLimit().toString());
+                errorCode = ErrorCodes.INVALID_VALUE;
+            } else {
+                mMerchantUser.setNewPpMinAmt(newVal);
                 mSettingsChanged = true;
                 setPpMinAmtSummary(newValue, false, null);
-            //}
+            }
         } else if (key.equals(KEY_EMAIL)) {
             //newValue = sharedPreferences.getString(KEY_EMAIL, null);
             newValue = (String)o;
@@ -293,7 +299,10 @@ implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPref
 
         if (errorCode != ErrorCodes.NO_ERROR &&
                 !key.equals(KEY_CAMERA_FLASH)) {
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), true, true)
+            if(errDesc==null) {
+                errDesc = AppCommonUtil.getErrorDesc(errorCode);
+            }
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, errDesc, true, true)
                 .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             return false;
         }

@@ -314,7 +314,7 @@ public class AppCommonUtil {
                     return ErrorCodes.REMOTE_SERVICE_NOT_AVAILABLE;
                 }
             }
-            LogMy.e(TAG,"Non-integer error code: "+expCode,e);
+            LogMy.e(TAG,"Non-integer error code: "+expCode+"Msg: "+expMsg,e);
             return ErrorCodes.GENERAL_ERROR;
         }
 
@@ -330,8 +330,9 @@ public class AppCommonUtil {
                 // as app will not be able to convert it into valid message description
                 // so return generic error code instead
                 // Also log the same for analysis
-                AppAlarms.handleException(e);
-                LogMy.d(TAG,"Exiting getLocalErrorCode: "+ErrorCodes.GENERAL_ERROR);
+                //AppAlarms.handleException(e);
+                LogMy.e(TAG,"Not Defined Error Code: "+expCode+"Msg: "+expMsg,e);
+                //LogMy.d(TAG,"Exiting getLocalErrorCode: "+ErrorCodes.GENERAL_ERROR);
                 return ErrorCodes.GENERAL_ERROR;
             } else {
                 // its backendless code
@@ -758,8 +759,7 @@ public class AppCommonUtil {
             return checkServiceTime();
 
         } catch (BackendlessException e) {
-            LogMy.e(TAG,"Failed to fetch global settings: "+e.toString());
-            AppAlarms.handleException(e);
+            LogMy.e(TAG,"Failed to fetch global settings: "+e.toString(),e);
             return AppCommonUtil.getLocalErrorCode(e);
         }
     }

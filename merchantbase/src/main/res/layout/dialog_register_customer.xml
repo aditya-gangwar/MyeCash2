@@ -19,12 +19,24 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/label_title">
+        android:layout_below="@+id/label_title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             style="@style/LL_Vertical_paddingSidesLarge"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/XL_space">
+
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/label_info_age"
+                android:text="***  FOR PEOPLE > 18 YEARS ONLY  ***"
+                android:textStyle="bold"
+                android:textColor="@color/primary_text"
+                android:layout_marginBottom="@dimen/medium_space"/>
 
             <EditText
                 style="@style/Edittext_only_view_small"

@@ -44,6 +44,8 @@ public class CommonConstants {
     /*
      * Date formats
      */
+    public static final String TIMEZONE = "Asia/Kolkata";
+
     public static final Locale DATE_LOCALE = Locale.ENGLISH;
     // used where only date (without time) is to be shown
     public static final String DATE_FORMAT_ONLY_DATE_DISPLAY = "dd MMM, yy";

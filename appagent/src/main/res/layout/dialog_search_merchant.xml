@@ -53,9 +53,8 @@
                 android:hint="8 Digit ID"
                 android:layout_weight="70"
                 android:gravity="center"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:maxLength="@string/merchant_id_char_limit"/>
         </LinearLayout>
 
         <EditText

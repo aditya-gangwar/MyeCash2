@@ -7,6 +7,7 @@ import in.myecash.common.database.Transaction;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by adgangwa on 08-10-2016.
@@ -65,6 +66,7 @@ public class CommonUtils {
 
     public static String getTxnCsvFilename(Date date, String merchantId) {
         // File name: txns_<merchant_id>_<ddMMMyy>.csv
+        mSdfOnlyDateFilename.setTimeZone(TimeZone.getTimeZone(CommonConstants.TIMEZONE));
         return CommonConstants.MERCHANT_TXN_FILE_PREFIX + merchantId + "_" + mSdfOnlyDateFilename.format(date) + CommonConstants.CSV_FILE_EXT;
     }
 
@@ -77,6 +79,7 @@ public class CommonUtils {
     }*/
 
     public static String getTxnImgDir(Date date) {
+        mSdfOnlyDateFilename.setTimeZone(TimeZone.getTimeZone(CommonConstants.TIMEZONE));
         return CommonConstants.MERCHANT_TXN_IMAGE_ROOT_DIR + mSdfOnlyDateFilename.format(date);
     }
 

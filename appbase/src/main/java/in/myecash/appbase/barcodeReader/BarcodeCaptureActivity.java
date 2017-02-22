@@ -32,6 +32,7 @@ import in.myecash.appbase.R;
 import in.myecash.appbase.barcodeReader.camera.CameraSource;
 import in.myecash.appbase.barcodeReader.camera.CameraSourcePreview;
 import in.myecash.appbase.barcodeReader.camera.GraphicOverlay;
+import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -245,7 +246,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
 
             YuvImage yuvimage = new YuvImage(byteBuffer.array(), ImageFormat.NV21, w, h, null);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            yuvimage.compressToJpeg(new Rect(0, 0, w, h), 90, baos); // Where 80 is the quality of the generated jpeg
+            yuvimage.compressToJpeg(new Rect(0, 0, w, h), 80, baos); // Where 80 is the quality of the generated jpeg
             byte[] jpegArray = baos.toByteArray();
             Bitmap bitmap = BitmapFactory.decodeByteArray(jpegArray, 0, jpegArray.length);
             //Bitmap bmp = AppCommonUtil.addDateTime(BarcodeCaptureActivity.this, bitmap);
@@ -265,10 +266,15 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
             finish();
         } else {
             //LogMy.d(TAG, "Barcode in Multitracker = " + barcodeValue);
-            Intent intent = new Intent();
-            intent.putExtra(BarcodeObject, barcodeValue);
-            setResult(ErrorCodes.NO_ERROR, intent);
-            finish();
+            // validate card id
+            if(ValidationHelper.validateCardId(barcodeValue)==ErrorCodes.NO_ERROR) {
+                Intent intent = new Intent();
+                intent.putExtra(BarcodeObject, barcodeValue);
+                setResult(ErrorCodes.NO_ERROR, intent);
+                finish();
+            } else {
+                //AppCommonUtil.toast(this, "Invalid MyeCash Card");
+            }
          }
     }
 

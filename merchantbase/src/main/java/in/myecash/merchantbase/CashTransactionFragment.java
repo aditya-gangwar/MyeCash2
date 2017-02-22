@@ -70,6 +70,7 @@ public class CashTransactionFragment extends BaseFragment implements
     private static final int STATUS_CASH_PAID_NOT_SET = 7;
     private static final int STATUS_MANUAL_SET = 8;
     private static final int STATUS_NO_BILL_AMT = 9;
+    private static final int STATUS_ACCOUNT_FULL = 10;
 
     private CashTransactionFragmentIf mCallback;
     private MyRetainedFragment mRetainedFragment;
@@ -280,8 +281,8 @@ public class CashTransactionFragment extends BaseFragment implements
         } else {
             String str = "Balance      "+ AppCommonUtil.getSignedAmtStr(Math.abs(mReturnCash), true);
             mInputToPayCash.setText(str);
-            mInputToPayCash.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
-            mDividerInputToPayCash.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
+            mInputToPayCash.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary));
+            mDividerInputToPayCash.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.primary));
         }
     }
 
@@ -863,6 +864,9 @@ public class CashTransactionFragment extends BaseFragment implements
                             setAddClStatus(STATUS_CLEARED);
                             calcAndSetAmts(false);
                             break;
+                        case STATUS_ACCOUNT_FULL:
+                            AppCommonUtil.toast(getActivity(), "Cash Account Limit Reached");
+                            break;
                         case STATUS_DISABLED:
                             AppCommonUtil.toast(getActivity(), "Disabled in settings");
                             break;
@@ -1034,6 +1038,7 @@ public class CashTransactionFragment extends BaseFragment implements
             case STATUS_CLEARED:
             //case STATUS_CASH_PAID_NOT_SET:
             case STATUS_DISABLED:
+            case STATUS_ACCOUNT_FULL:
                 mRadioAddCl.setChecked(false);
                 // for 'cleared' scenarios - dont disable radio button
                 if(status != STATUS_CLEARED && status != STATUS_AUTO_CLEARED) {
@@ -1239,11 +1244,15 @@ public class CashTransactionFragment extends BaseFragment implements
 
         // Init 'add cash' status
         if(mMerchantUser.getMerchant().getCl_add_enable()) {
-            // by default, dont try add cash
-            if(mRetainedFragment.mBillTotal==0) {
-                setAddClStatus(STATUS_AUTO);
+            if(mRetainedFragment.mCurrCashback.getCurrClBalance() >= MyGlobalSettings.getCashAccLimit()) {
+                setAddClStatus(STATUS_ACCOUNT_FULL);
             } else {
-                setAddClStatus(STATUS_CLEARED);
+                // by default, dont try add cash
+                if (mRetainedFragment.mBillTotal == 0) {
+                    setAddClStatus(STATUS_AUTO);
+                } else {
+                    setAddClStatus(STATUS_CLEARED);
+                }
             }
         } else {
             setAddClStatus(STATUS_DISABLED);
@@ -1309,7 +1318,7 @@ public class CashTransactionFragment extends BaseFragment implements
 
     private void initAccUiVisibility(boolean expandClickCase) {
         // Add account row
-        if(mAddClStatus==STATUS_DISABLED) {
+        if(mAddClStatus==STATUS_DISABLED || mAddClStatus==STATUS_ACCOUNT_FULL) {
             // this can be hidden
             hideIfReq(mLayoutAddCl, expandClickCase);
         } else {
@@ -1503,7 +1512,7 @@ public class CashTransactionFragment extends BaseFragment implements
     // UI Resources data members
     private EditText mInputBillAmt;
 
-    private View mLayoutCashAccount;
+    //private View mLayoutCashAccount;
 
     private View mLayoutAddCl;
     private AppCompatCheckBox mRadioAddCl;
@@ -1515,15 +1524,15 @@ public class CashTransactionFragment extends BaseFragment implements
     private EditText mLabelDebitCl;
     private EditText mInputDebitCl;
 
-    private View mLayoutCashBack;
+    //private View mLayoutCashBack;
 
     private View mLayoutDebitCb;
     private AppCompatCheckBox mCheckboxDebitCb;
     private EditText mLabelDebitCb;
     private EditText mInputDebitCb;
 
-    private View mCbDiv1;
-    private View mCbLabel;
+    //private View mCbDiv1;
+    //private View mCbLabel;
     //private View mCbDiv2;
     private View mLayoutAddCb;
     private AppCompatCheckBox mCheckboxAddCb;
@@ -1531,7 +1540,7 @@ public class CashTransactionFragment extends BaseFragment implements
     private EditText mInputAddCb;
     private EditText mSubHeadAddCb;
 
-    private View mLayoutCashPaid;
+    //private View mLayoutCashPaid;
 
     //private View mLayoutCashPaidLink;
     //private EditText mLabelCashPaid;
@@ -1540,10 +1549,10 @@ public class CashTransactionFragment extends BaseFragment implements
     private View mDividerInputToPayCash;
     private AppCompatButton mInputToPayCash;
 
-    private View mSpaceCashAccount;
-    private View mSpaceCashBack;
-    private View mSpaceCashPaid;
-    private View mSpaceAboveButton;
+    //private View mSpaceCashAccount;
+    //private View mSpaceCashBack;
+    //private View mSpaceCashPaid;
+    //private View mSpaceAboveButton;
 
     private AppCompatImageButton mAccExpand;
     private AppCompatImageButton mCbExpand;
@@ -1556,7 +1565,7 @@ public class CashTransactionFragment extends BaseFragment implements
 
         mInputBillAmt = (EditText) v.findViewById(R.id.input_trans_bill_amt);
 
-        mLayoutCashAccount = v.findViewById(R.id.layout_cash_account);
+        //mLayoutCashAccount = v.findViewById(R.id.layout_cash_account);
 
         mLayoutAddCl = v.findViewById(R.id.layout_add_cl);
         //mCheckboxAddCl = (AppCompatCheckBox) v.findViewById(R.id.checkbox_add_cl);
@@ -1571,7 +1580,7 @@ public class CashTransactionFragment extends BaseFragment implements
         mInputDebitCl = (EditText) v.findViewById(R.id.input_trans_redeem_cl);
 
 
-        mCbDiv1 = v.findViewById(R.id.cb_divider_1);
+        /*mCbDiv1 = v.findViewById(R.id.cb_divider_1);
         mCbLabel = v.findViewById(R.id.label_cash_back);
         //mCbDiv2 = v.findViewById(R.id.cb_divider_2);
         mSpaceCashAccount = v.findViewById(R.id.space_cash_account);
@@ -1579,7 +1588,7 @@ public class CashTransactionFragment extends BaseFragment implements
         mSpaceCashPaid = v.findViewById(R.id.space_cash_paid);
         mSpaceAboveButton = v.findViewById(R.id.space_above_button);
 
-        mLayoutCashBack = v.findViewById(R.id.layout_cashback);
+        mLayoutCashBack = v.findViewById(R.id.layout_cashback);*/
         mLayoutDebitCb = v.findViewById(R.id.layout_redeem_cb);
         mCheckboxDebitCb = (AppCompatCheckBox) v.findViewById(R.id.checkbox_redeem_cb);
         mLabelDebitCb = (EditText) v.findViewById(R.id.label_trans_redeem_cb);
@@ -1591,7 +1600,7 @@ public class CashTransactionFragment extends BaseFragment implements
         mInputAddCb = (EditText) v.findViewById(R.id.input_trans_add_cb);
         mSubHeadAddCb = (EditText) v.findViewById(R.id.label_trans_add_cb_sub);
 
-        mLayoutCashPaid = v.findViewById(R.id.layout_cash_paid);
+        //mLayoutCashPaid = v.findViewById(R.id.layout_cash_paid);
 
         /*mLayoutCashPaidLink = v.findViewById(R.id.layout_cash_paid_link);
         mLabelCashPaid = (EditText) v.findViewById(R.id.label_cash_paid);

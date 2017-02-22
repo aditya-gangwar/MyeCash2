@@ -141,7 +141,7 @@ public class ErrorCodes {
         aMap.put(LOGGED_IN_DEVICE_DELETE,"You cannot delete device from which you are logged in.");
         aMap.put(WRNG_PSWD_NOT_TRUSTED_DEV,"Not Trusted Device. Please enter correct User ID/Password to add in Trusted device list.");
 
-        aMap.put(NO_SUCH_CARD,"Invalid Membership Card");
+        aMap.put(NO_SUCH_CARD,"Invalid MyeCash Customer Card");
         aMap.put(WRONG_CARD,"Invalid Membership card. Please return to company agent for refund.");
         aMap.put(CARD_ALREADY_IN_USE,"This Membership card is already registered to customer");
         aMap.put(CARD_DISABLED,"This Membership card is Disabled and cannot be used");

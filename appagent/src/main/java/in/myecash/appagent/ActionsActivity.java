@@ -59,6 +59,7 @@ public class ActionsActivity extends AppCompatActivity implements
     private static final String DIALOG_SEARCH_CUSTOMER = "searchCustomer";
     private static final String DIALOG_SEARCH_CARD = "searchCard";
 
+    private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
 
     // this will never be null, as it only gets destroyed with cashback activity itself
     private ActionsFragment mActionsFragment;
@@ -109,126 +110,141 @@ public class ActionsActivity extends AppCompatActivity implements
 
     @Override
     public void onBgProcessResponse(int errorCode, int operation) {
-        switch(operation) {
-            case MyRetainedFragment.REQUEST_LOGOUT:
-                AppCommonUtil.cancelProgressDialog(true);
-                AgentUser.reset();
-                //Start Login Activity
-                if(!mExitAfterLogout) {
-                    Intent intent = new Intent( this, LoginActivity.class );
-                    // clear this activity from backstack
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-                finish();
-                break;
+        // Session timeout case - show dialog and logout - irrespective of invoked operation
+        if(errorCode==ErrorCodes.SESSION_TIMEOUT || errorCode==ErrorCodes.NOT_LOGGED_IN) {
+            AppCommonUtil.cancelProgressDialog(true);
+            DialogFragmentWrapper.createNotification(AppConstants.notLoggedInTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                    .show(mFragMgr, DIALOG_SESSION_TIMEOUT);
+            return;
+        }
 
-            case MyRetainedFragment.REQUEST_CHANGE_PASSWD:
-                AppCommonUtil.cancelProgressDialog(true);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    DialogFragmentWrapper.createNotification(AppConstants.pwdChangeSuccessTitle, AppConstants.pwdChangeSuccessMsg, false, false)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                    logoutAgent();
-                } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
-
-            case MyRetainedFragment.REQUEST_SEARCH_MERCHANT:
-                AppCommonUtil.cancelProgressDialog(true);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    mWorkFragment.mCurrMerchant = MerchantUser.getInstance().getMerchant();
-                    startMchntDetailsFragment();
-                    // show merchant details
-                    /*
-                    mWorkFragment.mCurrMerchant = MerchantUser.getInstance().getMerchant();
-                    MerchantDetailsFragment dialog = new MerchantDetailsFragment();
-                    dialog.show(getFragmentManager(), DIALOG_MCHNT_DETAILS);*/
-                } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
-
-            case MyRetainedFragment.REQUEST_DISABLE_MERCHANT:
-                AppCommonUtil.cancelProgressDialog(true);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.merchantDisableSuccessMsg, false, false)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
-
-            case MyRetainedFragment.REQUEST_SEARCH_CUSTOMER:
-                AppCommonUtil.cancelProgressDialog(true);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    mWorkFragment.mCurrCustomer = CustomerUser.getInstance().getCustomer();
-                    startCustDetailsFragment();
-                } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
-
-            case MyRetainedFragment.REQUEST_DISABLE_CUSTOMER:
-                AppCommonUtil.cancelProgressDialog(true);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.customerDisableSuccessMsg, false, false)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
-
-            case MyRetainedFragment.REQUEST_LIMIT_CUST_ACC:
-                AppCommonUtil.cancelProgressDialog(true);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    String msg = String.format(AppConstants.customerLimitedSuccessMsg, MyGlobalSettings.getCustAccLimitModeMins());
-                    DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, msg, false, false)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
-
-            case MyRetainedFragment.REQUEST_SEARCH_CARD:
-                AppCommonUtil.cancelProgressDialog(true);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    startCardDetailsFragment();
-                } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
-
-            case MyRetainedFragment.REQUEST_ACTION_CARDS:
-                AppCommonUtil.cancelProgressDialog(true);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    if(!mWorkFragment.cardNumFetched) {
-                        mWorkFragment.cardNumFetched = true;
+        try {
+            switch(operation) {
+                case MyRetainedFragment.REQUEST_LOGOUT:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    AgentUser.reset();
+                    //Start Login Activity
+                    if(!mExitAfterLogout) {
+                        Intent intent = new Intent( this, LoginActivity.class );
+                        // clear this activity from backstack
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     }
-                    startCardActionListFrag(null);
-                } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
+                    finish();
+                    break;
 
-            case MyRetainedFragment.REQUEST_DISABLE_CUST_CARD:
-                AppCommonUtil.cancelProgressDialog(true);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.custCardDisableSuccessMsg, false, false)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                } else {
-                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
-                            .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-                }
-                break;
+                case MyRetainedFragment.REQUEST_CHANGE_PASSWD:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        DialogFragmentWrapper.createNotification(AppConstants.pwdChangeSuccessTitle, AppConstants.pwdChangeSuccessMsg, false, false)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                        logoutAgent();
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+
+                case MyRetainedFragment.REQUEST_SEARCH_MERCHANT:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        mWorkFragment.mCurrMerchant = MerchantUser.getInstance().getMerchant();
+                        startMchntDetailsFragment();
+                        // show merchant details
+                        /*
+                        mWorkFragment.mCurrMerchant = MerchantUser.getInstance().getMerchant();
+                        MerchantDetailsFragment dialog = new MerchantDetailsFragment();
+                        dialog.show(getFragmentManager(), DIALOG_MCHNT_DETAILS);*/
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+
+                case MyRetainedFragment.REQUEST_DISABLE_MERCHANT:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.merchantDisableSuccessMsg, false, false)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+
+                case MyRetainedFragment.REQUEST_SEARCH_CUSTOMER:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        mWorkFragment.mCurrCustomer = CustomerUser.getInstance().getCustomer();
+                        startCustDetailsFragment();
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+
+                case MyRetainedFragment.REQUEST_DISABLE_CUSTOMER:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.customerDisableSuccessMsg, false, false)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+
+                case MyRetainedFragment.REQUEST_LIMIT_CUST_ACC:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        String msg = String.format(AppConstants.customerLimitedSuccessMsg, MyGlobalSettings.getCustAccLimitModeMins());
+                        DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, msg, false, false)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+
+                case MyRetainedFragment.REQUEST_SEARCH_CARD:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        startCardDetailsFragment();
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+
+                case MyRetainedFragment.REQUEST_ACTION_CARDS:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        if(!mWorkFragment.cardNumFetched) {
+                            mWorkFragment.cardNumFetched = true;
+                        }
+                        startCardActionListFrag(null);
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+
+                case MyRetainedFragment.REQUEST_DISABLE_CUST_CARD:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.custCardDisableSuccessMsg, false, false)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
+            LogMy.e(TAG, "Exception in CashbackActivity:onBgProcessResponse: "+operation+": "+errorCode, e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 
@@ -251,6 +267,9 @@ public class ActionsActivity extends AppCompatActivity implements
             if(now.getDayOfMonth()%10==0) {
                 AppCommonUtil.delAllInternalFiles(this);
             }
+            logoutAgent();
+        }  else if (tag.equals(DIALOG_SESSION_TIMEOUT)) {
+            mExitAfterLogout = false;
             logoutAgent();
         }
     }

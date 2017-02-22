@@ -74,6 +74,43 @@ public class GlobalSettingConstants {
     public static final Map<String, String> valuesGlobalSettings;
     static {
         Map<String, String> aMap = new HashMap<>(TOTAL_SETTINGS_CNT);
+        aMap.put(SETTINGS_MERCHANT_PASSWD_RESET_MINS,"60");
+        aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS,"60");
+        aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_MINS,"60");
+        aMap.put(SETTINGS_CUSTOMER_ACCOUNT_BLOCK_MINS,"60");
+        aMap.put(SETTINGS_CUST_ACC_LIMIT_MODE_MINS,"60");
+        aMap.put(SETTINGS_STATS_NO_REFRESH_MINS,"30");
+        aMap.put(SETTINGS_CUSTOMER_NO_REFRESH_MINS,"15");
+        aMap.put(SETTINGS_WRONG_ATTEMPT_RESET_MINS,"120");
+
+        aMap.put(SETTINGS_CB_REDEEM_CARD_REQ,"true");
+        aMap.put(SETTINGS_ACC_DB_CARD_REQ,"true");
+        aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN,"5000");
+        aMap.put(SETTINGS_CL_DEBIT_LIMIT_FOR_PIN,"10");
+        aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN,"10");
+        aMap.put(SETTINGS_CB_REDEEM_LIMIT,"200");
+        aMap.put(SETTINGS_CUSTOMER_CASH_LIMIT,"5000");
+
+        aMap.put(SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS,"30");
+        aMap.put(SETTINGS_TXNS_INTABLE_KEEP_DAYS,"10");
+        aMap.put(SETTINGS_OPS_KEEP_DAYS,"90");
+        aMap.put(SETTINGS_OTP_VALID_MINS,"15");
+        aMap.put(SETTINGS_MERCHANT_WRONG_ATTEMPT_LIMIT,"5");
+        aMap.put(SETTINGS_CUSTOMER_WRONG_ATTEMPT_LIMIT,"5");
+        aMap.put(SETTINGS_MCHNT_RENEW_DURATION,"12");
+        aMap.put(SETTINGS_CUST_RENEW_DURATION,"12");
+        aMap.put(SETTINGS_MCHNT_TXN_HISTORY_DAYS,"90");
+        aMap.put(SETTINGS_CUST_TXN_HISTORY_DAYS,"90");
+        aMap.put(SETTINGS_SERVICE_DISABLED_UNTIL,null);
+        aMap.put(SETTINGS_TXN_IMAGE_CAPTURE_MODE,String.valueOf(TXN_IMAGE_CAPTURE_CARD_REQUIRED));
+        aMap.put(SETTINGS_DAILY_DOWNTIME_START_HOUR,"5");
+        aMap.put(SETTINGS_DAILY_DOWNTIME_END_HOUR,"5");
+        //URL to which App will redirect if backend is not available
+        aMap.put(SETTINGS_SERVICE_NA_URL,"http://www.whysotechnologies.com/backsoon");
+        valuesGlobalSettings = Collections.unmodifiableMap(aMap);
+    }
+    /*static {
+        Map<String, String> aMap = new HashMap<>(TOTAL_SETTINGS_CNT);
         aMap.put(SETTINGS_MERCHANT_PASSWD_RESET_MINS,"7");
         aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS,"5");
         aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_MINS,"6");
@@ -108,7 +145,7 @@ public class GlobalSettingConstants {
         //URL to which App will redirect if backend is not available
         aMap.put(SETTINGS_SERVICE_NA_URL,"http://www.whysotechnologies.com/backsoon");
         valuesGlobalSettings = Collections.unmodifiableMap(aMap);
-    }
+    }*/
 
     /*
      * Map to Type of Description
