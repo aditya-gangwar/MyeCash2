@@ -820,8 +820,6 @@ public class AppCommonUtil {
                 .apply();
     }
 
-
-
     public static void setDialogTextSize(DialogFragment frag, AlertDialog dialog) {
         //int textSize = (int) Helper.getDimen(mainScreen, R.dimen.textSize12);
         float small = frag.getResources().getDimension(R.dimen.text_size_small);

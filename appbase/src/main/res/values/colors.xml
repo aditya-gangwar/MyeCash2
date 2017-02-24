@@ -17,6 +17,7 @@
     <color name="hint">#CCCCCC</color>
     <color name="disabled">#BBBBBB</color>
     <color name="icon_grey">#999999</color>
+    <color name="icon_grey_dark">#777777</color>
 
     <color name="cb_exclusion">#CF0000</color>
     <color name="link_blue">#0099e5</color>

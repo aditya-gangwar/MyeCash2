@@ -145,6 +145,13 @@ public class MyGlobalSettings
     public static String getServiceNAUrl() {
         return (String) getValue(GlobalSettingConstants.SETTINGS_SERVICE_NA_URL);
     }
+    public static String getTermsUrl() {
+        if(getRunMode()== MyGlobalSettings.RunMode.appCustomer) {
+            return (String) getValue(GlobalSettingConstants.SETTINGS_CUST_TERMS_URL);
+        } else {
+            return (String) getValue(GlobalSettingConstants.SETTINGS_MCHNT_TERMS_URL);
+        }
+    }
 
     private static Object getValue(String gSettingKey) {
         if(mRunMode==RunMode.backend) {

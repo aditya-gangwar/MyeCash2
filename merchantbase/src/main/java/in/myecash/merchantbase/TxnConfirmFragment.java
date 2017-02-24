@@ -62,14 +62,16 @@ public class TxnConfirmFragment extends BaseFragment {
         try {
             bindUiResources(v);
 
-            mInputInvoiceNum.setOnTouchListener(this);
-            /*mInputInvoiceNum.setOnTouchListener(new View.OnTouchListener() {
+            //mInputInvoiceNum.setOnTouchListener(this);
+            mInputInvoiceNum.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    if(event.getAction()==MotionEvent.ACTION_UP) {
+                        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                    }
                     return false;
                 }
-            });*/
+            });
 
             mBtnConfirm.setOnClickListener(this);
             /*mBtnConfirm.setOnClickListener(new View.OnClickListener() {
@@ -126,9 +128,9 @@ public class TxnConfirmFragment extends BaseFragment {
 
     @Override
     public boolean handleTouchUp(View v) {
-        if(v.getId()==R.id.input_invoice_num) {
+        /*if(v.getId()==R.id.input_invoice_num) {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        }
+        }*/
         return false;
     }
 

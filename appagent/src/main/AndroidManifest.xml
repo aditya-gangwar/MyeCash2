@@ -25,7 +25,8 @@
             android:value="barcode" />
 
         <activity
-            android:name=".SplashActivity">
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,48 +34,57 @@
         </activity>
 
         <activity
-            android:name=".LoginActivity">
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".ActionsActivity"
             android:label="Home"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".RegisterMerchantActivity"
             android:label="@string/title_activity_register_merchant"
-            android:windowSoftInputMode="stateHidden|adjustResize">
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name="in.myecash.merchantbase.TermsConditionsActivity"
-            android:label="@string/title_activity_terms_conditions">
+            android:label="@string/title_activity_terms_conditions"
+            android:screenOrientation="portrait">
         </activity>
 
 
         <activity
             android:name="in.myecash.merchantbase.CashbackActivity"
             android:label="CashbackActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="in.myecash.merchantbase.TxnReportsActivity"
-            android:label="Transactions">
+            android:label="Transactions"
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name="in.myecash.appbase.barcodeReader.BarcodeCaptureActivity"
-            android:label="Read Barcode"/>
+            android:label="Read Barcode"
+            android:screenOrientation="portrait"/>
 
 
         <activity
             android:name="in.myecash.customerbase.CashbackActivityCust"
             android:label="CashbackActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="in.myecash.customerbase.TxnReportsCustActivity"
-            android:label="Transactions">
+            android:label="Transactions"
+            android:screenOrientation="portrait">
         </activity>
 
 

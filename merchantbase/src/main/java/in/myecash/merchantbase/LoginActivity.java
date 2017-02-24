@@ -26,7 +26,7 @@ import android.widget.TextView;
 
 import com.helpshift.support.Support;
 
-import in.myecash.appbase.ServerNaActivity;
+import in.myecash.appbase.SingleWebViewActivity;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.constants.CommonConstants;
@@ -346,7 +346,18 @@ public class LoginActivity extends AppCompatActivity implements
             if (operation == MyRetainedFragment.REQUEST_LOGIN) {
                 mLoginButton.setEnabled(true);
             }
-            Intent intent = new Intent( this, ServerNaActivity.class );
+
+            String url = null;
+            if(MyGlobalSettings.isAvailable()) {
+                url = MyGlobalSettings.getServiceNAUrl();
+            } else {
+                // MyGlobalSettings.getServiceNAUrl() will use constant value
+                url = PreferenceManager.getDefaultSharedPreferences(this)
+                        .getString(AppConstants.PREF_SERVICE_NA_URL, MyGlobalSettings.getServiceNAUrl());
+            }
+
+            Intent intent = new Intent(LoginActivity.this, SingleWebViewActivity.class );
+            intent.putExtra(SingleWebViewActivity.INTENT_EXTRA_URL, url);
             startActivity(intent);
             return;
         }
@@ -496,7 +507,7 @@ public class LoginActivity extends AppCompatActivity implements
                 // validate
                 int errorCode = ValidationHelper.validateMerchantId(mLoginId);
                 if(errorCode==ErrorCodes.NO_ERROR) {
-                    // TODO: show 'FAQ'
+                    // TODO: show 'FAQ' only for non-login section
                     Support.setUserIdentifier(mLoginId);
                     Support.showFAQs(LoginActivity.this);
                 } else {
@@ -516,7 +527,9 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void onClick( View widget )
             {
-                // TODO: redirect to T&C section for Merchants on the website
+                Intent intent = new Intent(LoginActivity.this, SingleWebViewActivity.class );
+                intent.putExtra(SingleWebViewActivity.INTENT_EXTRA_URL, MyGlobalSettings.getTermsUrl());
+                startActivity(intent);
             }
         };
 

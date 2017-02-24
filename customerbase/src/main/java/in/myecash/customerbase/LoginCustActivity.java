@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import in.myecash.appbase.ServerNaActivity;
+import in.myecash.appbase.SingleWebViewActivity;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.appbase.utilities.RootUtil;
@@ -332,7 +332,18 @@ public class LoginCustActivity extends AppCompatActivity implements
             if (operation == MyRetainedFragment.REQUEST_AUTO_LOGIN) {
                 mLoginButton.setEnabled(true);
             }
-            Intent intent = new Intent( this, ServerNaActivity.class );
+
+            String url = null;
+            if(MyGlobalSettings.isAvailable()) {
+                url = MyGlobalSettings.getServiceNAUrl();
+            } else {
+                // MyGlobalSettings.getServiceNAUrl() will use constant value
+                url = PreferenceManager.getDefaultSharedPreferences(this)
+                        .getString(AppConstants.PREF_SERVICE_NA_URL, MyGlobalSettings.getServiceNAUrl());
+            }
+
+            Intent intent = new Intent(this, SingleWebViewActivity.class );
+            intent.putExtra(SingleWebViewActivity.INTENT_EXTRA_URL, url);
             startActivity(intent);
             return;
         }
@@ -515,7 +526,9 @@ public class LoginCustActivity extends AppCompatActivity implements
             @Override
             public void onClick( View widget )
             {
-                // TODO: redirect to T&C section for Customers on the website
+                Intent intent = new Intent(LoginCustActivity.this, SingleWebViewActivity.class );
+                intent.putExtra(SingleWebViewActivity.INTENT_EXTRA_URL, MyGlobalSettings.getTermsUrl());
+                startActivity(intent);
             }
         };
 

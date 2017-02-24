@@ -1,7 +1,6 @@
 package in.myecash.merchantbase;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,13 +14,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
+import java.io.File;
 import java.util.ArrayList;
 
 import in.myecash.appbase.BaseFragment;
+import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.OnSingleClickListener;
+import in.myecash.appbase.utilities.ValidationHelper;
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.ErrorCodes;
@@ -51,10 +57,13 @@ public class CashTransactionFragment extends BaseFragment implements
     private static final int REQ_NEW_REDEEM_CB = 6;
     private static final int REQ_NOTIFY_ERROR = 7;
     private static final int REQ_NOTIFY_ERROR_EXIT = 8;
+    private static final int REQ_CONFIRM_CARD_SCAN = 9;
+    public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9009;
 
     private static final String DIALOG_NUM_INPUT = "NumberInput";
     private static final String DIALOG_CASH_PAY = "CashPay";
     private static final String DIALOG_CONFIRM_TXN = "ConfirmTxn";
+    private static final String DIALOG_CARD_SCAN = "dialogCardScan";
 
     private static final int STATUS_DISABLED = 0;
     // temporary disabled - state can be changed only explicitly clicking by user
@@ -114,7 +123,7 @@ public class CashTransactionFragment extends BaseFragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_cash_txn, container, false);
+        View v = inflater.inflate(R.layout.fragment_cash_txn_2, container, false);
 
         // access to UI elements
         bindUiResources(v);
@@ -629,6 +638,39 @@ public class CashTransactionFragment extends BaseFragment implements
         }
         try {
             switch (requestCode) {
+                case REQ_CONFIRM_CARD_SCAN:
+                    LogMy.d(TAG, "Card Scan confirmation");
+                    Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
+                    mRetainedFragment.mCardImageFilename = CommonConstants.PREFIX_TXN_IMG_FILE_NAME+Long.toString(System.currentTimeMillis())+"."+CommonConstants.PHOTO_FILE_FORMAT;
+                    intent.putExtra(BarcodeCaptureActivity.ImageFileName,mRetainedFragment.mCardImageFilename);
+                    startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
+                    break;
+
+                case RC_BARCODE_CAPTURE_CARD_DIALOG:
+                    String qrCode = null;
+                    if (data != null) {
+                        qrCode = data.getStringExtra(BarcodeCaptureActivity.BarcodeObject);
+                    }
+                    if (qrCode!= null) {
+                        LogMy.d(TAG, "Read customer QR code: " + qrCode);
+                        if (ValidationHelper.validateCardId(qrCode) == ErrorCodes.NO_ERROR) {
+                            mRetainedFragment.mCustCardId = qrCode;
+                            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, qrCode);
+                            mRetainedFragment.mCardPresented = true;
+
+                            // calculate State and amounts again
+                            initAmtUiStates();
+                            initAmtUiVisibility(false);
+                            calcAndSetAmts(false);
+                        } else {
+                            AppCommonUtil.toast(getActivity(), "Invalid Customer Card");
+                        }
+                    } else {
+                        AppCommonUtil.toast(getActivity(), "Failed to Read Card");
+                        LogMy.d(TAG, "Failed to read barcode");
+                        delCardImageFile();
+                    }
+                    break;
             /*case REQUEST_CASH_PAY:
                 setCashPaid((int) data.getSerializableExtra(CashPaidDialog.EXTRA_CASH_PAID));
                 calcAndSetAmts();
@@ -720,6 +762,15 @@ public class CashTransactionFragment extends BaseFragment implements
         }
     }
 
+    private void delCardImageFile() {
+        if(mRetainedFragment.mCardImageFilename!=null) {
+            File file = new File(mRetainedFragment.mCardImageFilename);
+            if (file.exists()) {
+                getActivity().deleteFile(mRetainedFragment.mCardImageFilename);
+            }
+            mRetainedFragment.mCardImageFilename = null;
+        }
+    }
     /*@Override
     public void onAmountEnter(int value) {
         LogMy.d(TAG, "In onAmountEnter");
@@ -889,7 +940,8 @@ public class CashTransactionFragment extends BaseFragment implements
                             AppCommonUtil.toast(getActivity(), AppConstants.toastNoBalance);
                             break;
                         case STATUS_QR_CARD_NOT_USED:
-                            AppCommonUtil.toast(getActivity(), "Member card Not Scanned");
+                            //AppCommonUtil.toast(getActivity(), "Member card Not Scanned");
+                            showNoCardError();
                             break;
                         case STATUS_NO_BILL_AMT:
                             AppCommonUtil.toast(getActivity(), "Billing Amount is 0");
@@ -913,7 +965,8 @@ public class CashTransactionFragment extends BaseFragment implements
                             AppCommonUtil.toast(getActivity(), AppConstants.toastNoBalance);
                             break;
                         case STATUS_QR_CARD_NOT_USED:
-                            AppCommonUtil.toast(getActivity(), "Valid Member card not used");
+                            //AppCommonUtil.toast(getActivity(), "Valid Member card not used");
+                            showNoCardError();
                             break;
                         case STATUS_BALANCE_BELOW_LIMIT:
                             AppCommonUtil.toast(getActivity(), "Cashback balance below " +
@@ -957,6 +1010,13 @@ public class CashTransactionFragment extends BaseFragment implements
         }
 
         return true;
+    }
+
+    private void showNoCardError() {
+        DialogFragmentWrapper dialog = DialogFragmentWrapper.createConfirmationDialog(AppConstants.generalFailureTitle,
+                AppConstants.noDebitWoCardMsg, true, false);
+        dialog.setTargetFragment(this, REQ_CONFIRM_CARD_SCAN);
+        dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
     }
 
     // Not using BaseFragment's onClick method
@@ -1039,11 +1099,12 @@ public class CashTransactionFragment extends BaseFragment implements
             //case STATUS_CASH_PAID_NOT_SET:
             case STATUS_DISABLED:
             case STATUS_ACCOUNT_FULL:
-                mRadioAddCl.setChecked(false);
+                //mRadioAddCl.setChecked(false);
+                mRadioAddCl.setAlpha(0.4f);
                 // for 'cleared' scenarios - dont disable radio button
                 if(status != STATUS_CLEARED && status != STATUS_AUTO_CLEARED) {
                     // disable only for cases, if cant be enabled back for now
-                    mRadioAddCl.setEnabled(false);
+                    //mRadioAddCl.setEnabled(false);
                 }
                 // make label appear as disabled - but dont disable it - in order to catch click event
                 //mLabelAddCl.setEnabled(false);
@@ -1053,8 +1114,9 @@ public class CashTransactionFragment extends BaseFragment implements
                 mInputAddCl.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 break;
             case STATUS_AUTO:
-                mRadioAddCl.setChecked(true);
-                mRadioAddCl.setEnabled(true);
+                //mRadioAddCl.setChecked(true);
+                mRadioAddCl.setAlpha(1.0f);
+                //mRadioAddCl.setEnabled(true);
                 //mLabelAddCl.setEnabled(true);
                 // restore text color - in case changed while disabling it in above case
                 mLabelAddCl.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary_text));
@@ -1080,7 +1142,8 @@ public class CashTransactionFragment extends BaseFragment implements
             case STATUS_QR_CARD_NOT_USED:
             case STATUS_NO_BALANCE:
             case STATUS_NO_BILL_AMT:
-                mRadioDebitCl.setChecked(false);
+                //mRadioDebitCl.setChecked(false);
+                mRadioDebitCl.setAlpha(0.4f);
                 if(status!=STATUS_CLEARED && status!=STATUS_AUTO_CLEARED) {
                     mRadioDebitCl.setEnabled(false);
                 }
@@ -1090,7 +1153,8 @@ public class CashTransactionFragment extends BaseFragment implements
                 mInputDebitCl.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 break;
             case STATUS_AUTO:
-                mRadioDebitCl.setChecked(true);
+                ///mRadioDebitCl.setChecked(true);
+                mRadioDebitCl.setAlpha(1.0f);
                 mRadioDebitCl.setEnabled(true);
                 //mLabelDebitCl.setEnabled(true);
                 mLabelDebitCl.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary_text));
@@ -1117,9 +1181,11 @@ public class CashTransactionFragment extends BaseFragment implements
             case STATUS_QR_CARD_NOT_USED:
             case STATUS_NO_BALANCE:
             case STATUS_NO_BILL_AMT:
-                mCheckboxDebitCb.setChecked(false);
+                //mCheckboxDebitCb.setChecked(false);
+                mCheckboxDebitCb.setAlpha(0.4f);
                 if(status!=STATUS_CLEARED && status!=STATUS_AUTO_CLEARED) {
                     mCheckboxDebitCb.setEnabled(false);
+                    //mCheckboxDebitCb.setClickable(false);
                 }
                 // set onTouchListener - as onClickListener doesnt work in disabled editext
                 //mLabelDebitCb.setEnabled(false);
@@ -1130,8 +1196,9 @@ public class CashTransactionFragment extends BaseFragment implements
                 //mMinCashToPay = mRetainedFragment.mBillTotal - mClBalance;
                 break;
             case STATUS_AUTO:
-                mCheckboxDebitCb.setChecked(true);
+                //mCheckboxDebitCb.setChecked(true);
                 mCheckboxDebitCb.setEnabled(true);
+                mCheckboxDebitCb.setAlpha(1.0f);
                 //mLabelDebitCb.setEnabled(true);
                 mLabelDebitCb.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary_text));
                 mInputDebitCb.setEnabled(true);
@@ -1154,17 +1221,23 @@ public class CashTransactionFragment extends BaseFragment implements
         switch(status) {
             case STATUS_DISABLED:
             case STATUS_NO_BILL_AMT:
-                mCheckboxAddCb.setChecked(false);
+                //mCheckboxAddCb.setChecked(false);
                 mCheckboxAddCb.setEnabled(false);
-                //mLabelAddCb.setEnabled(false);
+                //mCheckboxAddCb.setClickable(false);
+                mCheckboxAddCb.setAlpha(0.4f);
+                /*if(status==STATUS_DISABLED) {
+                    mCheckboxAddCb.setImageDrawable(AppCommonUtil.getTintedDrawable(getActivity(),
+                            mCheckboxAddCb.getDrawable(), R.color.disabled));
+                }*/
                 mLabelAddCb.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 mInputAddCb.setEnabled(false);
-                //mSubHeadAddCb.setEnabled(false);
                 mSubHeadAddCb.setTextColor(ContextCompat.getColor(getActivity(), R.color.disabled));
                 break;
             case STATUS_AUTO:
-                mCheckboxAddCb.setChecked(true);
+                //mCheckboxAddCb.setChecked(true);
                 mCheckboxAddCb.setEnabled(false);
+                //mCheckboxAddCb.setClickable(false);
+                mCheckboxAddCb.setAlpha(0.4f);
                 break;
             default:
                 // no other status is valid for 'add cb'
@@ -1515,19 +1588,22 @@ public class CashTransactionFragment extends BaseFragment implements
     //private View mLayoutCashAccount;
 
     private View mLayoutAddCl;
-    private AppCompatCheckBox mRadioAddCl;
+    //private AppCompatCheckBox mRadioAddCl;
+    private ImageView mRadioAddCl;
     private EditText mLabelAddCl;
     private EditText mInputAddCl;
 
     private View mLayoutDebitCl;
-    private AppCompatCheckBox mRadioDebitCl;
+    //private AppCompatCheckBox mRadioDebitCl;
+    private ImageView mRadioDebitCl;
     private EditText mLabelDebitCl;
     private EditText mInputDebitCl;
 
     //private View mLayoutCashBack;
 
     private View mLayoutDebitCb;
-    private AppCompatCheckBox mCheckboxDebitCb;
+    //private AppCompatCheckBox mCheckboxDebitCb;
+    private ImageView mCheckboxDebitCb;
     private EditText mLabelDebitCb;
     private EditText mInputDebitCb;
 
@@ -1535,7 +1611,8 @@ public class CashTransactionFragment extends BaseFragment implements
     //private View mCbLabel;
     //private View mCbDiv2;
     private View mLayoutAddCb;
-    private AppCompatCheckBox mCheckboxAddCb;
+    //private AppCompatCheckBox mCheckboxAddCb;
+    private ImageView mCheckboxAddCb;
     private EditText mLabelAddCb;
     private EditText mInputAddCb;
     private EditText mSubHeadAddCb;
@@ -1569,13 +1646,13 @@ public class CashTransactionFragment extends BaseFragment implements
 
         mLayoutAddCl = v.findViewById(R.id.layout_add_cl);
         //mCheckboxAddCl = (AppCompatCheckBox) v.findViewById(R.id.checkbox_add_cl);
-        mRadioAddCl = (AppCompatCheckBox) v.findViewById(R.id.radio_add_cl);
+        mRadioAddCl = (ImageView) v.findViewById(R.id.radio_add_cl);
         mLabelAddCl = (EditText) v.findViewById(R.id.label_trans_add_cl);
         mInputAddCl = (EditText) v.findViewById(R.id.input_trans_add_cl);
 
         mLayoutDebitCl = v.findViewById(R.id.layout_redeem_cl);
         //mCheckboxRedeemCl = (AppCompatCheckBox) v.findViewById(R.id.checkbox_debit_cl);
-        mRadioDebitCl = (AppCompatCheckBox) v.findViewById(R.id.radio_redeem_cl);
+        mRadioDebitCl = (ImageView) v.findViewById(R.id.radio_redeem_cl);
         mLabelDebitCl = (EditText) v.findViewById(R.id.label_trans_redeem_cl);
         mInputDebitCl = (EditText) v.findViewById(R.id.input_trans_redeem_cl);
 
@@ -1590,12 +1667,12 @@ public class CashTransactionFragment extends BaseFragment implements
 
         mLayoutCashBack = v.findViewById(R.id.layout_cashback);*/
         mLayoutDebitCb = v.findViewById(R.id.layout_redeem_cb);
-        mCheckboxDebitCb = (AppCompatCheckBox) v.findViewById(R.id.checkbox_redeem_cb);
+        mCheckboxDebitCb = (ImageView) v.findViewById(R.id.checkbox_redeem_cb);
         mLabelDebitCb = (EditText) v.findViewById(R.id.label_trans_redeem_cb);
         mInputDebitCb = (EditText) v.findViewById(R.id.input_trans_redeem_cb);
 
         mLayoutAddCb = v.findViewById(R.id.layout_add_cb);
-        mCheckboxAddCb = (AppCompatCheckBox) v.findViewById(R.id.checkbox_add_cb);
+        mCheckboxAddCb = (ImageView) v.findViewById(R.id.checkbox_add_cb);
         mLabelAddCb = (EditText) v.findViewById(R.id.label_trans_add_cb);
         mInputAddCb = (EditText) v.findViewById(R.id.input_trans_add_cb);
         mSubHeadAddCb = (EditText) v.findViewById(R.id.label_trans_add_cb_sub);

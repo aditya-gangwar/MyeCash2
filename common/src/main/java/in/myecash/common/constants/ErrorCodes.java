@@ -142,8 +142,8 @@ public class ErrorCodes {
         aMap.put(WRNG_PSWD_NOT_TRUSTED_DEV,"Not Trusted Device. Please enter correct User ID/Password to add in Trusted device list.");
 
         aMap.put(NO_SUCH_CARD,"Invalid MyeCash Customer Card");
-        aMap.put(WRONG_CARD,"Invalid Membership card. Please return to company agent for refund.");
-        aMap.put(CARD_ALREADY_IN_USE,"This Membership card is already registered to customer");
+        aMap.put(WRONG_CARD,"Wrong Customer Card Used.");
+        aMap.put(CARD_ALREADY_IN_USE,"This card is already registered to customer");
         aMap.put(CARD_DISABLED,"This Membership card is Disabled and cannot be used");
         aMap.put(CARD_NOT_REG_WITH_CUST,"This Membership card is not registered to any Customer");
         aMap.put(CARD_WRONG_OWNER_MCHNT,"This Membership card is not allocated to you as Merchant. Please return to company agent.");

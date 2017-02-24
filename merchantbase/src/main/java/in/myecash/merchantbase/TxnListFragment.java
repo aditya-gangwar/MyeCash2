@@ -640,7 +640,6 @@ public class TxnListFragment extends BaseFragment {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     LogMy.d(TAG, "In onTouch: " + v.getId());
 
-                    // getRootView was not working, so manually finding root view
                     View rootView = null;
                     if (v.getId() == mCustId.getId() || v.getId() == mDatetime.getId()) {
                         rootView = (View) v.getParent().getParent();
@@ -763,6 +762,7 @@ public class TxnListFragment extends BaseFragment {
 
                     LogMy.d(TAG,"In onClickListener of txn list item");
                     int pos = mTxnRecyclerView.getChildAdapterPosition(v);
+                    //AppCommonUtil.cancelProgressDialog(true);
                     if (pos >= 0 && pos < getItemCount()) {
                         showDetailedDialog(pos);
                     } else {

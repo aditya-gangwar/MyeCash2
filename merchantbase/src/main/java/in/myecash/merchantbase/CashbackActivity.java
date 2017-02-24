@@ -35,7 +35,6 @@ import com.helpshift.support.Support;
 
 import in.myecash.appbase.BaseActivity;
 import in.myecash.appbase.OtpPinInputDialog;
-import in.myecash.appbase.ServerNaActivity;
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.constants.AppConstants;
 
@@ -769,22 +768,14 @@ public class CashbackActivity extends BaseActivity implements
 
         } else if(errorCode == ErrorCodes.DUPLICATE_ENTRY &&
                 custOp.equals(DbConstants.OP_RESET_PIN)) {
-            File file = new File(mWorkFragment.mCardImageFilename);
-            if(file.exists()) {
-                deleteFile(mWorkFragment.mCardImageFilename);
-            }
+            delCardImageFile();
             // Old request is already pending
             String msg = String.format(AppConstants.pinGenerateDuplicateRequestMsg, Integer.toString(MyGlobalSettings.getCustPasswdResetMins()));
             DialogFragmentWrapper.createNotification(AppConstants.pinResetFailureTitle, msg, false, true)
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
         } else {
-            if(mWorkFragment.mCardImageFilename!=null) {
-                File file = new File(mWorkFragment.mCardImageFilename);
-                if (file.exists()) {
-                    deleteFile(mWorkFragment.mCardImageFilename);
-                }
-            }
+            delCardImageFile();
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
@@ -1364,15 +1355,12 @@ public class CashbackActivity extends BaseActivity implements
                 // check if txn image is to be captured
                 if(!captureTxnImage(pin)) {
                     // delete earlier stored captured image file
-                    File file = new File(mWorkFragment.mCardImageFilename);
-                    if(file.exists()) {
-                        deleteFile(mWorkFragment.mCardImageFilename);
-                    }
-                    mWorkFragment.mCardImageFilename = null;
+                    delCardImageFile();
+                } else {
+                    mWorkFragment.mCurrTransaction.getTransaction().setImgFileName(mWorkFragment.mCardImageFilename);
                 }
             }
 
-            mWorkFragment.mCurrTransaction.getTransaction().setImgFileName(mWorkFragment.mCardImageFilename);
             mWorkFragment.commitCashTransaction(pin);
         }
     }
@@ -1409,7 +1397,9 @@ public class CashbackActivity extends BaseActivity implements
             dialog.show(mFragMgr, DIALOG_TXN_SUCCESS);
 
             // if required, start upload of txn image file in background thread
-            if(mWorkFragment.mCardImageFilename != null) {
+            String finalImgName = mWorkFragment.mCurrTransaction.getTransaction().getImgFileName();
+            if(mWorkFragment.mCardImageFilename != null &&
+                    finalImgName!=null && !finalImgName.isEmpty()) {
                 mWorkFragment.uploadImageFile(this, mWorkFragment.mCardImageFilename,
                         mWorkFragment.mCurrTransaction.getTransaction().getImgFileName(),
                         CommonUtils.getTxnImgDir(new Date()));
@@ -1417,13 +1407,7 @@ public class CashbackActivity extends BaseActivity implements
             }
         } else {
             // delete file, if available
-            if(mWorkFragment.mCardImageFilename != null) {
-                File file = new File(mWorkFragment.mCardImageFilename);
-                if(file.exists()) {
-                    deleteFile(mWorkFragment.mCardImageFilename);
-                }
-                mWorkFragment.mCardImageFilename = null;
-            }
+            delCardImageFile();
             // Display failure notification
             DialogFragmentWrapper.createNotification(AppConstants.commitTransFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -1450,6 +1434,16 @@ public class CashbackActivity extends BaseActivity implements
             LogMy.e(TAG, "Exception in CashbackActivity:onDialogResult: "+tag, e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
+    }
+
+    private void delCardImageFile() {
+        if(mWorkFragment.mCardImageFilename!=null) {
+            File file = new File(mWorkFragment.mCardImageFilename);
+            if (file.exists()) {
+                deleteFile(mWorkFragment.mCardImageFilename);
+            }
+            mWorkFragment.mCardImageFilename = null;
         }
     }
 
@@ -1574,10 +1568,12 @@ public class CashbackActivity extends BaseActivity implements
                         mWorkFragment.fetchCashback(qrCode);
                         startBillingFragment();
                     } else {
-                        Toast.makeText(this, "Not a valid customer card.", Toast.LENGTH_LONG).show();
+                        AppCommonUtil.toast(this, "Invalid Customer Card");
                     }
                 } else {
+                    AppCommonUtil.toast(this, "Failed to Read Card");
                     LogMy.d(TAG, "Failed to read barcode");
+                    delCardImageFile();
                 }
             } else if(requestCode == RC_TXN_REPORT) {
                 if(resultCode == ErrorCodes.SESSION_TIMEOUT) {

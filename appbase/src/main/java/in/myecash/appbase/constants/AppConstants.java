@@ -138,6 +138,8 @@ public class AppConstants {
     public static final String custMobileChangeSuccessMsg = "Mobile Number changed successfully.\n\nPlease login again with new mobile number.";
     public static final String enableAccSuccessMsg = "Account is Active now. Please login to proceed.";
 
+    public static final String noDebitWoCardMsg = "Debit not allowed without Customer Card.\n\nScan Card now ?\n";
+
     // Progress dialog messages
     public static final String progressDefault = "Processing ...";
     public static final String progressRegisterMerchant = "Registering merchant ...";

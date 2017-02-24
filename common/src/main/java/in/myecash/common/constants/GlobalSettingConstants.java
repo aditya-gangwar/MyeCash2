@@ -48,6 +48,8 @@ public class GlobalSettingConstants {
     public static final String SETTINGS_DAILY_DOWNTIME_START_HOUR = "Daily_Downtime_Start_Hour";
     public static final String SETTINGS_DAILY_DOWNTIME_END_HOUR = "Daily_Downtime_End_Hour";
     public static final String SETTINGS_SERVICE_NA_URL = "Service_NotAvailable_URL";
+    public static final String SETTINGS_MCHNT_TERMS_URL = "Mchnt_Terms_Url";
+    public static final String SETTINGS_CUST_TERMS_URL = "Cust_Terms_Url";
 
     /*
      * Ones defined only in backend as constant values - as not used by App
@@ -106,7 +108,9 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_DAILY_DOWNTIME_START_HOUR,"5");
         aMap.put(SETTINGS_DAILY_DOWNTIME_END_HOUR,"5");
         //URL to which App will redirect if backend is not available
-        aMap.put(SETTINGS_SERVICE_NA_URL,"http://www.whysotechnologies.com/backsoon");
+        aMap.put(SETTINGS_SERVICE_NA_URL,"http://www.myecash.in/back-soon");
+        aMap.put(SETTINGS_MCHNT_TERMS_URL, "http://www.myecash.in/terms");
+        aMap.put(SETTINGS_CUST_TERMS_URL, "http://www.myecash.in/terms#2");
         valuesGlobalSettings = Collections.unmodifiableMap(aMap);
     }
     /*static {
@@ -183,6 +187,8 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_DAILY_DOWNTIME_START_HOUR, "Start Hour for Daily service downtime (24 hour format).");
         aMap.put(SETTINGS_DAILY_DOWNTIME_END_HOUR, "End Hour for Daily service downtime (24 hour format).");
         aMap.put(SETTINGS_SERVICE_NA_URL, null);
+        aMap.put(SETTINGS_MCHNT_TERMS_URL, null);
+        aMap.put(SETTINGS_CUST_TERMS_URL, null);
         descGlobalSettings = Collections.unmodifiableMap(aMap);
     }
 
@@ -228,6 +234,8 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_DAILY_DOWNTIME_START_HOUR, DATATYPE_INT);
         aMap.put(SETTINGS_DAILY_DOWNTIME_END_HOUR, DATATYPE_INT);
         aMap.put(SETTINGS_SERVICE_NA_URL, DATATYPE_STRING);
+        aMap.put(SETTINGS_MCHNT_TERMS_URL, DATATYPE_STRING);
+        aMap.put(SETTINGS_CUST_TERMS_URL, DATATYPE_STRING);
         valueTypesGlobalSettings = Collections.unmodifiableMap(aMap);
     }
 }
