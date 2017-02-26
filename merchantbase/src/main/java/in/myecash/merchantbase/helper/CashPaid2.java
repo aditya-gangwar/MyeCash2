@@ -3,6 +3,7 @@ package in.myecash.merchantbase.helper;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.graphics.Typeface;
+import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageButton;
 import android.text.Editable;
@@ -40,6 +41,7 @@ public class CashPaid2 implements Serializable, View.OnTouchListener {
     CashPaid2If mCallback;
     TreeSet<Integer> mValues;
     boolean[] markedStatus;
+    long lastCustomAmtClickTime;
 
     public interface CashPaid2If {
         void onAmountEnterFinal(int value, boolean clearCase);
@@ -178,14 +180,20 @@ public class CashPaid2 implements Serializable, View.OnTouchListener {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_UP) {
-                    String uiVal = mInputAmt.getText().toString();
-                    if(uiVal.isEmpty()) {
-                        uiVal = "0";
-                    } else {
-                        //remove rupee symbol
-                        uiVal = uiVal.replace(AppConstants.SYMBOL_RS,"");
+                    long currentClickTime= SystemClock.uptimeMillis();
+                    long elapsedTime=currentClickTime-lastCustomAmtClickTime;
+                    lastCustomAmtClickTime=currentClickTime;
+
+                    if(elapsedTime >= AppConstants.MIN_CLICK_INTERVAL) {
+                        String uiVal = mInputAmt.getText().toString();
+                        if (uiVal.isEmpty()) {
+                            uiVal = "0";
+                        } else {
+                            //remove rupee symbol
+                            uiVal = uiVal.replace(AppConstants.SYMBOL_RS, "");
+                        }
+                        mCallback.collectCustomAmount(uiVal, mMinCashToPay);
                     }
-                    mCallback.collectCustomAmount(uiVal, mMinCashToPay);
                 }
                 return false;
             }
@@ -280,7 +288,7 @@ public class CashPaid2 implements Serializable, View.OnTouchListener {
         LogMy.d(TAG,"In markInputAmt");
         et.setTextColor(ContextCompat.getColor(mActivity, R.color.green_positive));
         et.setTypeface(null, Typeface.BOLD);
-        //et.setBackgroundResource(R.drawable.round_rect_border_selected);
+        et.setBackgroundResource(R.drawable.round_rect_border_selected);
     }
 
     private void unmarkInputAmt(int i) {
@@ -292,6 +300,7 @@ public class CashPaid2 implements Serializable, View.OnTouchListener {
         LogMy.d(TAG,"In unmarkInputAmt");
         et.setTextColor(ContextCompat.getColor(mActivity, R.color.secondary_text));
         et.setTypeface(null, Typeface.NORMAL);
+        et.setBackgroundResource(0);
     }
 
     private void clearCustomAmt() {

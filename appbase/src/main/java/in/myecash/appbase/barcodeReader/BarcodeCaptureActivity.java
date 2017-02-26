@@ -93,7 +93,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
         mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
 
         // read parameters from the intent used to launch the activity.
-        boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, false);
+        boolean autoFocus = getIntent().getBooleanExtra(AutoFocus, true);
         //boolean useFlash = getIntent().getBooleanExtra(UseFlash, false);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);

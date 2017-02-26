@@ -106,7 +106,7 @@ public class SearchCardDialog extends BaseDialog
             intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
             intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
 
-            startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
+            startActivityForResult(intent, RC_BARCODE_CAPTURE_CASH_TXN);
         }
         return false;
     }*/

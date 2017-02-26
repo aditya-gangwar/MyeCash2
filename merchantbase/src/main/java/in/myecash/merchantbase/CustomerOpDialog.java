@@ -380,7 +380,7 @@ public class CustomerOpDialog extends BaseDialog  {
                 mImgFilename = getTempImgFilename(opCode);
                 intent.putExtra(BarcodeCaptureActivity.ImageFileName, mImgFilename);
 
-                startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
+                startActivityForResult(intent, RC_BARCODE_CAPTURE_CASH_TXN);
 
             }
         }

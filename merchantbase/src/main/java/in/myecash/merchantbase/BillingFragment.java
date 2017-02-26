@@ -322,13 +322,19 @@ public class BillingFragment extends BaseFragment {
         mInputItemAmt.setOnTouchListener(this);
     }
 
-    //@Override
-    //public boolean onTouch(View view, MotionEvent motionEvent) {
-    public boolean handleTouchUp(View view) {
+    @Override
+    public boolean handleTouchUp(View v) {
+        // do nothing
+        return false;
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+    //public boolean handleTouchUp(View view) {
         if(!mCallback.getRetainedFragment().getResumeOk())
             return true;
 
-        //if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+        if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
             if(view.getId()==mInputItemAmt.getId()) {
                 if(!mCalcMode) {
                     if (mTempCbExcluded) {
@@ -347,7 +353,7 @@ public class BillingFragment extends BaseFragment {
             } else {
                 return false;
             }
-        //}
+        }
         return true;
     }
 

@@ -66,7 +66,7 @@ import java.util.Map;
 
 public class CashbackActivity extends BaseActivity implements
         MyRetainedFragment.RetainedFragmentIf, MobileNumberFragment.MobileFragmentIf,
-        BillingFragment.BillingFragmentIf, CashTransactionFragment.CashTransactionFragmentIf,
+        BillingFragment.BillingFragmentIf, CashTransactionFragment_2.CashTransactionFragmentIf,
         DialogFragmentWrapper.DialogFragmentWrapperIf, OrderListViewFragment.OrderListViewFragmentIf,
         CustomerRegDialog.CustomerRegFragmentIf, TxnSuccessDialog.TxnSuccessDialogIf,
         CustomerOpDialog.CustomerOpDialogIf, OtpPinInputDialog.OtpPinInputDialogIf,
@@ -1571,7 +1571,7 @@ public class CashbackActivity extends BaseActivity implements
                         AppCommonUtil.toast(this, "Invalid Customer Card");
                     }
                 } else {
-                    AppCommonUtil.toast(this, "Failed to Read Card");
+                    //AppCommonUtil.toast(this, "Failed to Read Card");
                     LogMy.d(TAG, "Failed to read barcode");
                     delCardImageFile();
                 }
@@ -1580,6 +1580,8 @@ public class CashbackActivity extends BaseActivity implements
                     DialogFragmentWrapper.createNotification(AppConstants.notLoggedInTitle, AppCommonUtil.getErrorDesc(resultCode), false, true)
                             .show(mFragMgr, DIALOG_SESSION_TIMEOUT);
                 }
+            } else {
+                super.onActivityResult(requestCode, resultCode, data);
             }
         }
         catch (Exception e) {
@@ -1668,7 +1670,7 @@ public class CashbackActivity extends BaseActivity implements
             if (fragment == null) {
                 //setDrawerState(false);
                 // Create new fragment and transaction
-                Fragment transFragment = new CashTransactionFragment();
+                Fragment transFragment = new CashTransactionFragment_2();
                 FragmentTransaction transaction = mFragMgr.beginTransaction();
 
                 // Add over the existing fragment

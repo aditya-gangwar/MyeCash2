@@ -179,7 +179,7 @@ public class TxnCancelDialog extends BaseDialog {
                 intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
                 mImgFilename = getTempImgFilename(mTxnId);
                 intent.putExtra(BarcodeCaptureActivity.ImageFileName, mImgFilename);
-                startActivityForResult(intent, RC_BARCODE_CAPTURE_CARD_DIALOG);
+                startActivityForResult(intent, RC_BARCODE_CAPTURE_CASH_TXN);
 
             }
             return true;

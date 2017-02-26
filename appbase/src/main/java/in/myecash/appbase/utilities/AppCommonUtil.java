@@ -1,5 +1,7 @@
 package in.myecash.appbase.utilities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -30,6 +32,7 @@ import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.util.TypedValue;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -145,8 +148,9 @@ public class AppCommonUtil {
      8 Show toast on screen
      */
     public static void toast(Context context, String msg) {
-        if(mToast!=null)
+        if(mToast!=null) {
             mToast.cancel();
+        }
         mToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
         mToast.show();
     }
@@ -634,6 +638,30 @@ public class AppCommonUtil {
         DrawableCompat.setTint(wrapDrawable, ContextCompat.getColor(context, colorResId));
 
         item.setIcon(wrapDrawable);
+    }
+
+    public static void animateViewVisible(View view) {
+        // Prepare the View for the animation
+        view.setVisibility(View.VISIBLE);
+        view.setAlpha(0.0f);
+
+        // Start the animation
+        view.animate()
+                .translationY(view.getHeight())
+                .alpha(1.0f);
+    }
+
+    public static void animateViewHide(final View view) {
+        view.animate()
+            .translationY(0)
+            .alpha(0.0f)
+            .setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    view.setVisibility(View.GONE);
+                }
+            });
     }
 
     /*

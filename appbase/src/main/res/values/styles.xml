@@ -302,6 +302,10 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="Edittext_only_view_XS" parent="Edittext_only_view_small">
+        <item name="android:textSize">@dimen/text_size_XS</item>
+    </style>
+
     <style name="Edittext_only_view_small" parent="Edittext_only_click_small">
         <item name="android:clickable">false</item>
         <item name="android:focusable">false</item>

@@ -62,6 +62,7 @@
     <dimen name="keyboard_margin_sides_mid_col_dialog">10dp</dimen>
     <dimen name="keyboard_margin_tops_dialog">4dp</dimen>
 
+    <dimen name="text_size_XS">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_medium">17sp</dimen>
     <dimen name="text_size_large">20sp</dimen>
