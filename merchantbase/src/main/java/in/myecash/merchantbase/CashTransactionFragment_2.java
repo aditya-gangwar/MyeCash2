@@ -134,7 +134,7 @@ public class CashTransactionFragment_2 extends BaseFragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_cash_txn3, container, false);
+        View v = inflater.inflate(R.layout.fragment_cash_txn4, container, false);
 
         // access to UI elements
         bindUiResources(v);
@@ -550,11 +550,11 @@ public class CashTransactionFragment_2 extends BaseFragment implements
             String str = "";
             if(cbApply && cbExtraApply) {
                 // both CB appl - show only rates - else string will be too long to display in single line
-                str = "Cashback  @ "+mCbRate+"% + "+mPpCbRate+"%";
+                str = "* Cashback  @ "+mCbRate+"% + "+mPpCbRate+"%";
             } else if(cbApply) {
-                str = "Cashback  @ "+mCbRate+"% of  "+ AppCommonUtil.getAmtStr(cbEligibleAmt);
+                str = "* Cashback  @ "+mCbRate+"% of  "+ AppCommonUtil.getAmtStr(cbEligibleAmt);
             } else if(cbExtraApply) {
-                str = "Cashback  @ "+mPpCbRate+"% of  "+ AppCommonUtil.getAmtStr(mAddCashload);
+                str = "* Cashback  @ "+mPpCbRate+"% of  "+ AppCommonUtil.getAmtStr(mAddCashload);
             }
             mLabelAddCb.setText(str);
         }
@@ -970,7 +970,7 @@ public class CashTransactionFragment_2 extends BaseFragment implements
         mLabelBill.setOnTouchListener(this);
         mInputBillAmt.setOnTouchListener(this);
 
-        mLayoutAccount.setOnTouchListener(this);
+        //mLayoutAccount.setOnTouchListener(this);
         mImgAccount.setOnTouchListener(this);
         mLabelAccount.setOnTouchListener(this);
         mInputAccount.setOnTouchListener(this);

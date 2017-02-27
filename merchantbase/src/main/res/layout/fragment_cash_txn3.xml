@@ -105,7 +105,8 @@
             android:layout_marginLeft="@dimen/small_space"
             android:layout_marginRight="@dimen/small_space"
             android:layout_marginTop="@dimen/medium_space"
-            android:id="@+id/layout_account">
+            android:id="@+id/layout_account"
+            android:background="@android:drawable/list_selector_background">
 
             <ImageView
                 android:layout_width="wrap_content"

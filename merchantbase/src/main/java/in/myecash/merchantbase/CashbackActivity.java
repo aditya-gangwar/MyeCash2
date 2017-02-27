@@ -1299,6 +1299,10 @@ public class CashbackActivity extends BaseActivity implements
                 startBillingFragment();
             }
         } else {
+            if(mCashTxnStartPending) {
+                AppCommonUtil.cancelProgressDialog(true);
+                mCashTxnStartPending = false;
+            }
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             restartTxn();

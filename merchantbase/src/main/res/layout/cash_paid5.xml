@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:id="@+id/title_cashPaid"
+        android:layout_marginLeft="@dimen/small_space">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cash_logo_18dp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/secondary_text"
+            android:text="CASH PAID"/>
+
+        <!--View
+            style="@style/Divider_horizontal_Medium"
+            android:layout_width="0dp"
+            android:layout_weight="100"
+            android:background="@color/primary"/-->
+
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_below="@id/title_cashPaid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        card_view:cardCornerRadius="2dp">
+
+    <!--LinearLayout
+        style="@style/LL_Vertical"
+        android:layout_below="@id/title_cashPaid"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_rect_border"-->
+
+        <LinearLayout
+            style="@style/LL_Vertical"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_cash_paid">
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_cashPaid"
+                    android:id="@+id/choice_cash_pay_1"
+                    android:hint="\u20B9 0"/>
+                <View
+                    style="@style/Divider_vertical_Medium"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_cashPaid"
+                    android:id="@+id/choice_cash_pay_2"
+                    android:hint="\u20B9 0"/>
+                <View
+                    style="@style/Divider_vertical_Medium"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_cashPaid"
+                    android:id="@+id/choice_cash_pay_3"
+                    android:hint="\u20B9 0"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/Divider_horizontal_Medium"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap">
+
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_cashPaid"
+                    android:id="@+id/choice_cash_pay_4"
+                    android:hint="\u20B9 0"/>
+                <View
+                    style="@style/Divider_vertical_Medium"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_cashPaid"
+                    android:id="@+id/choice_cash_pay_5"
+                    android:hint="\u20B9 0"/>
+                <View
+                    style="@style/Divider_vertical_Medium"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_cashPaid"
+                    android:id="@+id/choice_cash_pay_custom"
+                    android:hint="@string/cash_paid_other_label"
+                    android:drawableRight="@drawable/ic_edit_18dp_999"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+            <!--LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_cash_row1"
+                android:layout_marginLeft="@dimen/small_space"
+                android:layout_marginRight="@dimen/small_space"
+                android:layout_marginTop="@dimen/large_space">
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="0dp"
+                    android:layout_weight="29"
+                    android:id="@+id/choice_cash_pay_1"
+                    android:hint="\u20B9 0"
+                    android:textColor="@color/secondary_text" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6.5"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="0dp"
+                    android:layout_weight="29"
+                    android:id="@+id/choice_cash_pay_2"
+                    android:hint="\u20B9 0"
+                    android:textColor="@color/secondary_text"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6.5"/-->
+
+            <!-- paddingRight of 24 dp to bring it in line with custom amount box below
+            24 dp = 18dp (pencil drwawble size) + 6 dp (normal edittext padding) -->
+            <!--EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="0dp"
+                android:layout_weight="29"
+                android:id="@+id/choice_cash_pay_3"
+                android:hint="\u20B9 0"
+                android:textColor="@color/secondary_text"
+                android:paddingRight="@dimen/cash_paid_3_padding"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_cash_row2"
+            android:layout_marginRight="@dimen/small_space"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_marginTop="@dimen/large_space">
+
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="0dp"
+                android:layout_weight="29"
+                android:id="@+id/choice_cash_pay_4"
+                android:hint="\u20B9 0"
+                android:textColor="@color/secondary_text" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"/>
+
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="0dp"
+                android:layout_weight="29"
+                android:id="@+id/choice_cash_pay_5"
+                android:hint="\u20B9 0"
+                android:textColor="@color/secondary_text" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7.5"/>
+
+            <EditText
+                style="@style/Edittext_only_view_medium"
+                android:layout_width="0dp"
+                android:layout_weight="29"
+                android:id="@+id/choice_cash_pay_custom"
+                android:hint="@string/cash_paid_other_label"
+                android:textColor="@color/secondary_text"
+                android:drawableRight="@drawable/ic_edit_18dp_999"/>
+
+        </LinearLayout-->
+
+        </android.support.v7.widget.CardView>
+    <!--/LinearLayout-->
+
+</RelativeLayout>

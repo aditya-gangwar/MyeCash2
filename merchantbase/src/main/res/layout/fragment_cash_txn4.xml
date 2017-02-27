@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/myCoordinatorLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/root_cashTxnFragment"
+        android:background="@color/bg_light_grey">
+
+        <!--android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:minHeight="?attr/actionBarSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"/-->
+        <!--include layout="@layout/activity_cashback"/-->
+
+        <LinearLayout
+            style="@style/LL_Vertical"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_last_row_btn"
+            android:layout_alignParentBottom="true">
+
+            <View
+                style="@style/Divider_horizontal_Medium"
+                android:id="@+id/divider_btn_collect_cash"
+                android:background="@color/green_positive"/>
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_border"
+                android:id="@+id/btn_collect_cash"
+                android:text="Collect      \u20B9 0"
+                android:textColor="@color/primary"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Vertical_paddingSidesXL"
+            android:id="@+id/layout_whole"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/layout_last_row_btn">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="25"/>
+
+            <!--android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                card_view:cardCornerRadius="2dp"-->
+
+
+            <LinearLayout
+                style="@style/LL_Vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_rect_border">
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:layout_marginLeft="@dimen/small_space"
+                android:layout_marginRight="@dimen/small_space"
+                android:paddingTop="@dimen/small_space"
+                android:paddingBottom="@dimen/small_space"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_receipt_white_24dp"
+                    android:id="@+id/img_trans_bill_amt"
+                    android:layout_marginRight="@dimen/small_space"
+                    android:tint="@color/primary"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="60"
+                    android:gravity="left|center_vertical"
+                    android:text="Total Bill"
+                    android:id="@+id/label_trans_bill_amt"/>
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/input_trans_bill_amt"
+                    android:text="\u20B9 0"
+                    android:gravity="right|center_vertical"
+                    android:layout_weight="30"
+                    android:textColor="@color/green_positive"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+                <!--View
+                    style="@style/Divider_horizontal_Medium"/-->
+
+                <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:layout_marginLeft="@dimen/small_space"
+                android:layout_marginRight="@dimen/small_space"
+                android:id="@+id/layout_account"
+                    android:paddingTop="@dimen/small_space"
+                    android:paddingBottom="@dimen/small_space">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_account_balance_wallet_white_24dp"
+                    android:id="@+id/img_account"
+                    android:layout_marginRight="@dimen/small_space"
+                    android:tint="@color/primary"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="60"
+                    android:gravity="left|center_vertical"
+                    android:text="Account"
+                    android:id="@+id/label_account"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/input_account"
+                    android:text="\u20B9 0"
+                    android:gravity="right|center_vertical"
+                    android:layout_weight="30"
+                    android:textColor="@color/secondary_text"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+                <!--View
+                    style="@style/Divider_horizontal_Medium"/-->
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:layout_marginLeft="@dimen/small_space"
+                android:layout_marginRight="@dimen/small_space"
+                android:id="@+id/layout_cb"
+                android:paddingTop="@dimen/small_space"
+                android:paddingBottom="@dimen/small_space">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_favorite_white_24dp"
+                    android:id="@+id/img_cashback"
+                    android:layout_marginRight="@dimen/small_space"
+                    android:tint="@color/primary"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="60"
+                    android:gravity="left|center_vertical"
+                    android:text="Cashback Debit"
+                    android:id="@+id/label_cashback"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/input_cashback"
+                    android:text="\u20B9 0"
+                    android:gravity="right|center_vertical"
+                    android:layout_weight="30"
+                    android:textColor="@color/secondary_text"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            </LinearLayout>
+            <!--/android.support.v7.widget.CardView-->
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:layout_marginTop="@dimen/medium_space"
+                android:layout_marginLeft="@dimen/small_space"
+                android:layout_marginRight="@dimen/small_space"
+                android:id="@+id/layout_cashback_add">
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="60"
+                    android:gravity="left|center_vertical"
+                    android:text="* Cashback"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="italic"
+                    android:id="@+id/label_cashback_add"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/input_cashback_add"
+                    android:text="+ \u20B9 0"
+                    android:gravity="right|center_vertical"
+                    android:layout_weight="30"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="italic"/>
+            </LinearLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"/>
+
+            <include layout="@layout/cash_paid5"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="25"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

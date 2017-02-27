@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/LL_Vertical_paddingSidesLarge"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/screen_side_padding"
+        android:paddingRight="@dimen/screen_side_padding">
 
         <EditText
             style="@style/Edittext_only_view_small"
@@ -133,7 +136,6 @@
     </RelativeLayout>
 
     <View
-        style="@style/Divider_horizontal_Large"
-        android:id="@+id/txn_divider_1"/>
+        style="@style/Divider_horizontal_Medium"/>
 
 </LinearLayout>

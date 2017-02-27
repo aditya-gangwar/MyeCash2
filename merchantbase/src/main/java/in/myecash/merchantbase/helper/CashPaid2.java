@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.graphics.Typeface;
 import android.os.SystemClock;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -54,7 +55,7 @@ public class CashPaid2 implements Serializable, View.OnTouchListener {
         mMinCashToPay = minCashToPay;
         mBillAmt = billAmt;
         mValues = new TreeSet<>();
-        mInputCashPay = new EditText[UI_SLOT_COUNT];
+        mInputCashPay = new AppCompatButton[UI_SLOT_COUNT];
         markedStatus = new boolean[UI_SLOT_COUNT];
     }
 
@@ -284,11 +285,11 @@ public class CashPaid2 implements Serializable, View.OnTouchListener {
         markInputAmt(mInputCashPay[i]);
         markedStatus[i] = true;
     }
-    private void markInputAmt(EditText et) {
+    private void markInputAmt(AppCompatButton et) {
         LogMy.d(TAG,"In markInputAmt");
         et.setTextColor(ContextCompat.getColor(mActivity, R.color.green_positive));
         et.setTypeface(null, Typeface.BOLD);
-        et.setBackgroundResource(R.drawable.round_rect_border_selected);
+        //et.setBackgroundResource(R.drawable.round_rect_border_selected);
     }
 
     private void unmarkInputAmt(int i) {
@@ -296,11 +297,11 @@ public class CashPaid2 implements Serializable, View.OnTouchListener {
         unmarkInputAmt(mInputCashPay[i]);
         markedStatus[i] = false;
     }
-    private void unmarkInputAmt(EditText et) {
+    private void unmarkInputAmt(AppCompatButton et) {
         LogMy.d(TAG,"In unmarkInputAmt");
         et.setTextColor(ContextCompat.getColor(mActivity, R.color.secondary_text));
         et.setTypeface(null, Typeface.NORMAL);
-        et.setBackgroundResource(0);
+        //et.setBackgroundResource(0);
     }
 
     private void clearCustomAmt() {
@@ -318,16 +319,16 @@ public class CashPaid2 implements Serializable, View.OnTouchListener {
         mInputAmt.setText(str);
     }
 
-    private EditText[] mInputCashPay;
-    private EditText mInputAmt;
+    private AppCompatButton[] mInputCashPay;
+    private AppCompatButton mInputAmt;
 
     private void initUiResources(View v) {
         LogMy.d(TAG,"In initUiResources");
-        mInputCashPay[0] = (EditText) v.findViewById(R.id.choice_cash_pay_1);
-        mInputCashPay[1] = (EditText) v.findViewById(R.id.choice_cash_pay_2);
-        mInputCashPay[2] = (EditText) v.findViewById(R.id.choice_cash_pay_3);
-        mInputCashPay[3] = (EditText) v.findViewById(R.id.choice_cash_pay_4);
-        mInputCashPay[4] = (EditText) v.findViewById(R.id.choice_cash_pay_5);
-        mInputAmt = (EditText) v.findViewById(R.id.choice_cash_pay_custom);
+        mInputCashPay[0] = (AppCompatButton) v.findViewById(R.id.choice_cash_pay_1);
+        mInputCashPay[1] = (AppCompatButton) v.findViewById(R.id.choice_cash_pay_2);
+        mInputCashPay[2] = (AppCompatButton) v.findViewById(R.id.choice_cash_pay_3);
+        mInputCashPay[3] = (AppCompatButton) v.findViewById(R.id.choice_cash_pay_4);
+        mInputCashPay[4] = (AppCompatButton) v.findViewById(R.id.choice_cash_pay_5);
+        mInputAmt = (AppCompatButton) v.findViewById(R.id.choice_cash_pay_custom);
     }
 }

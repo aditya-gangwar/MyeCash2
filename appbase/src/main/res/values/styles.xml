@@ -85,6 +85,17 @@
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
+    <style name="button_cashPaid" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">@dimen/medium_space</item>
+        <item name="android:minHeight">@dimen/XXXXL_space</item>
+    </style>
+
     <style name="button_normal_white" parent="button_normal">
         <item name="android:textColor">@color/accent2</item>
         <item name="android:background">@color/white</item>
