@@ -109,7 +109,9 @@
                 android:layout_marginRight="@dimen/small_space"
                 android:id="@+id/layout_account"
                     android:paddingTop="@dimen/small_space"
-                    android:paddingBottom="@dimen/small_space">
+                    android:paddingBottom="@dimen/small_space"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -117,7 +119,8 @@
                     android:src="@drawable/ic_account_balance_wallet_white_24dp"
                     android:id="@+id/img_account"
                     android:layout_marginRight="@dimen/small_space"
-                    android:tint="@color/primary"/>
+                    android:tint="@color/primary"
+                    android:clickable="false" />
 
                 <EditText
                     style="@style/Edittext_only_view_medium"
@@ -210,14 +213,14 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="50"/>
+                android:layout_weight="40"/>
 
             <include layout="@layout/cash_paid5"/>
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="25"/>
+                android:layout_weight="35"/>
 
         </LinearLayout>
     </RelativeLayout>

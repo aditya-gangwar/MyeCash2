@@ -33,9 +33,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/label_info_age"
-                android:text="***  FOR PEOPLE > 18 YEARS ONLY  ***"
+                android:text="*  FOR PEOPLE ABOVE 18 YEARS ONLY  *"
                 android:textStyle="bold"
-                android:textColor="@color/primary_text"
+                android:textColor="@color/secondary_text"
                 android:layout_marginBottom="@dimen/medium_space"/>
 
             <EditText

@@ -18,6 +18,19 @@
         android:id="@+id/layout_last_row_btn"
         android:layout_alignParentBottom="true">
 
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Verify Amounts above and Confirm Transaction !"
+            android:layout_gravity="center"
+            android:textStyle="italic"
+            android:textColor="@color/accent2"
+            android:layout_marginLeft="@dimen/small_space"
+            android:layout_marginRight="@dimen/small_space"
+            android:layout_marginBottom="@dimen/medium_space"
+            android:gravity="center"/>
+
         <View
             style="@style/Divider_horizontal_Medium"
             android:id="@+id/divider_btn_collect_cash"
@@ -42,7 +55,7 @@
 
         <LinearLayout
             style="@style/LL_Vertical_paddingSidesXL"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_space">
 
             <LinearLayout

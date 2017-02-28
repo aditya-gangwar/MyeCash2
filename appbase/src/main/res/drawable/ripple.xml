@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:color="@color/icon_grey"
+    android:color="?attr/colorControlHighlight"
     tools:targetApi="lollipop"> <!-- ripple effect color -->
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">

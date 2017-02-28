@@ -9,6 +9,7 @@ import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.QueryOptions;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
+import in.myecash.common.database.Cashback;
 import in.myecash.common.database.Transaction;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -85,7 +86,7 @@ public class MyTransaction {
         return map.values();
     }
 
-    public void commit() {
+    public void commit(String tableName) {
         LogMy.d(TAG, "In commit");
         mCurrTransaction = Backendless.Persistence.save( mCurrTransaction );
     }

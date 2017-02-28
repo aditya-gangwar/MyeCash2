@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="AUX678GF"
-            android:paddingTop="0dp"/>
+            android:paddingTop="0dp"
+            android:textColor="@color/secondary_text"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
@@ -33,6 +34,7 @@
                 android:layout_width="wrap_content"
                 android:text="\u20B9 99,999"
                 android:paddingRight="0dp"
+                android:textColor="@color/secondary_text"
                 android:textStyle="bold"/>
 
             <EditText

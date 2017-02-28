@@ -900,11 +900,14 @@ public class AppCommonUtil {
         Backendless.Data.mapTableToClass("Address", Address.class);
         Backendless.Data.mapTableToClass("Cities", Cities.class);
 
-        Backendless.Data.mapTableToClass( "Transaction0", Transaction.class );
+        /*Backendless.Data.mapTableToClass( "Transaction0", Transaction.class );
         Backendless.Data.mapTableToClass( "Cashback0", Cashback.class );
 
         Backendless.Data.mapTableToClass( "Transaction1", Transaction.class );
-        Backendless.Data.mapTableToClass( "Cashback1", Cashback.class );
+        Backendless.Data.mapTableToClass( "Cashback1", Cashback.class );*/
+
+        Backendless.Data.mapTableToClass( "Transaction6", Transaction.class );
+        Backendless.Data.mapTableToClass( "Cashback6", Cashback.class );
 
     }
 

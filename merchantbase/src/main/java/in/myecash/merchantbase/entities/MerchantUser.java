@@ -376,7 +376,7 @@ public class MerchantUser
             /*Transaction newTxn = MerchantServices.getInstance().commitTxn(txn.getTransaction());
             LogMy.d(TAG, "Txn commit success: " + newTxn.getTrans_id());
             txn.setCurrTransaction(newTxn);*/
-            txn.commit();
+            txn.commit(mMerchant.getTxn_table());
 
         } catch( BackendlessException e ) {
             LogMy.e(TAG, "Commit cash transaction failed: " + e.toString());
@@ -546,6 +546,8 @@ public class MerchantUser
     }
 
     private void initWithMchntObject() {
+        LogMy.d(TAG,mMerchant.getCashback_table()+", "+mMerchant.getTxn_table());
+
         // map cashback and transaction table
         Backendless.Data.mapTableToClass(mMerchant.getCashback_table(), Cashback.class);
         Backendless.Data.mapTableToClass(mMerchant.getTxn_table(), Transaction.class);

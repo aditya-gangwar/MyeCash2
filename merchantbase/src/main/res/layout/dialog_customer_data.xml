@@ -28,7 +28,7 @@
                 android:id="@+id/label_information_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Search Customer by Customer ID" />
+                android:text="Search Customer by ID" />
         </LinearLayout>
 
         <Space

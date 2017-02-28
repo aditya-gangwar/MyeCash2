@@ -137,7 +137,7 @@ public class CashbackActivity extends BaseActivity implements
     private Merchants mMerchant;
 
     // Activity state members: These are to be saved for restore in event of activity recreation
-    boolean mCashTxnStartPending;
+    //boolean mCashTxnStartPending;
     boolean mExitAfterLogout;
     boolean mTbImageIsMerchant;
     int mLastMenuItemId;
@@ -165,7 +165,7 @@ public class CashbackActivity extends BaseActivity implements
         mWorkFragment.mUserToken = getIntent().getStringExtra(INTENT_EXTRA_USER_TOKEN);
 
         if(savedInstanceState!=null) {
-            mCashTxnStartPending = savedInstanceState.getBoolean("mCashTxnStartPending");
+            //mCashTxnStartPending = savedInstanceState.getBoolean("mCashTxnStartPending");
             mExitAfterLogout = savedInstanceState.getBoolean("mExitAfterLogout");
             mTbImageIsMerchant = savedInstanceState.getBoolean("mTbImageIsMerchant");
             mLastMenuItemId = savedInstanceState.getInt("mLastMenuItemId");
@@ -1264,8 +1264,10 @@ public class CashbackActivity extends BaseActivity implements
     public void onCashbackResponse(int errorCode) {
         LogMy.d(TAG, "In onCashbackResponse: " + errorCode);
 
+        AppCommonUtil.cancelProgressDialog(true);
+
         if(mLastMenuItemId == R.id.menu_customers) {
-            AppCommonUtil.cancelProgressDialog(true);
+            //AppCommonUtil.cancelProgressDialog(true);
             // response against search of particular customer details
             if(errorCode==ErrorCodes.NO_ERROR) {
                 // show customer details dialog
@@ -1284,25 +1286,27 @@ public class CashbackActivity extends BaseActivity implements
             // Billing fragment must have started by now
             // show mobile number fragment
             //mFragMgr.popBackStackImmediate(MOBILE_NUM_FRAGMENT, 0);
-            goToMobileNumFrag();
+            //goToMobileNumFrag();
             askAndRegisterCustomer(false);
 
         } else if(errorCode==ErrorCodes.NO_ERROR) {
             // update customer ids to actual fetched - just to be sure
             updateCustIds();
             updateTbForCustomer();
-            if(mCashTxnStartPending) {
-                AppCommonUtil.cancelProgressDialog(true);
+            startBillingFragment();
+
+            /*if(mCashTxnStartPending) {
+                //AppCommonUtil.cancelProgressDialog(true);
                 startCashTransFragment();
             } else if(mMobileNumFragment.isVisible()) {
                 // Register customer cases - start Billing fragment
                 startBillingFragment();
-            }
+            }*/
         } else {
-            if(mCashTxnStartPending) {
-                AppCommonUtil.cancelProgressDialog(true);
+            /*if(mCashTxnStartPending) {
+                //AppCommonUtil.cancelProgressDialog(true);
                 mCashTxnStartPending = false;
-            }
+            }*/
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             restartTxn();
@@ -1546,8 +1550,10 @@ public class CashbackActivity extends BaseActivity implements
                 } else {
                     mWorkFragment.mCustMobile = mobileNum;
                     Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, mobileNum);
+
+                    AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
                     mWorkFragment.fetchCashback(mobileNum);
-                    startBillingFragment();
+                    //startBillingFragment();
                 }
             }
         }
@@ -1569,8 +1575,9 @@ public class CashbackActivity extends BaseActivity implements
                         Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, qrCode);
                         mWorkFragment.mCardPresented = true;
 
+                        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
                         mWorkFragment.fetchCashback(qrCode);
-                        startBillingFragment();
+                        //startBillingFragment();
                     } else {
                         AppCommonUtil.toast(this, "Invalid Customer Card");
                     }
@@ -1659,7 +1666,22 @@ public class CashbackActivity extends BaseActivity implements
     private void startCashTransFragment() {
         //mTbCalculator.setVisibility(View.GONE);
 
-        if(mWorkFragment.mCurrCashback==null || mWorkFragment.mCurrCashback.getCurrCbBalance()==-1) {
+        Fragment fragment = mFragMgr.findFragmentByTag(CASH_TRANS_FRAGMENT);
+        if (fragment == null) {
+            //setDrawerState(false);
+            // Create new fragment and transaction
+            Fragment transFragment = new CashTransactionFragment_2();
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container_1, transFragment, CASH_TRANS_FRAGMENT);
+            transaction.addToBackStack(CASH_TRANS_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+
+        /*if(mWorkFragment.mCurrCashback==null || mWorkFragment.mCurrCashback.getCurrCbBalance()==-1) {
             // means cashback object is null and not fetched yet from backend
             // we need to wait till it get fetched or error happens
             // set flag to start 'transaction fragment' in the response to fetch cashback request
@@ -1684,7 +1706,7 @@ public class CashbackActivity extends BaseActivity implements
                 // Commit the transaction
                 transaction.commit();
             }
-        }
+        }*/
     }
 
     private void startMobileNumFragment() {
@@ -1924,7 +1946,7 @@ public class CashbackActivity extends BaseActivity implements
         LogMy.d(TAG,"In onSaveInstanceState");
         super.onSaveInstanceState(outState);
 
-        outState.putBoolean("mCashTxnStartPending", mCashTxnStartPending);
+        //outState.putBoolean("mCashTxnStartPending", mCashTxnStartPending);
         outState.putBoolean("mExitAfterLogout", mExitAfterLogout);
         outState.putBoolean("mTbImageIsMerchant", mTbImageIsMerchant);
         outState.putInt("mLastMenuItemId", mLastMenuItemId);

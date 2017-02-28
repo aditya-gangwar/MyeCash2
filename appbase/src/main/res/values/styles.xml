@@ -127,7 +127,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textColor">@color/accent</item>
+        <item name="android:textColor">@color/green_positive</item>
         <item name="android:minHeight">@dimen/big_space</item>
     </style>
 

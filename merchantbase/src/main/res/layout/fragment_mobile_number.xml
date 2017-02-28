@@ -20,7 +20,7 @@
 
         <View
             style="@style/Divider_horizontal_Medium"
-            android:background="@color/accent"/>
+            android:background="@color/green_positive"/>
         <android.support.v7.widget.AppCompatButton
             style="@style/button_normal_border"
             android:id="@+id/btn_process"

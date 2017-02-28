@@ -61,8 +61,8 @@ public class GlobalSettingConstants {
     // as they depend on above 'passwd reset mins' values - keep the values 1/6th of them
     // TODO: Keep the 'backend passwd reset timer' duration (below defined) 1/6th of 'password reset mins' values
     // So, if Cool_off_mins is 60, then timer should run every 10 mins
-    public static final int MERCHANT_PASSWORD_RESET_TIMER_INTERVAL = 5;
-    public static final int CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL = 5;
+    public static final int MERCHANT_PASSWORD_RESET_TIMER_INTERVAL = 10;
+    public static final int CUSTOMER_PASSWORD_RESET_TIMER_INTERVAL = 10;
 
     /*
      * Map to Values
@@ -76,22 +76,24 @@ public class GlobalSettingConstants {
     public static final Map<String, String> valuesGlobalSettings;
     static {
         Map<String, String> aMap = new HashMap<>(TOTAL_SETTINGS_CNT);
-        aMap.put(SETTINGS_MERCHANT_PASSWD_RESET_MINS,"60");
-        aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS,"60");
+        aMap.put(SETTINGS_MERCHANT_PASSWD_RESET_MINS,"50");
+        aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS,"50");
         aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_MINS,"60");
         aMap.put(SETTINGS_CUSTOMER_ACCOUNT_BLOCK_MINS,"60");
         aMap.put(SETTINGS_CUST_ACC_LIMIT_MODE_MINS,"60");
         aMap.put(SETTINGS_STATS_NO_REFRESH_MINS,"30");
-        aMap.put(SETTINGS_CUSTOMER_NO_REFRESH_MINS,"15");
+        aMap.put(SETTINGS_CUSTOMER_NO_REFRESH_MINS,"60");
         aMap.put(SETTINGS_WRONG_ATTEMPT_RESET_MINS,"120");
 
         aMap.put(SETTINGS_CB_REDEEM_CARD_REQ,"true");
         aMap.put(SETTINGS_ACC_DB_CARD_REQ,"true");
-        aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN,"5000");
+        // Keeping this same as 'SETTINGS_CUSTOMER_CASH_LIMIT'
+        // which effectively means - PIN will never be required for credit
+        aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN,"4000");
         aMap.put(SETTINGS_CL_DEBIT_LIMIT_FOR_PIN,"10");
-        aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN,"10");
+        aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN,"50");
         aMap.put(SETTINGS_CB_REDEEM_LIMIT,"200");
-        aMap.put(SETTINGS_CUSTOMER_CASH_LIMIT,"5000");
+        aMap.put(SETTINGS_CUSTOMER_CASH_LIMIT,"4000");
 
         aMap.put(SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS,"30");
         aMap.put(SETTINGS_TXNS_INTABLE_KEEP_DAYS,"10");
