@@ -53,11 +53,9 @@
         </activity>
 
         <activity
-            android:name="in.myecash.merchantbase.TermsConditionsActivity"
-            android:label="@string/title_activity_terms_conditions"
+            android:name="in.myecash.appbase.SingleWebViewActivity"
             android:screenOrientation="portrait">
         </activity>
-
 
         <activity
             android:name="in.myecash.merchantbase.CashbackActivity"

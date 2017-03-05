@@ -23,11 +23,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.SortTxnDialog;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.utilities.ItemClickSupport;
 import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -532,6 +534,15 @@ public class TxnListFragment extends BaseFragment {
 
     private void updateUI() {
         mTxnRecyclerView.setAdapter(new TxnAdapter(mRetainedFragment.mLastFetchTransactions));
+        /*ItemClickSupport.addTo(mTxnRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                // show order details
+                LogMy.d(TAG,"Clicked list item: "+position);
+                //mCallback.showOrderDetails(position);
+                showDetailedDialog(position);
+            }
+        });*/
         mCallback.setToolbarTitle(mRetainedFragment.mLastFetchTransactions.size() + " Transactions");
     }
 
@@ -578,60 +589,77 @@ public class TxnListFragment extends BaseFragment {
         outState.putInt("mSelectedSortType", mSelectedSortType);
     }
 
-    private class TxnHolder extends RecyclerView.ViewHolder
-            implements View.OnTouchListener {
+    private class TxnHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Transaction mTxn;
 
-        public EditText mDatetime;
-        public EditText mCustId;
-        //public EditText mTxnId;
+        public TextView mDatetime;
+        public TextView mCustId;
+        //public TextView mTxnId;
 
-        public EditText mBillAmount;
-        public EditText mCashbackAward;
+        public TextView mBillAmount;
+        public TextView mCashbackAward;
         public View mCashbackIcon1;
-        public EditText mCbAwardCancel;
+        public TextView mCbAwardCancel;
         public View mAccountIcon;
-        public EditText mAccountAmt;
+        public TextView mAccountAmt;
         public View mCashbackIcon;
-        public EditText mCashbackAmt;
+        public TextView mCashbackAmt;
 
-        public View mLayoutCancel;
-        public EditText mCancelTime;
+        //public View mLayoutCancel;
+        public TextView mCancelTime;
+
+        //public View rootLayout;
 
         //public ImageView mSecureIcon;
 
         public TxnHolder(View itemView) {
             super(itemView);
             //itemView.setOnClickListener(this);
-            mDatetime = (EditText) itemView.findViewById(R.id.txn_time);
-            mCustId = (EditText) itemView.findViewById(R.id.txn_customer_id);
-            //mTxnId = (EditText) itemView.findViewById(R.id.txn_id);
+            mDatetime = (TextView) itemView.findViewById(R.id.txn_time);
+            mCustId = (TextView) itemView.findViewById(R.id.txn_customer_id);
+            //mTxnId = (TextView) itemView.findViewById(R.id.txn_id);
 
-            mBillAmount = (EditText) itemView.findViewById(R.id.txn_bill);
+            mBillAmount = (TextView) itemView.findViewById(R.id.txn_bill);
             mAccountIcon = itemView.findViewById(R.id.txn_account_icon);
-            mAccountAmt = (EditText) itemView.findViewById(R.id.txn_account_amt);
+            mAccountAmt = (TextView) itemView.findViewById(R.id.txn_account_amt);
             mCashbackIcon = itemView.findViewById(R.id.txn_cashback_icon);
-            mCashbackAmt = (EditText) itemView.findViewById(R.id.txn_cashback_amt);
+            mCashbackAmt = (TextView) itemView.findViewById(R.id.txn_cashback_amt);
 
-            mCashbackAward = (EditText) itemView.findViewById(R.id.txn_cashback_award);
+            mCashbackAward = (TextView) itemView.findViewById(R.id.txn_cashback_award);
             mCashbackIcon1 = itemView.findViewById(R.id.txn_cashback_icon_1);
-            mCbAwardCancel = (EditText) itemView.findViewById(R.id.txn_cb_award_cancel);
+            mCbAwardCancel = (TextView) itemView.findViewById(R.id.txn_cb_award_cancel);
             //mSecureIcon = (ImageView)itemView.findViewById(R.id.txn_secure_icon);
 
-            mLayoutCancel = itemView.findViewById(R.id.layout_cancelled);
-            mCancelTime = (EditText) itemView.findViewById(R.id.input_cancel_time);
+            //mLayoutCancel = itemView.findViewById(R.id.layout_cancelled);
+            mCancelTime = (TextView) itemView.findViewById(R.id.input_cancel_time);
 
-            mCustId.setOnTouchListener(this);
+            //rootLayout = itemView.findViewById(R.id.root_layout);
+
+            /*mCustId.setOnTouchListener(this);
             mDatetime.setOnTouchListener(this);
             mBillAmount.setOnTouchListener(this);
             mAccountAmt.setOnTouchListener(this);
             mCashbackAmt.setOnTouchListener(this);
             mCashbackAward.setOnTouchListener(this);
-            mCancelTime.setOnTouchListener(this);
+            mCancelTime.setOnTouchListener(this);*/
+            itemView.setOnClickListener(this);
         }
 
         @Override
+        public void onClick(View v) {
+            LogMy.d(TAG, "onClick: " + getAdapterPosition());
+            //v.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.disabled));
+            if(!mCallback.getRetainedFragment().getResumeOk())
+                return;
+
+            LogMy.d(TAG,"In onClickListener of txn list item");
+            int pos = getAdapterPosition();
+            showDetailedDialog(pos);
+            //AppCommonUtil.cancelProgressDialog(true);
+        }
+
+        /*@Override
         public boolean onTouch(View v, MotionEvent event) {
             if(!mCallback.getRetainedFragment().getResumeOk())
                 return true;
@@ -656,7 +684,7 @@ public class TxnListFragment extends BaseFragment {
                         .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
             return true;
-        }
+        }*/
 
         public void bindTxn(Transaction txn) {
             mTxn = txn;
@@ -709,7 +737,7 @@ public class TxnListFragment extends BaseFragment {
 
             // changes if txn was cancelled
             if(mTxn.getCancelTime()==null) {
-                mLayoutCancel.setVisibility(View.GONE);
+                mCancelTime.setVisibility(View.GONE);
                 mCbAwardCancel.setVisibility(View.GONE);
 
                 // need to remove strike through - must if last txn was cancelled one
@@ -719,8 +747,9 @@ public class TxnListFragment extends BaseFragment {
                 mAccountAmt.setPaintFlags(mAccountAmt.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
 
             } else {
-                mLayoutCancel.setVisibility(View.VISIBLE);
-                mCancelTime.setText(mSdfDateWithTime.format(txn.getCancelTime()));
+                mCancelTime.setVisibility(View.VISIBLE);
+                String txt = "CANCELLED AT "+ mSdfDateWithTime.format(txn.getCancelTime());
+                mCancelTime.setText(mSdfDateWithTime.format(txt));
 
                 if(txn.getTotal_billed()>0) {
                     mBillAmount.setPaintFlags(mBillAmount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -750,11 +779,11 @@ public class TxnListFragment extends BaseFragment {
 
     private class TxnAdapter extends RecyclerView.Adapter<TxnHolder> {
         private List<Transaction> mTxns;
-        private View.OnClickListener mListener;
+        //private View.OnClickListener mListener;
 
         public TxnAdapter(List<Transaction> txns) {
             mTxns = txns;
-            mListener = new View.OnClickListener() {
+            /*mListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(!mCallback.getRetainedFragment().getResumeOk())
@@ -769,15 +798,15 @@ public class TxnListFragment extends BaseFragment {
                         LogMy.e(TAG,"Invalid position in onClickListener of txn list item: "+pos);
                     }
                 }
-            };
+            };*/
         }
 
         @Override
         public TxnHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater.inflate(R.layout.txn_itemview, parent, false);
-            LogMy.d(TAG,"Root view: "+view.getId());
-            view.setOnClickListener(mListener);
+            //LogMy.d(TAG,"Root view: "+view.getId());
+            //view.setOnClickListener(mListener);
             return new TxnHolder(view);
         }
         @Override

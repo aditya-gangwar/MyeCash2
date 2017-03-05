@@ -82,7 +82,6 @@ public class MerchantDetailsFragment extends BaseFragment {
         if(merchant.getFirst_login_ok()) {
             mFirstLogin.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
         }
-        mDoB.setText(merchant.getDob());
 
         int status = merchant.getAdmin_status();
         mInputStatus.setText(DbConstants.userStatusDesc[status]);
@@ -167,7 +166,6 @@ public class MerchantDetailsFragment extends BaseFragment {
     private EditText mInputMobileNum;
     private EditText mRegisteredOn;
     private EditText mFirstLogin;
-    private EditText mDoB;
 
     private EditText mInputStatus;
     private EditText mInputStatusDate;
@@ -203,7 +201,6 @@ public class MerchantDetailsFragment extends BaseFragment {
         mInputMobileNum = (EditText) v.findViewById(R.id.input_merchant_mobile);
         mRegisteredOn = (EditText) v.findViewById(R.id.input_registered_on);
         mFirstLogin = (EditText) v.findViewById(R.id.input_first_login);
-        mDoB = (EditText) v.findViewById(R.id.input_dob);
 
         mInputStatus = (EditText) v.findViewById(R.id.input_status);
         mInputReason = (EditText) v.findViewById(R.id.input_status_reason);

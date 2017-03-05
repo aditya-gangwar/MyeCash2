@@ -43,6 +43,15 @@ public class ActionsFragment extends BaseFragment {
     public static final String[] agentCustomerActions = {};
     public static final String[] ccCustomerActions = {CUSTOMER_SEARCH};
 
+    // Possible Merchant Order Actions
+    public static final String MCHNT_ORDER_SEARCH = "Search Order";
+
+    public static final int MAX_MCHNT_ORDER_BUTTONS = 2;
+    // elements has to be <= MAX_CUSTOMER_BUTTONS
+    public static final String[] agentMchntOrderActions = {MCHNT_ORDER_SEARCH};
+    public static final String[] ccMchntOrderActions = {MCHNT_ORDER_SEARCH};
+    public static final String[] cCntMchntOrderActions = {MCHNT_ORDER_SEARCH};
+
 
     // Possible Member Card actions
     public static final String CARDS_SEARCH = "Search";
@@ -69,8 +78,10 @@ public class ActionsFragment extends BaseFragment {
     public static final int MAX_CARDS_BUTTONS = 4;
     // elements has to be <= MAX_CARDS_BUTTONS
     public static final String[] ccCardsActions = {CARDS_SEARCH};
-    public static final String[] agentCardsActions = {CARDS_SEARCH, CARDS_ALLOT_MCHNT, CARDS_RETURN_MCHNT};
-    public static final String[] cCntCardsActions = {CARDS_SEARCH, CARDS_UPLOAD, CARDS_ALLOT_AGENT, CARDS_RETURN_AGENT};
+    //public static final String[] agentCardsActions = {CARDS_SEARCH, CARDS_ALLOT_MCHNT, CARDS_RETURN_MCHNT};
+    public static final String[] agentCardsActions = {CARDS_SEARCH};
+    //public static final String[] cCntCardsActions = {CARDS_SEARCH, CARDS_UPLOAD, CARDS_ALLOT_AGENT, CARDS_RETURN_AGENT};
+    public static final String[] cCntCardsActions = {CARDS_SEARCH};
 
 
     // Possible other actions
@@ -133,6 +144,8 @@ public class ActionsFragment extends BaseFragment {
             case R.id.btn_merchant_1:
             case R.id.btn_customer_0:
             case R.id.btn_customer_1:
+            case R.id.btn_orders_0:
+            case R.id.btn_orders_1:
             case R.id.btn_cards_0:
             case R.id.btn_cards_1:
             case R.id.btn_cards_2:
@@ -144,29 +157,6 @@ public class ActionsFragment extends BaseFragment {
                 break;
         }
     }
-
-
-    /*@Override
-    public void onClick(View v) {
-        int vId = v.getId();
-        LogMy.d(TAG, "In onClick: " + vId);
-
-        switch(vId) {
-            case R.id.btn_merchant_0:
-            case R.id.btn_merchant_1:
-            case R.id.btn_customer_0:
-            case R.id.btn_customer_1:
-            case R.id.btn_cards_0:
-            case R.id.btn_cards_1:
-            case R.id.btn_cards_2:
-            case R.id.btn_cards_3:
-            case R.id.btn_others_0:
-            case R.id.btn_others_1:
-                String btnLabel = ((AppCompatButton)v).getText().toString();
-                mCallback.onActionBtnClick(btnLabel);
-                break;
-        }
-    }*/
 
     private void initButtons() {
         String[] actions = null;
@@ -220,6 +210,29 @@ public class ActionsFragment extends BaseFragment {
             }
         }
 
+        // Init buttons for Mchnt Order actions
+        if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_AGENT) {
+            actions = agentMchntOrderActions;
+        } else if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_CC) {
+            actions = ccMchntOrderActions;
+        } else if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_CCNT) {
+            actions = cCntMchntOrderActions;
+        }
+        if(actions==null || actions.length<=0) {
+            mLabelMchntOrders.setVisibility(View.GONE);
+            mLayoutOrderBtns.setVisibility(View.GONE);
+        } else {
+            for (int i = 0; i < MAX_MCHNT_ORDER_BUTTONS; i++) {
+                if (i < actions.length) {
+                    mOrderBtns[i].setVisibility(View.VISIBLE);
+                    mOrderBtns[i].setText(actions[i]);
+                    mOrderBtns[i].setOnClickListener(this);
+                } else {
+                    mOrderBtns[i].setVisibility(View.INVISIBLE);
+                    mOrderBtns[i].setEnabled(false);
+                }
+            }
+        }
 
         // Init buttons for Member Cards actions
         if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_CC) {
@@ -279,16 +292,19 @@ public class ActionsFragment extends BaseFragment {
 
     private AppCompatButton mMerchantBtns[] = new AppCompatButton[MAX_MERCHANT_BUTTONS];
     private AppCompatButton mCustomerBtns[] = new AppCompatButton[MAX_CUSTOMER_BUTTONS];
+    private AppCompatButton mOrderBtns[] = new AppCompatButton[MAX_MCHNT_ORDER_BUTTONS];
     private AppCompatButton mCardsBtns[] = new AppCompatButton[MAX_CARDS_BUTTONS];
     private AppCompatButton mOtherBtns[] = new AppCompatButton[MAX_OTHER_BUTTONS];
 
     private View mLabelMerchant;
     private View mLabelCustomer;
+    private View mLabelMchntOrders;
     private View mLabelCards;
     private View mLabelOthers;
 
     private View mLayoutMchntBtns;
     private View mLayoutCustBtns;
+    private View mLayoutOrderBtns;
     private View mLayoutCardBtns1;
     private View mLayoutCardBtns2;
     private View mLayoutOthers;
@@ -300,6 +316,9 @@ public class ActionsFragment extends BaseFragment {
         mCustomerBtns[0] = (AppCompatButton) v.findViewById(R.id.btn_customer_0);
         mCustomerBtns[1] = (AppCompatButton) v.findViewById(R.id.btn_customer_1);
 
+        mOrderBtns[0] = (AppCompatButton) v.findViewById(R.id.btn_orders_0);
+        mOrderBtns[1] = (AppCompatButton) v.findViewById(R.id.btn_orders_1);
+
         mCardsBtns[0] = (AppCompatButton) v.findViewById(R.id.btn_cards_0);
         mCardsBtns[1] = (AppCompatButton) v.findViewById(R.id.btn_cards_1);
         mCardsBtns[2] = (AppCompatButton) v.findViewById(R.id.btn_cards_2);
@@ -310,11 +329,13 @@ public class ActionsFragment extends BaseFragment {
 
         mLabelMerchant = v.findViewById(R.id.label_merchant);
         mLabelCustomer = v.findViewById(R.id.label_customer);
+        mLayoutOrderBtns = v.findViewById(R.id.label_orders);
         mLabelCards = v.findViewById(R.id.label_cards);
         mLabelOthers = v.findViewById(R.id.label_others);
 
         mLayoutMchntBtns = v.findViewById(R.id.layout_mchnt_btns);
         mLayoutCustBtns = v.findViewById(R.id.layout_cust_btns);
+        mLayoutOrderBtns = v.findViewById(R.id.layout_orders_btns);
         mLayoutCardBtns1 = v.findViewById(R.id.layout_cards_btns_1);
         mLayoutCardBtns2 = v.findViewById(R.id.layout_cards_btns_2);
         mLayoutOthers = v.findViewById(R.id.layout_others_btns);

@@ -383,10 +383,12 @@ implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPref
                 pref.setSummary("Won't apply as 'Add Cash to Account' is Disabled.");
             }
             pref.setEnabled(false);
+            pref.setSelectable(false);
         } else {
             String summary = String.format(getActivity().getString(R.string.addExtraCBSummary), value);
             pref.setSummary(summary);
             pref.setEnabled(true);
+            pref.setSelectable(true);
         }
     }
 
@@ -408,10 +410,12 @@ implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPref
                 pref.setSummary("Won't apply as 'Add Cash to Account' is Disabled.");
             }
             pref.setEnabled(false);
+            pref.setSelectable(false);
         } else {
             String summary = String.format(getActivity().getString(R.string.minCashExtraCBSummary), value);
             pref.setSummary(summary);
             pref.setEnabled(true);
+            pref.setSelectable(true);
         }
     }
 

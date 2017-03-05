@@ -72,6 +72,8 @@ public class MobileNumberFragment extends BaseFragment {
         //setup buttons
         initButtons();
 
+        mInputCustMobile.setText("");
+
         return v;
     }
 
@@ -170,10 +172,11 @@ public class MobileNumberFragment extends BaseFragment {
                     return;
                 }
                 mCallback.onMobileNumInput(mobileNum);
+                mInputCustMobile.setText("");
             }
         });
 
-        mBtnProcess.setOnLongClickListener(new View.OnLongClickListener() {
+        /*mBtnProcess.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 if(!mCallback.getRetainedFragment().getResumeOk())
@@ -182,7 +185,7 @@ public class MobileNumberFragment extends BaseFragment {
                 mCallback.onMobileNumInput(null);
                 return true;
             }
-        });
+        });*/
 
         /*mInputCustMobile.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -230,7 +233,7 @@ public class MobileNumberFragment extends BaseFragment {
         LogMy.d(TAG, "In onResume");
         super.onResume();
         mInputCustMobile.setError(null);
-        mInputCustMobile.setText("");
+        //mInputCustMobile.setText("");
         mCallback.getRetainedFragment().setResumeOk(true);
     }
 

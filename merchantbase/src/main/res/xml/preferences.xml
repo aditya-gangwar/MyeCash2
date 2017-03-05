@@ -9,19 +9,6 @@
         android:key="prefGrpCbAcc">
 
         <PreferenceCategory
-            android:title="ACCOUNT"
-            android:key="prefCatAcc">
-
-            <SwitchPreference
-                android:title="Add Cash to Account"
-                android:key="settings_cl_add_enabled"
-                android:summary="@string/addCashSummary"
-                android:disableDependentsState="true">
-            </SwitchPreference>
-
-        </PreferenceCategory>
-
-        <PreferenceCategory
             android:title="CASHBACK (%)"
             android:key="prefCatCb">
 
@@ -33,6 +20,19 @@
                 android:digits="0123456789."
                 android:maxLength="@string/cb_rate_char_limit">
             </EditTextPreference>
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="ACCOUNT"
+            android:key="prefCatAcc">
+
+            <SwitchPreference
+                android:title="Add Cash to Account"
+                android:key="settings_cl_add_enabled"
+                android:summary="@string/addCashSummary"
+                android:disableDependentsState="true">
+            </SwitchPreference>
 
             <EditTextPreference
                 android:title="Extra Cashback on Add Cash"

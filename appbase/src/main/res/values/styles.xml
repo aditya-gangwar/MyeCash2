@@ -31,6 +31,10 @@
 
     </style>
 
+    <style name="MySpinner" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="android:textColor">@color/primary_text</item>
+    </style>
+
     <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.ActionBar">
         <item name="colorControlNormal">@color/white</item>
     </style>
@@ -105,6 +109,12 @@
         <item name="android:padding">@dimen/small_space</item>
         <item name="android:minHeight">@dimen/XXXXL_space</item>
         <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="button_normal_very_thin" parent="button_normal">
+        <item name="android:padding">@dimen/small_space</item>
+        <item name="android:minHeight">@dimen/XL_space</item>
+        <item name="android:textSize">@dimen/text_size_XS</item>
     </style>
 
     <style name="button_normal" parent="Widget.AppCompat.Button.Borderless">
@@ -254,7 +264,7 @@
         <item name="android:gravity">center</item>
         <item name="android:inputType">number</item>
         <item name="android:digits">0123456789</item>
-        <item name="android:background">@null</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:singleLine">true</item>
         <item name="android:clickable">true</item>
     </style>
@@ -381,7 +391,7 @@
     </style>
 
     <style name="Edittext_only_click_large" parent="Edittext_only_click_bg_large">
-        <item name="android:background">@null</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="Edittext_only_view_bg_medium" parent="Edittext_only_click_bg_medium">
@@ -389,7 +399,7 @@
     </style>
 
     <style name="Edittext_only_view_bg_small" parent="Edittext_only_view_small">
-        <item name="android:background">@null</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="Edittext_only_click_bg_small" parent="Edittext_only_click_bg_large">
@@ -408,8 +418,8 @@
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:inputType">none</item>
         <item name="android:clickable">true</item>
-        <item name="android:textIsSelectable">true</item>
-        <item name="android:longClickable">true</item>
+        <item name="android:textIsSelectable">false</item>
+        <item name="android:longClickable">false</item>
     </style>
 
     <style name="KeyboardEdittext2" parent="MyEdittext_XL">
@@ -423,7 +433,7 @@
         <item name="android:inputType">none</item>
         <item name="android:layout_weight">1</item>
         <item name="android:clickable">true</item>
-        <item name="android:background">@null</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
         <item name="android:paddingBottom">0dp</item>
@@ -512,26 +522,7 @@
         <item name="android:textSize">@dimen/text_size_small</item>
     </style-->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--style name="MySpinner" parent="Widget.AppCompat.Spinner.Underlined">
-        <item name="android:spinnerMode">dialog</item>
-    </style>
-    <style name="MySpinnerItemStyle" parent="Widget.AppCompat.TextView.SpinnerItem">
+    <!--style name="MySpinnerItemStyle" parent="Widget.AppCompat.TextView.SpinnerItem">
         <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMediumInverse</item>
     </style>

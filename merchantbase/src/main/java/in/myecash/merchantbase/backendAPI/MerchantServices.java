@@ -13,6 +13,7 @@ import com.backendless.async.callback.AsyncCallback;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.MerchantOps;
+import in.myecash.common.database.MerchantOrders;
 import in.myecash.common.database.MerchantStats;
 import in.myecash.common.database.Merchants;
 import in.myecash.common.database.Transaction;
@@ -103,9 +104,21 @@ import in.myecash.common.database.Transaction;
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "cancelTxn", args, Transaction.class);
     }
 
-    /*public Transaction commitTxn(Transaction txn)
+    public Transaction commitTxn(String csvTxnData)
     {
-        Object[] args = new Object[]{txn};
+        Object[] args = new Object[]{csvTxnData};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "commitTxn", args, Transaction.class );
-    }*/
+    }
+
+    public void deleteMchntOrder(java.lang.String orderId)
+    {
+        Object[] args = new Object[]{orderId};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "deleteMchntOrder", args );
+    }
+
+    public MerchantOrders createMchntOrder(java.lang.String itemSku, int itemQty, int totalPrice)
+    {
+        Object[] args = new Object[]{itemSku, itemQty, totalPrice};
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "createMchntOrder", args, in.myecash.common.database.MerchantOrders.class );
+    }
 }

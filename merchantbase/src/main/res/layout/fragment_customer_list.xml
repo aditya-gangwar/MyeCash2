@@ -82,6 +82,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="100"/-->
 
+    <View
+        style="@style/Divider_horizontal_Medium"/>
+
     <LinearLayout
         style="@style/LL_Horizontal_wrap"
         android:layout_marginTop="@dimen/medium_space">

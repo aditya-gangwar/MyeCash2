@@ -1,5 +1,9 @@
 package in.myecash.common.constants;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by adgangwa on 07-05-2016.
  */
@@ -103,11 +107,42 @@ public class DbConstants {
     // Merchant Orders Table values
     public enum MCHNT_ORDER_STATUS {
         New,
-        In_Process,
-        On_Way,
-        Payment_Verification_Pending,
+        InProcess,
+        Shipped,
+        PaymentVerifyPending,
+        PaymentFailed,
         Completed,
-        Rejected
+        Rejected;
+
+        public static String toString(MCHNT_ORDER_STATUS status) {
+            switch (status) {
+                case New:
+                    return "New";
+                case InProcess:
+                    return "In Process";
+                case Shipped:
+                    return "Shipped";
+                case PaymentVerifyPending:
+                    return "Payment Verification Pending";
+                case PaymentFailed:
+                    return "Payment Failed";
+                case Completed:
+                    return "Completed";
+                case Rejected:
+                    return "Rejected";
+                default:
+                    return "";
+            }
+        }
+    }
+
+    // SKU to Item Name mapping
+    public static final String SKU_CUSTOMER_CARDS = "1001";
+    public static final Map<String, String> skuToItemName;
+    static {
+        Map<String, String> aMap = new HashMap<>(5);
+        aMap.put(SKU_CUSTOMER_CARDS, "Customer Cards");
+        skuToItemName = Collections.unmodifiableMap(aMap);
     }
     public enum MO_PLAN_PAY_MODE {
         Cash,

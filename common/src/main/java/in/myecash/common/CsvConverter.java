@@ -57,7 +57,11 @@ public class CsvConverter {
 
         csvFields[TXN_CSV_IDX_ID] = txn.getTrans_id();
         //csvFields[TXN_CSV_IDX_TIME] = mSdfDateWithTime.format(txn.getCreate_time());
-        csvFields[TXN_CSV_IDX_TIME] = String.valueOf(txn.getCreate_time().getTime()) ;
+        if(txn.getCreate_time()!=null) {
+            csvFields[TXN_CSV_IDX_TIME] = String.valueOf(txn.getCreate_time().getTime());
+        } else {
+            csvFields[TXN_CSV_IDX_TIME] = "";
+        }
         csvFields[TXN_CSV_IDX_MERCHANT_ID] = txn.getMerchant_id();
         if(txn.getMerchant_name().contains(CommonConstants.CSV_DELIMETER)) {
             txn.setMerchant_name(txn.getMerchant_name().replace(CommonConstants.CSV_DELIMETER, ""));
@@ -113,7 +117,11 @@ public class CsvConverter {
 
         Transaction txn = new Transaction();
         txn.setTrans_id(csvFields[TXN_CSV_IDX_ID]);
-        txn.setCreate_time(new Date(Long.parseLong(csvFields[TXN_CSV_IDX_TIME])));
+        if(csvFields[TXN_CSV_IDX_TIME].isEmpty()) {
+            txn.setCreate_time(null);
+        } else {
+            txn.setCreate_time(new Date(Long.parseLong(csvFields[TXN_CSV_IDX_TIME])));
+        }
         txn.setMerchant_id(csvFields[TXN_CSV_IDX_MERCHANT_ID]);
         txn.setMerchant_name(csvFields[TXN_CSV_IDX_MERCHANT_NAME]);
         txn.setCustomer_id(csvFields[TXN_CSV_IDX_CUSTOMER_ID]);
@@ -234,7 +242,4 @@ public class CsvConverter {
         }
         return sb.toString();
     }
-
-
-
 }

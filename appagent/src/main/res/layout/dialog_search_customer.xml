@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Mobile"
-                android:layout_weight="35"
+                android:layout_weight="40"
                 android:gravity="left"/>
             <EditText
                 style="@style/MyEdittext_Medium"
@@ -49,7 +49,7 @@
                 android:hint="10 Digit Mobile#"
                 android:inputType="phone"
                 android:maxLength="@string/mobile_char_limit"
-                android:layout_weight="65"
+                android:layout_weight="60"
                 android:gravity="center"/>
         </LinearLayout>
 
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:text="Customer ID"
-                android:layout_weight="35"
+                android:layout_weight="40"
                 android:gravity="left|bottom"
                 android:layout_gravity="bottom"/>
             <!--View
@@ -84,7 +84,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="6 Digit ID"
-                android:layout_weight="65"
+                android:layout_weight="60"
                 android:gravity="center"
                 android:singleLine="true"
                 android:ellipsize="end"

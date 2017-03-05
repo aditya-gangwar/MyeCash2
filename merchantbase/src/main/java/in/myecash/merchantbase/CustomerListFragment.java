@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
@@ -484,46 +485,46 @@ public class CustomerListFragment extends BaseFragment {
     }
 
     private class CbHolder extends RecyclerView.ViewHolder
-            implements View.OnTouchListener {
+            implements View.OnClickListener {
 
         private MyCashback mCb;
 
-        public EditText mCustId;
-        public EditText mLastTxnTime;
+        public TextView mCustId;
+        public TextView mLastTxnTime;
 
         //public View mLayoutBill;
-        public EditText mBillAmt;
+        public TextView mBillAmt;
 
         //public View mLayoutAcc;
-        public EditText mAccAdd;
-        public EditText mAccDebit;
-        public EditText mAccBalance;
+        public TextView mAccAdd;
+        public TextView mAccDebit;
+        public TextView mAccBalance;
 
         //public View mLayoutCb;
-        public EditText mCbAdd;
-        public EditText mCbDebit;
-        public EditText mCbBalance;
+        public TextView mCbAdd;
+        public TextView mCbDebit;
+        public TextView mCbBalance;
 
         public CbHolder(View itemView) {
             super(itemView);
 
-            mCustId = (EditText) itemView.findViewById(R.id.input_cust_id);
-            mLastTxnTime = (EditText) itemView.findViewById(R.id.input_last_txn);
+            mCustId = (TextView) itemView.findViewById(R.id.input_cust_id);
+            mLastTxnTime = (TextView) itemView.findViewById(R.id.input_last_txn);
 
             //mLayoutBill = itemView.findViewById(R.id.layout_bill);
-            mBillAmt = (EditText) itemView.findViewById(R.id.cust_bill_amt);
+            mBillAmt = (TextView) itemView.findViewById(R.id.cust_bill_amt);
 
             //mLayoutAcc = itemView.findViewById(R.id.layout_account);
-            mAccAdd = (EditText) itemView.findViewById(R.id.cust_acc_credit);
-            mAccDebit = (EditText) itemView.findViewById(R.id.cust_acc_debit);
-            mAccBalance = (EditText) itemView.findViewById(R.id.cust_acc_balance);
+            mAccAdd = (TextView) itemView.findViewById(R.id.cust_acc_credit);
+            mAccDebit = (TextView) itemView.findViewById(R.id.cust_acc_debit);
+            mAccBalance = (TextView) itemView.findViewById(R.id.cust_acc_balance);
 
             //mLayoutCb = itemView.findViewById(R.id.layout_cashback);
-            mCbAdd = (EditText) itemView.findViewById(R.id.cust_cb_credit);
-            mCbDebit = (EditText) itemView.findViewById(R.id.cust_cb_debit);
-            mCbBalance = (EditText) itemView.findViewById(R.id.cust_cb_balance);
+            mCbAdd = (TextView) itemView.findViewById(R.id.cust_cb_credit);
+            mCbDebit = (TextView) itemView.findViewById(R.id.cust_cb_debit);
+            mCbBalance = (TextView) itemView.findViewById(R.id.cust_cb_balance);
 
-            mCustId.setOnTouchListener(this);
+            /*mCustId.setOnTouchListener(this);
             mLastTxnTime.setOnTouchListener(this);
             mBillAmt.setOnTouchListener(this);;
             mAccAdd.setOnTouchListener(this);;
@@ -531,14 +532,16 @@ public class CustomerListFragment extends BaseFragment {
             mAccBalance.setOnTouchListener(this);;
             mCbAdd.setOnTouchListener(this);;
             mCbDebit.setOnTouchListener(this);;
-            mCbBalance.setOnTouchListener(this);;
+            mCbBalance.setOnTouchListener(this);;*/
 
             //mLayoutBill.setOnClickListener(this);
             //mLayoutAcc.setOnClickListener(this);
             //mLayoutCb.setOnClickListener(this);
+
+            itemView.setOnClickListener(this);
         }
 
-        @Override
+        /*@Override
         public boolean onTouch(View v, MotionEvent event) {
             if(!mCallback.getRetainedFragment().getResumeOk())
                 return false;
@@ -561,6 +564,14 @@ public class CustomerListFragment extends BaseFragment {
             rootView.performClick();
             }
             return true;
+        }*/
+
+        @Override
+        public void onClick(View v) {
+            LogMy.d(TAG,"In onClickListener of customer list item");
+            int pos = getAdapterPosition();
+            CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(pos, true);
+            dialog.show(getFragmentManager(), DIALOG_CUSTOMER_DETAILS);
         }
 
         public void bindCb(MyCashback cb) {
@@ -583,11 +594,11 @@ public class CustomerListFragment extends BaseFragment {
 
     private class CbAdapter extends RecyclerView.Adapter<CbHolder> {
         private List<MyCashback> mCbs;
-        private View.OnClickListener mListener;
+        //private View.OnClickListener mListener;
 
         public CbAdapter(List<MyCashback> cbs) {
             mCbs = cbs;
-            mListener = new View.OnClickListener() {
+            /*mListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     LogMy.d(TAG,"In onClickListener of customer list item");
@@ -599,14 +610,14 @@ public class CustomerListFragment extends BaseFragment {
                         LogMy.e(TAG,"Invalid position in onClickListener of customer list item: "+pos);
                     }
                 }
-            };
+            };*/
         }
 
         @Override
         public CbHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater.inflate(R.layout.customer_itemview, parent, false);
-            view.setOnClickListener(mListener);
+            //view.setOnClickListener(mListener);
             return new CbHolder(view);
         }
         @Override

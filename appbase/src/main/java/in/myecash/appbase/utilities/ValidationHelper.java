@@ -138,6 +138,16 @@ public final class ValidationHelper{
         }
     }
 
+    public static int validateMchntOrderId(String value) {
+        if (value==null || value.isEmpty() ) {
+            return ErrorCodes.EMPTY_VALUE;
+        } else if(!value.startsWith(CommonConstants.MCHNT_ORDER_ID_PREFIX)) {
+            return ErrorCodes.INVALID_VALUE;
+        }
+
+        return ErrorCodes.NO_ERROR;
+    }
+
     public static int validateCustInternalId(String value) {
         if (value==null || value.isEmpty() ) {
             return ErrorCodes.EMPTY_VALUE;

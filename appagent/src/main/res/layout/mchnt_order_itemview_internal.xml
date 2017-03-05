@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:descendantFocusability="beforeDescendants"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:foreground="?android:attr/selectableItemBackground" -->
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/medium_space"
+    android:elevation="3dp"
+    card_view:cardCornerRadius="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/small_space"
+        android:id="@+id/layout_card"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            style="@style/LL_Horizontal_weighted"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_img_text"
+            android:layout_marginBottom="@dimen/small_space">
+
+            <ImageView
+                android:id="@+id/img_merchant"
+                android:src="@drawable/cust_card_img"
+                android:layout_width="@dimen/dp_dialog_image_width"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:layout_marginRight="@dimen/medium_space"
+                android:layout_gravity="center"/>
+
+            <LinearLayout
+                style="@style/LL_Vertical"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:id="@+id/input_order_time"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="08 Apr,16  20:15"
+                    android:gravity="left"
+                    android:paddingTop="0dp"/>
+
+                <TextView
+                    style="@style/Edittext_only_view_small_lessPad"
+                    android:id="@+id/input_orderId"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Order#  MO-100001"
+                    android:textColor="@color/primary"
+                    android:paddingTop="0dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            style="@style/Edittext_only_view_small_lessPad"
+            android:id="@+id/input_status"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Status: Completed"
+            android:paddingTop="0dp"
+            android:paddingRight="0dp"
+            android:layout_below="@+id/layout_img_text"/>
+
+        <TextView
+            style="@style/Edittext_only_view_small_lessPad"
+            android:id="@+id/input_mchntId"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/input_status"
+            android:text="Merchant ID: "
+            android:paddingTop="0dp"
+            android:paddingLeft="0dp"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
+<!--/FrameLayout-->

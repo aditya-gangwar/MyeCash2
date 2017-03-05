@@ -11,7 +11,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/medium_space"
         android:elevation="3dp"
-        card_view:cardCornerRadius="2dp">
+        card_view:cardCornerRadius="4dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -50,7 +50,7 @@
 
                     <EditText
                         style="@style/Edittext_only_view_small_lessPad"
-                        android:id="@+id/input_op_time"
+                        android:id="@+id/input_order_time"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:text="08 Apr,16  20:15"
@@ -78,20 +78,23 @@
                 android:id="@+id/input_item_details"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:layout_below="@id/layout_img_text"
                 android:text="20 Customer Cards"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
                 android:paddingLeft="0dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:layout_below="@+id/layout_img_text"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/secondary_text"/>
 
             <EditText
                 style="@style/Edittext_only_view_small_lessPad"
-                android:id="@+id/input_price"
+                android:id="@+id/input_cost_details"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_below="@id/input_item_details"
-                android:text="Price:  20  x  \u20B9 30  =  \u20B9 600 "
+                android:text="Total Cost:  20  x  \u20B9 30  =  \u20B9 600 "
                 android:gravity="left"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -102,7 +105,7 @@
                 android:id="@+id/input_status"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_below="@id/input_price"
+                android:layout_below="@id/input_cost_details"
                 android:text="Status: Completed"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -115,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_below="@id/input_status"
-                android:text="Reason: Customer lost the mobile phone"
+                android:text="Reason: Merchant refused delivery"
                 android:gravity="left"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -126,7 +129,7 @@
                 android:id="@+id/input_delivered_on"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:text="Delivered: 08 Apr,16  20:15"
+                android:text="Delivered: 09 Apr,16  20:15"
                 android:gravity="left"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"
@@ -134,6 +137,14 @@
                 android:layout_below="@+id/input_status_reason"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_very_thin"
+                android:layout_width="wrap_content"
+                android:id="@+id/btn_invoice"
+                android:layout_below="@+id/input_delivered_on"
+                android:text="View Invoice"
+                android:layout_marginTop="@dimen/small_space"/>
 
         </RelativeLayout>
 

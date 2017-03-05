@@ -11,6 +11,7 @@ import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Cashback;
+import in.myecash.common.database.MerchantOrders;
 import in.myecash.common.database.MerchantStats;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.BackgroundProcessor;
@@ -27,6 +28,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -84,6 +87,11 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     private class MessageImgUpload implements Serializable {
         public File file;
         public String remoteDir;
+    }
+    private class MessageMcntOrder implements Serializable {
+        public String skuOrId;
+        public int qty;
+        public int totalPrice;
     }
 
     /*
@@ -201,6 +209,21 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         msg.pin = pin;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CANCEL_TXN, msg).sendToTarget();
     }
+    public void createMchntOrder(String sku, int qty, int totalPrice) {
+        MessageMcntOrder msg = new MessageMcntOrder();
+        msg.qty = qty;
+        msg.skuOrId = sku;
+        msg.totalPrice = totalPrice;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CRT_MCHNT_ORDER, msg).sendToTarget();
+    }
+    public void addFetchMchntOrderReq() {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_MERCHANT_ORDERS, null).sendToTarget();
+    }
+    public void addDeleteMchntOrder(String orderId) {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DELETE_MCHNT_ORDER, orderId).sendToTarget();
+    }
+
+
 
     @Override
     protected int handleMsg(Message msg) {
@@ -274,6 +297,15 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
                     break;
                 case MyRetainedFragment.REQUEST_CANCEL_TXN:
                     error = cancelTxn((MessageCancelTxn) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_CRT_MCHNT_ORDER:
+                    error = createMchntOrder((MessageMcntOrder) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_FETCH_MERCHANT_ORDERS:
+                    error = fetchMchntOrders();
+                    break;
+                case MyRetainedFragment.REQUEST_DELETE_MCHNT_ORDER:
+                    error = deleteMchntOrder((String) msg.obj);
                     break;
             }
         } catch (Exception e) {
@@ -473,6 +505,58 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         //return MerchantUser.getInstance().cancelTxn(msg.txnId, msg.cardId, msg.pin);
         return MerchantUser.getInstance().cancelTxn(mRetainedFragment.mCurrTransaction, msg.cardId, msg.pin);
     }
+
+    private int fetchMchntOrders() {
+        mRetainedFragment.mLastFetchMchntOrders = null;
+
+        try {
+            mRetainedFragment.mLastFetchMchntOrders = MerchantUser.getInstance().fetchMchntOrders();
+            LogMy.d(TAG,"fetchMchntOrders success: "+mRetainedFragment.mLastFetchMchntOrders.size());
+
+            // sort by time
+            Collections.sort(mRetainedFragment.mLastFetchMchntOrders, new AppCommonUtil.MchntOrderComparator());
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Exception in fetchMchntOrders: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    private int createMchntOrder(MessageMcntOrder msg) {
+        try {
+            MerchantOrders order = MerchantUser.getInstance().createMchntOrder(msg.skuOrId, msg.qty, msg.totalPrice);
+
+            if(mRetainedFragment.mLastFetchMchntOrders==null) {
+                mRetainedFragment.mLastFetchMchntOrders = new ArrayList<>();
+            }
+            mRetainedFragment.mLastFetchMchntOrders.add(order);
+
+            // sort by time
+            Collections.sort(mRetainedFragment.mLastFetchMchntOrders, new AppCommonUtil.MchntOrderComparator());
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG, "Exception in createMchntOrder: "+ e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    private int deleteMchntOrder(String orderId) {
+        int status = MerchantUser.getInstance().deleteMchntOrder(orderId);
+        if(status==ErrorCodes.NO_ERROR) {
+            // remove from local list also
+            Iterator<MerchantOrders> it = mRetainedFragment.mLastFetchMchntOrders.iterator();
+            while (it.hasNext()) {
+                if (it.next().getOrderId().equals(orderId)) {
+                    it.remove();
+                    break;
+                }
+            }
+        }
+        return status;
+    }
+
 
 
     private int fetchTxnFiles(Context ctxt) {

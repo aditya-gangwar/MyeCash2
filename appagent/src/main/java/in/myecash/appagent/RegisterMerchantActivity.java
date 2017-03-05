@@ -105,9 +105,16 @@ public class RegisterMerchantActivity extends AppCompatActivity
         MyCities.init();
         MyBusinessCategories.init();
 
-        // setup choice handlers
-        initChoiceCategories();
-        initChoiceCities();
+        // Location related
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                // The next two lines tell the new client that “this” current class will handle connection stuff
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                //fourth line adds the LocationServices API endpoint from GooglePlayServices
+                .addApi(LocationServices.API)
+                .build();
+
+        mGoogleApiClient.connect();
 
         // Initialize retained fragment - used for registration background thread
         // Check to see if we have retained the worker fragment.
@@ -135,29 +142,18 @@ public class RegisterMerchantActivity extends AppCompatActivity
             }
         });
 
-        // Location related
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                // The next two lines tell the new client that “this” current class will handle connection stuff
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                //fourth line adds the LocationServices API endpoint from GooglePlayServices
-                .addApi(LocationServices.API)
-                .build();
-
-        // Create the LocationRequest object
-        mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
-
         // check for location permission
-        int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        /*int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if(rc==PackageManager.PERMISSION_GRANTED) {
             mGoogleApiClient.connect();
         } else {
             // request permission
             requestLocationPermission(Manifest.permission.ACCESS_FINE_LOCATION, RC_HANDLE_LOCATION_FINE);
-        }
+        }*/
+
+        // setup choice handlers
+        initChoiceCategories();
+        initChoiceCities();
 
         // Register button listener
         mRegisterButton.setOnClickListener(new OnSingleClickListener() {
@@ -414,14 +410,6 @@ public class RegisterMerchantActivity extends AppCompatActivity
             sb.append("Pincode; ");
         }
 
-        /*
-        if(!mTermsAgreed) {
-            valid = false;
-            mTermsLink.setError("Agree to terms and conditions");
-        } else {
-            mTermsLink.setError(null);
-        }*/
-
         if(currentLatitude==0 || currentLongitude==0) {
             valid = false;
             sb.append("Location");
@@ -596,6 +584,13 @@ public class RegisterMerchantActivity extends AppCompatActivity
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
 
         if(rc==PackageManager.PERMISSION_GRANTED) {
+            // Create the LocationRequest object
+            mLocationRequest = LocationRequest.create()
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                    .setInterval(10 * 1000)        // 10 seconds, in milliseconds
+                    .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+
+
             Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (location == null) {
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
@@ -676,7 +671,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
                 .show();
     }
 
-    @Override
+    /*@Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -706,7 +701,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
                 .setMessage(R.string.no_location_permission)
                 .setPositiveButton(R.string.ok, listener)
                 .show();
-    }
+    }*/
 
     @Override
     public void onBgThreadCreated() {

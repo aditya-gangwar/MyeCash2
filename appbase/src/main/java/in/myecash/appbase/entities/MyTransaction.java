@@ -86,7 +86,7 @@ public class MyTransaction {
         return map.values();
     }
 
-    public void commit(String tableName) {
+    public void commit() {
         LogMy.d(TAG, "In commit");
         mCurrTransaction = Backendless.Persistence.save( mCurrTransaction );
     }

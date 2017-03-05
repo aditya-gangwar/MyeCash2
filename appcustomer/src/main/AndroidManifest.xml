@@ -27,10 +27,6 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name="in.myecash.appbase.ServerNaActivity"
-            android:label="Service Not Available"
-            android:screenOrientation="portrait"/>
-
         <activity
             android:name="in.myecash.customerbase.CashbackActivityCust"
             android:label="CashbackActivity"
@@ -45,7 +41,6 @@
 
         <activity
             android:name="in.myecash.appbase.SingleWebViewActivity"
-            android:label="@string/title_activity_terms_conditions"
             android:screenOrientation="portrait">
         </activity>
 

@@ -256,14 +256,19 @@ public class AgentUser {
         LogMy.d(TAG, "In registerMerchant");
         try {
             String url = uploadImageSync(imgFile, CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR);
+
             if(url != null) {
                 merchant.setDisplayImage(imgFile.getName());
-                mLastRegMerchantId = InternalUserServices.getInstance().registerMerchant(merchant);
-                LogMy.d(TAG, "Merchant registration success: " + merchant.getAuto_id());
+                //mLastRegMerchantId = InternalUserServices.getInstance().registerMerchant(merchant);
+                //LogMy.d(TAG, "Merchant registration success: " + merchant.getAuto_id());
 
             } else {
-                return ErrorCodes.FILE_UPLOAD_FAILED;
+                //return ErrorCodes.FILE_UPLOAD_FAILED;
+                merchant.setDisplayImage("");
             }
+            mLastRegMerchantId = InternalUserServices.getInstance().registerMerchant(merchant);
+            LogMy.d(TAG, "Merchant registration success: " + merchant.getAuto_id());
+
         } catch(BackendlessException e) {
             LogMy.e(TAG, "Merchant registration failed: " + e.toString());
             return AppCommonUtil.getLocalErrorCode(e);

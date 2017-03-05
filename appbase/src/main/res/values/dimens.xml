@@ -13,8 +13,8 @@
     <dimen name="dp_item_image_width">40dp</dimen>
     <dimen name="dp_item_image_height">40dp</dimen>
 
-    <dimen name="dp_dialog_image_width">70dp</dimen>
-    <dimen name="dp_dialog_image_height">70dp</dimen>
+    <dimen name="dp_dialog_image_width">60dp</dimen>
+    <dimen name="dp_dialog_image_height">60dp</dimen>
 
     <dimen name="normal_icon_width">24dp</dimen>
     <dimen name="normal_icon_height">24dp</dimen>

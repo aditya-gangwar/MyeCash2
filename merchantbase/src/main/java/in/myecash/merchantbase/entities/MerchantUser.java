@@ -15,6 +15,7 @@ import com.backendless.files.BackendlessFile;
 import com.crashlytics.android.Crashlytics;
 import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.appbase.entities.MyTransaction;
+import in.myecash.common.CsvConverter;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
@@ -22,6 +23,7 @@ import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.MerchantDevice;
 import in.myecash.common.database.MerchantOps;
+import in.myecash.common.database.MerchantOrders;
 import in.myecash.common.database.MerchantStats;
 import in.myecash.common.database.Merchants;
 import in.myecash.common.database.Transaction;
@@ -373,10 +375,19 @@ public class MerchantUser
         try {
             isLoginValid();
             txn.getTransaction().setCpin(pin);
-            /*Transaction newTxn = MerchantServices.getInstance().commitTxn(txn.getTransaction());
+
+            Transaction tx = txn.getTransaction();
+            // settings values eventually set by backend to null/empty for now
+            tx.setTrans_id("");
+            tx.setMerchant_id("");
+            tx.setMerchant_name("");
+            tx.setCustomer_id("");
+
+            String csvStr = CsvConverter.csvStrFromTxn(tx);
+            Transaction newTxn = MerchantServices.getInstance().commitTxn(csvStr);
             LogMy.d(TAG, "Txn commit success: " + newTxn.getTrans_id());
-            txn.setCurrTransaction(newTxn);*/
-            txn.commit(mMerchant.getTxn_table());
+            txn.setCurrTransaction(newTxn);
+            //txn.commit();
 
         } catch( BackendlessException e ) {
             LogMy.e(TAG, "Commit cash transaction failed: " + e.toString());
@@ -401,6 +412,41 @@ public class MerchantUser
         }
         return ErrorCodes.NO_ERROR;
     }
+
+    /*
+     * Merchant Order Fxs
+     */
+    public List<MerchantOrders> fetchMchntOrders() throws BackendlessException {
+        LogMy.d(TAG, "In fetchMchntOrders");
+        return CommonServices.getInstance().getMchntOrders(mMerchant.getAuto_id(),"","");
+    }
+
+    public MerchantOrders createMchntOrder(String sku, int qty, int totalPrice) {
+        if(mPseudoLoggedIn) {
+            throw new BackendlessException(String.valueOf(ErrorCodes.OPERATION_NOT_ALLOWED), "");
+        }
+        MerchantOrders order = MerchantServices.getInstance().createMchntOrder(sku, qty, totalPrice);
+        LogMy.d(TAG, "Mchnt Order Create Success: " + order.getOrderId());
+        return order;
+    }
+
+    public int deleteMchntOrder(String orderId) {
+        LogMy.d(TAG, "In deleteMchntOrder: " + orderId);
+        if(mPseudoLoggedIn) {
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
+        }
+        try {
+            MerchantServices.getInstance().deleteMchntOrder(orderId);
+            LogMy.d(TAG, "Mchnt Order delete success: " + orderId);
+
+        } catch(BackendlessException e) {
+            LogMy.e(TAG, "Mchnt Order delete failed: " + e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+
 
     public void uploadImgFile(File file, String remoteDir) throws Exception {
         if(mPseudoLoggedIn) {

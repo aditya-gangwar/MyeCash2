@@ -15,7 +15,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order History"
+            android:text="Merchant Order History"
             android:textStyle="bold"
             android:textColor="@color/white"/>
 
@@ -29,7 +29,27 @@
         android:layout_height="match_parent"
         android:id="@+id/mchntOrder_recycler_view"
         android:layout_below="@id/mcntOrderList_header"
-        android:background="@color/bg_light_grey">
+        android:background="@color/bg_light_grey_dark"
+        android:visibility="gone">
     </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        style="@style/LL_Vertical"
+        android:id="@+id/list_empty_view"
+        android:layout_below="@id/mcntOrderList_header"
+        android:padding="@dimen/XXXXL_space">
+
+        <EditText
+            style="@style/Edittext_only_view_medium"
+            android:layout_height="wrap_content"
+            android:text="No Orders Yet"/>
+
+        <!--android.support.v7.widget.AppCompatButton
+            style="@style/button_normal_very_thin"
+            android:id="@+id/btn_create"
+            android:text="Create"
+            android:layout_marginTop="@dimen/XL_space"/-->
+
+    </LinearLayout>
 
 </RelativeLayout>

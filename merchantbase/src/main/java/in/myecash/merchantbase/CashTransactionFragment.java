@@ -757,8 +757,9 @@ public class CashTransactionFragment extends BaseFragment implements
             }
         } catch (Exception e) {
             LogMy.e(TAG, "Exception in Fragment: ", e);
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
-                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true);
+            dialog.setTargetFragment(CashTransactionFragment.this, REQ_NOTIFY_ERROR);
+            dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
     }
 
@@ -1005,8 +1006,9 @@ public class CashTransactionFragment extends BaseFragment implements
             }
         } catch (Exception e) {
             LogMy.e(TAG, "Exception in CashTxnFragment:onTouch", e);
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
-                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true);
+            dialog.setTargetFragment(CashTransactionFragment.this, REQ_NOTIFY_ERROR);
+            dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
 
         return true;
@@ -1077,8 +1079,9 @@ public class CashTransactionFragment extends BaseFragment implements
             }
         } catch (Exception e) {
             LogMy.e(TAG, "Exception in CashTxnFragment:onClick", e);
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
-                    .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
+            DialogFragmentWrapper dialog = DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true);
+            dialog.setTargetFragment(this, REQ_CONFIRM_CARD_SCAN);
+            dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
         }
 
     }

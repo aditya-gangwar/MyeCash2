@@ -4,8 +4,10 @@ import android.os.Handler;
 
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.common.MyCardForAction;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.common.database.CustomerCards;
 import in.myecash.common.database.Customers;
+import in.myecash.common.database.MerchantOrders;
 import in.myecash.common.database.Merchants;
 import in.myecash.appbase.utilities.BackgroundProcessor;
 import in.myecash.appbase.utilities.LogMy;
@@ -34,6 +36,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_SEARCH_CARD = 13;
     public static final int REQUEST_ACTION_CARDS = 14;
     public static final int REQUEST_DISABLE_CUST_CARD = 15;
+    public static final int REQUEST_SEARCH_MCHNT_ORDER = 16;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -44,6 +47,13 @@ public class MyRetainedFragment extends RetainedFragment {
     public Merchants mCurrMerchant;
     public Customers mCurrCustomer;
     public CustomerCards mCurrMemberCard;
+
+    // members used for mchnt order actions
+    public String mMchntOrderId;
+    public String mMchntIdForOrder;
+    public List<DbConstants.MCHNT_ORDER_STATUS> mSelectedStatus;
+    public List<MerchantOrders> mLastFetchMchntOrders;
+
     // members used for bulk actions on cards
     public List<MyCardForAction> mLastCardsForAction;
     public boolean cardNumFetched;
@@ -90,13 +100,16 @@ public class MyRetainedFragment extends RetainedFragment {
     public void searchMemberCard(String id) {
         mBackgroundProcessor.addCardSearchReq(id);
     }
-    public void execActionForCards(String cards, String action, String allocateTo, boolean getCardNumsOnly) {
-        mBackgroundProcessor.addExecActionCardsReq(cards,action,allocateTo,getCardNumsOnly);
+    public void execActionForCards(String cards, String action, String allocateTo, String orderId, boolean getCardNumsOnly) {
+        mBackgroundProcessor.addExecActionCardsReq(cards,action,allocateTo,orderId,getCardNumsOnly);
     }
     public void disableCustCard(String ticketId, String reason, String remarks) {
         mBackgroundProcessor.addDisableCustCardReq(ticketId, reason, remarks);
     }
 
+    public void searchMchntOrder() {
+        mBackgroundProcessor.addSearchOrderReq();
+    }
 
     @Override
     protected void doOnActivityCreated() {

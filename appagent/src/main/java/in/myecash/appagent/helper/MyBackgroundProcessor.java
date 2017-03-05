@@ -10,17 +10,20 @@ import in.myecash.appagent.backendAPI.InternalUserServicesNoLogin;
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.common.MyCardForAction;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.BackgroundProcessor;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.common.database.CustomerCards;
+import in.myecash.common.database.MerchantOrders;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.merchantbase.backendAPI.MerchantServices;
 import in.myecash.merchantbase.entities.MerchantUser;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -59,6 +62,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         public String cards;
         public String action;
         public String allocateTo;
+        public String orderId;
         public boolean getCardNumsOnly;
     }
 
@@ -128,11 +132,12 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     public void addCardSearchReq(String id) {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_SEARCH_CARD, id).sendToTarget();
     }
-    public void addExecActionCardsReq(String cards, String action, String allocateTo, boolean getCardNumsOnly) {
+    public void addExecActionCardsReq(String cards, String action, String allocateTo, String orderId, boolean getCardNumsOnly) {
         MessageActionCards msg = new MessageActionCards();
         msg.cards = cards;
         msg.action = action;
         msg.allocateTo = allocateTo;
+        msg.orderId = orderId;
         msg.getCardNumsOnly = getCardNumsOnly;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_ACTION_CARDS, msg).sendToTarget();
     }
@@ -144,7 +149,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DISABLE_CUST_CARD, msg).sendToTarget();
     }
-
+    public void addSearchOrderReq() {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_SEARCH_MCHNT_ORDER, null).sendToTarget();
+    }
 
 
     @Override
@@ -187,6 +194,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_DISABLE_CUST_CARD:
                 error = disableCustCard((MessageDisableUser) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_SEARCH_MCHNT_ORDER:
+                error = searchMchntOrder();
                 break;
         }
         return error;
@@ -271,12 +281,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
     private int actionForCards(MessageActionCards data) {
         try {
-            List<MyCardForAction> list = InternalUserServices.getInstance().execActionForCards(data.cards, data.action, data.allocateTo, data.getCardNumsOnly);
+            List<MyCardForAction> list = InternalUserServices.getInstance().execActionForCards(data.cards, data.action,
+                    data.allocateTo, data.orderId, data.getCardNumsOnly);
 
-            /*mRetainedFragment.mLastCardsForAction.clear();
-            for (MyCardForAction card : list) {
-                mRetainedFragment.mLastCardsForAction.add(card);
-            }*/
             // as we want to maintain the order in which the card was scanned
             // so search by scannedCode in existing list - and update all fields filled by backend
             for (MyCardForAction card : list) {
@@ -312,6 +319,38 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         return ErrorCodes.NO_ERROR;
     }
 
+    private int searchMchntOrder() {
+        // convert to string literal CSV
+        String csvStr = null;
+        if(mRetainedFragment.mSelectedStatus!=null && !mRetainedFragment.mSelectedStatus.isEmpty()) {
+            for (DbConstants.MCHNT_ORDER_STATUS st :
+                    mRetainedFragment.mSelectedStatus) {
+                if(csvStr==null) {
+                    csvStr = "'"+st.name()+"'";
+                } else {
+                    csvStr = csvStr+",'"+st.name()+"'";
+                }
+            }
+        }
+        LogMy.d(TAG,"statusCsvStr: "+csvStr);
 
+        try {
+            mRetainedFragment.mLastFetchMchntOrders = CommonServices.getInstance().getMchntOrders(
+                    mRetainedFragment.mMchntIdForOrder==null?"":mRetainedFragment.mMchntIdForOrder,
+                    mRetainedFragment.mMchntOrderId==null?"":mRetainedFragment.mMchntOrderId,
+                    csvStr==null?"":csvStr);
+
+            LogMy.d(TAG,"fetchMchntOrders success: "+mRetainedFragment.mLastFetchMchntOrders.size());
+
+            // sort by time
+            Collections.sort(mRetainedFragment.mLastFetchMchntOrders, new AppCommonUtil.MchntOrderComparator());
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Exception in fetchMchntOrders: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+
+        return ErrorCodes.NO_ERROR;
+    }
 
 }

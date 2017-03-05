@@ -26,7 +26,7 @@ public class MobileChangePreference extends DialogPreference {
     public interface MobileChangePreferenceIf {
         void changeMobileNumOk(String verifyParam, String newMobile);
         void changeMobileNumOtp(String otp);
-        void changeMobileNumReset(boolean showMobilePref);
+        //void changeMobileNumReset(boolean showMobilePref);
         //MerchantOps getMobileChangeMerchantOp();
         MyRetainedFragment getRetainedFragment();
     }
@@ -46,8 +46,7 @@ public class MobileChangePreference extends DialogPreference {
 
     public MobileChangePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        CashbackActivity activity = (CashbackActivity)context;
-        mCallback = (MobileChangePreferenceIf)activity;
+        mCallback = (CashbackActivity)context;
         setDialogLayoutResource(R.layout.dialog_mobile_change);
         setPositiveButtonText(android.R.string.ok);
         setNegativeButtonText(android.R.string.cancel);
@@ -81,32 +80,6 @@ public class MobileChangePreference extends DialogPreference {
         getDialog().setCanceledOnTouchOutside(false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        //MerchantOps op = mCallback.getMobileChangeMerchantOp();
-        String verifyParam = mCallback.getRetainedFragment().mVerifyParamMobileChange;
-        String newMobile = mCallback.getRetainedFragment().mNewMobileNum;
-
-        //if(op == null || !op.getOp_status().equals(DbConstants.MERCHANT_OP_STATUS_OTP_GENERATED)) {
-        if(verifyParam==null || newMobile==null) {
-            // first run, otp not generated yet
-            // disable OTP and ask for parameters
-            labelNewOtp.setText("OTP will be sent on the New mobile number for verification");
-            inputNewOtp.setVisibility(View.GONE);
-        } else {
-            // second run, OTP generated
-            // disable and show parameter values and ask for otp
-            layoutDob1.setAlpha(0.4f);
-            labelDob2.setEnabled(false);
-            inputDob.setEnabled(false);
-
-            labelNewMobile.setEnabled(false);
-            inputNewMobile.setText(newMobile);
-            inputNewMobile.setEnabled(false);
-
-            labelNewMobile2.setEnabled(false);
-            inputNewMobile2.setText(newMobile);
-            inputNewMobile2.setEnabled(false);
-        }
-
         /*
         ((AlertDialog) getDialog()).setButton(DialogInterface.BUTTON_NEUTRAL, "Reset", new DialogInterface.OnClickListener() {
             @Override
@@ -115,6 +88,8 @@ public class MobileChangePreference extends DialogPreference {
                 dialog.dismiss();
             }
         });*/
+
+        setParams();
 
         Button pos = ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_POSITIVE);
         pos.setOnClickListener(new OnSingleClickListener() {
@@ -148,6 +123,34 @@ public class MobileChangePreference extends DialogPreference {
         });
     }
 
+    private void setParams() {
+        //MerchantOps op = mCallback.getMobileChangeMerchantOp();
+        String verifyParam = mCallback.getRetainedFragment().mVerifyParamMobileChange;
+        String newMobile = mCallback.getRetainedFragment().mNewMobileNum;
+
+        //if(op == null || !op.getOp_status().equals(DbConstants.MERCHANT_OP_STATUS_OTP_GENERATED)) {
+        if(verifyParam==null || newMobile==null) {
+            // first run, otp not generated yet
+            // disable OTP and ask for parameters
+            labelNewOtp.setText("OTP will be sent on the New mobile number for verification");
+            inputNewOtp.setVisibility(View.GONE);
+        } else {
+            // second run, OTP generated
+            // disable and show parameter values and ask for otp
+            layoutDob1.setAlpha(0.4f);
+            labelDob2.setEnabled(false);
+            inputDob.setEnabled(false);
+
+            labelNewMobile.setEnabled(false);
+            inputNewMobile.setText(newMobile);
+            inputNewMobile.setEnabled(false);
+
+            labelNewMobile2.setEnabled(false);
+            inputNewMobile2.setText(newMobile);
+            inputNewMobile2.setEnabled(false);
+        }
+    }
+
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder)
     {
@@ -155,8 +158,15 @@ public class MobileChangePreference extends DialogPreference {
         builder.setNeutralButton("Restart", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mCallback.changeMobileNumReset(true);
-                dialog.dismiss();
+                //mCallback.changeMobileNumReset(true);
+                //dialog.dismiss();
+
+                MyRetainedFragment retainedFrag = mCallback.getRetainedFragment();
+                retainedFrag.mNewMobileNum = null;
+                retainedFrag.mVerifyParamMobileChange = null;
+                retainedFrag.mOtpMobileChange = null;
+
+                setParams();
             }
         });
         builder.setTitle(null);

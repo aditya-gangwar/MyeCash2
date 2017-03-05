@@ -11,17 +11,20 @@ public class MerchantOrders
 {
     private String orderId;
     private String ownerId;
+    private String invoiceUrl;
     private java.util.Date statusChangeTime;
     private String invoiceId;
-    private String plannedPayMode;
     private java.util.Date deliveryTime;
     private String paymentRef;
     private String agentId;
     private java.util.Date createTime;
     private String merchantId;
+    private Integer totalPrice;
     private String agentName;
     private java.util.Date created;
     private String actualPayMode;
+    private Boolean isFirstOrder;
+    private Integer itemPrice;
     private String saleOrderId;
     private String status;
     private String statusChangeUser;
@@ -30,24 +33,6 @@ public class MerchantOrders
     private java.util.Date updated;
     private String itemSku;
     private String rejectReason;
-    private Integer totalPrice;
-
-    public Integer getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Integer totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public String getRejectReason() {
-        return rejectReason;
-    }
-
-    public void setRejectReason(String rejectReason) {
-        this.rejectReason = rejectReason;
-    }
-
     public String getOrderId()
     {
         return orderId;
@@ -61,6 +46,16 @@ public class MerchantOrders
     public String getOwnerId()
     {
         return ownerId;
+    }
+
+    public String getInvoiceUrl()
+    {
+        return invoiceUrl;
+    }
+
+    public void setInvoiceUrl( String invoiceUrl )
+    {
+        this.invoiceUrl = invoiceUrl;
     }
 
     public java.util.Date getStatusChangeTime()
@@ -81,16 +76,6 @@ public class MerchantOrders
     public void setInvoiceId( String invoiceId )
     {
         this.invoiceId = invoiceId;
-    }
-
-    public String getPlannedPayMode()
-    {
-        return plannedPayMode;
-    }
-
-    public void setPlannedPayMode( String plannedPayMode )
-    {
-        this.plannedPayMode = plannedPayMode;
     }
 
     public java.util.Date getDeliveryTime()
@@ -143,6 +128,16 @@ public class MerchantOrders
         this.merchantId = merchantId;
     }
 
+    public Integer getTotalPrice()
+    {
+        return totalPrice;
+    }
+
+    public void setTotalPrice( Integer totalPrice )
+    {
+        this.totalPrice = totalPrice;
+    }
+
     public String getAgentName()
     {
         return agentName;
@@ -166,6 +161,26 @@ public class MerchantOrders
     public void setActualPayMode( String actualPayMode )
     {
         this.actualPayMode = actualPayMode;
+    }
+
+    public Boolean getIsFirstOrder()
+    {
+        return isFirstOrder;
+    }
+
+    public void setIsFirstOrder( Boolean isFirstOrder )
+    {
+        this.isFirstOrder = isFirstOrder;
+    }
+
+    public Integer getItemPrice()
+    {
+        return itemPrice;
+    }
+
+    public void setItemPrice( Integer itemPrice )
+    {
+        this.itemPrice = itemPrice;
     }
 
     public String getSaleOrderId()
@@ -226,6 +241,16 @@ public class MerchantOrders
     public void setItemSku( String itemSku )
     {
         this.itemSku = itemSku;
+    }
+
+    public String getRejectReason()
+    {
+        return rejectReason;
+    }
+
+    public void setRejectReason( String rejectReason )
+    {
+        this.rejectReason = rejectReason;
     }
 
 

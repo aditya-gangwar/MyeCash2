@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/toolbar"
+    android:background="?android:attr/windowBackground">
+
+    <LinearLayout
+        style="@style/LL_Vertical"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_last_row_btn"
+        android:layout_alignParentBottom="true">
+
+        <View
+            style="@style/Divider_horizontal_Medium"
+            android:background="@color/green_positive"/>
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_normal_border"
+            android:id="@+id/btn_bill_total"
+            android:text="Collect    \u20B9 256"
+            android:textColor="@color/green_positive" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/LL_Vertical"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/layout_last_row_btn">
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:id="@+id/input_more_info"
+            android:layout_height="0dp"
+            android:layout_weight="7.5"
+            android:layout_width="match_parent"
+            android:text="* Cashback Excluded *"
+            android:textColor="@color/accent2"
+            android:textStyle="bold"
+            android:background="@color/bg_light_pink"
+            android:longClickable="false"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_weighted"
+            android:layout_weight="22.5">
+
+            <EditText
+                style="@style/Edittext_biggest_main_input"
+                android:id="@+id/input_item_amt"
+                android:layout_width="0dp"
+                android:layout_weight="82.5"
+                android:gravity="center"
+                android:text="@string/Rs_0"
+                android:maxLength="13"
+                android:textColor="@color/link_blue"/>
+
+            <ImageButton
+                style="@style/button_keyboard"
+                android:layout_width="0dp"
+                android:src="@drawable/ic_backspace_white_24dp"
+                android:tint="@color/secondary_text"
+                android:id="@+id/input_kb_bs"
+                android:layout_weight="17.5"
+                android:scaleType="center"/>
+        </LinearLayout>
+
+        <EditText
+            style="@style/Edittext_only_click_medium"
+            android:id="@+id/label_item_cnt"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="10"
+            android:text="Items: 0"
+            android:paddingRight="@dimen/XXL_space"
+            android:paddingTop="@dimen/medium_space"
+            android:paddingLeft="@dimen/medium_space"
+            android:textColor="@color/link_blue"/>
+
+        <!--LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="10">
+
+            <EditText
+                style="@style/Edittext_only_click_medium"
+                android:layout_width="wrap_content"
+                android:id="@+id/label_item_cnt"
+                android:text="Items: 0"
+                android:paddingRight="@dimen/XL_space"
+                android:paddingTop="@dimen/medium_space"
+                android:textColor="@color/link_blue"/>
+
+            <Switch
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/mySwitch"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:gravity="right|center_vertical"
+                android:paddingRight="@dimen/medium_space"
+                android:paddingTop="@dimen/medium_space"
+                android:text="Cashback  " />
+
+        </LinearLayout-->
+
+        <LinearLayout
+            style="@style/LL_Vertical"
+            android:layout_height="0dp"
+            android:layout_weight="60"
+            android:background="@color/bg_light_green">
+
+            <View
+                style="@style/Divider_horizontal_Medium"
+                android:background="@color/primary_text"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_weighted">
+
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_1"
+                    android:text="1"/>
+                <View
+                    style="@style/Divider_vertical_Medium"
+                    android:background="@color/primary_text"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_2"
+                    android:text="2"/>
+                <View
+                    style="@style/Divider_vertical_Medium"
+                    android:background="@color/primary_text"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_3"
+                    android:text="3"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/Divider_horizontal_Medium"
+                android:background="@color/primary_text"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_weighted">
+
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_4"
+                    android:text="4"/>
+                <View
+                    style="@style/Divider_vertical_Medium"
+                    android:background="@color/primary_text"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_5"
+                    android:text="5"/>
+                <View
+                    style="@style/Divider_vertical_Medium"
+                    android:background="@color/primary_text"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_6"
+                    android:text="6"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/Divider_horizontal_Medium"
+                android:background="@color/primary_text"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_weighted">
+
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_7"
+                    android:text="7"/>
+
+                <View
+                    style="@style/Divider_vertical_Medium"
+                    android:background="@color/primary_text"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_8"
+                    android:text="8"/>
+                <View
+                    style="@style/Divider_vertical_Medium"
+                    android:background="@color/primary_text"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_9"
+                    android:text="9"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/Divider_horizontal_Medium"
+                android:background="@color/primary_text"/>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_weighted">
+
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_X"
+                    android:text="x"
+                    android:textAllCaps="false"/>
+                <View
+                    style="@style/Divider_vertical_Medium"
+                    android:background="@color/primary_text"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_0"
+                    android:text="0" />
+                <View
+                    style="@style/Divider_vertical_Medium"
+                    android:background="@color/primary_text"/>
+                <android.support.v7.widget.AppCompatButton
+                    style="@style/button_keyboard"
+                    android:id="@+id/input_kb_plus"
+                    android:text="+/=" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

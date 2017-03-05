@@ -61,6 +61,7 @@ import in.myecash.common.database.CustomerOps;
 import in.myecash.common.database.Customers;
 import in.myecash.common.database.MerchantDevice;
 import in.myecash.common.database.MerchantOps;
+import in.myecash.common.database.MerchantOrders;
 import in.myecash.common.database.Merchants;
 import in.myecash.common.database.Transaction;
 
@@ -71,6 +72,7 @@ import java.io.FileOutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -892,23 +894,36 @@ public class AppCommonUtil {
         Backendless.Data.mapTableToClass("CustomerCards", CustomerCards.class);
         Backendless.Data.mapTableToClass("Customers", Customers.class);
         Backendless.Data.mapTableToClass("Merchants", Merchants.class);
+        Backendless.Data.mapTableToClass("CustomerOps", CustomerOps.class);
         Backendless.Data.mapTableToClass("Counters", Counters.class);
         Backendless.Data.mapTableToClass("MerchantOps", MerchantOps.class);
-        Backendless.Data.mapTableToClass("CustomerOps", CustomerOps.class);
         Backendless.Data.mapTableToClass("MerchantDevice", MerchantDevice.class);
         Backendless.Data.mapTableToClass("BusinessCategories", BusinessCategories.class);
         Backendless.Data.mapTableToClass("Address", Address.class);
         Backendless.Data.mapTableToClass("Cities", Cities.class);
+        Backendless.Data.mapTableToClass("MerchantOrders", MerchantOrders.class);
 
         /*Backendless.Data.mapTableToClass( "Transaction0", Transaction.class );
         Backendless.Data.mapTableToClass( "Cashback0", Cashback.class );
 
         Backendless.Data.mapTableToClass( "Transaction1", Transaction.class );
-        Backendless.Data.mapTableToClass( "Cashback1", Cashback.class );*/
+        Backendless.Data.mapTableToClass( "Cashback1", Cashback.class );
 
         Backendless.Data.mapTableToClass( "Transaction6", Transaction.class );
-        Backendless.Data.mapTableToClass( "Cashback6", Cashback.class );
+        Backendless.Data.mapTableToClass( "Cashback6", Cashback.class );*/
 
+    }
+
+    public static class MchntOrderComparator implements Comparator<MerchantOrders> {
+        @Override
+        public int compare(MerchantOrders lhs, MerchantOrders rhs) {
+            return compare(lhs.getCreateTime().getTime(), rhs.getCreateTime().getTime());
+        }
+        private static int compare(long a, long b) {
+            return a < b ? -1
+                    : a > b ? 1
+                    : 0;
+        }
     }
 
 }

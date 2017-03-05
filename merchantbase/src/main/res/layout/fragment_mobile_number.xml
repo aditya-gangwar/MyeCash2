@@ -43,7 +43,6 @@
                 android:maxLength="@string/mobile_char_limit"
                 android:hint="Mobile Number"
                 android:drawableLeft="@drawable/ic_mobile"
-                android:text="8800"
                 android:typeface="monospace"
                 android:gravity="center"
                 android:longClickable="false"/>

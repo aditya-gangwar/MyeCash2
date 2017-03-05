@@ -11,6 +11,7 @@ package in.myecash.appbase.backendAPI;
   import in.myecash.common.constants.CommonConstants;
   import in.myecash.common.database.CustomerCards;
   import in.myecash.common.database.Customers;
+  import in.myecash.common.database.MerchantOrders;
   import in.myecash.common.database.Merchants;
 
 
@@ -74,4 +75,9 @@ package in.myecash.appbase.backendAPI;
           return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "execCustomerOp", args, String.class );
       }
 
+      public java.util.List<MerchantOrders> getMchntOrders(String merchantId, String orderId, String statusCsvStr)
+      {
+          Object[] args = new Object[]{merchantId,orderId,statusCsvStr};
+          return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMchntOrders", args, java.util.List.class );
+      }
   }

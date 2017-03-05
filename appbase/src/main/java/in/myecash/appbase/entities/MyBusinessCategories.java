@@ -27,10 +27,14 @@ public class MyBusinessCategories
 
     public static void init() {
         if(mCategoryValueSet == null) {
-            mCategoryValueSet = new ArrayList<String>();
+            mCategoryValueSet = new ArrayList<>();
+        } else {
+            mCategoryValueSet.clear();
         }
         if(mObjectMap == null) {
-            mObjectMap = new HashMap<String,BusinessCategories>();
+            mObjectMap = new HashMap<>();
+        } else {
+            mObjectMap.clear();
         }
 
         // Fetch all categories from DB and build value set

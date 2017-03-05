@@ -21,11 +21,14 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.appbase.entities.MyBusinessCategories;
+import in.myecash.appbase.entities.MyCities;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.appbase.utilities.RootUtil;
@@ -55,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements
     private static final int RC_HANDLE_WRITE_STORAGE_PERM = 10;
     private static final int RC_HANDLE_READ_STORAGE_PERM = 11;
     private static final int RC_HANDLE_CAMERA_PERM = 12;
+    private static final int RC_HANDLE_LOCATION_FINE = 13;
 
 
     MyRetainedFragment      mWorkFragment;
@@ -111,7 +115,6 @@ public class LoginActivity extends AppCompatActivity implements
                     .apply();
         }
 
-
         mPasswdTextRes.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -161,6 +164,12 @@ public class LoginActivity extends AppCompatActivity implements
         if(rc != PackageManager.PERMISSION_GRANTED) {
             requestCameraPermission();
             return false;
+        }
+
+        rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        if(rc!=PackageManager.PERMISSION_GRANTED) {
+            // request permission
+            requestLocationPermission(Manifest.permission.ACCESS_FINE_LOCATION, RC_HANDLE_LOCATION_FINE);
         }
 
         return true;
@@ -232,13 +241,42 @@ public class LoginActivity extends AppCompatActivity implements
                 .show();
     }
 
+    private void requestLocationPermission(String permission, final int handle) {
+        LogMy.w(TAG, "Location permission is not granted. Requesting permission");
+
+        final String[] permissions = new String[]{permission};
+
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+            ActivityCompat.requestPermissions(this, permissions, handle);
+            return;
+        }
+
+        final Activity thisActivity = this;
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCompat.requestPermissions(thisActivity, permissions, handle);
+            }
+        };
+
+        final ScrollView scrollview_register = (ScrollView) findViewById(R.id.scrollview_register);
+        Snackbar.make(scrollview_register, R.string.permission_location_rationale,
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.ok, listener)
+                .show();
+    }
+
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode != RC_HANDLE_WRITE_STORAGE_PERM &&
                 requestCode != RC_HANDLE_CAMERA_PERM &&
-                requestCode != RC_HANDLE_READ_STORAGE_PERM) {
+                requestCode != RC_HANDLE_READ_STORAGE_PERM &&
+                requestCode != RC_HANDLE_LOCATION_FINE) {
             LogMy.d(TAG, "Got unexpected permission result: " + requestCode);
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             return;
@@ -264,6 +302,9 @@ public class LoginActivity extends AppCompatActivity implements
                 break;
             case RC_HANDLE_CAMERA_PERM:
                 msg = getString(R.string.no_camera_permission);
+                break;
+            case RC_HANDLE_LOCATION_FINE:
+                msg = getString(R.string.no_location_permission);
                 break;
         }
         DialogFragmentWrapper notDialog = DialogFragmentWrapper.createNotification(AppConstants.noPermissionTitle,

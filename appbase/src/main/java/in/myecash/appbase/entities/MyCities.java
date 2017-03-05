@@ -27,10 +27,14 @@ public class MyCities
 
     public static void init() {
         if(mCityValueSet == null) {
-            mCityValueSet = new ArrayList<String>();
+            mCityValueSet = new ArrayList<>();
+        } else {
+            mCityValueSet.clear();
         }
         if(mObjectMap == null) {
-            mObjectMap = new HashMap<String,Cities>();
+            mObjectMap = new HashMap<>();
+        } else {
+            mObjectMap.clear();
         }
 
         // Fetch all categories from DB and build value set

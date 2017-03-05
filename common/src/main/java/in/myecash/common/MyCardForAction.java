@@ -17,6 +17,7 @@ public class MyCardForAction implements Serializable {
     public static final String ACTION_STATUS_WRONG_ALLOT = "Wrong Allottee";
     public static final String ACTION_STATUS_WRONG_ALLOT_STATUS = "Allottee Status";
     public static final String ACTION_STATUS_ERROR = "Unknown Error";
+    public static final String ACTION_STATUS_WRONG_ORDER = "Wrong Order ID";
 
     private String scannedCode;
     private String cardNum;

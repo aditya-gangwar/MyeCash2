@@ -38,6 +38,9 @@ public class CardsActionListFrag extends BaseFragment {
     private static final String TAG = "AgentApp-CardsActionListFrag";
 
     private static final String ARG_ACTION = "argAction";
+    private static final String ARG_ORDER_ID = "argOrderId";
+    private static final String ARG_MCNT_ID = "argMchntId";
+
     private static final int MAX_CARD_ONE_GO = 10;
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9005;
 
@@ -47,6 +50,9 @@ public class CardsActionListFrag extends BaseFragment {
     private MyRetainedFragment mRetainedFragment;
     private CardsActionListFragIf mCallback;
     String mAction;
+    String mAllotTo;
+    String mOrderId;
+
     // Layout views
     private View mLayoutAllottee;
     private EditText mInputAllottee;
@@ -59,20 +65,38 @@ public class CardsActionListFrag extends BaseFragment {
     public interface CardsActionListFragIf {
         MyRetainedFragment getRetainedFragment();
         //void checkCardsForAction(String action);
-        void execActionForCards(String cards, String action, String allocateTo, boolean getCardNumsOnly);
+        void execActionForCards(String cards, String action, String allocateTo, String orderId, boolean getCardNumsOnly);
         void showCardDetails(String cardNum);
     }
 
 
-    public static CardsActionListFrag getInstance(String action) {
+    public static CardsActionListFrag getInstance(String action, String orderId, String mchntId) {
         Bundle args = new Bundle();
         args.putString(ARG_ACTION, action);
+        args.putString(ARG_ORDER_ID, orderId);
+        args.putString(ARG_MCNT_ID, mchntId);
 
         CardsActionListFrag fragment = new CardsActionListFrag();
         fragment.setArguments(args);
         return fragment;
     }
     
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.frag_cards_action, container, false);
+
+        mLayoutAllottee = view.findViewById(R.id.layout_allottee);
+        mInputAllottee = (EditText) view.findViewById(R.id.input_allottee);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.cards_recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mTitleView = (EditText) view.findViewById(R.id.title_action);
+        mBtnScan = (AppCompatButton) view.findViewById(R.id.btn_scan);
+        mBtnAction = (AppCompatButton) view.findViewById(R.id.btn_action);
+
+        return view;
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -83,6 +107,9 @@ public class CardsActionListFrag extends BaseFragment {
             mRetainedFragment = mCallback.getRetainedFragment();
 
             mAction = getArguments().getString(ARG_ACTION);
+            mOrderId = getArguments().getString(ARG_ORDER_ID);
+            mAllotTo = getArguments().getString(ARG_MCNT_ID);
+
             mTitleView.setText(mAction);
             initBtns();
 
@@ -91,7 +118,9 @@ public class CardsActionListFrag extends BaseFragment {
                     mInputAllottee.setHint("Agent ID");
                     break;
                 case ActionsFragment.CARDS_ALLOT_MCHNT:
-                    mInputAllottee.setHint("Merchant ID");
+                    //mInputAllottee.setHint("Merchant ID");
+                    String txt = mAllotTo+"(Order# "+mOrderId+")";
+                    mInputAllottee.setText(txt);
                     break;
                 default:
                     mLayoutAllottee.setVisibility(View.GONE);
@@ -107,22 +136,6 @@ public class CardsActionListFrag extends BaseFragment {
             notDialog.setTargetFragment(this,REQ_NOTIFY_ERROR);
             notDialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_cards_action, container, false);
-
-        mLayoutAllottee = view.findViewById(R.id.layout_allottee);
-        mInputAllottee = (EditText) view.findViewById(R.id.input_allottee);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.cards_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mTitleView = (EditText) view.findViewById(R.id.title_action);
-        mBtnScan = (AppCompatButton) view.findViewById(R.id.btn_scan);
-        mBtnAction = (AppCompatButton) view.findViewById(R.id.btn_action);
-
-        return view;
     }
 
     @Override
@@ -149,7 +162,7 @@ public class CardsActionListFrag extends BaseFragment {
                     error = ValidationHelper.validateAgentId(mInputAllottee.getText().toString());
                     break;
                 case ActionsFragment.CARDS_ALLOT_MCHNT:
-                    error = ValidationHelper.validateMerchantId(mInputAllottee.getText().toString());
+                    //error = ValidationHelper.validateMerchantId(mInputAllottee.getText().toString());
                     break;
             }
 
@@ -308,7 +321,8 @@ public class CardsActionListFrag extends BaseFragment {
             }
         }
         sb.deleteCharAt(sb.length()-1); //remove last delimeter
-        mCallback.execActionForCards(sb.toString(), mAction, mInputAllottee.getText().toString(), !mRetainedFragment.cardNumFetched);
+        //mCallback.execActionForCards(sb.toString(), mAction, mInputAllottee.getText().toString(), !mRetainedFragment.cardNumFetched);
+        mCallback.execActionForCards(sb.toString(), mAction, mAllotTo, mOrderId, !mRetainedFragment.cardNumFetched);
     }
 
     private void startCodeScan() {

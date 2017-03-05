@@ -152,6 +152,12 @@ public class MyGlobalSettings
             return (String) getValue(GlobalSettingConstants.SETTINGS_MCHNT_TERMS_URL);
         }
     }
+    public static Integer getCustCardPrice() {
+        return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUST_CARD_PRICE);
+    }
+    public static Integer getCustCardMaxQty() {
+        return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUST_CARD_MAX_QTY);
+    }
 
     private static Object getValue(String gSettingKey) {
         if(mRunMode==RunMode.backend) {

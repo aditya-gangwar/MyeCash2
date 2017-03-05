@@ -19,6 +19,15 @@ public class CustomerCards
   private String objectId;
   private String card_id;
   private String cardNum;
+  private String barcode;
+
+  public String getBarCode() {
+    return barcode;
+  }
+
+  public void setBarCode(String barcode) {
+    this.barcode = barcode;
+  }
 
   public String getCardNum() {
     return cardNum;

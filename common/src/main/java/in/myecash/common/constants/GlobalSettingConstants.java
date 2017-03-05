@@ -50,6 +50,8 @@ public class GlobalSettingConstants {
     public static final String SETTINGS_SERVICE_NA_URL = "Service_NotAvailable_URL";
     public static final String SETTINGS_MCHNT_TERMS_URL = "Mchnt_Terms_Url";
     public static final String SETTINGS_CUST_TERMS_URL = "Cust_Terms_Url";
+    public static final String SETTINGS_CUST_CARD_PRICE = "Cust_Card_Price";
+    public static final String SETTINGS_CUST_CARD_MAX_QTY = "Cust_Card_Max_Qty";
 
     /*
      * Ones defined only in backend as constant values - as not used by App
@@ -113,6 +115,8 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_SERVICE_NA_URL,"http://www.myecash.in/back-soon");
         aMap.put(SETTINGS_MCHNT_TERMS_URL, "http://www.myecash.in/terms");
         aMap.put(SETTINGS_CUST_TERMS_URL, "http://www.myecash.in/terms#2");
+        aMap.put(SETTINGS_CUST_CARD_PRICE, "30");
+        aMap.put(SETTINGS_CUST_CARD_MAX_QTY, "50");
         valuesGlobalSettings = Collections.unmodifiableMap(aMap);
     }
     /*static {
@@ -191,6 +195,8 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_SERVICE_NA_URL, null);
         aMap.put(SETTINGS_MCHNT_TERMS_URL, null);
         aMap.put(SETTINGS_CUST_TERMS_URL, null);
+        aMap.put(SETTINGS_CUST_CARD_PRICE, null);
+        aMap.put(SETTINGS_CUST_CARD_MAX_QTY, null);
         descGlobalSettings = Collections.unmodifiableMap(aMap);
     }
 
@@ -238,6 +244,8 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_SERVICE_NA_URL, DATATYPE_STRING);
         aMap.put(SETTINGS_MCHNT_TERMS_URL, DATATYPE_STRING);
         aMap.put(SETTINGS_CUST_TERMS_URL, DATATYPE_STRING);
+        aMap.put(SETTINGS_CUST_CARD_PRICE, DATATYPE_INT);
+        aMap.put(SETTINGS_CUST_CARD_MAX_QTY, DATATYPE_INT);
         valueTypesGlobalSettings = Collections.unmodifiableMap(aMap);
     }
 }

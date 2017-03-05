@@ -19,16 +19,13 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.helpshift.support.Support;
@@ -75,7 +72,8 @@ public class CashbackActivity extends BaseActivity implements
         DashboardTxnFragment.DashboardFragmentIf, DashboardFragment.DashboardSummaryFragmentIf,
         CustomerDetailsDialog.CustomerDetailsDialogIf, CustomerDataDialog.CustomerDataDialogIf,
         CustomerListFragment.CustomerListFragmentIf, MerchantOpListFrag.MerchantOpListFragIf,
-        TxnConfirmFragment.TxnConfirmFragmentIf, SettingsFragment.SettingsFragmentIf {
+        TxnConfirmFragment.TxnConfirmFragmentIf, SettingsFragment.SettingsFragmentIf,
+        MerchantOrderListFrag.MerchantOrderListFragIf, CreateMchntOrderDialog.CreateMchntOrderDialogIf {
 
     private static final String TAG = "MchntApp-CashbackActivity";
 
@@ -96,6 +94,7 @@ public class CashbackActivity extends BaseActivity implements
     private static final String CUSTOMER_LIST_FRAG = "CustomerListFrag";
     private static final String MERCHANT_OPS_LIST_FRAG = "MerchantOpsListFrag";
     private static final String TXN_CONFIRM_FRAGMENT = "TxnConfirmFragment";
+    private static final String MCHNT_ORDERS_FRAGMENT = "MchntOrdersFragment";
 
     private static final String DIALOG_BACK_BUTTON = "dialogBackButton";
     private static final String DIALOG_LOGOUT = "dialogLogout";
@@ -112,6 +111,7 @@ public class CashbackActivity extends BaseActivity implements
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
     private static final String DIALOG_MERCHANT_DETAILS = "dialogMerchantDetails";
     private static final String DIALOG_CUSTOMER_DATA = "dialogCustomerData";
+    private static final String DIALOG_CREATE_MCHNT_ORDER = "dialogCrtMchntOrder";
 
     private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
 
@@ -319,6 +319,9 @@ public class CashbackActivity extends BaseActivity implements
             } else if (i == R.id.menu_faq) {
                 Support.setUserIdentifier(mMerchantUser.getMerchantId());
                 Support.showFAQs(CashbackActivity.this);
+            } else if(i == R.id.menu_orders) {
+                AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+                mWorkFragment.fetchMchntOrders();
             }
 
             // Highlight the selected item has been done by NavigationView
@@ -1023,6 +1026,46 @@ public class CashbackActivity extends BaseActivity implements
                         AppAlarms.fileUploadFailed(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onBgProcessResponse",params);
                     }
                     break;
+                case MyRetainedFragment.REQUEST_CRT_MCHNT_ORDER:
+                case MyRetainedFragment.REQUEST_DELETE_MCHNT_ORDER:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode == ErrorCodes.NO_ERROR) {
+                        // detach and attach trusted device fragment - to refresh its view
+                        Fragment currentFragment = getFragmentManager().findFragmentByTag(MCHNT_ORDERS_FRAGMENT);
+                        if(currentFragment != null &&
+                                currentFragment.isVisible()) {
+                            // remove fragment
+                            getFragmentManager().popBackStackImmediate();
+                        } else {
+                            LogMy.e(TAG, "Mchnt Order List fragment not found.");
+                        }
+                        // start the same again
+                        startMchntOrdersFragment();
+
+                        // also show success message
+                        String msg;
+                        if(operation==MyRetainedFragment.REQUEST_CRT_MCHNT_ORDER) {
+                            msg = "Order Create Success";
+                        } else {
+                            msg = "Order Delete Success";
+                        }
+                        DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, msg, false, false)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+                case MyRetainedFragment.REQUEST_FETCH_MERCHANT_ORDERS:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode == ErrorCodes.NO_ERROR || errorCode == ErrorCodes.NO_DATA_FOUND) {
+                        startMchntOrdersFragment();
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
             }
         } catch (Exception e) {
             AppCommonUtil.cancelProgressDialog(true);
@@ -1068,7 +1111,8 @@ public class CashbackActivity extends BaseActivity implements
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
             // merchant operation success, reset to null
-            changeMobileNumReset(false);
+            //changeMobileNumReset(false);
+            resetMobileChangeData();
 
         } else if(errorCode==ErrorCodes.OTP_GENERATED) {
             // OTP sent successfully to new mobile, ask for the same
@@ -1090,7 +1134,8 @@ public class CashbackActivity extends BaseActivity implements
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         } else {
             // reset in case of any error
-            changeMobileNumReset(false);
+            //changeMobileNumReset(false);
+            resetMobileChangeData();
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
@@ -1112,7 +1157,14 @@ public class CashbackActivity extends BaseActivity implements
         changeMobileNum();
     }
 
-    @Override
+    public void resetMobileChangeData() {
+        LogMy.d(TAG, "In resetMobileChangeData: ");
+        //mWorkFragment.mMerchantOp = null;
+        mWorkFragment.mNewMobileNum = null;
+        mWorkFragment.mVerifyParamMobileChange = null;
+        mWorkFragment.mOtpMobileChange = null;
+     }
+    /*@Override
     public void changeMobileNumReset(boolean showMobilePref) {
         LogMy.d(TAG, "In changeMobileNumReset: ");
         //mWorkFragment.mMerchantOp = null;
@@ -1136,7 +1188,7 @@ public class CashbackActivity extends BaseActivity implements
                         .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
             }
         }
-    }
+    }*/
 
     private void changeMobileNum() {
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
@@ -1560,6 +1612,24 @@ public class CashbackActivity extends BaseActivity implements
     }
 
     @Override
+    public void deleteMchntOrder(String orderId) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mWorkFragment.deleteMchntOrder(orderId);
+    }
+
+    @Override
+    public void createMchntOrder() {
+        CreateMchntOrderDialog dialog = new CreateMchntOrderDialog();
+        dialog.show(getFragmentManager(), DIALOG_CREATE_MCHNT_ORDER);
+    }
+
+    @Override
+    public void onCreateMchntOrder(String sku, int qty, int totalPrice) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mWorkFragment.createMchntOrder(sku, qty, totalPrice);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
             if (requestCode == RC_BARCODE_CAPTURE) {
@@ -1799,6 +1869,21 @@ public class CashbackActivity extends BaseActivity implements
             // Add over the existing fragment
             transaction.replace(R.id.fragment_container_1, fragment, TRUSTED_DEVICES_FRAGMENT);
             transaction.addToBackStack(TRUSTED_DEVICES_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+    }
+
+    private void startMchntOrdersFragment() {
+        if (mFragMgr.findFragmentByTag(MCHNT_ORDERS_FRAGMENT) == null) {
+
+            Fragment fragment = new MerchantOrderListFrag();
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container_1, fragment, MCHNT_ORDERS_FRAGMENT);
+            transaction.addToBackStack(MCHNT_ORDERS_FRAGMENT);
 
             // Commit the transaction
             transaction.commit();

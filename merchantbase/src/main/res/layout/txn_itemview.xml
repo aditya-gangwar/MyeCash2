@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/LL_Vertical"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/ripple_bg">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/medium_space"
-        android:paddingBottom="@dimen/medium_space"
-        android:paddingLeft="@dimen/screen_side_padding"
-        android:paddingRight="@dimen/screen_side_padding">
+        android:id="@+id/root_layout"
+        android:padding="@dimen/medium_space"
+        android:clickable="false"
+        android:focusable="false">
 
-        <EditText
-            style="@style/Edittext_only_click_small_lessPad"
+        <TextView
+            style="@style/Edittext_only_view_small_lessPad"
             android:id="@+id/txn_customer_id"
             android:layout_below="@id/txn_time"
             android:layout_height="wrap_content"
@@ -25,10 +26,12 @@
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/bill_amts_layout"
             android:layout_width="wrap_content"
-            android:layout_alignParentRight="true">
+            android:layout_alignParentRight="true"
+            android:clickable="false"
+            android:focusable="false">
 
-            <EditText
-                style="@style/Edittext_only_click_small_lessPad"
+            <TextView
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/txn_bill"
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
@@ -37,8 +40,8 @@
                 android:textColor="@color/secondary_text"
                 android:textStyle="bold"/>
 
-            <EditText
-                style="@style/Edittext_only_click_small_lessPad"
+            <TextView
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:id="@+id/txn_bill_divider"
@@ -53,14 +56,14 @@
                 android:paddingTop="@dimen/edittext_padding_less"
                 android:tint="@color/primary"/>
 
-            <EditText
-                style="@style/Edittext_only_click_small_lessPad"
+            <TextView
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/txn_cashback_award"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="+ \u20B9 23"/>
-            <EditText
-                style="@style/Edittext_only_click_small_lessPad"
+            <TextView
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/txn_cb_award_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -73,7 +76,9 @@
             android:id="@+id/txn_amts_layout"
             android:layout_width="wrap_content"
             android:layout_below="@id/bill_amts_layout"
-            android:layout_alignParentRight="true">
+            android:layout_alignParentRight="true"
+            android:clickable="false"
+            android:focusable="false">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -83,16 +88,16 @@
                 android:paddingTop="0dp"
                 android:paddingBottom="@dimen/edittext_padding_less"
                 android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_click_small_lessPad"
+            <TextView
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/txn_account_amt"
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:text="+ \u20B9 3456"
                 android:paddingTop="0dp"
                 android:paddingRight="0dp"/>
-            <EditText
-                style="@style/Edittext_only_click_small_lessPad"
+            <TextView
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:id="@+id/txn_amts_divider"
@@ -107,8 +112,8 @@
                 android:paddingTop="0dp"
                 android:paddingBottom="@dimen/edittext_padding_less"
                 android:tint="@color/primary"/>
-            <EditText
-                style="@style/Edittext_only_click_small_lessPad"
+            <TextView
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/txn_cashback_amt"
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
@@ -117,14 +122,26 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
+            style="@style/Edittext_only_view_small_lessPad"
+            android:id="@+id/input_cancel_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txn_customer_id"
+            android:text="CANCELLED AT 22 JULY 2016 22:34"
+            android:paddingTop="0dp"
+            android:textColor="@color/red_negative"/>
+
+        <!--LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_cancelled"
             android:layout_below="@id/txn_customer_id"
-            android:layout_width="wrap_content">
+            android:layout_width="wrap_content"
+            android:clickable="false"
+            android:focusable="false">
 
-            <EditText
-                style="@style/Edittext_only_click_small_lessPad"
+            <TextView
+                style="@style/Edittext_only_view_small_lessPad"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="CANCELLED AT "
@@ -132,8 +149,8 @@
                 android:paddingTop="0dp"
                 android:textColor="@color/red_negative"/>
 
-            <EditText
-                style="@style/Edittext_only_click_small_lessPad"
+            <TextView
+                style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/input_cancel_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -141,18 +158,16 @@
                 android:paddingTop="0dp"
                 android:textColor="@color/red_negative"/>
 
-        </LinearLayout>
+        </LinearLayout-->
 
-        <EditText
-            style="@style/Edittext_only_click_small_lessPad"
+        <TextView
+            style="@style/Edittext_only_view_small_lessPad"
             android:id="@+id/txn_time"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="08 Apr,16  20:15"
             android:textStyle="bold"
             android:textColor="@color/subheading"
-            android:longClickable="false"
-            android:textIsSelectable="false"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />

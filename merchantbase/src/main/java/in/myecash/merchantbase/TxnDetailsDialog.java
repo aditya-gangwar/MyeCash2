@@ -118,10 +118,11 @@ public class TxnDetailsDialog extends BaseDialog {
     }
 
     private void initDialogView(final int position) {
+        LogMy.d(TAG,"Entering initDialogView");
         final Transaction txn = mCallback.getRetainedFragment().mLastFetchTransactions.get(position);
 
         // hide fields for customer care logins only
-        if(mCallback.getRetainedFragment().mMerchantUser.isPseudoLoggedIn()) {
+        /*if(mCallback.getRetainedFragment().mMerchantUser.isPseudoLoggedIn()) {
 
             // check if file locally available - will be after the call to showTxnImg()
             // if not, set the listener
@@ -151,7 +152,7 @@ public class TxnDetailsDialog extends BaseDialog {
             }
         } else {
             mTxnImage.setVisibility(View.GONE);
-        }
+        }*/
 
         if(txn != null) {
             mLayoutCancelled.setVisibility(View.GONE);
@@ -187,6 +188,7 @@ public class TxnDetailsDialog extends BaseDialog {
                 mLayoutCbBill.setVisibility(View.GONE);
             }
 
+            LogMy.d(TAG,"Mid check 1");
             mInputCustomerId.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -198,6 +200,7 @@ public class TxnDetailsDialog extends BaseDialog {
                     return false;
                 }
             });
+            LogMy.d(TAG,"Mid check 2");
             mInputCustomerId.setText(Html.fromHtml("<u>"+txn.getCust_private_id()+"</u>"));
             mInputMobileNum.setText(CommonUtils.getPartialVisibleStr(txn.getCustomer_id()));
 
@@ -259,11 +262,13 @@ public class TxnDetailsDialog extends BaseDialog {
             LogMy.wtf(TAG, "Txn object is null !!");
             getDialog().dismiss();
         }
+        LogMy.d(TAG,"Exiting initDialogView");
     }
 
     @Override
     public void onStart()
     {
+        LogMy.d(TAG,"Entering onStart");
         super.onStart();    //super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after this point
 
         final int position = getArguments().getInt(ARG_POSITION, -1);
@@ -292,6 +297,7 @@ public class TxnDetailsDialog extends BaseDialog {
                 neutralButton.setOnClickListener(null);
             }
         }
+        LogMy.d(TAG,"Exiting onStart");
     }
 
     @Override
@@ -329,7 +335,7 @@ public class TxnDetailsDialog extends BaseDialog {
     private EditText mInputAccAdd;
     private EditText mInputAccDebit;
 
-    private ImageView mTxnImage;
+    //private ImageView mTxnImage;
 
     private void bindUiResources(View v) {
 
@@ -361,7 +367,7 @@ public class TxnDetailsDialog extends BaseDialog {
 
         mInputCbRedeem = (EditText) v.findViewById(R.id.input_cb_redeem);
 
-        mTxnImage = (ImageView) v.findViewById(R.id.txnImage);
+        //mTxnImage = (ImageView) v.findViewById(R.id.txnImage);
 
     }
 }

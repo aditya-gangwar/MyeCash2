@@ -41,7 +41,8 @@ public class ActionsActivity extends AppCompatActivity implements
         CustomerDetailsFragment.CustomerDetailsFragmentIf, DisableCustDialog.DisableCustDialogIf,
         SearchCardDialog.SearchCardDialogIf, CardDetailsFragment.CardDetailsFragmentIf,
         CardsActionListFrag.CardsActionListFragIf, DisableCardDialog.DisableCardDialogIf,
-        GlobalSettingsListFrag.GlobalSettingsListFragIf
+        GlobalSettingsListFrag.GlobalSettingsListFragIf, SearchMchntOrderFrag.SearchMchntOrderFragIf,
+        MchntOrderListFragInternal.MerchantOrderListFragIf, OrderDetailsFrag.OrderDetailsFragIf
 {
 
     private static final String TAG = "AgentApp-ActionsActivity";
@@ -49,15 +50,19 @@ public class ActionsActivity extends AppCompatActivity implements
     private static final String ACTIONS_FRAGMENT = "actionsFragment";
     private static final String MCHNT_DETAILS_FRAGMENT = "mchntDetailsFragment";
     private static final String CUST_DETAILS_FRAGMENT = "custDetailsFragment";
+    private static final String SEARCH_ORDERS_FRAGMENT = "searchOrdersFragment";
     private static final String CARD_DETAILS_FRAGMENT = "cardDetailsFragment";
     private static final String SETTINGS_LIST_FRAGMENT = "settingsListFragment";
     private static final String CARDS_ACTIONS_LIST_FRAGMENT = "cardsActionListFragment";
+    private static final String MCHNT_ORDERS_FRAGMENT = "MchntOrdersFragment";
+    private static final String ORDER_DETAILS_FRAGMENT = "orderDetailsFragment";
 
     private static final String DIALOG_BACK_BUTTON = "dialogBackButton";
     private static final String DIALOG_CHANGE_PASSWORD = "dialogChangePassword";
     private static final String DIALOG_SEARCH_MCHNT = "searchMchnt";
     private static final String DIALOG_SEARCH_CUSTOMER = "searchCustomer";
     private static final String DIALOG_SEARCH_CARD = "searchCard";
+    private static final String DIALOG_SEARCH_ORDER = "searchMchntOrder";
 
     private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
 
@@ -239,6 +244,16 @@ public class ActionsActivity extends AppCompatActivity implements
                                 .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
                     break;
+
+                case MyRetainedFragment.REQUEST_SEARCH_MCHNT_ORDER:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        startMchntOrdersFragment();
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
             }
         } catch (Exception e) {
             AppCommonUtil.cancelProgressDialog(true);
@@ -315,7 +330,7 @@ public class ActionsActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.drawer_menu_custapp, menu);
+        inflater.inflate(R.menu.agent_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -407,6 +422,9 @@ public class ActionsActivity extends AppCompatActivity implements
                 SearchCustomerDialog custDialog = new SearchCustomerDialog();
                 custDialog.show(getFragmentManager(), DIALOG_SEARCH_CUSTOMER);
                 break;
+            case ActionsFragment.MCHNT_ORDER_SEARCH:
+                startSearchOrdersFragment();
+                break;
             case ActionsFragment.CARDS_SEARCH:
                 SearchCardDialog cardDialog = new SearchCardDialog();
                 cardDialog.show(getFragmentManager(), DIALOG_SEARCH_CARD);
@@ -429,9 +447,30 @@ public class ActionsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void execActionForCards(String cards, String action, String allocateTo, boolean getCardNumsOnly) {
+    public void showOrderDetails(int pos) {
+        startOrderDetailsFrag(mWorkFragment.mLastFetchMchntOrders.get(pos).getOrderId());
+    }
+
+    @Override
+    public void viewInvoice(String orderId) {
+
+    }
+
+    @Override
+    public void allocateCards(String orderId) {
+
+    }
+
+    @Override
+    public void searchMchntOrder() {
         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-        mWorkFragment.execActionForCards(cards, ActionsFragment.cardsActionCodeMap.get(action), allocateTo, getCardNumsOnly);
+        mWorkFragment.searchMchntOrder();
+    }
+
+    @Override
+    public void execActionForCards(String cards, String action, String allocateTo, String orderId, boolean getCardNumsOnly) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mWorkFragment.execActionForCards(cards, ActionsFragment.cardsActionCodeMap.get(action), allocateTo, orderId, getCardNumsOnly);
     }
 
     @Override
@@ -512,6 +551,20 @@ public class ActionsActivity extends AppCompatActivity implements
         }
     }
 
+    private void startSearchOrdersFragment() {
+        if (mFragMgr.findFragmentByTag(SEARCH_ORDERS_FRAGMENT) == null) {
+            Fragment fragment = new SearchMchntOrderFrag();
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container, fragment, SEARCH_ORDERS_FRAGMENT);
+            transaction.addToBackStack(SEARCH_ORDERS_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+    }
+
     private void startCardDetailsFragment() {
         if (mFragMgr.findFragmentByTag(CARD_DETAILS_FRAGMENT) == null) {
             LogMy.d(TAG, "Creating new card details fragment");
@@ -562,6 +615,37 @@ public class ActionsActivity extends AppCompatActivity implements
             mCardsActionFragment.updateUI();
         }
     }
+
+    private void startMchntOrdersFragment() {
+        if (mFragMgr.findFragmentByTag(MCHNT_ORDERS_FRAGMENT) == null) {
+
+            Fragment fragment = new MchntOrderListFragInternal();
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container, fragment, MCHNT_ORDERS_FRAGMENT);
+            transaction.addToBackStack(MCHNT_ORDERS_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+    }
+
+    private void startOrderDetailsFrag(String orderID) {
+        if (mFragMgr.findFragmentByTag(ORDER_DETAILS_FRAGMENT) == null) {
+            Fragment fragment = OrderDetailsFrag.getInstance(orderID);
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container, fragment, ORDER_DETAILS_FRAGMENT);
+            transaction.addToBackStack(ORDER_DETAILS_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+    }
+
+
 
     private void startMerchantRegisterActivity() {
         Intent registrationIntent = new Intent( this, RegisterMerchantActivity.class );

@@ -827,7 +827,13 @@ public class CashTransactionFragment_2 extends BaseFragment implements
                                 switch (mDebitClStatus) {
                                     case STATUS_QR_CARD_NOT_USED:
                                         cardScanAmtId = R.id.input_account;
-                                        askCardScan();
+                                        String txtMsg;
+                                        if(mCashPaid==0) {
+                                            txtMsg = "For Debit, Scan Customer Card.\nFor Add, Set Cash Paid.";
+                                        } else {
+                                            txtMsg = "For Debit, Scan Customer Card.";
+                                        }
+                                        askCardScan(txtMsg);
                                         break;
                                     case STATUS_NO_BALANCE:
                                         errorStr = "No Balance for Debit";
@@ -869,7 +875,7 @@ public class CashTransactionFragment_2 extends BaseFragment implements
                             default:
                                 if(mDebitCbStatus==STATUS_QR_CARD_NOT_USED) {
                                     cardScanAmtId = R.id.input_cashback;
-                                    askCardScan();
+                                    askCardScan("For Debit, Scan Customer Card.");
                                 } else {
                                     AppCommonUtil.toast(getActivity(), statusDesc.get(mDebitCbStatus));
                                 }
@@ -941,8 +947,8 @@ public class CashTransactionFragment_2 extends BaseFragment implements
         return true;
     }
 
-    private void askCardScan() {
-        Snackbar mySnackbar = Snackbar.make(mCoordinatorLayout, "Scan Customer Card for Debit", Snackbar.LENGTH_LONG);
+    private void askCardScan(String msg) {
+        Snackbar mySnackbar = Snackbar.make(mCoordinatorLayout, msg, Snackbar.LENGTH_LONG);
         mySnackbar.setAction("SCAN", new OnSingleClickListener() {
             @Override
             public void onSingleClick(View v) {

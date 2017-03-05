@@ -208,7 +208,7 @@ public class BillingFragment extends BaseFragment {
                 }
             }
         } catch (NumberFormatException e) {
-            AppCommonUtil.toast(getActivity(), "Invalid Number");
+            AppCommonUtil.toast(getActivity(), "Invalid Amount");
         } catch (Exception e) {
             LogMy.e(TAG, "Exception in BillingFragment:onClick", e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
@@ -294,25 +294,33 @@ public class BillingFragment extends BaseFragment {
         mBtnTotal.setOnClickListener(new OnSingleClickListener() {
             @Override
             public void onSingleClick(View v) {
-                String actualStr = mInputItemAmt.getText().toString();
-                // remove rupee symbol for processing
-                String effectiveStr = actualStr.replace(AppConstants.SYMBOL_RS, "");
+                try {
+                    String actualStr = mInputItemAmt.getText().toString();
+                    // remove rupee symbol for processing
+                    String effectiveStr = actualStr.replace(AppConstants.SYMBOL_RS, "");
 
-                if (mCalcMode) {
-                    AppCommonUtil.toast(getActivity(), "In Calculator Mode");
-                    return;
+                    if (mCalcMode) {
+                        AppCommonUtil.toast(getActivity(), "In Calculator Mode");
+                        return;
+                    }
+
+                    if (mRetainedFragment.mCurrCustomer != null &&
+                            mRetainedFragment.mCurrCustomer.getStatus() != DbConstants.USER_STATUS_ACTIVE &&
+                            mRetainedFragment.mCurrCustomer.getStatus() != DbConstants.USER_STATUS_LIMITED_CREDIT_ONLY) {
+                        AppCommonUtil.toast(getActivity(), "Customer Not Active");
+                        return;
+                    }
+
+                    // do processing for +, just in case user forgets to press it in end
+                    handlePlus(effectiveStr);
+                    mCallback.onTotalBill();
+                } catch (NumberFormatException e) {
+                    AppCommonUtil.toast(getActivity(), "Invalid Amount");
+                } catch (Exception e) {
+                    LogMy.e(TAG, "Exception in BillingFragment:onClick", e);
+                    DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), true, true)
+                            .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 }
-
-                if(mRetainedFragment.mCurrCustomer!=null &&
-                        mRetainedFragment.mCurrCustomer.getStatus() != DbConstants.USER_STATUS_ACTIVE &&
-                        mRetainedFragment.mCurrCustomer.getStatus() != DbConstants.USER_STATUS_LIMITED_CREDIT_ONLY ) {
-                    AppCommonUtil.toast(getActivity(), "Customer Not Active");
-                    return;
-                }
-
-                // do processing for +, just in case user forgets to press it in end
-                handlePlus(effectiveStr);
-                mCallback.onTotalBill();
             }
         });
         mLabelItemCnt.setOnTouchListener(this);

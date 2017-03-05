@@ -13,6 +13,7 @@ import in.myecash.appbase.utilities.TxnReportsHelper;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.MerchantOps;
+import in.myecash.common.database.MerchantOrders;
 import in.myecash.common.database.MerchantStats;
 import in.myecash.common.database.Transaction;
 import in.myecash.appbase.utilities.BackgroundProcessor;
@@ -60,6 +61,9 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_CUST_DATA_FILE_DOWNLOAD = 19;
     public static final int REQUEST_FETCH_MERCHANT_OPS = 20;
     public static final int REQUEST_CANCEL_TXN = 21;
+    public static final int REQUEST_CRT_MCHNT_ORDER = 22;
+    public static final int REQUEST_FETCH_MERCHANT_ORDERS = 23;
+    public static final int REQUEST_DELETE_MCHNT_ORDER = 24;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -83,6 +87,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public List<MyCashback> mLastFetchCashbacks;
     public List<MerchantOps> mLastFetchMchntOps;
     public Bitmap mLastFetchedImage;
+    public List<MerchantOrders> mLastFetchMchntOrders;
 
     public int mBillTotal;
     public int mCbExcludedTotal;
@@ -113,6 +118,7 @@ public class MyRetainedFragment extends RetainedFragment {
         mLastFetchTransactions = null;
         mLastFetchedImage = null;
         mLastFetchMchntOps = null;
+        mLastFetchMchntOrders = null;
 
         mCustMobile = null;
         mCustCardId = null;
@@ -257,6 +263,17 @@ public class MyRetainedFragment extends RetainedFragment {
     public void cancelTxn(String txnId, String cardId, String pin) {
         mBackgroundProcessor.addCancelTxnReq(txnId, cardId, pin);
     }
+
+    public void createMchntOrder(String sku, int qty, int totalPrice) {
+        mBackgroundProcessor.createMchntOrder(sku, qty, totalPrice);
+    }
+    public void fetchMchntOrders() {
+        mBackgroundProcessor.addFetchMchntOrderReq();
+    }
+    public void deleteMchntOrder(String orderId) {
+        mBackgroundProcessor.addDeleteMchntOrder(orderId);
+    }
+
 
     @Override
     protected void doOnActivityCreated() {

@@ -54,6 +54,7 @@ public class CommonConstants {
     // used to specify 'date with no time' in the CSV report generated
     public static final String DATE_FORMAT_ONLY_DATE_CSV = "dd/MM/yyyy";
     public static final String DATE_FORMAT_DDMM = "ddMM";
+    public static final String DATE_FORMAT_DDMMYY = "ddMMyy";
     // used in reports etc where both date and time is to be shown
     public static final String DATE_FORMAT_WITH_TIME = "dd/MM/yyyy HH:mm";
     // date format to be used in filename
@@ -79,9 +80,10 @@ public class CommonConstants {
     // DOB in format 'DDMMYYYY'
     public static final int DOB_LEN = 8;
     public static final int TRANSACTION_ID_LEN = 13;
-    public static final int PIN_LEN = 5;
+    public static final int PIN_LEN = 4;
     public static final int OTP_LEN = 5;
     public static final int PINCODE_LEN = 6;
+    public static final int CUSTOMER_CARD_BARCODE_SALT_LEN = 5;
 
     public static final int MAX_DEVICES_PER_MERCHANT = 3;
     public static final int DB_QUERY_PAGE_SIZE = 100;
@@ -116,6 +118,8 @@ public class CommonConstants {
     public static final String PREFIX_CCNT_ID = "3";
     public static final String TRANSACTION_ID_PREFIX = "TX";
     public static final String MEMBER_CARD_ID_PREFIX = "mmc";
+    public static final String MEMBER_BARCODE_ID_PREFIX = "a7";
+    public static final String MCHNT_ORDER_ID_PREFIX = "MO";
 
     /*
      * Other common constants

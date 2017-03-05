@@ -7,7 +7,8 @@
 
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesXL"
-        android:layout_below="@id/toolbar_actions">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <Space
             android:layout_width="match_parent"
@@ -78,10 +79,42 @@
 
         <EditText
             style="@style/Edittext_only_view_medium"
+            android:id="@+id/label_orders"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="MERCHANT ORDERS"
+            android:textStyle="bold"
+            android:textColor="@color/accent"
+            android:paddingLeft="0dp"
+            android:layout_marginTop="@dimen/XXL_space"/>
+
+        <LinearLayout
+            android:id="@+id/layout_orders_btns"
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/small_space">
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:id="@+id/btn_orders_0"
+                android:text="EMPTY"
+                android:layout_marginRight="@dimen/large_space"/>
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:id="@+id/btn_orders_1"
+                android:text="EMPTY" />
+        </LinearLayout>
+
+        <EditText
+            style="@style/Edittext_only_view_medium"
             android:id="@+id/label_cards"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="MEMBER CARDS"
+            android:text="CUSTOMER CARDS"
             android:textStyle="bold"
             android:textColor="@color/accent"
             android:paddingLeft="0dp"

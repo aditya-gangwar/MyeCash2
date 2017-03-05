@@ -130,6 +130,7 @@ public class CustomerRegDialog extends BaseDialog {
         if(mobileNum!=null && !mobileNum.isEmpty()) {
             mInputMobileNum.setText(mobileNum);
             AppCommonUtil.makeEditTextOnlyView(mInputMobileNum);
+
             mInputMobileNum.clearFocus();
             mInputMobileNum.setEnabled(false);
             mLabelMobile.setEnabled(false);
@@ -142,6 +143,8 @@ public class CustomerRegDialog extends BaseDialog {
             mInputQrCard.setText("OK");
             mInputQrCard.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
             mInputQrCard.setError(null);
+            AppCommonUtil.makeEditTextOnlyView(mInputQrCard);
+
             mInputQrCard.setClickable(false);
             mInputQrCard.setEnabled(false);
             mLabelCard.setEnabled(false);
@@ -153,14 +156,13 @@ public class CustomerRegDialog extends BaseDialog {
         // Set name and make non-editable
         if(firstName!=null && !firstName.isEmpty()) {
             mInputFirstName.setText(firstName);
-            mInputFirstName.setClickable(false);
+            AppCommonUtil.makeEditTextOnlyView(mInputFirstName);
             mInputFirstName.setEnabled(false);
             mLabelFirstName.setEnabled(false);
-            mLabelLastName.setEnabled(false);
 
             mInputLastName.setText(lastName);
-            mInputLastName.setClickable(false);
-            mInputLastName.setEnabled(false);
+            AppCommonUtil.makeEditTextOnlyView(mInputLastName);
+            mLabelLastName.setEnabled(false);
             mInputLastName.setEnabled(false);
 
             mImageName.setAlpha(0.5f);

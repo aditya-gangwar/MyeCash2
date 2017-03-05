@@ -7,21 +7,19 @@
 
     <EditText
         style="@style/Dialog_title"
-        android:id="@+id/label_cust_op_title"
-        android:text="Merchant Order"/>
+        android:id="@+id/label_title"
+        android:text="New Merchant Order"/>
 
     <LinearLayout
         style="@style/LL_Vertical_paddingSidesLarge"
-        android:layout_below="@id/label_cust_op_title">
+        android:layout_below="@id/label_title">
 
         <EditText
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/label_info_otp"
-            android:text="Order Customer Cards from here.\nOur Sales Executive will deliver the same in 2-4 working days."
-            android:textStyle="italic"
-            android:textColor="@color/accent2"
+            android:text="Order Customer Cards from here.\n\nWill be delivered in 2-4 working days, at your business address regsitered with us."
             android:layout_marginTop="@dimen/medium_space"/>
 
         <LinearLayout
@@ -42,6 +40,7 @@
                 android:gravity="left"/>
             <EditText
                 style="@style/Edittext_only_view_medium"
+                android:id="@+id/input_itemName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
@@ -85,15 +84,15 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/cash_logo_24dp"/>
+                android:src="@drawable/cash_logo_24dp"
+                android:layout_marginRight="@dimen/XS_space"/>
             <EditText
                 style="@style/Edittext_only_view_medium"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text=" Price"
+                android:text="Unit Price"
                 android:layout_weight="50"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
+                android:gravity="left"/>
             <!--View
                 style="@style/Divider_vertical_Medium"/-->
             <EditText
@@ -101,7 +100,7 @@
                 android:id="@+id/input_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="\u20B9  30"
+                android:text="\u20B9  0"
                 android:layout_weight="50"
                 android:gravity="left"/>
         </LinearLayout>
@@ -113,58 +112,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/cash_logo_24dp"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:layout_marginRight="@dimen/XS_space"/>
             <EditText
                 style="@style/Edittext_only_view_medium"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text=" Total Bill"
+                android:text="Total Bill"
                 android:layout_weight="50"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
-            <!--View
-                style="@style/Divider_vertical_Medium"/-->
+                android:gravity="left"/>
             <EditText
                 style="@style/Edittext_only_view_medium"
                 android:id="@+id/input_bill"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="\u20B9  600"
+                android:text="\u20B9  0"
                 android:layout_weight="50"
                 android:textColor="@color/green_positive"
                 android:gravity="left"/>
         </LinearLayout>
 
         <LinearLayout
-            style="@style/LL_Horizontal_wrap"
-            android:id="@+id/layout_new_mobile"
-            android:visibility="visible"
-            android:layout_marginTop="@dimen/large_space">
+            style="@style/LL_Horizontal_wrap">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_payment_white_24dp"
-                android:id="@+id/image_newMobile"
-                android:tint="@color/primary"/>
+                android:src="@drawable/cash_logo_24dp"
+                android:visibility="invisible"
+                android:layout_marginRight="@dimen/XS_space"/>
             <EditText
-                style="@style/Edittext_only_view_medium"
-                android:id="@+id/label_new_mobile"
+                style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="Payment Mode"
+                android:text="(Inclusive of all Taxes)"
                 android:layout_weight="50"
-                android:gravity="left"/>
-            <EditText
-                style="@style/Edittext_only_click_bg_medium"
-                android:layout_weight="50"
-                android:gravity="left"
-                android:id="@+id/input_payMode"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="Select"
-                android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
-                android:drawableTint="?android:textColorPrimary"/>
+                android:paddingTop="0dp"
+                android:gravity="left|top"/>
         </LinearLayout>
 
         <EditText
@@ -172,10 +156,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/label_info"
-            android:text="(Actual Payment to be done at the time of delivery only)"
+            android:text="Payment to be done at the time of delivery\n\nAre you sure to Create New Order ?"
             android:textStyle="italic"
-            android:paddingTop="0dp"
-            android:layout_marginBottom="@dimen/large_space"/>
+            android:layout_marginBottom="@dimen/large_space"
+            android:textColor="@color/accent2"
+            android:layout_marginTop="@dimen/large_space"/>
 
     </LinearLayout>
 </RelativeLayout>

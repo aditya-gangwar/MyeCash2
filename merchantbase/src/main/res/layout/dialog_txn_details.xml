@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<!--RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
@@ -7,9 +7,10 @@
     <EditText
         style="@style/Dialog_title"
         android:id="@+id/label_title"
-        android:text="TRANSACTION  DETAILS"/>
+        android:text="TRANSACTION  DETAILS"/-->
 
     <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/label_title">
@@ -17,13 +18,16 @@
         <LinearLayout
             style="@style/LL_Vertical_paddingSidesLarge">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/medium_space"/>
+            <EditText
+                style="@style/Dialog_title"
+                android:id="@+id/label_title"
+                android:layout_marginTop="@dimen/small_space"
+                android:text="TRANSACTION  DETAILS"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:id="@+id/layout_cancelled">
+                android:id="@+id/layout_cancelled"
+                android:layout_marginTop="@dimen/medium_space">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -108,7 +112,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_access_time_white_18dp"
-                    android:tint="@color/primary"
                     android:visibility="invisible"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
@@ -179,12 +182,9 @@
                     android:gravity="left|center_vertical"/>
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/medium_space"/>
-
             <LinearLayout
-                style="@style/LL_Horizontal_wrap">
+                style="@style/LL_Horizontal_wrap"
+                android:layout_marginTop="@dimen/medium_space">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -217,7 +217,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_receipt_white_18dp"
-                    android:tint="@color/primary"
                     android:visibility="invisible"/>
                 <!--EditText
                     style="@style/Edittext_only_view_small_lessPad"
@@ -355,17 +354,14 @@
                     android:textStyle="italic"/>
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/XS_space"/>
-
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Account (AC)"
                 android:textColor="@color/subheading"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp"
+                android:layout_marginTop="@dimen/small_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
@@ -404,8 +400,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_account_balance_wallet_white_18dp"
-                    android:visibility="invisible"
-                    android:tint="@color/primary"/>
+                    android:visibility="invisible"/>
                 <EditText
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
@@ -424,17 +419,14 @@
                     android:text="+ \u20B9 NA"/>
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/small_space"/>
-
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Customer"
                 android:textColor="@color/subheading"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp"
+                android:layout_marginTop="@dimen/small_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap">
@@ -489,7 +481,7 @@
                     android:gravity="left|center_vertical"/>
             </LinearLayout>
 
-            <ImageView
+            <!--ImageView
                 android:id="@+id/txnImage"
                 android:background="@color/bg_customercare_data"
                 android:src="@drawable/ic_block_white_48dp"
@@ -497,8 +489,8 @@
                 android:layout_height="@dimen/txn_img_image_height"
                 android:scaleType="centerInside"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/large_space"/>
+                android:layout_marginTop="@dimen/large_space"/-->
 
         </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+<!--/RelativeLayout-->
