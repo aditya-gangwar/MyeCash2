@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
@@ -14,6 +15,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
+import com.backendless.exceptions.BackendlessException;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,6 +33,7 @@ import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
+import in.myecash.common.database.MerchantOrders;
 
 /**
  * Created by adgangwa on 14-12-2016.
@@ -41,7 +45,7 @@ public class CardsActionListFrag extends BaseFragment {
     private static final String ARG_ORDER_ID = "argOrderId";
     private static final String ARG_MCNT_ID = "argMchntId";
 
-    private static final int MAX_CARD_ONE_GO = 10;
+    private static final int MAX_CARD_ONE_GO = 15;
     public static final int RC_BARCODE_CAPTURE_CARD_DIALOG = 9005;
 
     private static final int REQ_CONFIRM_ACTION = 1;
@@ -50,12 +54,15 @@ public class CardsActionListFrag extends BaseFragment {
     private MyRetainedFragment mRetainedFragment;
     private CardsActionListFragIf mCallback;
     String mAction;
-    String mAllotTo;
+    //String mAllotTo;
     String mOrderId;
+    MerchantOrders mOrder;
 
     // Layout views
     private View mLayoutAllottee;
     private EditText mInputAllottee;
+    private View mLayoutAllotedCards;
+    private EditText mInputAllotedCards;
     private RecyclerView mRecyclerView;
     private EditText mTitleView;
     private AppCompatButton mBtnScan;
@@ -70,11 +77,11 @@ public class CardsActionListFrag extends BaseFragment {
     }
 
 
-    public static CardsActionListFrag getInstance(String action, String orderId, String mchntId) {
+    public static CardsActionListFrag getInstance(String action, String orderId) {
         Bundle args = new Bundle();
         args.putString(ARG_ACTION, action);
         args.putString(ARG_ORDER_ID, orderId);
-        args.putString(ARG_MCNT_ID, mchntId);
+        //args.putString(ARG_MCNT_ID, mchntId);
 
         CardsActionListFrag fragment = new CardsActionListFrag();
         fragment.setArguments(args);
@@ -88,6 +95,9 @@ public class CardsActionListFrag extends BaseFragment {
 
         mLayoutAllottee = view.findViewById(R.id.layout_allottee);
         mInputAllottee = (EditText) view.findViewById(R.id.input_allottee);
+        mLayoutAllotedCards = view.findViewById(R.id.layout_allotCards);
+        mInputAllotedCards = (EditText) view.findViewById(R.id.input_cardCnt);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.cards_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mTitleView = (EditText) view.findViewById(R.id.title_action);
@@ -108,22 +118,36 @@ public class CardsActionListFrag extends BaseFragment {
 
             mAction = getArguments().getString(ARG_ACTION);
             mOrderId = getArguments().getString(ARG_ORDER_ID);
-            mAllotTo = getArguments().getString(ARG_MCNT_ID);
+            //mAllotTo = getArguments().getString(ARG_MCNT_ID);
+
+            // find order object
+            mOrder = null;
+            for (MerchantOrders od :
+                    mCallback.getRetainedFragment().mLastFetchMchntOrders) {
+                if(od.getOrderId().equals(mOrderId)) {
+                    mOrder = od;
+                }
+            }
+            if (mOrder==null) {
+                throw new BackendlessException(String.valueOf(ErrorCodes.GENERAL_ERROR), "No Order with ID: "+mOrderId);
+            }
 
             mTitleView.setText(mAction);
             initBtns();
 
             switch (mAction) {
-                case ActionsFragment.CARDS_ALLOT_AGENT:
+                /*case ActionsFragment.CARDS_ALLOT_AGENT:
                     mInputAllottee.setHint("Agent ID");
-                    break;
+                    break;*/
                 case ActionsFragment.CARDS_ALLOT_MCHNT:
                     //mInputAllottee.setHint("Merchant ID");
-                    String txt = mAllotTo+"(Order# "+mOrderId+")";
+                    String txt = "Order# "+mOrderId+" ("+mOrder.getMerchantId()+")";
                     mInputAllottee.setText(txt);
+                    mInputAllotedCards.setText(String.valueOf(mOrder.getAllotedCardCnt()));
                     break;
                 default:
                     mLayoutAllottee.setVisibility(View.GONE);
+                    mLayoutAllotedCards.setVisibility(View.GONE);
             }
 
         } catch (ClassCastException e) {
@@ -156,19 +180,19 @@ public class CardsActionListFrag extends BaseFragment {
 
         } else if(view.getId()==mBtnAction.getId()) {
             // Validate Allottee ID
-            int error = ErrorCodes.NO_ERROR;
+            /*int error = ErrorCodes.NO_ERROR;
             switch (mAction) {
                 case ActionsFragment.CARDS_ALLOT_AGENT:
                     error = ValidationHelper.validateAgentId(mInputAllottee.getText().toString());
                     break;
                 case ActionsFragment.CARDS_ALLOT_MCHNT:
-                    //error = ValidationHelper.validateMerchantId(mInputAllottee.getText().toString());
+                    error = ValidationHelper.validateMerchantId(mInputAllottee.getText().toString());
                     break;
             }
 
             if(error!=ErrorCodes.NO_ERROR) {
                 mInputAllottee.setError(AppCommonUtil.getErrorDesc(error));
-            } else {
+            } else {*/
                 if (mRetainedFragment.mLastCardsForAction.size() > 0) {
                     // check if any card in pending state
                     boolean pendingCard = false;
@@ -198,7 +222,7 @@ public class CardsActionListFrag extends BaseFragment {
                 } else {
                     AppCommonUtil.toast(getActivity(), "No Pending Cards Added");
                 }
-            }
+            //}
         }
     }
 
@@ -322,7 +346,7 @@ public class CardsActionListFrag extends BaseFragment {
         }
         sb.deleteCharAt(sb.length()-1); //remove last delimeter
         //mCallback.execActionForCards(sb.toString(), mAction, mInputAllottee.getText().toString(), !mRetainedFragment.cardNumFetched);
-        mCallback.execActionForCards(sb.toString(), mAction, mAllotTo, mOrderId, !mRetainedFragment.cardNumFetched);
+        mCallback.execActionForCards(sb.toString(), mAction, mOrder.getMerchantId(), mOrderId, !mRetainedFragment.cardNumFetched);
     }
 
     private void startCodeScan() {
@@ -347,12 +371,13 @@ public class CardsActionListFrag extends BaseFragment {
                 //adapter.refresh(mRetainedFragment.mLastCardsForAction);
             }
         } else {
-            LogMy.e(TAG,"In updateUI: mLastCardsForAction is null");
+            LogMy.d(TAG,"In updateUI: mLastCardsForAction is null");
         }
     }
 
     private void initBtns() {
         if(mRetainedFragment.cardNumFetched) {
+            // card number already fetched
             mBtnScan.setEnabled(false);
             mBtnScan.setOnClickListener(null);
             mBtnScan.setAlpha(0.5f);

@@ -33,6 +33,16 @@ public class MerchantOrders
     private java.util.Date updated;
     private String itemSku;
     private String rejectReason;
+    private Integer allotedCardCnt;
+
+    public Integer getAllotedCardCnt() {
+        return allotedCardCnt;
+    }
+
+    public void setAllotedCardCnt(Integer allotedCardCnt) {
+        this.allotedCardCnt = allotedCardCnt;
+    }
+
     public String getOrderId()
     {
         return orderId;

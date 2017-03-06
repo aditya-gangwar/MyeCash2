@@ -33,10 +33,9 @@
                 android:id="@+id/input_card_id"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="1234 5678 345"
+                android:text=""
                 android:layout_weight="60"
                 android:gravity="left"
-                android:singleLine="true"
                 android:ellipsize="end"/>
         </LinearLayout>
         <LinearLayout
@@ -68,7 +67,7 @@
                     android:id="@+id/input_card_status"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Invalid"
+                    android:text=""
                     android:textColor="@color/green_positive"/>
             </LinearLayout>
             <LinearLayout
@@ -96,8 +95,7 @@
                     android:gravity="left"
                     android:id="@+id/input_card_status_date"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="22 July 16, 23:00"/>
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
@@ -136,10 +134,35 @@
             style="@style/Edittext_only_view_small"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Owner Trail"
+            android:text="Trail"
             android:textStyle="bold"
             android:textColor="@color/accent"
             android:paddingLeft="0dp"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_shopping_cart_white_24dp"
+                android:tint="@color/primary"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Order ID"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_orderId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_weight="60"
+                android:gravity="left"/>
+        </LinearLayout>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap">
@@ -162,7 +185,7 @@
                 android:id="@+id/input_ccnt_id"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="3adgang"
+                android:text=""
                 android:layout_weight="60"
                 android:gravity="left"/>
         </LinearLayout>
@@ -189,7 +212,7 @@
                 android:id="@+id/input_agent_id"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="1adgang"
+                android:text=""
                 android:layout_weight="60"
                 android:gravity="left"/>
         </LinearLayout>
@@ -216,7 +239,7 @@
                 android:id="@+id/input_mchnt_id"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="199010101"
+                android:text=""
                 android:layout_weight="60"
                 android:gravity="left"/>
         </LinearLayout>
@@ -243,7 +266,7 @@
                 android:id="@+id/input_cust_id"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="ASD67823"
+                android:text=""
                 android:layout_weight="60"
                 android:gravity="left"/>
         </LinearLayout>

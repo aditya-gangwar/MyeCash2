@@ -749,7 +749,7 @@ public class TxnListFragment extends BaseFragment {
             } else {
                 mCancelTime.setVisibility(View.VISIBLE);
                 String txt = "CANCELLED AT "+ mSdfDateWithTime.format(txn.getCancelTime());
-                mCancelTime.setText(mSdfDateWithTime.format(txt));
+                mCancelTime.setText(txt);
 
                 if(txn.getTotal_billed()>0) {
                     mBillAmount.setPaintFlags(mBillAmount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

@@ -131,8 +131,8 @@ public class CommonConstants {
     public static final String PHOTO_FILE_FORMAT = "webp";
     // Bulk actions for Member Cards
     public static final String CARDS_UPLOAD_TO_POOL = "cardsUploadToPool";
-    public static final String CARDS_ALLOT_TO_AGENT = "cardsAllotToAgent";
+    //public static final String CARDS_ALLOT_TO_AGENT = "cardsAllotToAgent";
     public static final String CARDS_ALLOT_TO_MCHNT = "cardsAllotToMchnt";
     public static final String CARDS_RETURN_BY_MCHNT = "cardsReturnByMchnt";
-    public static final String CARDS_RETURN_BY_AGENT = "cardsReturnByAgent";
+    //public static final String CARDS_RETURN_BY_AGENT = "cardsReturnByAgent";
 }

@@ -227,7 +227,7 @@ public class ActionsActivity extends AppCompatActivity implements
                         if(!mWorkFragment.cardNumFetched) {
                             mWorkFragment.cardNumFetched = true;
                         }
-                        startCardActionListFrag(null);
+                        startCardActionListFrag(null,"");
                     } else {
                         DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                                 .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -430,15 +430,18 @@ public class ActionsActivity extends AppCompatActivity implements
                 cardDialog.show(getFragmentManager(), DIALOG_SEARCH_CARD);
                 break;
             case ActionsFragment.CARDS_UPLOAD:
-            case ActionsFragment.CARDS_ALLOT_AGENT:
-            case ActionsFragment.CARDS_ALLOT_MCHNT:
-            case ActionsFragment.CARDS_RETURN_MCHNT:
-            case ActionsFragment.CARDS_RETURN_AGENT:
+            ///case ActionsFragment.CARDS_ALLOT_AGENT:
+            //case ActionsFragment.CARDS_ALLOT_MCHNT:
+            //case ActionsFragment.CARDS_RETURN_MCHNT:
+            //case ActionsFragment.CARDS_RETURN_AGENT:
                 // initialize relevant data members first
-                mWorkFragment.mLastCardsForAction = null;
-                mWorkFragment.mLastCardsForAction = new ArrayList<>();
+                if(mWorkFragment.mLastCardsForAction==null) {
+                    mWorkFragment.mLastCardsForAction = new ArrayList<>();
+                } else {
+                    mWorkFragment.mLastCardsForAction.clear();
+                }
                 mWorkFragment.cardNumFetched = false;
-                startCardActionListFrag(action);
+                startCardActionListFrag(action,"");
                 break;
             case ActionsFragment.OTHER_GLOBAL_SETTINGS:
                 startSettingsListFrag();
@@ -458,7 +461,7 @@ public class ActionsActivity extends AppCompatActivity implements
 
     @Override
     public void allocateCards(String orderId) {
-
+        startCardActionListFrag(ActionsFragment.CARDS_ALLOT_MCHNT, orderId);
     }
 
     @Override
@@ -595,12 +598,12 @@ public class ActionsActivity extends AppCompatActivity implements
         }
     }
 
-    private void startCardActionListFrag(String action) {
+    private void startCardActionListFrag(String action, String orderId) {
 
         mCardsActionFragment = (CardsActionListFrag) mFragMgr.findFragmentByTag(CARDS_ACTIONS_LIST_FRAGMENT);
         if ( mCardsActionFragment == null) {
             LogMy.d(TAG, "Creating new card action list fragment");
-            mCardsActionFragment = CardsActionListFrag.getInstance(action);
+            mCardsActionFragment = CardsActionListFrag.getInstance(action,orderId);
             FragmentTransaction transaction = mFragMgr.beginTransaction();
 
             // Add over the existing fragment

@@ -63,12 +63,6 @@ package in.myecash.appbase.backendAPI;
           return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCustomer", args, Customers.class );
       }
 
-      public CustomerCards getMemberCard(String cardId)
-      {
-          Object[] args = new Object[]{cardId};
-          return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMemberCard", args, CustomerCards.class );
-      }
-
       public String execCustomerOp(java.lang.String opCode, java.lang.String customerId, java.lang.String argCardId, java.lang.String otp, java.lang.String pin, java.lang.String opParam)
       {
           Object[] args = new Object[]{opCode, customerId, argCardId, otp, pin, opParam};

@@ -14,13 +14,13 @@
             android:layout_gravity="center"/>
 
         <EditText
-            style="@style/Edittext_only_view_medium"
+            style="@style/Edittext_only_view_small"
             android:id="@+id/title_action"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Upload to Pool"
             android:layout_gravity="center"
-            android:textColor="@color/accent"
+            android:textColor="@color/primary"
             android:textStyle="bold"/>
     </LinearLayout>
 
@@ -30,9 +30,7 @@
 
     <LinearLayout
         style="@style/LL_Horizontal_wrap"
-        android:id="@+id/layout_allottee"
-        android:layout_marginBottom="@dimen/large_space"
-        android:background="@drawable/round_rect_border_disabled">
+        android:id="@+id/layout_allottee">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -40,28 +38,52 @@
             android:src="@drawable/ic_perm_identity_white_24dp"
             android:tint="@color/primary"/>
         <EditText
-            style="@style/Edittext_only_view_small"
+            style="@style/Edittext_only_view_small_lessPad"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
-            android:text="Allot To ?"
-            android:layout_weight="30"
+            android:text="Allot To :"
+            android:layout_weight="40"
             android:gravity="left"/>
         <EditText
-            style="@style/Edittext_only_view_small"
+            style="@style/Edittext_only_view_small_lessPad"
             android:id="@+id/input_allottee"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Agent ID"
-            android:layout_weight="70"
+            android:layout_weight="60"
             android:gravity="left"/>
     </LinearLayout>
+
+    <LinearLayout
+        style="@style/LL_Horizontal_wrap"
+        android:id="@+id/layout_allotCards">
+
+        <EditText
+            style="@style/Edittext_only_view_small_lessPad"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:text="Allotted Cards :"
+            android:layout_weight="40"
+            android:gravity="left"
+            android:layout_marginLeft="24dp"/>
+        <EditText
+            style="@style/Edittext_only_view_small_lessPad"
+            android:id="@+id/input_cardCnt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="60"
+            android:gravity="left"/>
+    </LinearLayout>
+
+    <View
+        style="@style/Divider_horizontal_Large"/>
 
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/cards_recycler_view"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/large_space">
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout

@@ -57,20 +57,20 @@ public class ActionsFragment extends BaseFragment {
     public static final String CARDS_SEARCH = "Search";
     // Bulk actions
     public static final String CARDS_UPLOAD = "Upload to Pool";
-    public static final String CARDS_ALLOT_AGENT = "Allot to Agent";
+    //public static final String CARDS_ALLOT_AGENT = "Allot to Agent";
     public static final String CARDS_ALLOT_MCHNT = "Allot to Merchant";
     public static final String CARDS_RETURN_MCHNT = "Return by Merchant";
-    public static final String CARDS_RETURN_AGENT = "Return by Agent";
+    //public static final String CARDS_RETURN_AGENT = "Return by Agent";
     // Map from Bulk action local code -> backend code
     public static final Map<String, String> cardsActionCodeMap;
     static {
         Map<String, String> aMap = new HashMap<>(10);
 
         aMap.put(CARDS_UPLOAD, CommonConstants.CARDS_UPLOAD_TO_POOL);
-        aMap.put(CARDS_ALLOT_AGENT, CommonConstants.CARDS_ALLOT_TO_AGENT);
+        //aMap.put(CARDS_ALLOT_AGENT, CommonConstants.CARDS_ALLOT_TO_AGENT);
         aMap.put(CARDS_ALLOT_MCHNT, CommonConstants.CARDS_ALLOT_TO_MCHNT);
         aMap.put(CARDS_RETURN_MCHNT, CommonConstants.CARDS_RETURN_BY_MCHNT);
-        aMap.put(CARDS_RETURN_AGENT, CommonConstants.CARDS_RETURN_BY_AGENT);
+        //aMap.put(CARDS_RETURN_AGENT, CommonConstants.CARDS_RETURN_BY_AGENT);
 
         cardsActionCodeMap = Collections.unmodifiableMap(aMap);
     }
@@ -81,7 +81,7 @@ public class ActionsFragment extends BaseFragment {
     //public static final String[] agentCardsActions = {CARDS_SEARCH, CARDS_ALLOT_MCHNT, CARDS_RETURN_MCHNT};
     public static final String[] agentCardsActions = {CARDS_SEARCH};
     //public static final String[] cCntCardsActions = {CARDS_SEARCH, CARDS_UPLOAD, CARDS_ALLOT_AGENT, CARDS_RETURN_AGENT};
-    public static final String[] cCntCardsActions = {CARDS_SEARCH};
+    public static final String[] cCntCardsActions = {CARDS_SEARCH, CARDS_UPLOAD};
 
 
     // Possible other actions

@@ -54,7 +54,7 @@ public class DbConstants {
     // CustomerCards table - 'status' column values
     public static final int CUSTOMER_CARD_STATUS_FOR_PRINT = 0;
     public static final int CUSTOMER_CARD_STATUS_NEW = 1;
-    public static final int CUSTOMER_CARD_STATUS_WITH_AGENT = 2;
+    //public static final int CUSTOMER_CARD_STATUS_WITH_AGENT = 2;
     public static final int CUSTOMER_CARD_STATUS_WITH_MERCHANT = 3;
     public static final int CUSTOMER_CARD_STATUS_ACTIVE = 4;
     public static final int CUSTOMER_CARD_STATUS_DISABLED = 5;

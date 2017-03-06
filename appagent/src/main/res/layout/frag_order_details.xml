@@ -509,7 +509,28 @@
                 android:id="@+id/input_firstOrder"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Yes"
+                android:layout_weight="55"
+                android:paddingTop="0dp"
+                android:gravity="left|center_vertical"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:text="Allotted Cards"
+                android:layout_weight="45"
+                android:gravity="left|center_vertical"
+                android:paddingTop="0dp"
+                android:layout_marginLeft="24dp"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/input_allotCards"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="55"
                 android:paddingTop="0dp"
                 android:gravity="left|center_vertical"/>
@@ -538,9 +559,36 @@
 
             <android.support.v7.widget.AppCompatButton
                 style="@style/button_normal_thin"
+                android:id="@+id/btn_allocateCards"
+                android:layout_width="0dp"
+                android:text="Allocate Cards"
+                android:layout_weight="47.5"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/btn_layout2"
+            android:layout_marginTop="@dimen/medium_space">
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
                 android:id="@+id/btn_status"
                 android:layout_width="0dp"
                 android:text="Change Status"
+                android:layout_weight="47.5"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"/>
+
+            <android.support.v7.widget.AppCompatButton
+                style="@style/button_normal_thin"
+                android:id="@+id/btn_cancel"
+                android:layout_width="0dp"
+                android:text="Cancel"
                 android:layout_weight="47.5"/>
         </LinearLayout>
 

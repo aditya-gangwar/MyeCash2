@@ -70,11 +70,11 @@ public class CardDetailsFragment extends BaseFragment {
         mCardStatusDate.setText(mSdfDateWithTime.format(card.getStatus_update_time()));
         mCardStatusReason.setText( (card.getStatus_reason()==null)?"":card.getStatus_reason() );
 
+        mOrderId.setText( (card.getOrderId()==null)?"":card.getOrderId() );
         mCcntId.setText( (card.getCcntId()==null)?"":card.getCcntId() );
         mAgentId.setText( (card.getAgentId()==null)?"":card.getAgentId() );
         mMchntId.setText( (card.getMchntId()==null)?"":card.getMchntId() );
         mCustId.setText( (card.getCustId()==null)?"":card.getCustId() );
-        
     }
 
     private EditText mInputQrCard;
@@ -82,6 +82,7 @@ public class CardDetailsFragment extends BaseFragment {
     private EditText mCardStatusDate;
     private EditText mCardStatusReason;
 
+    private EditText mOrderId;
     private EditText mCcntId;
     private EditText mAgentId;
     private EditText mMchntId;
@@ -93,6 +94,7 @@ public class CardDetailsFragment extends BaseFragment {
         mCardStatusDate = (EditText) v.findViewById(R.id.input_card_status_date);
         mCardStatusReason = (EditText) v.findViewById(R.id.input_card_status_reason);
 
+        mOrderId = (EditText) v.findViewById(R.id.input_orderId);
         mCcntId = (EditText) v.findViewById(R.id.input_ccnt_id);
         mAgentId = (EditText) v.findViewById(R.id.input_agent_id);
         mMchntId = (EditText) v.findViewById(R.id.input_mchnt_id);

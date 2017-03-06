@@ -269,7 +269,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     private int searchMemberCard(String id) {
         try {
             mRetainedFragment.mCurrMemberCard = null;
-            mRetainedFragment.mCurrMemberCard = CommonServices.getInstance().getMemberCard(id);
+            mRetainedFragment.mCurrMemberCard = InternalUserServices.getInstance().getMemberCard(id);
             LogMy.d(TAG,"searchMemberCard success");
 
         } catch (BackendlessException e) {

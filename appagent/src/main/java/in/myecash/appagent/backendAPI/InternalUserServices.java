@@ -12,7 +12,7 @@ import com.backendless.async.callback.AsyncCallback;
 
 import in.myecash.common.MyCardForAction;
 import in.myecash.common.constants.CommonConstants;
-import in.myecash.common.database.MerchantOps;
+import in.myecash.common.database.CustomerCards;
 import in.myecash.common.database.Merchants;
 
 public class InternalUserServices
@@ -74,5 +74,12 @@ public class InternalUserServices
         Object[] args = new Object[]{privateId, cardNum, ticketNum, reason, remarks};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "disableCustCard", args );
     }
+
+    public CustomerCards getMemberCard(String cardId)
+    {
+        Object[] args = new Object[]{cardId};
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMemberCard", args, CustomerCards.class );
+    }
+
 
 }

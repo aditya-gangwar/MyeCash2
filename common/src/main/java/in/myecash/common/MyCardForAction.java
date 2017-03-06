@@ -18,6 +18,8 @@ public class MyCardForAction implements Serializable {
     public static final String ACTION_STATUS_WRONG_ALLOT_STATUS = "Allottee Status";
     public static final String ACTION_STATUS_ERROR = "Unknown Error";
     public static final String ACTION_STATUS_WRONG_ORDER = "Wrong Order ID";
+    public static final String ACTION_STATUS_ORDER_FULL = "Order Full";
+    public static final String ACTION_STATUS_ORDER_EMPTY = "No Alloted Card";
 
     private String scannedCode;
     private String cardNum;

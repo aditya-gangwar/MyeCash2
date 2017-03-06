@@ -20,6 +20,15 @@ public class CustomerCards
   private String card_id;
   private String cardNum;
   private String barcode;
+  private String orderId;
+
+  public String getOrderId() {
+    return orderId;
+  }
+
+  public void setOrderId(String orderId) {
+    this.orderId = orderId;
+  }
 
   public String getBarCode() {
     return barcode;
