@@ -23,6 +23,7 @@ import in.myecash.merchantbase.entities.MerchantUser;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,9 +62,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     private class MessageActionCards implements Serializable {
         public String cards;
         public String action;
-        public String allocateTo;
+        /*public String allocateTo;
         public String orderId;
-        public boolean getCardNumsOnly;
+        public boolean getCardNumsOnly;*/
     }
 
     /*
@@ -132,13 +133,13 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     public void addCardSearchReq(String id) {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_SEARCH_CARD, id).sendToTarget();
     }
-    public void addExecActionCardsReq(String cards, String action, String allocateTo, String orderId, boolean getCardNumsOnly) {
+    public void addExecActionCardsReq(String cards, String action) {
         MessageActionCards msg = new MessageActionCards();
         msg.cards = cards;
         msg.action = action;
-        msg.allocateTo = allocateTo;
+        /*msg.allocateTo = allocateTo;
         msg.orderId = orderId;
-        msg.getCardNumsOnly = getCardNumsOnly;
+        msg.getCardNumsOnly = getCardNumsOnly;*/
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_ACTION_CARDS, msg).sendToTarget();
     }
     public void addDisableCustCardReq(String ticketId, String reason, String remarks) {
@@ -152,7 +153,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     public void addSearchOrderReq() {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_SEARCH_MCHNT_ORDER, null).sendToTarget();
     }
-
+    public void addFetchAllottedCardsReq(String orderId) {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_ALLOTTED_CARDS, orderId).sendToTarget();
+    }
 
     @Override
     protected int handleMsg(Message msg) {
@@ -197,6 +200,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_SEARCH_MCHNT_ORDER:
                 error = searchMchntOrder();
+                break;
+            case MyRetainedFragment.REQUEST_FETCH_ALLOTTED_CARDS:
+                error = fetchAllottedCards((String) msg.obj);
                 break;
         }
         return error;
@@ -282,7 +288,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     private int actionForCards(MessageActionCards data) {
         try {
             List<MyCardForAction> list = InternalUserServices.getInstance().execActionForCards(data.cards, data.action,
-                    data.allocateTo, data.orderId, data.getCardNumsOnly);
+                    (mRetainedFragment.mCurrOrder==null)?"":mRetainedFragment.mCurrOrder.getMerchantId(),
+                    (mRetainedFragment.mCurrOrder==null)?"":mRetainedFragment.mCurrOrder.getOrderId(),
+                    !mRetainedFragment.cardNumFetched);
 
             // as we want to maintain the order in which the card was scanned
             // so search by scannedCode in existing list - and update all fields filled by backend
@@ -290,12 +298,40 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 for (MyCardForAction oldCard : mRetainedFragment.mLastCardsForAction) {
                     if(oldCard.getScannedCode().equals(card.getScannedCode())) {
                         oldCard.setCardNum(card.getCardNum());
-                        if(!data.getCardNumsOnly) {
+                        if(mRetainedFragment.cardNumFetched) {
                             oldCard.setActionStatus(card.getActionStatus());
                         }
                     }
                 }
             }
+
+            if(mRetainedFragment.mCurrOrder!=null && mRetainedFragment.cardNumFetched) {
+                try {
+                    // cards action  was against an order, fetch updated order from backend
+                    // not using searchMchntOrder() - as it updates mLastFetchMchntOrders
+
+                    List<MerchantOrders> orders = CommonServices.getInstance().getMchntOrders(
+                            "", mRetainedFragment.mCurrOrder.getOrderId(), "");
+                    // update current order as fetched
+                    mRetainedFragment.mCurrOrder = orders.get(0);
+                    // update in last fetched list too
+                    int effectIndex = -1;
+                    for(int i=0; i<mRetainedFragment.mLastFetchMchntOrders.size(); i++) {
+                        if (mRetainedFragment.mLastFetchMchntOrders.get(i).getOrderId().equals(mRetainedFragment.mCurrOrder.getOrderId())) {
+                            effectIndex = i;
+                        }
+                    }
+                    if(effectIndex==-1) {
+                        LogMy.e(TAG,"Didnt find matching order");
+                    } else {
+                        mRetainedFragment.mLastFetchMchntOrders.set(effectIndex,mRetainedFragment.mCurrOrder);
+                    }
+                } catch (Exception e) {
+                    // ignore exception
+                    LogMy.e(TAG,"Failed to fetch updated order");
+                }
+            }
+
             LogMy.d(TAG,"actionForCards success");
 
         } catch (BackendlessException e) {
@@ -350,6 +386,24 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
             return AppCommonUtil.getLocalErrorCode(e);
         }
 
+        return ErrorCodes.NO_ERROR;
+    }
+
+    private int fetchAllottedCards(String orderId) {
+        try {
+            if(mRetainedFragment.mLastFetchedCards==null) {
+                mRetainedFragment.mLastFetchedCards = new ArrayList<>();
+            } else {
+                mRetainedFragment.mLastFetchedCards.clear();
+            }
+
+            mRetainedFragment.mLastFetchedCards = InternalUserServices.getInstance().getAllottedCards(orderId);
+            LogMy.d(TAG,"fetchAllottedCards success");
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Exception in disableCustCard: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
         return ErrorCodes.NO_ERROR;
     }
 

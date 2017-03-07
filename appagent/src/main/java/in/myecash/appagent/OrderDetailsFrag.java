@@ -1,6 +1,7 @@
 package in.myecash.appagent;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +20,7 @@ import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.SingleWebViewActivity;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -30,27 +32,26 @@ import in.myecash.common.database.MerchantOrders;
 
 public class OrderDetailsFrag extends BaseFragment {
     private static final String TAG = "AgentApp-OrderDetailsFrag";
-    private static final String ARG_ORDERID = "orderId";
 
     private final SimpleDateFormat mSdfDateWithTime = new SimpleDateFormat(CommonConstants.DATE_FORMAT_WITH_TIME, CommonConstants.DATE_LOCALE);
 
     public interface OrderDetailsFragIf {
         MyRetainedFragment getRetainedFragment();
-        void viewInvoice(String orderId);
-        void allocateCards(String orderId);
+        void allocateCards();
+        void fetchAllottedCards(String orderId);
         //void changeOrderStatus(String orderId);
     }
 
     private OrderDetailsFragIf mCallback;
     MerchantOrders mOrder;
 
-    public static OrderDetailsFrag getInstance(String orderId) {
+    /*public static OrderDetailsFrag getInstance(String orderId) {
         Bundle args = new Bundle();
         args.putString(ARG_ORDERID, orderId);
         OrderDetailsFrag fragment = new OrderDetailsFrag();
         fragment.setArguments(args);
         return fragment;
-    }
+    }*/
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -62,7 +63,6 @@ public class OrderDetailsFrag extends BaseFragment {
             throw new ClassCastException(getActivity().toString()
                     + " must implement OrderDetailsFragIf");
         }
-        initDialogView();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class OrderDetailsFrag extends BaseFragment {
     }
 
     private void initDialogView() {
-        String orderId = getArguments().getString(ARG_ORDERID, null);
+        /*String orderId = getArguments().getString(ARG_ORDERID, null);
         // find order object
         mOrder = null;
         for (MerchantOrders od :
@@ -86,7 +86,7 @@ public class OrderDetailsFrag extends BaseFragment {
         }
         if (mOrder==null) {
             throw new BackendlessException(String.valueOf(ErrorCodes.GENERAL_ERROR), "No Order with ID: "+orderId);
-        }
+        }*/
 
         mOrderId.setText(mOrder.getOrderId());
         mCreated.setText(mSdfDateWithTime.format(mOrder.getCreateTime()));
@@ -126,8 +126,25 @@ public class OrderDetailsFrag extends BaseFragment {
         }
         mIsFrstOrder.setText(mOrder.getIsFirstOrder().toString());
         mAllottedCards.setText(mOrder.getAllotedCardCnt().toString());
+        if(mOrder.getAllotedCardCnt()>0) {
+            mAllottedCards.setTextColor(ContextCompat.getColor(getActivity(), R.color.link_blue));
+            mAllottedCards.setPaintFlags(mAllottedCards.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+            mAllottedCards.setOnClickListener(new OnSingleClickListener() {
+                @Override
+                public void onSingleClick(View v) {
+                    // show card list dialog
+                    mCallback.fetchAllottedCards(mOrder.getOrderId());
+                }
+            });
+        }
 
         // Set up buttons
+        initButtons();
+    }
+
+    private void initButtons() {
+        DbConstants.MCHNT_ORDER_STATUS status = DbConstants.MCHNT_ORDER_STATUS.valueOf(mOrder.getStatus());
+
         if(mOrder.getInvoiceUrl()==null || mOrder.getInvoiceUrl().isEmpty()) {
             mViewInvoice.setEnabled(false);
             mViewInvoice.setOnClickListener(null);
@@ -195,7 +212,7 @@ public class OrderDetailsFrag extends BaseFragment {
                 break;
 
             case R.id.btn_allocateCards:
-                mCallback.allocateCards(mOrder.getOrderId());
+                mCallback.allocateCards();
                 break;
         }
     }
@@ -264,6 +281,8 @@ public class OrderDetailsFrag extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        mOrder = mCallback.getRetainedFragment().mCurrOrder;
+        initDialogView();
         mCallback.getRetainedFragment().setResumeOk(true);
     }
 

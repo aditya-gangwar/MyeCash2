@@ -527,7 +527,7 @@
                 android:paddingTop="0dp"
                 android:layout_marginLeft="24dp"/>
             <EditText
-                style="@style/Edittext_only_view_small"
+                style="@style/Edittext_only_click_small"
                 android:id="@+id/input_allotCards"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

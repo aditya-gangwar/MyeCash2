@@ -23,13 +23,13 @@ import in.myecash.appbase.utilities.ValidationHelper;
  * Created by adgangwa on 26-04-2016.
  */
 public class PasswdResetDialog extends BaseDialog {
-public static final String TAG = "AgentApp-PasswdResetDialog";
+    public static final String TAG = "AgentApp-PasswdResetDialog";
 
-private PasswdResetDialogIf mListener;
+    private PasswdResetDialogIf mListener;
 
-public interface PasswdResetDialogIf {
-    void onPasswdResetData(String brandName);
-}
+    public interface PasswdResetDialogIf {
+        void onPasswdResetData(String brandName);
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

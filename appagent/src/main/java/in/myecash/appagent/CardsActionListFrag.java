@@ -55,7 +55,7 @@ public class CardsActionListFrag extends BaseFragment {
     private CardsActionListFragIf mCallback;
     String mAction;
     //String mAllotTo;
-    String mOrderId;
+    //String mOrderId;
     MerchantOrders mOrder;
 
     // Layout views
@@ -72,15 +72,15 @@ public class CardsActionListFrag extends BaseFragment {
     public interface CardsActionListFragIf {
         MyRetainedFragment getRetainedFragment();
         //void checkCardsForAction(String action);
-        void execActionForCards(String cards, String action, String allocateTo, String orderId, boolean getCardNumsOnly);
+        void execActionForCards(String cards, String action);
         void showCardDetails(String cardNum);
     }
 
 
-    public static CardsActionListFrag getInstance(String action, String orderId) {
+    public static CardsActionListFrag getInstance(String action) {
         Bundle args = new Bundle();
         args.putString(ARG_ACTION, action);
-        args.putString(ARG_ORDER_ID, orderId);
+        //args.putString(ARG_ORDER_ID, orderId);
         //args.putString(ARG_MCNT_ID, mchntId);
 
         CardsActionListFrag fragment = new CardsActionListFrag();
@@ -117,11 +117,11 @@ public class CardsActionListFrag extends BaseFragment {
             mRetainedFragment = mCallback.getRetainedFragment();
 
             mAction = getArguments().getString(ARG_ACTION);
-            mOrderId = getArguments().getString(ARG_ORDER_ID);
+            //mOrderId = getArguments().getString(ARG_ORDER_ID);
             //mAllotTo = getArguments().getString(ARG_MCNT_ID);
 
             // find order object
-            mOrder = null;
+            /*mOrder = null;
             for (MerchantOrders od :
                     mCallback.getRetainedFragment().mLastFetchMchntOrders) {
                 if(od.getOrderId().equals(mOrderId)) {
@@ -130,25 +130,8 @@ public class CardsActionListFrag extends BaseFragment {
             }
             if (mOrder==null) {
                 throw new BackendlessException(String.valueOf(ErrorCodes.GENERAL_ERROR), "No Order with ID: "+mOrderId);
-            }
-
-            mTitleView.setText(mAction);
+            }*/
             initBtns();
-
-            switch (mAction) {
-                /*case ActionsFragment.CARDS_ALLOT_AGENT:
-                    mInputAllottee.setHint("Agent ID");
-                    break;*/
-                case ActionsFragment.CARDS_ALLOT_MCHNT:
-                    //mInputAllottee.setHint("Merchant ID");
-                    String txt = "Order# "+mOrderId+" ("+mOrder.getMerchantId()+")";
-                    mInputAllottee.setText(txt);
-                    mInputAllotedCards.setText(String.valueOf(mOrder.getAllotedCardCnt()));
-                    break;
-                default:
-                    mLayoutAllottee.setVisibility(View.GONE);
-                    mLayoutAllotedCards.setVisibility(View.GONE);
-            }
 
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
@@ -346,7 +329,7 @@ public class CardsActionListFrag extends BaseFragment {
         }
         sb.deleteCharAt(sb.length()-1); //remove last delimeter
         //mCallback.execActionForCards(sb.toString(), mAction, mInputAllottee.getText().toString(), !mRetainedFragment.cardNumFetched);
-        mCallback.execActionForCards(sb.toString(), mAction, mOrder.getMerchantId(), mOrderId, !mRetainedFragment.cardNumFetched);
+        mCallback.execActionForCards(sb.toString(), mAction);
     }
 
     private void startCodeScan() {
@@ -358,6 +341,23 @@ public class CardsActionListFrag extends BaseFragment {
     }
 
     public void updateUI() {
+        mOrder = mCallback.getRetainedFragment().mCurrOrder;
+        mTitleView.setText(mAction);
+        switch (mAction) {
+                /*case ActionsFragment.CARDS_ALLOT_AGENT:
+                    mInputAllottee.setHint("Agent ID");
+                    break;*/
+            case ActionsFragment.CARDS_ALLOT_MCHNT:
+                //mInputAllottee.setHint("Merchant ID");
+                String txt = "Order# "+mOrder.getOrderId()+" ("+mOrder.getMerchantId()+")";
+                mInputAllottee.setText(txt);
+                mInputAllotedCards.setText(String.valueOf(mOrder.getAllotedCardCnt()));
+                break;
+            default:
+                mLayoutAllottee.setVisibility(View.GONE);
+                mLayoutAllotedCards.setVisibility(View.GONE);
+        }
+
         if(mRetainedFragment.mLastCardsForAction!=null) {
             initBtns();
             CardsForActionAdapter adapter = (CardsForActionAdapter) mRecyclerView.getAdapter();

@@ -81,5 +81,11 @@ public class InternalUserServices
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getMemberCard", args, CustomerCards.class );
     }
 
+    public java.util.List<CustomerCards> getAllottedCards(java.lang.String orderId)
+    {
+        Object[] args = new Object[]{orderId};
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getAllottedCards", args, java.util.List.class );
+    }
+
 
 }

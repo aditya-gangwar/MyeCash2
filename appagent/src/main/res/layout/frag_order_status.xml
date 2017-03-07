@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/XXL_space"
+    android:background="?android:attr/windowBackground">
+
+    <EditText
+        style="@style/Dialog_title"
+        android:id="@+id/label_title"
+        android:text="Merchant Order: Change Status" /-->
+
+    <!--View
+        style="@style/Divider_horizontal_Large"
+        android:id="@+id/divider_cash_pay_title"/-->
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/LL_Vertical_paddingSidesLarge"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_space">
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:layout_marginTop="@dimen/large_space">
+
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Order ID"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_orderId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:text="MOTY678"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Merchant ID"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <!--View
+                style="@style/Divider_vertical_Medium"/-->
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_merchantId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:text="19901014"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Status"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <!--View
+                style="@style/Divider_vertical_Medium"/-->
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:text="In Process"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text="NEW STATUS"
+            android:textColor="@color/subheading"
+            android:paddingLeft="0dp"
+            android:layout_marginTop="@dimen/small_space"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/radioGroup">
+
+            <LinearLayout
+                style="@style/LL_Horizontal_weighted">
+                <RadioButton
+                    android:id="@+id/radioButton1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="New"/>
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="RadioButton"/>
+            </LinearLayout>
+            <LinearLayout
+                style="@style/LL_Horizontal_weighted">
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="New"/>
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="RadioButton"/>
+            </LinearLayout>
+        </RadioGroup>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Provide below Values"
+            android:textColor="@color/accent2"
+            android:layout_marginTop="@dimen/medium_space"
+            android:layout_marginBottom="@dimen/medium_space"/>
+
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_value1">
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/label_value1"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Order ID"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_value1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:text="MOTY678"
+                android:gravity="left"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_value2">
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/label_value2"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Order ID"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_value2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:text="MOTY678"
+                android:gravity="left"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_value3">
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/label_value3"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Order ID"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_value3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:text="MOTY678"
+                android:gravity="left"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_value4">
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/label_value4"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Order ID"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_view_small_lessPad"
+                android:id="@+id/input_value4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:text="MOTY678"
+                android:gravity="left"/>
+        </LinearLayout>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="COMMENTS"
+            android:textColor="@color/accent2"
+            android:layout_marginTop="@dimen/medium_space"/>
+
+        <EditText
+            style="@style/MyEdittext_Small"
+            android:id="@+id/input_comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/accent2"/>
+
+        <android.support.v7.widget.AppCompatButton
+            style="@style/button_normal_thin"
+            android:id="@+id/btn_process"
+            android:text="Process"
+            android:layout_marginTop="@dimen/XL_space"/>
+
+    </LinearLayout>
+<!--/RelativeLayout-->
+</ScrollView>

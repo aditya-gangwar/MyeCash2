@@ -43,14 +43,14 @@
             android:layout_width="0dp"
             android:text="Allot To :"
             android:layout_weight="40"
-            android:gravity="left"/>
+            android:gravity="left|center_vertical"/>
         <EditText
             style="@style/Edittext_only_view_small_lessPad"
             android:id="@+id/input_allottee"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="60"
-            android:gravity="left"/>
+            android:gravity="left|center_vertical"/>
     </LinearLayout>
 
     <LinearLayout
@@ -63,7 +63,7 @@
             android:layout_width="0dp"
             android:text="Allotted Cards :"
             android:layout_weight="40"
-            android:gravity="left"
+            android:gravity="left|center_vertical"
             android:layout_marginLeft="24dp"/>
         <EditText
             style="@style/Edittext_only_view_small_lessPad"
@@ -71,7 +71,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="60"
-            android:gravity="left"/>
+            android:gravity="left|center_vertical"/>
     </LinearLayout>
 
     <View

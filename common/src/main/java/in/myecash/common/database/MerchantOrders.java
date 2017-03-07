@@ -32,8 +32,16 @@ public class MerchantOrders
     private String objectId;
     private java.util.Date updated;
     private String itemSku;
-    private String rejectReason;
+    private String comments;
     private Integer allotedCardCnt;
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 
     public Integer getAllotedCardCnt() {
         return allotedCardCnt;
@@ -251,16 +259,6 @@ public class MerchantOrders
     public void setItemSku( String itemSku )
     {
         this.itemSku = itemSku;
-    }
-
-    public String getRejectReason()
-    {
-        return rejectReason;
-    }
-
-    public void setRejectReason( String rejectReason )
-    {
-        this.rejectReason = rejectReason;
     }
 
 

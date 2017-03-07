@@ -37,6 +37,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_ACTION_CARDS = 14;
     public static final int REQUEST_DISABLE_CUST_CARD = 15;
     public static final int REQUEST_SEARCH_MCHNT_ORDER = 16;
+    public static final int REQUEST_FETCH_ALLOTTED_CARDS = 17;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -47,8 +48,9 @@ public class MyRetainedFragment extends RetainedFragment {
     public Merchants mCurrMerchant;
     public Customers mCurrCustomer;
     public CustomerCards mCurrMemberCard;
+    public List<CustomerCards> mLastFetchedCards;
 
-    // members used for mchnt order actions
+    // members used for mchnt order search
     public String mMchntOrderId;
     public String mMchntIdForOrder;
     public List<DbConstants.MCHNT_ORDER_STATUS> mSelectedStatus;
@@ -56,6 +58,7 @@ public class MyRetainedFragment extends RetainedFragment {
 
     // members used for bulk actions on cards
     public List<MyCardForAction> mLastCardsForAction;
+    public MerchantOrders mCurrOrder;
     public boolean cardNumFetched;
 
     public void reset() {
@@ -63,6 +66,13 @@ public class MyRetainedFragment extends RetainedFragment {
         mCurrMerchant = null;
         mCurrCustomer = null;
         mCurrMemberCard = null;
+        mLastFetchedCards = null;
+        mMchntOrderId = null;
+        mMchntIdForOrder = null;
+        mSelectedStatus = null;
+        mLastFetchMchntOrders = null;
+        mLastCardsForAction = null;
+        mCurrOrder = null;
     }
 
     /*
@@ -100,8 +110,8 @@ public class MyRetainedFragment extends RetainedFragment {
     public void searchMemberCard(String id) {
         mBackgroundProcessor.addCardSearchReq(id);
     }
-    public void execActionForCards(String cards, String action, String allocateTo, String orderId, boolean getCardNumsOnly) {
-        mBackgroundProcessor.addExecActionCardsReq(cards,action,allocateTo,orderId,getCardNumsOnly);
+    public void execActionForCards(String cards, String action) {
+        mBackgroundProcessor.addExecActionCardsReq(cards,action);
     }
     public void disableCustCard(String ticketId, String reason, String remarks) {
         mBackgroundProcessor.addDisableCustCardReq(ticketId, reason, remarks);
@@ -109,6 +119,10 @@ public class MyRetainedFragment extends RetainedFragment {
 
     public void searchMchntOrder() {
         mBackgroundProcessor.addSearchOrderReq();
+    }
+
+    public void fetchAllottedCards(String orderId) {
+        mBackgroundProcessor.addFetchAllottedCardsReq(orderId);
     }
 
     @Override

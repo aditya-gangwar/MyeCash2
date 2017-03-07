@@ -43,20 +43,7 @@ public class SearchMchntOrderFrag extends BaseFragment {
 
         try {
             mListener = (SearchMchntOrderFragIf) getActivity();
-
-            // clear previous values
-            MyRetainedFragment mRetainedFrag = mListener.getRetainedFragment();
-            if(mRetainedFrag.mSelectedStatus==null) {
-                mRetainedFrag.mSelectedStatus = new ArrayList<>();
-            } else {
-                mRetainedFrag.mSelectedStatus.clear();
-            }
-            mRetainedFrag.mMchntOrderId = null;
-            mRetainedFrag.mMchntIdForOrder = null;
-
             setListeners();
-
-
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement SearchMchntOrderFragIf");

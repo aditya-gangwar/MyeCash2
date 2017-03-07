@@ -57,7 +57,6 @@ import in.myecash.common.database.BusinessCategories;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.Cities;
 import in.myecash.common.database.CustomerCards;
-import in.myecash.common.database.CustomerCardsNew;
 import in.myecash.common.database.CustomerOps;
 import in.myecash.common.database.Customers;
 import in.myecash.common.database.MerchantDevice;
@@ -893,7 +892,6 @@ public class AppCommonUtil {
 
     public static void initTableToClassMappings() {
         Backendless.Data.mapTableToClass("CustomerCards", CustomerCards.class);
-        Backendless.Data.mapTableToClass("CustomerCardsNew", CustomerCardsNew.class);
         Backendless.Data.mapTableToClass("Customers", Customers.class);
         Backendless.Data.mapTableToClass("Merchants", Merchants.class);
         Backendless.Data.mapTableToClass("CustomerOps", CustomerOps.class);

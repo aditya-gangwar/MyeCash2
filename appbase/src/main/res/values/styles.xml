@@ -507,6 +507,7 @@
         <item name="android:paddingBottom">@dimen/edittext_padding</item>
         <item name="android:paddingTop">@dimen/edittext_padding</item>
         <item name="android:textColor">@drawable/edit_text_selector</item>
+        <item name="android:inputType">textNoSuggestions</item>
     </style>
 
     <!--style name="MyTextAppearance" parent="TextAppearance.AppCompat">

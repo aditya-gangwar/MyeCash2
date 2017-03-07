@@ -42,7 +42,8 @@ public class ActionsActivity extends AppCompatActivity implements
         SearchCardDialog.SearchCardDialogIf, CardDetailsFragment.CardDetailsFragmentIf,
         CardsActionListFrag.CardsActionListFragIf, DisableCardDialog.DisableCardDialogIf,
         GlobalSettingsListFrag.GlobalSettingsListFragIf, SearchMchntOrderFrag.SearchMchntOrderFragIf,
-        MchntOrderListFragInternal.MerchantOrderListFragIf, OrderDetailsFrag.OrderDetailsFragIf
+        MchntOrderListFragInternal.MerchantOrderListFragIf, OrderDetailsFrag.OrderDetailsFragIf,
+        CardListDialog.CardListDialogIf
 {
 
     private static final String TAG = "AgentApp-ActionsActivity";
@@ -62,7 +63,7 @@ public class ActionsActivity extends AppCompatActivity implements
     private static final String DIALOG_SEARCH_MCHNT = "searchMchnt";
     private static final String DIALOG_SEARCH_CUSTOMER = "searchCustomer";
     private static final String DIALOG_SEARCH_CARD = "searchCard";
-    private static final String DIALOG_SEARCH_ORDER = "searchMchntOrder";
+    private static final String DIALOG_CARD_LIST = "dialogCardList";
 
     private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
 
@@ -227,7 +228,9 @@ public class ActionsActivity extends AppCompatActivity implements
                         if(!mWorkFragment.cardNumFetched) {
                             mWorkFragment.cardNumFetched = true;
                         }
-                        startCardActionListFrag(null,"");
+                        // null shud work fine - as its expected that the fragment will be still open
+                        // and it will have 'actio' stored in its arguments
+                        startCardActionListFrag(null);
                     } else {
                         DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                                 .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -249,6 +252,17 @@ public class ActionsActivity extends AppCompatActivity implements
                     AppCommonUtil.cancelProgressDialog(true);
                     if(errorCode==ErrorCodes.NO_ERROR) {
                         startMchntOrdersFragment();
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+
+                case MyRetainedFragment.REQUEST_FETCH_ALLOTTED_CARDS:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        CardListDialog dialog = new CardListDialog();
+                        dialog.show(getFragmentManager(), DIALOG_CARD_LIST);
                     } else {
                         DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                                 .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -423,6 +437,16 @@ public class ActionsActivity extends AppCompatActivity implements
                 custDialog.show(getFragmentManager(), DIALOG_SEARCH_CUSTOMER);
                 break;
             case ActionsFragment.MCHNT_ORDER_SEARCH:
+                // clear previous values
+                if(mWorkFragment.mSelectedStatus==null) {
+                    mWorkFragment.mSelectedStatus = new ArrayList<>();
+                } else {
+                    mWorkFragment.mSelectedStatus.clear();
+                }
+                mWorkFragment.mMchntOrderId = null;
+                mWorkFragment.mMchntIdForOrder = null;
+                mWorkFragment.mCurrOrder =  null;
+
                 startSearchOrdersFragment();
                 break;
             case ActionsFragment.CARDS_SEARCH:
@@ -441,7 +465,7 @@ public class ActionsActivity extends AppCompatActivity implements
                     mWorkFragment.mLastCardsForAction.clear();
                 }
                 mWorkFragment.cardNumFetched = false;
-                startCardActionListFrag(action,"");
+                startCardActionListFrag(action);
                 break;
             case ActionsFragment.OTHER_GLOBAL_SETTINGS:
                 startSettingsListFrag();
@@ -451,17 +475,19 @@ public class ActionsActivity extends AppCompatActivity implements
 
     @Override
     public void showOrderDetails(int pos) {
-        startOrderDetailsFrag(mWorkFragment.mLastFetchMchntOrders.get(pos).getOrderId());
+        mWorkFragment.mCurrOrder = mWorkFragment.mLastFetchMchntOrders.get(pos);
+        startOrderDetailsFrag();
     }
 
     @Override
-    public void viewInvoice(String orderId) {
-
-    }
-
-    @Override
-    public void allocateCards(String orderId) {
-        startCardActionListFrag(ActionsFragment.CARDS_ALLOT_MCHNT, orderId);
+    public void allocateCards() {
+        if(mWorkFragment.mLastCardsForAction==null) {
+            mWorkFragment.mLastCardsForAction = new ArrayList<>();
+        } else {
+            mWorkFragment.mLastCardsForAction.clear();
+        }
+        mWorkFragment.cardNumFetched = false;
+        startCardActionListFrag(ActionsFragment.CARDS_ALLOT_MCHNT);
     }
 
     @Override
@@ -471,9 +497,15 @@ public class ActionsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void execActionForCards(String cards, String action, String allocateTo, String orderId, boolean getCardNumsOnly) {
+    public void execActionForCards(String cards, String action) {
         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-        mWorkFragment.execActionForCards(cards, ActionsFragment.cardsActionCodeMap.get(action), allocateTo, orderId, getCardNumsOnly);
+        mWorkFragment.execActionForCards(cards, ActionsFragment.cardsActionCodeMap.get(action));
+    }
+
+    @Override
+    public void fetchAllottedCards(String orderId) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mWorkFragment.fetchAllottedCards(orderId);
     }
 
     @Override
@@ -598,12 +630,12 @@ public class ActionsActivity extends AppCompatActivity implements
         }
     }
 
-    private void startCardActionListFrag(String action, String orderId) {
+    private void startCardActionListFrag(String action) {
 
         mCardsActionFragment = (CardsActionListFrag) mFragMgr.findFragmentByTag(CARDS_ACTIONS_LIST_FRAGMENT);
         if ( mCardsActionFragment == null) {
             LogMy.d(TAG, "Creating new card action list fragment");
-            mCardsActionFragment = CardsActionListFrag.getInstance(action,orderId);
+            mCardsActionFragment = CardsActionListFrag.getInstance(action);
             FragmentTransaction transaction = mFragMgr.beginTransaction();
 
             // Add over the existing fragment
@@ -634,9 +666,10 @@ public class ActionsActivity extends AppCompatActivity implements
         }
     }
 
-    private void startOrderDetailsFrag(String orderID) {
+    private void startOrderDetailsFrag() {
         if (mFragMgr.findFragmentByTag(ORDER_DETAILS_FRAGMENT) == null) {
-            Fragment fragment = OrderDetailsFrag.getInstance(orderID);
+            //Fragment fragment = OrderDetailsFrag.getInstance(orderID);
+            Fragment fragment = new OrderDetailsFrag();
             FragmentTransaction transaction = mFragMgr.beginTransaction();
 
             // Add over the existing fragment
