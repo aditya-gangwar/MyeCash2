@@ -94,6 +94,8 @@ public class ErrorCodes {
     public static final int MOBILE_ALREADY_REGISTERED = 669;
     public static final int UNDER_DAILY_DOWNTIME = 670;
     public static final int INTERNET_OK_SERVICE_NOK = 671;
+    public static final int MCHNT_ORDER_FREE_CARDS = 672;
+    public static final int MCHNT_ORDER_ALLOT_CARDS = 673;
 
     // Merchnat order errors
     public static final int MO_DEL_INVALID_STATUS = 771;
@@ -178,6 +180,8 @@ public class ErrorCodes {
         aMap.put(MOBILE_ALREADY_REGISTERED,"Mobile Number is already registered for other user.");
         aMap.put(UNDER_DAILY_DOWNTIME,"Service not available daily between %s:00 and %s:00 hours.");
         aMap.put(INTERNET_OK_SERVICE_NOK,"MyeCash Server not reachable.\n\nSorry for Inconvenience.\n\nPlease try again after 1 hour. Thanks.");
+        aMap.put(MCHNT_ORDER_FREE_CARDS,"Please free up allocated cards first");
+        aMap.put(MCHNT_ORDER_ALLOT_CARDS,"Please allot all Cards first");
 
         aMap.put(MO_DEL_INVALID_STATUS,"In Process or Completed Order cannot be deleted.");
 

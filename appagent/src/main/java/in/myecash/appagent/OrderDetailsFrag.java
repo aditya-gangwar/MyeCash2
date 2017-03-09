@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.backendless.exceptions.BackendlessException;
-
 import java.text.SimpleDateFormat;
 
 import in.myecash.appagent.entities.AgentUser;
@@ -23,7 +21,6 @@ import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.MerchantOrders;
 
 /**
@@ -37,9 +34,9 @@ public class OrderDetailsFrag extends BaseFragment {
 
     public interface OrderDetailsFragIf {
         MyRetainedFragment getRetainedFragment();
-        void allocateCards();
+        void allocateCards(boolean removeCase);
         void fetchAllottedCards(String orderId);
-        //void changeOrderStatus(String orderId);
+        void startOrderStatusChange();
     }
 
     private OrderDetailsFragIf mCallback;
@@ -100,13 +97,13 @@ public class OrderDetailsFrag extends BaseFragment {
         mTotalPrice.setText(String.valueOf(mOrder.getTotalPrice()));
 
         DbConstants.MCHNT_ORDER_STATUS status = DbConstants.MCHNT_ORDER_STATUS.valueOf(mOrder.getStatus());
-        mInputStatus.setText(mOrder.getStatus());
+        mInputStatus.setText(status.toString());
         mChangedBy.setText(mOrder.getStatusChangeUser());
         mInputStatusDate.setText(mSdfDateWithTime.format(mOrder.getStatusChangeTime()));
         if(status==DbConstants.MCHNT_ORDER_STATUS.Rejected ||
                 status==DbConstants.MCHNT_ORDER_STATUS.PaymentFailed ) {
             mInputReason.setVisibility(View.VISIBLE);
-            mInputReason.setText(mOrder.getRejectReason());
+            mInputReason.setText(mOrder.getComments());
             mInputStatus.setTextColor(ContextCompat.getColor(getActivity(), in.myecash.merchantbase.R.color.red_negative));
         } else {
             mInputReason.setVisibility(View.GONE);
@@ -173,12 +170,14 @@ public class OrderDetailsFrag extends BaseFragment {
             mChangeStatus.setAlpha(0.4f);
         }
 
-        if(status==DbConstants.MCHNT_ORDER_STATUS.Shipped) {
-            mCancel.setOnClickListener(this);
+        if(status==DbConstants.MCHNT_ORDER_STATUS.Shipped||
+                status== DbConstants.MCHNT_ORDER_STATUS.PaymentVerifyPending||
+                status==DbConstants.MCHNT_ORDER_STATUS.InProcess) {
+            mRemove.setOnClickListener(this);
         } else {
-            mCancel.setEnabled(false);
-            mCancel.setOnClickListener(null);
-            mCancel.setAlpha(0.4f);
+            mRemove.setEnabled(false);
+            mRemove.setOnClickListener(null);
+            mRemove.setAlpha(0.4f);
         }
 
         // For agent - only 'Allocate Cards' is valid
@@ -187,9 +186,9 @@ public class OrderDetailsFrag extends BaseFragment {
             mBtnLayout2.setVisibility(View.GONE);
 
             if(!mOrder.getIsFirstOrder() && mChangeStatus.isEnabled()) {
-                mChangeStatus.setEnabled(false);
-                mChangeStatus.setOnClickListener(null);
-                mChangeStatus.setAlpha(0.4f);
+                mBtnAllocateCards.setEnabled(false);
+                mBtnAllocateCards.setOnClickListener(null);
+                mBtnAllocateCards.setAlpha(0.4f);
             }
         }
     }
@@ -212,8 +211,17 @@ public class OrderDetailsFrag extends BaseFragment {
                 break;
 
             case R.id.btn_allocateCards:
-                mCallback.allocateCards();
+                mCallback.allocateCards(false);
                 break;
+
+            case R.id.btn_status:
+                mCallback.startOrderStatusChange();
+                break;
+
+            case R.id.btn_remove:
+                mCallback.allocateCards(true);
+                break;
+
         }
     }
 
@@ -244,7 +252,7 @@ public class OrderDetailsFrag extends BaseFragment {
     private AppCompatButton mViewInvoice;
     private AppCompatButton mBtnAllocateCards;
     private AppCompatButton mChangeStatus;
-    private AppCompatButton mCancel;
+    private AppCompatButton mRemove;
     private View mBtnLayout2;
 
     private void bindUiResources(View v) {
@@ -274,7 +282,7 @@ public class OrderDetailsFrag extends BaseFragment {
         mViewInvoice = (AppCompatButton) v.findViewById(R.id.btn_invoice);
         mBtnAllocateCards = (AppCompatButton) v.findViewById(R.id.btn_allocateCards);
         mChangeStatus = (AppCompatButton) v.findViewById(R.id.btn_status);
-        mCancel = (AppCompatButton) v.findViewById(R.id.btn_cancel);
+        mRemove = (AppCompatButton) v.findViewById(R.id.btn_remove);
         mBtnLayout2 = v.findViewById(R.id.btn_layout2);
     }
 

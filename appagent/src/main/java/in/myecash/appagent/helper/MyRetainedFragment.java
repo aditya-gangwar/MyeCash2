@@ -38,6 +38,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_DISABLE_CUST_CARD = 15;
     public static final int REQUEST_SEARCH_MCHNT_ORDER = 16;
     public static final int REQUEST_FETCH_ALLOTTED_CARDS = 17;
+    public static final int REQUEST_CHANGE_ORDER_STATUS = 18;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -123,6 +124,10 @@ public class MyRetainedFragment extends RetainedFragment {
 
     public void fetchAllottedCards(String orderId) {
         mBackgroundProcessor.addFetchAllottedCardsReq(orderId);
+    }
+
+    public void changeOrderStatus(MerchantOrders updatedOrder) {
+        mBackgroundProcessor.addOrderStatusChangeReq(updatedOrder);
     }
 
     @Override

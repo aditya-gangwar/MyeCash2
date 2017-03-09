@@ -13,6 +13,7 @@ import com.backendless.async.callback.AsyncCallback;
 import in.myecash.common.MyCardForAction;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.CustomerCards;
+import in.myecash.common.database.MerchantOrders;
 import in.myecash.common.database.Merchants;
 
 public class InternalUserServices
@@ -87,5 +88,9 @@ public class InternalUserServices
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getAllottedCards", args, java.util.List.class );
     }
 
-
+    public MerchantOrders changeOrderStatus(MerchantOrders updatedOrder)
+    {
+        Object[] args = new Object[]{updatedOrder};
+        return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changeOrderStatus", args, MerchantOrders.class );
+    }
 }

@@ -57,9 +57,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Order ID"
                     android:layout_weight="60"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:maxLength="@string/merchant_id_char_limit"/>
+                    android:gravity="center"/>
             </LinearLayout>
 
             <EditText

@@ -23,6 +23,7 @@ import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.database.MerchantOrders;
 import in.myecash.customerbase.CashbackActivityCust;
 import in.myecash.customerbase.entities.CustomerUser;
 import in.myecash.merchantbase.CashbackActivity;
@@ -43,7 +44,7 @@ public class ActionsActivity extends AppCompatActivity implements
         CardsActionListFrag.CardsActionListFragIf, DisableCardDialog.DisableCardDialogIf,
         GlobalSettingsListFrag.GlobalSettingsListFragIf, SearchMchntOrderFrag.SearchMchntOrderFragIf,
         MchntOrderListFragInternal.MerchantOrderListFragIf, OrderDetailsFrag.OrderDetailsFragIf,
-        CardListDialog.CardListDialogIf
+        CardListDialog.CardListDialogIf, OrderStatusChangeFrag.OrderStatusChangeFragIf
 {
 
     private static final String TAG = "AgentApp-ActionsActivity";
@@ -57,6 +58,7 @@ public class ActionsActivity extends AppCompatActivity implements
     private static final String CARDS_ACTIONS_LIST_FRAGMENT = "cardsActionListFragment";
     private static final String MCHNT_ORDERS_FRAGMENT = "MchntOrdersFragment";
     private static final String ORDER_DETAILS_FRAGMENT = "orderDetailsFragment";
+    private static final String ORDER_STATUS_FRAGMENT = "orderStatusFragment";
 
     private static final String DIALOG_BACK_BUTTON = "dialogBackButton";
     private static final String DIALOG_CHANGE_PASSWORD = "dialogChangePassword";
@@ -268,6 +270,17 @@ public class ActionsActivity extends AppCompatActivity implements
                                 .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
                     break;
+
+                case MyRetainedFragment.REQUEST_CHANGE_ORDER_STATUS:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, "Order Updated Successfully", false, false)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
             }
         } catch (Exception e) {
             AppCommonUtil.cancelProgressDialog(true);
@@ -474,20 +487,36 @@ public class ActionsActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void startOrderStatusChange() {
+        startOrderStatusChangeFrag();
+    }
+
+    @Override
+    public void changeOrderStatus(MerchantOrders updatedOrder) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mWorkFragment.changeOrderStatus(updatedOrder);
+    }
+
+    @Override
     public void showOrderDetails(int pos) {
         mWorkFragment.mCurrOrder = mWorkFragment.mLastFetchMchntOrders.get(pos);
         startOrderDetailsFrag();
     }
 
     @Override
-    public void allocateCards() {
+    public void allocateCards(boolean removeCase) {
         if(mWorkFragment.mLastCardsForAction==null) {
             mWorkFragment.mLastCardsForAction = new ArrayList<>();
         } else {
             mWorkFragment.mLastCardsForAction.clear();
         }
         mWorkFragment.cardNumFetched = false;
-        startCardActionListFrag(ActionsFragment.CARDS_ALLOT_MCHNT);
+
+        if(removeCase) {
+            startCardActionListFrag(ActionsFragment.CARDS_RETURN_MCHNT);
+        } else {
+            startCardActionListFrag(ActionsFragment.CARDS_ALLOT_MCHNT);
+        }
     }
 
     @Override
@@ -675,6 +704,21 @@ public class ActionsActivity extends AppCompatActivity implements
             // Add over the existing fragment
             transaction.replace(R.id.fragment_container, fragment, ORDER_DETAILS_FRAGMENT);
             transaction.addToBackStack(ORDER_DETAILS_FRAGMENT);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+    }
+
+    private void startOrderStatusChangeFrag() {
+        if (mFragMgr.findFragmentByTag(ORDER_STATUS_FRAGMENT) == null) {
+            //Fragment fragment = OrderDetailsFrag.getInstance(orderID);
+            Fragment fragment = new OrderStatusChangeFrag();
+            FragmentTransaction transaction = mFragMgr.beginTransaction();
+
+            // Add over the existing fragment
+            transaction.replace(R.id.fragment_container, fragment, ORDER_STATUS_FRAGMENT);
+            transaction.addToBackStack(ORDER_STATUS_FRAGMENT);
 
             // Commit the transaction
             transaction.commit();

@@ -88,7 +88,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="60"
                 android:text="In Process"
-                android:gravity="left"/>
+                android:gravity="left"
+                android:textColor="@color/green_positive"/>
         </LinearLayout>
 
         <EditText
@@ -102,11 +103,11 @@
 
         <RadioGroup
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/radioGroup">
+            android:layout_height="wrap_content"
+            android:id="@+id/myradioGroup">
 
             <LinearLayout
-                style="@style/LL_Horizontal_weighted">
+                style="@style/LL_Horizontal_wrap">
                 <RadioButton
                     android:id="@+id/radioButton1"
                     android:layout_width="0dp"
@@ -121,7 +122,7 @@
                     android:text="RadioButton"/>
             </LinearLayout>
             <LinearLayout
-                style="@style/LL_Horizontal_weighted">
+                style="@style/LL_Horizontal_wrap">
                 <RadioButton
                     android:id="@+id/radioButton3"
                     android:layout_width="0dp"
@@ -141,6 +142,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/label_params"
             android:text="Provide below Values"
             android:textColor="@color/accent2"
             android:layout_marginTop="@dimen/medium_space"
@@ -148,82 +150,99 @@
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_payMode">
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:id="@+id/label_payMode"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:text="Payment Mode"
+                android:layout_weight="40"
+                android:gravity="left"/>
+            <EditText
+                style="@style/Edittext_only_click_bg_small"
+                android:id="@+id/input_payMode"
+                android:hint="Touch to set"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="left"
+                android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_value1">
             <EditText
-                style="@style/Edittext_only_view_small_lessPad"
+                style="@style/Edittext_only_view_small"
                 android:id="@+id/label_value1"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Order ID"
                 android:layout_weight="40"
                 android:gravity="left"/>
             <EditText
-                style="@style/Edittext_only_view_small_lessPad"
+                style="@style/MyEdittext_Small"
                 android:id="@+id/input_value1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="60"
-                android:text="MOTY678"
                 android:gravity="left"/>
         </LinearLayout>
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_value2">
             <EditText
-                style="@style/Edittext_only_view_small_lessPad"
+                style="@style/Edittext_only_view_small"
                 android:id="@+id/label_value2"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Order ID"
                 android:layout_weight="40"
                 android:gravity="left"/>
             <EditText
-                style="@style/Edittext_only_view_small_lessPad"
+                style="@style/MyEdittext_Small"
                 android:id="@+id/input_value2"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="60"
-                android:text="MOTY678"
                 android:gravity="left"/>
         </LinearLayout>
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_value3">
             <EditText
-                style="@style/Edittext_only_view_small_lessPad"
+                style="@style/Edittext_only_view_small"
                 android:id="@+id/label_value3"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Order ID"
                 android:layout_weight="40"
                 android:gravity="left"/>
             <EditText
-                style="@style/Edittext_only_view_small_lessPad"
+                style="@style/MyEdittext_Small"
                 android:id="@+id/input_value3"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="60"
-                android:text="MOTY678"
                 android:gravity="left"/>
         </LinearLayout>
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_value4">
             <EditText
-                style="@style/Edittext_only_view_small_lessPad"
+                style="@style/Edittext_only_view_small"
                 android:id="@+id/label_value4"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:text="Order ID"
                 android:layout_weight="40"
                 android:gravity="left"/>
             <EditText
-                style="@style/Edittext_only_view_small_lessPad"
+                style="@style/MyEdittext_Small"
                 android:id="@+id/input_value4"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="60"
-                android:text="MOTY678"
                 android:gravity="left"/>
         </LinearLayout>
 
@@ -231,7 +250,7 @@
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="COMMENTS"
+            android:text="Enter Comments below"
             android:textColor="@color/accent2"
             android:layout_marginTop="@dimen/medium_space"/>
 
@@ -239,8 +258,7 @@
             style="@style/MyEdittext_Small"
             android:id="@+id/input_comments"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/accent2"/>
+            android:layout_height="wrap_content"/>
 
         <android.support.v7.widget.AppCompatButton
             style="@style/button_normal_thin"

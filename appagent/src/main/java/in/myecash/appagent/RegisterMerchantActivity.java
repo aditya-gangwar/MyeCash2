@@ -323,6 +323,12 @@ public class RegisterMerchantActivity extends AppCompatActivity
         StringBuilder sb = new StringBuilder();
         sb.append("Correct following: ");
 
+        if(mRegFormNum.getText().toString().isEmpty()) {
+            valid = false;
+            mBrandNameTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
+            sb.append("Form Number; ");
+        }
+
         // validate all fields and mark ones with error
         // return false if any invalid
         if(!mImageUploaded) {
@@ -485,6 +491,8 @@ public class RegisterMerchantActivity extends AppCompatActivity
     }
 
     // ui resources
+    private EditText    mRegFormNum;
+
     private ImageView   mImageUploadBtn;
     private EditText    mBrandNameTextRes;
     private EditText    mCategoryTextRes;
@@ -502,6 +510,8 @@ public class RegisterMerchantActivity extends AppCompatActivity
     private Button      mRegisterButton;
 
     private void bindUiResources() {
+        mRegFormNum = (EditText) findViewById(R.id.input_formNum);
+
         mImageUploadBtn     = (ImageView) findViewById(R.id.btn_upload_image);
         mBrandNameTextRes   = (EditText) findViewById(R.id.input_merchant_name);
         mCategoryTextRes    = (EditText) findViewById(R.id.edittext_category);
@@ -523,6 +533,7 @@ public class RegisterMerchantActivity extends AppCompatActivity
     }
 
     private void getUiResourceValues() {
+        mWorkFragment.mCurrMerchant.setRegFormNum(mRegFormNum.getText().toString());
         mWorkFragment.mCurrMerchant.setName(mBrandNameTextRes.getText().toString());
         mWorkFragment.mCurrMerchant.setMobile_num(mMobileNoTextRes.getText().toString());
         mWorkFragment.mCurrMerchant.setContactName(mContactNameRes.getText().toString());

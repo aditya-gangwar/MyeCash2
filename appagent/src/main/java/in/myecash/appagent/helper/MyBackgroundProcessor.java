@@ -156,6 +156,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     public void addFetchAllottedCardsReq(String orderId) {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_ALLOTTED_CARDS, orderId).sendToTarget();
     }
+    public void addOrderStatusChangeReq(MerchantOrders updatedOrder) {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CHANGE_ORDER_STATUS, updatedOrder).sendToTarget();
+    }
 
     @Override
     protected int handleMsg(Message msg) {
@@ -203,6 +206,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_FETCH_ALLOTTED_CARDS:
                 error = fetchAllottedCards((String) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_CHANGE_ORDER_STATUS:
+                error = changeOrderStatus((MerchantOrders) msg.obj);
                 break;
         }
         return error;
@@ -376,13 +382,14 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                     mRetainedFragment.mMchntOrderId==null?"":mRetainedFragment.mMchntOrderId,
                     csvStr==null?"":csvStr);
 
-            LogMy.d(TAG,"fetchMchntOrders success: "+mRetainedFragment.mLastFetchMchntOrders.size());
+            LogMy.d(TAG,"searchMchntOrder success: "+mRetainedFragment.mLastFetchMchntOrders.size());
 
             // sort by time
             Collections.sort(mRetainedFragment.mLastFetchMchntOrders, new AppCommonUtil.MchntOrderComparator());
+            Collections.reverse(mRetainedFragment.mLastFetchMchntOrders);
 
         } catch (BackendlessException e) {
-            LogMy.e(TAG,"Exception in fetchMchntOrders: "+e.toString());
+            LogMy.e(TAG,"Exception in searchMchntOrder: "+e.toString());
             return AppCommonUtil.getLocalErrorCode(e);
         }
 
@@ -401,7 +408,31 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
             LogMy.d(TAG,"fetchAllottedCards success");
 
         } catch (BackendlessException e) {
-            LogMy.e(TAG,"Exception in disableCustCard: "+e.toString());
+            LogMy.e(TAG,"Exception in fetchAllottedCards: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    private int changeOrderStatus(MerchantOrders order) {
+        try {
+            mRetainedFragment.mCurrOrder = InternalUserServices.getInstance().changeOrderStatus(order);
+            LogMy.d(TAG,"changeOrderStatus success");
+            // update in last fetched list too
+            int effectIndex = -1;
+            for(int i=0; i<mRetainedFragment.mLastFetchMchntOrders.size(); i++) {
+                if (mRetainedFragment.mLastFetchMchntOrders.get(i).getOrderId().equals(mRetainedFragment.mCurrOrder.getOrderId())) {
+                    effectIndex = i;
+                }
+            }
+            if(effectIndex==-1) {
+                LogMy.e(TAG,"Didnt find matching order");
+            } else {
+                mRetainedFragment.mLastFetchMchntOrders.set(effectIndex,mRetainedFragment.mCurrOrder);
+            }
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Exception in changeOrderStatus: "+e.toString());
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;

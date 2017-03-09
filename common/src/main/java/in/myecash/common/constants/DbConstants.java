@@ -1,8 +1,11 @@
 package in.myecash.common.constants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Created by adgangwa on 07-05-2016.
@@ -134,6 +137,28 @@ public class DbConstants {
                     return "";
             }
         }
+
+        // reverse of toString
+        public static MCHNT_ORDER_STATUS fromString(String status) {
+            switch (status) {
+                case "New":
+                    return New;
+                case "In Process":
+                    return InProcess;
+                case "Shipped":
+                    return Shipped;
+                case "Payment Verification Pending":
+                    return PaymentVerifyPending;
+                case "Payment Failed":
+                    return PaymentFailed;
+                case "Completed":
+                    return Completed;
+                case "Rejected":
+                    return Rejected;
+                default:
+                    return null;
+            }
+        }
     }
 
     // SKU to Item Name mapping
@@ -144,12 +169,7 @@ public class DbConstants {
         aMap.put(SKU_CUSTOMER_CARDS, "Customer Cards");
         skuToItemName = Collections.unmodifiableMap(aMap);
     }
-    public enum MO_PLAN_PAY_MODE {
-        Cash,
-        Cheque,
-        Other
-    }
-    public enum MO_ACTUAL_PAY_MODE {
+    public enum MO_PAY_MODE {
         Cash,
         Cheque,
         Credit_Card,
@@ -157,7 +177,16 @@ public class DbConstants {
         PayTm,
         NEFT,
         IMPS,
-        UPI
+        UPI,
+        Other;
+
+        public static CharSequence[] getValueSet() {
+            ArrayList<String> list = new ArrayList<>();
+            for (MO_PAY_MODE s : MO_PAY_MODE.values()) {
+                list.add(s.name());
+            }
+            return list.toArray(new CharSequence[list.size()]);
+        }
     }
 
 

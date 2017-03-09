@@ -14,6 +14,18 @@
         android:paddingTop="@dimen/XXL_space"
         android:descendantFocusability="beforeDescendants">
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/XL_space">
+            <EditText
+                android:id="@+id/input_formNum"
+                style="@style/MyEdittext_Small"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="Registration Form Number"/>
+        </android.support.design.widget.TextInputLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

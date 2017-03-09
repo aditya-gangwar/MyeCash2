@@ -7,7 +7,9 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.geo.GeoPoint;
 import com.backendless.persistence.BackendlessDataQuery;
 
-public class MerchantOrders
+import java.io.Serializable;
+
+public class MerchantOrders implements Serializable
 {
     private String orderId;
     private String ownerId;

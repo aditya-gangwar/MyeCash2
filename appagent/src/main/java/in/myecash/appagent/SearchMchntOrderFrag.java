@@ -43,6 +43,7 @@ public class SearchMchntOrderFrag extends BaseFragment {
 
         try {
             mListener = (SearchMchntOrderFragIf) getActivity();
+            mRetainedFrag = mListener.getRetainedFragment();
             setListeners();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()

@@ -115,23 +115,8 @@ public class CardsActionListFrag extends BaseFragment {
         try {
             mCallback = (CardsActionListFragIf) getActivity();
             mRetainedFragment = mCallback.getRetainedFragment();
-
             mAction = getArguments().getString(ARG_ACTION);
-            //mOrderId = getArguments().getString(ARG_ORDER_ID);
-            //mAllotTo = getArguments().getString(ARG_MCNT_ID);
-
-            // find order object
-            /*mOrder = null;
-            for (MerchantOrders od :
-                    mCallback.getRetainedFragment().mLastFetchMchntOrders) {
-                if(od.getOrderId().equals(mOrderId)) {
-                    mOrder = od;
-                }
-            }
-            if (mOrder==null) {
-                throw new BackendlessException(String.valueOf(ErrorCodes.GENERAL_ERROR), "No Order with ID: "+mOrderId);
-            }*/
-            initBtns();
+            //initBtns();
 
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
@@ -162,112 +147,37 @@ public class CardsActionListFrag extends BaseFragment {
             }
 
         } else if(view.getId()==mBtnAction.getId()) {
-            // Validate Allottee ID
-            /*int error = ErrorCodes.NO_ERROR;
-            switch (mAction) {
-                case ActionsFragment.CARDS_ALLOT_AGENT:
-                    error = ValidationHelper.validateAgentId(mInputAllottee.getText().toString());
-                    break;
-                case ActionsFragment.CARDS_ALLOT_MCHNT:
-                    error = ValidationHelper.validateMerchantId(mInputAllottee.getText().toString());
-                    break;
-            }
-
-            if(error!=ErrorCodes.NO_ERROR) {
-                mInputAllottee.setError(AppCommonUtil.getErrorDesc(error));
-            } else {*/
-                if (mRetainedFragment.mLastCardsForAction.size() > 0) {
-                    // check if any card in pending state
-                    boolean pendingCard = false;
-                    for (MyCardForAction card :
-                            mRetainedFragment.mLastCardsForAction) {
-                        if (card.getActionStatus().equals(MyCardForAction.ACTION_STATUS_PENDING)) {
-                            pendingCard = true;
-                            break;
-                        }
+            if (mRetainedFragment.mLastCardsForAction.size() > 0) {
+                // check if any card in pending state
+                boolean pendingCard = false;
+                for (MyCardForAction card :
+                        mRetainedFragment.mLastCardsForAction) {
+                    if (card.getActionStatus().equals(MyCardForAction.ACTION_STATUS_PENDING)) {
+                        pendingCard = true;
+                        break;
                     }
+                }
 
-                    if(pendingCard) {
-                        // dont ask for confirmation - if only getting card numbers
-                        if(!mRetainedFragment.cardNumFetched) {
-                            makeActionCall();
-                        } else {
-                            // ask for confirmation
-                            String title = mRetainedFragment.mLastCardsForAction.size() + " Cards";
-                            String msg = "Are you sure to " + mAction + " ?";
-                            DialogFragmentWrapper dialog = DialogFragmentWrapper.createConfirmationDialog(title, msg, true, false);
-                            dialog.setTargetFragment(this, REQ_CONFIRM_ACTION);
-                            dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
-                        }
+                if(pendingCard) {
+                    // dont ask for confirmation - if only getting card numbers
+                    if(!mRetainedFragment.cardNumFetched) {
+                        makeActionCall();
                     } else {
-                        AppCommonUtil.toast(getActivity(), "No Pending Cards Added");
+                        // ask for confirmation
+                        String title = mRetainedFragment.mLastCardsForAction.size() + " Cards";
+                        String msg = "Are you sure to " + mAction + " ?";
+                        DialogFragmentWrapper dialog = DialogFragmentWrapper.createConfirmationDialog(title, msg, true, false);
+                        dialog.setTargetFragment(this, REQ_CONFIRM_ACTION);
+                        dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
                     }
                 } else {
                     AppCommonUtil.toast(getActivity(), "No Pending Cards Added");
                 }
-            //}
+            } else {
+                AppCommonUtil.toast(getActivity(), "No Pending Cards Added");
+            }
         }
     }
-
-
-
-    /*@Override
-    public void onClick(View view) {
-        if(view.getId()==mBtnScan.getId()) {
-            if(mRetainedFragment.mLastCardsForAction.size() < MAX_CARD_ONE_GO) {
-                startCodeScan();
-            } else {
-                String txt = "Max limit is "+MAX_CARD_ONE_GO;
-                AppCommonUtil.toast(getActivity(), txt);
-            }
-
-        } else if(view.getId()==mBtnAction.getId()) {
-            // Validate Allottee ID
-            int error = ErrorCodes.NO_ERROR;
-            switch (mAction) {
-                case ActionsFragment.CARDS_ALLOT_AGENT:
-                    error = ValidationHelper.validateAgentId(mInputAllottee.getText().toString());
-                    break;
-                case ActionsFragment.CARDS_ALLOT_MCHNT:
-                    error = ValidationHelper.validateMerchantId(mInputAllottee.getText().toString());
-                    break;
-            }
-
-            if(error!=ErrorCodes.NO_ERROR) {
-                mInputAllottee.setError(AppCommonUtil.getErrorDesc(error));
-            } else {
-                if (mRetainedFragment.mLastCardsForAction.size() > 0) {
-                    // check if any card in pending state
-                    boolean pendingCard = false;
-                    for (MyCardForAction card :
-                            mRetainedFragment.mLastCardsForAction) {
-                        if (card.getActionStatus().equals(MyCardForAction.ACTION_STATUS_PENDING)) {
-                            pendingCard = true;
-                            break;
-                        }
-                    }
-
-                    if(pendingCard) {
-                        // dont ask for confirmation - if only getting card numbers
-                        if(!mRetainedFragment.cardNumFetched) {
-                            makeActionCall();
-                        } else {
-                            // ask for confirmation
-                            String title = mRetainedFragment.mLastCardsForAction.size() + " Cards";
-                            String msg = "Are you sure to " + mAction + " ?";
-                            DialogFragmentWrapper dialog = DialogFragmentWrapper.createConfirmationDialog(title, msg, true, false);
-                            dialog.setTargetFragment(this, REQ_CONFIRM_ACTION);
-                            dialog.show(getFragmentManager(), DialogFragmentWrapper.DIALOG_CONFIRMATION);
-                        }
-                    } else {
-                        AppCommonUtil.toast(getActivity(), "No Pending Cards Added");
-                    }
-                } else {
-                    AppCommonUtil.toast(getActivity(), "No Pending Cards Added");
-                }
-            }
-        }
-    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -344,11 +254,8 @@ public class CardsActionListFrag extends BaseFragment {
         mOrder = mCallback.getRetainedFragment().mCurrOrder;
         mTitleView.setText(mAction);
         switch (mAction) {
-                /*case ActionsFragment.CARDS_ALLOT_AGENT:
-                    mInputAllottee.setHint("Agent ID");
-                    break;*/
             case ActionsFragment.CARDS_ALLOT_MCHNT:
-                //mInputAllottee.setHint("Merchant ID");
+            case ActionsFragment.CARDS_RETURN_MCHNT:
                 String txt = "Order# "+mOrder.getOrderId()+" ("+mOrder.getMerchantId()+")";
                 mInputAllottee.setText(txt);
                 mInputAllotedCards.setText(String.valueOf(mOrder.getAllotedCardCnt()));

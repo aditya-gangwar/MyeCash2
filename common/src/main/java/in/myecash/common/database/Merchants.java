@@ -48,6 +48,15 @@ public class Merchants
   private String contactName;
   private String prepaidCbRate;
   private Integer prepaidCbMinAmt;
+  private String regFormNum;
+
+  public String getRegFormNum() {
+    return regFormNum;
+  }
+
+  public void setRegFormNum(String regFormNum) {
+    this.regFormNum = regFormNum;
+  }
 
   public Integer getPrepaidCbMinAmt() {
     return prepaidCbMinAmt;

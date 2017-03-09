@@ -16,18 +16,18 @@
         android:layout_below="@id/label_title">
 
         <LinearLayout
-            style="@style/LL_Vertical_paddingSidesLarge">
+            style="@style/LL_Vertical_paddingSidesLarge"
+            android:layout_marginBottom="@dimen/large_space">
 
             <EditText
                 style="@style/Dialog_title"
                 android:id="@+id/label_title"
-                android:layout_marginTop="@dimen/small_space"
+                android:layout_marginBottom="@dimen/medium_space"
                 android:text="TRANSACTION  DETAILS"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:id="@+id/layout_cancelled"
-                android:layout_marginTop="@dimen/medium_space">
+                android:id="@+id/layout_cancelled">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -100,8 +100,7 @@
                     android:layout_height="match_parent"
                     android:text="TBS"
                     android:layout_weight="60"
-                    android:gravity="left|center_vertical"
-                    />
+                    android:gravity="left|center_vertical"/>
             </LinearLayout>
 
             <LinearLayout
@@ -239,17 +238,14 @@
                     android:paddingTop="0dp"/>
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/small_space"/>
-
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Cashback (CB)"
                 android:textColor="@color/subheading"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp"
+                android:layout_marginTop="@dimen/medium_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
@@ -426,7 +422,7 @@
                 android:text="Customer"
                 android:textColor="@color/subheading"
                 android:paddingLeft="0dp"
-                android:layout_marginTop="@dimen/small_space"/>
+                android:layout_marginTop="@dimen/medium_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap">

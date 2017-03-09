@@ -41,7 +41,7 @@
             style="@style/Edittext_only_view_small_lessPad"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
-            android:text="Allot To :"
+            android:text="Order/Mchnt ID :"
             android:layout_weight="40"
             android:gravity="left|center_vertical"/>
         <EditText

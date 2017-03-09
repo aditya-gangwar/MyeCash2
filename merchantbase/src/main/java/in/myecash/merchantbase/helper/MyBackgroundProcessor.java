@@ -224,7 +224,6 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     }
 
 
-
     @Override
     protected int handleMsg(Message msg) {
         int error = ErrorCodes.NO_ERROR;
@@ -515,6 +514,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
 
             // sort by time
             Collections.sort(mRetainedFragment.mLastFetchMchntOrders, new AppCommonUtil.MchntOrderComparator());
+            Collections.reverse(mRetainedFragment.mLastFetchMchntOrders);
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Exception in fetchMchntOrders: "+e.toString());
@@ -534,6 +534,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
 
             // sort by time
             Collections.sort(mRetainedFragment.mLastFetchMchntOrders, new AppCommonUtil.MchntOrderComparator());
+            Collections.reverse(mRetainedFragment.mLastFetchMchntOrders);
 
         } catch (BackendlessException e) {
             LogMy.e(TAG, "Exception in createMchntOrder: "+ e.toString());
