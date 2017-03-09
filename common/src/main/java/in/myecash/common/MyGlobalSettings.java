@@ -158,6 +158,9 @@ public class MyGlobalSettings
     public static Integer getCustCardMaxQty() {
         return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUST_CARD_MAX_QTY);
     }
+    public static String getContactUrl() {
+        return (String) getValue(GlobalSettingConstants.SETTINGS_CONTACT_US_URL);
+    }
 
     private static Object getValue(String gSettingKey) {
         if(mRunMode==RunMode.backend) {

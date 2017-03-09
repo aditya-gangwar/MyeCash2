@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import in.myecash.appbase.BaseDialog;
 import in.myecash.common.CommonUtils;
@@ -103,7 +104,7 @@ public class CustomerDetailsDialog extends BaseDialog {
 
         boolean showGetTxns = getArguments().getBoolean(ARG_GETTXNS_BTN, true);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyAnimatedDialog)
                 .setView(v)
                 .setPositiveButton(android.R.string.ok,this);
 
@@ -206,36 +207,36 @@ public class CustomerDetailsDialog extends BaseDialog {
         }
     }
 
-    private EditText mInputCustomerId;
-    private EditText mInputMobileNum;
-    // EditText mName;
-    private EditText mLastUsedHere;
-    private EditText mFirstUsedHere;
-    //private EditText mCreatedOn;
-    //private EditText mFirstLogin;
+    private TextView mInputCustomerId;
+    private TextView mInputMobileNum;
+    // TextView mName;
+    private TextView mLastUsedHere;
+    private TextView mFirstUsedHere;
+    //private TextView mCreatedOn;
+    //private TextView mFirstLogin;
 
-    private EditText mInputQrCard;
+    private TextView mInputQrCard;
     //private View mLayoutCardDetails;
-    private EditText mInputCardStatus;
-    private EditText mCardStatusDate;
+    private TextView mInputCardStatus;
+    private TextView mCardStatusDate;
 
-    private EditText mInputStatus;
+    private TextView mInputStatus;
     private View mLayoutStatusDetails;
-    private EditText mInputReason;
-    private EditText mInputStatusDate;
-    private EditText mInputStatusDetails;
-    //private EditText mInputAdminRemarks;
+    private TextView mInputReason;
+    private TextView mInputStatusDate;
+    private TextView mInputStatusDetails;
+    //private TextView mInputAdminRemarks;
 
-    private EditText mInputTotalBill;
-    //private EditText mInputCbBill;
+    private TextView mInputTotalBill;
+    //private TextView mInputCbBill;
 
-    private EditText mInputAccAvailable;
-    private EditText mInputAccTotalAdd;
-    private EditText mInputAccTotalDebit;
+    private TextView mInputAccAvailable;
+    private TextView mInputAccTotalAdd;
+    private TextView mInputAccTotalDebit;
 
-    private EditText mInputCbAvailable;
-    private EditText mInputCbTotalAward;
-    private EditText mInputCbTotalRedeem;
+    private TextView mInputCbAvailable;
+    private TextView mInputCbTotalAward;
+    private TextView mInputCbTotalRedeem;
 
     // layouts for optional fields
     //private View mLayoutName;
@@ -246,36 +247,36 @@ public class CustomerDetailsDialog extends BaseDialog {
 
     private void bindUiResources(View v) {
 
-        mInputCustomerId = (EditText) v.findViewById(R.id.input_customer_id);;
-        mInputMobileNum = (EditText) v.findViewById(R.id.input_customer_mobile);
-        //mName = (EditText) v.findViewById(R.id.input_cust_name);;
-        mLastUsedHere = (EditText) v.findViewById(R.id.input_cust_last_activity);;
-        mFirstUsedHere = (EditText) v.findViewById(R.id.input_cust_register_on);;
-        //mCreatedOn = (EditText) v.findViewById(R.id.input_cust_created_on);;
-        //mFirstLogin = (EditText) v.findViewById(R.id.input_first_login);;
+        mInputCustomerId = (TextView) v.findViewById(R.id.input_customer_id);;
+        mInputMobileNum = (TextView) v.findViewById(R.id.input_customer_mobile);
+        //mName = (TextView) v.findViewById(R.id.input_cust_name);;
+        mLastUsedHere = (TextView) v.findViewById(R.id.input_cust_last_activity);;
+        mFirstUsedHere = (TextView) v.findViewById(R.id.input_cust_register_on);;
+        //mCreatedOn = (TextView) v.findViewById(R.id.input_cust_created_on);;
+        //mFirstLogin = (TextView) v.findViewById(R.id.input_first_login);;
 
-        mInputQrCard = (EditText) v.findViewById(R.id.input_qr_card);
+        mInputQrCard = (TextView) v.findViewById(R.id.input_qr_card);
         //mLayoutCardDetails = v.findViewById(R.id.layout_card_details);
-        mInputCardStatus = (EditText) v.findViewById(R.id.input_card_status);
-        mCardStatusDate = (EditText) v.findViewById(R.id.input_card_status_date);
+        mInputCardStatus = (TextView) v.findViewById(R.id.input_card_status);
+        mCardStatusDate = (TextView) v.findViewById(R.id.input_card_status_date);
 
-        mInputStatus = (EditText) v.findViewById(R.id.input_status);
+        mInputStatus = (TextView) v.findViewById(R.id.input_status);
         mLayoutStatusDetails = v.findViewById(R.id.layout_status_details);
-        mInputReason = (EditText) v.findViewById(R.id.input_reason);
-        mInputStatusDate = (EditText) v.findViewById(R.id.input_status_date);
-        mInputStatusDetails = (EditText) v.findViewById(R.id.input_activation);
-        //mInputAdminRemarks = (EditText) v.findViewById(R.id.input_status_remarks);
+        mInputReason = (TextView) v.findViewById(R.id.input_reason);
+        mInputStatusDate = (TextView) v.findViewById(R.id.input_status_date);
+        mInputStatusDetails = (TextView) v.findViewById(R.id.input_activation);
+        //mInputAdminRemarks = (TextView) v.findViewById(R.id.input_status_remarks);
 
-        mInputTotalBill = (EditText) v.findViewById(R.id.input_total_bill);
-        //mInputCbBill = (EditText) v.findViewById(R.id.input_cb_bill);
+        mInputTotalBill = (TextView) v.findViewById(R.id.input_total_bill);
+        //mInputCbBill = (TextView) v.findViewById(R.id.input_cb_bill);
 
-        mInputAccAvailable = (EditText) v.findViewById(R.id.input_acc_balance);
-        mInputAccTotalAdd = (EditText) v.findViewById(R.id.input_acc_add);
-        mInputAccTotalDebit = (EditText) v.findViewById(R.id.input_acc_debit);
+        mInputAccAvailable = (TextView) v.findViewById(R.id.input_acc_balance);
+        mInputAccTotalAdd = (TextView) v.findViewById(R.id.input_acc_add);
+        mInputAccTotalDebit = (TextView) v.findViewById(R.id.input_acc_debit);
 
-        mInputCbAvailable = (EditText) v.findViewById(R.id.input_cb_balance);
-        mInputCbTotalAward = (EditText) v.findViewById(R.id.input_cb_award);
-        mInputCbTotalRedeem = (EditText) v.findViewById(R.id.input_cb_redeem);
+        mInputCbAvailable = (TextView) v.findViewById(R.id.input_cb_balance);
+        mInputCbTotalAward = (TextView) v.findViewById(R.id.input_cb_award);
+        mInputCbTotalRedeem = (TextView) v.findViewById(R.id.input_cb_redeem);
 
         // layouts for optional fields
         //mLayoutName = v.findViewById(R.id.layout_cust_name);

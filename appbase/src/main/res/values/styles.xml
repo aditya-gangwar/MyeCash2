@@ -43,6 +43,15 @@
         <item name="android:background">@drawable/background_splash</item>
     </style-->
 
+    <style name="MyAnimatedDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowAnimationStyle">@style/MyDialogAnimation</item>
+    </style>
+
+    <style name="MyDialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
     <style name="WrapEverythingDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="windowMinWidthMajor">0dp</item>
         <item name="windowMinWidthMinor">0dp</item>

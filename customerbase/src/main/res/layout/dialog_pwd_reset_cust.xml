@@ -63,6 +63,7 @@
 
             <EditText
                 style="@style/Edittext_only_view_small"
+                android:id="@+id/labelInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/reset_passwd_info" />

@@ -949,6 +949,7 @@ public class CashTransactionFragment_2 extends BaseFragment implements
 
     private void askCardScan(String msg) {
         Snackbar mySnackbar = Snackbar.make(mCoordinatorLayout, msg, Snackbar.LENGTH_LONG);
+        mySnackbar.setActionTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
         mySnackbar.setAction("SCAN", new OnSingleClickListener() {
             @Override
             public void onSingleClick(View v) {

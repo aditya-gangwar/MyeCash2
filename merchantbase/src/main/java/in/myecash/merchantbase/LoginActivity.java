@@ -509,7 +509,7 @@ public class LoginActivity extends AppCompatActivity implements
                 if(errorCode==ErrorCodes.NO_ERROR) {
                     // TODO: show 'FAQ' only for non-login section
                     Support.setUserIdentifier(mLoginId);
-                    Support.showFAQs(LoginActivity.this);
+                    Support.showFAQSection(LoginActivity.this,"1");
                 } else {
                     mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
                 }

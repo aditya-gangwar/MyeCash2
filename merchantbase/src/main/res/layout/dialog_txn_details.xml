@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent">
 
-    <EditText
+    <TextView
         style="@style/Dialog_title"
         android:id="@+id/label_title"
         android:text="TRANSACTION  DETAILS"/-->
@@ -19,7 +19,7 @@
             style="@style/LL_Vertical_paddingSidesLarge"
             android:layout_marginBottom="@dimen/large_space">
 
-            <EditText
+            <TextView
                 style="@style/Dialog_title"
                 android:id="@+id/label_title"
                 android:layout_marginBottom="@dimen/medium_space"
@@ -34,7 +34,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_error_white_24dp"
                     android:tint="@color/red_negative"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small"
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
                     android:textColor="@color/red_negative"
                     android:gravity="left|center_vertical"
                     android:paddingRight="0dp"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small"
                     android:id="@+id/input_cancel_time"
                     android:layout_height="match_parent"
@@ -61,14 +61,14 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_swap_horiz_white_18dp"
                     android:tint="@color/primary"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="Txn ID"
                     android:layout_weight="40"
                     android:gravity="left|center_vertical"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/input_txn_id"
                     android:layout_width="0dp"
@@ -85,7 +85,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_access_time_white_18dp"
                     android:tint="@color/primary"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
@@ -93,7 +93,7 @@
                     android:layout_weight="40"
                     android:gravity="left|center_vertical"
                     />
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/input_txn_time"
                     android:layout_width="0dp"
@@ -112,7 +112,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_access_time_white_18dp"
                     android:visibility="invisible"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
@@ -120,7 +120,7 @@
                     android:layout_weight="40"
                     android:gravity="left|center_vertical"
                     />
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/input_invoice_num"
                     android:layout_width="0dp"
@@ -139,14 +139,14 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_card_membership_white_18dp"
                     android:tint="@color/primary"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="Card Used"
                     android:layout_weight="40"
                     android:gravity="left|center_vertical"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/input_card_used"
                     android:layout_width="0dp"
@@ -164,14 +164,14 @@
                     android:src="@drawable/ic_lock_outline_white_18dp"
                     android:tint="@color/primary"
                     />
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
                     android:text="PIN Used"
                     android:layout_weight="40"
                     android:gravity="left|center_vertical"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/input_pin_used"
                     android:layout_width="0dp"
@@ -190,7 +190,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_receipt_white_18dp"
                     android:tint="@color/primary"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
@@ -198,7 +198,7 @@
                     android:layout_weight="40"
                     android:gravity="left|top"
                     android:layout_gravity="bottom"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/input_total_bill"
                     android:layout_width="0dp"
@@ -226,7 +226,7 @@
                     android:gravity="left|center_vertical"
                     android:paddingTop="0dp"
                     android:visibility="gone"/-->
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/input_cb_bill"
                     android:layout_width="0dp"
@@ -238,7 +238,7 @@
                     android:paddingTop="0dp"/>
             </LinearLayout>
 
-            <EditText
+            <TextView
                 style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -256,7 +256,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_favorite_white_18dp"
                     android:tint="@color/primary"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
@@ -264,7 +264,7 @@
                     android:layout_weight="40"
                     android:gravity="left|top"
                     android:layout_gravity="bottom"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_weight="60"
                     android:gravity="left|center_vertical"
@@ -282,7 +282,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_favorite_white_18dp"
                     android:visibility="invisible"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
@@ -296,7 +296,7 @@
                     android:layout_weight="60"
                     android:layout_width="0dp"
                     android:visibility="visible">
-                    <EditText
+                    <TextView
                         style="@style/Edittext_only_view_small_lessPad"
                         android:gravity="left|center_vertical"
                         android:id="@+id/input_cb_award"
@@ -304,7 +304,7 @@
                         android:layout_height="match_parent"
                         android:text="\u20B9 252"
                         android:paddingTop="0dp"/>
-                    <EditText
+                    <TextView
                         style="@style/Edittext_only_view_small_lessPad"
                         android:gravity="left|center_vertical"
                         android:id="@+id/input_cb_award2"
@@ -326,7 +326,7 @@
                     android:src="@drawable/ic_favorite_white_18dp"
                     android:visibility="invisible"
                     android:paddingBottom="0dp"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
@@ -337,7 +337,7 @@
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:visibility="invisible"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_weight="60"
                     android:gravity="left|center_vertical"
@@ -350,7 +350,7 @@
                     android:textStyle="italic"/>
             </LinearLayout>
 
-            <EditText
+            <TextView
                 style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -368,7 +368,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_account_balance_wallet_white_18dp"
                     android:tint="@color/primary"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
@@ -377,7 +377,7 @@
                     android:gravity="left|top"
                     android:layout_gravity="bottom"
                     android:paddingTop="0dp"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_weight="60"
                     android:gravity="left|center_vertical"
@@ -397,7 +397,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_account_balance_wallet_white_18dp"
                     android:visibility="invisible"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
@@ -405,7 +405,7 @@
                     android:layout_weight="40"
                     android:gravity="left|top"
                     android:layout_gravity="bottom"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:layout_weight="60"
                     android:gravity="left|center_vertical"
@@ -415,7 +415,7 @@
                     android:text="+ \u20B9 NA"/>
             </LinearLayout>
 
-            <EditText
+            <TextView
                 style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -432,7 +432,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_perm_identity_white_18dp"
                     android:tint="@color/primary"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/label_customer_id"
                     android:layout_height="match_parent"
@@ -440,7 +440,7 @@
                     android:text="Customer ID"
                     android:layout_weight="40"
                     android:gravity="left|center_vertical"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/input_customer_id"
                     android:layout_width="0dp"
@@ -459,7 +459,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_phone_android_white_18dp"
                     android:tint="@color/primary"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/label_customer_mobile"
                     android:layout_height="match_parent"
@@ -467,7 +467,7 @@
                     android:text="Mobile"
                     android:layout_weight="40"
                     android:gravity="left|center_vertical"/>
-                <EditText
+                <TextView
                     style="@style/Edittext_only_view_small_lessPad"
                     android:id="@+id/input_customer_mobile"
                     android:layout_width="0dp"

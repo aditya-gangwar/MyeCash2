@@ -55,7 +55,8 @@ public interface PasswdResetDialogIf {
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_passwd_reset, null);
         initUiResources(v);
 
-        String txt = String.format(getActivity().getString(R.string.reset_passwd_info), MyGlobalSettings.getMchntPasswdResetMins().toString());
+        String txt = String.format(getActivity().getString(R.string.reset_passwd_info),
+                MyGlobalSettings.getMchntPasswdResetMins().toString());
         mInfo.setText(txt);
 
         // return new dialog

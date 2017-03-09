@@ -589,7 +589,7 @@ public class TxnListFragment extends BaseFragment {
         outState.putInt("mSelectedSortType", mSelectedSortType);
     }
 
-    private class TxnHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class TxnHolder extends RecyclerView.ViewHolder {
 
         private Transaction mTxn;
 
@@ -643,10 +643,10 @@ public class TxnListFragment extends BaseFragment {
             mCashbackAmt.setOnTouchListener(this);
             mCashbackAward.setOnTouchListener(this);
             mCancelTime.setOnTouchListener(this);*/
-            itemView.setOnClickListener(this);
+            //itemView.setOnClickListener(this);
         }
 
-        @Override
+        /*@Override
         public void onClick(View v) {
             LogMy.d(TAG, "onClick: " + getAdapterPosition());
             //v.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.disabled));
@@ -657,7 +657,7 @@ public class TxnListFragment extends BaseFragment {
             int pos = getAdapterPosition();
             showDetailedDialog(pos);
             //AppCommonUtil.cancelProgressDialog(true);
-        }
+        }*/
 
         /*@Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -779,11 +779,12 @@ public class TxnListFragment extends BaseFragment {
 
     private class TxnAdapter extends RecyclerView.Adapter<TxnHolder> {
         private List<Transaction> mTxns;
-        //private View.OnClickListener mListener;
+        private int selected_position = -1;
+        private View.OnClickListener mListener;
 
         public TxnAdapter(List<Transaction> txns) {
             mTxns = txns;
-            /*mListener = new View.OnClickListener() {
+            mListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(!mCallback.getRetainedFragment().getResumeOk())
@@ -791,6 +792,12 @@ public class TxnListFragment extends BaseFragment {
 
                     LogMy.d(TAG,"In onClickListener of txn list item");
                     int pos = mTxnRecyclerView.getChildAdapterPosition(v);
+
+                    // Updating old as well as new positions
+                    notifyItemChanged(selected_position);
+                    selected_position = pos;
+                    notifyItemChanged(selected_position);
+
                     //AppCommonUtil.cancelProgressDialog(true);
                     if (pos >= 0 && pos < getItemCount()) {
                         showDetailedDialog(pos);
@@ -798,7 +805,7 @@ public class TxnListFragment extends BaseFragment {
                         LogMy.e(TAG,"Invalid position in onClickListener of txn list item: "+pos);
                     }
                 }
-            };*/
+            };
         }
 
         @Override
@@ -812,6 +819,14 @@ public class TxnListFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(TxnHolder holder, int position) {
             Transaction txn = mTxns.get(position);
+            if(selected_position == position){
+                // Here I am just highlighting the background
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.list_highlight));
+            }else{
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
+            }
+
+            holder.itemView.setOnClickListener(mListener);
             holder.bindTxn(txn);
         }
         @Override

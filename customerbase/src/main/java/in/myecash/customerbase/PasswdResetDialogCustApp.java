@@ -15,6 +15,7 @@ import android.widget.EditText;
 import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.OnSingleClickListener;
+import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
@@ -50,6 +51,10 @@ public class PasswdResetDialogCustApp extends BaseDialog {
 
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_pwd_reset_cust, null);
         initUiResources(v);
+
+        String txt = String.format(getActivity().getString(R.string.reset_passwd_info),
+                MyGlobalSettings.getCustPasswdResetMins().toString());
+        mInfo.setText(txt);
 
         // return new dialog
         final AlertDialog alertDialog =  new AlertDialog.Builder(getActivity()).setView(v)
@@ -124,7 +129,10 @@ public class PasswdResetDialogCustApp extends BaseDialog {
     }
 
     private EditText mInputName;
+    private EditText mInfo;
+
     private void initUiResources(View v) {
         mInputName = (EditText) v.findViewById(R.id.input_secret_1);
+        mInfo = (EditText) v.findViewById(R.id.labelInfo);
     }
 }

@@ -149,22 +149,8 @@ public class MchntOrderListFragInternal extends BaseFragment {
             mInputStatus = (TextView) itemView.findViewById(R.id.input_status);
             mMerchantId = (TextView) itemView.findViewById(R.id.input_mchntId);
 
-
             mLayout = itemView.findViewById(R.id.layout_card);
-            /*mLayout.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    ((View)v.getParent()).performClick();
-                    return false;
-                }
-            });*/
             mLayout.setOnClickListener(this);
-
-            //mInputOrderId.setOnClickListener(null);
-            //mInputOrderTime.setOnClickListener(null);
-            //mInputOrderTime.setOnTouchListener(null);
-            //mInputStatus.setOnClickListener(null);
-            //mMerchantId.setOnClickListener(null);
         }
 
         public void bindOrder(MerchantOrders order) {
@@ -185,7 +171,7 @@ public class MchntOrderListFragInternal extends BaseFragment {
         @Override
         public void onClick(View view) {
             LogMy.d(TAG, "onClick: " + getAdapterPosition());
-            view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.disabled));
+            view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.list_highlight));
             mCallback.showOrderDetails(getAdapterPosition());
         }
 

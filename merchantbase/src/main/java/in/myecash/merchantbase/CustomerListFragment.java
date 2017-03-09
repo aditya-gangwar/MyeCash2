@@ -9,7 +9,9 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -324,6 +326,7 @@ public class CustomerListFragment extends BaseFragment {
 
     @Override
     public void onResume() {
+        LogMy.d(TAG,"In Resume");
         super.onResume();
         mCallback.setDrawerState(false);
         updateUI();
@@ -484,8 +487,7 @@ public class CustomerListFragment extends BaseFragment {
         return file;
     }
 
-    private class CbHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+    private class CbHolder extends RecyclerView.ViewHolder {
 
         private MyCashback mCb;
 
@@ -504,6 +506,8 @@ public class CustomerListFragment extends BaseFragment {
         public TextView mCbAdd;
         public TextView mCbDebit;
         public TextView mCbBalance;
+
+        public View mLayout;
 
         public CbHolder(View itemView) {
             super(itemView);
@@ -538,7 +542,9 @@ public class CustomerListFragment extends BaseFragment {
             //mLayoutAcc.setOnClickListener(this);
             //mLayoutCb.setOnClickListener(this);
 
-            itemView.setOnClickListener(this);
+            //itemView.setOnClickListener(this);
+            //mLayout = itemView.findViewById(R.id.layout_card);
+            //mLayout.setOnClickListener(this);
         }
 
         /*@Override
@@ -566,15 +572,19 @@ public class CustomerListFragment extends BaseFragment {
             return true;
         }*/
 
-        @Override
+        /*@Override
         public void onClick(View v) {
             LogMy.d(TAG,"In onClickListener of customer list item");
+            //v.setSelected(true);
+            //new Handler().postDelayed(() -> v.setSelected(false), 100);
+            //v.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.list_highlight));
             int pos = getAdapterPosition();
             CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(pos, true);
             dialog.show(getFragmentManager(), DIALOG_CUSTOMER_DETAILS);
-        }
+        }*/
 
         public void bindCb(MyCashback cb) {
+            LogMy.d(TAG,"In bindCb");
             mCb = cb;
             MyCustomer customer = mCb.getCustomer();
 
@@ -592,17 +602,24 @@ public class CustomerListFragment extends BaseFragment {
         }
     }
 
-    private class CbAdapter extends RecyclerView.Adapter<CbHolder> {
+    private class CbAdapter extends RecyclerView.Adapter<CbHolder>{
         private List<MyCashback> mCbs;
-        //private View.OnClickListener mListener;
+        private int selected_position = -1;
+        private View.OnClickListener mListener;
 
         public CbAdapter(List<MyCashback> cbs) {
             mCbs = cbs;
-            /*mListener = new View.OnClickListener() {
+            mListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     LogMy.d(TAG,"In onClickListener of customer list item");
                     int pos = mCustRecyclerView.getChildAdapterPosition(v);
+
+                    // Updating old as well as new positions
+                    notifyItemChanged(selected_position);
+                    selected_position = pos;
+                    notifyItemChanged(selected_position);
+
                     if (pos >= 0 && pos < getItemCount()) {
                         CustomerDetailsDialog dialog = CustomerDetailsDialog.newInstance(pos, true);
                         dialog.show(getFragmentManager(), DIALOG_CUSTOMER_DETAILS);
@@ -610,11 +627,12 @@ public class CustomerListFragment extends BaseFragment {
                         LogMy.e(TAG,"Invalid position in onClickListener of customer list item: "+pos);
                     }
                 }
-            };*/
+            };
         }
 
         @Override
         public CbHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LogMy.d(TAG,"In CbHolder");
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater.inflate(R.layout.customer_itemview, parent, false);
             //view.setOnClickListener(mListener);
@@ -622,7 +640,18 @@ public class CustomerListFragment extends BaseFragment {
         }
         @Override
         public void onBindViewHolder(CbHolder holder, int position) {
+            LogMy.d(TAG,"In onBindViewHolder");
             MyCashback cb = mCbs.get(position);
+
+            if(selected_position == position){
+                // Here I am just highlighting the background
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.list_highlight2));
+            }else{
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
+            }
+
+            holder.itemView.setOnClickListener(mListener);
+
             holder.bindCb(cb);
         }
         @Override

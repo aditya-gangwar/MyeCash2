@@ -416,10 +416,10 @@ public class RegisterMerchantActivity extends AppCompatActivity
             sb.append("Pincode; ");
         }
 
-        if(currentLatitude==0 || currentLongitude==0) {
+        /*if(currentLatitude==0 || currentLongitude==0) {
             valid = false;
             sb.append("Location");
-        }
+        }*/
 
         if(!valid) {
             Toast.makeText(getBaseContext(), sb.toString(), Toast.LENGTH_LONG).show();

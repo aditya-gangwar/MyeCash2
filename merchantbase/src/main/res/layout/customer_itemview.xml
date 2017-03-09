@@ -8,19 +8,19 @@
     android:layout_marginTop="@dimen/medium_space"
     android:layout_marginLeft="@dimen/medium_space"
     android:layout_marginRight="@dimen/medium_space"
+    android:layout_marginBottom="@dimen/small_space"
     android:elevation="3dp"
-    card_view:cardCornerRadius="2dp"
+    card_view:cardCornerRadius="4dp"
     android:clickable="true"
+    android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/small_space"
-        android:layout_marginRight="@dimen/small_space"
-        android:focusableInTouchMode="false"
-        android:focusable="false"
-        android:clickable="false">
+        android:paddingLeft="@dimen/small_space"
+        android:paddingRight="@dimen/small_space"
+        android:id="@+id/layout_card">
 
         <TextView
             style="@style/Edittext_only_view_small"

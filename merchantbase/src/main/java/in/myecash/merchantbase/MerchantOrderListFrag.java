@@ -255,10 +255,13 @@ public class MerchantOrderListFrag extends BaseFragment {
 
             if(status.equals(DbConstants.MCHNT_ORDER_STATUS.Rejected) ||
                     status.equals(DbConstants.MCHNT_ORDER_STATUS.PaymentFailed) ) {
-                mInputStatusReason.setVisibility(View.VISIBLE);
-                mInputStatusReason.setText(order.getComments());
                 mInputStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+                if(order.getComments()!=null && !order.getComments().isEmpty()) {
+                    mInputStatusReason.setVisibility(View.VISIBLE);
+                    mInputStatusReason.setText(order.getComments());
+                }
             } else {
+                mInputStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
                 mInputStatusReason.setVisibility(View.GONE);
             }
 

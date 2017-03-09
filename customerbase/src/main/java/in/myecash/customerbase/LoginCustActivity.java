@@ -158,7 +158,7 @@ public class LoginCustActivity extends AppCompatActivity implements
         // local activity initializations
         bindUiResources();
         makeForgotPasswordLink();
-        makeHelpTnCLink();
+        makeContactTnCLink();
 
         // Fill old login id
         String oldId = PreferenceManager.getDefaultSharedPreferences(this).getString(AppConstants.PREF_LOGIN_ID, null);
@@ -494,9 +494,9 @@ public class LoginCustActivity extends AppCompatActivity implements
         promptView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    private void makeHelpTnCLink()
+    private void makeContactTnCLink()
     {
-        SpannableString helpTnCPrompt = new SpannableString( getString( R.string.Help_TnC_label ) );
+        SpannableString helpTnCPrompt = new SpannableString( getString( R.string.Contact_TnC_label ) );
 
         ClickableSpan clickableSpanHelp = new ClickableSpan()
         {
@@ -504,18 +504,20 @@ public class LoginCustActivity extends AppCompatActivity implements
             public void onClick( View widget )
             {
                 // read and set values
-                initOperationData();
+                //initOperationData();
                 // validate
-                int errorCode = ValidationHelper.validateMerchantId(mLoginId);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    // TODO: show 'HELP Page'
-                } else {
-                    mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
-                }
+                //int errorCode = ValidationHelper.validateMerchantId(mLoginId);
+                //if(errorCode==ErrorCodes.NO_ERROR) {
+                    Intent intent = new Intent(LoginCustActivity.this, SingleWebViewActivity.class );
+                    intent.putExtra(SingleWebViewActivity.INTENT_EXTRA_URL, MyGlobalSettings.getContactUrl());
+                    startActivity(intent);
+                //} else {
+                  //  mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
+                //}
             }
         };
 
-        String linkHelp = getString( R.string.Help_link );
+        String linkHelp = getString( R.string.Contact_link );
         int linkStartIndex = helpTnCPrompt.toString().indexOf( linkHelp );
         int linkEndIndex = linkStartIndex + linkHelp.length();
         helpTnCPrompt.setSpan(clickableSpanHelp, linkStartIndex, linkEndIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

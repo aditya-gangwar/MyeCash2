@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.myecash.appbase.OtpPinInputDialog;
+import in.myecash.appbase.SingleWebViewActivity;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.CsvConverter;
@@ -304,7 +305,10 @@ public class CashbackActivityCust extends AppCompatActivity implements
             PasswdChangeDialog dialog = new PasswdChangeDialog();
             dialog.show(getFragmentManager(), DIALOG_CHANGE_PASSWORD);
 
-        } else if (i == R.id.menu_faq) {
+        } else if (i == R.id.menu_contact) {
+            Intent intent = new Intent(this, SingleWebViewActivity.class );
+            intent.putExtra(SingleWebViewActivity.INTENT_EXTRA_URL, MyGlobalSettings.getContactUrl());
+            startActivity(intent);
         }
 
         // Highlight the selected item has been done by NavigationView

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -79,7 +80,7 @@ public class TxnDetailsDialog extends BaseDialog {
 
         bindUiResources(v);
 
-        Dialog dialog = new AlertDialog.Builder(getActivity())
+        Dialog dialog = new AlertDialog.Builder(getActivity(),R.style.MyAnimatedDialog)
                 .setView(v)
                 .setPositiveButton(android.R.string.ok, this)
                 .setNeutralButton("Cancel Txn", this)
@@ -308,64 +309,64 @@ public class TxnDetailsDialog extends BaseDialog {
     }
 
     private View mLayoutCancelled;
-    private EditText mInputCancelTime;
+    private TextView mInputCancelTime;
 
-    private EditText mInputTxnId;
-    private EditText mInputTxnTime;
+    private TextView mInputTxnId;
+    private TextView mInputTxnTime;
 
     private View mLayoutInvNum;
-    private EditText mInvoiceNum;
+    private TextView mInvoiceNum;
 
-    private EditText mInputTotalBill;
+    private TextView mInputTotalBill;
     private View mLayoutCbBill;
-    private EditText mInputCbBill;
+    private TextView mInputCbBill;
 
-    private EditText mInputCustomerId;
-    private EditText mInputMobileNum;
-    private EditText mCardUsed;
-    private EditText mPinUsed;
+    private TextView mInputCustomerId;
+    private TextView mInputMobileNum;
+    private TextView mCardUsed;
+    private TextView mPinUsed;
 
-    private EditText mInputCbAward;
-    private EditText mInputCbAward2;
+    private TextView mInputCbAward;
+    private TextView mInputCbAward2;
     private View mLayoutCbDetails;
-    private EditText mInputCbDetails;
+    private TextView mInputCbDetails;
 
-    private EditText mInputCbRedeem;
+    private TextView mInputCbRedeem;
 
-    private EditText mInputAccAdd;
-    private EditText mInputAccDebit;
+    private TextView mInputAccAdd;
+    private TextView mInputAccDebit;
 
     //private ImageView mTxnImage;
 
     private void bindUiResources(View v) {
 
         mLayoutCancelled = v.findViewById(R.id.layout_cancelled);
-        mInputCancelTime = (EditText) v.findViewById(R.id.input_cancel_time);
+        mInputCancelTime = (TextView) v.findViewById(R.id.input_cancel_time);
 
-        mInputTxnId = (EditText) v.findViewById(R.id.input_txn_id);
-        mInputTxnTime = (EditText) v.findViewById(R.id.input_txn_time);
+        mInputTxnId = (TextView) v.findViewById(R.id.input_txn_id);
+        mInputTxnTime = (TextView) v.findViewById(R.id.input_txn_time);
 
         mLayoutInvNum = v.findViewById(R.id.layout_invoice_num);
-        mInvoiceNum = (EditText) v.findViewById(R.id.input_invoice_num);
+        mInvoiceNum = (TextView) v.findViewById(R.id.input_invoice_num);
 
-        mInputTotalBill = (EditText) v.findViewById(R.id.input_total_bill);
+        mInputTotalBill = (TextView) v.findViewById(R.id.input_total_bill);
         mLayoutCbBill = v.findViewById(R.id.layout_cb_bill);
-        mInputCbBill = (EditText) v.findViewById(R.id.input_cb_bill);
+        mInputCbBill = (TextView) v.findViewById(R.id.input_cb_bill);
 
-        mInputCustomerId = (EditText) v.findViewById(R.id.input_customer_id);;
-        mInputMobileNum = (EditText) v.findViewById(R.id.input_customer_mobile);
-        mCardUsed = (EditText) v.findViewById(R.id.input_card_used);
-        mPinUsed = (EditText) v.findViewById(R.id.input_pin_used);
+        mInputCustomerId = (TextView) v.findViewById(R.id.input_customer_id);;
+        mInputMobileNum = (TextView) v.findViewById(R.id.input_customer_mobile);
+        mCardUsed = (TextView) v.findViewById(R.id.input_card_used);
+        mPinUsed = (TextView) v.findViewById(R.id.input_pin_used);
 
-        mInputAccAdd = (EditText) v.findViewById(R.id.input_acc_add);
-        mInputAccDebit = (EditText) v.findViewById(R.id.input_acc_debit);
+        mInputAccAdd = (TextView) v.findViewById(R.id.input_acc_add);
+        mInputAccDebit = (TextView) v.findViewById(R.id.input_acc_debit);
 
-        mInputCbAward = (EditText) v.findViewById(R.id.input_cb_award);
-        mInputCbAward2 = (EditText) v.findViewById(R.id.input_cb_award2);
+        mInputCbAward = (TextView) v.findViewById(R.id.input_cb_award);
+        mInputCbAward2 = (TextView) v.findViewById(R.id.input_cb_award2);
         mLayoutCbDetails = v.findViewById(R.id.layout_cb_details);
-        mInputCbDetails = (EditText) v.findViewById(R.id.input_cb_details);
+        mInputCbDetails = (TextView) v.findViewById(R.id.input_cb_details);
 
-        mInputCbRedeem = (EditText) v.findViewById(R.id.input_cb_redeem);
+        mInputCbRedeem = (TextView) v.findViewById(R.id.input_cb_redeem);
 
         //mTxnImage = (ImageView) v.findViewById(R.id.txnImage);
 

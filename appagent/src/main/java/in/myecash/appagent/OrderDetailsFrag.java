@@ -145,7 +145,7 @@ public class OrderDetailsFrag extends BaseFragment {
         if(mOrder.getInvoiceUrl()==null || mOrder.getInvoiceUrl().isEmpty()) {
             mViewInvoice.setEnabled(false);
             mViewInvoice.setOnClickListener(null);
-            mViewInvoice.setAlpha(0.4f);
+            mViewInvoice.setAlpha(0.5f);
         } else {
             mViewInvoice.setOnClickListener(this);
         }
@@ -156,18 +156,17 @@ public class OrderDetailsFrag extends BaseFragment {
         } else {
             mBtnAllocateCards.setEnabled(false);
             mBtnAllocateCards.setOnClickListener(null);
-            mBtnAllocateCards.setAlpha(0.4f);
+            mBtnAllocateCards.setAlpha(0.5f);
         }
 
-        if(status==DbConstants.MCHNT_ORDER_STATUS.New ||
-                status==DbConstants.MCHNT_ORDER_STATUS.InProcess ||
+        if(status==DbConstants.MCHNT_ORDER_STATUS.InProcess ||
                 status==DbConstants.MCHNT_ORDER_STATUS.Shipped ||
                 status==DbConstants.MCHNT_ORDER_STATUS.PaymentVerifyPending) {
             mChangeStatus.setOnClickListener(this);
         } else {
             mChangeStatus.setEnabled(false);
             mChangeStatus.setOnClickListener(null);
-            mChangeStatus.setAlpha(0.4f);
+            mChangeStatus.setAlpha(0.5f);
         }
 
         if(status==DbConstants.MCHNT_ORDER_STATUS.Shipped||
@@ -177,7 +176,7 @@ public class OrderDetailsFrag extends BaseFragment {
         } else {
             mRemove.setEnabled(false);
             mRemove.setOnClickListener(null);
-            mRemove.setAlpha(0.4f);
+            mRemove.setAlpha(0.5f);
         }
 
         // For agent - only 'Allocate Cards' is valid
@@ -188,7 +187,7 @@ public class OrderDetailsFrag extends BaseFragment {
             if(!mOrder.getIsFirstOrder() && mChangeStatus.isEnabled()) {
                 mBtnAllocateCards.setEnabled(false);
                 mBtnAllocateCards.setOnClickListener(null);
-                mBtnAllocateCards.setAlpha(0.4f);
+                mBtnAllocateCards.setAlpha(0.5f);
             }
         }
     }
