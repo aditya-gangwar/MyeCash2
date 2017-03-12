@@ -440,8 +440,8 @@
                     android:text="Customer ID"
                     android:layout_weight="40"
                     android:gravity="left|center_vertical"/>
-                <TextView
-                    style="@style/Edittext_only_view_small_lessPad"
+                <EditText
+                    style="@style/Edittext_only_click_small_lessPad"
                     android:id="@+id/input_customer_id"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
+import in.myecash.appbase.BuildConfig;
 import in.myecash.common.constants.CommonConstants;
 
 /**
@@ -12,12 +13,14 @@ import in.myecash.common.constants.CommonConstants;
  */
 public class LogMy {
     public static void d(String tag, String msg) {
-        if(CommonConstants.IS_PRODUCTION_RELEASE) return;
+        //if(CommonConstants.IS_PRODUCTION_RELEASE) return;
+        if(BuildConfig.DEBUG) return;
         Log.d(tag,msg);
         Crashlytics.log(msg);
     }
     public static void i(String tag, String msg) {
-        if(CommonConstants.IS_PRODUCTION_RELEASE) return;
+        //if(CommonConstants.IS_PRODUCTION_RELEASE) return;
+        if(BuildConfig.DEBUG) return;
         Log.i(tag,msg);
         Crashlytics.log(msg);
     }

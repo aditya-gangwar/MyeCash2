@@ -20,7 +20,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
-import android.os.IBinder;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -54,7 +53,6 @@ import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.database.Address;
 import in.myecash.common.database.BusinessCategories;
-import in.myecash.common.database.Cashback;
 import in.myecash.common.database.Cities;
 import in.myecash.common.database.CustomerCards;
 import in.myecash.common.database.CustomerOps;
@@ -63,25 +61,16 @@ import in.myecash.common.database.MerchantDevice;
 import in.myecash.common.database.MerchantOps;
 import in.myecash.common.database.MerchantOrders;
 import in.myecash.common.database.Merchants;
-import in.myecash.common.database.Transaction;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by adgangwa on 16-02-2016.
@@ -289,7 +278,7 @@ public class AppCommonUtil {
             errorCode = Integer.parseInt(expCode);
         } catch(Exception et) {
             // we get 'Internal client exception' when we try to invoke any backend API, while internet is not conneccted
-            if( (expMsg!=null && (expMsg.contains(CommonConstants.BACKENDLESS_HOST_IP)||
+            if( (expMsg!=null && (expMsg.contains(AppConstants.BACKENDLESS_DOMAIN)||
                     expMsg.contains("Connection refused"))) ||
                     expCode.contains("Internal client exception") ) {
 

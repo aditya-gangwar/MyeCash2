@@ -130,8 +130,8 @@ public class CashbackActivity extends BaseActivity implements
     private EditText mTbTitle;
     private EditText mTbTitle2;
     private LinearLayout mTbLayoutSubhead1;
-    private EditText mTbSubhead1Text1;
-    private EditText mTbSubhead1Text2;
+    private TextView mTbSubhead1Text1;
+    private TextView mTbSubhead1Text2;
 
     private MerchantUser mMerchantUser;
     private Merchants mMerchant;
@@ -441,7 +441,7 @@ public class CashbackActivity extends BaseActivity implements
         }
 
         if(dwnloadImage) {
-            String url = CommonConstants.BACKEND_FILE_BASE_URL+
+            String url = AppConstants.BACKEND_FILE_BASE_URL+
                     CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR+
                     mMerchantUser.getMerchant().getDisplayImage();
             mWorkFragment.fetchImageFile(url);
@@ -570,9 +570,9 @@ public class CashbackActivity extends BaseActivity implements
         mTbTitle = (EditText) mToolbar.findViewById(R.id.tb_title) ;
         mTbTitle2 = (EditText) mToolbar.findViewById(R.id.tb_title_2) ;
         mTbLayoutSubhead1 = (LinearLayout) mToolbar.findViewById(R.id.tb_layout_subhead1) ;
-        mTbSubhead1Text1 = (EditText) mToolbar.findViewById(R.id.tb_curr_cashload) ;
+        mTbSubhead1Text1 = (TextView) mToolbar.findViewById(R.id.tb_curr_cashload) ;
         //mTbSubhead1Divider = mToolbar.findViewById(R.id.tb_view_1) ;
-        mTbSubhead1Text2 = (EditText) mToolbar.findViewById(R.id.tb_curr_cashback) ;
+        mTbSubhead1Text2 = (TextView) mToolbar.findViewById(R.id.tb_curr_cashback) ;
     }
 
     private void askAndRegisterCustomer(boolean wrongOtpCase) {
@@ -916,6 +916,9 @@ public class CashbackActivity extends BaseActivity implements
     public void onBgProcessResponse(int errorCode, int operation) {
         LogMy.d(TAG,"In onBgProcessResponse: "+operation+", "+errorCode);
 
+        // this may get chnaged by background processor - like in case of 'change mobile'
+        mMerchant = mMerchantUser.getMerchant();
+
         // Session timeout case - show dialog and logout - irrespective of invoked operation
         if(errorCode==ErrorCodes.SESSION_TIMEOUT || errorCode==ErrorCodes.NOT_LOGGED_IN) {
             AppCommonUtil.cancelProgressDialog(true);
@@ -1107,6 +1110,7 @@ public class CashbackActivity extends BaseActivity implements
         AppCommonUtil.cancelProgressDialog(true);
 
         if(errorCode==ErrorCodes.NO_ERROR) {
+            restoreSettings();
             DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, AppConstants.mobileChangeSuccessMsg, false, false)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
 
@@ -1209,12 +1213,12 @@ public class CashbackActivity extends BaseActivity implements
         MerchantUser.reset();
 
         //Start Login Activity
-        if(!mExitAfterLogout) {
+        /*if(!mExitAfterLogout) {
             Intent intent = new Intent( this, LoginActivity.class );
             // clear cashback activity from backstack
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-        }
+        }*/
         finish();
     }
 
@@ -1936,7 +1940,7 @@ public class CashbackActivity extends BaseActivity implements
             }
 
             if (mMobileNumFragment.isVisible()) {
-                DialogFragmentWrapper.createConfirmationDialog(AppConstants.exitGenTitle, AppConstants.exitAppMsg, false, false)
+                DialogFragmentWrapper.createConfirmationDialog(AppConstants.logoutTitle, AppConstants.logoutMsg, false, false)
                         .show(mFragMgr, DIALOG_BACK_BUTTON);
             } else {
                 getFragmentManager().popBackStackImmediate();
@@ -1997,6 +2001,7 @@ public class CashbackActivity extends BaseActivity implements
     protected void onResume() {
         LogMy.d(TAG, "In onResume");
         super.onResume();
+        mMerchant = mMerchantUser.getMerchant();
         if(getFragmentManager().getBackStackEntryCount()==0) {
             // no fragment in backstack - so flag wont get set by any fragment - so set it here
             // though this shud never happen - as CashbackActivity always have a fragment

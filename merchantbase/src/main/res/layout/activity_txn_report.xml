@@ -131,7 +131,8 @@
             style="@style/Edittext_only_view_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter Customer 'Mobile Number' or 'ID'\nLeave Empty for All Customers"/>
+            android:text="Enter Customer 'Mobile Number' or 'ID'.\nLeave Empty for All Customers"
+            android:inputType="textMultiLine"/>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"

@@ -86,10 +86,11 @@ public class ActionsFragment extends BaseFragment {
 
     // Possible other actions
     public static final String OTHER_GLOBAL_SETTINGS = "Global Settings";
+    public static final String OTHER_CLEAR_DUMMY_DATA = "Clear Dummy Data";
 
     public static final int MAX_OTHER_BUTTONS = 2;
     // elements has to be <= MAX_OTHER_BUTTONS
-    public static final String[] agentOtherActions = {OTHER_GLOBAL_SETTINGS};
+    public static final String[] agentOtherActions = {OTHER_GLOBAL_SETTINGS, OTHER_CLEAR_DUMMY_DATA};
     public static final String[] ccOtherActions = {OTHER_GLOBAL_SETTINGS};
     public static final String[] cCntOtherActions = {OTHER_GLOBAL_SETTINGS};
 

@@ -21,6 +21,9 @@
 
     <dimen name="toolbar_icon_width">32dp</dimen>
     <dimen name="toolbar_icon_height">32dp</dimen>
+
+    <dimen name="toolbar_min_height">56dp</dimen>
+
     <dimen name="toolbar_image_width">46dp</dimen>
     <dimen name="toolbar_image_height">46dp</dimen>
     <dimen name="toolbar_image_padding">2dp</dimen>

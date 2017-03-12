@@ -66,6 +66,7 @@ public class ActionsActivity extends AppCompatActivity implements
     private static final String DIALOG_SEARCH_CUSTOMER = "searchCustomer";
     private static final String DIALOG_SEARCH_CARD = "searchCard";
     private static final String DIALOG_CARD_LIST = "dialogCardList";
+    private static final String DIALOG_DEL_DUMMY_DATA = "dialogDelDummyData";
 
     private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
 
@@ -281,6 +282,17 @@ public class ActionsActivity extends AppCompatActivity implements
                                 .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
                     break;
+
+                case MyRetainedFragment.REQUEST_DEL_DUMMY_DATA:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode==ErrorCodes.NO_ERROR) {
+                        DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, "Dummy Data Deleted Successfully", false, false)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
             }
         } catch (Exception e) {
             AppCommonUtil.cancelProgressDialog(true);
@@ -313,6 +325,9 @@ public class ActionsActivity extends AppCompatActivity implements
         }  else if (tag.equals(DIALOG_SESSION_TIMEOUT)) {
             mExitAfterLogout = false;
             logoutAgent();
+        } else if(tag.equals(DIALOG_DEL_DUMMY_DATA)) {
+            AppCommonUtil.showProgressDialog(this, "Deleting ...");
+            mWorkFragment.delDummyData();
         }
     }
 
@@ -483,6 +498,11 @@ public class ActionsActivity extends AppCompatActivity implements
             case ActionsFragment.OTHER_GLOBAL_SETTINGS:
                 startSettingsListFrag();
                 break;
+            case ActionsFragment.OTHER_CLEAR_DUMMY_DATA:
+                DialogFragmentWrapper.createConfirmationDialog("Confirm Clear Data", "Are you sure to Delete Data for Dummy Merchant ?", false, false)
+                        .show(mFragMgr, DIALOG_DEL_DUMMY_DATA);
+                break;
+
         }
     }
 

@@ -1,7 +1,6 @@
 package in.myecash.merchantbase;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -56,7 +55,7 @@ public class ForgotIdDialog extends BaseDialog {
                 .setPositiveButton(R.string.ok, this)
                 .setNegativeButton(R.string.cancel, this)
                 .create();
-        if(AppConstants.IS_PROD_BUILD) {
+        if(AppConstants.BLOCK_SCREEN_CAPTURE) {
             alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
 

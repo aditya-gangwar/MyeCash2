@@ -1,7 +1,6 @@
 package in.myecash.appbase;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,19 +10,14 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.OnSingleClickListener;
-import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.ValidationHelper;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * Created by adgangwa on 30-04-2016.
@@ -127,7 +121,7 @@ public class OtpPinInputDialog extends BaseDialog
         });*/
 
         Dialog dialog =  new AlertDialog.Builder(getActivity(), R.style.WrapEverythingDialog).setView(v).create();
-        if(AppConstants.IS_PROD_BUILD) {
+        if(AppConstants.BLOCK_SCREEN_CAPTURE) {
             dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
         dialog.setCanceledOnTouchOutside(false);

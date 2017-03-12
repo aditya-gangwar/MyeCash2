@@ -21,22 +21,22 @@
         <EditText
             style="@style/Edittext_only_view_small_lessPad"
             android:layout_width="wrap_content"
-            android:id="@+id/list_header_acc"
+            android:id="@+id/list_header_cb"
             android:layout_below="@id/list_header_id"
             android:layout_height="wrap_content"
-            android:text="Account:  Add - Debit = Balance"
+            android:text="Cashback:  Add - Debit = Balance"
             android:paddingTop="0dp"
-            android:paddingBottom="0dp"
             android:textColor="@color/white"/>
 
         <EditText
             style="@style/Edittext_only_view_small_lessPad"
             android:layout_width="wrap_content"
-            android:id="@+id/list_header_cb"
-            android:layout_below="@id/list_header_acc"
+            android:id="@+id/list_header_acc"
+            android:layout_below="@id/list_header_cb"
             android:layout_height="wrap_content"
-            android:text="Cashback:  Add - Debit = Balance"
+            android:text="Account:  Add - Debit = Balance"
             android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:textColor="@color/white"/>
 
         <EditText
@@ -64,7 +64,7 @@
         <View
             style="@style/Divider_horizontal_Large"
             android:id="@+id/list_divider_1"
-            android:layout_below="@id/list_header_cb"/>
+            android:layout_below="@id/list_header_acc"/>
 
     </RelativeLayout>
 
@@ -72,7 +72,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_light_grey"
+        android:background="@color/bg_light_grey_dark"
         android:id="@+id/cust_recycler_view"
         android:layout_weight="1">
     </android.support.v7.widget.RecyclerView>

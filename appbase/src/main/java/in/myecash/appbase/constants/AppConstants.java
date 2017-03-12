@@ -1,11 +1,25 @@
 package in.myecash.appbase.constants;
 
+import in.myecash.appbase.BuildConfig;
+
 /**
  * This class contains constants relevant only the user app code and not to backend code.
  */
 public class AppConstants {
 
-    public static final boolean IS_PROD_BUILD = false;
+    /*
+     * Backend server settings
+     */
+    public static final String APPLICATION_ID = BuildConfig.BACKENDLESS_APP_ID;
+    public static final String ANDROID_SECRET_KEY = BuildConfig.BACKENDLESS_SECRET_KEY;
+    public static final String VERSION = BuildConfig.BACKENDLESS_VERSION;
+
+    public static final String BACKENDLESS_DOMAIN = BuildConfig.BACKENDLESS_DOMAIN;
+    public static final String BACKENDLESS_HOST = BuildConfig.BACKENDLESS_HOST;
+    public static final String BACKEND_FILE_BASE_URL = BACKENDLESS_HOST+"/"+APPLICATION_ID+"/"+VERSION+"/files/";
+
+    public static final boolean BLOCK_SCREEN_CAPTURE = BuildConfig.BLOCK_SCREEN_CAPTURE;
+
     public static final int INTERNET_CHECK_TIMEUT_MILISECS = 20000;
     public static final long MIN_CLICK_INTERVAL=700;
 

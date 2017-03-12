@@ -10,6 +10,7 @@ import com.helpshift.Core;
 import com.helpshift.InstallConfig;
 import com.helpshift.exceptions.InstallException;
 
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.common.MyGlobalSettings;
@@ -47,8 +48,8 @@ public class MerchantApp extends Application {
         }
 
         // App level initializations - once in main activity
-        Backendless.initApp(this, CommonConstants.APPLICATION_ID, CommonConstants.ANDROID_SECRET_KEY, CommonConstants.VERSION);
-        com.backendless.Backendless.setUrl( CommonConstants.BACKENDLESS_HOST );
+        Backendless.initApp(this, AppConstants.APPLICATION_ID, AppConstants.ANDROID_SECRET_KEY, AppConstants.VERSION);
+        com.backendless.Backendless.setUrl( AppConstants.BACKENDLESS_HOST );
 
         // Map all tables to class here - except 'cashback' and 'transaction'
         AppCommonUtil.initTableToClassMappings();

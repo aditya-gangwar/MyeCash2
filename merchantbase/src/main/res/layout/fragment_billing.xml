@@ -17,7 +17,7 @@
         <android.support.v7.widget.AppCompatButton
             style="@style/button_normal_border"
             android:id="@+id/btn_bill_total"
-            android:text="Collect    \u20B9 256"
+            android:text="Bill    \u20B9 0"
             android:textColor="@color/green_positive" />
     </LinearLayout>
 
@@ -49,7 +49,7 @@
                 android:layout_weight="82.5"
                 android:gravity="center"
                 android:text="@string/Rs_0"
-                android:textColor="@color/link_blue"/>
+                android:textColor="@color/green_positive"/>
 
             <ImageButton
                 style="@style/button_keyboard"

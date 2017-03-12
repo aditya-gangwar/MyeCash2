@@ -92,7 +92,7 @@ implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPref
         getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
         getView().setClickable(true);
 
-        setAllSummaries();
+        //setAllSummaries();
 
         // Set Icons
         PreferenceScreen pref = (PreferenceScreen) getPreferenceScreen().findPreference(KEY_GRP_PROFILE);
@@ -452,6 +452,7 @@ implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPref
         super.onResume();
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
         mCallback.setDrawerState(false);
+        setAllSummaries();
         mCallback.getRetainedFragment().setResumeOk(true);
     }
 

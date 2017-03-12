@@ -425,7 +425,7 @@
         <item name="android:cursorVisible">false</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">false</item>
-        <item name="android:inputType">none</item>
+        <!--item name="android:inputType">none</item-->
         <item name="android:clickable">true</item>
         <item name="android:textIsSelectable">false</item>
         <item name="android:longClickable">false</item>
@@ -516,7 +516,7 @@
         <item name="android:paddingBottom">@dimen/edittext_padding</item>
         <item name="android:paddingTop">@dimen/edittext_padding</item>
         <item name="android:textColor">@drawable/edit_text_selector</item>
-        <item name="android:inputType">textNoSuggestions</item>
+        <item name="android:inputType">none|textNoSuggestions|textMultiLine</item>
     </style>
 
     <!--style name="MyTextAppearance" parent="TextAppearance.AppCompat">

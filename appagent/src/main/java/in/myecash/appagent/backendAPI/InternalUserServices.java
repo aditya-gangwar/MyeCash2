@@ -10,6 +10,7 @@ import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 
 
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.MyCardForAction;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.CustomerCards;
@@ -35,21 +36,15 @@ public class InternalUserServices
 
     public static void initApplication()
     {
-        Backendless.setUrl( CommonConstants.BACKENDLESS_HOST );
+        Backendless.setUrl( AppConstants.BACKENDLESS_HOST );
         // if you invoke this sample inside of android application, you should use overloaded "initApp" with "context" argument
-        Backendless.initApp( CommonConstants.APPLICATION_ID, CommonConstants.ANDROID_SECRET_KEY, InternalUserServices.APP_VERSION );
+        Backendless.initApp( AppConstants.APPLICATION_ID, AppConstants.ANDROID_SECRET_KEY, InternalUserServices.APP_VERSION );
     }
 
     public String registerMerchant(Merchants merchant)
     {
         Object[] args = new Object[]{merchant};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerMerchant", args, String.class );
-    }
-
-    public void registerMerchantAsync(Merchants merchant, AsyncCallback<Object> callback)
-    {
-        Object[] args = new Object[]{merchant};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerMerchant", args, Object.class, callback);
     }
 
     public void disableMerchant(java.lang.String merchantId, java.lang.String ticketNum, java.lang.String reason, java.lang.String remarks)
@@ -93,4 +88,12 @@ public class InternalUserServices
         Object[] args = new Object[]{updatedOrder};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "changeOrderStatus", args, MerchantOrders.class );
     }
+
+    public void clearDummyMchntData()
+    {
+        Object[] args = new Object[]{};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "clearDummyMchntData", args );
+    }
+
+
 }

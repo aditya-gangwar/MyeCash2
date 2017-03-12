@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.myecash.appbase.backendAPI.CommonServices;
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.appbase.utilities.FileFetchr;
 import in.myecash.common.constants.CommonConstants;
@@ -330,7 +331,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
     private int downloadFile(MessageFileDownload msg) {
         String filepath = msg.fileUrl;
-        String fileURL = CommonConstants.BACKEND_FILE_BASE_URL + filepath;
+        String fileURL = AppConstants.BACKEND_FILE_BASE_URL + filepath;
         //String filename = filepath.substring(filepath.lastIndexOf('/')+1);
         String filename = Uri.parse(fileURL).getLastPathSegment();
         LogMy.d(TAG,"Fetching "+fileURL+", Filename: "+filename);

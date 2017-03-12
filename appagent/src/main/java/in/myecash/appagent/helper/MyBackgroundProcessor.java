@@ -159,6 +159,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     public void addOrderStatusChangeReq(MerchantOrders updatedOrder) {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CHANGE_ORDER_STATUS, updatedOrder).sendToTarget();
     }
+    public void addDelDummyDataReq() {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DEL_DUMMY_DATA, null).sendToTarget();
+    }
 
     @Override
     protected int handleMsg(Message msg) {
@@ -209,6 +212,9 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 break;
             case MyRetainedFragment.REQUEST_CHANGE_ORDER_STATUS:
                 error = changeOrderStatus((MerchantOrders) msg.obj);
+                break;
+            case MyRetainedFragment.REQUEST_DEL_DUMMY_DATA:
+                error = delDummyMchntData();
                 break;
         }
         return error;
@@ -433,6 +439,18 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Exception in changeOrderStatus: "+e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    private int delDummyMchntData() {
+        try {
+            InternalUserServices.getInstance().clearDummyMchntData();
+            LogMy.d(TAG,"delDummyMchntData success");
+
+        } catch (BackendlessException e) {
+            LogMy.e(TAG,"Exception in delDummyMchntData: "+e.toString());
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;

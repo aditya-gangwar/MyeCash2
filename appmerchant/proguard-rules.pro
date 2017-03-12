@@ -15,3 +15,24 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keepattributes SourceFile,LineNumberTable
+# Backendless
+-dontwarn com.backendless.**
+-dontwarn weborb.**
+-keep class weborb.** {*;}
+-keep class com.backendless.** {*;}
+# Backendless
+# MPAndroidChart library
+-dontwarn io.realm.**
+-dontwarn com.github.mikephil.**
+-keep public class com.github.mikephil.** {
+     public protected *;
+}
+#-keep class com.github.mikephil.charting.** { *; }
+# MPAndroidChart library
+# crashlytics
+-keepattributes *Annotation*
+-keep public class * extends java.lang.Exception
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+# crashlytics

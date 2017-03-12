@@ -557,6 +557,9 @@ public class CashTransactionFragment_2 extends BaseFragment implements
                 str = "* Cashback  @ "+mCbRate+"% of  "+ AppCommonUtil.getAmtStr(cbEligibleAmt);
             } else if(cbExtraApply) {
                 str = "* Cashback  @ "+mPpCbRate+"% of  "+ AppCommonUtil.getAmtStr(mAddCashload);
+            } else {
+                // no cashback applies
+                str = "* Cashback  ";
             }
             mLabelAddCb.setText(str);
         }

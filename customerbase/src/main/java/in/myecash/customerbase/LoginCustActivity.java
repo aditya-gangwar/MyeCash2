@@ -649,7 +649,7 @@ public class LoginCustActivity extends AppCompatActivity implements
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
-        if(AppConstants.IS_PROD_BUILD) {
+        if(AppConstants.BLOCK_SCREEN_CAPTURE) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
         AppCommonUtil.setUserType(DbConstants.USER_TYPE_CUSTOMER);

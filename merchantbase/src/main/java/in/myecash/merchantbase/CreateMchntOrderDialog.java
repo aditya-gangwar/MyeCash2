@@ -7,24 +7,19 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.OnSingleClickListener;
-import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.DbConstants;
-import in.myecash.common.constants.ErrorCodes;
 
 /**
  * Created by adgangwa on 03-03-2017.
@@ -68,7 +63,7 @@ public class CreateMchntOrderDialog extends BaseDialog {
                 .setPositiveButton(R.string.ok, this)
                 .setNegativeButton(R.string.cancel, this)
                 .create();
-        if(AppConstants.IS_PROD_BUILD) {
+        if(AppConstants.BLOCK_SCREEN_CAPTURE) {
             alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
 

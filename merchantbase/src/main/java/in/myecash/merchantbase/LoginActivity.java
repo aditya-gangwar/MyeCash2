@@ -576,6 +576,10 @@ public class LoginActivity extends AppCompatActivity implements
 
         // delete local files - if required
         AppCommonUtil.delLocalFiles(MerchantUser.getInstance().getMerchant().getDelLocalFilesReq(), this);
+
+        mLoginButton.setEnabled(true);
+        mPasswdTextRes.setText("");
+
         startCbFrag();
     }
 
@@ -588,9 +592,9 @@ public class LoginActivity extends AppCompatActivity implements
         Intent intent = new Intent( this, CashbackActivity.class );
         intent.putExtra(CashbackActivity.INTENT_EXTRA_USER_TOKEN, MerchantUser.getInstance().getUserToken());
         // clear Login activity from backstack
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     private void getUiResourceValues() {
@@ -624,7 +628,7 @@ public class LoginActivity extends AppCompatActivity implements
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
         AppCommonUtil.setUserType(DbConstants.USER_TYPE_MERCHANT);
-        if(AppConstants.IS_PROD_BUILD) {
+        if(AppConstants.BLOCK_SCREEN_CAPTURE) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
         mWorkFragment.setResumeOk(true);

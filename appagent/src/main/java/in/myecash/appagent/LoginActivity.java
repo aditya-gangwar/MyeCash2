@@ -27,8 +27,6 @@ import android.widget.TextView;
 import in.myecash.appagent.entities.AgentUser;
 import in.myecash.appagent.helper.MyRetainedFragment;
 import in.myecash.appbase.constants.AppConstants;
-import in.myecash.appbase.entities.MyBusinessCategories;
-import in.myecash.appbase.entities.MyCities;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.appbase.utilities.RootUtil;
@@ -496,7 +494,7 @@ public class LoginActivity extends AppCompatActivity implements
         if(AppCommonUtil.getProgressDialogMsg()!=null) {
             AppCommonUtil.showProgressDialog(this, AppCommonUtil.getProgressDialogMsg());
         }
-        if(AppConstants.IS_PROD_BUILD) {
+        if(AppConstants.BLOCK_SCREEN_CAPTURE) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
         AppCommonUtil.setUserType(DbConstants.USER_TYPE_CC);

@@ -1,7 +1,6 @@
 package in.myecash.merchantbase;
 
 import android.app.AlertDialog;
-import android.app.FragmentBreadCrumbs;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.OnSingleClickListener;
-import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.ValidationHelper;
 
@@ -65,7 +63,7 @@ public class PasswordPreference extends DialogPreference {
     protected void showDialog(Bundle bundle) {
         LogMy.d(TAG, "In showDialog");
         super.showDialog(bundle);
-        if(AppConstants.IS_PROD_BUILD) {
+        if(AppConstants.BLOCK_SCREEN_CAPTURE) {
             getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
         getDialog().setCanceledOnTouchOutside(false);
@@ -82,7 +80,7 @@ public class PasswordPreference extends DialogPreference {
                 if(errorCode!= ErrorCodes.NO_ERROR) {
                     inputCurrPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
                 }
-                errorCode = ValidationHelper.validatePassword(newPassword);
+                errorCode = ValidationHelper.validateNewPassword(newPassword);
                 if(errorCode!= ErrorCodes.NO_ERROR) {
                     inputNewPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
                 }

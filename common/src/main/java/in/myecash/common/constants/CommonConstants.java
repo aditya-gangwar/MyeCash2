@@ -12,19 +12,19 @@ public class CommonConstants {
     /*
      * Common Settings
      */
-    public static final boolean IS_PRODUCTION_RELEASE = false;
+    //public static final boolean IS_PRODUCTION_RELEASE = false;
 
     /*
      * Backend server settings
      */
-    public static final String APPLICATION_ID = "927292A7-D4D3-7742-FFED-86CED1441100";
-    public static final String ANDROID_SECRET_KEY = "14765681-0A7C-3F4E-FF29-41A948E33500";
-    public static final String VERSION = "v1";
+    //public static final String APPLICATION_ID = "927292A7-D4D3-7742-FFED-86CED1441100";
+    //public static final String ANDROID_SECRET_KEY = "14765681-0A7C-3F4E-FF29-41A948E33500";
+    //public static final String VERSION = "v1";
 
-    public static final String BACKENDLESS_HOST_IP = "35.154.80.2";
-    public static final String BACKENDLESS_HOST = "http://"+BACKENDLESS_HOST_IP+":8080/api";
-    public static String BACKEND_FILE_BASE_URL = BACKENDLESS_HOST+"/"+APPLICATION_ID+"/"+VERSION+"/files/";
-    public static final String BULK_API_URL  = BACKENDLESS_HOST+"/"+VERSION+"/data/bulk/";
+    //public static final String BACKENDLESS_HOST_IP = "35.154.80.2";
+    //public static final String BACKENDLESS_HOST = "http://"+BACKENDLESS_HOST_IP+":8080/api";
+    //public static final String BULK_API_URL  = BACKENDLESS_HOST+"/"+VERSION+"/data/bulk/";
+    //public static String BACKEND_FILE_BASE_URL = BACKENDLESS_HOST+"/"+APPLICATION_ID+"/"+VERSION+"/files/";
 
     /*
      * Due to some issue in backendless - the errorCode is not correctly transmitted to app
@@ -83,7 +83,7 @@ public class CommonConstants {
     public static final int PIN_LEN = 4;
     public static final int OTP_LEN = 5;
     public static final int PINCODE_LEN = 6;
-    public static final int CUSTOMER_CARD_BARCODE_SALT_LEN = 5;
+    public static final int PASSWORD_MIN_LEN = 6;
 
     public static final int MAX_DEVICES_PER_MERCHANT = 3;
     public static final int DB_QUERY_PAGE_SIZE = 100;

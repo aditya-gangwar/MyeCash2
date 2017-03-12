@@ -18,7 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import in.myecash.appbase.BaseActivity;
-import in.myecash.appbase.DatePickerDialog;
+import in.myecash.appbase.MyDatePickerDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.AppAlarms;
@@ -49,7 +49,7 @@ import java.util.TimeZone;
  */
 public class TxnReportsActivity extends BaseActivity implements
         MyRetainedFragment.RetainedFragmentIf,
-        DatePickerDialog.DatePickerIf, TxnSummaryFragment.TxnSummaryFragmentIf,
+        MyDatePickerDialog.MyDatePickerIf, TxnSummaryFragment.TxnSummaryFragmentIf,
         TxnListFragment.TxnListFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         TxnDetailsDialog.TxnDetailsDialogIf, TxnReportsHelper.TxnReportsHelperIf,
         TxnCancelDialog.TxnCancelDialogIf, TxnPinInputDialog.TxnPinInputDialogIf,
@@ -73,8 +73,8 @@ public class TxnReportsActivity extends BaseActivity implements
     FragmentManager mFragMgr;
     MyRetainedFragment mWorkFragment;
 
-    private Date mNow;
-    private Date mTodayEoD;
+    //private Date mNow;
+    //private Date mTodayEoD;
     private String mCustomerId;
 
     // Store and restore as part of instance state
@@ -106,11 +106,11 @@ public class TxnReportsActivity extends BaseActivity implements
         }
 
         // Init date members
-        mNow = new Date();
+        //mNow = new Date();
         // end of today
-        DateUtil now = new DateUtil(mNow, TimeZone.getDefault());
-        mTodayEoD = now.toEndOfDay().getTime();
-        LogMy.d( TAG, "mNow: "+String.valueOf(mNow.getTime()) +", mTodayEoD: "+ String.valueOf(mTodayEoD.getTime()) );
+        //DateUtil now = new DateUtil(new Date(), TimeZone.getDefault());
+        //mTodayEoD = now.toEndOfDay().getTime();
+        //LogMy.d( TAG, "Now: "+String.valueOf(now.getTime()) +", TodayEoD: "+ String.valueOf(mTodayEoD.getTime()) );
 
         // create helper instance
         if(savedInstanceState==null) {
@@ -159,14 +159,22 @@ public class TxnReportsActivity extends BaseActivity implements
                 DateUtil minFrom = new DateUtil(new Date(), TimeZone.getDefault());
                 minFrom.removeDays(MyGlobalSettings.getMchntTxnHistoryDays());
 
-                DialogFragment fromDialog = DatePickerDialog.newInstance(mFromDate, minFrom.getTime(), mNow);
+                Date now = new Date();
+                Date maxTo;
+                if(mToDate==null) {
+                    maxTo = now;
+                } else {
+                    maxTo = new Date(Math.min(mToDate.getTime(), now.getTime()));
+                }
+
+                DialogFragment fromDialog = MyDatePickerDialog.newInstance(mFromDate.getTime(), minFrom.getTime().getTime(), maxTo.getTime());
                 fromDialog.show(getFragmentManager(), DIALOG_DATE_FROM);
 
             } else if (vId == R.id.input_date_to) {
                 if (mFromDate == null) {
                     AppCommonUtil.toast(this, "Set From Date");
                 } else {
-                    DialogFragment toDialog = DatePickerDialog.newInstance(mToDate, mFromDate, mNow);
+                    DialogFragment toDialog = MyDatePickerDialog.newInstance(mToDate.getTime(), mFromDate.getTime(), System.currentTimeMillis());
                     toDialog.show(getFragmentManager(), DIALOG_DATE_TO);
                 }
             }
@@ -297,9 +305,12 @@ public class TxnReportsActivity extends BaseActivity implements
     private void initDateInputs(Bundle instanceState) {
         if(instanceState==null) {
             // mFromDate as 'start of today' i.e. todayMidnight
-            DateUtil now = new DateUtil(mNow, TimeZone.getDefault());
+            DateUtil now = new DateUtil(new Date(), TimeZone.getDefault());
             mFromDate = now.toMidnight().getTime();
-            mToDate = mTodayEoD;
+
+            //DateUtil now2 = new DateUtil(new Date(), TimeZone.getDefault());
+            //mToDate = now2.toEndOfDay().getTime();
+            mToDate = new Date();
         } else {
             mFromDate = (Date)instanceState.getSerializable("mFromDate");
             mToDate = (Date)instanceState.getSerializable("mToDate");

@@ -61,6 +61,7 @@ public class ErrorCodes {
     public static final int INVALID_LENGTH = 554;
     public static final int INVALID_VALUE = 555;
     public static final int NO_DATA_FOUND = 556;
+    public static final int INVALID_PASSWD_FORMAT = 557;
 
     // Any of sub backend operations failed
     public static final int SEND_SMS_FAILED = 560;
@@ -168,6 +169,7 @@ public class ErrorCodes {
         aMap.put(INVALID_LENGTH,"Invalid length");
         aMap.put(INVALID_VALUE,"Wrong input values");
         aMap.put(NO_DATA_FOUND,"No data found");
+        aMap.put(INVALID_PASSWD_FORMAT,"Password should contain atleast 6 characters, and also any number.");
 
         aMap.put(DUPLICATE_ENTRY,"Duplicate entry. Data already exists.");
         aMap.put(DEVICE_ALREADY_REGISTERED,"Device already added to other Merchant. \nOne device can be added to only one merchant account.");

@@ -195,7 +195,6 @@
                     android:layout_weight="60"
                     android:gravity="left|center_vertical"
                     android:text="* Cashback"
-                    android:textColor="@color/primary_text"
                     android:textStyle="italic"
                     android:id="@+id/label_cashback_add"/>
 
@@ -206,7 +205,6 @@
                     android:text="+ \u20B9 0"
                     android:gravity="right|center_vertical"
                     android:layout_weight="30"
-                    android:textColor="@color/primary_text"
                     android:textStyle="italic"/>
             </LinearLayout>
 

@@ -30,6 +30,7 @@ import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.SortTxnDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.ItemClickSupport;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
@@ -784,9 +785,9 @@ public class TxnListFragment extends BaseFragment {
 
         public TxnAdapter(List<Transaction> txns) {
             mTxns = txns;
-            mListener = new View.OnClickListener() {
+            mListener = new OnSingleClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onSingleClick(View v) {
                     if(!mCallback.getRetainedFragment().getResumeOk())
                         return;
 

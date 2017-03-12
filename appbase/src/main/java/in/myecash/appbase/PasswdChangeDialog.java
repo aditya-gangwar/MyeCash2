@@ -1,7 +1,6 @@
 package in.myecash.appbase;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -58,7 +57,7 @@ public class PasswdChangeDialog extends BaseDialog {
                 .setPositiveButton(R.string.ok, this)
                 .setNegativeButton(R.string.cancel, this)
                 .create();
-        if(AppConstants.IS_PROD_BUILD) {
+        if(AppConstants.BLOCK_SCREEN_CAPTURE) {
             alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
 
@@ -79,7 +78,7 @@ public class PasswdChangeDialog extends BaseDialog {
                         if(errorCode!= ErrorCodes.NO_ERROR) {
                             inputCurrPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
                         }
-                        errorCode = ValidationHelper.validatePassword(newPassword);
+                        errorCode = ValidationHelper.validateNewPassword(newPassword);
                         if(errorCode!= ErrorCodes.NO_ERROR) {
                             inputNewPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
                         }

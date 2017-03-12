@@ -299,8 +299,9 @@ public class MerchantUser
         int returnCode = ErrorCodes.NO_ERROR;
         try {
             isLoginValid();
+            LogMy.d(TAG,"Before changeMobileNum: "+mMerchant.getMobile_num());
             mMerchant = MerchantServices.getInstance().changeMobile(verifyparam, newMobile, otp);
-            LogMy.d(TAG,"changeMobileNum success");
+            LogMy.d(TAG,"changeMobileNum success: "+mMerchant.getMobile_num());
 
         } catch (BackendlessException e) {
             LogMy.e(TAG,"Merchant settings update failed: "+e.toString());

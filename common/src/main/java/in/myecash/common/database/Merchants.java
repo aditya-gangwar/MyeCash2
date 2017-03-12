@@ -7,7 +7,7 @@ import com.backendless.persistence.BackendlessDataQuery;
 
 import java.util.Date;
 
-public class Merchants
+public class  Merchants
 {
   private String name;
   private String objectId;

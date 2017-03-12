@@ -120,6 +120,17 @@ public final class ValidationHelper{
         }
     }
 
+    public static int validateNewPassword(String value) {
+        if (value==null || value.isEmpty()) {
+            return ErrorCodes.EMPTY_VALUE;
+        } else if( value.length() < CommonConstants.PASSWORD_MIN_LEN ||
+                !containsDigit(value)) {
+            return ErrorCodes.INVALID_PASSWD_FORMAT;
+        } else {
+            return ErrorCodes.NO_ERROR;
+        }
+    }
+
     public static int validateTicketNum(String value) {
         if (value==null || value.isEmpty()) {
             return ErrorCodes.EMPTY_VALUE;
@@ -238,6 +249,16 @@ public final class ValidationHelper{
         }
     }
 
+    public static boolean containsDigit(String s) {
+        if (s != null && !s.isEmpty()) {
+            for (char c : s.toCharArray()) {
+                if (Character.isDigit(c)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }
 

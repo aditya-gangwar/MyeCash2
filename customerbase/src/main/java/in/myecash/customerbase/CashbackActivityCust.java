@@ -598,9 +598,14 @@ public class CashbackActivityCust extends AppCompatActivity implements
             MobileChangeDialog dialog = new MobileChangeDialog();
             dialog.show(mFragMgr, DIALOG_CHANGE_MOBILE);
 
+        } else if(errorCode==ErrorCodes.WRONG_OTP) {
+            // show error but don't reset
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+
         } else {
             // reset in case of any error
-            //changeMobileParamsReset();
+            changeMobileParamsReset();
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }

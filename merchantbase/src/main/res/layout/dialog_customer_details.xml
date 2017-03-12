@@ -366,7 +366,7 @@
                 android:textStyle="normal"
                 android:textColor="@color/subheading"
                 android:paddingLeft="0dp"
-                android:layout_marginTop="@dimen/small_space"/>
+                android:layout_marginTop="@dimen/medium_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap">
@@ -460,7 +460,7 @@
                 android:textStyle="normal"
                 android:textColor="@color/subheading"
                 android:paddingLeft="0dp"
-                android:layout_marginTop="@dimen/small_space"/>
+                android:layout_marginTop="@dimen/medium_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap">

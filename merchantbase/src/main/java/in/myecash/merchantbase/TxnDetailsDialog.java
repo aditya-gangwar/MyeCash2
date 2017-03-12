@@ -321,7 +321,7 @@ public class TxnDetailsDialog extends BaseDialog {
     private View mLayoutCbBill;
     private TextView mInputCbBill;
 
-    private TextView mInputCustomerId;
+    private EditText mInputCustomerId;
     private TextView mInputMobileNum;
     private TextView mCardUsed;
     private TextView mPinUsed;
@@ -353,7 +353,7 @@ public class TxnDetailsDialog extends BaseDialog {
         mLayoutCbBill = v.findViewById(R.id.layout_cb_bill);
         mInputCbBill = (TextView) v.findViewById(R.id.input_cb_bill);
 
-        mInputCustomerId = (TextView) v.findViewById(R.id.input_customer_id);;
+        mInputCustomerId = (EditText) v.findViewById(R.id.input_customer_id);;
         mInputMobileNum = (TextView) v.findViewById(R.id.input_customer_mobile);
         mCardUsed = (TextView) v.findViewById(R.id.input_card_used);
         mPinUsed = (TextView) v.findViewById(R.id.input_pin_used);
