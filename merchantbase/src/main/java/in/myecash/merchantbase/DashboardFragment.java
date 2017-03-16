@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import in.myecash.appbase.BaseFragment;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.database.MerchantStats;
@@ -183,7 +184,9 @@ public class DashboardFragment extends BaseFragment {
         }
 
         mUpdated.setText(sdf.format(updateTime));
-        String txt = "Data is updated only once every "+ MyGlobalSettings.getMchntDashBNoRefreshMins()+" minutes.";
+        //String txt = "Data is updated only once every "+ MyGlobalSettings.getMchntDashBNoRefreshMins()+" minutes.";
+        int hours = CommonUtils.roundUpTo(MyGlobalSettings.getMchntDashBNoRefreshMins(), 60);
+        String txt = "Data is updated only once every "+hours+" hours.";
         mUpdatedDetail.setText(txt);
     }
 

@@ -19,6 +19,7 @@ import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.MyGlobalSettings;
+import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
 
 /**
@@ -52,6 +53,9 @@ public class CreateMchntOrderDialog extends BaseDialog {
 
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_mchnt_order, null);
         initUiResources(v);
+
+        String txt = "* Minimum Quatity is "+MyGlobalSettings.getCustCardMinQty()+" Cards";
+        mLabelMinQty.setText(txt);
 
         mInputItemName.setText(DbConstants.skuToItemName.get(DbConstants.SKU_CUSTOMER_CARDS));
         mInputUnitPrice.setText(AppCommonUtil.getAmtStr(MyGlobalSettings.getCustCardPrice()));
@@ -92,13 +96,30 @@ public class CreateMchntOrderDialog extends BaseDialog {
     }
 
     private boolean validate() {
-        int qty = Integer.valueOf(mInputQty.getText().toString());
-        if(qty==0) {
+        if(mInputQty.getText().toString().isEmpty()) {
             mInputQty.setError("Quantity is Zero");
             return false;
+        }
 
-        } else if(qty > MyGlobalSettings.getCustCardMaxQty()) {
-            String txt = "Max Allowed Quantity is "+MyGlobalSettings.getCustCardMaxQty();
+        int qty = 0;
+        try {
+            qty = Integer.valueOf(mInputQty.getText().toString());
+        } catch (NumberFormatException e) {
+            mInputQty.setError("Invalid Format");
+            return false;
+        }
+
+        if (qty == 0) {
+            mInputQty.setError("Quantity is Zero");
+            return false;
+        }
+        if (qty < MyGlobalSettings.getCustCardMinQty()) {
+            String txt = "Minimum Quantity is " + MyGlobalSettings.getCustCardMinQty();
+            AppCommonUtil.toast(getActivity(), txt);
+            return false;
+        }
+        if (qty > MyGlobalSettings.getCustCardMaxQty()) {
+            String txt = "Max Allowed Quantity is " + MyGlobalSettings.getCustCardMaxQty();
             AppCommonUtil.toast(getActivity(), txt);
             return false;
         }
@@ -136,12 +157,14 @@ public class CreateMchntOrderDialog extends BaseDialog {
     private EditText mInputQty;
     private EditText mInputUnitPrice;
     private EditText mInputTotalBill;
+    private EditText mLabelMinQty;
 
     private void initUiResources(View v) {
         mInputItemName = (EditText) v.findViewById(R.id.input_itemName);
         mInputQty = (EditText) v.findViewById(R.id.input_qty);
         mInputUnitPrice = (EditText) v.findViewById(R.id.input_price);
         mInputTotalBill = (EditText) v.findViewById(R.id.input_bill);
+        mLabelMinQty = (EditText) v.findViewById(R.id.label_min_qty);
     }
 
 
@@ -159,6 +182,8 @@ public class CreateMchntOrderDialog extends BaseDialog {
                     mInputTotalBill.setText(AppCommonUtil.getAmtStr(totalPrice));
                 } catch (NumberFormatException ne) {
                     AppCommonUtil.toast(getActivity(), "Invalid Quantity");
+                } catch (Exception e) {
+                    //ignore exception
                 }
             }
         }

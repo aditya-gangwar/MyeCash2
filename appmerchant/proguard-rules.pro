@@ -16,6 +16,8 @@
 #   public *;
 #}
 -keepattributes SourceFile,LineNumberTable
+-keep class android.support.v4.** { *; }
+-keep class in.myecash.merchantbase.LoginActivity { *; }
 # Backendless
 -dontwarn com.backendless.**
 -dontwarn weborb.**
@@ -28,7 +30,8 @@
 -keep public class com.github.mikephil.** {
      public protected *;
 }
-#-keep class com.github.mikephil.charting.** { *; }
+-keep class com.github.mikephil.charting.** { *; }
+-keep class io.realm.** { *; }
 # MPAndroidChart library
 # crashlytics
 -keepattributes *Annotation*

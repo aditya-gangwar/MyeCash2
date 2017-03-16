@@ -24,6 +24,15 @@
 -keep class weborb.** {*;}
 -keep class com.backendless.** {*;}
 # Backendless
+# MPAndroidChart library
+-dontwarn io.realm.**
+-dontwarn com.github.mikephil.**
+-keep public class com.github.mikephil.** {
+     public protected *;
+}
+-keep class com.github.mikephil.charting.** { *; }
+-keep class io.realm.** { *; }
+# MPAndroidChart library
 # crashlytics
 -keepattributes *Annotation*
 -keep public class * extends java.lang.Exception

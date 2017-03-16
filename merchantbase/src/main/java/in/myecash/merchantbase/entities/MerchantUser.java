@@ -375,7 +375,7 @@ public class MerchantUser
         }
         try {
             isLoginValid();
-            txn.getTransaction().setCpin(pin);
+            //txn.getTransaction().setCpin(pin);
 
             Transaction tx = txn.getTransaction();
             // settings values eventually set by backend to null/empty for now
@@ -385,7 +385,7 @@ public class MerchantUser
             tx.setCustomer_id("");
 
             String csvStr = CsvConverter.csvStrFromTxn(tx);
-            Transaction newTxn = MerchantServices.getInstance().commitTxn(csvStr);
+            Transaction newTxn = MerchantServices.getInstance().commitTxn(csvStr,pin);
             LogMy.d(TAG, "Txn commit success: " + newTxn.getTrans_id());
             txn.setCurrTransaction(newTxn);
             //txn.commit();

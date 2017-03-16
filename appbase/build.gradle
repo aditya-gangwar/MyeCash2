@@ -18,8 +18,8 @@ android {
             buildConfigField 'String', 'BACKENDLESS_APP_ID', '"927292A7-D4D3-7742-FFED-86CED1441100"'
             buildConfigField 'String', 'BACKENDLESS_SECRET_KEY', '"14765681-0A7C-3F4E-FF29-41A948E33500"'
             buildConfigField 'String', 'BACKENDLESS_VERSION', '"v1"'
-            buildConfigField 'String', 'BACKENDLESS_DOMAIN', '"35.154.80.2"'
-            buildConfigField 'String', 'BACKENDLESS_HOST', '"http://35.154.80.2:8080/api"'
+            buildConfigField 'String', 'BACKENDLESS_DOMAIN', '"tomyecash.in"'
+            buildConfigField 'String', 'BACKENDLESS_HOST', '"http://tomyecash.in:8080/api"'
             buildConfigField "boolean", "BLOCK_SCREEN_CAPTURE", "false"
             buildConfigField "boolean", "DEBUG_LOG", "true"
         }
@@ -30,8 +30,8 @@ android {
             buildConfigField 'String', 'BACKENDLESS_APP_ID', '"927292A7-D4D3-7742-FFED-86CED1441100"'
             buildConfigField 'String', 'BACKENDLESS_SECRET_KEY', '"14765681-0A7C-3F4E-FF29-41A948E33500"'
             buildConfigField 'String', 'BACKENDLESS_VERSION', '"v1"'
-            buildConfigField 'String', 'BACKENDLESS_DOMAIN', '"35.154.80.2"'
-            buildConfigField 'String', 'BACKENDLESS_HOST', '"http://35.154.80.2:8080/api"'
+            buildConfigField 'String', 'BACKENDLESS_DOMAIN', '"tomyecash.in"'
+            buildConfigField 'String', 'BACKENDLESS_HOST', '"http://tomyecash.in:8080/api"'
             buildConfigField "boolean", "BLOCK_SCREEN_CAPTURE", "true"
             buildConfigField "boolean", "DEBUG_LOG", "false"
         }

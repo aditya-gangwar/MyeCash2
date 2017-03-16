@@ -76,6 +76,28 @@
                 android:layout_weight="50"
                 android:gravity="left"/>
         </LinearLayout>
+        <LinearLayout
+            style="@style/LL_Horizontal_wrap">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_shopping_cart_white_24dp"
+                android:tint="@color/primary"
+                android:visibility="invisible"/>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:id="@+id/label_min_qty"
+                android:text="* Minimum Quatity is 10 Cards"
+                android:textStyle="italic"
+                android:textColor="@color/secondary_text"
+                android:layout_weight="50"
+                android:gravity="left|bottom"
+                android:layout_gravity="bottom"
+                android:paddingTop="0dp"/>
+        </LinearLayout>
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"

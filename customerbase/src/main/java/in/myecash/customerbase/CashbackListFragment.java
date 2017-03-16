@@ -26,6 +26,7 @@ import java.util.List;
 
 import in.myecash.appbase.BaseFragment;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
@@ -234,7 +235,9 @@ public class CashbackListFragment extends BaseFragment {
                         // 24 is treated as special case as 'once in a day'
                         msg = "Refresh is allowed once a day.";
                     } else {
-                        msg = "Refresh allowed once every "+String.valueOf(MyGlobalSettings.getCustNoRefreshMins())+" minutes";
+                        //msg = "Refresh allowed once every "+String.valueOf(MyGlobalSettings.getCustNoRefreshMins())+" minutes";
+                        int hours = CommonUtils.roundUpTo(MyGlobalSettings.getMchntDashBNoRefreshMins(), 60);
+                        msg = "Refresh allowed once every "+hours+" hours.";
                     }
 
                     msg = msg+"\n\n"+"* Last Updated: "+mSdfDateWithTime.format(mRetainedFragment.mCbsUpdateTime);

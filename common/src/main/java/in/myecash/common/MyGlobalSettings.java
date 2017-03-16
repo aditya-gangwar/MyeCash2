@@ -155,6 +155,9 @@ public class MyGlobalSettings
     public static Integer getCustCardPrice() {
         return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUST_CARD_PRICE);
     }
+    public static Integer getCustCardMinQty() {
+        return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUST_CARD_MIN_QTY);
+    }
     public static Integer getCustCardMaxQty() {
         return (Integer) getValue(GlobalSettingConstants.SETTINGS_CUST_CARD_MAX_QTY);
     }

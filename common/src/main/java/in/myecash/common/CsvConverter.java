@@ -50,7 +50,7 @@ public class CsvConverter {
 
     // Total size of above fields = 15*10 + 50;
     public static final int TXN_CSV_MAX_SIZE = 256;
-    private static final String TXN_CSV_DELIM = ",";
+    public static final String TXN_CSV_DELIM = ",";
 
     public static String csvStrFromTxn(Transaction txn) {
         String[] csvFields = new String[TXN_CSV_TOTAL_FIELDS];

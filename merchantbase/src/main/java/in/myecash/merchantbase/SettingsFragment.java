@@ -249,15 +249,23 @@ implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPref
             }
         } else if (key.equals(KEY_PP_MIN_AMT)) {
             newValue = (String)o;
-            int newVal = Integer.valueOf(newValue);
-            if(newVal> MyGlobalSettings.getCashAccLimit()) {
-                errDesc = "Value more than Cash Account Limit of "+
-                        AppCommonUtil.getValueAmtStr(MyGlobalSettings.getCashAccLimit().toString());
-                errorCode = ErrorCodes.INVALID_VALUE;
+            if(newValue==null || newValue.isEmpty()) {
+                errorCode = ErrorCodes.EMPTY_VALUE;
             } else {
-                mMerchantUser.setNewPpMinAmt(newVal);
-                mSettingsChanged = true;
-                setPpMinAmtSummary(newValue, false, null);
+                try {
+                    int newVal = Integer.valueOf(newValue);
+                    if (newVal > MyGlobalSettings.getCashAccLimit()) {
+                        errDesc = "Value more than Cash Account Limit of " +
+                                AppCommonUtil.getValueAmtStr(MyGlobalSettings.getCashAccLimit().toString());
+                        errorCode = ErrorCodes.INVALID_VALUE;
+                    } else {
+                        mMerchantUser.setNewPpMinAmt(newVal);
+                        mSettingsChanged = true;
+                        setPpMinAmtSummary(newValue, false, null);
+                    }
+                } catch (Exception e) {
+                    errorCode = ErrorCodes.INVALID_FORMAT;
+                }
             }
         } else if (key.equals(KEY_EMAIL)) {
             //newValue = sharedPreferences.getString(KEY_EMAIL, null);
