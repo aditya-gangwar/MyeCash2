@@ -2,6 +2,8 @@ package in.myecash.appbase.utilities;
 
 import com.backendless.exceptions.BackendlessException;
 import com.crashlytics.android.Crashlytics;
+
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.common.constants.DbConstants;
 
 import java.util.Map;
@@ -41,11 +43,15 @@ public class AppAlarms {
 
     // Exception logging methods
     public static void handleException(BackendlessException e) {
-        Crashlytics.logException(e);
+        if(AppConstants.USE_CRASHLYTICS) {
+            Crashlytics.logException(e);
+        }
     }
 
     public static void handleException(Exception e) {
-        Crashlytics.logException(e);
+        if(AppConstants.USE_CRASHLYTICS) {
+            Crashlytics.logException(e);
+        }
     }
 
     // Raise alarm method for each Alarm name/code
@@ -175,7 +181,9 @@ public class AppAlarms {
 
     private static void raiseAlarm(String alarmMsg) {
         LogMy.e("BaseApp","Raising Alarm: "+alarmMsg);
-        Crashlytics.logException(new Exception(alarmMsg));
+        if(AppConstants.USE_CRASHLYTICS) {
+            Crashlytics.logException(new Exception(alarmMsg));
+        }
     }
 
 }

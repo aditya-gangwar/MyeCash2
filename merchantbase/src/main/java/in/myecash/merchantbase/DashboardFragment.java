@@ -185,7 +185,7 @@ public class DashboardFragment extends BaseFragment {
 
         mUpdated.setText(sdf.format(updateTime));
         //String txt = "Data is updated only once every "+ MyGlobalSettings.getMchntDashBNoRefreshMins()+" minutes.";
-        int hours = CommonUtils.roundUpTo(MyGlobalSettings.getMchntDashBNoRefreshMins(), 60);
+        int hours = Math.round(MyGlobalSettings.getMchntDashBNoRefreshMins()/60);
         String txt = "Data is updated only once every "+hours+" hours.";
         mUpdatedDetail.setText(txt);
     }

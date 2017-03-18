@@ -9,8 +9,6 @@ package in.myecash.appbase.backendAPI;
   import com.backendless.Backendless;
 
   import in.myecash.appbase.constants.AppConstants;
-  import in.myecash.common.constants.CommonConstants;
-  import in.myecash.common.database.CustomerCards;
   import in.myecash.common.database.Customers;
   import in.myecash.common.database.MerchantOrders;
   import in.myecash.common.database.Merchants;
@@ -37,7 +35,7 @@ package in.myecash.appbase.backendAPI;
       {
           Backendless.setUrl( AppConstants.BACKENDLESS_HOST );
           // if you invoke this sample inside of android application, you should use overloaded "initApp" with "context" argument
-          Backendless.initApp( AppConstants.APPLICATION_ID, AppConstants.ANDROID_SECRET_KEY, CommonServices.APP_VERSION );
+          Backendless.initApp( AppConstants.BACKENDLESS_APP_ID, AppConstants.ANDROID_SECRET_KEY, CommonServices.APP_VERSION );
       }
 
       public void isSessionValid()

@@ -1,0 +1,61 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="in.myecash.customer"
+    android:versionCode="1"
+    android:versionName="17.0">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <supports-screens
+        android:smallScreens="false"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true"
+        android:anyDensity="true"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/customer_app_name"
+        android:supportsRtl="true"
+        android:theme="@style/MyTheme">
+        <activity
+            android:name=".SplashActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard|screenLayout"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="in.myecash.customerbase.LoginCustActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name="in.myecash.customerbase.CashbackActivityCust"
+            android:label="CashbackActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="in.myecash.customerbase.TxnReportsCustActivity"
+            android:label="Transactions"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name="in.myecash.appbase.SingleWebViewActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="ff31ec54d8344eb7441145b5161d18520f44eb48" />
+    </application>
+
+</manifest>

@@ -9,7 +9,6 @@ package in.myecash.customerbase.backendAPI;
   import com.backendless.Backendless;
 
   import in.myecash.appbase.constants.AppConstants;
-  import in.myecash.common.constants.CommonConstants;
 
 
   public class CustomerServicesNoLogin
@@ -33,7 +32,7 @@ package in.myecash.customerbase.backendAPI;
     {
         Backendless.setUrl( AppConstants.BACKENDLESS_HOST );
         // if you invoke this sample inside of android application, you should use overloaded "initApp" with "context" argument
-        Backendless.initApp( AppConstants.APPLICATION_ID, AppConstants.ANDROID_SECRET_KEY, CustomerServicesNoLogin.APP_VERSION );
+        Backendless.initApp( AppConstants.BACKENDLESS_APP_ID, AppConstants.ANDROID_SECRET_KEY, CustomerServicesNoLogin.APP_VERSION );
     }
 
     public void resetCustomerPassword(String mobileNum, String secret)

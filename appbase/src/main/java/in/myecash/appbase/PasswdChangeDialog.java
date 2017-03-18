@@ -77,16 +77,17 @@ public class PasswdChangeDialog extends BaseDialog {
                         int errorCode = ValidationHelper.validatePassword(currPasswd);
                         if(errorCode!= ErrorCodes.NO_ERROR) {
                             inputCurrPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
-                        }
-                        errorCode = ValidationHelper.validateNewPassword(newPassword);
-                        if(errorCode!= ErrorCodes.NO_ERROR) {
-                            inputNewPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
-                        }
-
-                        String newPassword2 = inputNewPasswd2.getText().toString();
-                        if(!newPassword.equals(newPassword2)) {
-                            inputNewPasswd2.setError("Does not match with new password above.");
-                            errorCode = ErrorCodes.GENERAL_ERROR;
+                        } else {
+                            errorCode = ValidationHelper.validateNewPassword(newPassword);
+                            if (errorCode != ErrorCodes.NO_ERROR) {
+                                inputNewPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
+                            } else {
+                                String newPassword2 = inputNewPasswd2.getText().toString();
+                                if (!newPassword.equals(newPassword2)) {
+                                    inputNewPasswd2.setError("Does not match with new password above.");
+                                    errorCode = ErrorCodes.GENERAL_ERROR;
+                                }
+                            }
                         }
 
                         if(errorCode==ErrorCodes.NO_ERROR) {

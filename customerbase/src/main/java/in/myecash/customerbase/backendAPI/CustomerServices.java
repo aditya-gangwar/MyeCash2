@@ -10,11 +10,8 @@ import com.backendless.Backendless;
 
 
 import in.myecash.appbase.constants.AppConstants;
-import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.CustomerOps;
-import in.myecash.common.database.Customers;
-import in.myecash.common.database.MerchantOps;
 import in.myecash.common.database.Transaction;
 
   public class CustomerServices
@@ -38,7 +35,7 @@ import in.myecash.common.database.Transaction;
     {
         Backendless.setUrl( AppConstants.BACKENDLESS_HOST );
         // if you invoke this sample inside of android application, you should use overloaded "initApp" with "context" argument
-        Backendless.initApp( AppConstants.APPLICATION_ID, AppConstants.ANDROID_SECRET_KEY, CustomerServices.APP_VERSION );
+        Backendless.initApp( AppConstants.BACKENDLESS_APP_ID, AppConstants.ANDROID_SECRET_KEY, CustomerServices.APP_VERSION );
     }
 
     public java.util.List<Cashback> getCashbacks(String custPrivateId, long updatedSince)

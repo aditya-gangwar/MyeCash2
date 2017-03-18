@@ -10,7 +10,6 @@ import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 
 import in.myecash.appbase.constants.AppConstants;
-import in.myecash.common.constants.CommonConstants;
 
 
   public class MerchantServicesNoLogin
@@ -34,7 +33,7 @@ import in.myecash.common.constants.CommonConstants;
     {
         Backendless.setUrl( AppConstants.BACKENDLESS_HOST );
         // if you invoke this sample inside of android application, you should use overloaded "initApp" with "context" argument
-        Backendless.initApp( AppConstants.APPLICATION_ID, AppConstants.ANDROID_SECRET_KEY, MerchantServicesNoLogin.APP_VERSION );
+        Backendless.initApp( AppConstants.BACKENDLESS_APP_ID, AppConstants.ANDROID_SECRET_KEY, MerchantServicesNoLogin.APP_VERSION );
     }
 
 

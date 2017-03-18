@@ -1,1 +1,1 @@
-include ':appbase', ':merchantbase', ':appmerchant', ':appagent', ':appcustomer', ':customerbase', ':common'
+include ':appbase', ':merchantbase', ':merchant', ':internal', ':customer', ':customerbase', ':common'

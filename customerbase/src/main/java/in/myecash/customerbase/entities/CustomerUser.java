@@ -3,23 +3,15 @@ package in.myecash.customerbase.entities;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.HeadersManager;
-import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessException;
-import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.local.UserIdStorageFactory;
-import com.backendless.persistence.local.UserTokenStorageFactory;
 import com.crashlytics.android.Crashlytics;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.appbase.constants.AppConstants;
-import in.myecash.appbase.utilities.AppAlarms;
-import in.myecash.appbase.utilities.DialogFragmentWrapper;
-import in.myecash.common.DateUtil;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
@@ -366,6 +358,8 @@ public class CustomerUser {
             Backendless.Data.mapTableToClass(str, Cashback.class);
         }
         // Set user id for crashlytics
-        Crashlytics.setUserIdentifier(mCustomer.getPrivate_id());
+        if(AppConstants.USE_CRASHLYTICS) {
+            Crashlytics.setUserIdentifier(mCustomer.getPrivate_id());
+        }
     }
 }

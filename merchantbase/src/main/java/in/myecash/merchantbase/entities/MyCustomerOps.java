@@ -1,6 +1,7 @@
 package in.myecash.merchantbase.entities;
 
 import com.crashlytics.android.Crashlytics;
+
 import in.myecash.appbase.constants.AppConstants;
 
 /**
@@ -40,7 +41,9 @@ public class MyCustomerOps {
 
     public void setMobile_num(String mobile_num) {
         this.mobile_num = mobile_num;
-        Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, mobile_num);
+        if(AppConstants.USE_CRASHLYTICS) {
+            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, mobile_num);
+        }
     }
 
     public String getQr_card() {
@@ -49,7 +52,9 @@ public class MyCustomerOps {
 
     public void setQr_card(String qr_card) {
         this.qr_card = qr_card;
-        Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, qr_card);
+        if(AppConstants.USE_CRASHLYTICS) {
+            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, qr_card);
+        }
     }
 
     public String getOp_code() {

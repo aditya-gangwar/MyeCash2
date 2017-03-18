@@ -3,12 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MyeCash2.iml" filepath="$PROJECT_DIR$/MyeCash2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/appagent/appagent.iml" filepath="$PROJECT_DIR$/appagent/appagent.iml" />
       <module fileurl="file://$PROJECT_DIR$/appbase/appbase.iml" filepath="$PROJECT_DIR$/appbase/appbase.iml" />
-      <module fileurl="file://$PROJECT_DIR$/appcustomer/appcustomer.iml" filepath="$PROJECT_DIR$/appcustomer/appcustomer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/appmerchant/appmerchant.iml" filepath="$PROJECT_DIR$/appmerchant/appmerchant.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/customer/customer.iml" filepath="$PROJECT_DIR$/customer/customer.iml" />
       <module fileurl="file://$PROJECT_DIR$/customerbase/customerbase.iml" filepath="$PROJECT_DIR$/customerbase/customerbase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/internal/internal.iml" filepath="$PROJECT_DIR$/internal/internal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/merchant/merchant.iml" filepath="$PROJECT_DIR$/merchant/merchant.iml" />
       <module fileurl="file://$PROJECT_DIR$/merchantbase/merchantbase.iml" filepath="$PROJECT_DIR$/merchantbase/merchantbase.iml" />
     </modules>
   </component>

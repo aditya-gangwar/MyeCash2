@@ -5,7 +5,6 @@ package in.myecash.merchantbase.entities;
  */
 
 import android.graphics.Bitmap;
-import android.os.SystemClock;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
@@ -13,7 +12,9 @@ import com.backendless.HeadersManager;
 import com.backendless.exceptions.BackendlessException;
 import com.backendless.files.BackendlessFile;
 import com.crashlytics.android.Crashlytics;
+
 import in.myecash.appbase.backendAPI.CommonServices;
+import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.common.CsvConverter;
 import in.myecash.common.MyGlobalSettings;
@@ -600,7 +601,9 @@ public class MerchantUser
         Backendless.Data.mapTableToClass(mMerchant.getTxn_table(), Transaction.class);
 
         // Set user id for crashlytics
-        Crashlytics.setUserIdentifier(mMerchant.getAuto_id());
+        if(AppConstants.USE_CRASHLYTICS) {
+            Crashlytics.setUserIdentifier(mMerchant.getAuto_id());
+        }
     }
 
 }

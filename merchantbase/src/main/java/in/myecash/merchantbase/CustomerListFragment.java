@@ -131,7 +131,7 @@ public class CustomerListFragment extends BaseFragment {
 
             // update time
             mUpdated.setText(mUpdatedTime);
-            int hours = CommonUtils.roundUpTo(MyGlobalSettings.getMchntDashBNoRefreshMins(), 60);
+            int hours = Math.round(MyGlobalSettings.getMchntDashBNoRefreshMins()/60);
             String txt = "Data is updated only once every "+hours+" hours.";
             mUpdatedDetail.setText(txt);
 

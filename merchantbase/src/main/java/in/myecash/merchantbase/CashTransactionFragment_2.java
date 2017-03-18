@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import in.myecash.appbase.BaseFragment;
+import in.myecash.appbase.*;
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyTransaction;
@@ -604,7 +604,9 @@ public class CashTransactionFragment_2 extends BaseFragment implements
                         if (ValidationHelper.validateCardId(qrCode) == ErrorCodes.NO_ERROR) {
                             mRetainedFragment.mCardPresented = true;
                             mRetainedFragment.mCustCardId = qrCode;
-                            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, qrCode);
+                            if(AppConstants.USE_CRASHLYTICS) {
+                                Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, qrCode);
+                            }
 
                             // calculate State and amounts again
                             updateAmtUiStates();

@@ -1,39 +1,48 @@
 apply plugin: 'com.android.library'
 
 android {
+    signingConfigs {
+        myecashCommon {
+            keyAlias 'myecashCommon'
+            keyPassword 'Store@123$'
+            storeFile file('D:/Projects/Android/MyeCash2/appSign/myecash_ks.jks')
+            storePassword 'Store@123'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
-
+    publishNonDefault true
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "17.0"
     }
     buildTypes {
         debug {
             minifyEnabled false
-            useProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'BACKENDLESS_APP_ID', '"927292A7-D4D3-7742-FFED-86CED1441100"'
             buildConfigField 'String', 'BACKENDLESS_SECRET_KEY', '"14765681-0A7C-3F4E-FF29-41A948E33500"'
             buildConfigField 'String', 'BACKENDLESS_VERSION', '"v1"'
-            buildConfigField 'String', 'BACKENDLESS_DOMAIN', '"tomyecash.in"'
-            buildConfigField 'String', 'BACKENDLESS_HOST', '"http://tomyecash.in:8080/api"'
-            buildConfigField "boolean", "BLOCK_SCREEN_CAPTURE", "false"
-            buildConfigField "boolean", "DEBUG_LOG", "true"
+            buildConfigField 'String', 'BACKENDLESS_DOMAIN', '"35.154.80.2"'
+            buildConfigField 'String', 'BACKENDLESS_HOST', '"http://35.154.80.2:8080/api"'
+            buildConfigField 'boolean', 'BLOCK_SCREEN_CAPTURE', 'false'
+            buildConfigField 'boolean', 'USE_CRASHLYTICS', 'false'
+            buildConfigField 'boolean', 'DEBUG_MODE', 'true'
         }
         release {
             minifyEnabled false
             useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'BACKENDLESS_APP_ID', '"927292A7-D4D3-7742-FFED-86CED1441100"'
-            buildConfigField 'String', 'BACKENDLESS_SECRET_KEY', '"14765681-0A7C-3F4E-FF29-41A948E33500"'
+            buildConfigField 'String', 'BACKENDLESS_APP_ID', '"1E402302-7020-DBCF-FFB3-7220CDC84900"'
+            buildConfigField 'String', 'BACKENDLESS_SECRET_KEY', '"A0BE2545-A627-BF31-FF63-9BB6445EC700"'
             buildConfigField 'String', 'BACKENDLESS_VERSION', '"v1"'
             buildConfigField 'String', 'BACKENDLESS_DOMAIN', '"tomyecash.in"'
-            buildConfigField 'String', 'BACKENDLESS_HOST', '"http://tomyecash.in:8080/api"'
-            buildConfigField "boolean", "BLOCK_SCREEN_CAPTURE", "true"
-            buildConfigField "boolean", "DEBUG_LOG", "false"
+            buildConfigField 'String', 'BACKENDLESS_HOST', '"https://tomyecash.in:8443/api"'
+            buildConfigField "boolean", 'BLOCK_SCREEN_CAPTURE', 'true'
+            buildConfigField "boolean", 'USE_CRASHLYTICS', 'true'
+            buildConfigField 'boolean', 'DEBUG_MODE', 'true'
+            signingConfig signingConfigs.myecashCommon
         }
     }
 }

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,14 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import in.myecash.appbase.BaseFragment;
+import in.myecash.appbase.*;
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.OnSingleClickListener;
@@ -655,7 +653,9 @@ public class CashTransactionFragment extends BaseFragment implements
                         LogMy.d(TAG, "Read customer QR code: " + qrCode);
                         if (ValidationHelper.validateCardId(qrCode) == ErrorCodes.NO_ERROR) {
                             mRetainedFragment.mCustCardId = qrCode;
-                            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, qrCode);
+                            if(AppConstants.USE_CRASHLYTICS) {
+                                Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, qrCode);
+                            }
                             mRetainedFragment.mCardPresented = true;
 
                             // calculate State and amounts again

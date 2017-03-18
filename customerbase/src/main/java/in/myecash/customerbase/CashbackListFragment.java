@@ -236,7 +236,7 @@ public class CashbackListFragment extends BaseFragment {
                         msg = "Refresh is allowed once a day.";
                     } else {
                         //msg = "Refresh allowed once every "+String.valueOf(MyGlobalSettings.getCustNoRefreshMins())+" minutes";
-                        int hours = CommonUtils.roundUpTo(MyGlobalSettings.getMchntDashBNoRefreshMins(), 60);
+                        int hours = Math.round(MyGlobalSettings.getMchntDashBNoRefreshMins()/60);
                         msg = "Refresh allowed once every "+hours+" hours.";
                     }
 

@@ -503,16 +503,15 @@ public class LoginActivity extends AppCompatActivity implements
             public void onClick( View widget )
             {
                 // read and set values
-                initOperationData();
+                //initOperationData();
                 // validate
-                int errorCode = ValidationHelper.validateMerchantId(mLoginId);
-                if(errorCode==ErrorCodes.NO_ERROR) {
-                    // TODO: show 'FAQ' only for non-login section
+                //int errorCode = ValidationHelper.validateMerchantId(mLoginId);
+                //if(errorCode==ErrorCodes.NO_ERROR) {
                     Support.setUserIdentifier(mLoginId);
                     Support.showFAQSection(LoginActivity.this,"1");
-                } else {
-                    mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
-                }
+                //} else {
+                    //mIdTextRes.setError(AppCommonUtil.getErrorDesc(errorCode));
+                //}
             }
         };
 

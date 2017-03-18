@@ -30,8 +30,7 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.helpshift.support.Support;
 
-import in.myecash.appbase.BaseActivity;
-import in.myecash.appbase.OtpPinInputDialog;
+import in.myecash.appbase.*;
 import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.constants.AppConstants;
 
@@ -1553,8 +1552,10 @@ public class CashbackActivity extends BaseActivity implements
             mWorkFragment.mCustRegFirstName = firstName;
             mWorkFragment.mCustRegLastName = lastName;
 
-            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, mobileNum);
-            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, cardId);
+            if(AppConstants.USE_CRASHLYTICS) {
+                Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, mobileNum);
+                Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, cardId);
+            }
         }
     }
 
@@ -1605,7 +1606,9 @@ public class CashbackActivity extends BaseActivity implements
                             .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                 } else {
                     mWorkFragment.mCustMobile = mobileNum;
-                    Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, mobileNum);
+                    if(AppConstants.USE_CRASHLYTICS) {
+                        Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, mobileNum);
+                    }
 
                     AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
                     mWorkFragment.fetchCashback(mobileNum);
@@ -1646,7 +1649,9 @@ public class CashbackActivity extends BaseActivity implements
                     LogMy.d(TAG, "Read customer QR code: " + qrCode);
                     if (ValidationHelper.validateCardId(qrCode) == ErrorCodes.NO_ERROR) {
                         mWorkFragment.mCustCardId = qrCode;
-                        Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, qrCode);
+                        if(AppConstants.USE_CRASHLYTICS) {
+                            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, qrCode);
+                        }
                         mWorkFragment.mCardPresented = true;
 
                         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);

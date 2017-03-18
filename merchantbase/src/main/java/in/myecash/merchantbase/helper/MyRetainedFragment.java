@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 
 import com.crashlytics.android.Crashlytics;
+
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.TxnReportsHelper;
@@ -138,8 +139,10 @@ public class MyRetainedFragment extends RetainedFragment {
         mCustRegFirstName = null;
         mCustRegLastName = null;
 
-        Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, "");
-        Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, "");
+        if(AppConstants.USE_CRASHLYTICS) {
+            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, "");
+            Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_CARD, "");
+        }
     }
 
     public void fetchMerchantsOps() {

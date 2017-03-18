@@ -75,16 +75,17 @@ public class PinChangeDialog extends BaseDialog {
                         int errorCode = ValidationHelper.validatePin(currPasswd);
                         if(errorCode!= ErrorCodes.NO_ERROR) {
                             inputCurrPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
-                        }
-                        errorCode = ValidationHelper.validatePin(newPassword);
-                        if(errorCode!= ErrorCodes.NO_ERROR) {
-                            inputNewPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
-                        }
-
-                        String newPassword2 = inputNewPasswd2.getText().toString();
-                        if(!newPassword.equals(newPassword2)) {
-                            inputNewPasswd2.setError("Does not match with new PIN value.");
-                            errorCode = ErrorCodes.GENERAL_ERROR;
+                        } else {
+                            errorCode = ValidationHelper.validatePin(newPassword);
+                            if (errorCode != ErrorCodes.NO_ERROR) {
+                                inputNewPasswd.setError(AppCommonUtil.getErrorDesc(errorCode));
+                            } else {
+                                String newPassword2 = inputNewPasswd2.getText().toString();
+                                if (!newPassword.equals(newPassword2)) {
+                                    inputNewPasswd2.setError("Does not match with new PIN value.");
+                                    errorCode = ErrorCodes.GENERAL_ERROR;
+                                }
+                            }
                         }
 
                         if(errorCode==ErrorCodes.NO_ERROR) {

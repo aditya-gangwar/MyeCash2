@@ -49,9 +49,12 @@ public class MyCities
                 Iterator<Cities> iterator = items.getCurrentPage().iterator();
                 while (iterator.hasNext()) {
                     Cities item = iterator.next();
-                    mObjectMap.put(item.getCity(), item);
-                    mCityValueSet.add(item.getCity());
+                    if(!item.getCity().equals(CommonConstants.DUMMY_CITY_NAME)) {
+                        mObjectMap.put(item.getCity(), item);
+                        mCityValueSet.add(item.getCity());
+                    }
                 }
+
                 if( items.getCurrentPage().size() > 0 )
                     items.nextPage( this );
             }
