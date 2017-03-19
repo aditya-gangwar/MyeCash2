@@ -32,6 +32,7 @@ android {
             useProguard false
         }
         release {
+            debuggable true
             minifyEnabled false
             useProguard false
             signingConfig signingConfigs.myecashCommon

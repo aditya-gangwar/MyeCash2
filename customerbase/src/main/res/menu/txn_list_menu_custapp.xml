@@ -7,20 +7,23 @@
         android:title="Sort"
         android:orderInCategory="1"
         android:icon="@drawable/ic_sort_white_24dp"
-        app:showAsAction="never" />
+        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/action_download"
         android:title="Download"
         android:orderInCategory="2"
         android:icon="@drawable/ic_file_download_white_24dp"
-        app:showAsAction="never" />
+        android:showAsAction="never"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_email"
         android:title="Email"
         android:orderInCategory="3"
         android:icon="@drawable/ic_send_white_24dp"
-        app:showAsAction="never" />
+        android:showAsAction="never"
+        app:showAsAction="never"/>
 
 </menu>

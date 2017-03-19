@@ -55,6 +55,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Leave Empty to get list of all your Customers."
+            android:textColor="@color/secondary_text"/>
+
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="* Note: This Data is updated only once every 4 hours."
             android:textColor="@color/accent2"/>
 
         <Space

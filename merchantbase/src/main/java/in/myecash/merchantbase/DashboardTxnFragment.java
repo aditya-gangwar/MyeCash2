@@ -189,13 +189,14 @@ public class DashboardTxnFragment extends BaseFragment {
                 mMerchantStats.getCust_cnt_cb_and_cash() +
                 mMerchantStats.getCust_cnt_no_balance();
 
-        float percent = 0;
+        Float percent = 0f;
         String percentStr = null;
 //        if(mMerchantStats.getCust_cnt_cb() > 0) {
             row_1_values[0].setText("Only Cashback");
             row_1_values[1].setText(String.valueOf(mMerchantStats.getCust_cnt_cb()));
-            percent = (mMerchantStats.getCust_cnt_cb()*100.0f)/total_cust_cnt;
-            percentStr = df.format(percent)+" %";
+        percent = (mMerchantStats.getCust_cnt_cb()*100.0f)/total_cust_cnt;
+            percentStr = (percent.isNaN() ? "0" : df.format(percent))+" %";
+            //percentStr = df.format(percent)+" %";
             row_1_values[2].setText(percentStr);
 /*
             rows_table[0].setVisibility(View.VISIBLE);
@@ -207,7 +208,7 @@ public class DashboardTxnFragment extends BaseFragment {
             row_2_values[0].setText("Only Account Balance");
             row_2_values[1].setText(String.valueOf(mMerchantStats.getCust_cnt_cash()));
             percent = (mMerchantStats.getCust_cnt_cash()*100.0f)/total_cust_cnt;
-            percentStr = df.format(percent)+" %";
+        percentStr = (percent.isNaN() ? "0" : df.format(percent))+" %";
             row_2_values[2].setText(percentStr);
 /*
             rows_table[1].setVisibility(View.VISIBLE);
@@ -219,7 +220,7 @@ public class DashboardTxnFragment extends BaseFragment {
             row_3_values[0].setText("Account + Cashback");
             row_3_values[1].setText(String.valueOf(mMerchantStats.getCust_cnt_cb_and_cash()));
             percent = (mMerchantStats.getCust_cnt_cb_and_cash()*100.0f)/total_cust_cnt;
-            percentStr = df.format(percent)+" %";
+        percentStr = (percent.isNaN() ? "0" : df.format(percent))+" %";
             row_3_values[2].setText(percentStr);
 /*
             rows_table[2].setVisibility(View.VISIBLE);

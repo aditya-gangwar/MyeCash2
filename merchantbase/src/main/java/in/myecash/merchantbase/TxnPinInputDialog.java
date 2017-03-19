@@ -1,15 +1,22 @@
 package in.myecash.merchantbase;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -26,7 +33,7 @@ import in.myecash.appbase.utilities.ValidationHelper;
 /**
  * Created by adgangwa on 30-04-2016.
  */
-public class TxnPinInputDialog extends BaseDialog
+public class TxnPinInputDialog extends DialogFragment
         implements View.OnClickListener {
 
     private static final String TAG = "MchntApp-TxnPinInputDialog";
@@ -74,7 +81,7 @@ public class TxnPinInputDialog extends BaseDialog
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View v = LayoutInflater.from(getActivity())
-                .inflate(R.layout.dialog_txn_pin_input, null);
+                .inflate(R.layout.dialog_txn_pin_input, null, false);
 
         bindUiResources(v);
         if(savedInstanceState!=null) {
@@ -145,6 +152,7 @@ public class TxnPinInputDialog extends BaseDialog
 
         Dialog dialog =  new AlertDialog.Builder(getActivity(), R.style.WrapEverythingDialog).setView(v).create();
         //dialog.setTitle("Enter PIN");
+        //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         if(AppConstants.BLOCK_SCREEN_CAPTURE) {
             dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
@@ -153,12 +161,13 @@ public class TxnPinInputDialog extends BaseDialog
             @Override
             public void onShow(DialogInterface dialog) {
                 AppCommonUtil.setDialogTextSize(TxnPinInputDialog.this, (AlertDialog) dialog);
+                //((AlertDialog)dialog).getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             }
         });
         return dialog;
     }
 
-    @Override
+    /*@Override
     public void handleBtnClick(DialogInterface dialog, int which) {
         switch (which) {
             case DialogInterface.BUTTON_POSITIVE:
@@ -175,8 +184,46 @@ public class TxnPinInputDialog extends BaseDialog
     @Override
     public boolean handleTouchUp(View v) {
         return false;
+    }*/
+
+    /*@Override
+    public void onStart() {
+        // This MUST be called first! Otherwise the view tweaking will not be present in the displayed Dialog (most likely overriden)
+        super.onStart();
+
+        //int height = getResources().getDimensionPixelSize(R.dimen.popup_height);
+        //getDialog().getWindow().setLayout(R.dimen.keyboard_full_width_dialog_less, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //forceWrapContent(getDialog().findViewById(R.id.label_title));
     }
 
+    protected void forceWrapContent(View v) {
+        // Start with the provided view
+        View current = v;
+
+        // Travel up the tree until fail, modifying the LayoutParams
+        do {
+            // Get the parent
+            ViewParent parent = current.getParent();
+
+            // Check if the parent exists
+            if (parent != null) {
+                // Get the view
+                try {
+                    current = (View) parent;
+                } catch (ClassCastException e) {
+                    // This will happen when at the top view, it cannot be cast to a View
+                    break;
+                }
+
+                // Modify the layout
+                current.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            }
+        } while (current.getParent() != null);
+
+        // Request a layout to be re-done
+        current.requestLayout();
+    }*/
 
     /*@Override
     public void onStart()
@@ -224,24 +271,7 @@ public class TxnPinInputDialog extends BaseDialog
                 mPin = mPin.substring(0,(mPin.length()-1));
             }
 
-        } /*else if (vId == R.id.input_kb_ok) {
-            LogMy.d(TAG,"Clicked OK");
-            //mInputSecretPin.setText("");
-            Boolean wantToCloseDialog = true;
-            //String pin = mInputSecretPin.getText().toString();
-
-            int errorCode = ValidationHelper.validatePin(mPin);
-            if (errorCode == ErrorCodes.NO_ERROR) {
-                mCallback.onTxnPin(mPin, getTag());
-            } else {
-                mInputSecretPin.setError(AppCommonUtil.getErrorDesc(errorCode));
-                wantToCloseDialog = false;
-            }
-
-            if (wantToCloseDialog)
-                getDialog().dismiss();
-
-        } */else if (vId == R.id.input_kb_0 || vId == R.id.input_kb_1 || vId == R.id.input_kb_2 || vId == R.id.input_kb_3 || vId == R.id.input_kb_4 || vId == R.id.input_kb_5 || vId == R.id.input_kb_6 || vId == R.id.input_kb_7 || vId == R.id.input_kb_8 || vId == R.id.input_kb_9) {
+        } else if (vId == R.id.input_kb_0 || vId == R.id.input_kb_1 || vId == R.id.input_kb_2 || vId == R.id.input_kb_3 || vId == R.id.input_kb_4 || vId == R.id.input_kb_5 || vId == R.id.input_kb_6 || vId == R.id.input_kb_7 || vId == R.id.input_kb_8 || vId == R.id.input_kb_9) {
             LogMy.d(TAG,"Clicked Num key");
             AppCompatButton key = (AppCompatButton) v;
             if(mPin.length() >= CommonConstants.PIN_LEN) {
@@ -322,6 +352,26 @@ public class TxnPinInputDialog extends BaseDialog
                     getDialog().dismiss();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        // Store access variables for window and blank point
+        int width = getResources().getDimensionPixelSize(R.dimen.keyboard_full_width_dialog_less);
+        //int height = getResources().getDimensionPixelSize(R.dimen.popup_height);
+        getDialog().getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        /*
+        Window window = getDialog().getWindow();
+        Point size = new Point();
+        // Store dimensions of the screen in `size`
+        Display display = window.getWindowManager().getDefaultDisplay();
+        display.getSize(size);
+        // Set the width of the dialog proportional to 75% of the screen width
+        window.setLayout((int) (size.x * 0.75), WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setGravity(Gravity.CENTER);*/
+
+        super.onResume();
     }
 
     @Override

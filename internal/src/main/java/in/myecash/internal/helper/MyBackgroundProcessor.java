@@ -308,7 +308,10 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
                 for (MyCardForAction oldCard : mRetainedFragment.mLastCardsForAction) {
                     if(oldCard.getScannedCode().equals(card.getScannedCode())) {
                         oldCard.setCardNum(card.getCardNum());
-                        if(mRetainedFragment.cardNumFetched) {
+                        //oldCard.setActionStatus(card.getActionStatus());
+                        if(card.getActionStatus()!=null &&
+                                (mRetainedFragment.cardNumFetched ||
+                                !card.getActionStatus().equals(MyCardForAction.ACTION_STATUS_OK)) ) {
                             oldCard.setActionStatus(card.getActionStatus());
                         }
                     }

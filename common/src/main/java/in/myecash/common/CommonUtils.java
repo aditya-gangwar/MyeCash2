@@ -1,6 +1,8 @@
 package in.myecash.common;
 
+import com.backendless.exceptions.BackendlessException;
 import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.MerchantStats;
 import in.myecash.common.database.Merchants;
 import in.myecash.common.database.Transaction;
@@ -97,6 +99,22 @@ public class CommonUtils {
             retValue = false;
         }
         return retValue;
+    }
+
+    public static int getCustomerIdType(String id) {
+        switch (id.length()) {
+            case CommonConstants.MOBILE_NUM_LENGTH:
+                return CommonConstants.ID_TYPE_MOBILE;
+            case CommonConstants.CUSTOMER_CARDID_LEN:
+                return CommonConstants.ID_TYPE_CARD;
+            case CommonConstants.CUSTOMER_INTERNAL_ID_LEN:
+                return CommonConstants.ID_TYPE_AUTO;
+            default:
+                if(id.startsWith(CommonConstants.MEMBER_CARD_ID_PREFIX)) {
+                    return CommonConstants.ID_TYPE_CARD;
+                }
+                throw new BackendlessException(String.valueOf(ErrorCodes.WRONG_INPUT_DATA), "Invalid customer ID: "+id);
+        }
     }
 
     public static int roundUpTo(int i, int v){

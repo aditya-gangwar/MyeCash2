@@ -16,6 +16,18 @@
 
         <TextView
             style="@style/Edittext_only_view_small_lessPad"
+            android:id="@+id/txn_time"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="08 Apr,16  20:15"
+            android:textStyle="bold"
+            android:textColor="@color/subheading"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            style="@style/Edittext_only_view_small_lessPad"
             android:id="@+id/txn_customer_id"
             android:layout_below="@id/txn_time"
             android:layout_height="wrap_content"
@@ -56,7 +68,8 @@
                 android:src="@drawable/ic_favorite_white_18dp"
                 android:paddingBottom="@dimen/edittext_padding_less"
                 android:paddingTop="@dimen/edittext_padding_less"
-                android:tint="@color/primary"/>
+                android:tint="@color/primary"
+                android:alpha="0.8"/>
 
             <TextView
                 style="@style/Edittext_only_view_small_lessPad"
@@ -89,7 +102,8 @@
                 android:src="@drawable/ic_account_balance_wallet_white_18dp"
                 android:paddingTop="0dp"
                 android:paddingBottom="@dimen/edittext_padding_less"
-                android:tint="@color/primary"/>
+                android:tint="@color/primary"
+                android:alpha="0.8"/>
             <TextView
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/txn_account_amt"
@@ -113,7 +127,8 @@
                 android:src="@drawable/ic_favorite_white_18dp"
                 android:paddingTop="0dp"
                 android:paddingBottom="@dimen/edittext_padding_less"
-                android:tint="@color/primary"/>
+                android:tint="@color/primary"
+                android:alpha="0.8"/>
             <TextView
                 style="@style/Edittext_only_view_small_lessPad"
                 android:id="@+id/txn_cashback_amt"
@@ -161,18 +176,6 @@
                 android:textColor="@color/red_negative"/>
 
         </LinearLayout-->
-
-        <TextView
-            style="@style/Edittext_only_view_small_lessPad"
-            android:id="@+id/txn_time"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="08 Apr,16  20:15"
-            android:textStyle="bold"
-            android:textColor="@color/subheading"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 

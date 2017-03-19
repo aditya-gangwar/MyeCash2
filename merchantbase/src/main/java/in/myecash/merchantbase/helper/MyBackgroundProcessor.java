@@ -5,13 +5,20 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 
+import com.backendless.Backendless;
+import com.backendless.BackendlessCollection;
 import com.backendless.exceptions.BackendlessException;
+import com.backendless.persistence.BackendlessDataQuery;
+import com.backendless.persistence.QueryOptions;
 
 import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.appbase.constants.AppConstants;
+import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Cashback;
+import in.myecash.common.database.CustomerCards;
+import in.myecash.common.database.Customers;
 import in.myecash.common.database.MerchantOrders;
 import in.myecash.common.database.MerchantStats;
 import in.myecash.appbase.utilities.AppCommonUtil;
@@ -466,6 +473,65 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         }
         return ErrorCodes.NO_ERROR;
     }
+
+    /*private int getCashback(String custId) {
+        mRetainedFragment.mCurrCashback = null;
+        mRetainedFragment.mCurrCustomer = null;
+
+        try {
+            // Fetch Customer object first
+            int customerIdType = CommonUtils.getCustomerIdType(custId);
+            Customers customer = getCustomer(custId, customerIdType, true);
+
+            mRetainedFragment.mCurrCashback = new MyCashback();
+            mRetainedFragment.mCurrCashback.init(cashback, true);
+            mRetainedFragment.mCurrCustomer = mRetainedFragment.mCurrCashback.getCustomer();
+
+        } catch (BackendlessException e) {
+            mRetainedFragment.mCurrCashback = null;
+            mRetainedFragment.mCurrCustomer = null;
+
+            LogMy.e(TAG, "Exception in getCashback: "+ e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    public static Customers getCustomer(String custId, int idType, boolean fetchCard) {
+        BackendlessDataQuery query = new BackendlessDataQuery();
+        switch(idType) {
+            case CommonConstants.ID_TYPE_MOBILE:
+                query.setWhereClause("mobile_num = '"+custId+"'");
+                break;
+            case CommonConstants.ID_TYPE_CARD:
+                query.setWhereClause("cardId = '"+custId+"'");
+                break;
+            case CommonConstants.ID_TYPE_AUTO:
+                query.setWhereClause("private_id = '"+custId+"'");
+                break;
+        }
+
+        if(fetchCard) {
+            QueryOptions queryOptions = new QueryOptions();
+            queryOptions.addRelated("membership_card");
+            query.setQueryOptions(queryOptions);
+        }
+
+        BackendlessCollection<Customers> user = Backendless.Data.of( Customers.class ).find(query);
+        if( user.getTotalObjects() == 0) {
+            // No customer found is not an error
+            //return null;
+            String errorMsg = "No Customer found: "+custId+". whereclause: "+query.getWhereClause();
+            throw new BackendlessException(String.valueOf(ErrorCodes.NO_SUCH_USER), errorMsg);
+        } else {
+            if(fetchCard && user.getData().get(0).getMembership_card()==null) {
+                String errorMsg = "No customer card set for user: "+custId;
+                throw new BackendlessException(String.valueOf(ErrorCodes.NO_SUCH_CARD), errorMsg);
+            }
+            return user.getData().get(0);
+        }
+    }*/
+
 
     private int commitCashTrans(String pin) {
         int errorCode =  MerchantUser.getInstance().commitTxn(mRetainedFragment.mCurrTransaction, pin);

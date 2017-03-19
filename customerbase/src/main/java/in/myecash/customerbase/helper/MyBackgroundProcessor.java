@@ -18,7 +18,9 @@ import java.util.List;
 import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyCashback;
+import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.FileFetchr;
+import in.myecash.common.MyCustomer;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.Transaction;
@@ -285,7 +287,24 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
 
         try {
             isSessionValid();
-            List<Transaction> txns = CustomerUser.getInstance().fetchTxns(query);
+
+            List<Transaction> txns= null;
+            String[] csvFields = CustomerUser.getInstance().getCustomer().getTxn_tables().split(CommonConstants.CSV_DELIMETER);
+
+            // fetch cashback records from each table
+            for(int i=0; i<csvFields.length; i++) {
+                // fetch txns for this customer in this table
+                List<Transaction> data = MyTransaction.fetch(query, csvFields[i]);
+                if (data != null) {
+                    if(txns==null) {
+                        txns= new ArrayList<>();
+                    }
+                    // add all fetched records from this table to final set
+                    txns.addAll(data);
+                }
+            }
+
+            /*List<Transaction> txns = CustomerUser.getInstance().fetchTxns(query);*/
             if(txns!=null && txns.size() > 0) {
                 mRetainedFragment.mLastFetchTransactions = txns;
             } else {

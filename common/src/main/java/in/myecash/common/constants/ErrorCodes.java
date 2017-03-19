@@ -250,4 +250,118 @@ public class ErrorCodes {
 
         backendToLocalErrorCode = Collections.unmodifiableMap(map);
     }
+
+
+    // *******************************************************************
+    // IT IS MANDATORY THAT ALL ERROR CODES ABOVE ARE ADDED TO BELOW MAP
+    // *******************************************************************
+    public static final Map<String, String> appErrorNames;
+    static {
+        Map<String, String> aMap = new HashMap<>(200);
+
+        aMap.put(String.valueOf(NO_ERROR), "NO_ERROR");
+        aMap.put(String.valueOf(OP_SCHEDULED),"OP_SCHEDULED");
+        aMap.put(String.valueOf(OTP_GENERATED),"OTP_GENERATED");
+
+        aMap.put(String.valueOf(GENERAL_ERROR),"GENERAL_ERROR");
+
+        aMap.put(String.valueOf(USER_ALREADY_LOGGED_IN),"USER_ALREADY_LOGGED_IN");
+        aMap.put(String.valueOf(NO_SUCH_USER),"NO_SUCH_USER");
+        aMap.put(String.valueOf(USER_ACC_DISABLED),"USER_ACC_DISABLED");
+        aMap.put(String.valueOf(USER_ACC_LOCKED),"USER_ACC_LOCKED");
+        aMap.put(String.valueOf(FIRST_LOGIN_PENDING),"FIRST_LOGIN_PENDING");
+        aMap.put(String.valueOf(NOT_LOGGED_IN),"NOT_LOGGED_IN");
+        aMap.put(String.valueOf(CUST_NOT_REG_WITH_MCNT),"CUST_NOT_REG_WITH_MCNT");
+        aMap.put(String.valueOf(ACC_UNDER_EXPIRY),"ACC_UNDER_EXPIRY");
+        aMap.put(String.valueOf(USER_WRONG_ID_PASSWD),"USER_WRONG_ID_PASSWD");
+        aMap.put(String.valueOf(FATAL_ERROR_ACC_DISABLED),"FATAL_ERROR_ACC_DISABLED");
+        aMap.put(String.valueOf(USER_ALREADY_REGISTERED),"USER_ALREADY_REGISTERED");
+        aMap.put(String.valueOf(LIMITED_ACCESS_CREDIT_TXN_ONLY),"LIMITED_ACCESS_CREDIT_TXN_ONLY");
+        aMap.put(String.valueOf(SESSION_TIMEOUT),"SESSION_TIMEOUT");
+
+        aMap.put(String.valueOf(SEND_SMS_FAILED),"SEND_SMS_FAILED");
+        aMap.put(String.valueOf(OTP_GENERATE_FAILED),"OTP_GENERATE_FAILED");
+
+        aMap.put(String.valueOf(WRONG_INPUT_DATA),"WRONG_INPUT_DATA");
+        aMap.put(String.valueOf(WRONG_OTP),"WRONG_OTP");
+        aMap.put(String.valueOf(WRONG_PIN),"WRONG_PIN");
+        aMap.put(String.valueOf(VERIFICATION_FAILED_CARDID),"VERIFICATION_FAILED_CARDID");
+        aMap.put(String.valueOf(VERIFICATION_FAILED_DOB),"VERIFICATION_FAILED_DOB");
+        aMap.put(String.valueOf(VERIFICATION_FAILED_MOBILE),"VERIFICATION_FAILED_MOBILE");
+        aMap.put(String.valueOf(VERIFICATION_FAILED_PASSWD),"VERIFICATION_FAILED_PASSWD");
+        aMap.put(String.valueOf(OPERATION_NOT_ALLOWED),"OPERATION_NOT_ALLOWED");
+        aMap.put(String.valueOf(NOT_TRUSTED_DEVICE),"NOT_TRUSTED_DEVICE");
+        aMap.put(String.valueOf(TEMP_PASSWD_EXPIRED),"TEMP_PASSWD_EXPIRED");
+        aMap.put(String.valueOf(WRONG_USER_TYPE),"WRONG_USER_TYPE");
+        aMap.put(String.valueOf(DEVICE_INSECURE),"DEVICE_INSECURE");
+        aMap.put(String.valueOf(LOGGED_IN_DEVICE_DELETE),"LOGGED_IN_DEVICE_DELETE");
+        aMap.put(String.valueOf(WRNG_PSWD_NOT_TRUSTED_DEV),"WRNG_PSWD_NOT_TRUSTED_DEV");
+
+        aMap.put(String.valueOf(NO_SUCH_CARD),"NO_SUCH_CARD");
+        aMap.put(String.valueOf(WRONG_CARD),"WRONG_CARD");
+        aMap.put(String.valueOf(CARD_ALREADY_IN_USE),"CARD_ALREADY_IN_USE");
+        aMap.put(String.valueOf(CARD_DISABLED),"CARD_DISABLED");
+        aMap.put(String.valueOf(CARD_NOT_REG_WITH_CUST),"CARD_NOT_REG_WITH_CUST");
+        aMap.put(String.valueOf(CARD_WRONG_OWNER_MCHNT),"CARD_WRONG_OWNER_MCHNT");
+
+        aMap.put(String.valueOf(FAILED_ATTEMPT_LIMIT_RCHD),"FAILED_ATTEMPT_LIMIT_RCHD");
+        aMap.put(String.valueOf(TRUSTED_DEVICE_LIMIT_RCHD),"TRUSTED_DEVICE_LIMIT_RCHD");
+        aMap.put(String.valueOf(CASH_ACCOUNT_LIMIT_RCHD),"CASH_ACCOUNT_LIMIT_RCHD");
+        aMap.put(String.valueOf(ACCOUNT_NOT_ENUF_BALANCE),"ACCOUNT_NOT_ENUF_BALANCE");
+        aMap.put(String.valueOf(CB_NOT_ENUF_BALANCE),"CB_NOT_ENUF_BALANCE");
+
+
+        aMap.put(String.valueOf(EMPTY_VALUE),"EMPTY_VALUE");
+        aMap.put(String.valueOf(INVALID_FORMAT),"INVALID_FORMAT");
+        aMap.put(String.valueOf(INVALID_FORMAT_COMMA),"INVALID_FORMAT_COMMA");
+        aMap.put(String.valueOf(INVALID_FORMAT_ZERO),"INVALID_FORMAT_ZERO");
+        aMap.put(String.valueOf(INVALID_LENGTH),"INVALID_LENGTH");
+        aMap.put(String.valueOf(INVALID_VALUE),"INVALID_VALUE");
+        aMap.put(String.valueOf(NO_DATA_FOUND),"NO_DATA_FOUND");
+        aMap.put(String.valueOf(INVALID_PASSWD_FORMAT),"INVALID_PASSWD_FORMAT");
+
+        aMap.put(String.valueOf(DUPLICATE_ENTRY),"DUPLICATE_ENTRY");
+        aMap.put(String.valueOf(DEVICE_ALREADY_REGISTERED),"DEVICE_ALREADY_REGISTERED");
+        aMap.put(String.valueOf(MERCHANT_ID_RANGE_ERROR),"MERCHANT_ID_RANGE_ERROR");
+        aMap.put(String.valueOf(NO_INTERNET_CONNECTION),"NO_INTERNET_CONNECTION");
+        aMap.put(String.valueOf(FILE_UPLOAD_FAILED),"FILE_UPLOAD_FAILED");
+        aMap.put(String.valueOf(FILE_NOT_FOUND),"FILE_NOT_FOUND");
+        aMap.put(String.valueOf(SERVICE_GLOBAL_DISABLED),"SERVICE_GLOBAL_DISABLED");
+        aMap.put(String.valueOf(REMOTE_SERVICE_NOT_AVAILABLE),"REMOTE_SERVICE_NOT_AVAILABLE");
+        aMap.put(String.valueOf(MOBILE_ALREADY_REGISTERED),"MOBILE_ALREADY_REGISTERED");
+        aMap.put(String.valueOf(UNDER_DAILY_DOWNTIME),"UNDER_DAILY_DOWNTIME");
+        aMap.put(String.valueOf(INTERNET_OK_SERVICE_NOK),"INTERNET_OK_SERVICE_NOK");
+        aMap.put(String.valueOf(MCHNT_ORDER_FREE_CARDS),"MCHNT_ORDER_FREE_CARDS");
+        aMap.put(String.valueOf(MCHNT_ORDER_ALLOT_CARDS),"MCHNT_ORDER_ALLOT_CARDS");
+
+        aMap.put(String.valueOf(MO_DEL_INVALID_STATUS),"MO_DEL_INVALID_STATUS");
+
+        aMap.put(BL_ERROR_LOGIN_DISABLED, BL_ERROR_LOGIN_DISABLED);
+        aMap.put(BL_ERROR_ALREADY_LOGGOED_IN, BL_ERROR_ALREADY_LOGGOED_IN);
+        aMap.put(BL_ERROR_MULTIPLE_LOGIN_LIMIT, BL_ERROR_MULTIPLE_LOGIN_LIMIT);
+        aMap.put(BL_ERROR_INVALID_ID_PASSWD, BL_ERROR_INVALID_ID_PASSWD);
+        aMap.put(BL_ERROR_EMPTY_ID_PASSWD, BL_ERROR_EMPTY_ID_PASSWD);
+        aMap.put(BL_ERROR_ACCOUNT_LOCKED, BL_ERROR_ACCOUNT_LOCKED);
+        aMap.put(BL_ERROR_DUPLICATE_ENTRY, BL_ERROR_DUPLICATE_ENTRY);
+        aMap.put(BL_ERROR_DUPLICATE_ENTRY_1, BL_ERROR_DUPLICATE_ENTRY_1);
+        aMap.put(BL_ERROR_DUPLICATE_ENTRY_2, BL_ERROR_DUPLICATE_ENTRY_2);
+        aMap.put(BL_ERROR_REGISTER_DUPLICATE, BL_ERROR_REGISTER_DUPLICATE);
+        aMap.put(BL_ERROR_NO_PERMISSIONS, BL_ERROR_NO_PERMISSIONS);
+        aMap.put(BL_ERROR_NO_PERMISSIONS_1, BL_ERROR_NO_PERMISSIONS_1);
+        aMap.put(BL_ERROR_NO_PERMISSIONS_2, BL_ERROR_NO_PERMISSIONS_2);
+        aMap.put(BL_ERROR_NO_PERMISSIONS_3, BL_ERROR_NO_PERMISSIONS_3);
+        aMap.put(BL_ERROR_NO_PERMISSIONS_4, BL_ERROR_NO_PERMISSIONS_4);
+        aMap.put(BL_ERROR_NO_PERMISSIONS_5, BL_ERROR_NO_PERMISSIONS_5);
+        aMap.put(BL_ERROR_NO_PERMISSIONS_6, BL_ERROR_NO_PERMISSIONS_6);
+        aMap.put(BL_ERROR_NO_DATA_FOUND, BL_ERROR_NO_DATA_FOUND);
+        aMap.put(BL_ERROR_NO_DATA_FOUND_1, BL_ERROR_NO_DATA_FOUND_1);
+        aMap.put(BL_ERROR_NO_DATA_FOUND_2, BL_ERROR_NO_DATA_FOUND_2);
+        aMap.put(BL_ERROR_NO_DATA_FOUND_3, BL_ERROR_NO_DATA_FOUND_3);
+        aMap.put(BL_ERROR_SESSION_TIMEOUT_URL, BL_ERROR_SESSION_TIMEOUT_URL);
+        aMap.put(BL_ERROR_SESSION_TIMEOUT, BL_ERROR_SESSION_TIMEOUT);
+
+        appErrorNames = Collections.unmodifiableMap(aMap);
+    }
+
+
 }

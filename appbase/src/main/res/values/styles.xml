@@ -55,6 +55,9 @@
     <style name="WrapEverythingDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="windowMinWidthMajor">0dp</item>
         <item name="windowMinWidthMinor">0dp</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:minWidth">0dp</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">

@@ -387,9 +387,9 @@ public class CardsActionListFrag extends BaseFragment {
 
             mStatus.setText(mCard.getActionStatus());
             if(!mCard.getActionStatus().equals(MyCardForAction.ACTION_STATUS_PENDING)) {
-                mRemove.setAlpha(0.5f);
-                mRemove.setEnabled(false);
                 if(mCard.getActionStatus().equals(MyCardForAction.ACTION_STATUS_OK)) {
+                    mRemove.setAlpha(0.5f);
+                    mRemove.setEnabled(false);
                     mStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
                 } else {
                     mStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));

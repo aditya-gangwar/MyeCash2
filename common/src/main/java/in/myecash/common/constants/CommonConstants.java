@@ -123,6 +123,11 @@ public class CommonConstants {
     public static final String MEMBER_BARCODE_ID_PREFIX = "a7";
     public static final String MCHNT_ORDER_ID_PREFIX = "MO";
 
+    // Customer id type to fetch record
+    public static final int ID_TYPE_MOBILE = 0;
+    public static final int ID_TYPE_CARD = 1;
+    public static final int ID_TYPE_AUTO = 2;
+
     /*
      * Other common constants
      */

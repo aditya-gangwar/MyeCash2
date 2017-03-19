@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/LL_Vertical_paddingSidesLarge"
+    style="@style/LL_Vertical"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/medium_space"
-        android:paddingBottom="@dimen/medium_space">
+        android:padding="@dimen/medium_space">
 
         <EditText
             style="@style/Edittext_only_click_small_lessPad"
@@ -50,7 +49,8 @@
                 android:src="@drawable/ic_favorite_white_18dp"
                 android:paddingTop="@dimen/edittext_padding_less"
                 android:paddingBottom="@dimen/edittext_padding_less"
-                android:tint="@color/primary"/>
+                android:tint="@color/primary"
+                android:alpha="0.8"/>
 
             <EditText
                 style="@style/Edittext_only_click_small_lessPad"
@@ -101,7 +101,8 @@
                     android:src="@drawable/ic_account_balance_wallet_white_18dp"
                     android:paddingTop="0dp"
                     android:paddingBottom="@dimen/edittext_padding_less"
-                    android:tint="@color/primary"/>
+                    android:tint="@color/primary"
+                    android:alpha="0.8"/>
                 <EditText
                     style="@style/Edittext_only_click_small_lessPad"
                     android:id="@+id/txn_account_amt"
@@ -125,7 +126,8 @@
                     android:src="@drawable/ic_favorite_white_18dp"
                     android:paddingTop="0dp"
                     android:paddingBottom="@dimen/edittext_padding_less"
-                    android:tint="@color/primary"/>
+                    android:tint="@color/primary"
+                    android:alpha="0.8"/>
                 <EditText
                     style="@style/Edittext_only_click_small_lessPad"
                     android:id="@+id/txn_cashback_amt"

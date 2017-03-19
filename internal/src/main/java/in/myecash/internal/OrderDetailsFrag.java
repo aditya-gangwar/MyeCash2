@@ -159,9 +159,10 @@ public class OrderDetailsFrag extends BaseFragment {
             mBtnAllocateCards.setAlpha(0.5f);
         }
 
-        if(status==DbConstants.MCHNT_ORDER_STATUS.InProcess ||
+        if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_CCNT &&
+                (status==DbConstants.MCHNT_ORDER_STATUS.InProcess ||
                 status==DbConstants.MCHNT_ORDER_STATUS.Shipped ||
-                status==DbConstants.MCHNT_ORDER_STATUS.PaymentVerifyPending) {
+                status==DbConstants.MCHNT_ORDER_STATUS.PaymentVerifyPending) ) {
             mChangeStatus.setOnClickListener(this);
         } else {
             mChangeStatus.setEnabled(false);
@@ -184,7 +185,7 @@ public class OrderDetailsFrag extends BaseFragment {
         if(AgentUser.getInstance().getUserType() == DbConstants.USER_TYPE_AGENT) {
             mBtnLayout2.setVisibility(View.GONE);
 
-            if(!mOrder.getIsFirstOrder() && mChangeStatus.isEnabled()) {
+            if(!mOrder.getIsFirstOrder() && mBtnAllocateCards.isEnabled()) {
                 mBtnAllocateCards.setEnabled(false);
                 mBtnAllocateCards.setOnClickListener(null);
                 mBtnAllocateCards.setAlpha(0.5f);

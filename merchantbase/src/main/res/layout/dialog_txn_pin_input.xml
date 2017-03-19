@@ -2,23 +2,22 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/LL_Vertical"
-    android:layout_width="@dimen/keyboard_full_width_dialog_less"
-    android:background="?android:attr/windowBackground">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center">
 
     <EditText
         style="@style/Dialog_title"
         android:id="@+id/label_title"
-        android:text="ENTER  PIN" />
+        android:text="ENTER  PIN"/>
 
     <LinearLayout
         style="@style/LL_Vertical"
         android:layout_height="wrap_content"
         android:background="@color/bg_customercare_data"
-        android:id="@+id/layout_amounts">
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/medium_space"/>
+        android:id="@+id/layout_amounts"
+        android:padding="@dimen/medium_space">
 
         <LinearLayout
             style="@style/LL_Horizontal_wrap"
@@ -35,8 +34,8 @@
                 android:layout_width="0dp"
                 android:text="ACCOUNT"
                 android:layout_weight="60"
-                android:gravity="left|bottom"
-                android:layout_gravity="bottom"/>
+                android:gravity="left|center_vertical"
+                android:layout_gravity="center"/>
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:id="@+id/input_cash_amount"
@@ -76,15 +75,7 @@
                 android:textStyle="bold"/>
         </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/small_space"/>
-
     </LinearLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/medium_space"/>
 
     <EditText
         style="@style/Edittext_only_view_medium"
@@ -93,11 +84,8 @@
         android:layout_height="wrap_content"
         android:textStyle="italic"
         android:text="Verify above amounts!"
-        android:textColor="@color/accent2"/>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/medium_space"/>
+        android:textColor="@color/accent2"
+        android:layout_marginTop="@dimen/medium_space"/>
 
     <EditText
         android:id="@+id/input_secret_pin"
@@ -107,11 +95,9 @@
         android:maxLength="@string/pin_char_limit"
         android:inputType="text"
         android:gravity="center"
-        android:hint="Enter PIN"/>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/small_space"/>
+        android:hint="Enter PIN"
+        android:layout_marginTop="@dimen/medium_space"
+        android:layout_marginBottom="@dimen/medium_space"/>
 
     <View
         style="@style/Divider_horizontal_Medium"/>
@@ -120,6 +106,8 @@
         style="@style/LL_Horizontal_wrap"
         android:layout_width="wrap_content">
 
+        <View
+            style="@style/Divider_vertical_Medium"/>
         <android.support.v7.widget.AppCompatButton
             style="@style/button_keyboard_dialog_small"
             android:id="@+id/input_kb_1"
@@ -136,6 +124,8 @@
             style="@style/button_keyboard_dialog_small"
             android:id="@+id/input_kb_3"
             android:text="3"/>
+        <View
+            style="@style/Divider_vertical_Medium"/>
 
     </LinearLayout>
 
@@ -146,6 +136,8 @@
         style="@style/LL_Horizontal_wrap"
         android:layout_width="wrap_content">
 
+        <View
+            style="@style/Divider_vertical_Medium"/>
         <android.support.v7.widget.AppCompatButton
             style="@style/button_keyboard_dialog_small"
             android:id="@+id/input_kb_4"
@@ -162,6 +154,8 @@
             style="@style/button_keyboard_dialog_small"
             android:id="@+id/input_kb_6"
             android:text="6"/>
+        <View
+            style="@style/Divider_vertical_Medium"/>
 
     </LinearLayout>
 
@@ -172,6 +166,8 @@
         style="@style/LL_Horizontal_wrap"
         android:layout_width="wrap_content">
 
+        <View
+            style="@style/Divider_vertical_Medium"/>
         <android.support.v7.widget.AppCompatButton
             style="@style/button_keyboard_dialog_small"
             android:id="@+id/input_kb_7"
@@ -188,6 +184,8 @@
             style="@style/button_keyboard_dialog_small"
             android:id="@+id/input_kb_9"
             android:text="9"/>
+        <View
+            style="@style/Divider_vertical_Medium"/>
 
     </LinearLayout>
 
@@ -198,6 +196,8 @@
         style="@style/LL_Horizontal_wrap"
         android:layout_width="wrap_content">
 
+        <View
+            style="@style/Divider_vertical_Medium"/>
         <android.support.v7.widget.AppCompatButton
             style="@style/button_keyboard_dialog_small"
             android:id="@+id/input_kb_ok"
@@ -219,6 +219,8 @@
             android:src="@drawable/ic_backspace_white_18dp"
             android:tint="@color/secondary_text"
             android:scaleType="center"/>
+        <View
+            style="@style/Divider_vertical_Medium"/>
 
     </LinearLayout>
 
