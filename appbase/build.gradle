@@ -41,7 +41,7 @@ android {
             buildConfigField 'String', 'BACKENDLESS_HOST', '"https://tomyecash.in:8443/api"'
             buildConfigField "boolean", 'BLOCK_SCREEN_CAPTURE', 'true'
             buildConfigField "boolean", 'USE_CRASHLYTICS', 'true'
-            buildConfigField 'boolean', 'DEBUG_MODE', 'true'
+            buildConfigField 'boolean', 'DEBUG_MODE', 'false'
             signingConfig signingConfigs.myecashCommon
         }
     }
