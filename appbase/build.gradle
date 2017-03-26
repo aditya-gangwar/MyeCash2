@@ -15,14 +15,14 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
-        versionName "17.0"
+        versionCode 2
+        versionName "17.1"
     }
     buildTypes {
         debug {
             minifyEnabled false
-            buildConfigField 'String', 'BACKENDLESS_APP_ID', '"927292A7-D4D3-7742-FFED-86CED1441100"'
-            buildConfigField 'String', 'BACKENDLESS_SECRET_KEY', '"14765681-0A7C-3F4E-FF29-41A948E33500"'
+            buildConfigField 'String', 'BACKENDLESS_APP_ID', '"1E402302-7020-DBCF-FFB3-7220CDC84900"'
+            buildConfigField 'String', 'BACKENDLESS_SECRET_KEY', '"F94810FF-10AA-C51B-FF36-63582E899E00"'
             buildConfigField 'String', 'BACKENDLESS_VERSION', '"v1"'
             buildConfigField 'String', 'BACKENDLESS_DOMAIN', '"35.154.80.2"'
             buildConfigField 'String', 'BACKENDLESS_HOST', '"http://35.154.80.2:8080/api"'

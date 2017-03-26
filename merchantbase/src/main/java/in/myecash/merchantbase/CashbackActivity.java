@@ -62,7 +62,7 @@ import java.util.Map;
 
 public class CashbackActivity extends BaseActivity implements
         MyRetainedFragment.RetainedFragmentIf, MobileNumberFragment.MobileFragmentIf,
-        BillingFragment.BillingFragmentIf, CashTransactionFragment_2.CashTransactionFragmentIf,
+        BillingFragment2.BillingFragment2If, CashTransactionFragment_2.CashTransactionFragmentIf,
         DialogFragmentWrapper.DialogFragmentWrapperIf, OrderListViewFragment.OrderListViewFragmentIf,
         CustomerRegDialog.CustomerRegFragmentIf, TxnSuccessDialog.TxnSuccessDialogIf,
         CustomerOpDialog.CustomerOpDialogIf, OtpPinInputDialog.OtpPinInputDialogIf,
@@ -71,7 +71,7 @@ public class CashbackActivity extends BaseActivity implements
         DashboardTxnFragment.DashboardFragmentIf, DashboardFragment.DashboardSummaryFragmentIf,
         CustomerDetailsDialog.CustomerDetailsDialogIf, CustomerDataDialog.CustomerDataDialogIf,
         CustomerListFragment.CustomerListFragmentIf, MerchantOpListFrag.MerchantOpListFragIf,
-        TxnConfirmFragment.TxnConfirmFragmentIf, SettingsFragment.SettingsFragmentIf,
+        TxnConfirmFragment.TxnConfirmFragmentIf, SettingsFragment2.SettingsFragment2If,
         MerchantOrderListFrag.MerchantOrderListFragIf, CreateMchntOrderDialog.CreateMchntOrderDialogIf {
 
     private static final String TAG = "MchntApp-CashbackActivity";
@@ -294,10 +294,10 @@ public class CashbackActivity extends BaseActivity implements
             else if (i == R.id.menu_settings) {
                 startSettingsFragment();
 
-            } else if (i == R.id.menu_trusted_devices) {
+            } /*else if (i == R.id.menu_trusted_devices) {
                 startTrustedDevicesFragment();
 
-            } else if (i == R.id.menu_reg_customer) {
+            } */else if (i == R.id.menu_reg_customer) {
                 askAndRegisterCustomer(false);
 
             } else if (i == R.id.menu_new_card) {
@@ -307,7 +307,7 @@ public class CashbackActivity extends BaseActivity implements
                 CustomerOpDialog.newInstance(DbConstants.OP_NEW_CARD, mWorkFragment.mCustomerOp)
                         .show(mFragMgr, DIALOG_CUSTOMER_OP_NEW_CARD);
 
-            } else if (i == R.id.menu_reset_pin) {
+            } /*else if (i == R.id.menu_reset_pin) {
                 if (mWorkFragment.mCustomerOp != null) {
                     mWorkFragment.mCustomerOp.setOp_code(DbConstants.OP_RESET_PIN);
                 }
@@ -315,7 +315,7 @@ public class CashbackActivity extends BaseActivity implements
                 CustomerOpDialog.newInstance(DbConstants.OP_RESET_PIN, mWorkFragment.mCustomerOp)
                         .show(mFragMgr, DIALOG_CUSTOMER_OP_RESET_PIN);
 
-            } else if (i == R.id.menu_faq) {
+            } */else if (i == R.id.menu_faq) {
                 Support.setUserIdentifier(mMerchantUser.getMerchantId());
                 Support.showFAQs(CashbackActivity.this);
             } else if(i == R.id.menu_orders) {
@@ -526,7 +526,13 @@ public class CashbackActivity extends BaseActivity implements
             }
         }
 
-        mTbSubhead1Text1.setText(AppCommonUtil.getAmtStr(mWorkFragment.mCurrCashback.getCurrClBalance()));
+        int curAccBal = mWorkFragment.mCurrCashback.getCurrClBalance();
+        if(curAccBal==0 && !mMerchant.getCl_add_enable()) {
+            mTbSubhead1Text1.setVisibility(View.GONE);
+        } else {
+            mTbSubhead1Text1.setVisibility(View.VISIBLE);
+            mTbSubhead1Text1.setText(AppCommonUtil.getAmtStr(mWorkFragment.mCurrCashback.getCurrClBalance()));
+        }
         //mTbSubhead1Divider.setVisibility(View.VISIBLE);
         //mTbSubhead1Text2.setVisibility(View.VISIBLE);
         mTbSubhead1Text2.setText(AppCommonUtil.getAmtStr(mWorkFragment.mCurrCashback.getCurrCbBalance()));
@@ -805,7 +811,7 @@ public class CashbackActivity extends BaseActivity implements
         startActivityForResult(intent, RC_TXN_REPORT);
     }
 
-    private SettingsFragment startSettingsFragment() {
+    private SettingsFragment2 startSettingsFragment() {
         //mTbCalculator.setVisibility(View.GONE);
 
         // Store DB settings to app preferences
@@ -813,7 +819,7 @@ public class CashbackActivity extends BaseActivity implements
             //setDrawerState(false);
             // Display the fragment as the main content.
             if (mFragMgr.findFragmentByTag(SETTINGS_FRAGMENT) == null) {
-                SettingsFragment frag = new SettingsFragment();
+                SettingsFragment2 frag = new SettingsFragment2();
                 mFragMgr.beginTransaction()
                         .replace(R.id.fragment_container_1, frag, SETTINGS_FRAGMENT)
                         .addToBackStack(SETTINGS_FRAGMENT)
@@ -832,18 +838,18 @@ public class CashbackActivity extends BaseActivity implements
         //MerchantSettings settings = mMerchant.getSettings();
         SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(this).edit();
 
-        prefs.putString(SettingsFragment.KEY_CB_RATE, mMerchant.getCb_rate());
-        prefs.putBoolean(SettingsFragment.KEY_ADD_CL_ENABLED, mMerchant.getCl_add_enable());
-        prefs.putString(SettingsFragment.KEY_PP_CB_RATE, mMerchant.getPrepaidCbRate());
-        prefs.putString(SettingsFragment.KEY_PP_MIN_AMT, String.valueOf(mMerchant.getPrepaidCbMinAmt()));
+        prefs.putString(SettingsFragment2.KEY_CB_RATE, mMerchant.getCb_rate());
+        prefs.putBoolean(SettingsFragment2.KEY_ADD_CL_ENABLED, mMerchant.getCl_add_enable());
+        prefs.putString(SettingsFragment2.KEY_PP_CB_RATE, mMerchant.getPrepaidCbRate());
+        prefs.putString(SettingsFragment2.KEY_PP_MIN_AMT, String.valueOf(mMerchant.getPrepaidCbMinAmt()));
 
-        prefs.putString(SettingsFragment.KEY_MOBILE_NUM, mMerchant.getMobile_num());
-        prefs.putString(SettingsFragment.KEY_EMAIL, mMerchant.getEmail());
-        prefs.putString(SettingsFragment.KEY_CONTACT_PHONE, mMerchant.getContactPhone());
+        prefs.putString(SettingsFragment2.KEY_MOBILE_NUM, mMerchant.getMobile_num());
+        prefs.putString(SettingsFragment2.KEY_EMAIL, mMerchant.getEmail());
+        prefs.putString(SettingsFragment2.KEY_CONTACT_PHONE, mMerchant.getContactPhone());
 
-        prefs.putBoolean(SettingsFragment.KEY_LINKED_INV, mMerchant.isInvoiceNumAsk());
-        prefs.putBoolean(SettingsFragment.KEY_LINKED_INV_MANDATORY, !mMerchant.isInvoiceNumOptional());
-        prefs.putBoolean(SettingsFragment.KEY_LINKED_INV_ONLY_NMBRS, mMerchant.isInvoiceNumOnlyNumbers());
+        prefs.putBoolean(SettingsFragment2.KEY_LINKED_INV, mMerchant.isInvoiceNumAsk());
+        prefs.putBoolean(SettingsFragment2.KEY_LINKED_INV_MANDATORY, !mMerchant.isInvoiceNumOptional());
+        prefs.putBoolean(SettingsFragment2.KEY_LINKED_INV_ONLY_NMBRS, mMerchant.isInvoiceNumOnlyNumbers());
 
         return prefs.commit();
     }
@@ -1121,7 +1127,7 @@ public class CashbackActivity extends BaseActivity implements
             // OTP sent successfully to new mobile, ask for the same
             // show the 'mobile change preference' again
             // create if fragment don't already exist
-            SettingsFragment settingsFrag = (SettingsFragment) mFragMgr.findFragmentByTag(SETTINGS_FRAGMENT);
+            SettingsFragment2 settingsFrag = (SettingsFragment2) mFragMgr.findFragmentByTag(SETTINGS_FRAGMENT);
             if (settingsFrag==null) {
                 settingsFrag = startSettingsFragment();
             }
@@ -1582,22 +1588,16 @@ public class CashbackActivity extends BaseActivity implements
         if(mobileNum==null) {
             LogMy.d(TAG,"In onMobileNumInput: null mobile number");
             // merchant decided to skip mobile number collection
-            mWorkFragment.mCustMobile = null;
-            startBillingFragment();
+            //mWorkFragment.mCustMobile = null;
+            //startBillingFragment();
+            startCardScan();
+
         } else {
             LogMy.d(TAG, "In onMobileNumInput: " + mobileNum);
 
             if(mobileNum.length() != CommonConstants.MOBILE_NUM_LENGTH) {
                 // scan qr card
-                // launch barcode activity.
-                Intent intent = new Intent(this, BarcodeCaptureActivity.class);
-                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
-                ///intent.putExtra(BarcodeCaptureActivity.UseFlash, SettingsFragment.useCameraFlash(this));
-                intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
-                mWorkFragment.mCardImageFilename = CommonConstants.PREFIX_TXN_IMG_FILE_NAME+Long.toString(System.currentTimeMillis())+"."+CommonConstants.PHOTO_FILE_FORMAT;
-                intent.putExtra(BarcodeCaptureActivity.ImageFileName,mWorkFragment.mCardImageFilename);
-
-                startActivityForResult(intent, RC_BARCODE_CAPTURE);
+                startCardScan();
             } else {
                 int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
                 if ( resultCode != ErrorCodes.NO_ERROR) {
@@ -1616,6 +1616,18 @@ public class CashbackActivity extends BaseActivity implements
                 }
             }
         }
+    }
+
+    private void startCardScan() {
+        // launch barcode activity.
+        Intent intent = new Intent(this, BarcodeCaptureActivity.class);
+        intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+        ///intent.putExtra(BarcodeCaptureActivity.UseFlash, SettingsFragment.useCameraFlash(this));
+        intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+        mWorkFragment.mCardImageFilename = CommonConstants.PREFIX_TXN_IMG_FILE_NAME+Long.toString(System.currentTimeMillis())+"."+CommonConstants.PHOTO_FILE_FORMAT;
+        intent.putExtra(BarcodeCaptureActivity.ImageFileName,mWorkFragment.mCardImageFilename);
+
+        startActivityForResult(intent, RC_BARCODE_CAPTURE);
     }
 
     @Override
@@ -1710,7 +1722,7 @@ public class CashbackActivity extends BaseActivity implements
             //goToMobileNumFrag();
             //setDrawerState(false);
             // Create new fragment and transaction
-            Fragment billFragment = new BillingFragment();
+            Fragment billFragment = new BillingFragment2();
             FragmentTransaction transaction = mFragMgr.beginTransaction();
 
             // Replace whatever is in the fragment_container view with this fragment,
@@ -1936,7 +1948,7 @@ public class CashbackActivity extends BaseActivity implements
             // persist settings changes when back button is pressed
             // if 'settings changed' case, then dont pop fragment now
             // fragment should be popped after receiving response for update of merchant
-            SettingsFragment settingsFrag = (SettingsFragment) mFragMgr.findFragmentByTag(SETTINGS_FRAGMENT);
+            SettingsFragment2 settingsFrag = (SettingsFragment2) mFragMgr.findFragmentByTag(SETTINGS_FRAGMENT);
             if (settingsFrag != null &&
                     settingsFrag.isVisible() &&
                     settingsFrag.isSettingsChanged()) {

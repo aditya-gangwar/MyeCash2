@@ -105,11 +105,11 @@ public class CustomerRegDialog extends BaseDialog {
             mLabelInfoOtp.setVisibility(View.GONE);
 
             mLabelInfoMobile.setVisibility(View.VISIBLE);
-            mLabelInfoName.setVisibility(View.VISIBLE);
+            //mLabelInfoName.setVisibility(View.VISIBLE);
 
         } else {
             mLabelInfoMobile.setVisibility(View.GONE);
-            mLabelInfoName.setVisibility(View.GONE);
+            //mLabelInfoName.setVisibility(View.GONE);
 
             mLabelInfoOtp.setVisibility(View.VISIBLE);
             mLayoutOtp.setVisibility(View.VISIBLE);
@@ -160,10 +160,10 @@ public class CustomerRegDialog extends BaseDialog {
             mInputFirstName.setEnabled(false);
             mLabelFirstName.setEnabled(false);
 
-            mInputLastName.setText(lastName);
-            AppCommonUtil.makeEditTextOnlyView(mInputLastName);
-            mLabelLastName.setEnabled(false);
-            mInputLastName.setEnabled(false);
+            //mInputLastName.setText(lastName);
+            //AppCommonUtil.makeEditTextOnlyView(mInputLastName);
+            //mLabelLastName.setEnabled(false);
+            //mInputLastName.setEnabled(false);
 
             mImageName.setAlpha(0.5f);
         }
@@ -250,7 +250,7 @@ public class CustomerRegDialog extends BaseDialog {
                                 scannedCardId,
                                 mInputOtp.getText().toString(),
                                 mInputFirstName.getText().toString(),
-                                mInputLastName.getText().toString());
+                                "");
                         wantToCloseDialog = true;
                     }
 
@@ -299,13 +299,13 @@ public class CustomerRegDialog extends BaseDialog {
             }
         }
 
-        if(mInputLastName.isEnabled()) {
+        /*if(mInputLastName.isEnabled()) {
             errorCode = ValidationHelper.validateCustName(mInputLastName.getText().toString());
             if (errorCode != ErrorCodes.NO_ERROR) {
                 mInputLastName.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
-        }
+        }*/
 
         return retValue;
     }
@@ -356,18 +356,18 @@ public class CustomerRegDialog extends BaseDialog {
     }*/
 
     private EditText mInputFirstName;
-    private EditText mInputLastName;
+    //private EditText mInputLastName;
     private EditText mInputMobileNum;
     private EditText mInputOtp;
     private EditText mInputQrCard;
 
     private EditText mLabelFirstName;
-    private EditText mLabelLastName;
+    //private EditText mLabelLastName;
     private EditText mLabelMobile;
     private EditText mLabelCard;
     private EditText mLabelInfoOtp;
     private EditText mLabelInfoMobile;
-    private EditText mLabelInfoName;
+    //private EditText mLabelInfoName;
 
     private View mImageMobile;
     private View mImageCard;
@@ -378,18 +378,18 @@ public class CustomerRegDialog extends BaseDialog {
     private void bindUiResources(View v) {
 
         mInputFirstName = (EditText) v.findViewById(R.id.input_firstName);
-        mInputLastName = (EditText) v.findViewById(R.id.input_lastName);
+        //mInputLastName = (EditText) v.findViewById(R.id.input_lastName);
         mInputMobileNum = (EditText) v.findViewById(R.id.input_customer_mobile);
         mInputQrCard = (EditText) v.findViewById(R.id.input_qr_card);
         mInputOtp = (EditText) v.findViewById(R.id.input_otp);
 
         mLabelFirstName = (EditText) v.findViewById(R.id.label_firstName);
-        mLabelLastName = (EditText) v.findViewById(R.id.label_lastName);
+        //mLabelLastName = (EditText) v.findViewById(R.id.label_lastName);
         mLabelMobile = (EditText) v.findViewById(R.id.label_mobile);
         mLabelCard = (EditText) v.findViewById(R.id.label_card);
         mLabelInfoOtp = (EditText) v.findViewById(R.id.label_info_otp);
         mLabelInfoMobile = (EditText) v.findViewById(R.id.label_info_mobile);
-        mLabelInfoName = (EditText) v.findViewById(R.id.label_info_name);
+        //mLabelInfoName = (EditText) v.findViewById(R.id.label_info_name);
 
         mImageMobile = v.findViewById(R.id.image_mobile);
         mImageCard = v.findViewById(R.id.image_card);

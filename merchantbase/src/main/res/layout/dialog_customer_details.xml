@@ -452,7 +452,11 @@
                     android:paddingTop="0dp"/>
             </LinearLayout>
 
-            <TextView
+        <LinearLayout
+            style="@style/LL_Vertical"
+            android:id="@+id/layout_acc_balance">
+
+        <TextView
                 style="@style/Edittext_only_view_small"
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
@@ -545,6 +549,7 @@
                     android:text="+ \u20B9 NA"
                     android:paddingTop="0dp"/>
             </LinearLayout>
+        </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

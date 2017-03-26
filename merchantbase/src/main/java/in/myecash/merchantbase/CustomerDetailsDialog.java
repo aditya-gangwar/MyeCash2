@@ -23,6 +23,7 @@ import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.common.MyCustomer;
+import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
 import java.text.SimpleDateFormat;
@@ -178,9 +179,14 @@ public class CustomerDetailsDialog extends BaseDialog {
             mInputTotalBill.setText(AppCommonUtil.getAmtStr(cb.getBillAmt()));
             //mInputCbBill.setText(AppCommonUtil.getAmtStr(cb.getCbBillAmt()));
 
-            mInputAccAvailable.setText(AppCommonUtil.getAmtStr(cb.getCurrClBalance()));
-            mInputAccTotalAdd.setText(AppCommonUtil.getAmtStr(cb.getClCredit()));
-            mInputAccTotalDebit.setText(AppCommonUtil.getAmtStr(cb.getClDebit()));
+            if(cb.getClCredit()==0 && cb.getClDebit()==0 && !MerchantUser.getInstance().getMerchant().getCl_add_enable()) {
+                mLayoutAccBalance.setVisibility(View.GONE);
+            } else {
+                mLayoutAccBalance.setVisibility(View.VISIBLE);
+                mInputAccAvailable.setText(AppCommonUtil.getAmtStr(cb.getCurrClBalance()));
+                mInputAccTotalAdd.setText(AppCommonUtil.getAmtStr(cb.getClCredit()));
+                mInputAccTotalDebit.setText(AppCommonUtil.getAmtStr(cb.getClDebit()));
+            }
 
             mInputCbAvailable.setText(AppCommonUtil.getAmtStr(cb.getCurrCbBalance()));
             mInputCbTotalAward.setText(AppCommonUtil.getAmtStr(cb.getCbCredit()));
@@ -244,6 +250,7 @@ public class CustomerDetailsDialog extends BaseDialog {
     private View mLayoutFirstLogin;
     //private View mLayoutRemarks;
     private View mLayoutCardStatusDate;
+    private View mLayoutAccBalance;
 
     private void bindUiResources(View v) {
 
@@ -284,6 +291,7 @@ public class CustomerDetailsDialog extends BaseDialog {
         //mLayoutFirstLogin = v.findViewById(R.id.layout_first_login);
         //mLayoutRemarks = v.findViewById(R.id.layout_status_remarks);
         mLayoutCardStatusDate = v.findViewById(R.id.layout_card_status_date);
+        mLayoutAccBalance = v.findViewById(R.id.layout_acc_balance);
 
     }
 }

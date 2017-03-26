@@ -566,13 +566,14 @@ public class CashTransactionFragment_2 extends BaseFragment implements
     }
 
     private boolean billAmtEditAllowed() {
+        return true;
         // To avoid inconsistancy, editing allowed only if:
         // 0) No item added
         // 1) single item in order &
         //  1a) that item has single quantity and
         //  1b) it is not cashback excluded case
         // basically, only when merchant have probably entered final order cost only
-        if(mRetainedFragment.mOrderItems == null ||
+        /*if(mRetainedFragment.mOrderItems == null ||
                 mRetainedFragment.mOrderItems.size() == 0) {
             return true;
         } else {
@@ -583,7 +584,7 @@ public class CashTransactionFragment_2 extends BaseFragment implements
             } else {
                 return false;
             }
-        }
+        }*/
     }
 
     @Override
@@ -629,7 +630,7 @@ public class CashTransactionFragment_2 extends BaseFragment implements
                     String newBillAmt = (String) data.getSerializableExtra(NumberInputDialog.EXTRA_INPUT_HUMBER);
                     mRetainedFragment.mBillTotal = Integer.parseInt(newBillAmt);
                     displayInputBillAmt();
-                    if(mRetainedFragment.mOrderItems==null ||
+                    /*if(mRetainedFragment.mOrderItems==null ||
                             mRetainedFragment.mOrderItems.size()==0) {
                         if(mRetainedFragment.mOrderItems==null) {
                             mRetainedFragment.mOrderItems = new ArrayList<>();
@@ -644,7 +645,7 @@ public class CashTransactionFragment_2 extends BaseFragment implements
                         if (item.isCashbackExcluded()) {
                             mRetainedFragment.mCbExcludedTotal = Integer.parseInt(newBillAmt);
                         }
-                    }
+                    }*/
 
                     // except 'Add Cl', status of all others is impacted by 'Bill Amount'
                     // i.e. when Bill amount was 0 earlier, but not now
@@ -1065,11 +1066,16 @@ public class CashTransactionFragment_2 extends BaseFragment implements
     }
 
     private void showAccountStatus() {
-        if(mAddClStatus!=STATUS_AUTO && mDebitClStatus!=STATUS_AUTO) {
+        if(mAddClStatus==STATUS_DISABLED && mDebitClStatus==STATUS_NO_BALANCE) {
+            // Account facility is not available in FREE account - so it should come here in that case
+            mLayoutAccount.setVisibility(View.GONE);
+
+        } else if(mAddClStatus!=STATUS_AUTO && mDebitClStatus!=STATUS_AUTO) {
             mLayoutAccount.setAlpha(0.4f);
             mImgAccount.setColorFilter(ContextCompat.getColor(getActivity(), R.color.disabled), PorterDuff.Mode.SRC_IN);
             //mLabelAccount.setEnabled(false);
             //mInputAccount.setEnabled(false);
+
         } else {
             mLayoutAccount.setAlpha(1.0f);
             mImgAccount.setColorFilter(ContextCompat.getColor(getActivity(), R.color.primary), PorterDuff.Mode.SRC_IN);

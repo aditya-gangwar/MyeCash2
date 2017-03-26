@@ -95,7 +95,7 @@ public class GlobalSettingConstants {
         // which effectively means - PIN will never be required for credit
         aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN,"4000");
         aMap.put(SETTINGS_CL_DEBIT_LIMIT_FOR_PIN,"10");
-        aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN,"50");
+        aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN,"1000");
         aMap.put(SETTINGS_CB_REDEEM_LIMIT,"200");
         aMap.put(SETTINGS_CUSTOMER_CASH_LIMIT,"4000");
 

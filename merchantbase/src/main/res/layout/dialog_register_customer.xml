@@ -62,7 +62,7 @@
                     android:id="@+id/label_firstName"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="First Name"
+                    android:text="Name"
                     android:layout_weight="37"
                     android:gravity="left"/>
                 <EditText
@@ -75,7 +75,7 @@
                     android:layout_weight="63"
                     android:gravity="left"/>
             </LinearLayout>
-            <LinearLayout
+            <!--LinearLayout
                 style="@style/LL_Horizontal_wrap">
 
                 <ImageView
@@ -100,8 +100,8 @@
                     android:maxLength="@string/customer_name_char_limit"
                     android:layout_weight="63"
                     android:gravity="left"/>
-            </LinearLayout>
-            <EditText
+            </LinearLayout-->
+            <!--EditText
                 style="@style/Edittext_only_view_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -109,11 +109,11 @@
                 android:gravity="left"
                 android:textStyle="italic"
                 android:textColor="@color/secondary_text"
-                android:text="Use Correct Name. ID proof copy may be requested to restore access, in scenarios like Mobile lost etc. "/>
+                android:text="Use Correct Name. ID proof copy may be requested to restore access, in scenarios like Mobile lost etc. "/-->
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/XL_space"/>
+                android:layout_height="@dimen/XXL_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap">
@@ -156,7 +156,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/XL_space"/>
+                android:layout_height="@dimen/XXL_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap">
@@ -191,11 +191,12 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/XL_space"/>
+                android:layout_height="@dimen/XXL_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:id="@+id/layout_otp">
+                android:id="@+id/layout_otp"
+                android:layout_marginBottom="@dimen/XXXXL_space">
 
                 <ImageView
                     android:layout_width="wrap_content"

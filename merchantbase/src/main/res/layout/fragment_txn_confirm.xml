@@ -247,7 +247,8 @@
 
             <View
                 style="@style/Divider_horizontal_Large"
-                android:layout_marginBottom="@dimen/small_space"/>
+                android:layout_marginBottom="@dimen/small_space"
+                android:layout_marginTop="@dimen/medium_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
@@ -351,7 +352,7 @@
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
                 android:id="@+id/layout_invoice_num"
-                android:paddingBottom="@dimen/XL_space">
+                android:paddingBottom="@dimen/XXXXL_space">
 
                 <EditText
                     style="@style/Edittext_only_view_medium"

@@ -79,6 +79,7 @@
     <dimen name="text_size_XXL">36sp</dimen>
     <dimen name="text_size_XXXL">40sp</dimen>
     <dimen name="text_size_XXXXL">50sp</dimen>
+    <dimen name="text_size_biggest">60sp</dimen>
 
     <dimen name="XS_space">4dp</dimen>
     <dimen name="small_space">7dp</dimen>

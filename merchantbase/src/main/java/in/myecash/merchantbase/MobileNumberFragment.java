@@ -53,7 +53,7 @@ public class MobileNumberFragment extends BaseFragment {
 
         try {
             mCallback = (MobileFragmentIf) getActivity();
-            setHasOptionsMenu(true);
+            //setHasOptionsMenu(true);
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
                     + " must implement MobileFragmentIf");
@@ -202,7 +202,7 @@ public class MobileNumberFragment extends BaseFragment {
         });*/
     }
 
-    @Override
+    /*@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.mobile_frag_menu, menu);
 
@@ -225,7 +225,7 @@ public class MobileNumberFragment extends BaseFragment {
                     .show(getFragmentManager(), DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 
     @Override

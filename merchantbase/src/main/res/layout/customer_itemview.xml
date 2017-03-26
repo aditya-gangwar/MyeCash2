@@ -18,8 +18,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/small_space"
-        android:paddingRight="@dimen/small_space"
+        android:padding="@dimen/small_space"
         android:id="@+id/layout_card">
 
         <TextView

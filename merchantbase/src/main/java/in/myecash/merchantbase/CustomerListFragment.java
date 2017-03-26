@@ -498,7 +498,7 @@ public class CustomerListFragment extends BaseFragment {
         //public View mLayoutBill;
         public TextView mBillAmt;
 
-        //public View mLayoutAcc;
+        public View mLayoutAcc;
         public TextView mAccAdd;
         public TextView mAccDebit;
         public TextView mAccBalance;
@@ -519,7 +519,7 @@ public class CustomerListFragment extends BaseFragment {
             //mLayoutBill = itemView.findViewById(R.id.layout_bill);
             mBillAmt = (TextView) itemView.findViewById(R.id.cust_bill_amt);
 
-            //mLayoutAcc = itemView.findViewById(R.id.layout_account);
+            mLayoutAcc = itemView.findViewById(R.id.layout_account);
             mAccAdd = (TextView) itemView.findViewById(R.id.cust_acc_credit);
             mAccDebit = (TextView) itemView.findViewById(R.id.cust_acc_debit);
             mAccBalance = (TextView) itemView.findViewById(R.id.cust_acc_balance);
@@ -593,9 +593,14 @@ public class CustomerListFragment extends BaseFragment {
             mLastTxnTime.setText(mSdfDateWithTime.format(cb.getLastTxnTime()));
             mBillAmt.setText(AppCommonUtil.getAmtStr(cb.getBillAmt()));
 
-            mAccAdd.setText(AppCommonUtil.getAmtStr(cb.getClCredit()));
-            mAccDebit.setText(AppCommonUtil.getAmtStr(cb.getClDebit()));
-            mAccBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrClBalance()));
+            if(cb.getClCredit()==0 && cb.getClDebit()==0) {
+                mLayoutAcc.setVisibility(View.GONE);
+            } else {
+                mLayoutAcc.setVisibility(View.VISIBLE);
+                mAccAdd.setText(AppCommonUtil.getAmtStr(cb.getClCredit()));
+                mAccDebit.setText(AppCommonUtil.getAmtStr(cb.getClDebit()));
+                mAccBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrClBalance()));
+            }
 
             mCbAdd.setText(AppCommonUtil.getAmtStr(cb.getCbCredit()));
             mCbDebit.setText(AppCommonUtil.getAmtStr(cb.getCbRedeem()));

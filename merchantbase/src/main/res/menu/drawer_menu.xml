@@ -9,10 +9,10 @@
             android:id="@+id/menu_settings"
             android:title="Settings"
             android:icon="@drawable/ic_settings_black_24dp" />
-        <item
+        <!--item
             android:id="@+id/menu_trusted_devices"
             android:title="Trusted Devices"
-            android:icon="@drawable/ic_screen_lock_portrait_black_24dp" />
+            android:icon="@drawable/ic_screen_lock_portrait_black_24dp" /-->
         <!--item
             android:id="@+id/menu_logout"
             android:title="Log out"
@@ -82,10 +82,10 @@
                 android:id="@+id/menu_change_mobile"
                 android:title="Change Mobile"
                 android:icon="@drawable/ic_contact_phone_black_24dp" /-->
-            <item
+            <!--item
                 android:id="@+id/menu_reset_pin"
                 android:title="Reset PIN"
-                android:icon="@drawable/ic_lock_black_24dp" />
+                android:icon="@drawable/ic_lock_black_24dp" /-->
             </group>
         </menu>
     </item>

@@ -129,9 +129,9 @@ public class MerchantUser
                     + AppCommonUtil.getDeviceModel()+","
                     + AppCommonUtil.getAndroidVersion();
 
-            LogMy.d(TAG, "Calling setDeviceForLogin: "+userId+", "+deviceInfo);
-            MerchantServicesNoLogin.getInstance().setDeviceForLogin(userId, deviceInfo, otp);
-            LogMy.d(TAG,"setDeviceForLogin success");
+            LogMy.d(TAG, "Not Calling setDeviceForLogin: "+userId+", "+deviceInfo);
+            //MerchantServicesNoLogin.getInstance().setDeviceForLogin(userId, deviceInfo, otp);
+            //LogMy.d(TAG,"setDeviceForLogin success");
 
             //mInstance.mBackendlessUser = Backendless.UserService.login(userId, password, false);
             BackendlessUser user = Backendless.UserService.login(userId, password, false);

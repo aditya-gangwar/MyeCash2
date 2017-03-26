@@ -91,7 +91,9 @@ public class MyRetainedFragment extends RetainedFragment {
     public List<MerchantOrders> mLastFetchMchntOrders;
 
     public int mBillTotal;
+    // mCbExcludedTotal is not used - should always be 0
     public int mCbExcludedTotal;
+    // mOrderItems is not used - to be removed
     public List<OrderItem> mOrderItems;
     public int toDeleteTrustedDeviceIndex = -1;
 

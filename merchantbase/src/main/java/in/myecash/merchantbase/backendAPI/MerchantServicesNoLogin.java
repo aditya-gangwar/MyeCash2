@@ -45,23 +45,11 @@ import in.myecash.appbase.constants.AppConstants;
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "resetMerchantPwd", args );
     }
     
-    public void resetMerchantPwdAsync(String userId, String deviceId, String brandName, AsyncCallback<Object> callback)
-    {
-        Object[] args = new Object[]{userId, deviceId, brandName};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "resetMerchantPwd", args, Object.class, callback);
-    }
-    
-    public void setDeviceForLogin(String loginId, String deviceInfo, String rcvdOtp)
+    /*public void setDeviceForLogin(String loginId, String deviceInfo, String rcvdOtp)
     {
         Object[] args = new Object[]{loginId, deviceInfo, rcvdOtp};
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "setDeviceForLogin", args );
-    }
-    
-    public void setDeviceForLoginAsync(String loginId, String deviceInfo, String rcvdOtp, AsyncCallback<Object> callback)
-    {
-        Object[] args = new Object[]{loginId, deviceInfo, rcvdOtp};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "setDeviceForLogin", args, Object.class, callback);
-    }
+    }*/
     
     public void sendMerchantId(String mobileNum, String deviceId)
     {

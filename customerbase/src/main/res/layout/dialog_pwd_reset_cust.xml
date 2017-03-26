@@ -30,6 +30,13 @@
             android:layout_height="wrap_content"
             android:text="Enter your Member Card Number below" />
         </LinearLayout>
+        <EditText
+            style="@style/Edittext_only_view_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="0dp"
+            android:text="(check lower right corner on the back of your myecash card)"
+            android:textColor="@color/secondary_text"/>
 
         <Space
             android:layout_width="match_parent"
