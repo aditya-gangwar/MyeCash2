@@ -16,7 +16,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_card_membership_white_24dp"
+                android:src="@drawable/ic_person_outline_white_24dp"
                 android:tint="@color/primary"
                 android:layout_gravity="top"
                 android:paddingTop="@dimen/edittext_padding"/>
@@ -26,7 +26,7 @@
                 android:id="@+id/label_secret_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Enter your Card Number below" />
+                android:text="Enter your Name, as provided during registration." />
         </LinearLayout>
 
         <EditText
@@ -34,10 +34,8 @@
             style="@style/MyEdittext_Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Card Number"
-            android:maxLength="@string/card_number_limit"
+            android:hint="Customer Name"
             android:gravity="center"
-            android:inputType="number"
             android:imeOptions="actionDone"
             android:layout_marginTop="@dimen/large_space"/>
 

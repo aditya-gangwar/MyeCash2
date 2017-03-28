@@ -28,7 +28,7 @@
             android:paddingTop="0dp"
             android:textColor="@color/white"/>
 
-        <EditText
+        <!--EditText
             style="@style/Edittext_only_view_small_lessPad"
             android:layout_width="wrap_content"
             android:id="@+id/list_header_acc"
@@ -37,7 +37,7 @@
             android:text="Account:  Add - Debit = Balance"
             android:paddingTop="0dp"
             android:paddingBottom="0dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"/-->
 
         <EditText
             style="@style/Edittext_only_view_small_lessPad"
@@ -64,7 +64,7 @@
         <View
             style="@style/Divider_horizontal_Large"
             android:id="@+id/list_divider_1"
-            android:layout_below="@id/list_header_acc"/>
+            android:layout_below="@id/list_header_cb"/>
 
     </RelativeLayout>
 
@@ -87,7 +87,8 @@
 
     <LinearLayout
         style="@style/LL_Horizontal_wrap"
-        android:layout_marginTop="@dimen/medium_space">
+        android:layout_marginTop="@dimen/medium_space"
+        android:layout_marginLeft="@dimen/medium_space">
 
         <EditText
             style="@style/Edittext_only_view_small_lessPad"
@@ -109,6 +110,7 @@
 
     <EditText
         style="@style/Edittext_only_view_small_lessPad"
+        android:layout_marginLeft="@dimen/medium_space"
         android:id="@+id/updated_time_details"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"

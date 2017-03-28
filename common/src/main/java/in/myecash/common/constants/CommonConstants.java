@@ -41,6 +41,8 @@ public class CommonConstants {
     public static final int BOOLEAN_VALUE_TRUE = 2;
     public static final int BOOLEAN_VALUE_INVALID = -1;
 
+    public static final String CUSTOMER_CARE_NUMBER = "+91-9069113198";
+
     /*
      * Date formats
      */
@@ -68,6 +70,10 @@ public class CommonConstants {
 
     public static final int MILLISECS_IN_HOUR = 3600000;
     public static final int MILLISECS_IN_MINUTE = 60000;
+
+    public static final int SEX_MALE = 11;
+    public static final int SEX_FEMALE = 12;
+
     /*
      * Size, Length and Limits
      */

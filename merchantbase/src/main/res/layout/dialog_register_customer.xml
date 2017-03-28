@@ -49,7 +49,7 @@
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:layout_marginTop="@dimen/XXL_space">
+                android:layout_marginTop="@dimen/XL_space">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -62,9 +62,10 @@
                     android:id="@+id/label_firstName"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="Name"
-                    android:layout_weight="37"
+                    android:text="Name*"
+                    android:layout_weight="40"
                     android:gravity="left"/>
+
                 <EditText
                     style="@style/MyEdittext_Medium"
                     android:id="@+id/input_firstName"
@@ -72,9 +73,101 @@
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
                     android:maxLength="@string/customer_name_char_limit"
-                    android:layout_weight="63"
-                    android:gravity="left"/>
+                    android:layout_weight="60"
+                    android:gravity="left"
+                    android:imeOptions="actionNext"/>
             </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_dob"
+                android:layout_marginTop="@dimen/large_space">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_perm_identity_white_24dp"
+                    android:tint="@color/primary"
+                    android:visibility="invisible"/>
+                <TextView
+                    style="@style/Edittext_only_view_medium"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="Birth Date*"
+                    android:layout_weight="40"
+                    android:gravity="left"/>
+                <EditText
+                    style="@style/MyEdittext_Medium"
+                    android:id="@+id/input_dobDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:layout_weight="17.5"
+                    android:hint="DD"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"/>
+                <EditText
+                    style="@style/MyEdittext_Medium"
+                    android:id="@+id/input_dobMonth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:layout_weight="17.5"
+                    android:hint="MM"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"/>
+                <EditText
+                    style="@style/MyEdittext_Medium"
+                    android:id="@+id/input_dobYear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:layout_weight="25"
+                    android:gravity="center"
+                    android:hint="YYYY"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_sex"
+                android:layout_marginTop="@dimen/large_space">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_perm_identity_white_24dp"
+                    android:tint="@color/primary"
+                    android:visibility="invisible"/>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioGroupSex"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        style="@style/radio_button_medium"
+                        android:id="@+id/radioMale"
+                        android:text="Male"
+                        android:layout_weight="1"
+                        android:checked="false"/>
+
+                    <RadioButton
+                        style="@style/radio_button_medium"
+                        android:id="@+id/radioFemale"
+                        android:text="Female"
+                        android:layout_weight="1"
+                        android:checked="false"/>
+                </RadioGroup>
+
+            </LinearLayout>
+
+
             <!--LinearLayout
                 style="@style/LL_Horizontal_wrap">
 
@@ -113,7 +206,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/XXL_space"/>
+                android:layout_height="@dimen/XL_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap">
@@ -129,8 +222,8 @@
                     android:id="@+id/label_mobile"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="Mobile"
-                    android:layout_weight="37"
+                    android:text="Mobile*"
+                    android:layout_weight="40"
                     android:gravity="left"/>
                 <EditText
                     style="@style/MyEdittext_Medium"
@@ -140,7 +233,7 @@
                     android:hint="10 digit"
                     android:inputType="phone"
                     android:maxLength="@string/mobile_char_limit"
-                    android:layout_weight="63"
+                    android:layout_weight="60"
                     android:gravity="left"
                     android:imeOptions="actionDone"/>
             </LinearLayout>
@@ -150,13 +243,12 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/label_info_mobile"
                 android:gravity="left"
-                android:textStyle="italic"
                 android:textColor="@color/secondary_text"
-                android:text="OTP will be sent on this number for verification."/>
+                android:text="(OTP will be sent on this number)"/>
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/XXL_space"/>
+                android:layout_height="@dimen/large_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap">
@@ -173,7 +265,7 @@
                     android:id="@+id/label_card"
                     android:layout_width="0dp"
                     android:text="Card"
-                    android:layout_weight="37"
+                    android:layout_weight="40"
                     android:gravity="left|bottom"
                     android:layout_gravity="bottom"/>
                 <!--View
@@ -184,14 +276,23 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:hint="Touch to Scan"
-                    android:layout_weight="63"
+                    android:layout_weight="60"
                     android:gravity="left"
                     android:ellipsize="end"/>
             </LinearLayout>
+            <EditText
+                style="@style/Edittext_only_view_small"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/label_info_card"
+                android:text="(OPTIONAL)"
+                android:gravity="left"
+                android:paddingTop="0dp"
+                android:textColor="@color/secondary_text"/>
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/XXL_space"/>
+                android:layout_height="@dimen/large_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
@@ -204,22 +305,24 @@
                     android:id="@+id/image_otp"
                     android:src="@drawable/ic_security_white_24dp"
                     android:tint="@color/primary"/>
+
                 <EditText
                     style="@style/Edittext_only_view_medium"
                     android:id="@+id/label_otp"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:text="OTP"
-                    android:layout_weight="37"
+                    android:layout_weight="40"
                     android:gravity="left|bottom"
                     android:layout_gravity="bottom"/>
+
                 <EditText
                     style="@style/MyEdittext_Medium"
                     android:id="@+id/input_otp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:hint="Enter OTP"
-                    android:layout_weight="63"
+                    android:layout_weight="60"
                     android:gravity="left"
                     android:inputType="number"
                     android:maxLength="@string/otp_char_limit"

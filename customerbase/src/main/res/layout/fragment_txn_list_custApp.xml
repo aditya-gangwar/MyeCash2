@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txnlist_header_bill"
             android:layout_alignParentRight="true"
-            android:text="+/- Account  |  - Cashback Debit"
+            android:text="- Cashback Debit"
             android:paddingBottom="@dimen/edittext_padding_less"
             android:paddingTop="0dp"/>
 

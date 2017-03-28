@@ -80,9 +80,9 @@ import in.myecash.common.database.Transaction;
         Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "archiveTxns", args );
     }
 
-    public Cashback registerCustomer(java.lang.String customerMobile, java.lang.String cardId, java.lang.String otp, java.lang.String firstName, java.lang.String lastName)
+    public Cashback registerCustomer(java.lang.String customerMobile, java.lang.String dob, int sex, java.lang.String cardId, java.lang.String otp, java.lang.String firstName, java.lang.String lastName)
     {
-        Object[] args = new Object[]{customerMobile, cardId, otp, firstName, lastName};
+        Object[] args = new Object[]{customerMobile, dob, sex, cardId, otp, firstName, lastName};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "registerCustomer", args, Cashback.class );
     }
 

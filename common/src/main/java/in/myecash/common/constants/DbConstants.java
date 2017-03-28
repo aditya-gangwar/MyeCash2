@@ -61,6 +61,7 @@ public class DbConstants {
     public static final int CUSTOMER_CARD_STATUS_WITH_MERCHANT = 3;
     public static final int CUSTOMER_CARD_STATUS_ACTIVE = 4;
     public static final int CUSTOMER_CARD_STATUS_DISABLED = 5;
+    public static final int CUSTOMER_CARD_NOT_AVAILABLE = 6;
     // Map int status values to corresponding descriptions
     public static String cardStatusDesc[] = {
             "Invalid",
@@ -68,7 +69,8 @@ public class DbConstants {
             "Invalid",
             "Allotted to Merchant",
             "Active",
-            "Disabled"
+            "Disabled",
+            "Not Allotted"
     };
     public static String cardStatusDescInternal[] = {
             "Out for Print",
@@ -76,7 +78,8 @@ public class DbConstants {
             "Allotted to Agent",
             "Allotted to Merchant",
             "Active",
-            "Disabled"
+            "Disabled",
+            "Not Allotted"
     };
 
     // 'opcode' values used in different tables

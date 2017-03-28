@@ -177,10 +177,10 @@ public class CustomerUser {
         return ErrorCodes.NO_ERROR;
     }
 
-    public static int enableAccount(String userId, String passwd, String rcvdOtp, String cardNum, String pin) {
+    public static int enableAccount(String userId, String passwd, String rcvdOtp, String pin) {
         LogMy.d(TAG, "In enableAccount");
         try {
-            CustomerServicesNoLogin.getInstance().enableCustAccount(userId, passwd, rcvdOtp, cardNum, pin);
+            CustomerServicesNoLogin.getInstance().enableCustAccount(userId, passwd, rcvdOtp, pin);
             LogMy.d(TAG,"enableAccount success");
         } catch (BackendlessException e) {
             LogMy.e(TAG,"enableAccount failed: "+e.toString());
@@ -217,15 +217,15 @@ public class CustomerUser {
         return ErrorCodes.NO_ERROR;
     }
 
-    public int changeMobileNum(String cardNum, String pin, String newMobile, String otp) {
+    //public int changeMobileNum(String cardNum, String pin, String newMobile, String otp) {
+    public int changeMobileNum(String pin, String newMobile, String otp) {
         if(mPseudoLoggedIn) {
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
 
         try {
             isLoginValid();
-            CommonServices.getInstance().execCustomerOp(DbConstants.OP_CHANGE_MOBILE, mCustomer.getMobile_num(),
-                    cardNum, otp, pin, newMobile);
+            CommonServices.getInstance().execCustomerOp(DbConstants.OP_CHANGE_MOBILE, mCustomer.getMobile_num(),"",otp,pin,newMobile);
             LogMy.d(TAG,"changeMobileNum success");
 
         } catch (BackendlessException e) {
@@ -236,7 +236,7 @@ public class CustomerUser {
         return ErrorCodes.NO_ERROR;
     }
 
-    public int changePin(String oldPin, String newPin, String cardNum) {
+    public int changePin(String oldPin, String newPin, String custName) {
         if(mPseudoLoggedIn) {
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
@@ -246,11 +246,11 @@ public class CustomerUser {
             if(oldPin==null || newPin==null) {
                 // PIN reset scenario
                 CommonServices.getInstance().execCustomerOp(DbConstants.OP_RESET_PIN, mCustomer.getMobile_num(),
-                        cardNum, "", oldPin, newPin);
+                        custName, "", oldPin, newPin);
             } else {
                 // PIN change scenario
                 CommonServices.getInstance().execCustomerOp(DbConstants.OP_CHANGE_PIN, mCustomer.getMobile_num(),
-                        mCustomer.getMembership_card().getCardNum(), "", oldPin, newPin);
+                        "", "", oldPin, newPin);
             }
 
         } catch (BackendlessException e) {

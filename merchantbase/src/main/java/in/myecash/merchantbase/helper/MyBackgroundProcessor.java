@@ -70,6 +70,8 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         public String mobileNum;
         public String otp;
         public String qrCode;
+        public String dob;
+        public int sex;
     }
     private class MessageDelDevice implements Serializable {
         public String curDeviceId;
@@ -168,7 +170,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         LogMy.d(TAG, "In addCashbackRequest:  " + custId);
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_GET_CASHBACK, custId).sendToTarget();
     }
-    public void addCustRegRequest(String mobileNum, String qrCode, String otp, String firstName, String lastName) {
+    public void addCustRegRequest(String mobileNum, String dob, int sex, String qrCode, String otp, String firstName, String lastName) {
         LogMy.d(TAG, "In addCustRegRequest:  " + mobileNum);
         MessageCustRegister msg = new MessageCustRegister();
         msg.firstName = firstName;
@@ -176,6 +178,8 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         msg.mobileNum = mobileNum;
         msg.otp = otp;
         msg.qrCode = qrCode;
+        msg.dob = dob;
+        msg.sex = sex;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_REGISTER_CUSTOMER,msg).sendToTarget();
     }
     public void addLoginRequest(String userId, String password, String deviceId, String otp) {
@@ -434,7 +438,8 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         mRetainedFragment.mCurrCustomer = null;
 
         try {
-            Cashback cashback = MerchantUser.getInstance().registerCustomer(data.mobileNum, data.qrCode, data.otp, data.firstName, data.lastName);
+            Cashback cashback = MerchantUser.getInstance().registerCustomer(data.mobileNum, data.dob, data.sex, data.qrCode,
+                    data.otp, data.firstName, data.lastName);
 
             mRetainedFragment.mCurrCashback = new MyCashback();
             mRetainedFragment.mCurrCashback.init(cashback, true);

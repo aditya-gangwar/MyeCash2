@@ -82,11 +82,16 @@ public class TxnSuccessDialog extends BaseDialog {
             String txt = "Txn ID: " + txnId;
             mInputTxnId.setText(txt);
         }
-        mInputCashBalance.setText(AppCommonUtil.getAmtStr(clbalance));
         mInputCbBalance.setText(AppCommonUtil.getAmtStr(cbBalance));
-
-        mInputCashBalanceOld.setText(AppCommonUtil.getAmtStr(clbalanceOld));
         mInputCbBalanceOld.setText(AppCommonUtil.getAmtStr(cbBalanceOld));
+
+        if(clbalance==0 && clbalanceOld==0) {
+            mLayoutAccNew.setVisibility(View.GONE);
+            mLayoutAccOld.setVisibility(View.GONE);
+        } else {
+            mInputCashBalance.setText(AppCommonUtil.getAmtStr(clbalance));
+            mInputCashBalanceOld.setText(AppCommonUtil.getAmtStr(clbalanceOld));
+        }
 
         //displayTransactionValues();
 
@@ -150,6 +155,9 @@ public class TxnSuccessDialog extends BaseDialog {
     private EditText mInputCashBalanceOld;
     private EditText mInputCbBalanceOld;
 
+    private View mLayoutAccNew;
+    private View mLayoutAccOld;
+
     private void bindUiResources(View v) {
         mInputCustomer = (EditText) v.findViewById(R.id.input_cust_id);
 
@@ -159,5 +167,8 @@ public class TxnSuccessDialog extends BaseDialog {
 
         mInputCashBalanceOld = (EditText) v.findViewById(R.id.input_account_balance_old);
         mInputCbBalanceOld = (EditText) v.findViewById(R.id.input_cb_balance_old);
+
+        mLayoutAccNew = v.findViewById(R.id.layout_acc_new);
+        mLayoutAccOld = v.findViewById(R.id.layout_acc_old);
     }
 }

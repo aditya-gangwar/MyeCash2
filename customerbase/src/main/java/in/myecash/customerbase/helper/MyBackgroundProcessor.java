@@ -54,7 +54,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     private class MessageChangePin implements Serializable {
         public String oldPin;
         public String newPin;
-        public String cardNum;
+        public String custName;
     }
     private class MessageGetCb implements Serializable {
         public Context ctxt;
@@ -102,11 +102,11 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         msg.updatedSince = updatedSince;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_CB,msg).sendToTarget();
     }
-    public void addPinChangeRequest(String oldPin, String newPin, String cardNum) {
+    public void addPinChangeRequest(String oldPin, String newPin, String custName) {
         MessageChangePin msg = new MessageChangePin();
         msg.oldPin = oldPin;
         msg.newPin = newPin;
-        msg.cardNum = cardNum;
+        msg.custName = custName;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CHANGE_PIN,msg).sendToTarget();
     }
     public void addFetchTxnsRequest(String query) {
@@ -203,7 +203,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     }
 
     private int changeMobileNum() {
-        return CustomerUser.getInstance().changeMobileNum(mRetainedFragment.mCardMobileChange ,mRetainedFragment.mPinMobileChange,
+        return CustomerUser.getInstance().changeMobileNum(mRetainedFragment.mPinMobileChange,
                 mRetainedFragment.mNewMobileNum, mRetainedFragment.mOtpMobileChange);
     }
 
@@ -278,7 +278,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     }
 
     private int changePin(MessageChangePin msg) {
-        return CustomerUser.getInstance().changePin(msg.oldPin, msg.newPin, msg.cardNum);
+        return CustomerUser.getInstance().changePin(msg.oldPin, msg.newPin, msg.custName);
     }
 
     private int fetchTransactions(String query) {
@@ -376,7 +376,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     private int enableAccount(MessageLogin msg) {
         LogMy.d(TAG, "In enableAccount");
         return CustomerUser.enableAccount(msg.userId, msg.password,
-                mRetainedFragment.mAccEnableOtp, mRetainedFragment.mAccEnableCardNum, mRetainedFragment.mAccEnablePin);
+                mRetainedFragment.mAccEnableOtp, mRetainedFragment.mAccEnablePin);
     }
 
     private int fetchCustomerOps() {

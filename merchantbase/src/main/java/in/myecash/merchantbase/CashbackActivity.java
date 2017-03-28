@@ -72,7 +72,8 @@ public class CashbackActivity extends BaseActivity implements
         CustomerDetailsDialog.CustomerDetailsDialogIf, CustomerDataDialog.CustomerDataDialogIf,
         CustomerListFragment.CustomerListFragmentIf, MerchantOpListFrag.MerchantOpListFragIf,
         TxnConfirmFragment.TxnConfirmFragmentIf, SettingsFragment2.SettingsFragment2If,
-        MerchantOrderListFrag.MerchantOrderListFragIf, CreateMchntOrderDialog.CreateMchntOrderDialogIf {
+        MerchantOrderListFrag.MerchantOrderListFragIf, CreateMchntOrderDialog.CreateMchntOrderDialogIf,
+        TxnVerifyDialog.TxnVerifyDialogIf {
 
     private static final String TAG = "MchntApp-CashbackActivity";
 
@@ -80,6 +81,7 @@ public class CashbackActivity extends BaseActivity implements
 
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final int RC_TXN_REPORT = 9005;
+    public static final int RC_BARCODE_CAPTURE_TXN_VERIFY = 9007;
 
     private static final String RETAINED_FRAGMENT = "workCashback";
     private static final String MOBILE_NUM_FRAGMENT = "MobileNumFragment";
@@ -113,6 +115,7 @@ public class CashbackActivity extends BaseActivity implements
     private static final String DIALOG_CREATE_MCHNT_ORDER = "dialogCrtMchntOrder";
 
     private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
+    private static final String DIALOG_TXN_VERIFY_TYPE = "dialogTxnVerifyType";
 
     MyRetainedFragment mWorkFragment;
     FragmentManager mFragMgr;
@@ -298,7 +301,7 @@ public class CashbackActivity extends BaseActivity implements
                 startTrustedDevicesFragment();
 
             } */else if (i == R.id.menu_reg_customer) {
-                askAndRegisterCustomer(false);
+                askAndRegisterCustomer(ErrorCodes.NO_ERROR);
 
             } else if (i == R.id.menu_new_card) {
                 if (mWorkFragment.mCustomerOp != null) {
@@ -506,7 +509,8 @@ public class CashbackActivity extends BaseActivity implements
                 setTbImage(R.drawable.ic_block_white_48dp, R.color.failure);
             }
 
-        } else if(mWorkFragment.mCurrCustomer.getCardStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
+        } else if(mWorkFragment.mCurrCustomer.getCardStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE &&
+                mWorkFragment.mCurrCustomer.getCardStatus() != DbConstants.CUSTOMER_CARD_NOT_AVAILABLE) {
 
             switch(mWorkFragment.mCurrCustomer.getCardStatus()) {
                 case DbConstants.CUSTOMER_CARD_STATUS_DISABLED:
@@ -547,6 +551,8 @@ public class CashbackActivity extends BaseActivity implements
             setTbImage(mMerchantUser.getDisplayImage());
             //mTbLayoutImage.setBackground(null);
             mTbImage.setBackground(null);
+        } else {
+            setTbImage(R.drawable.ic_store_white_24dp, R.color.icon_grey);
         }
         mTbImageIsMerchant = true;
         setTbTitle(mMerchant.getName());
@@ -580,13 +586,13 @@ public class CashbackActivity extends BaseActivity implements
         mTbSubhead1Text2 = (TextView) mToolbar.findViewById(R.id.tb_curr_cashback) ;
     }
 
-    private void askAndRegisterCustomer(boolean wrongOtpCase) {
+    private void askAndRegisterCustomer(int status) {
         LogMy.d(TAG, "In askAndRegisterCustomer");
         // Show user registration confirmation dialogue
         // confirm for registration
-        CustomerRegDialog.newInstance(mWorkFragment.mCustMobile, mWorkFragment.mCustCardId,
-                mWorkFragment.mCustRegFirstName, mWorkFragment.mCustRegLastName, wrongOtpCase).
-                show(mFragMgr, DIALOG_REG_CUSTOMER);
+        //CustomerRegDialog.newInstance(mWorkFragment.mCustMobile, mWorkFragment.mCustCardId,
+        //        mWorkFragment.mCustRegFirstName, mWorkFragment.mCustRegLastName, status).
+        CustomerRegDialog.newInstance(status).show(mFragMgr, DIALOG_REG_CUSTOMER);
     }
 
     @Override
@@ -1293,24 +1299,24 @@ public class CashbackActivity extends BaseActivity implements
 
         } else if(errorCode==ErrorCodes.OTP_GENERATED) {
             // OTP sent successfully to customer mobile, ask for the same
-            if(mWorkFragment.mCustMobile==null || mWorkFragment.mCustCardId==null) {
+            if(mWorkFragment.mCustMobile==null) {
                 // some issue - not supposed to be null - raise alarm
                 AppAlarms.wtf(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onCustRegResponse",null);
             } else {
                 // start the dialog again
                 // but this time it will have pre-filled last entered mobile and cardId
                 // based on which it will ask for OTP
-                askAndRegisterCustomer(false);
+                askAndRegisterCustomer(errorCode);
             }
 
         } else if(errorCode==ErrorCodes.WRONG_OTP) {
             // OTP sent successfully to customer mobile, ask for the same
-            if(mWorkFragment.mCustMobile==null || mWorkFragment.mCustCardId==null) {
+            if(mWorkFragment.mCustMobile==null) {
                 // some issue - not supposed to be null - raise alarm
                 AppAlarms.wtf(mMerchant.getAuto_id(),DbConstants.USER_TYPE_MERCHANT,"onCustRegResponse",null);
             } else {
                 // start the dialog again
-                askAndRegisterCustomer(true);
+                askAndRegisterCustomer(errorCode);
             }
 
         } else {
@@ -1348,7 +1354,7 @@ public class CashbackActivity extends BaseActivity implements
             // show mobile number fragment
             //mFragMgr.popBackStackImmediate(MOBILE_NUM_FRAGMENT, 0);
             //goToMobileNumFrag();
-            askAndRegisterCustomer(false);
+            askAndRegisterCustomer(ErrorCodes.NO_ERROR);
 
         } else if(errorCode==ErrorCodes.NO_ERROR) {
             // update customer ids to actual fetched - just to be sure
@@ -1388,7 +1394,39 @@ public class CashbackActivity extends BaseActivity implements
     public void onTransactionConfirm() {
         LogMy.d(TAG,"In onTransactionConfirm");
 
-        if(CommonUtils.customerPinRequired(mMerchantUser.getMerchant(), mWorkFragment.mCurrTransaction.getTransaction())) {
+        if(CommonUtils.txnVerifyReq(mMerchantUser.getMerchant(), mWorkFragment.mCurrTransaction.getTransaction())) {
+            // ask for customer PIN
+            /*TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(
+                    mWorkFragment.mCurrTransaction.getTransaction().getCl_credit(),
+                    mWorkFragment.mCurrTransaction.getTransaction().getCl_debit(),
+                    mWorkFragment.mCurrTransaction.getTransaction().getCb_debit(),
+                    null);
+            dialog.show(mFragMgr, DIALOG_PIN_CASH_TXN);*/
+
+            // If card scanned - its fine, else ask for preffered verification method
+            String usedCard = mWorkFragment.mCurrTransaction.getTransaction().getUsedCardId();
+            if(usedCard==null || usedCard.isEmpty()) {
+                TxnVerifyDialog dialog = new TxnVerifyDialog();
+                dialog.show(mFragMgr, DIALOG_TXN_VERIFY_TYPE);
+            }
+        } else {
+            LogMy.d(TAG,"In onTransactionConfirm, PIN not required");
+            commitTxn(null);
+        }
+    }
+
+    @Override
+    public void startTxnVerify(int sortType) {
+        if(sortType==AppConstants.TXN_VERIFY_CARD) {
+            // start card scan
+            LogMy.d(TAG, "Card Scan for txn verification");
+            Intent intent = new Intent(this, BarcodeCaptureActivity.class);
+            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+            mWorkFragment.mCardImageFilename = CommonConstants.PREFIX_TXN_IMG_FILE_NAME+Long.toString(System.currentTimeMillis())+"."+CommonConstants.PHOTO_FILE_FORMAT;
+            intent.putExtra(BarcodeCaptureActivity.ImageFileName, mWorkFragment.mCardImageFilename);
+            startActivityForResult(intent, RC_BARCODE_CAPTURE_TXN_VERIFY);
+
+        } else if(sortType==AppConstants.TXN_VERIFY_PIN) {
             // ask for customer PIN
             TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(
                     mWorkFragment.mCurrTransaction.getTransaction().getCl_credit(),
@@ -1396,9 +1434,9 @@ public class CashbackActivity extends BaseActivity implements
                     mWorkFragment.mCurrTransaction.getTransaction().getCb_debit(),
                     null);
             dialog.show(mFragMgr, DIALOG_PIN_CASH_TXN);
-        } else {
-            LogMy.d(TAG,"In onTransactionConfirm, PIN not required");
-            commitTxn(null);
+
+        } else if(sortType==AppConstants.TXN_VERIFY_OTP) {
+
         }
     }
 
@@ -1410,7 +1448,6 @@ public class CashbackActivity extends BaseActivity implements
     }
 
     private void commitTxn(String pin) {
-        // check internet and start customer reg thread
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
@@ -1538,7 +1575,7 @@ public class CashbackActivity extends BaseActivity implements
     }
 
     @Override
-    public void onCustomerRegOk(String mobileNum, String cardId, String otp, String firstName, String lastName) {
+    public void onCustomerRegOk(String mobileNum, String dob, int sex, String cardId, String otp, String firstName, String lastName) {
 
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
@@ -1549,7 +1586,7 @@ public class CashbackActivity extends BaseActivity implements
             // show progress dialog
             AppCommonUtil.showProgressDialog(CashbackActivity.this, AppConstants.progressRegCustomer);
             // start in background thread
-            mWorkFragment.registerCustomer(mobileNum, cardId, otp, firstName, lastName);
+            mWorkFragment.registerCustomer(mobileNum, dob, sex, cardId, otp, firstName, lastName);
             // update values
             mWorkFragment.mCustMobile = mobileNum;
             mWorkFragment.mCustCardId = cardId;
@@ -1557,6 +1594,8 @@ public class CashbackActivity extends BaseActivity implements
 
             mWorkFragment.mCustRegFirstName = firstName;
             mWorkFragment.mCustRegLastName = lastName;
+            mWorkFragment.mCustRegDob = dob;
+            mWorkFragment.mCustSex = sex;
 
             if(AppConstants.USE_CRASHLYTICS) {
                 Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, mobileNum);
@@ -1574,8 +1613,10 @@ public class CashbackActivity extends BaseActivity implements
         mWorkFragment.mCardPresented = false;
         mWorkFragment.mCustRegLastName = null;
         mWorkFragment.mCustRegFirstName = null;
+        mWorkFragment.mCustRegDob = null;
+        mWorkFragment.mCustSex = -1;
 
-        askAndRegisterCustomer(false);
+        askAndRegisterCustomer(ErrorCodes.NO_ERROR);
     }
 
 
@@ -1651,13 +1692,12 @@ public class CashbackActivity extends BaseActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
-            if (requestCode == RC_BARCODE_CAPTURE) {
+            if (requestCode == RC_BARCODE_CAPTURE || requestCode == RC_BARCODE_CAPTURE_TXN_VERIFY) {
                 String qrCode = null;
                 if (data != null) {
                     qrCode = data.getStringExtra(BarcodeCaptureActivity.BarcodeObject);
                 }
-                if (resultCode == ErrorCodes.NO_ERROR &&
-                        qrCode != null) {
+                if (resultCode == ErrorCodes.NO_ERROR && qrCode != null) {
                     LogMy.d(TAG, "Read customer QR code: " + qrCode);
                     if (ValidationHelper.validateCardId(qrCode) == ErrorCodes.NO_ERROR) {
                         mWorkFragment.mCustCardId = qrCode;
@@ -1667,8 +1707,14 @@ public class CashbackActivity extends BaseActivity implements
                         mWorkFragment.mCardPresented = true;
 
                         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-                        mWorkFragment.fetchCashback(qrCode);
-                        //startBillingFragment();
+
+                        if(requestCode == RC_BARCODE_CAPTURE) {
+                            mWorkFragment.fetchCashback(qrCode);
+                            //startBillingFragment();
+                        } else {
+                            mWorkFragment.mCurrTransaction.getTransaction().setUsedCardId(mWorkFragment.mCustCardId);
+                            commitTxn("");
+                        }
                     } else {
                         AppCommonUtil.toast(this, "Invalid Customer Card");
                     }

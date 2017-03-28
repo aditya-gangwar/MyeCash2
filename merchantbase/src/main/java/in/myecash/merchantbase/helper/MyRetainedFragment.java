@@ -80,6 +80,8 @@ public class MyRetainedFragment extends RetainedFragment {
 
     public String mCustRegFirstName;
     public String mCustRegLastName;
+    public String mCustRegDob; // DDMMYYYY format
+    public int mCustSex;
 
     public MyCashback mCurrCashback;
     public MyCustomer mCurrCustomer;
@@ -140,6 +142,8 @@ public class MyRetainedFragment extends RetainedFragment {
 
         mCustRegFirstName = null;
         mCustRegLastName = null;
+        mCustRegDob = null;
+        mCustSex = -1;
 
         if(AppConstants.USE_CRASHLYTICS) {
             Crashlytics.setString(AppConstants.CLTS_INPUT_CUST_MOBILE, "");
@@ -239,8 +243,8 @@ public class MyRetainedFragment extends RetainedFragment {
         mBackgroundProcessor.addCashbackRequest(custId);
     }
 
-    public void registerCustomer(String mobileNum, String qrCode, String otp, String firstName, String lastName) {
-        mBackgroundProcessor.addCustRegRequest(mobileNum, qrCode, otp, firstName, lastName);
+    public void registerCustomer(String mobileNum, String dob, int sex, String qrCode, String otp, String firstName, String lastName) {
+        mBackgroundProcessor.addCustRegRequest(mobileNum, dob, sex, qrCode, otp, firstName, lastName);
     }
 
     public void commitCashTransaction(String pin) {

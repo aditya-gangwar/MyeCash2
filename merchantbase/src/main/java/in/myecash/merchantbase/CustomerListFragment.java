@@ -88,7 +88,7 @@ public class CustomerListFragment extends BaseFragment {
     private RecyclerView mCustRecyclerView;
     private EditText mLabelTxnTime;
     private EditText mLabelBill;
-    private EditText mLabelAcc;
+    //private EditText mLabelAcc;
     private EditText mLabelCb;
     private EditText mUpdated;
     private EditText mUpdatedDetail;
@@ -177,12 +177,12 @@ public class CustomerListFragment extends BaseFragment {
                 mLabelBill.setText("Total Bill");
                 mLabelBill.setTypeface(null, Typeface.NORMAL);
                 break;
-            case MyCashback.CB_CMP_TYPE_ACC_BALANCE:
+            /*case MyCashback.CB_CMP_TYPE_ACC_BALANCE:
             case MyCashback.CB_CMP_TYPE_ACC_ADD:
             case MyCashback.CB_CMP_TYPE_ACC_DEBIT:
                 mLabelAcc.setText("Account:  Add - Used = Balance");
                 mLabelAcc.setTypeface(null, Typeface.NORMAL);
-                break;
+                break;*/
             case MyCashback.CB_CMP_TYPE_CB_BALANCE:
             case MyCashback.CB_CMP_TYPE_CB_ADD:
             case MyCashback.CB_CMP_TYPE_CB_DEBIT:
@@ -204,7 +204,7 @@ public class CustomerListFragment extends BaseFragment {
                 mLabelBill.setText(text);
                 mLabelBill.setTypeface(null, Typeface.BOLD);
                 break;
-            case MyCashback.CB_CMP_TYPE_ACC_BALANCE:
+            /*case MyCashback.CB_CMP_TYPE_ACC_BALANCE:
                 text = "Account:  Add - Used = "+AppConstants.SYMBOL_DOWN_ARROW+"Balance";
                 mLabelAcc.setText(text);
                 mLabelAcc.setTypeface(null, Typeface.BOLD);
@@ -218,7 +218,7 @@ public class CustomerListFragment extends BaseFragment {
                 text = "Account:  Add - "+AppConstants.SYMBOL_DOWN_ARROW+"Used = Balance";
                 mLabelAcc.setText(text);
                 mLabelAcc.setTypeface(null, Typeface.BOLD);
-                break;
+                break;*/
             case MyCashback.CB_CMP_TYPE_CB_BALANCE:
                 text = "Cashback:  Add - Used = "+AppConstants.SYMBOL_DOWN_ARROW+"Balance";
                 mLabelCb.setText(text);
@@ -250,7 +250,7 @@ public class CustomerListFragment extends BaseFragment {
 
         mLabelTxnTime = (EditText) view.findViewById(R.id.list_header_txnTime);
         mLabelBill = (EditText) view.findViewById(R.id.list_header_bill);
-        mLabelAcc = (EditText) view.findViewById(R.id.list_header_acc);
+        //mLabelAcc = (EditText) view.findViewById(R.id.list_header_acc);
         mLabelCb = (EditText) view.findViewById(R.id.list_header_cb);
 
         mUpdated = (EditText) view.findViewById(R.id.input_updated_time);
@@ -357,7 +357,16 @@ public class CustomerListFragment extends BaseFragment {
                     emailReport();
 
                 } else if (i == R.id.action_sort) {
-                    SortCustDialog dialog = SortCustDialog.newInstance(mSelectedSortType);
+                    // loop and check if there's any customer with acc credit/debit
+                    boolean accFigures = false;
+                    for (MyCashback cb :
+                            mRetainedFragment.mLastFetchCashbacks) {
+                        if(cb.getClCredit()!=0 || cb.getClDebit()!=0) {
+                            accFigures = true;
+                        }
+                    }
+
+                    SortCustDialog dialog = SortCustDialog.newInstance(mSelectedSortType, accFigures);
                     dialog.setTargetFragment(this, REQ_SORT_CUST_TYPES);
                     dialog.show(getFragmentManager(), DIALOG_SORT_CUST_TYPES);
                 }

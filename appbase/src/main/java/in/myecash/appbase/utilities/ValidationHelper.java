@@ -242,7 +242,8 @@ public final class ValidationHelper{
 
             if( Integer.parseInt(value.substring(0,2)) > 31 ||
                     Integer.parseInt(value.substring(2,4)) > 12 ||
-                    Integer.parseInt(value.substring(4)) > currYear ) {
+                    Integer.parseInt(value.substring(4)) > currYear ||
+                    Integer.parseInt(value.substring(4)) < 1900) {
                 return ErrorCodes.INVALID_FORMAT;
             }
             return ErrorCodes.NO_ERROR;

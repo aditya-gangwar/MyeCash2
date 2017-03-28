@@ -80,10 +80,15 @@ public class CustDetailsDialogCustApp extends BaseDialog {
         mCreatedOn.setText(mSdfDateOnly.format(cust.getCreated()));
         mExpiringOn.setText(mSdfDateOnly.format(AppCommonUtil.getExpiryDate(cust)));
 
-        mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cust.getMembership_card().getCardNum()));
-        mInputCardStatus.setText(DbConstants.cardStatusDesc[cust.getMembership_card().getStatus()]);
-        if(cust.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
-            mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+        if(cust.getMembership_card()==null) {
+            mLayoutCardId.setVisibility(View.GONE);
+            mLayoutCardStatus.setVisibility(View.GONE);
+        } else {
+            mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cust.getMembership_card().getCardNum()));
+            mInputCardStatus.setText(DbConstants.cardStatusDesc[cust.getMembership_card().getStatus()]);
+            if (cust.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
+                mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+            }
         }
 
         int status = cust.getAdmin_status();
@@ -128,6 +133,9 @@ public class CustDetailsDialogCustApp extends BaseDialog {
     private EditText mInputQrCard;
     private EditText mInputCardStatus;
 
+    private View mLayoutCardId;
+    private View mLayoutCardStatus;
+
     private EditText mInputStatus;
     private View mLayoutStatusDetails;
     private EditText mInputReason;
@@ -149,5 +157,8 @@ public class CustDetailsDialogCustApp extends BaseDialog {
 
         mInputQrCard = (EditText) v.findViewById(R.id.input_qr_card);
         mInputCardStatus = (EditText) v.findViewById(R.id.input_card_status);
+
+        mLayoutCardId = v.findViewById(R.id.layout_cardId);
+        mLayoutCardStatus = v.findViewById(R.id.layout_card_details);
     }
 }

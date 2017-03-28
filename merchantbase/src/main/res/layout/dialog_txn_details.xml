@@ -357,11 +357,13 @@
                 android:text="Account (AC)"
                 android:textColor="@color/subheading"
                 android:paddingLeft="0dp"
+                android:id="@+id/label_acc"
                 android:layout_marginTop="@dimen/small_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:visibility="visible">
+                android:visibility="visible"
+                android:id="@+id/layout_acc_debit">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -390,7 +392,8 @@
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:visibility="visible">
+                android:visibility="visible"
+                android:id="@+id/layout_acc_add">
 
                 <ImageView
                     android:layout_width="wrap_content"

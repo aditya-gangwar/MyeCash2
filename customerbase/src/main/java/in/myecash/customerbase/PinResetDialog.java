@@ -29,7 +29,7 @@ public class PinResetDialog extends BaseDialog {
     private PinResetDialogIf mListener;
 
     public interface PinResetDialogIf {
-        void onPinResetData(String cardNum);
+        void onPinResetData(String custName);
     }
 
     @Override
@@ -71,13 +71,13 @@ public class PinResetDialog extends BaseDialog {
                     @Override
                     public void onSingleClick(View v) {
                         AppCommonUtil.hideKeyboard(getDialog());
-                        String value = mInputCardNum.getText().toString();
-                        int error = ValidationHelper.validateCardNum(value);
+                        String value = mInputName.getText().toString();
+                        int error = ValidationHelper.validateName(value);
                         if(error == ErrorCodes.NO_ERROR) {
                             mListener.onPinResetData(value);
                             getDialog().dismiss();
                         } else {
-                            mInputCardNum.setError(AppCommonUtil.getErrorDesc(error));
+                            mInputName.setError(AppCommonUtil.getErrorDesc(error));
                         }
                     }
                 });
@@ -122,11 +122,11 @@ public class PinResetDialog extends BaseDialog {
         super.onCancel(dialog);
     }
 
-    private EditText mInputCardNum;
+    private EditText mInputName;
     private EditText mLabelInfo1;
 
     private void initUiResources(View v) {
-        mInputCardNum = (EditText) v.findViewById(R.id.input_secret_1);
+        mInputName = (EditText) v.findViewById(R.id.input_secret_1);
         mLabelInfo1 = (EditText) v.findViewById(R.id.label_info_1);
     }
 }

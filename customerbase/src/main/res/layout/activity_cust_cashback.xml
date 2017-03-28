@@ -146,15 +146,13 @@
                     android:textStyle="bold"
                     android:textColor="@color/secondary_text"/>
 
-                <Space
-                    android:layout_width="@dimen/large_space"
-                    android:layout_height="match_parent" />
-
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_account_balance_wallet_white_18dp"
-                    android:tint="@color/primary"/>
+                    android:tint="@color/primary"
+                    android:id="@+id/tb_acc_img"
+                    android:layout_marginLeft="@dimen/large_space"/>
 
                 <EditText
                     style="@style/Edittext_only_view_medium"

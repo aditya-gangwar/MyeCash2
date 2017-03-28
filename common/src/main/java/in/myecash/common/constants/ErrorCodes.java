@@ -72,7 +72,7 @@ public class ErrorCodes {
     public static final int WRONG_OTP = 581;
     public static final int WRONG_PIN = 582;
     public static final int VERIFICATION_FAILED_PASSWD = 583;
-    public static final int VERIFICATION_FAILED_CARDID = 584;
+    public static final int VERIFICATION_FAILED_NAME = 584;
     public static final int VERIFICATION_FAILED_DOB = 585;
     public static final int VERIFICATION_FAILED_MOBILE = 586;
     public static final int OPERATION_NOT_ALLOWED = 587;
@@ -136,7 +136,7 @@ public class ErrorCodes {
         aMap.put(WRONG_INPUT_DATA,"Invalid input data");
         aMap.put(WRONG_OTP,"Wrong OTP value.");
         aMap.put(WRONG_PIN,"Wrong PIN. Account gets Locked after %s incorrect attempts.");
-        aMap.put(VERIFICATION_FAILED_CARDID,"Wrong Card Number. Account gets Locked after %s incorrect attempts.");
+        aMap.put(VERIFICATION_FAILED_NAME,"Wrong Customer Name. Account gets Locked after %s incorrect attempts.");
         aMap.put(VERIFICATION_FAILED_DOB,"Wrong Date of Birth. Account gets Locked after %s incorrect attempts.");
         aMap.put(VERIFICATION_FAILED_MOBILE,"Wrong Mobile Number. Account gets Locked after %s incorrect attempts.");
         aMap.put(VERIFICATION_FAILED_PASSWD,"Wrong password. Account gets Locked after %s incorrect attempts.");
@@ -285,7 +285,7 @@ public class ErrorCodes {
         aMap.put(String.valueOf(WRONG_INPUT_DATA),"WRONG_INPUT_DATA");
         aMap.put(String.valueOf(WRONG_OTP),"WRONG_OTP");
         aMap.put(String.valueOf(WRONG_PIN),"WRONG_PIN");
-        aMap.put(String.valueOf(VERIFICATION_FAILED_CARDID),"VERIFICATION_FAILED_CARDID");
+        aMap.put(String.valueOf(VERIFICATION_FAILED_NAME),"VERIFICATION_FAILED_NAME");
         aMap.put(String.valueOf(VERIFICATION_FAILED_DOB),"VERIFICATION_FAILED_DOB");
         aMap.put(String.valueOf(VERIFICATION_FAILED_MOBILE),"VERIFICATION_FAILED_MOBILE");
         aMap.put(String.valueOf(VERIFICATION_FAILED_PASSWD),"VERIFICATION_FAILED_PASSWD");

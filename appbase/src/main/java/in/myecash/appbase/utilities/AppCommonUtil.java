@@ -376,7 +376,7 @@ public class AppCommonUtil {
                         Integer.toString(MyGlobalSettings.getDailyDownEndHour()));
 
             case ErrorCodes.WRONG_PIN:
-            case ErrorCodes.VERIFICATION_FAILED_CARDID:
+            case ErrorCodes.VERIFICATION_FAILED_NAME:
             case ErrorCodes.VERIFICATION_FAILED_PASSWD:
             case ErrorCodes.VERIFICATION_FAILED_DOB:
             case ErrorCodes.VERIFICATION_FAILED_MOBILE:
@@ -401,7 +401,7 @@ public class AppCommonUtil {
         // handle all error messages requiring substitution seperatly
         switch(errorCode) {
             case ErrorCodes.WRONG_PIN:
-            case ErrorCodes.VERIFICATION_FAILED_CARDID:
+            case ErrorCodes.VERIFICATION_FAILED_NAME:
             case ErrorCodes.VERIFICATION_FAILED_PASSWD:
             case ErrorCodes.VERIFICATION_FAILED_DOB:
             case ErrorCodes.VERIFICATION_FAILED_MOBILE:

@@ -96,7 +96,11 @@ public class TxnSummaryFragment extends BaseFragment {
 
         input_values[AppConstants.INDEX_TXN_COUNT].setText(String.valueOf(summary[AppConstants.INDEX_TXN_COUNT]));
         input_values[AppConstants.INDEX_BILL_AMOUNT].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_BILL_AMOUNT], true));
-        input_values[AppConstants.INDEX_ADD_ACCOUNT].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_ADD_ACCOUNT], true));
+        if(summary[AppConstants.INDEX_ADD_ACCOUNT]==0) {
+            layoutAcc.setVisibility(View.GONE);
+        } else {
+            input_values[AppConstants.INDEX_ADD_ACCOUNT].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_ADD_ACCOUNT], true));
+        }
         input_values[AppConstants.INDEX_DEBIT_ACCOUNT].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_DEBIT_ACCOUNT], false));
         input_values[AppConstants.INDEX_CASHBACK].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_CASHBACK], true));
         input_values[AppConstants.INDEX_DEBIT_CASHBACK].setText(AppCommonUtil.getSignedAmtStr(summary[AppConstants.INDEX_DEBIT_CASHBACK], true));
@@ -105,6 +109,7 @@ public class TxnSummaryFragment extends BaseFragment {
     EditText input_values[] = new EditText[AppConstants.INDEX_SUMMARY_MAX_VALUE];
     EditText dates;
     AppCompatButton detailsButton;
+    View layoutAcc;
 
     protected void bindUiResources(View view) {
         dates = (EditText) view.findViewById(R.id.txnlist_filter_duration);
@@ -116,6 +121,7 @@ public class TxnSummaryFragment extends BaseFragment {
         input_values[AppConstants.INDEX_DEBIT_CASHBACK] = (EditText) view.findViewById(R.id.input_trans_redeem_cb);
 
         detailsButton = (AppCompatButton) view.findViewById(R.id.details_btn);
+        layoutAcc = view.findViewById(R.id.layout_account);
     }
 
     @Override

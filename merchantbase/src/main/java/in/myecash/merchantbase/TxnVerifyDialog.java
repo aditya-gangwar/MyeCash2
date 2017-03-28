@@ -1,35 +1,34 @@
-package in.myecash.customerbase;
+package in.myecash.merchantbase;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.constants.AppConstants;
-import in.myecash.appbase.utilities.OnSingleClickListener;
-import in.myecash.common.MyGlobalSettings;
-import in.myecash.common.constants.ErrorCodes;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.LogMy;
-import in.myecash.appbase.utilities.ValidationHelper;
+import in.myecash.appbase.entities.MyCashback;
+import in.myecash.appbase.utilities.OnSingleClickListener;
 
 /**
- * Created by adgangwa on 26-04-2016.
+ * Created by adgangwa on 15-09-2016.
  */
-public class PasswdResetDialogCustApp extends BaseDialog {
-    public static final String TAG = "CustApp-PasswdResetDialog";
+public class TxnVerifyDialog extends BaseDialog {
+    public static final String TAG = "MchntApp-TxnVerifyDialog";
 
-    private PasswdResetDialogIf mListener;
-
-    public interface PasswdResetDialogIf {
-        void onPasswdResetData(String secret1);
+    private TxnVerifyDialogIf mListener;
+    public interface TxnVerifyDialogIf {
+        void startTxnVerify(int sortType);
     }
 
     @Override
@@ -37,10 +36,10 @@ public class PasswdResetDialogCustApp extends BaseDialog {
         super.onActivityCreated(savedInstanceState);
 
         try {
-            mListener = (PasswdResetDialogIf) getActivity();
+            mListener = (TxnVerifyDialogIf) getActivity();
         } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString()
-                    + " must implement PasswdResetDialogIf");
+                    + " must implement TxnVerifyDialogIf");
         }
     }
 
@@ -48,38 +47,43 @@ public class PasswdResetDialogCustApp extends BaseDialog {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LogMy.d(TAG, "In onCreateDialog");
 
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_pwd_reset_cust, null);
+        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_txn_verify, null);
         initUiResources(v);
-
-        String txt = String.format(getActivity().getString(R.string.reset_passwd_info),
-                MyGlobalSettings.getCustPasswdResetMins().toString());
-        mInfo.setText(txt);
 
         // return new dialog
         final AlertDialog alertDialog =  new AlertDialog.Builder(getActivity()).setView(v)
                 .setPositiveButton(R.string.ok, this)
                 .setNegativeButton(R.string.cancel, this)
                 .create();
-        if(AppConstants.BLOCK_SCREEN_CAPTURE) {
-            alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-        }
 
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
+                AppCommonUtil.setDialogTextSize(TxnVerifyDialog.this, (AlertDialog) dialog);
 
                 Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 b.setOnClickListener(new OnSingleClickListener() {
                     @Override
                     public void onSingleClick(View v) {
-                        AppCommonUtil.hideKeyboard(getDialog());
-                        String value = mInputName.getText().toString();
-                        int error = ValidationHelper.validateName(value);
-                        if(error == ErrorCodes.NO_ERROR) {
-                            mListener.onPasswdResetData(value);
-                            getDialog().dismiss();
+
+                        int selectedId = mRadioGroup.getCheckedRadioButtonId();
+                        int selectedType = -1;
+
+                        if (selectedId == R.id.radioCard) {
+                            selectedType = AppConstants.TXN_VERIFY_CARD;
+
+                        } else if (selectedId == R.id.radioPIN) {
+                            selectedType = AppConstants.TXN_VERIFY_PIN;
+
+                        } else if (selectedId == R.id.radioOTP) {
+                            selectedType = AppConstants.TXN_VERIFY_OTP;
+                        }
+
+                        if(selectedType==-1) {
+                            AppCommonUtil.toast(getActivity(), "Select Verification Method");
                         } else {
-                            mInputName.setError(AppCommonUtil.getErrorDesc(error));
+                            mListener.startTxnVerify(selectedType);
+                            getDialog().dismiss();
                         }
                     }
                 });
@@ -87,7 +91,6 @@ public class PasswdResetDialogCustApp extends BaseDialog {
         });
 
         alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         return alertDialog;
     }
 
@@ -100,8 +103,6 @@ public class PasswdResetDialogCustApp extends BaseDialog {
                 //pass a handler the button doesn't get instantiated
                 break;
             case DialogInterface.BUTTON_NEGATIVE:
-                AppCommonUtil.hideKeyboard(getDialog());
-                mListener.onPasswdResetData(null);
                 dialog.dismiss();
                 break;
             case DialogInterface.BUTTON_NEUTRAL:
@@ -124,14 +125,17 @@ public class PasswdResetDialogCustApp extends BaseDialog {
     @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
-        mListener.onPasswdResetData(null);
     }
 
-    private EditText mInputName;
-    private EditText mInfo;
+    private RadioGroup mRadioGroup;
+    private RadioButton mRadioCard;
+    private RadioButton mRadioPin;
+    private RadioButton mRadioOtp;
 
     private void initUiResources(View v) {
-        mInputName = (EditText) v.findViewById(R.id.input_secret_1);
-        mInfo = (EditText) v.findViewById(R.id.labelInfo);
+        mRadioGroup = (RadioGroup) v.findViewById(R.id.custSortRadioGroup);
+        mRadioCard = (RadioButton) v.findViewById(R.id.radioCard);
+        mRadioPin = (RadioButton) v.findViewById(R.id.radioPIN);
+        mRadioOtp = (RadioButton) v.findViewById(R.id.radioOTP);
     }
 }

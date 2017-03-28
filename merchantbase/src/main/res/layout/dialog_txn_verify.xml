@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <EditText
+        style="@style/Dialog_title"
+        android:id="@+id/label_title"
+        android:text="VERIFY   TRANSACTION"/>
+
+    <!--View
+        style="@style/Divider_horizontal_Large"
+        android:id="@+id/divider_cash_pay_title"/-->
+
+    <EditText
+        style="@style/Edittext_only_view_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select method to verify Debit Transaction"
+        android:layout_marginTop="@dimen/large_space"/>
+
+    <LinearLayout
+        style="@style/LL_Vertical_paddingSidesLarge"
+        android:layout_marginBottom="@dimen/large_space"
+        android:layout_marginTop="@dimen/large_space">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_space"/>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/custSortRadioGroup">
+
+            <RadioButton
+                style="@style/radio_button_medium"
+                android:id="@+id/radioCard"
+                android:text="Scan Card"
+                android:layout_marginBottom="@dimen/medium_space"/>
+
+            <RadioButton
+                style="@style/radio_button_medium"
+                android:id="@+id/radioPIN"
+                android:text="PIN"
+                android:layout_marginBottom="@dimen/medium_space"/>
+
+            <RadioButton
+                style="@style/radio_button_medium"
+                android:id="@+id/radioOTP"
+                android:text="OTP (coming soon)"
+                android:textColor="@color/secondary_text"
+                android:enabled="false"/>
+        </RadioGroup>
+
+    </LinearLayout>
+</LinearLayout>

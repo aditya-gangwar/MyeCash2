@@ -76,7 +76,8 @@
                 android:layout_height="@dimen/small_space"/>
 
             <LinearLayout
-                style="@style/LL_Horizontal_wrap">
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/labelAcc">
 
                 <ImageView
                     android:layout_width="wrap_content"

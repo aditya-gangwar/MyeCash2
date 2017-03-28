@@ -56,7 +56,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public String mPinMobileChange;
     public String mNewMobileNum;
     public String mOtpMobileChange;
-    public String mCardMobileChange;
+    //public String mCardMobileChange;
 
     // members used by 'Txn Reports Activity' to store its state, and its fragments
     public List<String> mMissingFiles;
@@ -65,7 +65,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public List<Transaction> mLastFetchTransactions;
 
     // params for enabling account
-    public String mAccEnableCardNum;
+    //public String mAccEnableCardNum;
     public String mAccEnablePin;
     public String mAccEnableOtp;
 
@@ -101,8 +101,8 @@ public class MyRetainedFragment extends RetainedFragment {
     public void fetchCashback(Long updatedSince, Context ctxt) {
         mBackgroundProcessor.addFetchCbRequest(updatedSince, ctxt);
     }
-    public void changePin(String oldPin, String newPin, String cardNum) {
-        mBackgroundProcessor.addPinChangeRequest(oldPin, newPin, cardNum);
+    public void changePin(String oldPin, String newPin, String custName) {
+        mBackgroundProcessor.addPinChangeRequest(oldPin, newPin, custName);
     }
     public void fetchTransactions(String whereClause) {
         mBackgroundProcessor.addFetchTxnsRequest(whereClause);

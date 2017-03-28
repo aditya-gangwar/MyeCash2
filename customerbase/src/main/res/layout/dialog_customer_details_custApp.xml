@@ -266,7 +266,8 @@
             android:layout_height="@dimen/small_space"/>
 
         <LinearLayout
-            style="@style/LL_Horizontal_wrap">
+            style="@style/LL_Horizontal_wrap"
+            android:id="@+id/layout_cardId">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -292,7 +293,6 @@
                 android:text="1234 5678 345"
                 android:layout_weight="60"
                 android:gravity="left"
-                android:singleLine="true"
                 android:ellipsize="end"/>
         </LinearLayout>
         <LinearLayout

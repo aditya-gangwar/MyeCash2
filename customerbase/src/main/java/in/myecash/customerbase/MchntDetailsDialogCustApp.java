@@ -167,9 +167,16 @@ public class MchntDetailsDialogCustApp extends BaseDialog {
 
             mInputTotalBill.setText(AppCommonUtil.getAmtStr(cb.getBillAmt()));
 
-            mInputAccAvailable.setText(AppCommonUtil.getAmtStr(cb.getCurrClBalance()));
-            mInputAccTotalAdd.setText(AppCommonUtil.getAmtStr(cb.getClCredit()));
-            mInputAccTotalDebit.setText(AppCommonUtil.getAmtStr(cb.getClDebit()));
+            if(cb.getClCredit()==0 && cb.getClDebit()==0) {
+                mLabelAcc.setVisibility(View.GONE);
+                mLayoutBalAcc.setVisibility(View.GONE);
+                mLayoutAddAcc.setVisibility(View.GONE);
+                mLayoutDebitAcc.setVisibility(View.GONE);
+            } else {
+                mInputAccAvailable.setText(AppCommonUtil.getAmtStr(cb.getCurrClBalance()));
+                mInputAccTotalAdd.setText(AppCommonUtil.getAmtStr(cb.getClCredit()));
+                mInputAccTotalDebit.setText(AppCommonUtil.getAmtStr(cb.getClDebit()));
+            }
 
             mInputCbAvailable.setText(AppCommonUtil.getAmtStr(cb.getCurrCbBalance()));
             mInputCbTotalAward.setText(AppCommonUtil.getAmtStr(cb.getCbCredit()));
@@ -201,6 +208,11 @@ public class MchntDetailsDialogCustApp extends BaseDialog {
     private EditText mInputAccAvailable;
     private EditText mInputAccTotalAdd;
     private EditText mInputAccTotalDebit;
+
+    private View mLabelAcc;
+    private View mLayoutBalAcc;
+    private View mLayoutAddAcc;
+    private View mLayoutDebitAcc;
 
     private EditText mInputCbAvailable;
     private EditText mInputCbTotalAward;
@@ -235,6 +247,11 @@ public class MchntDetailsDialogCustApp extends BaseDialog {
         mInputAccAvailable = (EditText) v.findViewById(R.id.input_acc_balance);
         mInputAccTotalAdd = (EditText) v.findViewById(R.id.input_acc_add);
         mInputAccTotalDebit = (EditText) v.findViewById(R.id.input_acc_debit);
+
+        mLabelAcc = v.findViewById(R.id.label_acc);
+        mLayoutBalAcc = v.findViewById(R.id.layout_bal_acc);
+        mLayoutAddAcc = v.findViewById(R.id.layout_add_acc);
+        mLayoutDebitAcc = v.findViewById(R.id.layout_debit_acc);
 
         mInputMchntId = (EditText) v.findViewById(R.id.input_merchant_id);
         mInputContactPhone = (EditText) v.findViewById(R.id.input_mobile);

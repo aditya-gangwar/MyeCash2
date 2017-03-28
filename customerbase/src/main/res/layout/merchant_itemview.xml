@@ -85,14 +85,15 @@
 
                     <LinearLayout
                         style="@style/LL_Horizontal_wrap"
-                        android:id="@+id/layout_cb"
+                        android:id="@+id/layout_acc"
                         android:layout_width="72dp"
-                        android:gravity="end">
+                        android:gravity="end"
+                        android:clickable="false">
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_favorite_white_18dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_account_balance_wallet_white_18dp"
                             android:tint="@color/primary"
                             android:clickable="false"
                             android:layout_gravity="center_vertical"
@@ -100,7 +101,7 @@
                             android:paddingBottom="@dimen/edittext_padding_less"/>
                         <EditText
                             style="@style/Edittext_only_click_small"
-                            android:id="@+id/input_cb_bal"
+                            android:id="@+id/input_acc_bal"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
@@ -111,7 +112,6 @@
                             android:paddingBottom="@dimen/edittext_padding_less"
                             android:paddingLeft="@dimen/edittext_padding_less"/>
                     </LinearLayout>
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -133,15 +133,14 @@
 
                     <LinearLayout
                         style="@style/LL_Horizontal_wrap"
-                        android:id="@+id/layout_acc"
+                        android:id="@+id/layout_cb"
                         android:layout_width="72dp"
-                        android:gravity="end"
-                        android:clickable="false">
+                        android:gravity="end">
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_account_balance_wallet_white_18dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_favorite_white_18dp"
                             android:tint="@color/primary"
                             android:clickable="false"
                             android:layout_gravity="center_vertical"
@@ -149,7 +148,7 @@
                             android:paddingBottom="@dimen/edittext_padding_less"/>
                         <EditText
                             style="@style/Edittext_only_click_small"
-                            android:id="@+id/input_acc_bal"
+                            android:id="@+id/input_cb_bal"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_weight="1"

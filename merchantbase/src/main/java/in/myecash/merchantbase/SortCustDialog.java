@@ -28,6 +28,7 @@ public class SortCustDialog extends BaseDialog {
     public static final String TAG = "MchntApp-SortCustDialog";
 
     public static final String ARG_SELECTED = "argSelected";
+    public static final String ARG_SHOW_ACC = "argShowAcc";
     public static final String EXTRA_SELECTION = "extraSelected";
 
     //private SortCustDialogIf mListener;
@@ -37,10 +38,11 @@ public class SortCustDialog extends BaseDialog {
         void onCustSortType(int sortType);
     }*/
 
-    public static SortCustDialog newInstance(int selectedSortType) {
+    public static SortCustDialog newInstance(int selectedSortType, boolean showAcc) {
         LogMy.d(TAG, "Creating new SortCustDialog instance: "+selectedSortType);
         Bundle args = new Bundle();
         args.putInt(ARG_SELECTED, selectedSortType);
+        args.putBoolean(ARG_SHOW_ACC, showAcc);
 
         SortCustDialog fragment = new SortCustDialog();
         fragment.setArguments(args);
@@ -89,6 +91,9 @@ public class SortCustDialog extends BaseDialog {
                 break;
         }
 
+        if(!getArguments().getBoolean(ARG_SHOW_ACC)) {
+            mLayoutAcc.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -202,6 +207,8 @@ public class SortCustDialog extends BaseDialog {
     private RadioButton mAddAcc;
     private RadioButton mDebitAcc;
 
+    private View mLayoutAcc;
+
     private void initUiResources(View v) {
         mSortCustRadioGroup = (RadioGroup) v.findViewById(R.id.custSortRadioGroup);
         mUpdateTime = (RadioButton) v.findViewById(R.id.lastTxnTime);
@@ -214,5 +221,7 @@ public class SortCustDialog extends BaseDialog {
         mBalanceAcc = (RadioButton) v.findViewById(R.id.balanceAcc);
         mAddAcc = (RadioButton) v.findViewById(R.id.addAcc);
         mDebitAcc = (RadioButton) v.findViewById(R.id.debitAcc);
+
+        mLayoutAcc = v.findViewById(R.id.layout_acc);
     }
 }

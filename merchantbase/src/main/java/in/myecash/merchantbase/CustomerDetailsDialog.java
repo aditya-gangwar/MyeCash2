@@ -139,13 +139,18 @@ public class CustomerDetailsDialog extends BaseDialog {
             }
             mFirstUsedHere.setText(mSdfDateWithTime.format(cb.getCreateTime()));
 
-            mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cust.getCardId()));
-            mInputCardStatus.setText(DbConstants.cardStatusDesc[cust.getCardStatus()]);
-            mLayoutCardStatusDate.setVisibility(View.GONE);
-            if(cust.getCardStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
-                mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
-                mLayoutCardStatusDate.setVisibility(View.VISIBLE);
-                mCardStatusDate.setText(cust.getCardStatusUpdateTime());
+            if(cust.getCardId()==null || cust.getCardId().isEmpty()) {
+                mLayoutCard.setVisibility(View.GONE);
+            } else {
+                mLayoutCard.setVisibility(View.VISIBLE);
+                mInputQrCard.setText(CommonUtils.getPartialVisibleStr(cust.getCardId()));
+                mInputCardStatus.setText(DbConstants.cardStatusDesc[cust.getCardStatus()]);
+                mLayoutCardStatusDate.setVisibility(View.GONE);
+                if (cust.getCardStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
+                    mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+                    mLayoutCardStatusDate.setVisibility(View.VISIBLE);
+                    mCardStatusDate.setText(cust.getCardStatusUpdateTime());
+                }
             }
             int status = cust.getStatus();
             mInputStatus.setText(DbConstants.userStatusDesc[status]);
@@ -179,7 +184,7 @@ public class CustomerDetailsDialog extends BaseDialog {
             mInputTotalBill.setText(AppCommonUtil.getAmtStr(cb.getBillAmt()));
             //mInputCbBill.setText(AppCommonUtil.getAmtStr(cb.getCbBillAmt()));
 
-            if(cb.getClCredit()==0 && cb.getClDebit()==0 && !MerchantUser.getInstance().getMerchant().getCl_add_enable()) {
+            if(cb.getClCredit()==0 && cb.getClDebit()==0) {
                 mLayoutAccBalance.setVisibility(View.GONE);
             } else {
                 mLayoutAccBalance.setVisibility(View.VISIBLE);
@@ -251,6 +256,7 @@ public class CustomerDetailsDialog extends BaseDialog {
     //private View mLayoutRemarks;
     private View mLayoutCardStatusDate;
     private View mLayoutAccBalance;
+    private View mLayoutCard;
 
     private void bindUiResources(View v) {
 
@@ -262,6 +268,7 @@ public class CustomerDetailsDialog extends BaseDialog {
         //mCreatedOn = (TextView) v.findViewById(R.id.input_cust_created_on);;
         //mFirstLogin = (TextView) v.findViewById(R.id.input_first_login);;
 
+        mLayoutCard = v.findViewById(R.id.layout_card);
         mInputQrCard = (TextView) v.findViewById(R.id.input_qr_card);
         //mLayoutCardDetails = v.findViewById(R.id.layout_card_details);
         mInputCardStatus = (TextView) v.findViewById(R.id.input_card_status);

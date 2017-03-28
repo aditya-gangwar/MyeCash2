@@ -78,7 +78,7 @@ public class DashboardFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LogMy.d(TAG, "In onCreateView");
-        View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        View v = inflater.inflate(R.layout.fragment_dashboard2, container, false);
 
         // access to UI elements
         bindUiResources(v);
@@ -89,18 +89,18 @@ public class DashboardFragment extends BaseFragment {
 
     private void setListeners() {
         layoutCustCnt.setOnClickListener(this);
-        layoutBillAmt.setOnClickListener(this);
-        layoutAccount.setOnClickListener(this);
+        //layoutBillAmt.setOnClickListener(this);
+        //layoutAccount.setOnClickListener(this);
         layoutCashback.setOnClickListener(this);
 
         labelCustCnt.setOnTouchListener(this);
-        labelBillAmt.setOnTouchListener(this);
-        labelAccount.setOnTouchListener(this);
+        //labelBillAmt.setOnTouchListener(this);
+        //labelAccount.setOnTouchListener(this);
         labelCashback.setOnTouchListener(this);
 
         total_customers.setOnTouchListener(this);
-        total_bill_amt.setOnTouchListener(this);
-        total_account_cash.setOnTouchListener(this);
+        //total_bill_amt.setOnTouchListener(this);
+        //total_account_cash.setOnTouchListener(this);
         total_cashback.setOnTouchListener(this);
 
         //downloadDataFile.setOnClickListener(this);
@@ -172,8 +172,8 @@ public class DashboardFragment extends BaseFragment {
         int cust_cnt = mMerchantStats.getCust_cnt_cash()+mMerchantStats.getCust_cnt_cb()+mMerchantStats.getCust_cnt_cb_and_cash()+mMerchantStats.getCust_cnt_no_balance();
         total_customers.setText(String.valueOf(cust_cnt));
 
-        total_bill_amt.setText(AppCommonUtil.getAmtStr(mMerchantStats.getBill_amt_total()));
-        total_account_cash.setText(AppCommonUtil.getAmtStr(mMerchantStats.getCash_credit()));
+        //total_bill_amt.setText(AppCommonUtil.getAmtStr(mMerchantStats.getBill_amt_total()));
+        //total_account_cash.setText(AppCommonUtil.getAmtStr(mMerchantStats.getCash_credit()));
         total_cashback.setText(AppCommonUtil.getAmtStr(mMerchantStats.getCb_credit()));
 
         // update time
@@ -191,18 +191,18 @@ public class DashboardFragment extends BaseFragment {
     }
 
     View layoutCustCnt;
-    View layoutBillAmt;
-    View layoutAccount;
+    //View layoutBillAmt;
+    //View layoutAccount;
     View layoutCashback;
 
     View labelCustCnt;
-    View labelBillAmt;
-    View labelAccount;
+    //View labelBillAmt;
+    //View labelAccount;
     View labelCashback;
 
     EditText total_customers;
-    EditText total_bill_amt;
-    EditText total_account_cash;
+    //EditText total_bill_amt;
+    //EditText total_account_cash;
     EditText total_cashback;
 
     EditText mUpdated;
@@ -213,18 +213,18 @@ public class DashboardFragment extends BaseFragment {
     protected void bindUiResources(View view) {
 
         layoutCustCnt = view.findViewById(R.id.layout_cust_cnt);
-        layoutBillAmt = view.findViewById(R.id.layout_bill_amt);
-        layoutAccount = view.findViewById(R.id.layout_account_cash);
+        //layoutBillAmt = view.findViewById(R.id.layout_bill_amt);
+        //layoutAccount = view.findViewById(R.id.layout_account_cash);
         layoutCashback = view.findViewById(R.id.layout_cashback);
 
         labelCustCnt = view.findViewById(R.id.label_cust_cnt);
-        labelBillAmt = view.findViewById(R.id.label_bill_amt);
-        labelAccount = view.findViewById(R.id.label_account_cash);
+        //labelBillAmt = view.findViewById(R.id.label_bill_amt);
+        //labelAccount = view.findViewById(R.id.label_account_cash);
         labelCashback = view.findViewById(R.id.label_cashback);
 
         total_customers = (EditText) view.findViewById(R.id.input_cust_cnt);
-        total_bill_amt = (EditText) view.findViewById(R.id.input_bill_amt);
-        total_account_cash = (EditText) view.findViewById(R.id.input_account_cash);
+        //total_bill_amt = (EditText) view.findViewById(R.id.input_bill_amt);
+        //total_account_cash = (EditText) view.findViewById(R.id.input_account_cash);
         total_cashback = (EditText) view.findViewById(R.id.input_cashback);
 
         mUpdated = (EditText) view.findViewById(R.id.input_updated_time);

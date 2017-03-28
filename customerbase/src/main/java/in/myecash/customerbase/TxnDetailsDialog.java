@@ -136,8 +136,15 @@ public class TxnDetailsDialog extends BaseDialog {
 
             mInputCbRedeem.setText(AppCommonUtil.getAmtStr(txn.getCb_debit()));
 
-            mInputAccAdd.setText(AppCommonUtil.getAmtStr(txn.getCl_credit()));
-            mInputAccDebit.setText(AppCommonUtil.getAmtStr(txn.getCl_debit()));
+            if(txn.getCl_credit()==0 && txn.getCl_debit()==0) {
+                mLabelAcc.setVisibility(View.GONE);
+                mLayoutAccAdd.setVisibility(View.GONE);
+                mLayoutAccDebit.setVisibility(View.GONE);
+            } else {
+                mInputAccAdd.setText(AppCommonUtil.getAmtStr(txn.getCl_credit()));
+                mInputAccDebit.setText(AppCommonUtil.getAmtStr(txn.getCl_debit()));
+            }
+
 
             mInputMerchant.setText(txn.getMerchant_name());
             mInputMchntId.setText(txn.getMerchant_id());
@@ -244,6 +251,10 @@ public class TxnDetailsDialog extends BaseDialog {
     private EditText mInputAccAdd;
     private EditText mInputAccDebit;
 
+    private View mLabelAcc;
+    private View mLayoutAccDebit;
+    private View mLayoutAccAdd;
+
     private EditText mInputMerchant;
     private EditText mInputMchntId;
 
@@ -268,6 +279,10 @@ public class TxnDetailsDialog extends BaseDialog {
 
         mInputAccAdd = (EditText) v.findViewById(R.id.input_acc_add);
         mInputAccDebit = (EditText) v.findViewById(R.id.input_acc_debit);
+
+        mLabelAcc = v.findViewById(R.id.label_acc);
+        mLayoutAccDebit = v.findViewById(R.id.layout_acc_debit);
+        mLayoutAccAdd = v.findViewById(R.id.layout_acc_add);
 
         mInputCbAward = (EditText) v.findViewById(R.id.input_cb_award);
         mInputCbAward2 = (EditText) v.findViewById(R.id.input_cb_award2);

@@ -25,6 +25,7 @@ public class SortTxnDialog extends BaseDialog {
     public static final String TAG = "BaseApp-SortTxnDialog";
 
     public static final String ARG_SELECTED = "argSelected";
+    public static final String ARG_SHOW_ACC = "argShowAcc";
     public static final String EXTRA_SELECTION = "extraSelected";
 
     // Txn sort parameter types
@@ -42,10 +43,11 @@ public class SortTxnDialog extends BaseDialog {
         void onTxnSortType(int sortType);
     }*/
 
-    public static SortTxnDialog newInstance(int selectedSortType) {
+    public static SortTxnDialog newInstance(int selectedSortType, boolean showAcc) {
         LogMy.d(TAG, "Creating new SortTxnDialog instance: "+selectedSortType);
         Bundle args = new Bundle();
         args.putInt(ARG_SELECTED, selectedSortType);
+        args.putBoolean(ARG_SHOW_ACC, showAcc);
 
         SortTxnDialog fragment = new SortTxnDialog();
         fragment.setArguments(args);
@@ -92,6 +94,13 @@ public class SortTxnDialog extends BaseDialog {
             case TXN_SORT_ACC_DEBIT:
                 mSortTxnRadioGroup.check(mDebitAcc.getId());
                 break;
+        }
+
+        boolean showAcc = getArguments().getBoolean(ARG_SHOW_ACC, true);
+        if(!showAcc) {
+            mLabelAcc.setVisibility(View.GONE);
+            mAddAcc.setVisibility(View.GONE);
+            mDebitAcc.setVisibility(View.GONE);
         }
 
         // return new dialog
@@ -185,6 +194,7 @@ public class SortTxnDialog extends BaseDialog {
     private RadioButton mBillAmt;
     private RadioButton mAwardCb;
     private RadioButton mRedeemCb;
+    private View mLabelAcc;
     private RadioButton mAddAcc;
     private RadioButton mDebitAcc;
 
@@ -194,6 +204,7 @@ public class SortTxnDialog extends BaseDialog {
         mBillAmt = (RadioButton) v.findViewById(R.id.billAmt);
         mAwardCb = (RadioButton) v.findViewById(R.id.awardCb);
         mRedeemCb = (RadioButton) v.findViewById(R.id.redeemCb);
+        mLabelAcc = v.findViewById(R.id.labelAcc);
         mAddAcc = (RadioButton) v.findViewById(R.id.addAcc);
         mDebitAcc = (RadioButton) v.findViewById(R.id.debitAcc);
     }

@@ -308,6 +308,7 @@
 
             <EditText
                 style="@style/Edittext_only_view_small"
+                android:id="@+id/label_acc"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Account (AC)"
@@ -316,7 +317,8 @@
                 android:paddingLeft="0dp"/>
 
             <LinearLayout
-                style="@style/LL_Horizontal_wrap">
+                style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_bal_acc">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -343,6 +345,7 @@
             </LinearLayout>
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_add_acc"
                 android:visibility="visible">
 
                 <ImageView
@@ -372,6 +375,7 @@
             </LinearLayout>
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
+                android:id="@+id/layout_debit_acc"
                 android:visibility="visible">
 
                 <ImageView

@@ -36,6 +36,7 @@ import in.myecash.common.MyMerchant;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
+import in.myecash.common.database.Transaction;
 import in.myecash.customerbase.helper.MyRetainedFragment;
 
 /**
@@ -261,7 +262,15 @@ public class CashbackListFragment extends BaseFragment {
 
     private void sortMerchantList() {
         try {
-            SortMchntDialog dialog = SortMchntDialog.newInstance(mSelectedSortType);
+            // loop and check if there's any txn with acc credit/debit
+            boolean accFigures = false;
+            for (MyCashback cb : mMyCbs) {
+                if(cb.getClCredit()!=0 || cb.getClDebit()!=0) {
+                    accFigures = true;
+                }
+            }
+
+            SortMchntDialog dialog = SortMchntDialog.newInstance(mSelectedSortType, accFigures);
             dialog.setTargetFragment(this, REQ_SORT_CUST_TYPES);
             dialog.show(getFragmentManager(), DIALOG_SORT_CUST_TYPES);
 
@@ -299,6 +308,7 @@ public class CashbackListFragment extends BaseFragment {
         private EditText mLastTxnTime;
         private EditText mAccBalance;
         private EditText mCbBalance;
+        private View mLayoutAcc;
 
         public CbHolder(View itemView) {
             super(itemView);
@@ -312,6 +322,7 @@ public class CashbackListFragment extends BaseFragment {
             mLastTxnTime = (EditText) itemView.findViewById(R.id.input_last_txn);
             mAccBalance = (EditText) itemView.findViewById(R.id.input_acc_bal);
             mCbBalance = (EditText) itemView.findViewById(R.id.input_cb_bal);
+            mLayoutAcc = itemView.findViewById(R.id.layout_acc);
 
             mCardView.setOnTouchListener(this);
             mLayoutMchntItem.setOnTouchListener(this);
@@ -319,8 +330,8 @@ public class CashbackListFragment extends BaseFragment {
             mMerchantName.setOnTouchListener(this);
             mCategoryNdCity.setOnTouchListener(this);
             mLastTxnTime.setOnTouchListener(this);
-            mAccBalance.setOnTouchListener(this);;
-            mCbBalance.setOnTouchListener(this);;
+            mAccBalance.setOnTouchListener(this);
+            mCbBalance.setOnTouchListener(this);
         }
 
         @Override
@@ -386,7 +397,12 @@ public class CashbackListFragment extends BaseFragment {
             mCategoryNdCity.setText(txt);
             String str = "Last: "+mSdfDateWithTime.format(cb.getLastTxnTime());
             mLastTxnTime.setText(str);
-            mAccBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrClBalance()));
+            if(mCb.getCurrClBalance()==0) {
+                mLayoutAcc.setVisibility(View.GONE);
+            } else {
+                mLayoutAcc.setVisibility(View.VISIBLE);
+                mAccBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrClBalance()));
+            }
             mCbBalance.setText(AppCommonUtil.getAmtStr(mCb.getCurrCbBalance()));
         }
 

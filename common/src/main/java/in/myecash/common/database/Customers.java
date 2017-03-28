@@ -33,6 +33,24 @@ public class Customers
   private String txn_tables;
   private Date delLocalFilesReq;
   private String namak;
+  private String dob;
+  private int sex;
+
+  public String getDob() {
+    return dob;
+  }
+
+  public void setDob(String dob) {
+    this.dob = dob;
+  }
+
+  public int getSex() {
+    return sex;
+  }
+
+  public void setSex(int sex) {
+    this.sex = sex;
+  }
 
   public String getNamak() {
     return namak;

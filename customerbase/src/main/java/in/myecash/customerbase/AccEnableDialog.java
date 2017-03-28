@@ -24,21 +24,22 @@ import in.myecash.common.constants.ErrorCodes;
 public class AccEnableDialog extends BaseDialog {
     private static final String TAG = "CustApp-AccEnableDialog";
 
-    private static final String ARG_CARD_NUM = "ArgCardNum";
+    //private static final String ARG_CARD_NUM = "ArgCardNum";
     private static final String ARG_PIN = "ArgPin";
 
     public interface AccEnableDialogIf {
-        void enableAccOk(String otp, String cardNum, String pin);
+        //void enableAccOk(String otp, String cardNum, String pin);
+        void enableAccOk(String otp, String pin);
     }
 
     private AccEnableDialogIf mCallback;
 
-    public static AccEnableDialog newInstance(String cardNum, String pin) {
-        LogMy.d(TAG, "Creating new AccEnableDialog instance: "+cardNum+", "+pin);
+    //public static AccEnableDialog newInstance(String cardNum, String pin) {
+    public static AccEnableDialog newInstance(String pin) {
         Bundle args = new Bundle();
-        if(cardNum!=null) {
+        /*if(cardNum!=null) {
             args.putString(ARG_CARD_NUM, cardNum);
-        }
+        }*/
         if(pin!=null) {
             args.putString(ARG_PIN, pin);
         }
@@ -123,13 +124,13 @@ public class AccEnableDialog extends BaseDialog {
         initUiResources(v);
 
         // get arguments
-        String cardNum = getArguments().getString(ARG_CARD_NUM,null);
+        //String cardNum = getArguments().getString(ARG_CARD_NUM,null);
         String pin = getArguments().getString(ARG_PIN,null);
 
         // set values if available
-        if(cardNum!=null && !cardNum.isEmpty()) {
+        /*if(cardNum!=null && !cardNum.isEmpty()) {
             inputCardNum.setText(cardNum);
-        }
+        }*/
         if(pin!=null && !pin.isEmpty()) {
             inputPin.setText(pin);
         }
@@ -164,7 +165,6 @@ public class AccEnableDialog extends BaseDialog {
 
                             // here means - atleast one of OTP, Card# or PIN is available
                             mCallback.enableAccOk(inputOtp.getText().toString(),
-                                    inputCardNum.getText().toString(),
                                     inputPin.getText().toString());
 
                             getDialog().dismiss();
@@ -208,32 +208,32 @@ public class AccEnableDialog extends BaseDialog {
         //pass a handler the button doesn't get instantiated
     }*/
 
-    private EditText labelInfo1;
-    private EditText labelInfo2;
-    private EditText labelInfo3;
+    //private EditText labelInfo1;
+    //private EditText labelInfo2;
+    //private EditText labelInfo3;
 
-    private View layoutCardNum;
-    private EditText inputCardNum;
+    //private View layoutCardNum;
+    //private EditText inputCardNum;
 
-    private View labelOr;
+    //private View labelOr;
 
-    private View layoutPin;
+    //private View layoutPin;
     private EditText inputPin;
 
     private View layoutOtp;
     private EditText inputOtp;
 
     private void initUiResources(View view) {
-        labelInfo1 = (EditText) view.findViewById(R.id.label_info1);
-        labelInfo2 = (EditText) view.findViewById(R.id.label_info2);
-        labelInfo3 = (EditText) view.findViewById(R.id.label_info3);
+        //labelInfo1 = (EditText) view.findViewById(R.id.label_info1);
+        //labelInfo2 = (EditText) view.findViewById(R.id.label_info2);
+        //labelInfo3 = (EditText) view.findViewById(R.id.label_info3);
 
-        layoutCardNum = view.findViewById(R.id.layout_cardNum);
-        inputCardNum = (EditText) view.findViewById(R.id.input_card_num);
+        //layoutCardNum = view.findViewById(R.id.layout_cardNum);
+        //inputCardNum = (EditText) view.findViewById(R.id.input_card_num);
 
-        labelOr = view.findViewById(R.id.label_or);
+        //labelOr = view.findViewById(R.id.label_or);
 
-        layoutPin = view.findViewById(R.id.layout_pin);
+        //layoutPin = view.findViewById(R.id.layout_pin);
         inputPin = (EditText) view.findViewById(R.id.input_pin);
 
         layoutOtp = view.findViewById(R.id.layout_otp);
@@ -255,7 +255,7 @@ public class AccEnableDialog extends BaseDialog {
             }
         }
 
-        boolean cardEntered = false;
+        /*boolean cardEntered = false;
         if( !inputCardNum.getText().toString().isEmpty()) {
             cardEntered = true;
             errorCode = ValidationHelper.validateCardNum(inputCardNum.getText().toString());
@@ -263,7 +263,7 @@ public class AccEnableDialog extends BaseDialog {
                 inputCardNum.setError(AppCommonUtil.getErrorDesc(errorCode));
                 retValue = false;
             }
-        }
+        }*/
 
         boolean pinEntered = false;
         if( !inputPin.getText().toString().isEmpty()) {
@@ -275,7 +275,8 @@ public class AccEnableDialog extends BaseDialog {
             }
         }
 
-        if(!otpEntered && !cardEntered && !pinEntered) {
+        //if(!otpEntered && !cardEntered && !pinEntered) {
+        if(!otpEntered && !pinEntered) {
             // if otp not entered - atleast one of Card# or PIN shud be provided
             AppCommonUtil.toast(getActivity(), "No OTP. Provide Card# or PIN to generate");
             retValue = false;

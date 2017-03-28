@@ -26,7 +26,7 @@ public class AppConstants {
     public static final long MIN_CLICK_INTERVAL=700;
 
     public static final String PHONE_COUNTRY_CODE = "+91 ";
-    public static int MOBILE_NUM_PROCESS_MIN_LENGTH = 8;
+    public static int MOBILE_NUM_PROCESS_MIN_LENGTH = 0;
     public static final String SYMBOL_RS = "\u20B9 ";
     public static final String SYMBOL_RS_0 = "\u20B9 0";
     public static final String SYMBOL_DOWN_ARROW = "\u25BC";
@@ -38,6 +38,12 @@ public class AppConstants {
     // Prefixes for downloadable files
     public static final String FILE_PREFIX_TXN_LIST = "MyeCash_txns_";
     public static final String FILE_PREFIX_CUSTOMER_LIST = "MyeCash_Customers_";
+
+    // Txn verify methods
+    public static final int TXN_VERIFY_CARD = 0;
+    public static final int TXN_VERIFY_PIN = 1;
+    public static final int TXN_VERIFY_OTP = 2;
+
 
     // Titles/Msgs/hints shown on dialogues
     public static final String generalInfoTitle = "Information";
@@ -104,7 +110,7 @@ public class AppConstants {
     public static final String custOpChangeMobileSuccessMsg = "Customer registered number updated successfully.";
 
     public static final String customerRegConfirmTitle = "Customer Registration Success";
-    public static final String custRegSuccessMsg = "Customer PIN is sent to the provided mobile number.\nPlease proceed with transaction.";
+    public static final String custRegSuccessMsg = "Customer PIN is sent to the provided mobile number.\n\nPlease proceed with transaction.";
 
     public static final String deviceDeleteTitle = "Remove Trusted Device";
     public static final String deviceDeleteMsg = "Remove '%s' from Trusted Device list ?\nYou will need to login again after device delete.";

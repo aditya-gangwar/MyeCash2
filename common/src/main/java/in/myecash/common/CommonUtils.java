@@ -18,7 +18,7 @@ public class CommonUtils {
 
     private static final SimpleDateFormat mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
 
-    public static boolean customerPinRequired(Merchants merchant, Transaction txn) {
+    public static boolean txnVerifyReq(Merchants merchant, Transaction txn) {
         if(txn.getCancelTime()==null) {
             int cl_credit_threshold = (merchant.getCl_credit_limit_for_pin() < 0) ? MyGlobalSettings.getAccAddPinLimit() : merchant.getCl_credit_limit_for_pin();
             int cl_debit_threshold = (merchant.getCl_debit_limit_for_pin() < 0) ? MyGlobalSettings.getAccDebitPinLimit() : merchant.getCl_debit_limit_for_pin();

@@ -2,6 +2,7 @@ package in.myecash.common;
 
 import com.backendless.exceptions.BackendlessException;
 import in.myecash.common.constants.CommonConstants;
+import in.myecash.common.constants.DbConstants;
 import in.myecash.common.database.CustomerCards;
 import in.myecash.common.database.Customers;
 
@@ -67,7 +68,11 @@ public class MyCustomer {
         mStatusUpdateDate = new Date(Long.parseLong(csvFields[CUST_CSV_STATUS_UPDATE_TIME]));
         mStatusUpdateTime = mSdfDateWithTime.format(mStatusUpdateDate);
         mCardId = csvFields[CUST_CSV_CARD_ID];
-        mCardStatus = Integer.parseInt(csvFields[CUST_CSV_CARD_STATUS]);
+        if(csvFields[CUST_CSV_CARD_STATUS].isEmpty()) {
+            mCardStatus = DbConstants.CUSTOMER_CARD_NOT_AVAILABLE;
+        } else {
+            mCardStatus = Integer.parseInt(csvFields[CUST_CSV_CARD_STATUS]);
+        }
 
         if(!csvFields[CUST_CSV_STATUS_REASON].isEmpty()) {
             mStatusReason = csvFields[CUST_CSV_STATUS_REASON];
@@ -92,9 +97,16 @@ public class MyCustomer {
         csvFields[CUST_CSV_ACC_STATUS] = String.valueOf(customer.getAdmin_status()) ;
         csvFields[CUST_CSV_STATUS_REASON] = customer.getStatus_reason();
         csvFields[CUST_CSV_STATUS_UPDATE_TIME] = String.valueOf(customer.getStatus_update_time().getTime()) ;
-        csvFields[CUST_CSV_CARD_ID] = CommonUtils.getPartialVisibleStr(card.getCardNum());
-        csvFields[CUST_CSV_CARD_STATUS] = String.valueOf(card.getStatus()) ;
-        csvFields[CUST_CSV_CARD_STATUS_UPDATE_TIME] = String.valueOf(card.getStatus_update_time().getTime()) ;
+
+        if(card!=null) {
+            csvFields[CUST_CSV_CARD_ID] = CommonUtils.getPartialVisibleStr(card.getCardNum());
+            csvFields[CUST_CSV_CARD_STATUS] = String.valueOf(card.getStatus());
+            csvFields[CUST_CSV_CARD_STATUS_UPDATE_TIME] = String.valueOf(card.getStatus_update_time().getTime());
+        } else {
+            csvFields[CUST_CSV_CARD_ID] = "";
+            csvFields[CUST_CSV_CARD_STATUS] = "";
+            csvFields[CUST_CSV_CARD_STATUS_UPDATE_TIME] = "";
+        }
 
         // join the fields in single CSV string
         StringBuilder sb = new StringBuilder(CUST_CSV_MAX_SIZE);

@@ -315,7 +315,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/large_space"/>
 
-            <View
+            <!--View
                 style="@style/Divider_horizontal_Large"/>
 
             <Space
@@ -353,8 +353,6 @@
                     android:layout_weight="30"
                     android:gravity="left|top"
                     android:layout_gravity="bottom"/>
-                <!--View
-                    style="@style/Divider_vertical_Medium"/-->
                 <EditText
                     style="@style/Edittext_only_click_bg_medium"
                     android:id="@+id/input_qr_card"
@@ -363,7 +361,7 @@
                     android:hint="Touch to Scan"
                     android:layout_weight="70"
                     android:gravity="left"/>
-            </LinearLayout>
+            </LinearLayout-->
 
         </LinearLayout>
 

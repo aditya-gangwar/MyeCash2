@@ -226,8 +226,14 @@ public class TxnDetailsDialog extends BaseDialog {
 
             mInputCbRedeem.setText(AppCommonUtil.getAmtStr(txn.getCb_debit()));
 
-            mInputAccAdd.setText(AppCommonUtil.getAmtStr(txn.getCl_credit()));
-            mInputAccDebit.setText(AppCommonUtil.getAmtStr(txn.getCl_debit()));
+            if(txn.getCl_credit()==0 && txn.getCl_debit()==0) {
+                mLabelAcc.setVisibility(View.GONE);
+                mLayoutAccAdd.setVisibility(View.GONE);
+                mLayoutAccDebit.setVisibility(View.GONE);
+            } else {
+                mInputAccAdd.setText(AppCommonUtil.getAmtStr(txn.getCl_credit()));
+                mInputAccDebit.setText(AppCommonUtil.getAmtStr(txn.getCl_debit()));
+            }
 
             // Changes if cancelled txn
             mInputCbAward2.setVisibility(View.GONE);
@@ -336,6 +342,10 @@ public class TxnDetailsDialog extends BaseDialog {
     private TextView mInputAccAdd;
     private TextView mInputAccDebit;
 
+    private View mLabelAcc;
+    private View mLayoutAccDebit;
+    private View mLayoutAccAdd;
+
     //private ImageView mTxnImage;
 
     private void bindUiResources(View v) {
@@ -357,6 +367,10 @@ public class TxnDetailsDialog extends BaseDialog {
         mInputMobileNum = (TextView) v.findViewById(R.id.input_customer_mobile);
         mCardUsed = (TextView) v.findViewById(R.id.input_card_used);
         mPinUsed = (TextView) v.findViewById(R.id.input_pin_used);
+
+        mLabelAcc = v.findViewById(R.id.label_acc);
+        mLayoutAccDebit = v.findViewById(R.id.layout_acc_debit);
+        mLayoutAccAdd = v.findViewById(R.id.layout_acc_add);
 
         mInputAccAdd = (TextView) v.findViewById(R.id.input_acc_add);
         mInputAccDebit = (TextView) v.findViewById(R.id.input_acc_debit);

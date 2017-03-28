@@ -28,6 +28,7 @@ public class SortMchntDialog extends BaseDialog {
     public static final String TAG = "CustApp-SortMchntDialog";
 
     public static final String ARG_SELECTED = "argSelected";
+    public static final String ARG_SHOW_ACC = "argShowAcc";
     public static final String EXTRA_SELECTION = "extraSelected";
 
     //private SortMchntDialogIf mListener;
@@ -37,10 +38,11 @@ public class SortMchntDialog extends BaseDialog {
         void onCustSortType(int sortType);
     }*/
 
-    public static SortMchntDialog newInstance(int selectedSortType) {
+    public static SortMchntDialog newInstance(int selectedSortType, boolean showAcc) {
         LogMy.d(TAG, "Creating new SortMchntDialog instance: "+selectedSortType);
         Bundle args = new Bundle();
         args.putInt(ARG_SELECTED, selectedSortType);
+        args.putBoolean(ARG_SHOW_ACC, showAcc);
 
         SortMchntDialog fragment = new SortMchntDialog();
         fragment.setArguments(args);
@@ -78,6 +80,10 @@ public class SortMchntDialog extends BaseDialog {
             case MyCashback.CB_CMP_TYPE_CB_BALANCE:
                 mSortCustRadioGroup.check(mBalanceCb.getId());
                 break;
+        }
+
+        if(!getArguments().getBoolean(ARG_SHOW_ACC)) {
+            mBalanceAcc.setVisibility(View.GONE);
         }
 
     }

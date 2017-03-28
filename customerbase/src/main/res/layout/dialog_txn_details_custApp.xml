@@ -11,11 +11,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/label_title">
 
         <LinearLayout
-            style="@style/LL_Vertical_paddingSidesLarge">
+            style="@style/LL_Vertical_paddingSidesLarge"
+            android:layout_height="wrap_content">
 
             <Space
                 android:layout_width="match_parent"
@@ -354,21 +355,20 @@
                     android:textStyle="italic"/>
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/XS_space"/>
-
             <EditText
                 style="@style/Edittext_only_view_small"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Account (AC)"
                 android:textColor="@color/subheading"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp"
+                android:id="@+id/label_acc"
+                android:layout_marginTop="@dimen/XS_space"/>
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:visibility="visible">
+                android:visibility="visible"
+                android:id="@+id/layout_acc_debit">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -398,7 +398,8 @@
 
             <LinearLayout
                 style="@style/LL_Horizontal_wrap"
-                android:visibility="visible">
+                android:visibility="visible"
+                android:id="@+id/layout_acc_add">
 
                 <ImageView
                     android:layout_width="wrap_content"

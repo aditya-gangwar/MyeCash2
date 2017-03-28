@@ -40,7 +40,8 @@
                     android:layout_height="@dimen/toolbar_image_height"
                     android:padding="@dimen/toolbar_image_padding"
                     android:layout_gravity="center_vertical|left"
-                    android:src="@drawable/ic_person"
+                    android:src="@drawable/ic_store_white_24dp"
+                    android:tint="@color/icon_grey"
                     android:scaleType="fitXY"
                     android:layout_marginRight="@dimen/small_space"/>
 

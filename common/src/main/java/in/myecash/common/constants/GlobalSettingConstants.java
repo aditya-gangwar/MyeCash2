@@ -54,6 +54,7 @@ public class GlobalSettingConstants {
     public static final String SETTINGS_CUST_CARD_MIN_QTY = "Cust_Card_Min_Qty";
     public static final String SETTINGS_CUST_CARD_MAX_QTY = "Cust_Card_Max_Qty";
     public static final String SETTINGS_CONTACT_US_URL = "ContactUs_Url";
+    //public static final String SETTINGS_CB_TXN_VERIFY_TYPE = "Cb_Txn_Verify_Method";
 
     /*
      * Ones defined only in backend as constant values - as not used by App
@@ -77,6 +78,12 @@ public class GlobalSettingConstants {
     public static final int TXN_IMAGE_CAPTURE_CARD_REQUIRED = 1;
     public static final int TXN_IMAGE_CAPTURE_NEVER = 2;
 
+    // SETTINGS_CB_TXN_VERIFY_TYPE possible values
+    /*public static final int TXN_CB_VERIFY_CARD = 0; // card scan required
+    public static final int TXN_CB_VERIFY_PIN = 1; // PIN required
+    public static final int TXN_CB_VERIFY_OTP = 2; // OTP required
+    public static final int TXN_CB_VERIFY_ANY_ONE = 3; // any one of card, PIN or OTP - ask user for it*/
+
     public static final Map<String, String> valuesGlobalSettings;
     static {
         Map<String, String> aMap = new HashMap<>(TOTAL_SETTINGS_CNT);
@@ -89,15 +96,15 @@ public class GlobalSettingConstants {
         aMap.put(SETTINGS_CUSTOMER_NO_REFRESH_MINS,"240");
         aMap.put(SETTINGS_WRONG_ATTEMPT_RESET_MINS,"120");
 
-        aMap.put(SETTINGS_CB_REDEEM_CARD_REQ,"true");
-        aMap.put(SETTINGS_ACC_DB_CARD_REQ,"true");
+        aMap.put(SETTINGS_CB_REDEEM_CARD_REQ,"false");
+        aMap.put(SETTINGS_ACC_DB_CARD_REQ,"false");
         // Keeping this same as 'SETTINGS_CUSTOMER_CASH_LIMIT'
         // which effectively means - PIN will never be required for credit
-        aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN,"4000");
-        aMap.put(SETTINGS_CL_DEBIT_LIMIT_FOR_PIN,"10");
-        aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN,"1000");
         aMap.put(SETTINGS_CB_REDEEM_LIMIT,"200");
         aMap.put(SETTINGS_CUSTOMER_CASH_LIMIT,"4000");
+        aMap.put(SETTINGS_CL_CREDIT_LIMIT_FOR_PIN,"4000");
+        aMap.put(SETTINGS_CL_DEBIT_LIMIT_FOR_PIN,"0");
+        aMap.put(SETTINGS_CB_DEBIT_LIMIT_FOR_PIN,"0");
 
         aMap.put(SETTINGS_MCHNT_REMOVAL_EXPIRY_DAYS,"30");
         aMap.put(SETTINGS_TXNS_INTABLE_KEEP_DAYS,"7");

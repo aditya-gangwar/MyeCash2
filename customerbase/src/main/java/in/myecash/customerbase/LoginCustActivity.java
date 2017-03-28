@@ -367,11 +367,11 @@ public class LoginCustActivity extends AppCompatActivity implements
                 } else if (errorCode == ErrorCodes.USER_ACC_DISABLED) {
                     mLoginButton.setEnabled(true);
                     // reset Enable account parameters
-                    mWorkFragment.mAccEnableCardNum = null;
+                    //mWorkFragment.mAccEnableCardNum = null;
                     mWorkFragment.mAccEnablePin = null;
                     mWorkFragment.mAccEnableOtp = null;
                     // Show Enable account dialog
-                    AccEnableDialog dialog = AccEnableDialog.newInstance(null, null);
+                    AccEnableDialog dialog = AccEnableDialog.newInstance(null);
                     dialog.show(getFragmentManager(), DIALOG_ENABLE_ACC);
 
                 } else if (errorCode == ErrorCodes.SERVICE_GLOBAL_DISABLED) {
@@ -437,7 +437,7 @@ public class LoginCustActivity extends AppCompatActivity implements
                 } else if (errorCode == ErrorCodes.OTP_GENERATED) {
                     // OTP sent successfully to registered mobile, ask for the same
                     // show the 'enable account dialog' again
-                    AccEnableDialog dialog = AccEnableDialog.newInstance(mWorkFragment.mAccEnableCardNum, mWorkFragment.mAccEnablePin);
+                    AccEnableDialog dialog = AccEnableDialog.newInstance(mWorkFragment.mAccEnablePin);
                     dialog.show(getFragmentManager(), DIALOG_ENABLE_ACC);
 
                 } else {
@@ -556,10 +556,10 @@ public class LoginCustActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void enableAccOk(String otp, String cardNum, String pin) {
+    public void enableAccOk(String otp, String pin) {
         // update values
         mWorkFragment.mAccEnableOtp = otp;
-        mWorkFragment.mAccEnableCardNum = cardNum;
+        //mWorkFragment.mAccEnableCardNum = cardNum;
         mWorkFragment.mAccEnablePin = pin;
 
         // show progress dialog

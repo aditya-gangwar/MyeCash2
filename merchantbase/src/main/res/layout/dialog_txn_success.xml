@@ -101,7 +101,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    style="@style/LL_Horizontal_wrap">
+                    style="@style/LL_Horizontal_wrap"
+                    android:id="@+id/layout_acc_new">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -141,11 +142,14 @@
 
                 <LinearLayout
                     style="@style/LL_Horizontal_wrap">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:src="@drawable/ic_favorite_white_18dp"
-                        android:tint="@color/primary"/>
+                        android:tint="@color/primary"
+                        android:id="@+id/imageView" />
+
                     <EditText
                         style="@style/Edittext_only_view_medium_lessPad"
                         android:layout_height="wrap_content"
@@ -165,7 +169,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    style="@style/LL_Horizontal_wrap">
+                    style="@style/LL_Horizontal_wrap"
+                    android:id="@+id/layout_acc_old">
 
                     <ImageView
                         android:layout_width="wrap_content"

@@ -100,6 +100,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
     //private LinearLayout mTbLayoutSubhead1;
     private EditText mTbSubhead1Text1;
     private EditText mTbSubhead1Text2;
+    private View mTbImgAcc;
 
     private CustomerUser mCustomerUser;
     private Customers mCustomer;
@@ -140,6 +141,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
         // reference to views
         mTbSubhead1Text1 = (EditText) findViewById(R.id.tb_curr_cashload) ;
         mTbSubhead1Text2 = (EditText) findViewById(R.id.tb_curr_cashback) ;
+        mTbImgAcc = findViewById(R.id.tb_acc_img) ;
 
         // Setup a toolbar to replace the action bar.
         initToolbar();
@@ -626,9 +628,10 @@ public class CashbackActivityCust extends AppCompatActivity implements
     }
 
     @Override
-    public void changeMobileNumOk(String newMobile, String cardNum) {
+    //public void changeMobileNumOk(String newMobile, String cardNum) {
+    public void changeMobileNumOk(String newMobile) {
         mRetainedFragment.mNewMobileNum = newMobile;
-        mRetainedFragment.mCardMobileChange = cardNum;
+        //mRetainedFragment.mCardMobileChange = cardNum;
 
         // ask for customer PIN
         String txnDetail = String.format(AppConstants.msgChangeCustMobilePin,newMobile);
@@ -720,9 +723,9 @@ public class CashbackActivityCust extends AppCompatActivity implements
     }
 
     @Override
-    public void onPinResetData(String cardNum) {
+    public void onPinResetData(String custName) {
         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-        mRetainedFragment.changePin(null, null, cardNum);
+        mRetainedFragment.changePin(null, null, custName);
     }
 
     private void onPinChangeResponse(int errorCode) {
@@ -820,7 +823,14 @@ public class CashbackActivityCust extends AppCompatActivity implements
                 mRetainedFragment.stats.addToStats(cb);
             }
             mTbSubhead1Text2.setText(AppCommonUtil.getAmtStr(mRetainedFragment.stats.getCbBalance()));
-            mTbSubhead1Text1.setText(AppCommonUtil.getAmtStr(mRetainedFragment.stats.getClBalance()));
+            if(mRetainedFragment.stats.getClBalance()>0) {
+                mTbImgAcc.setVisibility(View.VISIBLE);
+                mTbSubhead1Text1.setVisibility(View.VISIBLE);
+                mTbSubhead1Text1.setText(AppCommonUtil.getAmtStr(mRetainedFragment.stats.getClBalance()));
+            } else {
+                mTbImgAcc.setVisibility(View.GONE);
+                mTbSubhead1Text1.setVisibility(View.GONE);
+            }
 
             // create or refresh cashback list fragment
             mMchntListFragment = (CashbackListFragment) mFragMgr.findFragmentByTag(CASHBACK_LIST_FRAGMENT);

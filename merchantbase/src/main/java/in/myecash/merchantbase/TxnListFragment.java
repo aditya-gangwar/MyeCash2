@@ -262,7 +262,16 @@ public class TxnListFragment extends BaseFragment {
             } else if (i == R.id.action_email) {
                 emailReport();
             } else if (i == R.id.action_sort) {
-                SortTxnDialog dialog = SortTxnDialog.newInstance(mSelectedSortType);
+                // loop and check if there's any txn with acc credit/debit
+                boolean accFigures = false;
+                for (Transaction txn :
+                        mRetainedFragment.mLastFetchTransactions) {
+                    if(txn.getCl_debit()!=0 || txn.getCl_credit()!=0) {
+                        accFigures = true;
+                    }
+                }
+
+                SortTxnDialog dialog = SortTxnDialog.newInstance(mSelectedSortType, accFigures);
                 dialog.setTargetFragment(this, REQ_SORT_TXN_TYPES);
                 dialog.show(getFragmentManager(), DIALOG_SORT_TXN_TYPES);
             }
@@ -604,6 +613,7 @@ public class TxnListFragment extends BaseFragment {
         public TextView mCbAwardCancel;
         public View mAccountIcon;
         public TextView mAccountAmt;
+        public View mTxnAmtDiv;
         public View mCashbackIcon;
         public TextView mCashbackAmt;
 
@@ -624,6 +634,8 @@ public class TxnListFragment extends BaseFragment {
             mBillAmount = (TextView) itemView.findViewById(R.id.txn_bill);
             mAccountIcon = itemView.findViewById(R.id.txn_account_icon);
             mAccountAmt = (TextView) itemView.findViewById(R.id.txn_account_amt);
+            mTxnAmtDiv = itemView.findViewById(R.id.txn_amts_divider);
+
             mCashbackIcon = itemView.findViewById(R.id.txn_cashback_icon);
             mCashbackAmt = (TextView) itemView.findViewById(R.id.txn_cashback_amt);
 
@@ -701,18 +713,26 @@ public class TxnListFragment extends BaseFragment {
 
             if(mTxn.getCl_credit() > 0) {
                 mAccountIcon.setVisibility(View.VISIBLE);
+                mAccountAmt.setVisibility(View.VISIBLE);
+                mTxnAmtDiv.setVisibility(View.VISIBLE);
+
                 mAccountAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCl_credit(), true));
                 mAccountAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.green_positive));
 
             } else if(mTxn.getCl_debit() > 0) {
                 mAccountIcon.setVisibility(View.VISIBLE);
+                mAccountAmt.setVisibility(View.VISIBLE);
+                mTxnAmtDiv.setVisibility(View.VISIBLE);
+
                 mAccountAmt.setText(AppCommonUtil.getSignedAmtStr(mTxn.getCl_debit(), false));
                 mAccountAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
 
             } else {
                 mAccountIcon.setVisibility(View.GONE);
-                mAccountAmt.setText("-");
-                mAccountAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary_text));
+                mAccountAmt.setVisibility(View.GONE);
+                mTxnAmtDiv.setVisibility(View.GONE);
+                //mAccountAmt.setText("-");
+                //mAccountAmt.setTextColor(ContextCompat.getColor(getActivity(), R.color.primary_text));
             }
 
             if(mTxn.getCb_debit() > 0) {
