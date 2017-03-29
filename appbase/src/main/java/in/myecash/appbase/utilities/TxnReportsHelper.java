@@ -273,7 +273,7 @@ public class TxnReportsHelper {
         Transaction txn = CsvConverter.txnFromCsvStr(csvString);
 
         if( !isCustomerFilter ||
-                mCustomerId.equals(txn.getCustomer_id()) ||
+                mCustomerId.equals(txn.getCust_mobile()) ||
                 mCustomerId.equals(txn.getCust_private_id()) ) {
 
             mTxnsFromCsv.add(txn);

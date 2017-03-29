@@ -222,8 +222,7 @@ public class CashbackActivityCust extends AppCompatActivity implements
 
         View headerLayout = mNavigationView.getHeaderView(0);
         TextView headerTitle = (TextView)headerLayout.findViewById(R.id.drawer_header_title);
-        String fullName = mCustomer.getFirstName()+" "+mCustomer.getLastName();
-        headerTitle.setText(fullName);
+        headerTitle.setText(mCustomer.getName());
         TextView headerMobile = (TextView)headerLayout.findViewById(R.id.drawer_header_mobile);
         headerMobile.setText(mCustomer.getMobile_num());
 
@@ -347,11 +346,12 @@ public class CashbackActivityCust extends AppCompatActivity implements
         mTbTitle2.setVisibility(View.GONE);
         if(mCustomer.getAdmin_status()!=DbConstants.USER_STATUS_ACTIVE ) {
             mTbTitle2.setVisibility(View.VISIBLE);
-            //String custName = "~ "+mRetainedFragment.mCurrCashback.getCashback().getCustomer().getName();
+            //String secret = "~ "+mRetainedFragment.mCurrCashback.getCashback().getCustomer().getName();
             mTbTitle2.setText(DbConstants.userStatusDesc[mCustomer.getAdmin_status()]);
             mTbTitle2.setTextColor(ContextCompat.getColor(this, R.color.red_negative));
 
-        } else if(mCustomer.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
+        } else if(mCustomer.getMembership_card()!=null &&
+                mCustomer.getMembership_card().getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
 
             switch(mCustomer.getMembership_card().getStatus()) {
                 case DbConstants.CUSTOMER_CARD_STATUS_DISABLED:
@@ -723,9 +723,9 @@ public class CashbackActivityCust extends AppCompatActivity implements
     }
 
     @Override
-    public void onPinResetData(String custName) {
+    public void onPinResetData(String secret) {
         AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-        mRetainedFragment.changePin(null, null, custName);
+        mRetainedFragment.changePin(null, null, secret);
     }
 
     private void onPinChangeResponse(int errorCode) {

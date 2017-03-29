@@ -102,6 +102,7 @@ public class CashbackActivity extends BaseActivity implements
     private static final String DIALOG_REG_CUSTOMER = "dialogRegCustomer";
     private static final String DIALOG_TXN_SUCCESS = "dialogSuccessTxn";
     private static final String DIALOG_PIN_CASH_TXN = "dialogPinTxn";
+    private static final String DIALOG_OTP_CASH_TXN = "dialogOtpTxn";
 
     private static final String DIALOG_CUSTOMER_OP_NEW_CARD = "dialogNewCard";
     private static final String DIALOG_CUSTOMER_OP_RESET_PIN = "dialogResetPin";
@@ -1080,6 +1081,21 @@ public class CashbackActivity extends BaseActivity implements
                                 .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
                     break;
+                case MyRetainedFragment.REQUEST_GEN_TXN_OTP:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    // ask for customer OTP
+                    if(errorCode == ErrorCodes.OTP_GENERATED) {
+                        TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(
+                                mWorkFragment.mCurrTransaction.getTransaction().getCl_credit(),
+                                mWorkFragment.mCurrTransaction.getTransaction().getCl_debit(),
+                                mWorkFragment.mCurrTransaction.getTransaction().getCb_debit(),
+                                null, true);
+                        dialog.show(mFragMgr, DIALOG_OTP_CASH_TXN);
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
             }
         } catch (Exception e) {
             AppCommonUtil.cancelProgressDialog(true);
@@ -1403,21 +1419,24 @@ public class CashbackActivity extends BaseActivity implements
                     null);
             dialog.show(mFragMgr, DIALOG_PIN_CASH_TXN);*/
 
-            // If card scanned - its fine, else ask for preffered verification method
+            // If card scanned - its fine, else ask for prefered verification method
             String usedCard = mWorkFragment.mCurrTransaction.getTransaction().getUsedCardId();
             if(usedCard==null || usedCard.isEmpty()) {
                 TxnVerifyDialog dialog = new TxnVerifyDialog();
                 dialog.show(mFragMgr, DIALOG_TXN_VERIFY_TYPE);
+            } else {
+                LogMy.d(TAG,"In onTransactionConfirm, card scanned available");
+                commitTxn(null,true);
             }
         } else {
-            LogMy.d(TAG,"In onTransactionConfirm, PIN not required");
-            commitTxn(null);
+            LogMy.d(TAG,"In onTransactionConfirm, txn verify not required");
+            commitTxn(null,true);
         }
     }
 
     @Override
-    public void startTxnVerify(int sortType) {
-        if(sortType==AppConstants.TXN_VERIFY_CARD) {
+    public void startTxnVerify(int verifyType) {
+        if(verifyType==AppConstants.TXN_VERIFY_CARD) {
             // start card scan
             LogMy.d(TAG, "Card Scan for txn verification");
             Intent intent = new Intent(this, BarcodeCaptureActivity.class);
@@ -1426,28 +1445,32 @@ public class CashbackActivity extends BaseActivity implements
             intent.putExtra(BarcodeCaptureActivity.ImageFileName, mWorkFragment.mCardImageFilename);
             startActivityForResult(intent, RC_BARCODE_CAPTURE_TXN_VERIFY);
 
-        } else if(sortType==AppConstants.TXN_VERIFY_PIN) {
+        } else if(verifyType==AppConstants.TXN_VERIFY_PIN) {
             // ask for customer PIN
             TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(
                     mWorkFragment.mCurrTransaction.getTransaction().getCl_credit(),
                     mWorkFragment.mCurrTransaction.getTransaction().getCl_debit(),
                     mWorkFragment.mCurrTransaction.getTransaction().getCb_debit(),
-                    null);
+                    null, false);
             dialog.show(mFragMgr, DIALOG_PIN_CASH_TXN);
 
-        } else if(sortType==AppConstants.TXN_VERIFY_OTP) {
-
+        } else if(verifyType==AppConstants.TXN_VERIFY_OTP) {
+            // generate otp
+            AppCommonUtil.showProgressDialog(CashbackActivity.this, AppConstants.progressDefault);
+            mWorkFragment.generateTxnOtp(mWorkFragment.mCurrCustomer.getPrivateId());
         }
     }
 
     @Override
     public void onTxnPin(String pinOrOtp, String tag) {
         if(tag.equals(DIALOG_PIN_CASH_TXN)) {
-            commitTxn(pinOrOtp);
+            commitTxn(pinOrOtp, false);
+        } else if(tag.equals(DIALOG_OTP_CASH_TXN)) {
+            commitTxn(pinOrOtp, true);
         }
     }
 
-    private void commitTxn(String pin) {
+    private void commitTxn(String pin, boolean isOtp) {
         int resultCode = AppCommonUtil.isNetworkAvailableAndConnected(this);
         if ( resultCode != ErrorCodes.NO_ERROR) {
             // Show error notification dialog
@@ -1467,7 +1490,7 @@ public class CashbackActivity extends BaseActivity implements
                 }
             }
 
-            mWorkFragment.commitCashTransaction(pin);
+            mWorkFragment.commitCashTransaction(pin, isOtp);
         }
     }
 
@@ -1494,7 +1517,7 @@ public class CashbackActivity extends BaseActivity implements
         if(errorCode == ErrorCodes.NO_ERROR) {
             // Display success notification
             TxnSuccessDialog dialog = TxnSuccessDialog.newInstance(
-                    mWorkFragment.mCurrTransaction.getTransaction().getCustomer_id(),
+                    mWorkFragment.mCurrTransaction.getTransaction().getCust_mobile(),
                     mWorkFragment.mCurrTransaction.getTransaction().getTrans_id(),
                     mWorkFragment.mCurrCashback.getCurrClBalance(),
                     mWorkFragment.mCurrCashback.getCurrCbBalance(),
@@ -1514,6 +1537,13 @@ public class CashbackActivity extends BaseActivity implements
         } else {
             // delete file, if available
             delCardImageFile();
+
+            // reset card value - if its card related error
+            if(errorCode >= ErrorCodes.NO_SUCH_CARD && errorCode <= ErrorCodes.CARD_WRONG_OWNER_MCHNT) {
+                mWorkFragment.mCardPresented = false;
+                mWorkFragment.mCustCardId = null;
+                mWorkFragment.mCurrTransaction.getTransaction().setUsedCardId("");
+            }
             // Display failure notification
             DialogFragmentWrapper.createNotification(AppConstants.commitTransFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
@@ -1713,7 +1743,7 @@ public class CashbackActivity extends BaseActivity implements
                             //startBillingFragment();
                         } else {
                             mWorkFragment.mCurrTransaction.getTransaction().setUsedCardId(mWorkFragment.mCustCardId);
-                            commitTxn("");
+                            commitTxn("",true);
                         }
                     } else {
                         AppCommonUtil.toast(this, "Invalid Customer Card");

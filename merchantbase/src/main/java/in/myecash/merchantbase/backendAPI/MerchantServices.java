@@ -92,22 +92,22 @@ import in.myecash.common.database.Transaction;
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCashback", args, Cashback.class );
     }
 
-    public void getCashbackAsync(java.lang.String merchantId, java.lang.String merchantCbTable, java.lang.String customerId, boolean debugLogs, AsyncCallback<Cashback> callback)
+    public Transaction cancelTxn(java.lang.String txnId, java.lang.String cardId, java.lang.String pin, boolean isOtp)
     {
-        Object[] args = new Object[]{merchantId, merchantCbTable, customerId, debugLogs};
-        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "getCashback", args, Cashback.class, callback);
-    }
-
-    public Transaction cancelTxn(java.lang.String txnId, java.lang.String cardId, java.lang.String pin)
-    {
-        Object[] args = new Object[]{txnId, cardId, pin};
+        Object[] args = new Object[]{txnId, cardId, pin, isOtp};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "cancelTxn", args, Transaction.class);
     }
 
-    public Transaction commitTxn(String csvTxnData, String pin)
+    public Transaction commitTxn(String csvTxnData, String pin, boolean isOtp)
     {
-        Object[] args = new Object[]{csvTxnData,pin};
+        Object[] args = new Object[]{csvTxnData,pin,isOtp};
         return Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "commitTxn", args, Transaction.class );
+    }
+
+    public void generateTxnOtp(java.lang.String custMobileOrId)
+    {
+        Object[] args = new Object[]{custMobileOrId};
+        Backendless.CustomService.invoke( SERVICE_NAME, SERVICE_VERSION_NAME, "generateTxnOtp", args );
     }
 
     public void deleteMchntOrder(java.lang.String orderId)

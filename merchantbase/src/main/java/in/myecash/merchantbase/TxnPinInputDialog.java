@@ -3,25 +3,18 @@ package in.myecash.merchantbase;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageButton;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.OnSingleClickListener;
 import in.myecash.common.constants.CommonConstants;
@@ -41,18 +34,20 @@ public class TxnPinInputDialog extends DialogFragment
     private static final String ARG_CASH_DEBIT = "cashDebit";
     private static final String ARG_CASHBACK_DEBIT = "cashbackDebit";
     private static final String ARG_CANCEL_TXNID = "cancelTxnId";
+    private static final String ARG_ASK_OTP = "mAskOtp";
 
     //private static Integer[] keys = {0,1,2,3,4,5,6,7,8,9};
 
     private TxnPinInputDialogIf mCallback;
     private String mPin;
+    private boolean mAskOtp;
 
     public interface TxnPinInputDialogIf {
         void onTxnPin(String pin, String tag);
     }
 
 
-    public static TxnPinInputDialog newInstance(int cashCredit, int cashDebit, int cashbackDebit, String cancelTxnId) {
+    public static TxnPinInputDialog newInstance(int cashCredit, int cashDebit, int cashbackDebit, String cancelTxnId, boolean argAskOtp) {
         Bundle args = new Bundle();
         args.putInt(ARG_CASH_CREDIT, cashCredit);
         args.putInt(ARG_CASH_DEBIT, cashDebit);
@@ -60,6 +55,7 @@ public class TxnPinInputDialog extends DialogFragment
         if(cancelTxnId!=null && !cancelTxnId.isEmpty()) {
             args.putString(ARG_CANCEL_TXNID, cancelTxnId);
         }
+        args.putBoolean(ARG_ASK_OTP, argAskOtp);
 
         TxnPinInputDialog fragment = new TxnPinInputDialog();
         fragment.setArguments(args);
@@ -102,6 +98,12 @@ public class TxnPinInputDialog extends DialogFragment
             int cashCredit = getArguments().getInt(ARG_CASH_CREDIT);
             int cashDebit = getArguments().getInt(ARG_CASH_DEBIT);
             int cashbackDebit = getArguments().getInt(ARG_CASHBACK_DEBIT);
+
+            mAskOtp = getArguments().getBoolean(ARG_ASK_OTP);
+            if(mAskOtp) {
+                mTitle.setText("Enter OTP");
+                mInputSecretPin.setHint("Enter OTP");
+            }
 
             if (cashCredit > 0) {
                 mInputCashAmount.setText(AppCommonUtil.getSignedAmtStr(cashCredit, true));
@@ -273,17 +275,20 @@ public class TxnPinInputDialog extends DialogFragment
 
         } else if (vId == R.id.input_kb_0 || vId == R.id.input_kb_1 || vId == R.id.input_kb_2 || vId == R.id.input_kb_3 || vId == R.id.input_kb_4 || vId == R.id.input_kb_5 || vId == R.id.input_kb_6 || vId == R.id.input_kb_7 || vId == R.id.input_kb_8 || vId == R.id.input_kb_9) {
             LogMy.d(TAG,"Clicked Num key");
+
             AppCompatButton key = (AppCompatButton) v;
-            if(mPin.length() >= CommonConstants.PIN_LEN) {
-                AppCommonUtil.toast(getActivity(), CommonConstants.PIN_LEN+" digit PIN allowed");
-            } else {
+            if(mAskOtp && mPin.length() < CommonConstants.OTP_LEN) {
                 mPin = mPin + key.getText();
-                //mInputSecretPin.append(key.getText());
+                mInputSecretPin.append(key.getText());
+
+            } else if(!mAskOtp && mPin.length() < CommonConstants.PIN_LEN) {
+                mPin = mPin + key.getText();
                 mInputSecretPin.append("*");
             }
         }
     }
 
+    private EditText mTitle;
     private View mLayoutAmts;
     private EditText mInputCashAmount;
     private EditText mInputCashbackAmount;
@@ -297,6 +302,7 @@ public class TxnPinInputDialog extends DialogFragment
     private AppCompatImageButton mKeyBspace;
 
     private void bindUiResources(View v) {
+        mTitle = (EditText) v.findViewById(R.id.label_title);
         mLayoutAmts = v.findViewById(R.id.layout_amounts);
         mInputCashAmount = (EditText) v.findViewById(R.id.input_cash_amount);
         mInputCashbackAmount = (EditText) v.findViewById(R.id.input_cashback_amount);
@@ -340,7 +346,12 @@ public class TxnPinInputDialog extends DialogFragment
                 Boolean wantToCloseDialog = true;
                 //String pin = mInputSecretPin.getText().toString();
 
-                int errorCode = ValidationHelper.validatePin(mPin);
+                int errorCode;
+                if(mAskOtp) {
+                    errorCode = ValidationHelper.validateOtp(mPin);
+                } else {
+                    errorCode = ValidationHelper.validatePin(mPin);
+                }
                 if (errorCode == ErrorCodes.NO_ERROR) {
                     mCallback.onTxnPin(mPin, getTag());
                 } else {

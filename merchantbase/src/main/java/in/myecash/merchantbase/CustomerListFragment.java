@@ -62,7 +62,8 @@ public class CustomerListFragment extends BaseFragment {
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
     private static final String DIALOG_SORT_CUST_TYPES = "dialogSortCust";
 
-    private static final String CSV_HEADER = "Sl.No.,Customer ID,Mobile No.,Card ID,Status,Account Balance,Account Add,Account Debit,Cashback Balance,Cashback Award,Cashback Redeem,Total Bill,Cashback Bill,Last Txn here,First Txn here";
+    private static final String CSV_HEADER = "Sl.No.,Customer ID,Mobile No.,Card ID,Status,Cashback Balance,Cashback Add,Cashback Debit,Account Balance,Account Add,Account Debit,Total Bill,Last Txn here,First Txn here";
+    private static final String CSV_HEADER_NO_ACC = "Sl.No.,Customer ID,Mobile No.,Card ID,Status,Cashback Balance,Cashback Add,Cashback Debit,Total Bill,Last Txn here,First Txn here";
     // 5+10+10+10+10+5+5+5+5+5+5+5+5+10+10 = 105
     private static final int CSV_RECORD_MAX_CHARS = 128;
     private static final int CSV_LINES_BUFFER = 100;
@@ -357,16 +358,7 @@ public class CustomerListFragment extends BaseFragment {
                     emailReport();
 
                 } else if (i == R.id.action_sort) {
-                    // loop and check if there's any customer with acc credit/debit
-                    boolean accFigures = false;
-                    for (MyCashback cb :
-                            mRetainedFragment.mLastFetchCashbacks) {
-                        if(cb.getClCredit()!=0 || cb.getClDebit()!=0) {
-                            accFigures = true;
-                        }
-                    }
-
-                    SortCustDialog dialog = SortCustDialog.newInstance(mSelectedSortType, accFigures);
+                    SortCustDialog dialog = SortCustDialog.newInstance(mSelectedSortType, anyCustUsingAcc());
                     dialog.setTargetFragment(this, REQ_SORT_CUST_TYPES);
                     dialog.show(getFragmentManager(), DIALOG_SORT_CUST_TYPES);
                 }
@@ -381,6 +373,19 @@ public class CustomerListFragment extends BaseFragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean anyCustUsingAcc() {
+        // loop and check if there's any customer with acc credit/debit
+        boolean accFigures = false;
+        for (MyCashback cb :
+                mRetainedFragment.mLastFetchCashbacks) {
+            if(cb.getClCredit()!=0 || cb.getClDebit()!=0) {
+                accFigures = true;
+                break;
+            }
+        }
+        return accFigures;
     }
 
     private void downloadReport() throws IOException {
@@ -440,7 +445,13 @@ public class CustomerListFragment extends BaseFragment {
 
             // +10 to cover for headers
             StringBuilder sb = new StringBuilder(CSV_RECORD_MAX_CHARS*(CSV_LINES_BUFFER+10));
-            sb.append(CSV_HEADER).append(CommonConstants.NEWLINE_SEP);
+
+            boolean showAccFields = anyCustUsingAcc();
+            if(showAccFields) {
+                sb.append(CSV_HEADER).append(CommonConstants.NEWLINE_SEP);
+            } else {
+                sb.append(CSV_HEADER_NO_ACC).append(CommonConstants.NEWLINE_SEP);
+            }
 
             int cnt = mRetainedFragment.mLastFetchCashbacks.size();
             for(int i=0; i<cnt; i++) {
@@ -455,14 +466,23 @@ public class CustomerListFragment extends BaseFragment {
                 sb.append(i+1).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cust.getPrivateId()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cust.getMobileNum()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(CommonUtils.getPartialVisibleStr(cust.getCardId())).append(CommonConstants.CSV_DELIMETER);
+                if(cust.getCardId()==null || cust.getCardId().isEmpty()) {
+                    sb.append(CommonConstants.CSV_DELIMETER);
+                } else {
+                    sb.append(CommonUtils.getPartialVisibleStr(cust.getCardId())).append(CommonConstants.CSV_DELIMETER);
+                }
                 sb.append(DbConstants.userStatusDesc[cust.getStatus()]).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cb.getCurrClBalance()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cb.getClCredit()).append(CommonConstants.CSV_DELIMETER);
-                sb.append(cb.getClDebit()).append(CommonConstants.CSV_DELIMETER);
+
                 sb.append(cb.getCurrCbBalance()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cb.getCbCredit()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(cb.getCbRedeem()).append(CommonConstants.CSV_DELIMETER);
+
+                if(showAccFields) {
+                    sb.append(cb.getCurrClBalance()).append(CommonConstants.CSV_DELIMETER);
+                    sb.append(cb.getClCredit()).append(CommonConstants.CSV_DELIMETER);
+                    sb.append(cb.getClDebit()).append(CommonConstants.CSV_DELIMETER);
+                }
+
                 sb.append(cb.getBillAmt()).append(CommonConstants.CSV_DELIMETER);
                 sb.append(mSdfDateWithTime.format(cb.getLastTxnTime())).append(CommonConstants.CSV_DELIMETER);
                 sb.append(mSdfDateWithTime.format(cb.getCreateTime()));

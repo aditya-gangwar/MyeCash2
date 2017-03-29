@@ -74,11 +74,10 @@ public class CustDetailsDialogCustApp extends BaseDialog {
     private void initDialogView() {
         Customers cust = CustomerUser.getInstance().getCustomer();
 
-        String name = cust.getFirstName()+" "+cust.getLastName();
-        mName.setText(name);
+        mName.setText(cust.getName());
         mInputMobileNum.setText(cust.getMobile_num());
-        mCreatedOn.setText(mSdfDateOnly.format(cust.getCreated()));
-        mExpiringOn.setText(mSdfDateOnly.format(AppCommonUtil.getExpiryDate(cust)));
+        mCreatedOn.setText(mSdfDateOnly.format(cust.getRegDate()));
+        //mExpiringOn.setText(mSdfDateOnly.format(AppCommonUtil.getExpiryDate(cust)));
 
         if(cust.getMembership_card()==null) {
             mLayoutCardId.setVisibility(View.GONE);
@@ -128,7 +127,7 @@ public class CustDetailsDialogCustApp extends BaseDialog {
     private EditText mName;
     private EditText mInputMobileNum;
     private EditText mCreatedOn;
-    private EditText mExpiringOn;
+    //private EditText mExpiringOn;
 
     private EditText mInputQrCard;
     private EditText mInputCardStatus;
@@ -147,7 +146,7 @@ public class CustDetailsDialogCustApp extends BaseDialog {
         mInputMobileNum = (EditText) v.findViewById(R.id.input_customer_mobile);
         mName = (EditText) v.findViewById(R.id.input_cust_name);
         mCreatedOn = (EditText) v.findViewById(R.id.input_cust_created_on);
-        mExpiringOn = (EditText) v.findViewById(R.id.input_expiring_on);
+        //mExpiringOn = (EditText) v.findViewById(R.id.input_expiring_on);
 
         mInputStatus = (EditText) v.findViewById(R.id.input_status);
         mLayoutStatusDetails = v.findViewById(R.id.layout_status_details);

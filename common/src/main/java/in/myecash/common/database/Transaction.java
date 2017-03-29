@@ -6,7 +6,6 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.persistence.BackendlessDataQuery;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Transaction implements Serializable
 {
@@ -28,7 +27,7 @@ public class Transaction implements Serializable
   private String merchant_name;
   private String ownerId;
   private Integer cb_debit;
-  private String customer_id;
+  private String cust_mobile;
   private String cb_percent;
   private String invoiceNum;
   private java.util.Date cancelTime;
@@ -219,14 +218,14 @@ public class Transaction implements Serializable
     this.cb_debit = cb_debit;
   }
 
-  public String getCustomer_id()
+  public String getCust_mobile()
   {
-    return customer_id;
+    return cust_mobile;
   }
 
-  public void setCustomer_id( String customer_id )
+  public void setCust_mobile(String cust_mobile)
   {
-    this.customer_id = customer_id;
+    this.cust_mobile = cust_mobile;
   }
 
   public String getCb_percent()

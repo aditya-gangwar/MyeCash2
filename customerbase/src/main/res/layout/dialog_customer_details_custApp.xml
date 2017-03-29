@@ -87,7 +87,7 @@
                 android:id="@+id/input_customer_mobile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="8800191535"
+                android:text=""
                 android:layout_weight="60"
                 android:gravity="left"/>
         </LinearLayout>
@@ -115,13 +115,13 @@
                 android:id="@+id/input_cust_created_on"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="22 July 16"
+                android:text=""
                 android:layout_weight="60"
                 android:gravity="left"
                 android:paddingTop="0dp"/>
         </LinearLayout>
 
-        <LinearLayout
+        <!--LinearLayout
             style="@style/LL_Horizontal_wrap"
             android:id="@+id/layout_cust_expiring_on">
 
@@ -148,7 +148,7 @@
                 android:layout_weight="60"
                 android:gravity="left"
                 android:paddingTop="0dp"/>
-        </LinearLayout>
+        </LinearLayout-->
 
         <Space
             android:layout_width="match_parent"
@@ -178,7 +178,7 @@
                 android:id="@+id/input_status"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Active"
+                android:text=""
                 android:textColor="@color/green_positive"/>
         </LinearLayout>
 
@@ -234,7 +234,7 @@
                     android:id="@+id/input_status_date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="22 July 16, 23:00"
+                    android:text=""
                     android:paddingTop="0dp"/>
             </LinearLayout>
             <LinearLayout
@@ -290,7 +290,7 @@
                 android:id="@+id/input_qr_card"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="1234 5678 345"
+                android:text=""
                 android:layout_weight="60"
                 android:gravity="left"
                 android:ellipsize="end"/>
@@ -325,7 +325,7 @@
                     android:id="@+id/input_card_status"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Invalid"
+                    android:text=""
                     android:paddingTop="0dp"/>
             </LinearLayout>
         </LinearLayout>

@@ -20,7 +20,6 @@ import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.FileFetchr;
-import in.myecash.common.MyCustomer;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.database.Cashback;
 import in.myecash.common.database.Transaction;
@@ -54,7 +53,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     private class MessageChangePin implements Serializable {
         public String oldPin;
         public String newPin;
-        public String custName;
+        public String secret;
     }
     private class MessageGetCb implements Serializable {
         public Context ctxt;
@@ -102,11 +101,11 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
         msg.updatedSince = updatedSince;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FETCH_CB,msg).sendToTarget();
     }
-    public void addPinChangeRequest(String oldPin, String newPin, String custName) {
+    public void addPinChangeRequest(String oldPin, String newPin, String secret) {
         MessageChangePin msg = new MessageChangePin();
         msg.oldPin = oldPin;
         msg.newPin = newPin;
-        msg.custName = custName;
+        msg.secret = secret;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CHANGE_PIN,msg).sendToTarget();
     }
     public void addFetchTxnsRequest(String query) {
@@ -278,7 +277,7 @@ public class MyBackgroundProcessor <T> extends BackgroundProcessor<T> {
     }
 
     private int changePin(MessageChangePin msg) {
-        return CustomerUser.getInstance().changePin(msg.oldPin, msg.newPin, msg.custName);
+        return CustomerUser.getInstance().changePin(msg.oldPin, msg.newPin, msg.secret);
     }
 
     private int fetchTransactions(String query) {

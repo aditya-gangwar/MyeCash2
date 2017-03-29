@@ -20,8 +20,7 @@ public class Customers
   private String objectId;
   private String cashback_table;
   private Integer admin_status;
-  private String firstName;
-  private String lastName;
+  private String name;
   private String private_id;
   private CustomerCards membership_card;
   // cardId is used at only one place as of now
@@ -29,12 +28,29 @@ public class Customers
   private String cardId;
   private Boolean first_login_ok;
   private Boolean debugLogs;
-  private Date lastRenewDate;
   private String txn_tables;
   private Date delLocalFilesReq;
   private String namak;
   private String dob;
   private int sex;
+  private java.util.Date regDate;
+  private String regMchntId;
+
+  public Date getRegDate() {
+    return regDate;
+  }
+
+  public void setRegDate(Date regDate) {
+    this.regDate = regDate;
+  }
+
+  public String getRegMchntId() {
+    return regMchntId;
+  }
+
+  public void setRegMchntId(String regMchntId) {
+    this.regMchntId = regMchntId;
+  }
 
   public String getDob() {
     return dob;
@@ -68,20 +84,12 @@ public class Customers
     this.delLocalFilesReq = delLocalFilesReq;
   }
 
-  public String getLastName() {
-    return lastName;
+  public String getName() {
+    return name;
   }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getTxn_tables() {
@@ -90,14 +98,6 @@ public class Customers
 
   public void setTxn_tables(String txn_tables) {
     this.txn_tables = txn_tables;
-  }
-
-  public Date getLastRenewDate() {
-    return lastRenewDate;
-  }
-
-  public void setLastRenewDate(Date lastRenewDate) {
-    this.lastRenewDate = lastRenewDate;
   }
 
   public Boolean getDebugLogs() {

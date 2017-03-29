@@ -236,7 +236,7 @@ public class CustomerUser {
         return ErrorCodes.NO_ERROR;
     }
 
-    public int changePin(String oldPin, String newPin, String custName) {
+    public int changePin(String oldPin, String newPin, String secret) {
         if(mPseudoLoggedIn) {
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
@@ -246,7 +246,7 @@ public class CustomerUser {
             if(oldPin==null || newPin==null) {
                 // PIN reset scenario
                 CommonServices.getInstance().execCustomerOp(DbConstants.OP_RESET_PIN, mCustomer.getMobile_num(),
-                        custName, "", oldPin, newPin);
+                        secret, "", oldPin, newPin);
             } else {
                 // PIN change scenario
                 CommonServices.getInstance().execCustomerOp(DbConstants.OP_CHANGE_PIN, mCustomer.getMobile_num(),

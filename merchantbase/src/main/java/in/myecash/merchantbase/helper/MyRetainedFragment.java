@@ -65,6 +65,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_CRT_MCHNT_ORDER = 22;
     public static final int REQUEST_FETCH_MERCHANT_ORDERS = 23;
     public static final int REQUEST_DELETE_MCHNT_ORDER = 24;
+    public static final int REQUEST_GEN_TXN_OTP = 25;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -247,8 +248,8 @@ public class MyRetainedFragment extends RetainedFragment {
         mBackgroundProcessor.addCustRegRequest(mobileNum, dob, sex, qrCode, otp, firstName, lastName);
     }
 
-    public void commitCashTransaction(String pin) {
-        mBackgroundProcessor.addCommitTransRequest(pin);
+    public void commitCashTransaction(String pin, boolean isOtp) {
+        mBackgroundProcessor.addCommitTransRequest(pin, isOtp);
     }
 
     public void downloadCustDataFile(Context ctxt, String fileURL) {
@@ -269,8 +270,12 @@ public class MyRetainedFragment extends RetainedFragment {
         }
     }
 
-    public void cancelTxn(String txnId, String cardId, String pin) {
-        mBackgroundProcessor.addCancelTxnReq(txnId, cardId, pin);
+    public void cancelTxn(String txnId, String cardId, String pin, boolean isOtp) {
+        mBackgroundProcessor.addCancelTxnReq(txnId, cardId, pin, isOtp);
+    }
+
+    public void generateTxnOtp(String custMobileOrId) {
+        mBackgroundProcessor.addGenTxnOtpReq(custMobileOrId);
     }
 
     public void createMchntOrder(String sku, int qty, int totalPrice) {

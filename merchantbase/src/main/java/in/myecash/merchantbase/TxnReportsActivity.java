@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,12 +18,16 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.crashlytics.android.Crashlytics;
+
 import in.myecash.appbase.BaseActivity;
 import in.myecash.appbase.MyDatePickerDialog;
+import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.AppAlarms;
 import in.myecash.appbase.utilities.TxnReportsHelper;
+import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.DbConstants;
@@ -36,6 +41,7 @@ import in.myecash.appbase.utilities.LogMy;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.merchantbase.helper.MyRetainedFragment;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,10 +59,11 @@ public class TxnReportsActivity extends BaseActivity implements
         TxnListFragment.TxnListFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
         TxnDetailsDialog.TxnDetailsDialogIf, TxnReportsHelper.TxnReportsHelperIf,
         TxnCancelDialog.TxnCancelDialogIf, TxnPinInputDialog.TxnPinInputDialogIf,
-        CustomerDetailsDialog.CustomerDetailsDialogIf {
+        CustomerDetailsDialog.CustomerDetailsDialogIf, TxnVerifyDialog.TxnVerifyDialogIf {
     private static final String TAG = "MchntApp-TxnReportsActivity";
 
     public static final String EXTRA_CUSTOMER_ID = "extraCustId";
+    public static final int RC_BARCODE_CAPTURE_TXN_VERIFY = 9007;
 
     private static final String RETAINED_FRAGMENT = "retainedFragReports";
     private static final String DIALOG_DATE_FROM = "DialogDateFrom";
@@ -66,6 +73,8 @@ public class TxnReportsActivity extends BaseActivity implements
     private static final String DIALOG_TXN_CANCEL_CONFIRM = "dialogTxnCanConf";
     private static final String DIALOG_PIN_CANCEL_TXN = "dialogPinCanTxn";
     private static final String DIALOG_CUSTOMER_DETAILS = "dialogCustomerDetails";
+    private static final String DIALOG_TXN_VERIFY_TYPE = "dialogTxnVerifyType";
+    private static final String DIALOG_OTP_CANCEL_TXN = "dialogOtpTxn";
 
     // All required date formatters
     private SimpleDateFormat mSdfOnlyDateDisplay = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_DISPLAY, CommonConstants.DATE_LOCALE);
@@ -226,82 +235,6 @@ public class TxnReportsActivity extends BaseActivity implements
         }
     }
 
-    /*@Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if(event.getAction()==MotionEvent.ACTION_UP) {
-            try {
-                if(!mWorkFragment.getResumeOk()) {
-                    return true;
-                }
-
-                int vId = v.getId();
-                LogMy.d(TAG, "In onTouch: " + vId);
-
-                if (vId == R.id.input_date_from) {
-                    // Find the minimum date for DatePicker
-                    DateUtil minFrom = new DateUtil(new Date(), TimeZone.getDefault());
-                    minFrom.removeDays(MyGlobalSettings.getMchntTxnHistoryDays());
-
-                    DialogFragment fromDialog = DatePickerDialog.newInstance(mFromDate, minFrom.getTime(), mNow);
-                    fromDialog.show(getFragmentManager(), DIALOG_DATE_FROM);
-
-                } else if (vId == R.id.input_date_to) {
-                    if (mFromDate == null) {
-                        AppCommonUtil.toast(this, "Set From Date");
-                    } else {
-                        DialogFragment toDialog = DatePickerDialog.newInstance(mToDate, mFromDate, mNow);
-                        toDialog.show(getFragmentManager(), DIALOG_DATE_TO);
-                    }
-                }
-            } catch (Exception e) {
-                AppCommonUtil.cancelProgressDialog(true);
-                LogMy.e(TAG, "Exception in TxnReportsActivity:onTouch", e);
-                DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
-                        .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if(!mWorkFragment.getResumeOk()) {
-            return;
-        }
-
-        int vId = v.getId();
-        LogMy.d(TAG, "In onClick: " + vId);
-
-        try {
-            if (vId == R.id.btn_get_report) {
-                // clear old data
-                //mWorkFragment.mAllFiles.clear();
-                //mWorkFragment.mMissingFiles.clear();
-                //mWorkFragment.mTxnsFromCsv.clear();
-                if (mWorkFragment.mLastFetchTransactions != null) {
-                    mWorkFragment.mLastFetchTransactions.clear();
-                    mWorkFragment.mLastFetchTransactions = null;
-                }
-                mCustomerId = mInputCustId.getText().toString();
-                if (mCustomerId.length() > 0) {
-                    if( mCustomerId.length() != CommonConstants.CUSTOMER_INTERNAL_ID_LEN &&
-                            mCustomerId.length() != CommonConstants.MOBILE_NUM_LENGTH ) {
-                        mInputCustId.setError(AppCommonUtil.getErrorDesc(ErrorCodes.INVALID_LENGTH));
-                        return;
-                    }
-                }
-
-                //fetchReportData();
-                mHelper.startTxnFetch(mFromDate, mToDate,
-                        MerchantUser.getInstance().getMerchantId(), mCustomerId);
-            }
-        } catch(Exception e) {
-            LogMy.e(TAG, "Exception is ReportsActivity:onClick: "+vId, e);
-            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
-                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
-        }
-    }*/
-
     private void initDateInputs(Bundle instanceState) {
         if(instanceState==null) {
             // mFromDate as 'start of today' i.e. todayMidnight
@@ -321,7 +254,6 @@ public class TxnReportsActivity extends BaseActivity implements
         mInputDateFrom.setOnTouchListener(this);
         mInputDateTo.setOnTouchListener(this);
     }
-
 
     private void initToolbar() {
         LogMy.d(TAG, "In initToolbar");
@@ -480,6 +412,19 @@ public class TxnReportsActivity extends BaseActivity implements
                 case MyRetainedFragment.REQUEST_GET_CASHBACK:
                     onCashbackResponse(errorCode);
                     break;
+
+                case MyRetainedFragment.REQUEST_GEN_TXN_OTP:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    // ask for customer OTP
+                    if(errorCode == ErrorCodes.OTP_GENERATED) {
+                        TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(0,0,0,mCancelTxnId,true);
+                        dialog.show(mFragMgr, DIALOG_OTP_CANCEL_TXN);
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
+
             }
 
         } catch (Exception e) {
@@ -555,15 +500,89 @@ public class TxnReportsActivity extends BaseActivity implements
         mWorkFragment.mCardImageFilename = imgFileName;
 
         // ask for customer PIN
-        TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(0,0,0,txnId);
-        dialog.show(mFragMgr, DIALOG_PIN_CANCEL_TXN);
+        /*TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(0,0,0,txnId);
+        dialog.show(mFragMgr, DIALOG_PIN_CANCEL_TXN);*/
+        // ask for verification method
+        TxnVerifyDialog dialog = new TxnVerifyDialog();
+        dialog.show(mFragMgr, DIALOG_TXN_VERIFY_TYPE);
+    }
+
+    @Override
+    public void startTxnVerify(int verifyType) {
+        if(verifyType==AppConstants.TXN_VERIFY_CARD) {
+            // start card scan
+            LogMy.d(TAG, "Card Scan for txn verification");
+            Intent intent = new Intent(this, BarcodeCaptureActivity.class);
+            intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+            intent.putExtra(BarcodeCaptureActivity.ImageFileName, mWorkFragment.mCardImageFilename);
+            startActivityForResult(intent, RC_BARCODE_CAPTURE_TXN_VERIFY);
+
+        } else if(verifyType==AppConstants.TXN_VERIFY_PIN) {
+            // ask for customer PIN
+            TxnPinInputDialog dialog = TxnPinInputDialog.newInstance(0,0,0,mCancelTxnId,false);
+            dialog.show(mFragMgr, DIALOG_PIN_CANCEL_TXN);
+
+        } else if(verifyType==AppConstants.TXN_VERIFY_OTP) {
+            // generate otp
+            AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+            mWorkFragment.generateTxnOtp(mWorkFragment.mCurrTransaction.getTransaction().getCust_private_id());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try {
+            if (requestCode == RC_BARCODE_CAPTURE_TXN_VERIFY) {
+                String qrCode = null;
+                if (data != null) {
+                    qrCode = data.getStringExtra(BarcodeCaptureActivity.BarcodeObject);
+                }
+                if (resultCode == ErrorCodes.NO_ERROR && qrCode != null) {
+                    LogMy.d(TAG, "Read customer QR code: " + qrCode);
+                    if (ValidationHelper.validateCardId(qrCode) == ErrorCodes.NO_ERROR) {
+                        mCancelTxnCardId = qrCode;
+
+                        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+                        mWorkFragment.cancelTxn(mCancelTxnId, mCancelTxnCardId, "", false);
+                    } else {
+                        AppCommonUtil.toast(this, "Invalid Customer Card");
+                        delCardImageFile();
+                    }
+                } else {
+                    //AppCommonUtil.toast(this, "Failed to Read Card");
+                    LogMy.d(TAG, "Failed to read barcode");
+                    delCardImageFile();
+                }
+            } else {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+        catch (Exception e) {
+            AppCommonUtil.cancelProgressDialog(true);
+            LogMy.e(TAG, "Exception in TxnReportsActivity:onActivityResult: "+requestCode+", "+resultCode, e);
+            DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
+                    .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+        }
     }
 
     @Override
     public void onTxnPin(String pin, String tag) {
         if(tag.equals(DIALOG_PIN_CANCEL_TXN)) {
             AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
-            mWorkFragment.cancelTxn(mCancelTxnId, mCancelTxnCardId, pin);
+            mWorkFragment.cancelTxn(mCancelTxnId, mCancelTxnCardId, pin, false);
+        } else if(tag.equals(DIALOG_OTP_CANCEL_TXN)) {
+            AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+            mWorkFragment.cancelTxn(mCancelTxnId, mCancelTxnCardId, pin, true);
+        }
+    }
+
+    private void delCardImageFile() {
+        if(mWorkFragment.mCardImageFilename!=null) {
+            File file = new File(mWorkFragment.mCardImageFilename);
+            if (file.exists()) {
+                deleteFile(mWorkFragment.mCardImageFilename);
+            }
+            mWorkFragment.mCardImageFilename = null;
         }
     }
 

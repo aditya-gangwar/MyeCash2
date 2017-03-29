@@ -45,14 +45,13 @@
                 style="@style/radio_button_medium"
                 android:id="@+id/radioPIN"
                 android:text="PIN"
+                android:checked="true"
                 android:layout_marginBottom="@dimen/medium_space"/>
 
             <RadioButton
                 style="@style/radio_button_medium"
                 android:id="@+id/radioOTP"
-                android:text="OTP (coming soon)"
-                android:textColor="@color/secondary_text"
-                android:enabled="false"/>
+                android:text="OTP"/>
         </RadioGroup>
 
     </LinearLayout>

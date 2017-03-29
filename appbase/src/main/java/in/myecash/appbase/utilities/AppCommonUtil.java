@@ -873,11 +873,11 @@ public class AppCommonUtil {
         renewDate.addMonths(MyGlobalSettings.getMchntRenewalDuration());
         return renewDate.getTime();
     }
-    public static Date getExpiryDate(Customers customer) {
+    /*public static Date getExpiryDate(Customers customer) {
         DateUtil renewDate = new DateUtil(customer.getLastRenewDate());
         renewDate.addMonths(MyGlobalSettings.getCustRenewalDuration());
         return renewDate.getTime();
-    }
+    }*/
 
     public static void initTableToClassMappings() {
         Backendless.Data.mapTableToClass("CustomerCards", CustomerCards.class);

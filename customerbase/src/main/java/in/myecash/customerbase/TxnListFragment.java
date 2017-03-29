@@ -62,7 +62,8 @@ public class TxnListFragment extends BaseFragment {
     private static final String CSV_REPORT_HEADER_5 = ",,,,,,,Currency,INR,,";
     private static final String CSV_REPORT_HEADER_6 = ",,,,,,,,,,";
     private static final String CSV_REPORT_HEADER_7 = ",,,,,,,,,,";
-    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Merchant Id,Merchant Name,Bill Amount,Account Debit,Account Add,Cashback Debit,Cashback Add,Extra Cashback Add,Cashback Rate,Extra Cashback Rate,Card Used,PIN used,Cancel Time,Comments";
+    private static final String CSV_HEADER = "Sl. No.,Date,Time,Transaction Id,Merchant Id,Merchant Name,Bill Amount,Cashback Add,Cashback Debit,Cashback Rate,Account Debit,Account Add,Extra Cashback Add,Extra Cashback Rate,Cancel Time,Comments";
+    private static final String CSV_HEADER_NO_ACC = "Sl. No.,Date,Time,Transaction Id,Merchant Id,Merchant Name,Bill Amount,Cashback Add,Cashback Debit,Cashback Rate,Cancel Time,Comments";
     // 5+10+10+10+10+10+10+5+5+5+5 = 85
     private static final int CSV_RECORD_MAX_CHARS = 128;
     //TODO: change this to 100 in production
@@ -301,16 +302,7 @@ public class TxnListFragment extends BaseFragment {
             } else if (i == R.id.action_email) {
                 emailReport();
             } else if (i == R.id.action_sort) {
-                // loop and check if there's any txn with acc credit/debit
-                boolean accFigures = false;
-                for (Transaction txn :
-                        mRetainedFragment.mLastFetchTransactions) {
-                    if(txn.getCl_debit()!=0 || txn.getCl_credit()!=0) {
-                        accFigures = true;
-                    }
-                }
-
-                SortTxnDialog dialog = SortTxnDialog.newInstance(mSelectedSortType, accFigures);
+                SortTxnDialog dialog = SortTxnDialog.newInstance(mSelectedSortType, anyAccTxn());
                 dialog.setTargetFragment(this, REQ_SORT_TXN_TYPES);
                 dialog.show(getFragmentManager(), DIALOG_SORT_TXN_TYPES);
             }
@@ -321,6 +313,19 @@ public class TxnListFragment extends BaseFragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean anyAccTxn() {
+        // loop and check if there's any txn with acc credit/debit
+        boolean accFigures = false;
+        for (Transaction txn :
+                mRetainedFragment.mLastFetchTransactions) {
+            if(txn.getCl_debit()!=0 || txn.getCl_credit()!=0) {
+                accFigures = true;
+                break;
+            }
+        }
+        return accFigures;
     }
 
     private void downloadReport() {
@@ -393,13 +398,20 @@ public class TxnListFragment extends BaseFragment {
             Customers user = CustomerUser.getInstance().getCustomer();
             sb.append(CSV_REPORT_HEADER_1).append(CommonConstants.NEWLINE_SEP);
             sb.append(String.format(CSV_REPORT_HEADER_2,user.getMobile_num())).append(CommonConstants.NEWLINE_SEP);
-            sb.append(String.format(CSV_REPORT_HEADER_3,user.getMembership_card().getCardNum())).append(CommonConstants.NEWLINE_SEP);
+            sb.append(String.format(CSV_REPORT_HEADER_3,
+                    (user.getMembership_card()==null)?"":user.getMembership_card().getCardNum()))
+                    .append(CommonConstants.NEWLINE_SEP);
             sb.append(String.format(CSV_REPORT_HEADER_4,startDate,endDate)).append(CommonConstants.NEWLINE_SEP);
             sb.append(CSV_REPORT_HEADER_5).append(CommonConstants.NEWLINE_SEP);
             sb.append(CSV_REPORT_HEADER_6).append(CommonConstants.NEWLINE_SEP);
             sb.append(CSV_REPORT_HEADER_7).append(CommonConstants.NEWLINE_SEP);
 
-            sb.append(CSV_HEADER).append(CommonConstants.NEWLINE_SEP);
+            boolean showAccFields = anyAccTxn();
+            if(showAccFields) {
+                sb.append(CSV_HEADER).append(CommonConstants.NEWLINE_SEP);
+            } else {
+                sb.append(CSV_HEADER_NO_ACC).append(CommonConstants.NEWLINE_SEP);
+            }
 
             int billTotal = 0;
             int accDebitTotal = 0;
@@ -440,46 +452,7 @@ public class TxnListFragment extends BaseFragment {
                     sb.append("0").append(CommonConstants.CSV_DELIMETER);
                 }
 
-                /*if(txn.getCl_credit() > 0) {
-                    sb.append(txn.getCl_credit()).append(CommonConstants.CSV_DELIMETER);
-                    sb.append("CR").append(CommonConstants.CSV_DELIMETER);
-                } else if(txn.getCl_debit() > 0) {
-                    sb.append(txn.getCl_debit()).append(CommonConstants.CSV_DELIMETER);
-                    sb.append("DR").append(CommonConstants.CSV_DELIMETER);
-                } else {
-                    sb.append("0").append(CommonConstants.CSV_DELIMETER);
-                    sb.append(CommonConstants.CSV_DELIMETER);
-                }*/
-
-                if(txn.getCl_debit() > 0) {
-                    if(txnCancel) {
-                        sb.append("<").append(txn.getCl_debit()).append(">").append(CommonConstants.CSV_DELIMETER);
-                    } else {
-                        sb.append(txn.getCl_debit()).append(CommonConstants.CSV_DELIMETER);
-                        accDebitTotal = accDebitTotal + txn.getCl_debit();
-                    }
-                } else {
-                    sb.append("0").append(CommonConstants.CSV_DELIMETER);
-                }
-
-                if(txn.getCl_credit() > 0) {
-                    sb.append(txn.getCl_credit()).append(CommonConstants.CSV_DELIMETER);
-                    accCreditTotal = accCreditTotal +txn.getCl_credit();
-                } else {
-                    sb.append("0").append(CommonConstants.CSV_DELIMETER);
-                }
-
-                if(txn.getCb_debit() > 0) {
-                    if(txnCancel) {
-                        sb.append("<").append(txn.getCb_debit()).append(">").append(CommonConstants.CSV_DELIMETER);
-                    } else {
-                        sb.append(txn.getCb_debit()).append(CommonConstants.CSV_DELIMETER);
-                        cbRedeemTotal = cbRedeemTotal + txn.getCb_debit();
-                    }
-                } else {
-                    sb.append("0").append(CommonConstants.CSV_DELIMETER);
-                }
-
+                // cashback details
                 if(txn.getCb_credit() > 0) {
                     if(txnCancel) {
                         sb.append("<").append(txn.getCb_credit()).append(">").append(CommonConstants.CSV_DELIMETER);
@@ -490,22 +463,49 @@ public class TxnListFragment extends BaseFragment {
                 } else {
                     sb.append("0").append(CommonConstants.CSV_DELIMETER);
                 }
+                if(txn.getCb_debit() > 0) {
+                    if(txnCancel) {
+                        sb.append("<").append(txn.getCb_debit()).append(">").append(CommonConstants.CSV_DELIMETER);
+                    } else {
+                        sb.append(txn.getCb_debit()).append(CommonConstants.CSV_DELIMETER);
+                        cbRedeemTotal = cbRedeemTotal + txn.getCb_debit();
+                    }
+                } else {
+                    sb.append("0").append(CommonConstants.CSV_DELIMETER);
+                }
+                sb.append(txn.getCb_percent()).append("%").append(CommonConstants.CSV_DELIMETER);
+
+                // account details
+                if(txn.getCl_debit() > 0) {
+                    if(txnCancel) {
+                        sb.append("<").append(txn.getCl_debit()).append(">").append(CommonConstants.CSV_DELIMETER);
+                    } else {
+                        sb.append(txn.getCl_debit()).append(CommonConstants.CSV_DELIMETER);
+                        accDebitTotal = accDebitTotal + txn.getCl_debit();
+                    }
+                } else {
+                    sb.append("0").append(CommonConstants.CSV_DELIMETER);
+                }
+                if(txn.getCl_credit() > 0) {
+                    sb.append(txn.getCl_credit()).append(CommonConstants.CSV_DELIMETER);
+                    accCreditTotal = accCreditTotal +txn.getCl_credit();
+                } else {
+                    sb.append("0").append(CommonConstants.CSV_DELIMETER);
+                }
                 if(txn.getExtra_cb_credit() > 0) {
                     sb.append(txn.getExtra_cb_credit()).append(CommonConstants.CSV_DELIMETER);
                     cbAwardTotal = cbAwardTotal + txn.getExtra_cb_credit();
                 } else {
                     sb.append("0").append(CommonConstants.CSV_DELIMETER);
                 }
-
-                sb.append(txn.getCb_percent()).append("%").append(CommonConstants.CSV_DELIMETER);
                 sb.append(txn.getExtra_cb_percent()).append("%").append(CommonConstants.CSV_DELIMETER);
 
-                if(txn.getUsedCardId()==null) {
+                /*if(txn.getUsedCardId()==null) {
                     sb.append("").append(CommonConstants.CSV_DELIMETER);
                 } else {
                     sb.append(txn.getUsedCardId()).append(CommonConstants.CSV_DELIMETER);
                 }
-                sb.append(txn.getCpin());
+                sb.append(txn.getCpin());*/
 
                 if(txn.getCancelTime()==null) {
                     sb.append(CommonConstants.CSV_DELIMETER);
@@ -536,12 +536,17 @@ public class TxnListFragment extends BaseFragment {
             sb.append("Total").append(CommonConstants.CSV_DELIMETER);
             sb.append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER);
             sb.append(billTotal).append(CommonConstants.CSV_DELIMETER);
-            sb.append(accDebitTotal).append(CommonConstants.CSV_DELIMETER);
-            sb.append(accCreditTotal).append(CommonConstants.CSV_DELIMETER);
-            sb.append(cbRedeemTotal).append(CommonConstants.CSV_DELIMETER);
+
             sb.append(cbAwardTotal).append(CommonConstants.CSV_DELIMETER);
-            sb.append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER);
-            sb.append(CommonConstants.NEWLINE_SEP);
+            sb.append(cbRedeemTotal).append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER);
+
+            if(showAccFields) {
+                sb.append(accDebitTotal).append(CommonConstants.CSV_DELIMETER);
+                sb.append(accCreditTotal).append(CommonConstants.CSV_DELIMETER);
+                sb.append(CommonConstants.CSV_DELIMETER).append(CommonConstants.CSV_DELIMETER);
+            }
+
+            sb.append(CommonConstants.CSV_DELIMETER).append(CommonConstants.NEWLINE_SEP);
 
             // write remaining records
             if(sb!=null) {

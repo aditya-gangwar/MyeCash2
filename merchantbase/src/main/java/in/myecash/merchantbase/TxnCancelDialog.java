@@ -224,7 +224,7 @@ public class TxnCancelDialog extends BaseDialog {
 
         mTxnId = txn.getTrans_id();
         mInputTxnId.setText(txn.getTrans_id());
-        mInputCustId.setText(CommonUtils.getPartialVisibleStr(txn.getCustomer_id()));
+        mInputCustId.setText(CommonUtils.getPartialVisibleStr(txn.getCust_mobile()));
 
         if(txn.getCl_credit()<=0 && txn.getCl_debit()<=0) {
             mLayoutAccount.setVisibility(View.GONE);

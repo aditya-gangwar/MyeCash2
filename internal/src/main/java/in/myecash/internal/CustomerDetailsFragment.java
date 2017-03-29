@@ -80,16 +80,15 @@ public class CustomerDetailsFragment extends BaseFragment {
         Customers customer = mCallback.getRetainedFragment().mCurrCustomer;
         CustomerCards card = customer.getMembership_card();
 
-        String name = customer.getFirstName()+" "+customer.getLastName();
-        mName.setText(name);
+        mName.setText(customer.getName());
         mInternalId.setText(customer.getPrivate_id());
         mInputMobileNum.setText(customer.getMobile_num());
         mFirstLogin.setText(customer.getFirst_login_ok().toString());
         if(customer.getFirst_login_ok()) {
             mFirstLogin.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
         }
-        mRegisteredOn.setText(mSdfDateOnly.format(customer.getCreated()));
-        mExpiringOn.setText(mSdfDateOnly.format(AppCommonUtil.getExpiryDate(customer)));
+        mRegisteredOn.setText(mSdfDateOnly.format(customer.getRegDate()));
+        //mExpiringOn.setText(mSdfDateOnly.format(AppCommonUtil.getExpiryDate(customer)));
 
         int status = customer.getAdmin_status();
         mInputStatus.setText(DbConstants.userStatusDesc[status]);
@@ -99,13 +98,18 @@ public class CustomerDetailsFragment extends BaseFragment {
         mInputStatusDate.setText(mSdfDateWithTime.format(customer.getStatus_update_time()));
         mInputReason.setText(customer.getStatus_reason());
 
-        mInputQrCard.setText(card.getCardNum());
-        mInputCardStatus.setText(DbConstants.cardStatusDescInternal[card.getStatus()]);
-        if(card.getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
-            mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+        if(card!=null) {
+            mInputQrCard.setText(card.getCardNum());
+            mInputCardStatus.setText(DbConstants.cardStatusDescInternal[card.getStatus()]);
+            if (card.getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE) {
+                mInputCardStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.red_negative));
+            }
+            mCardStatusDate.setText(mSdfDateWithTime.format(card.getStatus_update_time()));
+            mCardStatusReason.setText(card.getStatus_reason());
+        } else {
+            mInputQrCard.setText("");
+            mLayoutCardDetails.setVisibility(View.GONE);
         }
-        mCardStatusDate.setText(mSdfDateWithTime.format(card.getStatus_update_time()));
-        mCardStatusReason.setText(card.getStatus_reason());
 
         if( status!=DbConstants.USER_STATUS_ACTIVE && (mAccDisable.getVisibility()==View.VISIBLE) ) {
             mAccDisable.setEnabled(false);
@@ -119,7 +123,7 @@ public class CustomerDetailsFragment extends BaseFragment {
             mAccLimited.setAlpha(0.4f);
         }
 
-        if( card.getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE && (mCardDisable.getVisibility()==View.VISIBLE) ) {
+        if( card!=null && card.getStatus() != DbConstants.CUSTOMER_CARD_STATUS_ACTIVE && (mCardDisable.getVisibility()==View.VISIBLE) ) {
             mCardDisable.setEnabled(false);
             mCardDisable.setOnClickListener(null);
             mCardDisable.setAlpha(0.4f);
@@ -199,7 +203,7 @@ public class CustomerDetailsFragment extends BaseFragment {
     private EditText mInputMobileNum;
     private EditText mFirstLogin;
     private EditText mRegisteredOn;
-    private EditText mExpiringOn;
+    //private EditText mExpiringOn;
 
     private EditText mInputStatus;
     private EditText mInputStatusDate;
@@ -207,6 +211,7 @@ public class CustomerDetailsFragment extends BaseFragment {
     //private EditText mInputRemarks;
 
     private EditText mInputQrCard;
+    private View mLayoutCardDetails;
     private EditText mInputCardStatus;
     private EditText mCardStatusDate;
     private EditText mCardStatusReason;
@@ -224,7 +229,7 @@ public class CustomerDetailsFragment extends BaseFragment {
         mInputMobileNum = (EditText) v.findViewById(R.id.input_customer_mobile);
         mFirstLogin = (EditText) v.findViewById(R.id.input_first_login);
         mRegisteredOn = (EditText) v.findViewById(R.id.input_registered_on);
-        mExpiringOn = (EditText) v.findViewById(R.id.input_expiring_on);
+        //mExpiringOn = (EditText) v.findViewById(R.id.input_expiring_on);
 
         mInputStatus = (EditText) v.findViewById(R.id.input_status);
         mInputStatusDate = (EditText) v.findViewById(R.id.input_status_date);
@@ -232,6 +237,7 @@ public class CustomerDetailsFragment extends BaseFragment {
         //mInputRemarks = (EditText) v.findViewById(R.id.input_status_remarks);
 
         mInputQrCard = (EditText) v.findViewById(R.id.input_card_id);
+        mLayoutCardDetails = v.findViewById(R.id.layout_card_details);
         mInputCardStatus = (EditText) v.findViewById(R.id.input_card_status);
         mCardStatusDate = (EditText) v.findViewById(R.id.input_card_status_date);
         mCardStatusReason = (EditText) v.findViewById(R.id.input_card_status_reason);

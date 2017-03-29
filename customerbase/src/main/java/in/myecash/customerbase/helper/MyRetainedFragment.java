@@ -101,8 +101,8 @@ public class MyRetainedFragment extends RetainedFragment {
     public void fetchCashback(Long updatedSince, Context ctxt) {
         mBackgroundProcessor.addFetchCbRequest(updatedSince, ctxt);
     }
-    public void changePin(String oldPin, String newPin, String custName) {
-        mBackgroundProcessor.addPinChangeRequest(oldPin, newPin, custName);
+    public void changePin(String oldPin, String newPin, String secret) {
+        mBackgroundProcessor.addPinChangeRequest(oldPin, newPin, secret);
     }
     public void fetchTransactions(String whereClause) {
         mBackgroundProcessor.addFetchTxnsRequest(whereClause);

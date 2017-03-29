@@ -109,6 +109,7 @@ public class DbConstants {
     // Transactions table values
     public static final String TXN_CUSTOMER_PIN_USED = "Yes";
     public static final String TXN_CUSTOMER_PIN_NOT_USED = "No";
+    public static final String TXN_CUSTOMER_OTP_USED = "OTP";
 
     // Merchant Orders Table values
     public enum MCHNT_ORDER_STATUS {

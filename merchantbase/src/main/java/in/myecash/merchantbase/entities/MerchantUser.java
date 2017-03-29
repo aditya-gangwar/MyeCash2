@@ -370,7 +370,7 @@ public class MerchantUser
     /*
      * Methods for DB uploads / commits
      */
-    public int commitTxn(MyTransaction txn, String pin) {
+    public int commitTxn(MyTransaction txn, String pin, boolean isOtp) {
         if(mPseudoLoggedIn) {
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
@@ -383,10 +383,10 @@ public class MerchantUser
             tx.setTrans_id("");
             tx.setMerchant_id("");
             tx.setMerchant_name("");
-            tx.setCustomer_id("");
+            tx.setCust_mobile("");
 
             String csvStr = CsvConverter.csvStrFromTxn(tx);
-            Transaction newTxn = MerchantServices.getInstance().commitTxn(csvStr,pin);
+            Transaction newTxn = MerchantServices.getInstance().commitTxn(csvStr,pin,isOtp);
             LogMy.d(TAG, "Txn commit success: " + newTxn.getTrans_id());
             txn.setCurrTransaction(newTxn);
             //txn.commit();
@@ -398,18 +398,33 @@ public class MerchantUser
         return ErrorCodes.NO_ERROR;
     }
 
-    public int cancelTxn(MyTransaction txn, String cardId, String pin) {
+    public int cancelTxn(MyTransaction txn, String cardId, String pin, boolean isOtp) {
         if(mPseudoLoggedIn) {
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
         try {
             isLoginValid();
-            Transaction newTxn = MerchantServices.getInstance().cancelTxn(txn.getTransaction().getTrans_id(), cardId, pin);
+            Transaction newTxn = MerchantServices.getInstance().cancelTxn(txn.getTransaction().getTrans_id(), cardId, pin, isOtp);
             LogMy.d(TAG, "Txn cancel success: " + newTxn.getTrans_id());
             txn.setCurrTransaction(newTxn);
 
         } catch(BackendlessException e) {
             LogMy.e(TAG, "Txn cancel failed: " + e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
+
+    public int genTxnOtp(String custMobileOrId) {
+        if(mPseudoLoggedIn) {
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
+        }
+        try {
+            MerchantServices.getInstance().generateTxnOtp(custMobileOrId);
+            LogMy.d(TAG, "Generate OTP success: " + custMobileOrId);
+
+        } catch(BackendlessException e) {
+            LogMy.e(TAG, "Generate OTP failed: " + e.toString());
             return AppCommonUtil.getLocalErrorCode(e);
         }
         return ErrorCodes.NO_ERROR;

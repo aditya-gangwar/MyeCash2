@@ -3,7 +3,6 @@ package in.myecash.common;
 import com.backendless.exceptions.BackendlessException;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import in.myecash.common.constants.CommonConstants;
@@ -67,7 +66,7 @@ public class CsvConverter {
             txn.setMerchant_name(txn.getMerchant_name().replace(CommonConstants.CSV_DELIMETER, ""));
         }
         csvFields[TXN_CSV_IDX_MERCHANT_NAME] = txn.getMerchant_name();
-        csvFields[TXN_CSV_IDX_CUSTOMER_ID] = txn.getCustomer_id();
+        csvFields[TXN_CSV_IDX_CUSTOMER_ID] = txn.getCust_mobile();
         csvFields[TXN_CSV_IDX_CUSTOMER_PVT_ID] = txn.getCust_private_id();
         csvFields[TXN_CSV_IDX_USED_CARD_ID] = (txn.getUsedCardId()==null)?"":txn.getUsedCardId();
         csvFields[TXN_CSV_IDX_TOTAL_BILLED] = String.valueOf(txn.getTotal_billed());
@@ -124,7 +123,7 @@ public class CsvConverter {
         }
         txn.setMerchant_id(csvFields[TXN_CSV_IDX_MERCHANT_ID]);
         txn.setMerchant_name(csvFields[TXN_CSV_IDX_MERCHANT_NAME]);
-        txn.setCustomer_id(csvFields[TXN_CSV_IDX_CUSTOMER_ID]);
+        txn.setCust_mobile(csvFields[TXN_CSV_IDX_CUSTOMER_ID]);
         txn.setCust_private_id(csvFields[TXN_CSV_IDX_CUSTOMER_PVT_ID]);
         txn.setUsedCardId(csvFields[TXN_CSV_IDX_USED_CARD_ID]);
         txn.setTotal_billed(Integer.parseInt(csvFields[TXN_CSV_IDX_TOTAL_BILLED]));

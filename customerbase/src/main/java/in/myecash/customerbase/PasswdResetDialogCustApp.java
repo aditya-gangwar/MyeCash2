@@ -73,13 +73,13 @@ public class PasswdResetDialogCustApp extends BaseDialog {
                     @Override
                     public void onSingleClick(View v) {
                         AppCommonUtil.hideKeyboard(getDialog());
-                        String value = mInputName.getText().toString();
-                        int error = ValidationHelper.validateName(value);
+                        String value = mInputSecret.getText().toString();
+                        int error = ValidationHelper.validateDob(value);
                         if(error == ErrorCodes.NO_ERROR) {
                             mListener.onPasswdResetData(value);
                             getDialog().dismiss();
                         } else {
-                            mInputName.setError(AppCommonUtil.getErrorDesc(error));
+                            mInputSecret.setError(AppCommonUtil.getErrorDesc(error));
                         }
                     }
                 });
@@ -127,11 +127,11 @@ public class PasswdResetDialogCustApp extends BaseDialog {
         mListener.onPasswdResetData(null);
     }
 
-    private EditText mInputName;
+    private EditText mInputSecret;
     private EditText mInfo;
 
     private void initUiResources(View v) {
-        mInputName = (EditText) v.findViewById(R.id.input_secret_1);
+        mInputSecret = (EditText) v.findViewById(R.id.input_secret_1);
         mInfo = (EditText) v.findViewById(R.id.labelInfo);
     }
 }

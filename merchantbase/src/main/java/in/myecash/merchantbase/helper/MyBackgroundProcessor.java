@@ -93,6 +93,11 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         public String txnId;
         public String cardId;
         public String pin;
+        public boolean isOtp;
+    }
+    private class MessageTxnCommit implements Serializable {
+        public String pin;
+        public boolean isOtp;
     }
     private class MessageImgUpload implements Serializable {
         public File file;
@@ -162,9 +167,12 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         msg.mobileNum = mobileNum;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_FORGOT_ID, msg).sendToTarget();
     }
-    public void addCommitTransRequest(String pin) {
+    public void addCommitTransRequest(String pin, boolean isOtp) {
         LogMy.d(TAG, "In addCommitTransRequest");
-        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_COMMIT_TRANS, pin).sendToTarget();
+        MessageTxnCommit msg = new MessageTxnCommit();
+        msg.pin = pin;
+        msg.isOtp = isOtp;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_COMMIT_TRANS, msg).sendToTarget();
     }
     public void addCashbackRequest(String custId) {
         LogMy.d(TAG, "In addCashbackRequest:  " + custId);
@@ -214,12 +222,16 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         msg.fileUrl = fileURL;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CUST_DATA_FILE_DOWNLOAD, msg).sendToTarget();
     }
-    public void addCancelTxnReq(String txnId, String cardId, String pin) {
+    public void addCancelTxnReq(String txnId, String cardId, String pin, boolean isOtp) {
         MessageCancelTxn msg = new MessageCancelTxn();
         msg.cardId = cardId;
         msg.txnId = txnId;
         msg.pin = pin;
+        msg.isOtp = isOtp;
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_CANCEL_TXN, msg).sendToTarget();
+    }
+    public void addGenTxnOtpReq(String custMobileOrId) {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_GEN_TXN_OTP, custMobileOrId).sendToTarget();
     }
     public void createMchntOrder(String sku, int qty, int totalPrice) {
         MessageMcntOrder msg = new MessageMcntOrder();
@@ -259,7 +271,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
                     break;
                 case MyRetainedFragment.REQUEST_COMMIT_TRANS:
                     //commitCashTrans((Transaction) msg.obj);
-                    error = commitCashTrans((String) msg.obj);
+                    error = commitCashTrans((MessageTxnCommit) msg.obj);
                     break;
                 case MyRetainedFragment.REQUEST_UPDATE_MERCHANT_SETTINGS:
                     error = updateMerchantSettings();
@@ -317,6 +329,9 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
                     break;
                 case MyRetainedFragment.REQUEST_DELETE_MCHNT_ORDER:
                     error = deleteMchntOrder((String) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_GEN_TXN_OTP:
+                    error = genTxnOtp((String) msg.obj);
                     break;
             }
         } catch (Exception e) {
@@ -479,71 +494,16 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         return ErrorCodes.NO_ERROR;
     }
 
-    /*private int getCashback(String custId) {
-        mRetainedFragment.mCurrCashback = null;
-        mRetainedFragment.mCurrCustomer = null;
-
-        try {
-            // Fetch Customer object first
-            int customerIdType = CommonUtils.getCustomerIdType(custId);
-            Customers customer = getCustomer(custId, customerIdType, true);
-
-            mRetainedFragment.mCurrCashback = new MyCashback();
-            mRetainedFragment.mCurrCashback.init(cashback, true);
-            mRetainedFragment.mCurrCustomer = mRetainedFragment.mCurrCashback.getCustomer();
-
-        } catch (BackendlessException e) {
-            mRetainedFragment.mCurrCashback = null;
-            mRetainedFragment.mCurrCustomer = null;
-
-            LogMy.e(TAG, "Exception in getCashback: "+ e.toString());
-            return AppCommonUtil.getLocalErrorCode(e);
-        }
-        return ErrorCodes.NO_ERROR;
-    }
-
-    public static Customers getCustomer(String custId, int idType, boolean fetchCard) {
-        BackendlessDataQuery query = new BackendlessDataQuery();
-        switch(idType) {
-            case CommonConstants.ID_TYPE_MOBILE:
-                query.setWhereClause("mobile_num = '"+custId+"'");
-                break;
-            case CommonConstants.ID_TYPE_CARD:
-                query.setWhereClause("cardId = '"+custId+"'");
-                break;
-            case CommonConstants.ID_TYPE_AUTO:
-                query.setWhereClause("private_id = '"+custId+"'");
-                break;
-        }
-
-        if(fetchCard) {
-            QueryOptions queryOptions = new QueryOptions();
-            queryOptions.addRelated("membership_card");
-            query.setQueryOptions(queryOptions);
-        }
-
-        BackendlessCollection<Customers> user = Backendless.Data.of( Customers.class ).find(query);
-        if( user.getTotalObjects() == 0) {
-            // No customer found is not an error
-            //return null;
-            String errorMsg = "No Customer found: "+custId+". whereclause: "+query.getWhereClause();
-            throw new BackendlessException(String.valueOf(ErrorCodes.NO_SUCH_USER), errorMsg);
-        } else {
-            if(fetchCard && user.getData().get(0).getMembership_card()==null) {
-                String errorMsg = "No customer card set for user: "+custId;
-                throw new BackendlessException(String.valueOf(ErrorCodes.NO_SUCH_CARD), errorMsg);
-            }
-            return user.getData().get(0);
-        }
-    }*/
-
-
-    private int commitCashTrans(String pin) {
-        int errorCode =  MerchantUser.getInstance().commitTxn(mRetainedFragment.mCurrTransaction, pin);
+    private int commitCashTrans(MessageTxnCommit msg) {
+        int errorCode =  MerchantUser.getInstance().commitTxn(mRetainedFragment.mCurrTransaction, msg.pin, msg.isOtp);
         if(errorCode==ErrorCodes.NO_ERROR) {
             mRetainedFragment.mCurrCashback.setCashback(mRetainedFragment.mCurrTransaction.getTransaction().getCashback());
         }
         return errorCode;
+    }
+
+    private int genTxnOtp(String custMobileOrId) {
+        return MerchantUser.getInstance().genTxnOtp(custMobileOrId);
     }
 
     private int updateMerchantSettings() {
@@ -574,7 +534,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
 
     private int cancelTxn(MessageCancelTxn msg) {
         //return MerchantUser.getInstance().cancelTxn(msg.txnId, msg.cardId, msg.pin);
-        return MerchantUser.getInstance().cancelTxn(mRetainedFragment.mCurrTransaction, msg.cardId, msg.pin);
+        return MerchantUser.getInstance().cancelTxn(mRetainedFragment.mCurrTransaction, msg.cardId, msg.pin, msg.isOtp);
     }
 
     private int fetchMchntOrders() {

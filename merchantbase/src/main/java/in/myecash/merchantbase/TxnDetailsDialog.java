@@ -203,7 +203,7 @@ public class TxnDetailsDialog extends BaseDialog {
             });
             LogMy.d(TAG,"Mid check 2");
             mInputCustomerId.setText(Html.fromHtml("<u>"+txn.getCust_private_id()+"</u>"));
-            mInputMobileNum.setText(CommonUtils.getPartialVisibleStr(txn.getCustomer_id()));
+            mInputMobileNum.setText(CommonUtils.getPartialVisibleStr(txn.getCust_mobile()));
 
             int totalCb = txn.getCb_credit() + txn.getExtra_cb_credit();
             String detailStr = MyTransaction.getCbDetailStr(txn);
