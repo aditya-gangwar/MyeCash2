@@ -87,8 +87,8 @@ public class GlobalSettingConstants {
     public static final Map<String, String> valuesGlobalSettings;
     static {
         Map<String, String> aMap = new HashMap<>(TOTAL_SETTINGS_CNT);
-        aMap.put(SETTINGS_MERCHANT_PASSWD_RESET_MINS,"60");
-        aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS,"60");
+        aMap.put(SETTINGS_MERCHANT_PASSWD_RESET_MINS,"10");
+        aMap.put(SETTINGS_CUSTOMER_PASSWD_RESET_MINS,"10");
         aMap.put(SETTINGS_MERCHANT_ACCOUNT_BLOCK_MINS,"60");
         aMap.put(SETTINGS_CUSTOMER_ACCOUNT_BLOCK_MINS,"60");
         aMap.put(SETTINGS_CUST_ACC_LIMIT_MODE_MINS,"60");

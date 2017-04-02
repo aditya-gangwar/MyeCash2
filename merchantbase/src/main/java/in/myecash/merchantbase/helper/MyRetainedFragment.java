@@ -66,6 +66,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_FETCH_MERCHANT_ORDERS = 23;
     public static final int REQUEST_DELETE_MCHNT_ORDER = 24;
     public static final int REQUEST_GEN_TXN_OTP = 25;
+    public static final int REQUEST_LOAD_TEST = 26;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -286,6 +287,10 @@ public class MyRetainedFragment extends RetainedFragment {
     }
     public void deleteMchntOrder(String orderId) {
         mBackgroundProcessor.addDeleteMchntOrder(orderId);
+    }
+
+    public void startLoadTest(String custId, String pin, int reps) {
+        mBackgroundProcessor.addLoadTestReq(custId, pin, reps);
     }
 
 

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LL_Vertical"
+    android:layout_height="wrap_content">
+
+    <EditText
+        style="@style/Dialog_title"
+        android:id="@+id/label_title"
+        android:text="GENERATE    TEST   LOAD"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="?android:attr/windowBackground">
+
+            <LinearLayout
+                style="@style/LL_Vertical_paddingSidesLarge">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/XL_space"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enter Customer Private ID" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/medium_space"/>
+
+                <EditText
+                    android:id="@+id/input_custId"
+                    style="@style/MyEdittext_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Customer ID"
+                    android:maxLength="@string/customer_internal_id_char_limit"
+                    android:gravity="center"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/XL_space"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enter Customer PIN" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/medium_space"/>
+
+                <EditText
+                    android:id="@+id/input_pin"
+                    style="@style/MyEdittext_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="PIN"
+                    android:maxLength="@string/pin_char_limit"
+                    android:inputType="number"
+                    android:gravity="center"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/XL_space"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enter Repetitions (Txn Count)" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/medium_space"/>
+
+                <EditText
+                    android:id="@+id/input_reps"
+                    style="@style/MyEdittext_Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Reps (Count)"
+                    android:maxLength="@string/pin_char_limit"
+                    android:inputType="number"
+                    android:gravity="center"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/XL_space"/>
+
+                <EditText
+                    style="@style/Edittext_only_view_small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Are you sure to generate load ?"
+                    android:textColor="@color/accent2"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

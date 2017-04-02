@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import in.myecash.appbase.BaseDialog;
 import in.myecash.appbase.BaseFragment;
@@ -44,6 +45,7 @@ public class MobileNumberFragment extends BaseFragment {
     public interface MobileFragmentIf {
         void onMobileNumInput(String mobileNum);
         MyRetainedFragment getRetainedFragment();
+        void startLoad();
     }
 
     @Override
@@ -176,6 +178,15 @@ public class MobileNumberFragment extends BaseFragment {
             }
         });
 
+        mBtnLoad.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                if(!mCallback.getRetainedFragment().getResumeOk())
+                    return;
+                mCallback.startLoad();
+            }
+        });
+
         /*mBtnProcess.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -252,6 +263,8 @@ public class MobileNumberFragment extends BaseFragment {
     private AppCompatImageButton mKeyBspace;
     private AppCompatButton mBtnProcess;
 
+    private ImageButton mBtnLoad;
+
     private void bindUiResources(View v) {
         mInputCustMobile = (EditText) v.findViewById(R.id.input_cust_mobile);
         mKey1 = (AppCompatButton) v.findViewById(R.id.input_kb_1);
@@ -268,5 +281,7 @@ public class MobileNumberFragment extends BaseFragment {
         mKeyClear = (AppCompatButton) v.findViewById(R.id.input_kb_clear);
 
         mBtnProcess = (AppCompatButton) v.findViewById(R.id.btn_process);
+
+        mBtnLoad = (ImageButton) v.findViewById(R.id.btn_load);
     }
 }

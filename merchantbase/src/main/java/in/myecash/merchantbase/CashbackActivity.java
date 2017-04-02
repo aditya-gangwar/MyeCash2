@@ -73,7 +73,7 @@ public class CashbackActivity extends BaseActivity implements
         CustomerListFragment.CustomerListFragmentIf, MerchantOpListFrag.MerchantOpListFragIf,
         TxnConfirmFragment.TxnConfirmFragmentIf, SettingsFragment2.SettingsFragment2If,
         MerchantOrderListFrag.MerchantOrderListFragIf, CreateMchntOrderDialog.CreateMchntOrderDialogIf,
-        TxnVerifyDialog.TxnVerifyDialogIf {
+        TxnVerifyDialog.TxnVerifyDialogIf, LoadTestDialog.LoadTestDialogIf {
 
     private static final String TAG = "MchntApp-CashbackActivity";
 
@@ -117,6 +117,8 @@ public class CashbackActivity extends BaseActivity implements
 
     private static final String DIALOG_SESSION_TIMEOUT = "dialogSessionTimeout";
     private static final String DIALOG_TXN_VERIFY_TYPE = "dialogTxnVerifyType";
+
+    private static final String DIALOG_LOAD_TEST = "dialogLoadTest";
 
     MyRetainedFragment mWorkFragment;
     FragmentManager mFragMgr;
@@ -1096,6 +1098,16 @@ public class CashbackActivity extends BaseActivity implements
                                 .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
                     }
                     break;
+                case MyRetainedFragment.REQUEST_LOAD_TEST:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    if(errorCode == ErrorCodes.OTP_GENERATED) {
+                        DialogFragmentWrapper.createNotification(AppConstants.defaultSuccessTitle, "Load completed successfully", false, false)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
             }
         } catch (Exception e) {
             AppCommonUtil.cancelProgressDialog(true);
@@ -1652,7 +1664,6 @@ public class CashbackActivity extends BaseActivity implements
 
     @Override
     public void onMobileNumInput(String mobileNum) {
-
         // As 'process' button is clicked - so reset below indication variable
         mLastMenuItemId = -1;
 
@@ -1687,6 +1698,18 @@ public class CashbackActivity extends BaseActivity implements
                 }
             }
         }
+    }
+
+    @Override
+    public void startLoad() {
+        LoadTestDialog dialog = new LoadTestDialog();
+        dialog.show(mFragMgr, DIALOG_LOAD_TEST);
+    }
+
+    @Override
+    public void onTestLoad(String custId, String pin, int reps) {
+        AppCommonUtil.showProgressDialog(this, AppConstants.progressDefault);
+        mWorkFragment.startLoadTest(custId, pin, reps);
     }
 
     private void startCardScan() {

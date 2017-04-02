@@ -370,7 +370,88 @@ public class MerchantUser
     /*
      * Methods for DB uploads / commits
      */
-    public int commitTxn(MyTransaction txn, String pin, boolean isOtp) {
+    public int startLoad(String customerId, String pin, int reps) {
+        if(mPseudoLoggedIn || !AppConstants.DEBUG_MODE) {
+            return ErrorCodes.OPERATION_NOT_ALLOWED;
+        }
+
+        int errCode = ErrorCodes.NO_ERROR;
+        int txnDone = 0;
+
+        try {
+            Transaction trans = new Transaction();
+            trans.setCust_private_id(customerId);
+            trans.setUsedCardId("");
+            trans.setCb_percent("25");
+            trans.setExtra_cb_credit(0);
+            trans.setExtra_cb_percent("0");
+
+            MyTransaction myTxn = new MyTransaction(trans);
+
+            // 1000 txn commits for given customer
+            for(int i=1; i<=reps; i++) {
+
+                switch (i%4) {
+                    case 1:
+                        LogMy.d(TAG,"Case 1");
+                        trans.setTotal_billed(1000);
+                        trans.setCb_billed(1000);
+                        trans.setCb_credit(250);
+                        trans.setCb_debit(0);
+                        trans.setCl_credit(0);
+                        trans.setCl_debit(0);
+                        break;
+
+                    case 2:
+                        LogMy.d(TAG,"Case 2");
+                        trans.setTotal_billed(250);
+                        trans.setCb_billed(0);
+                        trans.setCb_credit(0);
+                        trans.setCb_debit(250);
+                        trans.setCl_credit(0);
+                        trans.setCl_debit(0);
+                        break;
+
+                    case 3:
+                        LogMy.d(TAG,"Case 3");
+                        trans.setTotal_billed(0);
+                        trans.setCb_billed(0);
+                        trans.setCb_credit(0);
+                        trans.setCb_debit(0);
+                        trans.setCl_credit(100);
+                        trans.setCl_debit(0);
+                        break;
+
+                    case 0:
+                        LogMy.d(TAG,"Case 0");
+                        trans.setTotal_billed(0);
+                        trans.setCb_billed(0);
+                        trans.setCb_credit(0);
+                        trans.setCb_debit(0);
+                        trans.setCl_credit(0);
+                        trans.setCl_debit(100);
+                        break;
+
+                    default:
+                        LogMy.e(TAG,"Invalid value: "+i%4);
+                }
+                errCode = commitTxn(myTxn, pin, false, true);
+                if(errCode!=ErrorCodes.NO_ERROR) {
+                    break;
+                } else {
+                    txnDone++;
+                }
+            } // end loop
+        } catch( BackendlessException e ) {
+            LogMy.e(TAG, "Commit cash transaction in load failed: " + e.toString());
+            errCode = AppCommonUtil.getLocalErrorCode(e);
+        }
+
+        LogMy.d(TAG,"Committed "+txnDone+" txns");
+        return errCode;
+    }
+
+    public int commitTxn(MyTransaction txn, String pin, boolean isOtp, boolean loadTest) {
         if(mPseudoLoggedIn) {
             return ErrorCodes.OPERATION_NOT_ALLOWED;
         }
@@ -388,7 +469,9 @@ public class MerchantUser
             String csvStr = CsvConverter.csvStrFromTxn(tx);
             Transaction newTxn = MerchantServices.getInstance().commitTxn(csvStr,pin,isOtp);
             LogMy.d(TAG, "Txn commit success: " + newTxn.getTrans_id());
-            txn.setCurrTransaction(newTxn);
+            if(!loadTest) {
+                txn.setCurrTransaction(newTxn);
+            }
             //txn.commit();
 
         } catch( BackendlessException e ) {

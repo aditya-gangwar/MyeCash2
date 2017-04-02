@@ -108,6 +108,11 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         public int qty;
         public int totalPrice;
     }
+    private class MessageLoadTest implements Serializable {
+        public String custId;
+        public String pin;
+        public int reps;
+    }
 
     /*
      * Add request methods - Assumes that MerchantUser is instantiated
@@ -247,6 +252,13 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_DELETE_MCHNT_ORDER, orderId).sendToTarget();
     }
 
+    public void addLoadTestReq(String custId, String pin, int reps) {
+        MessageLoadTest msg = new MessageLoadTest();
+        msg.custId = custId;
+        msg.pin = pin;
+        msg.reps = reps;
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_LOAD_TEST, msg).sendToTarget();
+    }
 
     @Override
     protected int handleMsg(Message msg) {
@@ -332,6 +344,10 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
                     break;
                 case MyRetainedFragment.REQUEST_GEN_TXN_OTP:
                     error = genTxnOtp((String) msg.obj);
+                    break;
+                case MyRetainedFragment.REQUEST_LOAD_TEST:
+                    MessageLoadTest data = (MessageLoadTest)msg.obj;
+                    error = MerchantUser.getInstance().startLoad(data.custId, data.pin, data.reps);
                     break;
             }
         } catch (Exception e) {
@@ -495,7 +511,7 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
     }
 
     private int commitCashTrans(MessageTxnCommit msg) {
-        int errorCode =  MerchantUser.getInstance().commitTxn(mRetainedFragment.mCurrTransaction, msg.pin, msg.isOtp);
+        int errorCode =  MerchantUser.getInstance().commitTxn(mRetainedFragment.mCurrTransaction, msg.pin, msg.isOtp, false);
         if(errorCode==ErrorCodes.NO_ERROR) {
             mRetainedFragment.mCurrCashback.setCashback(mRetainedFragment.mCurrTransaction.getTransaction().getCashback());
         }

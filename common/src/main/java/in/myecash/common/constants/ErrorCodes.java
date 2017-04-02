@@ -110,7 +110,7 @@ public class ErrorCodes {
     static {
         Map<Integer, String> aMap = new HashMap<>(100);
 
-        aMap.put(NO_ERROR, "");
+        aMap.put(NO_ERROR, "All is well");
         aMap.put(OP_SCHEDULED,"");
         aMap.put(OTP_GENERATED,"OTP sent on mobile number. Do the operation again with OTP value.");
 
