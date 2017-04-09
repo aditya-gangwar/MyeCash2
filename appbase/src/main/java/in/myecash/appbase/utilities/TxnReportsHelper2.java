@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,20 +31,20 @@ import in.myecash.common.database.Transaction;
 /**
  * Created by adgangwa on 28-10-2016.
  */
-public class TxnReportsHelper {
+public class TxnReportsHelper2 {
 
-    public interface TxnReportsHelperIf {
+    public interface TxnReportsHelper2If {
         void fetchTxnsFromDB(String whereClause);
         void fetchTxnFiles(List<String> missingFiles);
         void onFinalTxnSetAvailable(List<Transaction> allTxns);
     }
 
-    private static final String TAG = "BaseApp-TxnReportsHelper";
+    private static final String TAG = "BaseApp-TxnReportsHelper2";
 
     private Context mContext;
-    private TxnReportsHelperIf mCallback;
+    private TxnReportsHelper2If mCallback;
 
-    private Date mTxnInDbFrom;
+    //private Date mTxnInDbFrom;
     private Date mFromDate;
     private Date mToDate;
     private String mMerchantId;
@@ -54,13 +55,13 @@ public class TxnReportsHelper {
     public List<Transaction> mTxnsFromCsv = new ArrayList<>();
 
 
-    public TxnReportsHelper(Activity callingActivity) {
+    public TxnReportsHelper2(Activity callingActivity) {
         mContext = callingActivity;
-        mCallback = (TxnReportsHelperIf) callingActivity;
-        mTxnInDbFrom = getTxnInDbStartTime();
+        mCallback = (TxnReportsHelper2If) callingActivity;
+        //mTxnInDbFrom = getTxnInDbStartTime();
     }
 
-    public static Date getTxnInDbStartTime() {
+    /*public static Date getTxnInDbStartTime() {
         // time after which txns should be in DB
         DateUtil now = new DateUtil(new Date(), TimeZone.getDefault());
         LogMy.d( TAG, "now: "+ String.valueOf(now.getTime().getTime()) );
@@ -68,7 +69,7 @@ public class TxnReportsHelper {
         now.removeDays(MyGlobalSettings.getTxnsIntableKeepDays()-1);
         LogMy.d( TAG, "now: "+ String.valueOf(now.getTime().getTime()) );
         return now.toMidnight().getTime();
-    }
+    }*/
 
     /*
      * If mFromDate < mTxnInDbFrom (means txns from CSV files required)
@@ -80,14 +81,14 @@ public class TxnReportsHelper {
     public void startTxnFetch(Date from, Date to, String merchantId, String customerId) throws Exception{
         mFromDate = from;
         mToDate = to;
-        LogMy.d( TAG, "mTxnInDbFrom: "+ String.valueOf(mTxnInDbFrom.getTime()) );
+        //LogMy.d( TAG, "mTxnInDbFrom: "+ String.valueOf(mTxnInDbFrom.getTime()) );
         mMerchantId = merchantId;
         mCustomerId = customerId;
 
         // reset all
         mTxnsFromCsv.clear();
 
-        if(mFromDate.getTime() < mTxnInDbFrom.getTime()) {
+        //if(mFromDate.getTime() < mTxnInDbFrom.getTime()) {
             // archived txns from CSV files are required
             if(mMerchantId==null || mMerchantId.isEmpty()) {
                 LogMy.e(TAG,"Merchant ID not available to fetch txn CSV files");
@@ -105,18 +106,96 @@ public class TxnReportsHelper {
                 // all files will be processed in single go, after fetching missing files
                 mCallback.fetchTxnFiles(mMissingFiles);;
             }
-        } else {
+        /*} else {
             // txns only from DB required
             mCallback.fetchTxnsFromDB(buildWhereClause());
-        }
+        }*/
     }
 
     // checks for txn files locally and sets 'mWorkFragment.mAllFiles' and 'mWorkFragment.mMissingFiles' accordingly
     private void getTxnCsvFilePaths() {
+        // assuming 1 file per month
+        // loop from 'from date month' to 'to date month' - checking if corresponding file is locally available or not
+
+        // +1 as getMonth() starts with 0 for Jan
+        int fromMonth = (new DateUtil(mFromDate, TimeZone.getDefault())).getMonth()+1;
+        int toMonth = (new DateUtil(mToDate, TimeZone.getDefault())).getMonth()+1;
+        int fromYear = (new DateUtil(mFromDate, TimeZone.getDefault())).getYear();
+        int toYear = (new DateUtil(mToDate, TimeZone.getDefault())).getYear();
+        //int currDay = (new DateUtil(new Date(), TimeZone.getDefault())).getDayOfMonth();
+
+        mMissingFiles.clear();
+        mAllFiles.clear();
+
+        SimpleDateFormat formatter1=new SimpleDateFormat("dd/MM/yyyy");
+
+        // build names of all required CSV files
+        for(int y=fromYear; y<=toYear; y++) {
+            int startMonth = (y==fromYear)?fromMonth:1;
+            int endMonth = (y==toYear)?toMonth:12;
+            String yearStr = String.format("%04d", y);
+
+            for (int m = startMonth; m <= endMonth; m++) {
+                String monthStr = String.format("%02d", m);
+
+                String filename = CommonUtils.getTxnCsvFilename(monthStr, yearStr, mMerchantId);
+                mAllFiles.add(filename);
+
+                File file = mContext.getFileStreamPath(filename);
+                if(file == null || !file.exists()) {
+                    // file does not exist locally
+                    LogMy.d(TAG,"Missing file: "+filename);
+                    String filepath = CommonUtils.getMerchantTxnDir(mMerchantId) + CommonConstants.FILE_PATH_SEPERATOR + filename;
+                    mMissingFiles.add(filepath);
+                } else {
+                    // check if local copy is latest or not
+                    boolean latestCopy = true;
+                    Date reqFileUpdateTime = null;
+
+                    try {
+                        if (y == toYear && m == toMonth) {
+                            // current month file
+                            // file update should be after requested 'to' time
+                            reqFileUpdateTime = mToDate;
+                            //reqFileUpdateTime = (new DateUtil(new Date(), TimeZone.getDefault())).toMidnight().getTime();
+                        } else {
+                            // old month file
+                            // file update should be after next month's first day midnight
+                            String nextDayDate = null;
+                            if (m != 12) {
+                                nextDayDate = "01/" + String.format("%02d", m + 1) + "/" + yearStr;
+                            } else {
+                                // Dec month - next month is 1 and add year also
+                                nextDayDate = "01/01/" + String.format("%04d", y + 1);
+                            }
+                            reqFileUpdateTime = formatter1.parse(nextDayDate);
+                        }
+
+                        if(file.lastModified() < reqFileUpdateTime.getTime()) {
+                            LogMy.d(TAG,"Local file modified time less than required: "+filename+","+file.lastModified()+","+reqFileUpdateTime.getTime());
+                            latestCopy = false;
+                        }
+                    } catch (Exception e) {
+                        // Add to missing file list
+                        LogMy.e(TAG,"Exception in TxnReportsHelper2, adding to missing file list: "+filename);
+                        latestCopy = false;
+                    }
+
+                    if(!latestCopy) {
+                        String filepath = CommonUtils.getMerchantTxnDir(mMerchantId) + CommonConstants.FILE_PATH_SEPERATOR + filename;
+                        mMissingFiles.add(filepath);
+                    }
+                }
+            }
+        }
+
+        LogMy.d(TAG,"mAllFiles: "+mAllFiles.toString());
+        LogMy.d(TAG,"mMissingFiles: "+mMissingFiles.toString());
+
         // loop through the dates for which report is required
         // check if file against the date is available locally
         // if not, add in missing file list
-        long diff = Math.abs(mTxnInDbFrom.getTime() - mFromDate.getTime());
+        /*long diff = Math.abs(mTxnInDbFrom.getTime() - mFromDate.getTime());
         int diffDays = (int) (diff / (24 * 60 * 60 * 1000));
 
         DateUtil txnDay = new DateUtil(mFromDate, TimeZone.getDefault());
@@ -135,7 +214,7 @@ public class TxnReportsHelper {
                 mMissingFiles.add(filepath);
             }
             txnDay.addDays(1);
-        }
+        }*/
     }
 
     // this function is called for further processing,
@@ -143,14 +222,18 @@ public class TxnReportsHelper {
     public void onAllTxnFilesAvailable(boolean remoteCsvTxnFileNotFound) throws Exception {
         // process CSV files to extract applicable CSV records
         processTxnFiles();
+
+        // For now - always check for txns in DB
+        mCallback.fetchTxnsFromDB(buildWhereClause());
+
         // check if records from DB table are to be fetched too
-        if( mToDate.getTime() >= mTxnInDbFrom.getTime() ||
+        /*if( mToDate.getTime() >= mTxnInDbFrom.getTime() ||
                 remoteCsvTxnFileNotFound ) {
             mCallback.fetchTxnsFromDB(buildWhereClause());
         } else {
             // no DB table records to be fetched
             onDbTxnsAvailable(null);
-        }
+        }*/
     }
 
     // returns final list of transactions
@@ -192,7 +275,7 @@ public class TxnReportsHelper {
         // we used '<' and not '<='
         whereClause.append(" AND create_time < '").append(mToDate.getTime()).append("'");
 
-        //whereClause.append(" AND archived = false");
+        whereClause.append(" AND archived = false");
 
         // customer and merchant id
         if(mCustomerId.length() == CommonConstants.MOBILE_NUM_LENGTH) {
@@ -221,7 +304,7 @@ public class TxnReportsHelper {
                 //LogMy.d(TAG,"Encoded "+mAllFiles.get(i)+": "+new String(bytes));
                 //byte[] decodedBytes = Base64.decode(bytes, Base64.DEFAULT);
                 //LogMy.d(TAG,"Decoded "+mAllFiles.get(i)+": "+new String(decodedBytes));
-                //InputStream is = new ByteArrayInputStream(decodedBytes);
+
                 InputStream is = new ByteArrayInputStream(bytes);
                 BufferedReader bfReader = new BufferedReader(new InputStreamReader(is));
 
@@ -272,15 +355,18 @@ public class TxnReportsHelper {
     private void processTxnCsvRecord(String csvString, boolean isCustomerFilter)  throws ParseException {
         Transaction txn = CsvConverter.txnFromCsvStr(csvString);
 
-        if( !isCustomerFilter ||
+        if( txn.getCreate_time().getTime() > mFromDate.getTime()
+                && txn.getCreate_time().getTime() < mToDate.getTime()
+                && (!isCustomerFilter || mCustomerId.equals(txn.getCust_private_id()))
+                ) {
+            mTxnsFromCsv.add(txn);
+        }
+
+        /*if( !isCustomerFilter ||
                 mCustomerId.equals(txn.getCust_mobile()) ||
                 mCustomerId.equals(txn.getCust_private_id()) ) {
 
             mTxnsFromCsv.add(txn);
-        }
-    }
-
-    public Date getTxnInDbFrom() {
-        return mTxnInDbFrom;
+        }*/
     }
 }

@@ -26,7 +26,7 @@ import in.myecash.appbase.barcodeReader.BarcodeCaptureActivity;
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.appbase.utilities.AppAlarms;
-import in.myecash.appbase.utilities.TxnReportsHelper;
+import in.myecash.appbase.utilities.TxnReportsHelper2;
 import in.myecash.appbase.utilities.ValidationHelper;
 import in.myecash.common.CommonUtils;
 import in.myecash.common.constants.CommonConstants;
@@ -57,7 +57,7 @@ public class TxnReportsActivity extends BaseActivity implements
         MyRetainedFragment.RetainedFragmentIf,
         MyDatePickerDialog.MyDatePickerIf, TxnSummaryFragment.TxnSummaryFragmentIf,
         TxnListFragment.TxnListFragmentIf, DialogFragmentWrapper.DialogFragmentWrapperIf,
-        TxnDetailsDialog.TxnDetailsDialogIf, TxnReportsHelper.TxnReportsHelperIf,
+        TxnDetailsDialog.TxnDetailsDialogIf, TxnReportsHelper2.TxnReportsHelper2If,
         TxnCancelDialog.TxnCancelDialogIf, TxnPinInputDialog.TxnPinInputDialogIf,
         CustomerDetailsDialog.CustomerDetailsDialogIf, TxnVerifyDialog.TxnVerifyDialogIf {
     private static final String TAG = "MchntApp-TxnReportsActivity";
@@ -87,7 +87,7 @@ public class TxnReportsActivity extends BaseActivity implements
     private String mCustomerId;
 
     // Store and restore as part of instance state
-    private TxnReportsHelper mHelper;
+    private TxnReportsHelper2 mHelper;
     private Date mFromDate;
     private Date mToDate;
     private int mLastTxnPos;
@@ -123,7 +123,7 @@ public class TxnReportsActivity extends BaseActivity implements
 
         // create helper instance
         if(savedInstanceState==null) {
-            mHelper = new TxnReportsHelper(this);
+            mHelper = new TxnReportsHelper2(this);
         } else {
             mHelper = mWorkFragment.mTxnReportHelper;
         }
@@ -216,12 +216,20 @@ public class TxnReportsActivity extends BaseActivity implements
                     mWorkFragment.mLastFetchTransactions = null;
                 }
                 mCustomerId = mInputCustId.getText().toString();
-                if (mCustomerId.length() > 0) {
-                    if( mCustomerId.length() != CommonConstants.CUSTOMER_INTERNAL_ID_LEN &&
+                if (mCustomerId.length() > 0 &&
+                        mCustomerId.length() != CommonConstants.CUSTOMER_INTERNAL_ID_LEN) {
+                    if(mCustomerId.length() == CommonConstants.MOBILE_NUM_LENGTH) {
+
+                    } else {
+                        mInputCustId.setError(AppCommonUtil.getErrorDesc(ErrorCodes.INVALID_LENGTH));
+                    }
+                    return;
+
+                    /*if( mCustomerId.length() != CommonConstants.CUSTOMER_INTERNAL_ID_LEN &&
                             mCustomerId.length() != CommonConstants.MOBILE_NUM_LENGTH ) {
                         mInputCustId.setError(AppCommonUtil.getErrorDesc(ErrorCodes.INVALID_LENGTH));
                         return;
-                    }
+                    }*/
                 }
 
                 //fetchReportData();
@@ -425,6 +433,17 @@ public class TxnReportsActivity extends BaseActivity implements
                     }
                     break;
 
+                case MyRetainedFragment.REQUEST_GET_CUST_ID:
+                    AppCommonUtil.cancelProgressDialog(true);
+                    // ask for customer OTP
+                    if(errorCode == ErrorCodes.NO_ERROR) {
+                        mHelper.startTxnFetch(mFromDate, mToDate,
+                                MerchantUser.getInstance().getMerchantId(), mWorkFragment.mTempStr);
+                    } else {
+                        DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
+                                .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
+                    }
+                    break;
             }
 
         } catch (Exception e) {

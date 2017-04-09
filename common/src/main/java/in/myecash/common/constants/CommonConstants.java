@@ -57,6 +57,7 @@ public class CommonConstants {
     public static final String DATE_FORMAT_ONLY_DATE_CSV = "dd/MM/yyyy";
     public static final String DATE_FORMAT_DDMM = "ddMM";
     public static final String DATE_FORMAT_DDMMYY = "ddMMyy";
+    public static final String DATE_FORMAT_MMYYYY = "MMyyyy";
     // used in reports etc where both date and time is to be shown
     public static final String DATE_FORMAT_WITH_TIME = "dd/MM/yyyy HH:mm";
     // date format to be used in filename
@@ -101,9 +102,11 @@ public class CommonConstants {
      */
     public static final String FILE_PATH_SEPERATOR = "/";
     public static final String MERCHANT_ROOT_DIR = "merchants"+ CommonConstants.FILE_PATH_SEPERATOR;
+    public static final String CUSTOMER_ROOT_DIR = "customers"+ CommonConstants.FILE_PATH_SEPERATOR;
+    public static final String MERCHANT_TXN_ROOT_DIR = MERCHANT_ROOT_DIR+"txnCsvFiles"+ CommonConstants.FILE_PATH_SEPERATOR;
+    public static final String CUSTOMER_TXN_ROOT_DIR = CUSTOMER_ROOT_DIR+"txnCsvFiles"+ CommonConstants.FILE_PATH_SEPERATOR;
     public static final String MERCHANT_DISPLAY_IMAGES_DIR = MERCHANT_ROOT_DIR+"displayImages"+ CommonConstants.FILE_PATH_SEPERATOR;
     public static final String MERCHANT_LOGGING_ROOT_DIR = "logging"+ CommonConstants.FILE_PATH_SEPERATOR;
-    public static final String MERCHANT_TXN_ROOT_DIR = MERCHANT_ROOT_DIR+"txnCsvFiles"+ CommonConstants.FILE_PATH_SEPERATOR;
     public static final String MERCHANT_CUST_DATA_ROOT_DIR = MERCHANT_ROOT_DIR+"customerData"+ CommonConstants.FILE_PATH_SEPERATOR;
     public static final String MERCHANT_TXN_IMAGE_ROOT_DIR = MERCHANT_ROOT_DIR+"txnImages"+ CommonConstants.FILE_PATH_SEPERATOR;
 

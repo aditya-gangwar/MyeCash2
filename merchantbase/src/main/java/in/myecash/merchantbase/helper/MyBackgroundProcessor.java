@@ -5,27 +5,18 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 
-import com.backendless.Backendless;
-import com.backendless.BackendlessCollection;
 import com.backendless.exceptions.BackendlessException;
-import com.backendless.persistence.BackendlessDataQuery;
-import com.backendless.persistence.QueryOptions;
 
 import in.myecash.appbase.backendAPI.CommonServices;
 import in.myecash.appbase.constants.AppConstants;
-import in.myecash.common.CommonUtils;
-import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Cashback;
-import in.myecash.common.database.CustomerCards;
-import in.myecash.common.database.Customers;
 import in.myecash.common.database.MerchantOrders;
 import in.myecash.common.database.MerchantStats;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.BackgroundProcessor;
 import in.myecash.appbase.utilities.FileFetchr;
 import in.myecash.appbase.utilities.LogMy;
-import in.myecash.merchantbase.backendAPI.MerchantServices;
 import in.myecash.merchantbase.entities.MerchantUser;
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.appbase.entities.MyTransaction;
@@ -33,7 +24,6 @@ import in.myecash.appbase.entities.MyTransaction;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -260,6 +250,10 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_LOAD_TEST, msg).sendToTarget();
     }
 
+    public void addCustIdReq(String custMobile) {
+        mRequestHandler.obtainMessage(MyRetainedFragment.REQUEST_GET_CUST_ID, custMobile).sendToTarget();
+    }
+
     @Override
     protected int handleMsg(Message msg) {
         int error = ErrorCodes.NO_ERROR;
@@ -348,6 +342,9 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
                 case MyRetainedFragment.REQUEST_LOAD_TEST:
                     MessageLoadTest data = (MessageLoadTest)msg.obj;
                     error = MerchantUser.getInstance().startLoad(data.custId, data.pin, data.reps);
+                    break;
+                case MyRetainedFragment.REQUEST_GET_CUST_ID:
+                    error = getCustomerId((String) msg.obj);
                     break;
             }
         } catch (Exception e) {
@@ -606,6 +603,16 @@ public class MyBackgroundProcessor<T> extends BackgroundProcessor<T> {
         return status;
     }
 
+    private int getCustomerId(String custMobile) {
+        try {
+            mRetainedFragment.mTempStr = CommonServices.getInstance().getCustomerId(custMobile);
+
+        } catch(BackendlessException e) {
+            LogMy.e(TAG, "getCustomerId failed: " + e.toString());
+            return AppCommonUtil.getLocalErrorCode(e);
+        }
+        return ErrorCodes.NO_ERROR;
+    }
 
 
     private int fetchTxnFiles(Context ctxt) {

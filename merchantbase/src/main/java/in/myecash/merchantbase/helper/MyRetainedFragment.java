@@ -10,7 +10,7 @@ import com.crashlytics.android.Crashlytics;
 
 import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppAlarms;
-import in.myecash.appbase.utilities.TxnReportsHelper;
+import in.myecash.appbase.utilities.TxnReportsHelper2;
 import in.myecash.common.constants.DbConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.MerchantOps;
@@ -67,6 +67,7 @@ public class MyRetainedFragment extends RetainedFragment {
     public static final int REQUEST_DELETE_MCHNT_ORDER = 24;
     public static final int REQUEST_GEN_TXN_OTP = 25;
     public static final int REQUEST_LOAD_TEST = 26;
+    public static final int REQUEST_GET_CUST_ID = 27;
 
     // Threads taken care by this fragment
     private MyBackgroundProcessor<String> mBackgroundProcessor;
@@ -79,6 +80,8 @@ public class MyRetainedFragment extends RetainedFragment {
     public String mCustCardId;
     public boolean mCardPresented;
     public String mCardImageFilename;
+    // this is used differently in different cases
+    public String mTempStr;
 
     public String mCustRegFirstName;
     public String mCustRegLastName;
@@ -111,7 +114,7 @@ public class MyRetainedFragment extends RetainedFragment {
     //public List<String> mAllFiles = new ArrayList<>();
     public List<String> mMissingFiles;
     // 'Txn Reports Activity' store the helper instance here in onSaveInstance
-    public TxnReportsHelper mTxnReportHelper;
+    public TxnReportsHelper2 mTxnReportHelper;
     //public List<Transaction> mTxnsFromCsv = new ArrayList<>();
     public int mSummary[] = new int[AppConstants.INDEX_SUMMARY_MAX_VALUE];
     public List<Transaction> mLastFetchTransactions;
@@ -291,6 +294,10 @@ public class MyRetainedFragment extends RetainedFragment {
 
     public void startLoadTest(String custId, String pin, int reps) {
         mBackgroundProcessor.addLoadTestReq(custId, pin, reps);
+    }
+
+    public void getCustomerId(String custMobile) {
+        mBackgroundProcessor.addCustIdReq(custMobile);
     }
 
 

@@ -5,6 +5,7 @@ package in.myecash.merchantbase.entities;
  */
 
 import android.graphics.Bitmap;
+import android.os.SystemClock;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
@@ -391,6 +392,7 @@ public class MerchantUser
             // 1000 txn commits for given customer
             for(int i=1; i<=reps; i++) {
 
+                SystemClock.sleep(1000);
                 switch (i%4) {
                     case 1:
                         LogMy.d(TAG,"Case 1");

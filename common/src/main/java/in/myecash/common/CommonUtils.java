@@ -17,6 +17,7 @@ import java.util.TimeZone;
 public class CommonUtils {
 
     private static final SimpleDateFormat mSdfOnlyDateFilename = new SimpleDateFormat(CommonConstants.DATE_FORMAT_ONLY_DATE_FILENAME, CommonConstants.DATE_LOCALE);
+    private static final SimpleDateFormat mSdfDateMMYYYY = new SimpleDateFormat(CommonConstants.DATE_FORMAT_MMYYYY, CommonConstants.DATE_LOCALE);
 
     public static boolean txnVerifyReq(Merchants merchant, Transaction txn) {
         if(txn.getCancelTime()==null) {
@@ -53,11 +54,19 @@ public class CommonUtils {
      * Methods to get file paths (in backend) for various types of user files
      */
     public static String getMerchantTxnDir(String merchantId) {
-        // merchant directory: merchants/<first 3 chars of merchant id>/<next 2 chars of merchant id>/<merchant id>/
+        // merchant directory: merchants/<first 3 chars of merchant id>/<first 5 chars of merchant id>/<merchant id>/
         return CommonConstants.MERCHANT_TXN_ROOT_DIR +
                 merchantId.substring(0,3) + CommonConstants.FILE_PATH_SEPERATOR +
                 merchantId.substring(0,5) + CommonConstants.FILE_PATH_SEPERATOR +
                 merchantId;
+    }
+
+    public static String getCustomerTxnDir(String customerId) {
+        // customer directory: customers/<first 2 chars of customer id>/first 4 chars of customer id>/<customer id>/
+        return CommonConstants.CUSTOMER_TXN_ROOT_DIR +
+                customerId.substring(0,2) + CommonConstants.FILE_PATH_SEPERATOR +
+                customerId.substring(0,4) + CommonConstants.FILE_PATH_SEPERATOR +
+                customerId;
     }
 
     public static String getMerchantCustFilePath(String merchantId) {
@@ -70,6 +79,11 @@ public class CommonUtils {
         // File name: txns_<merchant_id>_<ddMMMyy>.csv
         mSdfOnlyDateFilename.setTimeZone(TimeZone.getTimeZone(CommonConstants.TIMEZONE));
         return CommonConstants.MERCHANT_TXN_FILE_PREFIX + merchantId + "_" + mSdfOnlyDateFilename.format(date) + CommonConstants.CSV_FILE_EXT;
+    }
+
+    public static String getTxnCsvFilename(String month, String year, String merchantId) {
+        // File name: txns_<merchant_id>_<MMyyyy>.csv
+        return CommonConstants.MERCHANT_TXN_FILE_PREFIX + merchantId + "_" + month + year + CommonConstants.CSV_FILE_EXT;
     }
 
     /*public static String getTxnImgDir(String merchantId) {

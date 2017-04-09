@@ -204,4 +204,6 @@ public class DateUtil {
     public int getDayOfMonth() {
         return cal.get(Calendar.DAY_OF_MONTH);
     }
+    public int getMonth() {return cal.get(Calendar.MONTH);}
+    public int getYear() {return cal.get(Calendar.YEAR);}
 }
