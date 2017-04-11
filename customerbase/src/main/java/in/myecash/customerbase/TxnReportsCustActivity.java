@@ -26,7 +26,7 @@ import in.myecash.appbase.constants.AppConstants;
 import in.myecash.appbase.utilities.AppCommonUtil;
 import in.myecash.appbase.utilities.DialogFragmentWrapper;
 import in.myecash.appbase.utilities.LogMy;
-import in.myecash.appbase.utilities.TxnReportsHelper;
+import in.myecash.appbase.utilities.TxnReportsHelper2;
 import in.myecash.common.DateUtil;
 import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
@@ -42,7 +42,7 @@ public class TxnReportsCustActivity extends BaseActivity implements
         MyRetainedFragment.RetainedFragmentIf,
         MyDatePickerDialog.MyDatePickerIf, TxnListFragment.TxnListFragmentIf,
         DialogFragmentWrapper.DialogFragmentWrapperIf, TxnDetailsDialog.TxnDetailsDialogIf,
-        TxnReportsHelper.TxnReportsHelperIf {
+        TxnReportsHelper2.TxnReportsHelper2If {
     private static final String TAG = "CustApp-TxnReportsActivity";
 
     public static final String EXTRA_MERCHANT_ID = "extraMchntId";
@@ -68,7 +68,7 @@ public class TxnReportsCustActivity extends BaseActivity implements
     private String mMerchantName;
 
     // Store and restore as part of instance state
-    private TxnReportsHelper mHelper;
+    private TxnReportsHelper2 mHelper;
     private Date mFromDate;
     private Date mToDate;
     //private int mDetailedTxnPos;
@@ -97,7 +97,7 @@ public class TxnReportsCustActivity extends BaseActivity implements
 
         // create/restore helper instance
         if(savedInstanceState==null) {
-            mHelper = new TxnReportsHelper(this);
+            mHelper = new TxnReportsHelper2(this);
         } else {
             mHelper = mWorkFragment.mTxnReportHelper;
         }
@@ -112,6 +112,13 @@ public class TxnReportsCustActivity extends BaseActivity implements
         //DateUtil now = new DateUtil(mNow, TimeZone.getDefault());
         //mTodayEoD = now.toEndOfDay().getTime();
         //LogMy.d( TAG, "mNow: "+String.valueOf(mNow.getTime()) +", mTodayEoD: "+ String.valueOf(mTodayEoD.getTime()) );
+
+        if(mMerchantId==null || mMerchantId.isEmpty()) {
+            mMerchantLayout.setVisibility(View.GONE);
+        } else {
+            mMerchantLayout.setVisibility(View.VISIBLE);
+            mInputMerchant.setText(mMerchantName);
+        }
 
         initDateInputs(savedInstanceState);
         mBtnGetReport.setOnClickListener(this);
@@ -130,7 +137,7 @@ public class TxnReportsCustActivity extends BaseActivity implements
         // so added this callback
 
         // if 'Merchant ID' not provided - means fetch only latest txns from DB table
-        if(mMerchantId==null || mMerchantId.isEmpty()) {
+        /*if(mMerchantId==null || mMerchantId.isEmpty()) {
             mFromDate = new Date();
             mFromDate.setTime(mHelper.getTxnInDbFrom().getTime());
             mToDate = new Date();
@@ -139,7 +146,7 @@ public class TxnReportsCustActivity extends BaseActivity implements
             mBtnGetReport.performClick();
         } else {
             mInputMerchant.setText(mMerchantName);
-        }
+        }*/
     }
 
     @Override
@@ -250,7 +257,7 @@ public class TxnReportsCustActivity extends BaseActivity implements
                 mWorkFragment.mLastFetchTransactions.clear();
                 mWorkFragment.mLastFetchTransactions = null;
             }
-            mHelper.startTxnFetch(mFromDate, mToDate, mMerchantId, CustomerUser.getInstance().getCustomer().getPrivate_id());
+            mHelper.startTxnFetch(mFromDate, mToDate, mMerchantId, CustomerUser.getInstance().getCustomer().getPrivate_id(), false);
         } catch(Exception e) {
             LogMy.e(TAG, "Exception is startTxnFetch", e);
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
@@ -481,6 +488,7 @@ public class TxnReportsCustActivity extends BaseActivity implements
     private EditText mLabelInfo;
     private EditText mInputDateFrom;
     private EditText mInputDateTo;
+    private View mMerchantLayout;
     private EditText mInputMerchant;
     private AppCompatButton mBtnGetReport;
 
@@ -491,6 +499,7 @@ public class TxnReportsCustActivity extends BaseActivity implements
         mLabelInfo = (EditText) findViewById(R.id.label_info);
         mInputDateFrom = (EditText) findViewById(R.id.input_date_from);
         mInputDateTo = (EditText) findViewById(R.id.input_date_to);
+        mMerchantLayout = findViewById(R.id.layout_merchant);
         mInputMerchant = (EditText) findViewById(R.id.input_merchant);
         mBtnGetReport = (AppCompatButton) findViewById(R.id.btn_get_report);
 

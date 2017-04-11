@@ -2,15 +2,13 @@ package in.myecash.appbase.utilities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Base64;
 
 import com.backendless.exceptions.BackendlessException;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +21,6 @@ import in.myecash.appbase.entities.MyTransaction;
 import in.myecash.common.CommonUtils;
 import in.myecash.common.CsvConverter;
 import in.myecash.common.DateUtil;
-import in.myecash.common.MyGlobalSettings;
 import in.myecash.common.constants.CommonConstants;
 import in.myecash.common.constants.ErrorCodes;
 import in.myecash.common.database.Transaction;
@@ -49,6 +46,9 @@ public class TxnReportsHelper2 {
     private Date mToDate;
     private String mMerchantId;
     private String mCustomerId;
+    private boolean mFetchByMchnt;
+    private String mCurPeriodFile;
+    private long mCurFileModTime;
 
     public List<String> mAllFiles = new ArrayList<>();
     public List<String> mMissingFiles = new ArrayList<>();
@@ -78,12 +78,13 @@ public class TxnReportsHelper2 {
      * Else
      *      fetch txns only from DB
      */
-    public void startTxnFetch(Date from, Date to, String merchantId, String customerId) throws Exception{
+    public void startTxnFetch(Date from, Date to, String merchantId, String customerId, boolean fetchByMchnt) throws Exception{
         mFromDate = from;
         mToDate = to;
         //LogMy.d( TAG, "mTxnInDbFrom: "+ String.valueOf(mTxnInDbFrom.getTime()) );
         mMerchantId = merchantId;
         mCustomerId = customerId;
+        mFetchByMchnt = fetchByMchnt;
 
         // reset all
         mTxnsFromCsv.clear();
@@ -96,7 +97,11 @@ public class TxnReportsHelper2 {
             }
 
             // find which txn csv files are not locally available
-            getTxnCsvFilePaths();
+            if(mFetchByMchnt) {
+                getTxnCsvFilePaths();
+            } else {
+                getCustTxnCsvFilePaths();
+            }
             if (mMissingFiles.isEmpty()) {
                 // all required txn files are locally available
                 // process all files and store applicable CSV records in 'mWorkFragment.mFilteredCsvRecords'
@@ -156,6 +161,7 @@ public class TxnReportsHelper2 {
                         if (y == toYear && m == toMonth) {
                             // current month file
                             // file update should be after requested 'to' time
+                            mCurPeriodFile = filename;
                             reqFileUpdateTime = mToDate;
                             //reqFileUpdateTime = (new DateUtil(new Date(), TimeZone.getDefault())).toMidnight().getTime();
                         } else {
@@ -171,8 +177,10 @@ public class TxnReportsHelper2 {
                             reqFileUpdateTime = formatter1.parse(nextDayDate);
                         }
 
-                        if(file.lastModified() < reqFileUpdateTime.getTime()) {
-                            LogMy.d(TAG,"Local file modified time less than required: "+filename+","+file.lastModified()+","+reqFileUpdateTime.getTime());
+                        long fileModifyTime = getCsvModifyTime(file);
+                        //if(file.lastModified() < reqFileUpdateTime.getTime()) {
+                        if(fileModifyTime < (reqFileUpdateTime.getTime()/1000)) {
+                            LogMy.d(TAG,"Local file modified time less than required: "+filename+","+fileModifyTime+","+(reqFileUpdateTime.getTime()/1000));
                             latestCopy = false;
                         }
                     } catch (Exception e) {
@@ -217,6 +225,107 @@ public class TxnReportsHelper2 {
         }*/
     }
 
+    // checks for txn files locally and sets 'mWorkFragment.mAllFiles' and 'mWorkFragment.mMissingFiles' accordingly
+    private void getCustTxnCsvFilePaths() {
+        // assuming 1 file per year
+        // loop from 'from date year' to 'to date year' - checking if corresponding file is locally available or not
+
+        int fromYear = (new DateUtil(mFromDate, TimeZone.getDefault())).getYear();
+        int toYear = (new DateUtil(mToDate, TimeZone.getDefault())).getYear();
+
+        mMissingFiles.clear();
+        mAllFiles.clear();
+
+        SimpleDateFormat formatter1=new SimpleDateFormat("dd/MM/yyyy");
+
+        // build names of all required CSV files
+        for(int y=fromYear; y<=toYear; y++) {
+            String yearStr = String.format("%04d", y);
+
+            String filename = CommonUtils.getCustTxnCsvFilename(yearStr, mCustomerId);
+            mAllFiles.add(filename);
+
+            File file = mContext.getFileStreamPath(filename);
+            if(file == null || !file.exists()) {
+                // file does not exist locally
+                LogMy.d(TAG,"Missing file: "+filename);
+                String filepath = CommonUtils.getCustomerTxnDir(mCustomerId) + CommonConstants.FILE_PATH_SEPERATOR + filename;
+                mMissingFiles.add(filepath);
+            } else {
+                // check if local copy is latest or not
+                boolean latestCopy = true;
+                Date reqFileUpdateTime = null;
+
+                try {
+                    if (y == toYear) {
+                        // current year file
+                        // file update should be after requested 'to' time
+                        mCurPeriodFile = filename;
+                        reqFileUpdateTime = mToDate;
+                        //reqFileUpdateTime = (new DateUtil(new Date(), TimeZone.getDefault())).toMidnight().getTime();
+                    } else {
+                        // old year file
+                        // file update should be after next year's first day midnight
+
+                        String nextDayDate = "01/01" + String.format("%04d", y + 1);
+                        reqFileUpdateTime = formatter1.parse(nextDayDate);
+                    }
+
+                    long fileModifyTime = getCsvModifyTime(file);
+                    //if(file.lastModified() < reqFileUpdateTime.getTime()) {
+                    if(fileModifyTime < (reqFileUpdateTime.getTime()/1000)) {
+                        LogMy.d(TAG,"Local file modified time less than required: "+filename+","+fileModifyTime+","+(reqFileUpdateTime.getTime()/1000));
+                        latestCopy = false;
+                    }
+                } catch (Exception e) {
+                    // Add to missing file list
+                    LogMy.e(TAG,"Exception in TxnReportsHelper2, adding to missing file list: "+filename);
+                    latestCopy = false;
+                }
+
+                if(!latestCopy) {
+                    String filepath = CommonUtils.getCustomerTxnDir(mCustomerId) + CommonConstants.FILE_PATH_SEPERATOR + filename;
+                    mMissingFiles.add(filepath);
+                }
+            }
+        }
+
+        LogMy.d(TAG,"mAllFiles: "+mAllFiles.toString());
+        LogMy.d(TAG,"mMissingFiles: "+mMissingFiles.toString());
+    }
+
+    private long getCsvModifyTime(File file) {
+        long modifyTime = 0;
+        try {
+            FileInputStream is = new FileInputStream(file);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+            int lineCnt = 0;
+            String receiveString = "";
+            while ( (receiveString = reader.readLine()) != null ) {
+                // ignore empty lines
+                if(receiveString.trim().isEmpty() || receiveString.equals(CommonConstants.NEWLINE_SEP)) {
+                    LogMy.d(TAG, "Read empty line");
+                    continue;
+                }
+
+                //LogMy.d(TAG,"Read line: "+receiveString);
+                if(lineCnt==0) {
+                    modifyTime = Long.parseLong(receiveString);
+                } else {
+                    break;
+                }
+                lineCnt++;
+            }
+            is.close();
+
+        } catch (Exception e) {
+            LogMy.e(TAG,"Failed to read modify time from CSV file"+file.getAbsolutePath(),e);
+            modifyTime = 0;
+        }
+        return modifyTime;
+    }
+
     // this function is called for further processing,
     // when all CSV txn files for old days are available locally
     public void onAllTxnFilesAvailable(boolean remoteCsvTxnFileNotFound) throws Exception {
@@ -224,16 +333,16 @@ public class TxnReportsHelper2 {
         processTxnFiles();
 
         // For now - always check for txns in DB
-        mCallback.fetchTxnsFromDB(buildWhereClause());
+        //mCallback.fetchTxnsFromDB(buildWhereClause());
 
         // check if records from DB table are to be fetched too
-        /*if( mToDate.getTime() >= mTxnInDbFrom.getTime() ||
-                remoteCsvTxnFileNotFound ) {
+        //if( mToDate.getTime() >= mTxnInDbFrom.getTime() || remoteCsvTxnFileNotFound ) {
+        if( (mToDate.getTime()/1000) >= mCurFileModTime || remoteCsvTxnFileNotFound ) {
             mCallback.fetchTxnsFromDB(buildWhereClause());
         } else {
             // no DB table records to be fetched
             onDbTxnsAvailable(null);
-        }*/
+        }
     }
 
     // returns final list of transactions
@@ -296,29 +405,53 @@ public class TxnReportsHelper2 {
     private void processTxnFiles() throws Exception {
         mTxnsFromCsv.clear();
 
-        boolean isCustomerFilter = (mCustomerId != null && mCustomerId.length() > 0);
+        //boolean isCustomerFilter = (mCustomerId != null && mCustomerId.length() > 0);
+
+        boolean isFilter;
+        if(mFetchByMchnt) {
+            isFilter = (mCustomerId != null && mCustomerId.length() > 0);
+        } else {
+            isFilter = (mMerchantId != null && mMerchantId.length() > 0);
+        }
+
+        FileInputStream is;
+        BufferedReader bfReader;
 
         for(int i=0; i<mAllFiles.size(); i++) {
             try {
-                byte[] bytes = AppCommonUtil.fileAsByteArray(mContext, mAllFiles.get(i));
+                //byte[] bytes = AppCommonUtil.fileAsByteArray(mContext, mAllFiles.get(i));
                 //LogMy.d(TAG,"Encoded "+mAllFiles.get(i)+": "+new String(bytes));
                 //byte[] decodedBytes = Base64.decode(bytes, Base64.DEFAULT);
                 //LogMy.d(TAG,"Decoded "+mAllFiles.get(i)+": "+new String(decodedBytes));
 
-                InputStream is = new ByteArrayInputStream(bytes);
-                BufferedReader bfReader = new BufferedReader(new InputStreamReader(is));
+                //InputStream is = new ByteArrayInputStream(bytes);
+                //BufferedReader bfReader = new BufferedReader(new InputStreamReader(is));
+
+                is = mContext.openFileInput(mAllFiles.get(i));
+                bfReader = new BufferedReader(new InputStreamReader(is));
 
                 int lineCnt = 0;
                 String receiveString = "";
                 while ( (receiveString = bfReader.readLine()) != null ) {
-                    LogMy.d(TAG,"Read line: "+receiveString);
-                    // Line 0 is header - ignore the same
+                    // ignore empty lines
+                    if(receiveString.trim().isEmpty() || receiveString.equals(CommonConstants.NEWLINE_SEP)) {
+                        LogMy.d(TAG, "Read empty line");
+                        continue;
+                    }
+
+                    //LogMy.d(TAG,"Read line: "+receiveString);
+                    // first line is modify time
                     if(lineCnt!=0) {
-                        // ignore empty lines
-                        if(receiveString.trim().isEmpty() || receiveString.equals(CommonConstants.NEWLINE_SEP)) {
-                            LogMy.d(TAG, "Read empty line");
-                        } else {
-                            processTxnCsvRecord(receiveString, isCustomerFilter);
+                        processTxnCsvRecord(receiveString, isFilter);
+                    } else {
+                        if(mCurPeriodFile.equals(mAllFiles.get(i))) {
+                            // store current month file's modify time
+                            try {
+                                mCurFileModTime = Long.parseLong(receiveString);
+                            } catch (Exception e) {
+                                LogMy.e(TAG,"Failed to read modify time from CSV file"+mAllFiles.get(i),e);
+                                mCurFileModTime = 0;
+                            }
                         }
                     }
                     lineCnt++;
@@ -352,15 +485,27 @@ public class TxnReportsHelper2 {
         }
     }
 
-    private void processTxnCsvRecord(String csvString, boolean isCustomerFilter)  throws ParseException {
+    private void processTxnCsvRecord(String csvString, boolean isFilter)  throws ParseException {
         Transaction txn = CsvConverter.txnFromCsvStr(csvString);
 
         if( txn.getCreate_time().getTime() > mFromDate.getTime()
+                && txn.getCreate_time().getTime() < mToDate.getTime()) {
+            if(isFilter) {
+                if( (mFetchByMchnt && mCustomerId.equals(txn.getCust_private_id()))
+                || (!mFetchByMchnt && mMerchantId.equals(txn.getMerchant_id())) ) {
+                    mTxnsFromCsv.add(txn);
+                }
+            } else {
+                mTxnsFromCsv.add(txn);
+            }
+        }
+
+        /*if( txn.getCreate_time().getTime() > mFromDate.getTime()
                 && txn.getCreate_time().getTime() < mToDate.getTime()
                 && (!isCustomerFilter || mCustomerId.equals(txn.getCust_private_id()))
                 ) {
             mTxnsFromCsv.add(txn);
-        }
+        }*/
 
         /*if( !isCustomerFilter ||
                 mCustomerId.equals(txn.getCust_mobile()) ||

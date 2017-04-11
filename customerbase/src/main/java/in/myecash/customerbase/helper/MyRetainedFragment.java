@@ -9,6 +9,7 @@ import java.util.Map;
 
 import in.myecash.appbase.entities.MyCashback;
 import in.myecash.appbase.utilities.TxnReportsHelper;
+import in.myecash.appbase.utilities.TxnReportsHelper2;
 import in.myecash.common.database.CustomerOps;
 import in.myecash.common.database.Transaction;
 import in.myecash.customerbase.entities.CustomerStats;
@@ -61,7 +62,7 @@ public class MyRetainedFragment extends RetainedFragment {
     // members used by 'Txn Reports Activity' to store its state, and its fragments
     public List<String> mMissingFiles;
     // 'Txn Reports Activity' store the helper instance here in onSaveInstance
-    public TxnReportsHelper mTxnReportHelper;
+    public TxnReportsHelper2 mTxnReportHelper;
     public List<Transaction> mLastFetchTransactions;
 
     // params for enabling account

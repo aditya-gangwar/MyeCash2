@@ -429,27 +429,29 @@ public class CashbackActivity extends BaseActivity implements
         // set merchant details
         // Set merchant DP as toolbar icon
         // Check if local path available, else download from server
-        boolean dwnloadImage = false;
-        File file = getFileStreamPath(mMerchant.getDisplayImage());
-        if(file!=null) {
-            LogMy.d(TAG,"Mchnt DP available locally: "+file.getPath());
+        if(mMerchant.getDisplayImage()!=null && !mMerchant.getDisplayImage().isEmpty()) {
+            boolean dwnloadImage = false;
+            File file = getFileStreamPath(mMerchant.getDisplayImage());
+            if (file != null) {
+                LogMy.d(TAG, "Mchnt DP available locally: " + file.getPath());
 
-            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
-            if(bitmap==null) {
-                dwnloadImage = true;
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+                if (bitmap == null) {
+                    dwnloadImage = true;
+                } else {
+                    LogMy.d(TAG, "Decoded file as bitmap: " + file.getPath());
+                    mMerchantUser.setDisplayImage(bitmap);
+                }
             } else {
-                LogMy.d(TAG,"Decoded file as bitmap: "+file.getPath());
-                mMerchantUser.setDisplayImage(bitmap);
+                dwnloadImage = true;
             }
-        } else {
-            dwnloadImage = true;
-        }
 
-        if(dwnloadImage) {
-            String url = AppConstants.BACKEND_FILE_BASE_URL+
-                    CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR+
-                    mMerchantUser.getMerchant().getDisplayImage();
-            mWorkFragment.fetchImageFile(url);
+            if (dwnloadImage) {
+                String url = AppConstants.BACKEND_FILE_BASE_URL +
+                        CommonConstants.MERCHANT_DISPLAY_IMAGES_DIR +
+                        mMerchantUser.getMerchant().getDisplayImage();
+                mWorkFragment.fetchImageFile(url);
+            }
         }
     }
 
@@ -2077,6 +2079,7 @@ public class CashbackActivity extends BaseActivity implements
 
     // `onPostCreate` called when activity start-up is complete after `onStart()`
     // NOTE! Make sure to override the method with only a single `Bundle` argument
+    /*
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         LogMy.d(TAG,"In onPostCreate");
@@ -2104,7 +2107,7 @@ public class CashbackActivity extends BaseActivity implements
             DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(ErrorCodes.GENERAL_ERROR), false, true)
                     .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);
         }
-    }
+    }*/
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

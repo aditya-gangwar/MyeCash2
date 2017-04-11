@@ -234,7 +234,7 @@ public class TxnReportsActivity extends BaseActivity implements
 
                 //fetchReportData();
                 mHelper.startTxnFetch(mFromDate, mToDate,
-                        MerchantUser.getInstance().getMerchantId(), mCustomerId);
+                        MerchantUser.getInstance().getMerchantId(), mCustomerId, true);
             }
         } catch(Exception e) {
             LogMy.e(TAG, "Exception is ReportsActivity:onClick: "+vId, e);
@@ -438,7 +438,7 @@ public class TxnReportsActivity extends BaseActivity implements
                     // ask for customer OTP
                     if(errorCode == ErrorCodes.NO_ERROR) {
                         mHelper.startTxnFetch(mFromDate, mToDate,
-                                MerchantUser.getInstance().getMerchantId(), mWorkFragment.mTempStr);
+                                MerchantUser.getInstance().getMerchantId(), mWorkFragment.mTempStr, true);
                     } else {
                         DialogFragmentWrapper.createNotification(AppConstants.generalFailureTitle, AppCommonUtil.getErrorDesc(errorCode), false, true)
                                 .show(mFragMgr, DialogFragmentWrapper.DIALOG_NOTIFICATION);

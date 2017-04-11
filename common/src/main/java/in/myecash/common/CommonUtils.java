@@ -86,6 +86,11 @@ public class CommonUtils {
         return CommonConstants.MERCHANT_TXN_FILE_PREFIX + merchantId + "_" + month + year + CommonConstants.CSV_FILE_EXT;
     }
 
+    public static String getCustTxnCsvFilename(String year, String customerId) {
+        // File name: txns_<customer_id>_<yyyy>.csv
+        return CommonConstants.CUSTOMER_TXN_FILE_PREFIX + customerId + "_" + year + CommonConstants.CSV_FILE_EXT;
+    }
+
     /*public static String getTxnImgDir(String merchantId) {
         // merchant directory: merchants/<first 3 chars of merchant id>/<next 2 chars of merchant id>/<merchant id>/
         return CommonConstants.MERCHANT_TXN_IMAGE_ROOT_DIR +
